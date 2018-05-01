@@ -1,8 +1,5 @@
 .. automodule:: komm.algebra
 
-Algebra
-=======
-
 .. autoclass:: komm.BinaryFiniteExtensionField
     :members:
     :inherited-members:
