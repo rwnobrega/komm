@@ -33,7 +33,8 @@ class Sequence:
         self._length = self._sequence.size
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(sequence={self._sequence.tolist()})'
+        args = 'sequence={}'.format(self._sequence.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def sequence(self):
@@ -68,7 +69,8 @@ class BarkerSequence(Sequence):
         super().__init__(self._barker_sequence(length))
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.length})'
+        args = 'length={}'.format(self.length)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
     def _barker_sequence(length):
@@ -116,8 +118,8 @@ class WalshHadamardSequence(Sequence):
         super().__init__(self._hadamard_matrix(length)[natural_index])
 
     def __repr__(self):
-        return f"{self.__class__.__name__}" \
-               f"(length={self._length}, ordering='{self._ordering}', index={self._index})"
+        args = "length={}, ordering='{}', index={}".format(self._length, self._ordering, self._index)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def index(self):
@@ -192,8 +194,8 @@ class LFSRSequence(Sequence):
         return cls(DICT[num_states])
 
     def __repr__(self):
-        args = f'feedback_poly={self._feedback_poly}, start_state_poly={self._start_state_poly}'
-        return f'{self.__class__.__name__}({args})'
+        args = 'feedback_poly={}, start_state_poly={}'.format(self._feedback_poly, self._start_state_poly)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def feedback_poly(self):

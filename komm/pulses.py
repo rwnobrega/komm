@@ -57,9 +57,8 @@ class Pulse:
         return filtered
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(impulse_response={self._impulse_response.tolist()}, ' \
-               f'samples_per_symbol={self._samples_per_symbol})'
-
+        args = 'impulse_response={}, samples_per_symbol={}'.format(self._impulse_response.tolist(), self._samples_per_symbol)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 class RectangularNRZPulse(Pulse):
     """
@@ -69,7 +68,8 @@ class RectangularNRZPulse(Pulse):
         super().__init__(np.ones(samples_per_symbol, dtype=np.float), samples_per_symbol)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(samples_per_symbol={self._samples_per_symbol})'
+        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class RectangularRZPulse(Pulse):
@@ -87,8 +87,8 @@ class RectangularRZPulse(Pulse):
         super().__init__(impulse_response, samples_per_symbol)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(samples_per_symbol={self._samples_per_symbol})'
-
+        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class ManchesterPulse(Pulse):
@@ -106,8 +106,8 @@ class ManchesterPulse(Pulse):
         super().__init__(impulse_response, samples_per_symbol)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(samples_per_symbol={self._samples_per_symbol})'
-
+        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 class SincPulse(Pulse):
     def __init__(self, samples_per_symbol, length_in_symbols):
@@ -118,9 +118,8 @@ class SincPulse(Pulse):
         self._length_in_symbols = length_in_symbols
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(samples_per_symbol={self._samples_per_symbol}, ' \
-               f'length_in_symbols={self._length_in_symbols})'
-
+        args = 'samples_per_symbol={}, length_in_symbols={}'.format(self._samples_per_symbol, self._length_in_symbols)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 class RaisedCosinePulse(Pulse):
     def __init__(self, rolloff, samples_per_symbol, length_in_symbols):
@@ -134,9 +133,8 @@ class RaisedCosinePulse(Pulse):
         self._rolloff = rolloff
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(rolloff={self._rolloff}, ' \
-               f'samples_per_symbol={self._samples_per_symbol}, ' \
-               f'length_in_symbols={self._length_in_symbols})'
+        args = 'rolloff={}, samples_per_symbol={}, length_in_symbols={}'.format(self._rolloff, self._samples_per_symbol, self._length_in_symbols)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class RootRaisedCosinePulse(Pulse):
@@ -152,9 +150,8 @@ class RootRaisedCosinePulse(Pulse):
         self._rolloff = rolloff
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(rolloff={self._rolloff}, ' \
-               f'samples_per_symbol={self._samples_per_symbol}, ' \
-               f'length_in_symbols={self._length_in_symbols})'
+        args = 'rolloff={}, samples_per_symbol={}, length_in_symbols={}'.format(self._rolloff, self._samples_per_symbol, self._length_in_symbols)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class GaussianPulse(Pulse):

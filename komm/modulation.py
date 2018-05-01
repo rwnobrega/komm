@@ -44,8 +44,8 @@ class Modulation:
             lambda recv: soft_bit_demodulator(recv, self._constellation, self._inverse_mapping, self.channel_N0)
 
     def __repr__(self):
-        args = f'constellation={self._constellation.tolist()}, labeling={self._labeling.tolist()}'
-        return f'{self.__class__.__name__}({args})'
+        args = 'constellation={}, labeling={}'.format(self._constellation.tolist(), self._labeling.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
 
     def _init_constellation(self, constellation):
         self._constellation = np.array(constellation)
@@ -279,9 +279,8 @@ class PAModulation(RealModulation):
             lambda recv: uniform_real_soft_bit_demodulator(np.array(recv) / base_amplitude, self._channel_snr)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._order}, ' \
-               f'polarity={repr(self._polarity)}, ' \
-               f'base_amplitude={repr(self._base_amplitude)})'
+        args = '{}, polarity="{}", base_amplitude={}'.format(self._order, self._polarity, self._base_amplitude)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class ComplexModulation(Modulation):
@@ -360,7 +359,8 @@ class ASKModulation(ComplexModulation):
             lambda recv: ask_hard_demodulator(np.array(recv), self.order)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._order})'
+        args = '{}'.format(self._order)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class PSKModulation(ComplexModulation):
@@ -388,7 +388,8 @@ class PSKModulation(ComplexModulation):
                 lambda recv: qpsk_soft_bit_demodulator_reflected(np.array(recv), self._channel_snr)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._order})'
+        args = '{}'.format(self._order)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class QAModulation(ComplexModulation):
@@ -422,8 +423,8 @@ class QAModulation(ComplexModulation):
             lambda recv: rectangular_hard_demodulator(np.array(recv), self._order)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._order})'
-
+        args = '{}'.format(self._order)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 

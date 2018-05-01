@@ -130,7 +130,8 @@ class AWGNChannel:
         return input_signal + noise
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(snr={self.snr}, signal_power={self.signal_power})'
+        args = 'snr={}, signal_power={}'.format(self.snr, self.signal_power)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class DiscreteMemorylessChannel:
@@ -204,7 +205,8 @@ class DiscreteMemorylessChannel:
         return discrete_memoryless_channel(input_sequence, self._output_cardinality, self._transition_matrix)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(transition_matrix={self._transition_matrix.tolist()})'
+        args = 'transition_matrix={}'.format(self._transition_matrix.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
@@ -272,7 +274,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(crossover={self._crossover})'
+        args = 'crossover={}'.format(self._crossover)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
@@ -338,11 +341,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         return output_sequence
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(erasure={self._erasure})'
-
-
-
-
+        args = 'erasure={}'.format(self._erasure)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 

@@ -64,7 +64,8 @@ class SymbolCode:
         return np.array(symbols)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(dictionary={self._dictionary})'
+        args = 'dictionary={}'.format(self._dictionary)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class HuffmanCode(SymbolCode):

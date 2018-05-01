@@ -383,7 +383,8 @@ class BinaryFiniteExtensionField:
         return BinaryPolynomial.from_coefficients(int(c) for c in coefficients)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._degree})'
+        args = '{}'.format(self._degree)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     def __call__(self, value):
         """
