@@ -1,22 +1,3 @@
-"""
-Channels
-========
-
-Channel models and impairments.
-
-Continuous
-----------
-
-    AWGNChannel
-
-Discrete
---------
-
-    DiscreteMemorylessChannel
-    BinarySymmetricChannel
-    BinaryErasureChannel
-"""
-
 import numpy as np
 
 from .util import \
@@ -31,37 +12,30 @@ class AWGNChannel:
     """
     Additive white gaussian noise (AWGN) channel.
 
-    The *additive white gaussian noise* (*AWGN*) channel :cite:`Cover.Thomas.06` (Ch. 9) is
-    defined by
+    The *additive white gaussian noise* (*AWGN*) channel :cite:`Cover.Thomas.06` (Ch. 9) is defined by
 
     .. math::
 
         Y_n = X_n + Z_n,
 
-    where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and
-    :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a gaussian distribution with zero mean.
-    The channel *signal-to-noise ratio* (*SNR*) is calculated by
+    where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a gaussian distribution with zero mean. The channel *signal-to-noise ratio* (*SNR*) is calculated by
 
     .. math::
 
         \\mathrm{SNR} = \\frac{P}{N},
 
-    where :math:`P = \\mathrm{E}[X^2_n]` is the average power of the input signal, and
-    :math:`N = \\mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.
+    where :math:`P = \\mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \\mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.
 
     The constructor takes the channel SNR and the input signal power as parameters.
 
-    To invoke the channel from a given input, just
+    To invoke the channel for a given input, just
 
     Parameters
     ==========
     snr : `float`, optional
-        The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel).
-        Default value is :code:`np.inf`.
+        The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). Default value is :code:`np.inf`.
     signal_power : `float` or `str`, optional
-        The input signal power :math:`P`.  If set to the string :code:`'measured'`,
-        every time the channel is invoked the input signal power will be computed
-        from the input (i.e., its squared Euclidean norm).  Default value is :code:`1.0`.
+        The input signal power :math:`P`.  If set to the string :code:`'measured'`, every time the channel is invoked the input signal power will be computed from the input (i.e., its squared Euclidean norm). Default value is :code:`1.0`.
 
     Examples
     ========
@@ -100,8 +74,7 @@ class AWGNChannel:
 
     def capacity(self):
         """
-        Returns the channel capacity, given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`,
-        in bits per dimension.
+        Returns the channel capacity, given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.
 
         Examples
         ========
@@ -138,14 +111,9 @@ class DiscreteMemorylessChannel:
     """
     Discrete memoryless channel (DMC).
 
-    A *discrete memoryless channel* (*DMC*) :cite:`Cover.Thomas.06` (Ch. 7) is defined by an
-    *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a
-    *transition matrix* :math:`p_{Y \mid X}`.
+    A *discrete memoryless channel* (*DMC*) :cite:`Cover.Thomas.06` (Ch. 7) is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition matrix* :math:`p_{Y \mid X}`.
 
-    The constructor expects the transition matrix, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`,
-    as its sole parameter.  The input and output alphabets are always taken as :math:`\\mathcal{X} =
-    \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots,
-    |\\mathcal{Y}| - 1 \\}`, respectively.
+    The constructor expects the transition matrix, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, as its sole parameter. The input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
 
     Parameters
     ==========
@@ -188,8 +156,7 @@ class DiscreteMemorylessChannel:
 
     def capacity(self):
         """
-        Returns the channel capacity, calculated by the Arimoto--Blahut algorithm
-        :cite:`Cover.Thomas.06` (Sec. 10.8).
+        Returns the channel capacity, calculated by the Arimoto--Blahut algorithm :cite:`Cover.Thomas.06` (Sec. 10.8).
 
         Examples
         ========
@@ -213,10 +180,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     """
     Binary symmetric channel (BSC).
 
-    The *binary symmetric channel* (*BSC*) :cite:`Cover.Thomas.06` (Sec. 7.1.4) is a
-    :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input and output
-    alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition matrix
-    given by
+    The *binary symmetric channel* (*BSC*) :cite:`Cover.Thomas.06` (Sec. 7.1.4) is a :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition matrix given by
 
     .. math::
 
@@ -233,9 +197,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     Parameters
     ==========
-    crossover : `float`, optional
-        The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`.
-        Default value is :code:`0.0`.
+    crossover_probability : `float`, optional
+        The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. Default value is :code:`0.0`.
 
     Examples
     ========
@@ -245,16 +208,16 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     >>> y = bsc(x); y
     array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
     """
-    def __init__(self, crossover=0.0):
-        super().__init__([[1 - crossover, crossover], [crossover, 1 - crossover]])
-        self._crossover = crossover
+    def __init__(self, crossover_probability=0.0):
+        super().__init__([[1 - crossover_probability, crossover_probability], [crossover_probability, 1 - crossover_probability]])
+        self._crossover_probability = crossover_probability
 
     @property
-    def crossover(self):
+    def crossover_probability(self):
         """
         The channel crossover probability :math:`p`.
         """
-        return self._crossover
+        return self.crossover_probability
 
     def capacity(self):
         """
@@ -267,14 +230,14 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         >>> bsc.capacity()
         0.18872187554086717
         """
-        return 1.0 - entropy(np.array([self._crossover, 1.0 - self._crossover]))
+        return 1.0 - entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
 
     def __call__(self, input_sequence):
-        error_pattern = bernoulli_iid(self._crossover, input_sequence.size)
+        error_pattern = bernoulli_iid(self._crossover_probability, input_sequence.size)
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):
-        args = 'crossover={}'.format(self._crossover)
+        args = 'crossover_probability={}'.format(self._crossover_probability)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
@@ -282,10 +245,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     """
     Binary erasure channel (BSC).
 
-    The *binary erasure channel* (*BEC*) :cite:`Cover.Thomas.06` (Sec. 7.1.5) is a
-    :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input alphabet
-    :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`,
-    and transition matrix given by
+    The *binary erasure channel* (*BEC*) :cite:`Cover.Thomas.06` (Sec. 7.1.5) is a :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition matrix given by
 
     .. math::
 
@@ -299,9 +259,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     Parameters
     ==========
-    erasure : `float`, optional
-        The channel erasure probability :math:`\\epsilon`. Must satisfy
-        :math:`0 \leq \\epsilon \leq 1`. Default value is :code:`0.0`.
+    erasure_probability : `float`, optional
+        The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \leq \\epsilon \leq 1`. Default value is :code:`0.0`.
 
     Examples
     ========
@@ -311,16 +270,16 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     >>> y = bec(x); y
     array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
     """
-    def __init__(self, erasure=0.0):
-        super().__init__([[1 - erasure, 0, erasure], [0, 1 - erasure, erasure]])
-        self._erasure = erasure
+    def __init__(self, erasure_probability=0.0):
+        super().__init__([[1 - erasure_probability, 0, erasure_probability], [0, 1 - erasure_probability, erasure_probability]])
+        self._erasure_probability = erasure_probability
 
     @property
-    def erasure(self):
+    def erasure_probability(self):
         """
         The channel erasure probability :math:`\\epsilon`.
         """
-        return self._erasure
+        return self._erasure_probability
 
     def capacity(self):
         """
@@ -332,16 +291,16 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         >>> bec.capacity()
         0.75
         """
-        return 1.0 - self._erasure
+        return 1.0 - self._erasure_probability
 
     def __call__(self, input_sequence):
-        erasure_pattern = bernoulli_iid(self._erasure, input_sequence.size) == 1
+        erasure_pattern = bernoulli_iid(self._erasure_probability, input_sequence.size) == 1
         output_sequence = np.copy(input_sequence)
         output_sequence[erasure_pattern] = 2
         return output_sequence
 
     def __repr__(self):
-        args = 'erasure={}'.format(self._erasure)
+        args = 'erasure_probability={}'.format(self._erasure_probability)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
