@@ -153,13 +153,12 @@ class BlockCode:
 
     def __repr__(self):
         if self._constructed_from == 'generator_matrix':
-            args = f'generator_matrix={self._generator_matrix.tolist()}'
+            args = 'generator_matrix={}'.format(self._generator_matrix.tolist())
         elif self._constructed_from == 'parity_check_matrix':
-            args = f'parity_check_matrix={self._parity_check_matrix.tolist()}'
+            args = 'parity_check_matrix={}'.format(self._parity_check_matrix.tolist())
         elif self._constructed_from == 'parity_submatrix':
-            args = f'parity_submatrix={self._parity_submatrix.tolist()}, ' \
-                   f'information_set={self._information_set.tolist()}'
-        return f'{self.__class__.__name__}({args})'
+            args = 'parity_submatrix={}, information_set={}'.format(self._parity_submatrix.tolist(), self._information_set.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @classmethod
     def _process_docstring(cls):
@@ -431,7 +430,7 @@ class BlockCode:
             if name.startswith('_decode_'):
                 identifier = name[8:]
                 method = getattr(cls, name)
-                table.append([method.name, f':code:`{identifier}`', method.input_type])
+                table.append([method.name, ':code:`{}`'.format(identifier), method.input_type])
         return table
 
 
@@ -490,7 +489,8 @@ class HammingCode(BlockCode):
         self._minimum_distance = 3
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._redundancy})'
+        args = 'redundancy={}'.format(self._redundancy)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
     def _hamming_parity_submatrix(m):
@@ -556,7 +556,8 @@ class SimplexCode(BlockCode):
         self._minimum_distance = 2**(k - 1)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._dimension})'
+        args = 'dimension={}'.format(self._dimension)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 class GolayCode(BlockCode):
@@ -592,7 +593,8 @@ class GolayCode(BlockCode):
         self._minimum_distance = 7
 
     def __repr__(self):
-        return f'{self.__class__.__name__}()'
+        args = ''
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
     def _golay_parity_submatrix():
@@ -656,7 +658,8 @@ class RepetitionCode(BlockCode):
         self._minimum_distance = n
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._length})'
+        args = 'length={}'.format(self._length)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @tag(name='Majority-logic', input_type='hard', target='codeword')
     def _decode_majority_logic(self, recvword):
@@ -719,7 +722,8 @@ class SingleParityCheckCode(BlockCode):
         self._minimum_distance = 2
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._length})'
+        args = 'length={}'.format(self._length)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @tag(name='Wagner', input_type='soft', target='codeword')
     def _decode_wagner(self, recvword):
@@ -794,7 +798,8 @@ class ReedMullerCode(BlockCode):
         self._m = m
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._r}, {self._m})'
+        args = '{}, {}'.format(self._r, self._m)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
     def _reed_muller_generator_matrix(r, m):
@@ -934,10 +939,8 @@ class CyclicCode(BlockCode):
             self._information_set = np.arange(self._redundancy, self._length)
 
     def __repr__(self):
-        args = f'{self._length}, ' \
-               f'generator_polynomial={self._generator_polynomial}, ' \
-               f'systematic={self._is_systematic}'
-        return f'{self.__class__.__name__}({args})'
+        args = '{}, generator_polynomial={}, systematic={}'.format(self._length, self._generator_polynomial, self._is_systematic)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def generator_polynomial(self):
@@ -1087,7 +1090,8 @@ class BCHCode(CyclicCode):
         self._beta_minimal_polynomial = [b.minimal_polynomial() for b in self._beta]
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._m}, {self._packing_radius})'
+        args = '{}, {}'.format(self._m, self._packing_radius)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
     def _bch_code_generator_polynomial(field, m, designed_t):

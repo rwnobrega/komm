@@ -72,7 +72,7 @@ class ConvolutionalCode:
 
     def __repr__(self):
         args = str(np.vectorize(oct)(self._generator_matrix).tolist()).replace("'", "")
-        return f'{self.__class__.__name__}({args})'
+        return '{}({})'.format(self.__class__.__name__, args)
 
     def _init_finite_state_machine(self):
         k, n = self._num_input_bits, self._num_output_bits
