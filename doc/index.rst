@@ -34,13 +34,13 @@ From source
     :maxdepth: 2
     :caption: Contents:
 
-    algebra
-    channels
-    error_control
-    modulation
-    pulses
-    sequences
-    source_coding
+    module_algebra
+    module_channels
+    module_error_control
+    module_modulation
+    module_pulses
+    module_sequences
+    module_source_coding
 
 License
 -------
