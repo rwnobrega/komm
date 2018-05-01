@@ -4,10 +4,6 @@ Convolutional coding
 
 Convolutional coding.
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     ConvolutionalCode
 """
 

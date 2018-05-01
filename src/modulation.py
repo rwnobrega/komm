@@ -7,19 +7,11 @@ Modulation schemes.
 Real modulation
 ---------------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     RealModulation
     PAModulation
 
 Complex modulation
 ------------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
 
     ComplexModulation
     ASKModulation

@@ -7,10 +7,6 @@ Source coding...
 Lossless coding
 ---------------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     SymbolCode
     HuffmanCode
 """

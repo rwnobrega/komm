@@ -30,6 +30,11 @@ From source
     git clone https://github.com/rwnobrega/komm
     # Comming soon!
 
+License
+-------
+
+**Komm** is licensed under the `GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.en.html>`_.
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
@@ -41,11 +46,6 @@ From source
     module_pulses
     module_sequences
     module_source_coding
-
-License
--------
-
-**Komm** is licensed under the `GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.en.html>`_.
 
 Indices:
 --------

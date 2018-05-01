@@ -7,18 +7,10 @@ Channel models and impairments.
 Continuous
 ----------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     AWGNChannel
 
 Discrete
 --------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
 
     DiscreteMemorylessChannel
     BinarySymmetricChannel

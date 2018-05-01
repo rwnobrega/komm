@@ -7,10 +7,6 @@ Algebraic tools.
 Algebraic structures
 --------------------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     BinaryPolynomial
     BinaryFiniteExtensionField
 """

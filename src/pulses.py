@@ -7,18 +7,10 @@ Pulses...
 Base class
 ----------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     Pulse
 
 Rectangular pulses
 ------------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
 
     RectangularNRZPulse
     RectangularRZPulse
@@ -26,21 +18,12 @@ Rectangular pulses
 
 Nyquist pulses
 --------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     SincPulse
     RaisedCosinePulse
     RootRaisedCosinePulse
 
 Other pulses
 ------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
 
     GaussianPulse
 """

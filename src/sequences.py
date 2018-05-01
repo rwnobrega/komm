@@ -7,10 +7,6 @@ Sequences...
 Binary sequences
 ----------------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     BarkerSequence
     WalshHadamardSequence
     LFSRSequence

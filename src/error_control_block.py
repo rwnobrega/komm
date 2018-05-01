@@ -7,10 +7,6 @@ Block coding.
 Block codes
 -----------
 
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
-
     BlockCode
     HammingCode
     SimplexCode
@@ -21,10 +17,6 @@ Block codes
 
 Cyclic codes
 ------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: stubs/
 
     CyclicCode
     BCHCode
