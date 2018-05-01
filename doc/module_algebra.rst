@@ -1,9 +1,9 @@
 .. automodule:: komm.algebra
 
-.. autoclass:: BinaryFiniteExtensionField
+.. autoclass:: komm.BinaryFiniteExtensionField
     :members:
     :inherited-members: 
 
-.. autoclass:: BinaryPolynomial
+.. autoclass:: komm.BinaryPolynomial
     :members:
     :inherited-members:
