@@ -8,7 +8,7 @@ This software is still under development.
 Installation
 ------------
 
-Before you start, make sure you have both `Python 3 <https://www.python.org/>`_ and `NumPy <https://www.numpy.org/>`_ installed.
+Before you start, make sure you have both `Python <https://www.python.org/>`_ (version 3.4 or later) and `NumPy <https://www.numpy.org/>`_ installed.
 
 Using pip
 ~~~~~~~~~
