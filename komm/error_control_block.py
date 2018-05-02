@@ -1,27 +1,3 @@
-"""
-Block coding
-============
-
-Block coding.
-
-Block codes
------------
-
-    BlockCode
-    HammingCode
-    SimplexCode
-    GolayCode
-    RepetitionCode
-    SingleParityCheckCode
-    ReedMullerCode
-
-Cyclic codes
-------------
-
-    CyclicCode
-    BCHCode
-"""
-
 import functools
 import itertools
 import operator

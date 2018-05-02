@@ -1,16 +1,3 @@
-"""
-Source coding
-=============
-
-Source coding...
-
-Lossless coding
----------------
-
-    SymbolCode
-    HuffmanCode
-"""
-
 import numpy as np
 
 __all__ = ['SymbolCode', 'HuffmanCode']

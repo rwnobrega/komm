@@ -2,7 +2,8 @@
 *.py~
 __pycache__
 tmp
-doc/_build
+docs/_build
+docs/stubs
 .benchmarks
 .cache
 .spyproject

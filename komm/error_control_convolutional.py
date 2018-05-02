@@ -1,12 +1,3 @@
-"""
-Convolutional coding
-====================
-
-Convolutional coding.
-
-    ConvolutionalCode
-"""
-
 import numpy as np
 
 from .algebra import \

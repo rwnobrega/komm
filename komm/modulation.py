@@ -1,24 +1,3 @@
-"""
-Modulation
-==========
-
-Modulation schemes.
-
-Real modulation
----------------
-
-    RealModulation
-    PAModulation
-
-Complex modulation
-------------------
-
-    ComplexModulation
-    ASKModulation
-    PSKModulation
-    QAModulation
-"""
-
 import itertools
 
 import numpy as np

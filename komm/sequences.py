@@ -1,17 +1,3 @@
-"""
-Sequences
-=========
-
-Sequences...
-
-Binary sequences
-----------------
-
-    BarkerSequence
-    WalshHadamardSequence
-    LFSRSequence
-"""
-
 import numpy as np
 
 from .algebra import \

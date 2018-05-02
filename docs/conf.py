@@ -38,11 +38,12 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
     'sphinxcontrib.bibtex',
 ]
 
 autodoc_member_order = 'bysource'
-#autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
+autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
 add_module_names = False
 autosummary_generate = True
 
@@ -96,8 +97,10 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
-#html_theme = 'default'
+# ~html_theme = 'default'
+# ~html_theme = 'sphinx_rtd_theme'
+# ~html_theme = 'alabaster'
+html_theme = 'nature'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -117,13 +120,13 @@ html_static_path = ['_static']
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_sidebars = {
-    '**': [
-        'globaltoc.html',
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
-    ]
-}
+# ~html_sidebars = {
+    # ~'**': [
+        # ~'globaltoc.html',
+        # ~'relations.html',  # needs 'show_related': True theme option to display
+        # ~'searchbox.html',
+    # ~]
+# ~}
 
 
 # -- Options for HTMLHelp output ------------------------------------------

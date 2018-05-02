@@ -1,16 +1,3 @@
-"""
-Algebra
-=======
-
-Algebraic tools.
-
-Algebraic structures
---------------------
-
-    BinaryPolynomial
-    BinaryFiniteExtensionField
-"""
-
 import functools
 
 import numpy as np

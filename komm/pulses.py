@@ -1,33 +1,3 @@
-"""
-Pulses
-======
-
-Pulses...
-
-Base class
-----------
-
-    Pulse
-
-Rectangular pulses
-------------------
-
-    RectangularNRZPulse
-    RectangularRZPulse
-    ManchesterPulse
-
-Nyquist pulses
---------------
-    SincPulse
-    RaisedCosinePulse
-    RootRaisedCosinePulse
-
-Other pulses
-------------
-
-    GaussianPulse
-"""
-
 import numpy as np
 
 __all__ = ['Pulse',
