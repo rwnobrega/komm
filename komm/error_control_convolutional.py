@@ -184,7 +184,6 @@ class ConvolutionalCode:
         """
         inp = np.array(inp)
         if method is None:
-            print(self._default_decoder)
             method = self._default_decoder(inp.dtype)
         decoder = getattr(self, '_decode_' + method)
         outp = decoder(inp)
