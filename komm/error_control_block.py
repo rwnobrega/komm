@@ -246,7 +246,7 @@ class BlockCode:
         taken = []
         for w in range(self._length + 1):
             for errorword in binary_iterator_weight(self._length, w):
-                syndrome = (errorword @ self._parity_check_matrix.T) % 2
+                syndrome = np.dor(errorword, self._parity_check_matrix.T) % 2
                 syndrome_int = binlist2int(syndrome)
                 if syndrome_int not in taken:
                     syndrome_table[syndrome_int] = np.array(errorword)
@@ -311,7 +311,7 @@ class BlockCode:
         OUTPUT:
             - codeword
         """
-        codeword = (message @ self._generator_matrix) % 2
+        codeword = np.dot(message, self._generator_matrix) % 2
         return codeword
 
     def _encode_systematic_generator_matrix(self, message):
@@ -325,7 +325,7 @@ class BlockCode:
         """
         codeword = np.empty(self._length, dtype=np.int)
         codeword[self._information_set] = message
-        codeword[self._parity_set] = (message @ self._parity_submatrix) % 2
+        codeword[self._parity_set] = np.dot(message, self._parity_submatrix) % 2
         return codeword
 
     def _default_encoder(self):
@@ -338,7 +338,7 @@ class BlockCode:
         if self._is_systematic:
             return codeword[self._information_set]
         else:
-            return (codeword @ self.generator_matrix_right_inverse) % 2
+            return np.dot(codeword, self.generator_matrix_right_inverse) % 2
 
     def decode(self, inp, method=None):
         """
@@ -397,7 +397,7 @@ class BlockCode:
             - codeword_hat
         """
         codewords = self.codewords()
-        metrics = recvword @ codewords.T
+        metrics = np.dot(recvword, codewords.T)
         codeword_hat = codewords[np.argmin(metrics)]
         return codeword_hat
 
@@ -407,7 +407,7 @@ class BlockCode:
         Syndrome table decoder.
         """
         syndrome_table = self.syndrome_table()
-        syndrome = (recvword @ self._parity_check_matrix.T) % 2
+        syndrome = np.dot(recvword, self._parity_check_matrix.T) % 2
         syndrome_int = binlist2int(syndrome)
         errorword_hat = syndrome_table[syndrome_int]
         codeword_hat = np.bitwise_xor(recvword, errorword_hat)
@@ -836,8 +836,8 @@ class ReedMullerCode(BlockCode):
             binary_vectors_J = np.array(list(binary_iterator(self._m - ell)), dtype=np.int)
             for I in itertools.combinations(range(self._m), ell):
                 E = np.setdiff1d(np.arange(self._m), I, assume_unique=True)
-                S = binary_vectors_I @ 2**np.array(I, dtype=np.int)
-                Q = binary_vectors_J @ 2**np.array(E, dtype=np.int)
+                S = np.dot(binary_vectors_I, 2**np.array(I, dtype=np.int))
+                Q = np.dot(binary_vectors_J, 2**np.array(E, dtype=np.int))
                 reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
         return reed_partitions
 
@@ -873,7 +873,7 @@ class ReedMullerCode(BlockCode):
         for idx, partition in enumerate(reed_partitions):
             checksums = np.bitwise_xor.reduce(bx[partition], axis=1)
             min_reliability = np.min(np.abs(recvword[partition]), axis=1)
-            decision_var = (1 - 2*checksums) @ min_reliability
+            decision_var = np.dot(1 - 2*checksums, min_reliability)
             message_hat[idx] = decision_var < 0
             bx ^= message_hat[idx] * self._generator_matrix[idx]
         return message_hat

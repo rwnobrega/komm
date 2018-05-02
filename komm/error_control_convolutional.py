@@ -103,7 +103,7 @@ class ConvolutionalCode:
                 bits[s0_indices] = s0_bin
                 s1_bin = bits[s1_indices]
                 s1 = binlist2int(s1_bin)
-                o_bin = (bits @ taps.T) % 2
+                o_bin = np.dot(bits, taps.T) % 2
                 self._outgoing_states[s0].append(s1)
                 self._outgoing_outputs[s0].append(o_bin)
                 self._input_edge[s0, s1] = i_bin

@@ -540,7 +540,7 @@ def right_inverse(M):
     M_rref_ri = np.zeros(M.T.shape, dtype=np.int)
     P, _, s_indices = xrref(M)
     M_rref_ri[s_indices] = np.eye(M.shape[0])
-    M_ri = (M_rref_ri @ P) % 2
+    M_ri = np.dot(M_rref_ri, P) % 2
     return M_ri
 
 

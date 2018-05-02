@@ -108,7 +108,7 @@ class Modulation:
         """
         Mean symbol energy, supposing equiprobable symbols.
         """
-        return np.real(self._constellation @ self._constellation.conj()) / self._order
+        return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
     @property
     def energy_per_bit(self):
