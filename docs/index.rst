@@ -1,3 +1,5 @@
+:tocdepth: 3
+
 Komm
 ====
 
@@ -37,8 +39,11 @@ Channels
     BinarySymmetricChannel
     BinaryErasureChannel
 
-Error control: Block coding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Error control
+~~~~~~~~~~~~~
+
+Block coding
+^^^^^^^^^^^^
 
 .. autosummary::
     :toctree: stubs
@@ -54,8 +59,8 @@ Error control: Block coding
     CyclicCode
     BCHCode
 
-Error control: Convolutional coding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Convolutional coding
+^^^^^^^^^^^^^^^^^^^^
 
 .. autosummary::
     :toctree: stubs
@@ -104,8 +109,11 @@ Sequences
     WalshHadamardSequence
     LFSRSequence
 
-Source coding: Lossless coding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Source coding
+~~~~~~~~~~~~~
+
+Lossless coding
+^^^^^^^^^^^^^^^
 
 .. autosummary::
     :toctree: stubs
