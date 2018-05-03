@@ -40,10 +40,10 @@ class AWGNChannel:
     def __init__(self, snr=np.inf, signal_power=1.0):
         """Constructor for the class. It expects the following parameters:
 
-        snr : :obj:`float`, optional
+        :code:`snr` : :obj:`float`, optional
             The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.
 
-        signal_power : :obj:`float` or :obj:`str`, optional
+        :code:`signal_power` : :obj:`float` or :obj:`str`, optional
             The input signal power :math:`P`.  If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
         """
 
@@ -127,7 +127,7 @@ class DiscreteMemorylessChannel:
         """
         Constructor for the class. It expects the following parameter:
 
-        transition_matrix : :obj:`numpy.ndarray` of :obj:`float`
+        :code:`transition_matrix` : 2D array of :obj:`float`
             The channel transition matrix :math:`p_{Y \mid X}`.
         """
         self._transition_matrix = np.array(transition_matrix, dtype=np.float)
@@ -228,7 +228,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         """
         Constructor for the class. It expects the following parameter:
 
-        crossover_probability : :obj:`float`, optional
+        :code:`crossover_probability` : :obj:`float`, optional
             The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`.
         """
         super().__init__([[1 - crossover_probability, crossover_probability], [crossover_probability, 1 - crossover_probability]])
@@ -292,7 +292,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         """
         Constructor for the class. It expects the following parameter:
 
-        erasure_probability : :obj:`float`, optional
+        :code:`erasure_probability` : :obj:`float`, optional
             The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \leq \\epsilon \leq 1`. Default value is :code:`0.0`.
         """
         super().__init__([[1 - erasure_probability, 0, erasure_probability], [0, 1 - erasure_probability, erasure_probability]])
