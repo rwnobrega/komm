@@ -19,28 +19,16 @@ __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
 
 class BlockCode:
     """
-    General binary linear block code.
+    General binary linear block code. A *binary linear block code* is a :math:`k`-dimensional subspace of the vector space :math:`\\mathbb{F}_2^n`.  The parameters :math:`n` and :math:`k` are called the code *length* and *dimension* of the code, respectively. The parameter :math:`m = n - k` is called the *redundancy* of the code.
 
-    A *binary linear block code* :cite:`Lin.Costello.04` (Ch. 3) is a :math:`k`-dimensional subspace of the vector space :math:`\\mathbb{F}_2^n`.  The parameters :math:`n` and :math:`k` are called the code *length* and *dimension* of the code, respectively.
+    References: :cite:`Lin.Costello.04` (Ch. 3)
 
-    .. rubric:: Constructors
-
-    The constructor accepts one of the following forms:
-
-    `komm.BlockCode(generator_matrix=generator_matrix)`
-        *generator matrix* :math:`G`.
-
-    `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
-        *parity-check matrix* :math:`H`.
-
-    `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
-        A *parity submatrix* :math:`P` along with the *information set*, with the parameters :code:`parity_submatrix` and :code:`information_set`. Either a 1D-array containing the indices of the information positions, or one of the strings "left", "right". Default is "left".
-
-    .. rubric:: Decoding methods
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -53,7 +41,7 @@ class BlockCode:
     array([[0, 1, 1, 1, 0, 0],
            [1, 0, 1, 0, 1, 0],
            [1, 1, 0, 0, 0, 1]])
-    >>> code.codewords()
+    >>> code.codeword_table()
     array([[0, 0, 0, 0, 0, 0],
            [1, 0, 0, 0, 1, 1],
            [0, 1, 0, 1, 0, 1],
@@ -64,7 +52,7 @@ class BlockCode:
            [1, 1, 1, 0, 0, 0]])
     >>> code.codeword_weight_distribution()
     array([1, 0, 0, 4, 3, 0, 0])
-    >>> code.syndrome_table()
+    >>> code.coset_leader_table()
     array([[0, 0, 0, 0, 0, 0],
            [0, 0, 0, 1, 0, 0],
            [0, 0, 0, 0, 1, 0],
@@ -73,17 +61,45 @@ class BlockCode:
            [0, 1, 0, 0, 0, 0],
            [1, 0, 0, 0, 0, 0],
            [1, 0, 0, 1, 0, 0]])
-    >>> code.coset_weight_distribution()
+    >>> code.coset_leader_weight_distribution()
     array([1, 6, 1, 0, 0, 0, 0])
     >>> (code.packing_radius, code.covering_radius)
     (1, 2)
     """
     def __init__(self, **kwargs):
+        """
+        Constructor for the class. It expects one of the following formats:
+
+        **Via generator matrix**
+
+        `komm.BlockCode(generator_matrix=generator_matrix)`
+
+            :code:`generator_matrix` : 2D array of :obj:`int`
+                Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.
+
+        **Via parity-check matrix**
+
+        `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
+
+            :code:`parity_check_matrix` : 2D array of :obj:`int`
+                Parity-check matrix :math:`H` for the code, which is a :math:`m \\times n` binary matrix.
+
+        **Via parity submatrix and information set**
+
+        `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
+
+            :code:`parity_submatrix` : 2D array of :obj:`int`
+                Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.
+
+            :code:`information_set` : (1D array of :obj:`int`) or :obj:`str`, optional
+                Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
+        """
+
         if 'generator_matrix' in kwargs:
             self._init_from_generator_matrix(**kwargs)
         elif 'parity_check_matrix' in kwargs:
             self._init_from_parity_check_matrix(**kwargs)
-        elif 'parity_submatrix' in list(kwargs):
+        elif 'parity_submatrix' in kwargs:
             self._init_from_parity_submatrix(**kwargs)
         else:
             raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix'" \
@@ -142,22 +158,22 @@ class BlockCode:
 
     @property
     def length(self):
-        """The length :math:`n` of the code"""
+        """The length :math:`n` of the code. This property is read-only."""
         return self._length
 
     @property
     def dimension(self):
-        """The dimension :math:`k` of the code."""
+        """The dimension :math:`k` of the code. This property is read-only."""
         return self._dimension
 
     @property
     def redundancy(self):
-        """The redundancy :math:`m` of the code."""
+        """The redundancy :math:`m` of the code. This property is read-only."""
         return self._redundancy
 
     @property
     def minimum_distance(self):
-        """The minimum distance :math:`d_\mathrm{min}` of the code."""
+        """The minimum distance :math:`d_\\mathrm{min}` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
         if not hasattr(self, '_minimum_distance'):
             codeword_weight_distribution = self.codeword_weight_distribution()
             self._minimum_distance = np.flatnonzero(codeword_weight_distribution)[1]  # TODO: optimize me
@@ -165,140 +181,170 @@ class BlockCode:
 
     @property
     def packing_radius(self):
-        """The packing radius :math:`t` of the code."""
+        """The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d_\\mathrm{min} - 1) / 2 \\rfloor`. This property is read-only."""
         if not hasattr(self, '_packing_radius'):
             self._packing_radius = self.minimum_distance // 2
         return self._packing_radius
 
     @property
     def covering_radius(self):
-        """The covering radius of the code."""
+        """The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only."""
         if not hasattr(self, '_covering_radius'):
-            coset_weight_distribution = self.coset_weight_distribution()
-            return len(np.trim_zeros(coset_weight_distribution, 'b')) - 1
+            coset_leader_weight_distribution = self.coset_leader_weight_distribution()
+            self._covering_radius = np.flatnonzero(coset_leader_weight_distribution)[-1]
         return self._covering_radius
 
     @property
     def generator_matrix(self):
-        """Generator matrix :math:`G` of the code."""
+        """The generator matrix :math:`G` of the code. This property is read-only."""
         return self._generator_matrix
 
     @property
     def parity_check_matrix(self):
-        """Parity-check matrix :math:`H` of the code."""
+        """The parity-check matrix :math:`H` of the code. This property is read-only."""
         return self._parity_check_matrix
 
-    # TODO: print message if computation lasts more than x seconds??? (codewords, syndrome_lut)
-    @functools.lru_cache(maxsize=None)
-    def codewords(self):
+    def codeword_table(self):
         """
-        All the codewords.
-        Cached method.
-        """
-        codewords = np.empty([2**self._dimension, self._length], dtype=np.int)
-        for (i, message) in enumerate(binary_iterator(self._dimension)):
-            codewords[i] = self.encode(message)
-        return codewords
+        Returns a matrix containing all the codewords.
 
-    @functools.lru_cache(maxsize=None)
+        **Output:**
+            :code:`codeword_table` : 2D array of :obj:`int`
+                A :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
+
+        This is a cached method.
+
+        Examples
+        ========
+        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> code.codeword_table()
+        array([[0, 0, 0, 0, 0, 0],
+               [1, 0, 0, 0, 1, 1],
+               [0, 1, 0, 1, 0, 1],
+               [1, 1, 0, 1, 1, 0],
+               [0, 0, 1, 1, 1, 0],
+               [1, 0, 1, 1, 0, 1],
+               [0, 1, 1, 0, 1, 1],
+               [1, 1, 1, 0, 0, 0]])
+        """
+        if not hasattr(self, '_codeword_table'):
+            self._codeword_table = np.empty([2**self._dimension, self._length], dtype=np.int)
+            for (i, message) in enumerate(binary_iterator(self._dimension)):
+                self._codeword_table[i] = self.encode(message)
+        return self._codeword_table
+
     def codeword_weight_distribution(self):
         """
-        Exhaustive approach.
-        Cached method.
-        """
-        codewords = self.codewords()
-        return np.bincount(np.sum(codewords, axis=1), minlength=self._length + 1)
+        Returns the codeword weight distribution.
 
-    @functools.lru_cache(maxsize=None)
-    def syndrome_table(self):
-        """
-        Syndrome table.
+        **Output:**
+            :code:`codeword_weight_distribution` : 1D array of :obj:`int`
+                An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n)`.
 
-        Constructs a complete, optimal, syndrome -> error pattern lookup table.
-        Exhaustive procedure.
-        Cached method.
-        """
-        syndrome_table = np.empty([2**self._redundancy, self._length], dtype=np.int)
-        taken = []
-        for w in range(self._length + 1):
-            for errorword in binary_iterator_weight(self._length, w):
-                syndrome = np.dor(errorword, self._parity_check_matrix.T) % 2
-                syndrome_int = binlist2int(syndrome)
-                if syndrome_int not in taken:
-                    syndrome_table[syndrome_int] = np.array(errorword)
-                    taken.append(syndrome_int)
-                if len(taken) == 2**self.redundancy:
-                    return syndrome_table
+        This is a cached method.
 
-    @functools.lru_cache(maxsize=None)
-    def coset_weight_distribution(self):
+        Examples
+        ========
+        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> code.codeword_weight_distribution()
+        array([1, 0, 0, 4, 3, 0, 0])
         """
-        Exhaustive approach.
-        Cached method.
+        if not hasattr(self, '_codeword_weight_distribution'):
+            self._codeword_weight_distribution = np.bincount(np.sum(self.codeword_table(), axis=1),
+                                                             minlength=self._length + 1)
+        return self._codeword_weight_distribution
+
+    def coset_leader_table(self):
         """
-        syndrome_table = self.syndrome_table()
-        return np.bincount([np.count_nonzero(s) for s in syndrome_table], minlength=self._length + 1)
+        Returns a matrix containing all the coset leaders. This may be used as a :term:`LUT` for syndrome-based decoding.
+
+        **Output:**
+            :code:`coset_leader_table` : 2D array of :obj:`int`
+                A :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`.
+
+        This is a cached method.
+
+        Examples
+        ========
+        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> code.coset_leader_table()
+        array([[0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 1, 0, 0],
+               [0, 0, 0, 0, 1, 0],
+               [0, 0, 1, 0, 0, 0],
+               [0, 0, 0, 0, 0, 1],
+               [0, 1, 0, 0, 0, 0],
+               [1, 0, 0, 0, 0, 0],
+               [1, 0, 0, 1, 0, 0]])
+        """
+        if not hasattr(self, '_coset_leader_table'):
+            self._coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=np.int)
+            taken = []
+            for w in range(self._length + 1):
+                for errorword in binary_iterator_weight(self._length, w):
+                    syndrome = np.dot(errorword, self._parity_check_matrix.T) % 2
+                    syndrome_int = binlist2int(syndrome)
+                    if syndrome_int not in taken:
+                        self._coset_leader_table[syndrome_int] = np.array(errorword)
+                        taken.append(syndrome_int)
+                    if len(taken) == 2**self.redundancy:
+                        break
+        return self._coset_leader_table
+
+    def coset_leader_weight_distribution(self):
+        """
+        Returns the coset leader weight distribution.
+
+        **Output:**
+            :code:`coset_leader_weight_distribution` : 1D array of :obj:`int`
+                An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n)`.
+
+        This is a cached method.
+
+        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> code.coset_leader_weight_distribution()
+        array([1, 6, 1, 0, 0, 0, 0])
+        """
+        if not hasattr(self, '_coset_leader_weight_distribution'):
+            coset_leader_table = self.coset_leader_table()
+            self._coset_leader_weight_distribution = np.bincount([np.count_nonzero(s) for s in coset_leader_table], minlength=self._length + 1)
+        return self._coset_leader_weight_distribution
 
     @property
     @functools.lru_cache(maxsize=None)
-    def generator_matrix_right_inverse(self):
+    def _generator_matrix_right_inverse(self):
         return right_inverse(self.generator_matrix)
 
-    def encode(self, inp, method=None):
+    def encode(self, message, method=None):
         """
-        Encode a message.
+        Encode a given message to its corresponding codeword.
 
-        .. rubric:: Input
+        **Input:**
+            :code:`message` : 1D array of :obj:`int`
+                The message to be encoded. Its length must be :math:`k`.
 
-        inp : :obj:`numpy.ndarray` of :obj:`int`
-            The message to be encoded. Its length must a multiple of :obj:`self.dimension`.
-        method : :obj:`string` or :obj:`None`
-            The encoding method to be used.
+            :code:`method` : :obj:`str`, optional
+                The encoding method to be used.
 
-        .. rubric:: Output
-
-        outp : :obj:`numpy.ndarray` of :obj:`int`
-            The codeword corresponding to msg. Its length is the length of the input times the
-            code rate.
+        **Output:**
+            :code:`codeword` : 1D array of :obj:`int`
+                The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
         """
-        inp = np.array(inp)
+        message = np.array(message)
 
         if method is None:
             method = self._default_encoder()
 
-        n_words = inp.size // self._dimension
-        if n_words * self._dimension != inp.size:
-            raise ValueError("Size of input must be a multiple of code dimension")
-
         encoder = getattr(self, '_encode_' + method)
-        outp = np.empty(n_words * self._length, dtype=np.int)
-        for i, message in enumerate(np.reshape(inp, newshape=(n_words, self._dimension))):
-            codeword = encoder(message)
-            outp[i*self._length : (i + 1)*self._length] = codeword
+        codeword = encoder(message)
 
-        return outp
+        return codeword
 
     def _encode_generator_matrix(self, message):
-        """
-        Generator matrix encoder.
-
-        INPUT:
-            - message
-        OUTPUT:
-            - codeword
-        """
         codeword = np.dot(message, self._generator_matrix) % 2
         return codeword
 
     def _encode_systematic_generator_matrix(self, message):
-        """
-        Systematic generator matrix encoder.
-
-        INPUT:
-            - message
-        OUTPUT:
-            - codeword
-        """
         codeword = np.empty(self._length, dtype=np.int)
         codeword[self._information_set] = message
         codeword[self._parity_set] = np.dot(message, self._parity_submatrix) % 2
@@ -310,53 +356,58 @@ class BlockCode:
         else:
             return 'generator_matrix'
 
-    def codeword_to_message(self, codeword):
+    def message_from_codeword(self, codeword):
+        """
+        Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.
+
+        **Input:**
+            :code:`codeword` : 1D array of :obj:`int`
+                A codeword from the code. Its length must be :math:`n`.
+
+        **Output:**
+            :code:`message` : 1D array of :obj:`int`
+                The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
+        """
         if self._is_systematic:
             return codeword[self._information_set]
         else:
-            return np.dot(codeword, self.generator_matrix_right_inverse) % 2
+            return np.dot(codeword, self._generator_matrix_right_inverse) % 2
 
-    def decode(self, inp, method=None):
+    def decode(self, revcword, method=None):
         """
-        Decode to message.
+        Decode a received word to a message.
 
-        INPUT:
-            - recvword
-        OUTPUT:
-            - message
+        **Input:**
+            :code:`revcword` : 1D array of (:obj:`int` or :obj:`float`)
+                The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
+
+            :code:`method` : :obj:`str`, optional
+                The decoding method to be used.
+
+        **Output:**
+            :code:`message_hat` : 1D array of :obj:`int`
+                The message decoded from :code:`revcword`. Its length is equal to :math:`k`.
         """
-        inp = np.array(inp)
+        revcword = np.array(revcword)
 
         if method is None:
             method = self._default_decoder(inp.dtype)
 
-        n_words = inp.size // self._length
-        if n_words * self._length != inp.size:
-            raise ValueError("Size of input must be a multiple of code length")
-
         decoder = getattr(self, '_decode_' + method)
-        outp = np.empty(n_words * self._dimension, dtype=np.int)
-        for i, recvword in enumerate(np.reshape(inp, newshape=(n_words, self._length))):
-            if decoder.target == 'codeword':
-                message_hat = self.codeword_to_message(decoder(recvword))
-            elif decoder.target == 'message':
-                message_hat = decoder(recvword)
-            outp[i*self._dimension : (i + 1)*self._dimension] = message_hat
 
-        return outp
+        if decoder.target == 'codeword':
+            message_hat = self.message_from_codeword(decoder(recvword))
+        elif decoder.target == 'message':
+            message_hat = decoder(recvword)
+
+        return message_hat
 
     @tag(name='Exhaustive search (hard-decision)', input_type='hard', target='codeword')
     def _decode_exhaustive_search_hard(self, recvword):
         """
         Exhaustive search minimum distance hard decoder. Hamming distance.
-
-        INPUT:
-            - recvword
-
-        OUTPUT:
-            - codeword_hat
         """
-        codewords = self.codewords()
+        codewords = self.codeword_table()
         metrics = np.count_nonzero(recvword != codewords, axis=1)
         codeword_hat = codewords[np.argmin(metrics)]
         return codeword_hat
@@ -365,14 +416,8 @@ class BlockCode:
     def _decode_exhaustive_search_soft(self, recvword):
         """
         Exhaustive search minimum distance soft decoder. Euclidean distance.
-
-        INPUT:
-            - recvword
-
-        OUTPUT:
-            - codeword_hat
         """
-        codewords = self.codewords()
+        codewords = self.codeword_table()
         metrics = np.dot(recvword, codewords.T)
         codeword_hat = codewords[np.argmin(metrics)]
         return codeword_hat
@@ -382,10 +427,10 @@ class BlockCode:
         """
         Syndrome table decoder.
         """
-        syndrome_table = self.syndrome_table()
+        coset_leader_table = self.coset_leader_table()
         syndrome = np.dot(recvword, self._parity_check_matrix.T) % 2
         syndrome_int = binlist2int(syndrome)
-        errorword_hat = syndrome_table[syndrome_int]
+        errorword_hat = coset_leader_table[syndrome_int]
         codeword_hat = np.bitwise_xor(recvword, errorword_hat)
         return codeword_hat
 
@@ -863,7 +908,7 @@ class ReedMullerCode(BlockCode):
 
 class CyclicCode(BlockCode):
     """
-    Generic binary cyclic code.
+    General binary cyclic code.
 
     Examples of generator polynomials can be found in the table below.
 

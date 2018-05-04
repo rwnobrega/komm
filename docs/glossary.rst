@@ -7,3 +7,9 @@ Glossary
 
     i.i.d.
         Independent and identically distributed.
+
+    LUT
+        Lookup table.
+
+    MSB
+        Most significant bit.
