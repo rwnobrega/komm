@@ -173,7 +173,7 @@ class BlockCode:
 
     @property
     def minimum_distance(self):
-        """The minimum distance :math:`d_\\mathrm{min}` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
+        """The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
         if not hasattr(self, '_minimum_distance'):
             codeword_weight_distribution = self.codeword_weight_distribution()
             self._minimum_distance = np.flatnonzero(codeword_weight_distribution)[1]  # TODO: optimize me
@@ -181,7 +181,7 @@ class BlockCode:
 
     @property
     def packing_radius(self):
-        """The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d_\\mathrm{min} - 1) / 2 \\rfloor`. This property is read-only."""
+        """The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only."""
         if not hasattr(self, '_packing_radius'):
             self._packing_radius = self.minimum_distance // 2
         return self._packing_radius
@@ -457,32 +457,29 @@ class BlockCode:
 
 class HammingCode(BlockCode):
     """
-    Hamming code.
-
-    The *Hamming code* :cite:`Lin.Costello.04` (Sec 4.1) with redundancy :math:`m` is defined as the linear block code with parity-check matrix whose columns are all the ...
+    Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:
 
     - Length: :math:`n = 2^m - 1`
     - Redundancy: :math:`m`
     - Dimension: :math:`k = 2^m - m - 1`
     - Minimum distance: :math:`d = 3`
 
-    .. rubric:: Decoding methods
+    This class constructs the code in systematic form, with the information set on the left.
+
+    References: :cite:`Lin.Costello.04` (Sec 4.1)
+
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
+    **Notes**
 
-    m : :obj:`int`
-        The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
-
-    .. rubric:: Notes
-
-    - For :math:`m = 2` it reduces to the repetition code
-      (:class:`RepetitionCode`) of length :math:`3`.
+    - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.
     - Its dual is the simplex code (:class:`SimplexCode`).
     - Hamming codes are perfect codes.
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.HammingCode(3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -500,12 +497,13 @@ class HammingCode(BlockCode):
     array([0, 1, 0, 1, 0, 1, 1])
     >>> code.decode([0, 1, 0, 0, 0, 1, 1])
     array([1, 0, 1, 1])
-
-    ..rubric:: See also
-
-    BlockCode, SimplexCode, GolayCode, RepetitionCode
     """
     def __init__(self, m):
+        """Constructor for the class. It expects the following parameter:
+
+        :code:`m` : :obj:`int`
+            The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
+        """
         super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(m))
         self._minimum_distance = 3
 
@@ -524,32 +522,27 @@ class HammingCode(BlockCode):
 
 class SimplexCode(BlockCode):
     """
-    Simplex (maximum-length) code.
-
-    Simplex code (also known as maximum-length codes) with dimension :math:`k`.
+    Simplex (maximum-length) code. For a given dimension :math:`k`, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the :math:`2^k - 1` nonzero binary :math:`k`-tuples. The simplex code (also known as maximum-length code) has the following parameters:
 
     - Length: :math:`n = 2^k - 1`
     - Dimension: :math:`k`
     - Redundancy: :math:`m = 2^k - k - 1`
     - Minimum distance: :math:`d = 2^{k - 1}`
 
-    .. rubric:: Decoding methods
+    This class constructs the code in systematic form, with the information set on the left.
+
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
+    **Notes**
 
-    k : :obj:`int`
-        The dimension :math:`k` of the code. Must satisfy :math:`m \geq 2`.
-
-    .. rubric:: Notes
-
-    - For :math:`k = 2` it reduces to the single parity check code
-      (:class:`SingleParityCheckCode`) of length :math:`3`.
+    - For :math:`k = 2` it reduces to the single parity check code (:class:`SingleParityCheckCode`) of length :math:`3`.
     - Its dual is the Hamming code (:class:`HammingCode`).
     - Simplex codes are constant-weight codes.
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.SimplexCode(3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -567,12 +560,13 @@ class SimplexCode(BlockCode):
     array([1, 0, 1, 1, 0, 1, 0])
     >>> code.decode([1, 0, 1, 1, 1, 1, 0])
     array([1, 0, 1])
-
-    .. rubric:: See also
-
-    :class:`BlockCode`, :class:`HammingCode`, :class:`GolayCode`, :class:`RepetitionCode`
     """
     def __init__(self, k):
+        """Constructor for the class. It expects the following parameter:
+
+        :code:`k` : :obj:`int`
+            The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.
+        """
         super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(k).T)
         self._minimum_distance = 2**(k - 1)
 
