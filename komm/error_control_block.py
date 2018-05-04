@@ -766,9 +766,7 @@ class SingleParityCheckCode(BlockCode):
 
 class ReedMullerCode(BlockCode):
     """
-    Reed--Muller code.
-
-    Reed--Muller code with parameters :math:`r` and :math:`m`.
+    Reed--Muller code. See references for more detail. It has the following parameters:
 
     - Length: :math:`n = 2^m`
     - Dimension: :math:`k = 1 + {m \choose 1} + \cdots + {m \choose r}`
@@ -776,35 +774,37 @@ class ReedMullerCode(BlockCode):
 
     The parameters must satisfy :math:`0 \leq r < m`.
 
-    .. rubric:: Decoding methods
+    References: :cite:`Lin.Costello.04` (p. 105--114)
+
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
-
-    r : :obj:`int`
-        The parameter :math:`r` of the code.
-    m : :obj:`int`
-        The parameter :math:`m` of the code.
-
-    .. rubric:: Notes
+    **Notes**
 
     - For :math:`r = 0` it reduces to a repetition code (:class:`RepetitionCode`).
     - For :math:`r = 1` it reduces to an extended simplex code (:class:`SimplexCode`).
     - For :math:`r = m-2` it reduces to an extended Hamming code (:class:`HammingCode`).
     - For :math:`r = m-1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.ReedMullerCode(1, 5)
     >>> (code.length, code.dimension, code.minimum_distance)
     (32, 6, 16)
-
-    .. rubric:: See also
-
-    BlockCode, HammingCode, SimplexCode, RepetitionCode, SingleParityCheckCode
     """
     def __init__(self, r, m):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`r` : :obj:`int`
+            The parameter :math:`r` of the code.
+        :code:`m` : :obj:`int`
+            The parameter :math:`m` of the code.
+
+        The parameters must satisfy :math:`0 \leq r < m`.
+        """
         assert 0 <= r < m
 
         super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(r, m))
@@ -819,8 +819,7 @@ class ReedMullerCode(BlockCode):
     @staticmethod
     def _reed_muller_generator_matrix(r, m):
         """
-        [1] Lin, Costello, 2Ed, p. 105--114.
-        Assumes 0 <= r < m.
+        [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= r < m.
         """
         v = np.empty((m, 2**m), dtype=np.int)
         for i in range(m):
@@ -837,13 +836,9 @@ class ReedMullerCode(BlockCode):
         return np.array(G_list, dtype=np.int)
 
     @functools.lru_cache(maxsize=None)
-    def reed_partitions(self):
+    def _reed_partitions(self):
         """
-        Get Reed partitions from Reed-Muller generator matrix.
-
-        References
-        ----------
-        [1] Lin, Costello, 2Ed, pp. 105--114.
+        Get Reed partitions from Reed-Muller generator matrix. See Lin, Costello, 2Ed, p. 105--114.
         """
         reed_partitions = []
         for ell in range(self._r, -1, -1):
@@ -859,14 +854,9 @@ class ReedMullerCode(BlockCode):
     @tag(name='Reed', input_type='hard', target='message')
     def _decode_reed(self, recvword):
         """
-        Reed decoding algorithm for Reed--Muller codes.
-        It's a majority-logic decoding algorithm.
-
-        References
-        ----------
-        [1] Lin, Costello, 2Ed, pp. 105--114, 439--440.
+        Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, pp. 105--114, 439--440.
         """
-        reed_partitions = self.reed_partitions()
+        reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = np.copy(recvword)
         for idx, partition in enumerate(reed_partitions):
@@ -878,11 +868,9 @@ class ReedMullerCode(BlockCode):
     @tag(name='Weighted Reed', input_type='soft', target='message')
     def _decode_weighted_reed(self, recvword):
         """
-        References
-        ----------
-        [1] Lin, Costello, 2Ed, pp. 440-442.
+        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, pp. 440-442.
         """
-        reed_partitions = self.reed_partitions()
+        reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = (recvword < 0) * 1
         for idx, partition in enumerate(reed_partitions):
