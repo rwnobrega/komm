@@ -499,7 +499,8 @@ class HammingCode(BlockCode):
     array([1, 0, 1, 1])
     """
     def __init__(self, m):
-        """Constructor for the class. It expects the following parameter:
+        """
+        Constructor for the class. It expects the following parameter:
 
         :code:`m` : :obj:`int`
             The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
@@ -562,7 +563,8 @@ class SimplexCode(BlockCode):
     array([1, 0, 1])
     """
     def __init__(self, k):
-        """Constructor for the class. It expects the following parameter:
+        """
+        Constructor for the class. It expects the following parameter:
 
         :code:`k` : :obj:`int`
             The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.
@@ -577,21 +579,24 @@ class SimplexCode(BlockCode):
 
 class GolayCode(BlockCode):
     """
-    Binary Golay code.
+    Binary Golay code. It has the following parameters:
 
-    - Length: 23
-    - Dimension: 12
-    - Minimum distance: 7
+    - Length: :math:`23`
+    - Dimension: :math:`12`
+    - Minimum distance: :math:`7`
 
-    .. rubric:: Decoding methods
+    This class constructs the code in systematic form, with the information set on the left.
+
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Notes
+    **Notes**
 
     - The binary Golay code is a perfect code.
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.GolayCode()
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -604,6 +609,9 @@ class GolayCode(BlockCode):
     array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
     """
     def __init__(self):
+        """
+        Constructor for the class. It expects no parameters.
+        """
         super().__init__(parity_submatrix=GolayCode._golay_parity_submatrix())
         self._minimum_distance = 7
 
@@ -630,28 +638,22 @@ class GolayCode(BlockCode):
 
 class RepetitionCode(BlockCode):
     """
-    Repetition code.
-
-    Repetition code of length :math:`n`.
+    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00\cdots0` and :math:`11\cdots1`. The repetition code has the following parameters:
 
     - Length: :math:`n`
     - Dimension: :math:`k = 1`
     - Minimum distance: :math:`d = n`
 
-    .. rubric:: Decoding methods
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
-
-    n : :obj:`int`
-        The length :math:`n` of the code. Must be a positive integer.
-
-    .. rubric:: Notes
+    **Notes**
 
     - Its dual is the single parity check code (:class:`SingleParityCheckCode`).
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.RepetitionCode(5)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -669,6 +671,12 @@ class RepetitionCode(BlockCode):
     array([0])
     """
     def __init__(self, n):
+        """
+        Constructor for the class. It expects the following parameter:
+
+        :code:`n` : :obj:`int`
+            The length :math:`n` of the code. Must be a positive integer.
+        """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int))
         self._minimum_distance = n
 
@@ -679,9 +687,7 @@ class RepetitionCode(BlockCode):
     @tag(name='Majority-logic', input_type='hard', target='codeword')
     def _decode_majority_logic(self, recvword):
         """
-        Majority-logic decoder.
-
-        A hard-decision decoder for Repetition codes only.
+        Majority-logic decoder. A hard-decision decoder for Repetition codes only.
         """
         majority = np.argmax(np.bincount(recvword))
         codeword_hat = majority * np.ones_like(recvword)
@@ -696,28 +702,22 @@ class RepetitionCode(BlockCode):
 
 class SingleParityCheckCode(BlockCode):
     """
-    Single parity check code.
-
-    Single parity check code of length :math:`n`.
+    Single parity check code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending :math:`n - 1` information bits with a single parity-check bit. The repetition code has the following parameters:
 
     - Length: :math:`n`.
     - Dimension: :math:`k = n - 1`.
     - Minimum distance: :math:`d = 2`.
 
-    .. rubric:: Decoding methods
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
-
-    n : :obj:`int`
-        The length :math:`n` of the code. Must be a positive integer.
-
-    .. rubric:: Notes
+    **Notes**
 
     - Its dual is the repetition code (:class:`RepetitionCode`).
 
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.SingleParityCheckCode(5)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -733,6 +733,12 @@ class SingleParityCheckCode(BlockCode):
     array([1, 0, 1, 1, 1])
     """
     def __init__(self, n):
+        """
+        Constructor for the class. It expects the following parameter:
+
+        :code:`n` : :obj:`int`
+            The length :math:`n` of the code. Must be a positive integer.
+        """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int).T)
         self._minimum_distance = 2
 
@@ -743,13 +749,7 @@ class SingleParityCheckCode(BlockCode):
     @tag(name='Wagner', input_type='soft', target='codeword')
     def _decode_wagner(self, recvword):
         """
-        Wagner decoder.
-
-        A soft-decision decoder for SingleParityCheck codes only.
-
-        References
-        ----------
-        [1] Costello, Forney: Channel Coding: The Road to Channel Capacity.
+        Wagner decoder. A soft-decision decoder for SingleParityCheck codes only. See Costello, Forney: Channel Coding: The Road to Channel Capacity.
         """
         codeword_hat = (recvword < 0)
         if np.bitwise_xor.reduce(codeword_hat) != 0:
