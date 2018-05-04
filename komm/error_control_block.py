@@ -373,12 +373,12 @@ class BlockCode:
         else:
             return np.dot(codeword, self._generator_matrix_right_inverse) % 2
 
-    def decode(self, revcword, method=None):
+    def decode(self, recvword, method=None):
         """
         Decode a received word to a message.
 
         **Input:**
-            :code:`revcword` : 1D array of (:obj:`int` or :obj:`float`)
+            :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
                 The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
             :code:`method` : :obj:`str`, optional
@@ -386,12 +386,12 @@ class BlockCode:
 
         **Output:**
             :code:`message_hat` : 1D array of :obj:`int`
-                The message decoded from :code:`revcword`. Its length is equal to :math:`k`.
+                The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
         """
-        revcword = np.array(revcword)
+        recvword = np.array(recvword)
 
         if method is None:
-            method = self._default_decoder(inp.dtype)
+            method = self._default_decoder(recvword.dtype)
 
         decoder = getattr(self, '_decode_' + method)
 
