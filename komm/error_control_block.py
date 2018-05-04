@@ -445,7 +445,7 @@ class BlockCode:
 
     @classmethod
     def _available_decoding_methods(cls):
-        header = ['Method', 'Identifier', 'Input type']
+        header = ['Method', 'Identifier', 'Input\xa0type']
         table = [header]
         for name in dir(cls):
             if name.startswith('_decode_'):
