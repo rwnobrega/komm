@@ -1,7 +1,7 @@
 import numpy as np
 
 __all__ = ['Pulse',
-           'RectangularNRZPulse', 'RectangularRZPulse',
+           'RectangularNRZPulse', 'RectangularRZPulse', 'ManchesterPulse',
            'SincPulse', 'RaisedCosinePulse', 'RootRaisedCosinePulse',
            'GaussianPulse']
 
