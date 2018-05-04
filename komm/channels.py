@@ -46,7 +46,6 @@ class AWGNChannel:
         :code:`signal_power` : :obj:`float` or :obj:`str`, optional
             The input signal power :math:`P`.  If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
         """
-
         self._snr = snr
         self._signal_power = signal_power
 
