@@ -43,7 +43,7 @@ extensions = [
 ]
 
 autodoc_member_order = 'bysource'
-autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
+autodoc_default_flags = ['members', 'show-inheritance']
 add_module_names = False
 autosummary_generate = True
 
