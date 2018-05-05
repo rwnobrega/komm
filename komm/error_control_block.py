@@ -766,7 +766,7 @@ class SingleParityCheckCode(BlockCode):
 
 class ReedMullerCode(BlockCode):
     """
-    Reed--Muller code. See references for more detail. It has the following parameters:
+    Reed--Muller code. See references for more details. It has the following parameters:
 
     - Length: :math:`n = 2^m`
     - Dimension: :math:`k = 1 + {m \choose 1} + \cdots + {m \choose r}`
@@ -890,33 +890,25 @@ class ReedMullerCode(BlockCode):
 
 class CyclicCode(BlockCode):
     """
-    General binary cyclic code.
+    General binary cyclic code. A *binary cyclic linear block code*
 
     Examples of generator polynomials can be found in the table below.
 
-    ===============    ======================
-    Code               Generator polynomial
-    ===============    ======================
-    Hamming (7,4,3)    :code:`0b1011`
-    Simplex (7,3,4)    :code:`0b10111`
-    BCH (15,5,7)       :code:`0b10100110111`
-    Golay (23,12,7)    :code:`0b101011100011`
-    ===============    ======================
+    ===============  ==============================================  =============================
+    Code             Generator polynomial :math:`g(X)`               Integer representation
+    ===============  ==============================================  =============================
+    Hamming (7,4,3)  :math:`X^3 + X + 1`                             :code:`0b1011 = 11`
+    Simplex (7,3,4)  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 23`
+    BCH (15,5,7)     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 1335`
+    Golay (23,12,7)  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 2787`
+    ===============  ==============================================  =============================
 
-    .. rubric:: Decoding methods
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
-
-    length : :obj:`int`
-        Length :math:`n` of the code.
-    generator_polynomial : :obj:`int`
-        Generator polynomial :math:`G(X)` of the code. The polynomial :math:`X^3 + X + 1` is represented as :code:`0b1011 = 0o13 = 11`.
-    systematic : :obj:`bool`
-        True for systematic encoder (default), False otherwise.
-
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)  # Hamming(3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -931,6 +923,16 @@ class CyclicCode(BlockCode):
     BlockCode, BCHCode
     """
     def __init__(self, length, generator_polynomial, systematic=True):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`length` : :obj:`int`
+            The length :math:`n` of the code.
+        :code:`generator_polynomial` : :obj:`int`
+            The generator polynomial :math:`g(X)` of the code. The polynomial :math:`X^3 + X + 1` is represented as :code:`0b1011 = 0o13 = 11`.
+        :code:`systematic` : :obj:`bool`, optional
+            Whether the encoder is systematic. Default is :code:`True`.
+        """
         self._generator_polynomial = BinaryPolynomial(generator_polynomial)
         self._length = length
         self._redundancy = self._generator_polynomial.degree
