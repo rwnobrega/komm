@@ -158,22 +158,22 @@ class BlockCode:
 
     @property
     def length(self):
-        """The length :math:`n` of the code. This property is read-only."""
+        """Length :math:`n` of the code. This property is read-only."""
         return self._length
 
     @property
     def dimension(self):
-        """The dimension :math:`k` of the code. This property is read-only."""
+        """Dimension :math:`k` of the code. This property is read-only."""
         return self._dimension
 
     @property
     def redundancy(self):
-        """The redundancy :math:`m` of the code. This property is read-only."""
+        """Redundancy :math:`m` of the code. This property is read-only."""
         return self._redundancy
 
     @property
     def minimum_distance(self):
-        """The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
+        """Minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
         if not hasattr(self, '_minimum_distance'):
             codeword_weight_distribution = self.codeword_weight_distribution()
             self._minimum_distance = np.flatnonzero(codeword_weight_distribution)[1]  # TODO: optimize me
@@ -181,14 +181,14 @@ class BlockCode:
 
     @property
     def packing_radius(self):
-        """The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only."""
+        """Packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only."""
         if not hasattr(self, '_packing_radius'):
             self._packing_radius = self.minimum_distance // 2
         return self._packing_radius
 
     @property
     def covering_radius(self):
-        """The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only."""
+        """Covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only."""
         if not hasattr(self, '_covering_radius'):
             coset_leader_weight_distribution = self.coset_leader_weight_distribution()
             self._covering_radius = np.flatnonzero(coset_leader_weight_distribution)[-1]
@@ -196,12 +196,12 @@ class BlockCode:
 
     @property
     def generator_matrix(self):
-        """The generator matrix :math:`G` of the code. This property is read-only."""
+        """Generator matrix :math:`G` of the code. This property is read-only."""
         return self._generator_matrix
 
     @property
     def parity_check_matrix(self):
-        """The parity-check matrix :math:`H` of the code. This property is read-only."""
+        """Parity-check matrix :math:`H` of the code. This property is read-only."""
         return self._parity_check_matrix
 
     def codeword_table(self):
@@ -329,7 +329,7 @@ class BlockCode:
             The message to be encoded. Its length must be :math:`k`.
 
         :code:`method` : :obj:`str`, optional
-                The encoding method to be used.
+            The encoding method to be used.
 
         **Output:**
 
@@ -810,6 +810,7 @@ class ReedMullerCode(BlockCode):
 
         :code:`r` : :obj:`int`
             The parameter :math:`r` of the code.
+
         :code:`m` : :obj:`int`
             The parameter :math:`m` of the code.
 
@@ -864,7 +865,7 @@ class ReedMullerCode(BlockCode):
     @tag(name='Reed', input_type='hard', target='message')
     def _decode_reed(self, recvword):
         """
-        Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, pp. 105--114, 439--440.
+        Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
         """
         reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
@@ -878,7 +879,7 @@ class ReedMullerCode(BlockCode):
     @tag(name='Weighted Reed', input_type='soft', target='message')
     def _decode_weighted_reed(self, recvword):
         """
-        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, pp. 440-442.
+        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
         """
         reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
@@ -900,18 +901,20 @@ class ReedMullerCode(BlockCode):
 
 class CyclicCode(BlockCode):
     """
-    General binary cyclic code. A *binary cyclic linear block code*
+    General binary cyclic code. A cyclic code is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code) and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.
 
     Examples of generator polynomials can be found in the table below.
 
-    ===============  ==============================================  =============================
+    ===============  ==============================================  ======================================
     Code             Generator polynomial :math:`g(X)`               Integer representation
-    ===============  ==============================================  =============================
-    Hamming (7,4,3)  :math:`X^3 + X + 1`                             :code:`0b1011 = 11`
-    Simplex (7,3,4)  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 23`
-    BCH (15,5,7)     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 1335`
-    Golay (23,12,7)  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 2787`
-    ===============  ==============================================  =============================
+    ===============  ==============================================  ======================================
+    Hamming (7,4,3)  :math:`X^3 + X + 1`                             :code:`0b1011 = 0o13 = 11`
+    Simplex (7,3,4)  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 0o27 = 23`
+    BCH (15,5,7)     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 0o2467 = 1335`
+    Golay (23,12,7)  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`
+    ===============  ==============================================  ======================================
+
+    References: :cite:`Lin.Costello.04` (Chapter 5)
 
     **Decoding methods**
 
@@ -920,17 +923,13 @@ class CyclicCode(BlockCode):
     Examples
     ========
 
-    >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)  # Hamming(3)
+    >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)  # Hamming (7, 4)
     >>> (code.length, code.dimension, code.minimum_distance)
     (7, 4, 3)
 
-    >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay()
+    >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
     >>> (code.length, code.dimension, code.minimum_distance)
     (23, 12, 7)
-
-    .. rubric:: See also
-
-    BlockCode, BCHCode
     """
     def __init__(self, length, generator_polynomial, systematic=True):
         """
@@ -938,8 +937,10 @@ class CyclicCode(BlockCode):
 
         :code:`length` : :obj:`int`
             The length :math:`n` of the code.
+
         :code:`generator_polynomial` : :obj:`int`
-            The generator polynomial :math:`g(X)` of the code. The polynomial :math:`X^3 + X + 1` is represented as :code:`0b1011 = 0o13 = 11`.
+            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), represented as an integer. Bit :math:`i` (for :math:`0 \leq i \leq m`, counting from right to left, :term:`MSB` in the left) of :code:`generator_polynomial` is the coefficient of :math:`X^i` in :math:`g(X)`. For example, :math:`g(X) = X^3 + X + 1` is represented as :code:`generator_polynomial = 0b1011 = 0o13 = 11`.
+
         :code:`systematic` : :obj:`bool`, optional
             Whether the encoder is systematic. Default is :code:`True`.
         """
@@ -954,35 +955,50 @@ class CyclicCode(BlockCode):
             self._information_set = np.arange(self._redundancy, self._length)
 
     def __repr__(self):
-        args = '{}, generator_polynomial={}, systematic={}'.format(self._length, self._generator_polynomial, self._is_systematic)
+        args = 'length={}, generator_polynomial={}, systematic={}'.format(self._length, self._generator_polynomial, self._is_systematic)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def generator_polynomial(self):
-        """Generator polynomial :math:`g(X)` of the cyclic code, of degree :math:`n - k`."""
+        """Generator polynomial :math:`g(X)` of the cyclic code. It has degree :math:`m`, where :math:`m` is the redundancy of the code."""
         return self._generator_polynomial
 
     @property
     def parity_polynomial(self):
-        """Parity polynomial :math:`h(X)` of the cyclic code, of degree :math:`k`."""
+        """Parity polynomial :math:`h(X)` of the cyclic code. It has degree :math:`k`, where :math:`k` is the dimension of the code."""
         return self._parity_polynomial
 
-    @functools.lru_cache(maxsize=None)
     def meggitt_table(self):
         """
-        Meggitt table for Meggit decoder.
+        Returns the Meggit table for the cyclic code. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
 
-        References
-        ==========
-        .. [1] Sebastià Xambó i Descamps: A computational primer on BLOCK ERROR-CORRECTING CODES
+        **Output:**
+
+        :code:`meggitt_table` : :obj:`dict`
+            A dictionary where the keys are syndromes and the values are error patterns.
+
+        This is a cached method.
+
+        Examples
+        ========
+        >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
+        >>> code.meggitt_table()
+        {0b1011: 0b1000000,
+         0b1010: 0b1000001,
+         0b1001: 0b1000010,
+         0b1111: 0b1000100,
+         0b11: 0b1001000,
+         0b1100: 0b1010000,
+         0b101: 0b1100000}
         """
-        meggitt_table = {}
-        for w in range(self.packing_radius):
-            for idx in itertools.combinations(range(self._length - 1), w):
-                errorword_poly = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
-                syndrome_poly = errorword_poly % self._generator_polynomial
-                meggitt_table[syndrome_poly] = errorword_poly
-        return meggitt_table
+        if not hasattr(self, '_meggitt_table'):
+            self._meggitt_table = {}
+            for w in range(self.packing_radius):
+                for idx in itertools.combinations(range(self._length - 1), w):
+                    errorword_poly = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
+                    syndrome_poly = errorword_poly % self._generator_polynomial
+                    self._meggitt_table[syndrome_poly] = errorword_poly
+        return self._meggitt_table
 
     def _encode_cyclic_direct(self, message):
         """
@@ -1009,7 +1025,6 @@ class CyclicCode(BlockCode):
     @property
     @functools.lru_cache(maxsize=None)
     def generator_matrix(self):
-        """Generator matrix :math:`G` of the cyclic code."""
         n, k = self.length, self.dimension
         generator_matrix = np.empty((k, n), dtype=np.int)
         row = self._generator_polynomial.coefficients(width=n)
@@ -1020,7 +1035,6 @@ class CyclicCode(BlockCode):
     @property
     @functools.lru_cache(maxsize=None)
     def parity_check_matrix(self):
-        """Parity-check matrix :math:`H` of the cyclic code."""
         n, k = self.length, self.dimension
         parity_check_matrix = np.empty((n - k, n), dtype=np.int)
         row = self._parity_polynomial.coefficients(width=n)[::-1]
@@ -1070,8 +1084,7 @@ class BCHCode(CyclicCode):
     length : :obj:`int`
         Length :math:`n` of the code.
     t : :obj:`int`
-        Designed error-correcting capability :math:`t` of the BCH code. It will be internally
-        replaced by the true error-correcting capability of the code.
+        Designed error-correcting capability :math:`t` of the BCH code. It will be internally replaced by the true error-correcting capability of the code.
 
     .. rubric:: Examples
 
