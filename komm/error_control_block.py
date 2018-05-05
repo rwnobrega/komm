@@ -74,25 +74,25 @@ class BlockCode:
 
         `komm.BlockCode(generator_matrix=generator_matrix)`
 
-            :code:`generator_matrix` : 2D array of :obj:`int`
-                Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.
+        :code:`generator_matrix` : 2D array of :obj:`int`
+            Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.
 
         **Via parity-check matrix**
 
         `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
 
-            :code:`parity_check_matrix` : 2D array of :obj:`int`
-                Parity-check matrix :math:`H` for the code, which is a :math:`m \\times n` binary matrix.
+        :code:`parity_check_matrix` : 2D array of :obj:`int`
+            Parity-check matrix :math:`H` for the code, which is a :math:`m \\times n` binary matrix.
 
         **Via parity submatrix and information set**
 
         `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
 
-            :code:`parity_submatrix` : 2D array of :obj:`int`
-                Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.
+        :code:`parity_submatrix` : 2D array of :obj:`int`
+            Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.
 
-            :code:`information_set` : (1D array of :obj:`int`) or :obj:`str`, optional
-                Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
+        :code:`information_set` : (1D array of :obj:`int`) or :obj:`str`, optional
+            Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
         """
 
         if 'generator_matrix' in kwargs:
@@ -209,8 +209,9 @@ class BlockCode:
         Returns a matrix containing all the codewords.
 
         **Output:**
-            :code:`codeword_table` : 2D array of :obj:`int`
-                A :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
+
+        :code:`codeword_table` : 2D array of :obj:`int`
+            A :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
 
         This is a cached method.
 
@@ -238,8 +239,9 @@ class BlockCode:
         Returns the codeword weight distribution.
 
         **Output:**
-            :code:`codeword_weight_distribution` : 1D array of :obj:`int`
-                An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n)`.
+
+        :code:`codeword_weight_distribution` : 1D array of :obj:`int`
+            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n)`.
 
         This is a cached method.
 
@@ -259,8 +261,9 @@ class BlockCode:
         Returns a matrix containing all the coset leaders. This may be used as a :term:`LUT` for syndrome-based decoding.
 
         **Output:**
-            :code:`coset_leader_table` : 2D array of :obj:`int`
-                A :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`.
+
+        :code:`coset_leader_table` : 2D array of :obj:`int`
+            A :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`.
 
         This is a cached method.
 
@@ -296,8 +299,9 @@ class BlockCode:
         Returns the coset leader weight distribution.
 
         **Output:**
-            :code:`coset_leader_weight_distribution` : 1D array of :obj:`int`
-                An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n)`.
+
+        :code:`coset_leader_weight_distribution` : 1D array of :obj:`int`
+            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n)`.
 
         This is a cached method.
 
@@ -320,15 +324,17 @@ class BlockCode:
         Encode a given message to its corresponding codeword.
 
         **Input:**
-            :code:`message` : 1D array of :obj:`int`
-                The message to be encoded. Its length must be :math:`k`.
 
-            :code:`method` : :obj:`str`, optional
+        :code:`message` : 1D array of :obj:`int`
+            The message to be encoded. Its length must be :math:`k`.
+
+        :code:`method` : :obj:`str`, optional
                 The encoding method to be used.
 
         **Output:**
-            :code:`codeword` : 1D array of :obj:`int`
-                The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
+
+        :code:`codeword` : 1D array of :obj:`int`
+            The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
         """
         message = np.array(message)
 
@@ -361,12 +367,14 @@ class BlockCode:
         Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.
 
         **Input:**
-            :code:`codeword` : 1D array of :obj:`int`
-                A codeword from the code. Its length must be :math:`n`.
+
+        :code:`codeword` : 1D array of :obj:`int`
+            A codeword from the code. Its length must be :math:`n`.
 
         **Output:**
-            :code:`message` : 1D array of :obj:`int`
-                The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
+
+        :code:`message` : 1D array of :obj:`int`
+            The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
         """
         if self._is_systematic:
             return codeword[self._information_set]
@@ -378,15 +386,17 @@ class BlockCode:
         Decode a received word to a message.
 
         **Input:**
-            :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
-                The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
-            :code:`method` : :obj:`str`, optional
-                The decoding method to be used.
+        :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
+            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
+
+        :code:`method` : :obj:`str`, optional
+            The decoding method to be used.
 
         **Output:**
-            :code:`message_hat` : 1D array of :obj:`int`
-                The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
+
+        :code:`message_hat` : 1D array of :obj:`int`
+            The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
         """
         recvword = np.array(recvword)
 
