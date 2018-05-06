@@ -19,7 +19,7 @@ __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
 
 class BlockCode:
     """
-    General binary linear block code. A *binary linear block code* is a :math:`k`-dimensional subspace of the vector space :math:`\\mathbb{F}_2^n`.  The parameters :math:`n` and :math:`k` are called the code *length* and *dimension* of the code, respectively. The parameter :math:`m = n - k` is called the *redundancy* of the code.
+    General binary linear block code. A *binary linear block code* is a :math:`k`-dimensional subspace of the vector space :math:`\\mathbb{F}_2^n`. The parameters :math:`n` and :math:`k` are called the code *length* and *dimension* of the code, respectively. The parameter :math:`m = n - k` is called the *redundancy* of the code.
 
     References: :cite:`Lin.Costello.04` (Ch. 3)
 
@@ -196,12 +196,12 @@ class BlockCode:
 
     @property
     def generator_matrix(self):
-        """Generator matrix :math:`G` of the code. This property is read-only."""
+        """Generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only."""
         return self._generator_matrix
 
     @property
     def parity_check_matrix(self):
-        """Parity-check matrix :math:`H` of the code. This property is read-only."""
+        """Parity-check matrix :math:`H` of the code. It as a :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only."""
         return self._parity_check_matrix
 
     def codeword_table(self):
@@ -241,7 +241,7 @@ class BlockCode:
         **Output:**
 
         :code:`codeword_weight_distribution` : 1D array of :obj:`int`
-            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n)`.
+            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n)`.
 
         This is a cached method.
 
@@ -301,7 +301,7 @@ class BlockCode:
         **Output:**
 
         :code:`coset_leader_weight_distribution` : 1D array of :obj:`int`
-            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n)`.
+            An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
 
         This is a cached method.
 
@@ -513,7 +513,7 @@ class HammingCode(BlockCode):
         Constructor for the class. It expects the following parameter:
 
         :code:`m` : :obj:`int`
-            The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
+            The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.
         """
         super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(m))
         self._minimum_distance = 3
@@ -577,7 +577,7 @@ class SimplexCode(BlockCode):
         Constructor for the class. It expects the following parameter:
 
         :code:`k` : :obj:`int`
-            The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.
+            The dimension :math:`k` of the code. Must satisfy :math:`k \\geq 2`.
         """
         super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(k).T)
         self._minimum_distance = 2**(k - 1)
@@ -648,7 +648,7 @@ class GolayCode(BlockCode):
 
 class RepetitionCode(BlockCode):
     """
-    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00\cdots0` and :math:`11\cdots1`. The repetition code has the following parameters:
+    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \\cdots 0` and :math:`11 \\cdots 1`. The repetition code has the following parameters:
 
     - Length: :math:`n`
     - Dimension: :math:`k = 1`
@@ -776,13 +776,12 @@ class SingleParityCheckCode(BlockCode):
 
 class ReedMullerCode(BlockCode):
     """
-    Reed--Muller code. See references for more details. It has the following parameters:
+    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\\rho` and :math:`\\mu`, which must satisfy :math:`0 \\leq \\rho < \\mu`. See references for more details. The resulting code is denoted by :math:`\\mathrm{RM}(\\rho, \\mu)`, and has the following parameters:
 
-    - Length: :math:`n = 2^m`
-    - Dimension: :math:`k = 1 + {m \choose 1} + \cdots + {m \choose r}`
-    - Minimum distance: :math:`d = 2^{m - r}`
-
-    The parameters must satisfy :math:`0 \leq r < m`.
+    - Length: :math:`n = 2^{\\mu}`
+    - Dimension: :math:`k = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\rho}`
+    - Redundancy: :math:`m = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\mu - \\rho - 1}`
+    - Minimum distance: :math:`d = 2^{\\mu - \\rho}`
 
     References: :cite:`Lin.Costello.04` (p. 105--114)
 
@@ -792,10 +791,10 @@ class ReedMullerCode(BlockCode):
 
     **Notes**
 
-    - For :math:`r = 0` it reduces to a repetition code (:class:`RepetitionCode`).
-    - For :math:`r = 1` it reduces to an extended simplex code (:class:`SimplexCode`).
-    - For :math:`r = m-2` it reduces to an extended Hamming code (:class:`HammingCode`).
-    - For :math:`r = m-1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
+    - For :math:`\\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
+    - For :math:`\\rho = 1` it reduces to an extended simplex code (:class:`SimplexCode`).
+    - For :math:`\\rho = \\mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
+    - For :math:`\\rho = \\mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
     Examples
     ========
@@ -804,45 +803,59 @@ class ReedMullerCode(BlockCode):
     >>> (code.length, code.dimension, code.minimum_distance)
     (32, 6, 16)
     """
-    def __init__(self, r, m):
+    def __init__(self, rho, mu):
         """
         Constructor for the class. It expects the following parameters:
 
-        :code:`r` : :obj:`int`
-            The parameter :math:`r` of the code.
+        :code:`rho` : :obj:`int`
+            The parameter :math:`\\rho` of the code.
 
-        :code:`m` : :obj:`int`
-            The parameter :math:`m` of the code.
+        :code:`mu` : :obj:`int`
+            The parameter :math:`\\mu` of the code.
 
-        The parameters must satisfy :math:`0 \leq r < m`.
+        The parameters must satisfy :math:`0 \\leq \\rho < \\mu`.
         """
-        assert 0 <= r < m
+        assert 0 <= rho < mu
 
-        super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(r, m))
-        self._minimum_distance = 2**(m - r)
-        self._r = r
-        self._m = m
+        super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(rho, mu))
+        self._minimum_distance = 2**(mu - rho)
+        self._rho = rho
+        self._mu = mu
 
     def __repr__(self):
-        args = '{}, {}'.format(self._r, self._m)
+        args = '{}, {}'.format(self._rho, self._mu)
         return '{}({})'.format(self.__class__.__name__, args)
 
+    @property
+    def rho(self):
+        """
+        Parameter :math:`\\rho` of the code. This property is read-only.
+        """
+        return self._rho
+
+    @property
+    def mu(self):
+        """
+        Parameter :math:`\\mu` of the code. This property is read-only.
+        """
+        return self._mu
+
     @staticmethod
-    def _reed_muller_generator_matrix(r, m):
+    def _reed_muller_generator_matrix(rho, mu):
         """
-        [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= r < m.
+        [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= rho < mu.
         """
-        v = np.empty((m, 2**m), dtype=np.int)
-        for i in range(m):
-            block = np.hstack((np.zeros(2**(m - i - 1), dtype=np.int), np.ones(2**(m - i - 1), dtype=np.int)))
-            v[m - i - 1] = np.tile(block, 2**i)
+        v = np.empty((mu, 2**mu), dtype=np.int)
+        for i in range(mu):
+            block = np.hstack((np.zeros(2**(mu - i - 1), dtype=np.int), np.ones(2**(mu - i - 1), dtype=np.int)))
+            v[mu - i - 1] = np.tile(block, 2**i)
 
         G_list = []
-        for ell in range(r, 0, -1):
-            for I in itertools.combinations(range(m), ell):
+        for ell in range(rho, 0, -1):
+            for I in itertools.combinations(range(mu), ell):
                 row = functools.reduce(np.multiply, v[I, :])
                 G_list.append(row)
-        G_list.append(np.ones(2**m, dtype=np.int))
+        G_list.append(np.ones(2**mu, dtype=np.int))
 
         return np.array(G_list, dtype=np.int)
 
@@ -852,11 +865,11 @@ class ReedMullerCode(BlockCode):
         Get Reed partitions from Reed-Muller generator matrix. See Lin, Costello, 2Ed, p. 105--114.
         """
         reed_partitions = []
-        for ell in range(self._r, -1, -1):
+        for ell in range(self._rho, -1, -1):
             binary_vectors_I = np.array(list(binary_iterator(ell)), dtype=np.int)
-            binary_vectors_J = np.array(list(binary_iterator(self._m - ell)), dtype=np.int)
-            for I in itertools.combinations(range(self._m), ell):
-                E = np.setdiff1d(np.arange(self._m), I, assume_unique=True)
+            binary_vectors_J = np.array(list(binary_iterator(self._mu - ell)), dtype=np.int)
+            for I in itertools.combinations(range(self._mu), ell):
+                E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
                 S = np.dot(binary_vectors_I, 2**np.array(I, dtype=np.int))
                 Q = np.dot(binary_vectors_J, 2**np.array(E, dtype=np.int))
                 reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
@@ -901,7 +914,7 @@ class ReedMullerCode(BlockCode):
 
 class CyclicCode(BlockCode):
     """
-    General binary cyclic code. A cyclic code is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code) and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.
+    General binary cyclic code. A cyclic code is a linear block code (:class:`BlockCode`) such that, if :math:`c` is a codeword, then every cyclic shift of :math:`c` is also a codeword. It is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code) and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.
 
     Examples of generator polynomials can be found in the table below.
 
@@ -938,8 +951,8 @@ class CyclicCode(BlockCode):
         :code:`length` : :obj:`int`
             The length :math:`n` of the code.
 
-        :code:`generator_polynomial` : :obj:`int`
-            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), represented as an integer. Bit :math:`i` (for :math:`0 \leq i \leq m`, counting from right to left, :term:`MSB` in the left) of :code:`generator_polynomial` is the coefficient of :math:`X^i` in :math:`g(X)`. For example, :math:`g(X) = X^3 + X + 1` is represented as :code:`generator_polynomial = 0b1011 = 0o13 = 11`.
+        :code:`generator_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
+            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), represented as an integer. Bit :math:`i` (for :math:`0 \\leq i \\leq m`, counting from right to left, :term:`MSB` in the left) of :code:`generator_polynomial` is the coefficient of :math:`X^i` in :math:`g(X)`. For example, :math:`g(X) = X^3 + X + 1` is represented as :code:`generator_polynomial = 0b1011 = 0o13 = 11`.
 
         :code:`systematic` : :obj:`bool`, optional
             Whether the encoder is systematic. Default is :code:`True`.
@@ -960,12 +973,12 @@ class CyclicCode(BlockCode):
 
     @property
     def generator_polynomial(self):
-        """Generator polynomial :math:`g(X)` of the cyclic code. It has degree :math:`m`, where :math:`m` is the redundancy of the code."""
+        """Generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code."""
         return self._generator_polynomial
 
     @property
     def parity_polynomial(self):
-        """Parity polynomial :math:`h(X)` of the cyclic code. It has degree :math:`k`, where :math:`k` is the dimension of the code."""
+        """Parity polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code."""
         return self._parity_polynomial
 
     def meggitt_table(self):
@@ -1045,11 +1058,7 @@ class CyclicCode(BlockCode):
     @tag(name='Meggitt decoder', input_type='hard', target='codeword')
     def _decode_meggitt(self, recvword):
         """
-        Meggitt decoder.
-
-        References
-        ==========
-        .. [1] Sebastià Xambó i Descamps: A computational primer on BLOCK ERROR-CORRECTING CODES
+        Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
         meggitt_table = self.meggitt_table()
         recvword_poly = BinaryPolynomial.from_coefficients(recvword)
@@ -1073,20 +1082,21 @@ class CyclicCode(BlockCode):
 
 class BCHCode(CyclicCode):
     """
-    Bose--Chaudhuri--Hocquenghem (BCH) code.
+    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau < 2^{\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:
 
-    .. rubric:: Decoding methods
+    - Length: :math:`n = 2^{\\mu} - 1`
+    - Dimension: :math:`k \geq n - \\mu \\tau`
+    - Redundancy: :math:`m \\leq \\mu \\tau`
+    - Minimum distance: :math:`d \\geq 2\\tau + 1`
+
+    **Decoding methods**
 
     [[0]]
 
-    .. rubric:: Parameters
+    References: :cite:`Lin.Costello.04` (Ch. 6)
 
-    length : :obj:`int`
-        Length :math:`n` of the code.
-    t : :obj:`int`
-        Designed error-correcting capability :math:`t` of the BCH code. It will be internally replaced by the true error-correcting capability of the code.
-
-    .. rubric:: Examples
+    Examples
+    ========
 
     >>> code = komm.BCHCode(5, 3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -1094,14 +1104,18 @@ class BCHCode(CyclicCode):
     >>> code.generator_polynomial
     0b1000111110101111
 
-    >>> # Example of t being replaced by its true value.
-    >>> # Here.
-
-    .. rubric:: See also
-
-    CyclicCode
+    >>> # TODO: Example of tau being replaced by its true value.
     """
-    def __init__(self, m, designed_t):
+    def __init__(self, mu, tau):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`mu` : :obj:`int`
+            The parameter :math:`\\mu` of the code.
+
+        :code:`tau` : :obj:`int`
+            The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
+        """
         assert 1 <= designed_t < 2**(m - 1)
 
         field = BinaryFiniteExtensionField(m)
@@ -1124,8 +1138,7 @@ class BCHCode(CyclicCode):
     @staticmethod
     def _bch_code_generator_polynomial(field, m, designed_t):
         """
-        [1] Lin, Costello, 2Ed, p. 194--195.
-        Assumes 1 <= designed_t < 2**(m - 1)
+        Assumes 1 <= designed_t < 2**(m - 1). See :cite:`Lin.Costello.04` (p. 194--195)
         """
         alpha = field.primitive_element
 
@@ -1141,11 +1154,7 @@ class BCHCode(CyclicCode):
 
     def _bch_general_decoder(self, recvword, syndrome_computer, key_equation_solver, root_finder):
         """
-        General BCH decoder.
-
-        References
-        ==========
-        .. [1] Lin-Costello, p. 205--209.
+        General BCH decoder. See :cite:`Lin.Costello.04` (p. 205--209).
         """
         recvword_poly = BinaryPolynomial.from_coefficients(recvword)
         syndrome_poly = syndrome_computer(recvword_poly)
@@ -1158,11 +1167,7 @@ class BCHCode(CyclicCode):
 
     def _bch_syndrome(self, recvword_poly):
         """
-        BCH syndrome computation.
-
-        References
-        ==========
-        .. [1] Lin-Costello, p. 205--209.
+        BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).
         """
         syndrome_poly = np.empty(len(self._beta), dtype=np.object)
         for i, (b, b_min_poly) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
@@ -1188,12 +1193,7 @@ class BCHCode(CyclicCode):
 
     def _berlekamp_algorithm(self, syndrome_poly):
         """
-        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
-
-        References
-        ==========
-        .. [1] Lin-Costello, p. 209--212
-        .. [2] Ryan--Lin, p. 114-121
+        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).
         """
         field = self._field
         t = self._packing_radius
