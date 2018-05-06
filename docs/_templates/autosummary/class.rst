@@ -4,18 +4,7 @@
 
 .. autoclass:: {{ objname }}
 
-   {% block methods %}
    .. automethod:: __init__
-
-   {% if methods %}
-   .. rubric:: Methods
-
-   .. autosummary::
-   {% for item in methods %}
-      ~{{ name }}.{{ item }}
-   {%- endfor %}
-   {% endif %}
-   {% endblock %}
 
    {% block attributes %}
    {% if attributes %}
@@ -23,6 +12,17 @@
 
    .. autosummary::
    {% for item in attributes %}
+      ~{{ name }}.{{ item }}
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}
+
+   {% block methods %}
+   {% if methods %}
+   .. rubric:: Methods
+
+   .. autosummary::
+   {% for item in methods %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
    {% endif %}
