@@ -7,23 +7,23 @@
    .. automethod:: __init__
 
    {% block attributes %}
-   {% if attributes %}
+   {%- if attributes %}
    .. rubric:: Attributes
 
    .. autosummary::
-   {% for item in attributes %}
+   {%- for item in attributes %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
-   {% endif %}
-   {% endblock %}
+   {%- endif %}
+   {%- endblock %}
 
    {% block methods %}
-   {% if methods %}
+   {%- if methods %}
    .. rubric:: Methods
 
    .. autosummary::
-   {% for item in methods %}
+   {%- for item in methods %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
-   {% endif %}
-   {% endblock %}
+   {%- endif %}
+   {%- endblock %}
