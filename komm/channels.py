@@ -198,7 +198,7 @@ class DiscreteMemorylessChannel:
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
     """
-    Binary symmetric channel (BSC). It is :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition matrix given by
+    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition matrix given by
 
     .. math::
 
@@ -263,7 +263,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
     """
-    Binary erasure channel (BSC). It a :class:`discrete memoryless channel <DiscreteMemorylessChannel>` with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition matrix given by
+    Binary erasure channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition matrix given by
 
     .. math::
 
