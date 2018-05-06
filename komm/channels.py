@@ -73,7 +73,7 @@ class AWGNChannel:
 
     def capacity(self):
         """
-        Returns the channel capacity, given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.
+        Returns the channel capacity :math:`C`. It is given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.
 
         Examples
         ========
@@ -156,7 +156,7 @@ class DiscreteMemorylessChannel:
 
     def capacity(self):
         """
-        Returns the channel capacity, calculated by the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+        Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
 
         Examples
         ========
@@ -209,7 +209,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     .. math::
         Y_n = X_n + Z_n,
 
-    where :math:`Z_n \sim \mathrm{Bernoulli}(p)` are :term:`i.i.d.` random variables.
+    where :math:`Z_n` are :term:`i.i.d.` Bernouli random variables with :math:`\\Pr[Z_n = 1] = p`.
 
     References: :cite:`Cover.Thomas.06` (Sec. 7.1.4)
 
@@ -242,7 +242,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     def capacity(self):
         """
-        Returns the channel capacity, given by :math:`C = 1 - \\mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
+        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
         Examples
         ========
@@ -306,7 +306,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     def capacity(self):
         """
-        Returns the channel capacity, given by :math:`C = 1 - \\epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
+        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
 
         Examples
         ========
