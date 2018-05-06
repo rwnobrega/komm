@@ -19,7 +19,7 @@ __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
 
 class BlockCode:
     """
-    General binary linear block code. A *binary linear block code* is a :math:`k`-dimensional subspace of the vector space :math:`\\mathbb{F}_2^n`. The parameters :math:`n` and :math:`k` are called the code *length* and *dimension* of the code, respectively. The parameter :math:`m = n - k` is called the *redundancy* of the code.
+    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \\times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \\times n` matrix. Those matrix are related by :math:`G H^\\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.
 
     References: :cite:`Lin.Costello.04` (Ch. 3)
 
@@ -82,7 +82,7 @@ class BlockCode:
         `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
 
         :code:`parity_check_matrix` : 2D array of :obj:`int`
-            Parity-check matrix :math:`H` for the code, which is a :math:`m \\times n` binary matrix.
+            Parity-check matrix :math:`H` for the code, which is an :math:`m \\times n` binary matrix.
 
         **Via parity submatrix and information set**
 
@@ -201,7 +201,7 @@ class BlockCode:
 
     @property
     def parity_check_matrix(self):
-        """Parity-check matrix :math:`H` of the code. It as a :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only."""
+        """Parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only."""
         return self._parity_check_matrix
 
     def codeword_table(self):
