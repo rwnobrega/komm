@@ -11,16 +11,31 @@ __all__ = ['ConvolutionalCode']
 
 class ConvolutionalCode:
     """
-    Binary convolutional code.
+    Binary convolutional code. It is characterized by its (polynomial) *generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomials in :math:`D`. The element in row :math:`i` and column :math:`j` of :math:`G(D)` is denoted by :math:`g_{ij}(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
 
-    Mathematically, a ...
+    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Clark.Cain.81` (Appendix B, p. 402).
 
-    Parameters
-    ==========
-    generator_matrix : :obj:`numpy.ndarray`
-        Generator matrix :math:`G(D)` in polynomial form.
-        The polynomial :math:`D^3 + D + 1` is represented as :code:`0b1011 = 0o13 = 11`.
-        k-by-n matrix with integer entries.
+    =================================  =================================
+     Parameters :math:`(n, k, \\nu)`    Generator matrix :math:`G(D)`
+    =================================  =================================
+     :math:`(2, 1, 1)`                  :code:`[[0o3, 0o1]]`
+     :math:`(2, 1, 2)`                  :code:`[[0o7, 0o5]]`
+     :math:`(2, 1, 3)`                  :code:`[[0o17, 0o15]]`
+     :math:`(2, 1, 4)`                  :code:`[[0o35, 0o23]]`
+     :math:`(2, 1, 5)`                  :code:`[[0o75, 0o53]]`
+     :math:`(2, 1, 6)`                  :code:`[[0o171, 0o133]]`
+     :math:`(2, 1, 7)`                  :code:`[[0o371, 0o247]]`
+     :math:`(2, 1, 8)`                  :code:`[[0o753, 0o561]]`
+     :math:`(3, 1, 1)`                  :code:`[[0o3, 0o3, 0o1]]`
+     :math:`(3, 1, 2)`                  :code:`[[0o7, 0o07, 0o5]]`
+     :math:`(3, 1, 3)`                  :code:`[[0o17, 0o15, 0o13]]`
+     :math:`(3, 1, 4)`                  :code:`[[0o37, 0o33, 0o25]]`
+     :math:`(3, 1, 5)`                  :code:`[[0o75, 0o53, 0o47]]`
+     :math:`(3, 1, 6)`                  :code:`[[0o171, 0o165, 0o133]]`
+     :math:`(3, 1, 7)`                  :code:`[[0o367, 0o331, 0o225]]`
+    =================================  =================================
+
+    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Clark.Cain.81`
 
     Examples
     ========
@@ -50,13 +65,18 @@ class ConvolutionalCode:
     """
 
     def __init__(self, generator_matrix):
+        """ Constructor for the class. It expects the following parameter:
+
+        :code:`generator_matrix` : 2D array of :obj:`int`
+            Generator matrix :math:`G(D)` in polynomial form, which is a :math:`k \\times n` matrix with integer entries representing binary polynomials (:obj:`BinaryPolynomial`). For example, the integer :code:`0b1011 = 0o13 = 11`: stands for the polynomial :math:`D^3 + D + 1`.
+        """
         self._generator_matrix = np.empty_like(generator_matrix, dtype=np.object)
         for i, row in enumerate(generator_matrix):
             self._generator_matrix[i] = [BinaryPolynomial(x) for x in row]
 
         self._num_input_bits, self._num_output_bits = self._generator_matrix.shape
-        self._constraint_length = np.max(np.vectorize(lambda x: x.degree)(self._generator_matrix), axis=1)
-        self._overall_constraint_length = np.sum(self._constraint_length)
+        self._constraint_lengths = np.max(np.vectorize(lambda x: x.degree)(self._generator_matrix), axis=1)
+        self._overall_constraint_length = np.sum(self._constraint_lengths)
         self._num_states = 2**self._overall_constraint_length
 
         self._init_finite_state_machine()
@@ -72,19 +92,19 @@ class ConvolutionalCode:
         bits = np.empty(k + nu, dtype=np.int)
         taps = np.empty((n, k + nu), dtype=np.int)
 
-        i_indices = np.concatenate(([0], np.cumsum(self._constraint_length + 1)[:-1]))
+        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
         s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
         s1_indices = s0_indices - 1
 
         for j in range(n):
-            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=self._constraint_length[i] + 1)
+            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=self._constraint_lengths[i] + 1)
                                          for i in range(k)])
 
         self._outgoing_states = {s: [] for s in range(num_states)}
         self._outgoing_outputs = {s: [] for s in range(num_states)}
         self._input_edge = {}
 
-        i_indices = np.concatenate(([0], np.cumsum(self._constraint_length + 1)[:-1]))
+        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
         s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
         s1_indices = s0_indices - 1
 
@@ -101,47 +121,83 @@ class ConvolutionalCode:
 
     @property
     def num_input_bits(self):
-        """Number of input bits per block, :math:`k`."""
+        """
+        Number of input bits per block, :math:`k`. This property is read-only.
+        """
         return self._num_input_bits
 
     @property
     def num_output_bits(self):
-        """Number of input bits per block, :math:`n`."""
+        """
+        Number of output bits per block, :math:`n`. This property is read-only.
+        """
         return self._num_output_bits
 
     @property
-    def constraint_length(self):
-        """Doc soon."""
-        return self._constraint_length
+    def constraint_lengths(self):
+        """
+        Constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D array of :obj:`int`. It is given by
+
+        .. math::
+
+            \\nu_i = \\max_{0 \\leq j < n} \\{ \\deg g_{ij}(D) \\}
+
+        This property is read-only.
+        """
+        return self._constraint_lengths
 
     @property
     def overall_constraint_length(self):
         """
-        Overall constraint length of the code, :math:`\\nu`.  The number of states of the
-        finite-state machine is given by :math:`2^{\\nu}`.
+        Overall constraint length :math:`\\nu` of the code. It is given by
+
+        .. math::
+
+            \\nu = \\sum_{0 \\leq i < k} \\nu_i
+
+        This property is read-only.
         """
-        return np.sum(self._constraint_length)
+        return self._overall_constraint_length
+
+    @property
+    def num_states(self):
+        """
+        Number of states of the finite-state machine. It is given by :math:`2^{\\nu}`, where :math:`\\nu` is the overall constraint length of the code. This property is read-only.
+        """
+        return self._num_states
 
     @property
     def memory_order(self):
-        """Memory order of the code, :math:`m`."""
-        return  np.max(self._constraint_length)
-
-    def encode(self, inp, initial_state=0, method=None):
         """
-        Encode a message.
+        Memory order :math:`m` of the code. It is given by
 
-        .. rubric:: Input
+        .. math::
 
-        message : :obj:`numpy.ndarray` of :obj:`int`
-            Binary message to be encoded.
-        initial_state : :obj:`int`
-            Initial state of the machine.
+            \\nu = \\max_{0 \\leq i < k} \\nu_i
 
-        .. rubric:: Output
+        This property is read-only.
+        """
+        return  np.max(self._constraint_lengths)
 
-        codeword : :obj:`numpy.ndarray` :obj:`int`
-            Binary codeword.
+    def encode(self, message, initial_state=0, method=None):
+        """
+        Encode a given message to its corresponding codeword.
+
+        **Input:**
+
+        :code:`message` : 1D array of :obj:`int`
+            Binary message to be encoded. It may be of any length.
+
+        :code:`initial_state` : :obj:`int`, optional
+            Initial state of the machine. The default value is :code:`0`.
+
+        :code:`method` : :obj:`str`, optional
+            Encoding method to be used.
+
+        **Output:**
+
+        :code:`codeword` : 1D array of :obj:`int`
+            Codeword corresponding to :code:`message`. Its length is equal to :math:`(n/k)` times the length of :code:`message`.
         """
         inp = np.array(inp)
         if method is None:
@@ -164,21 +220,30 @@ class ConvolutionalCode:
     def _default_encoder(self):
         return 'finite_state_machine'
 
-    def decode(self, inp, method=None):
+    def decode(self, recvword, method=None):
         """
-        Decode to message.
+        Decode a received word to a message.
 
-        INPUT:
-            - recvword
-        OUTPUT:
-            - message
+        **Input:**
+
+        :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
+            Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). It may be of any length.
+
+        :code:`method` : :obj:`str`, optional
+            Decoding method to be used.
+
+        **Output:**
+
+        :code:`message_hat` : 1D array of :obj:`int`
+            Message decoded from :code:`recvword`. Its length is equal to :math:`(k/n)` times the length of :code:`recvword`.
         """
-        inp = np.array(inp)
+
+        recvword = np.array(recvword)
         if method is None:
-            method = self._default_decoder(inp.dtype)
+            method = self._default_decoder(recvword.dtype)
         decoder = getattr(self, '_decode_' + method)
-        outp = decoder(inp)
-        return outp
+        message_hat = decoder(recvword)
+        return message_hat
 
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
@@ -223,28 +288,3 @@ class ConvolutionalCode:
             return 'viterbi_hard'
         elif dtype == np.float:
             return 'viterbi_soft'
-
-    @classmethod
-    def optimum_convolutional_code(cls, num_output_bits, num_input_bits, overall_constraint_length):
-        """
-        Clark, Cain, Appendix B, p.402
-        """
-        DICT = {
-            (2, 1, 1): [[0o3, 0o1]],
-            (2, 1, 2): [[0o7, 0o5]],
-            (2, 1, 3): [[0o17, 0o15]],
-            (2, 1, 4): [[0o35, 0o23]],
-            (2, 1, 5): [[0o75, 0o53]],
-            (2, 1, 6): [[0o171, 0o133]],
-            (2, 1, 7): [[0o371, 0o247]],
-            (2, 1, 8): [[0o753, 0o561]],
-
-            (3, 1, 1): [[0o3, 0o3, 0o1]],
-            (3, 1, 2): [[0o7, 0o07, 0o5]],
-            (3, 1, 3): [[0o17, 0o15, 0o13]],
-            (3, 1, 4): [[0o37, 0o33, 0o25]],
-            (3, 1, 5): [[0o75, 0o53, 0o47]],
-            (3, 1, 6): [[0o171, 0o165, 0o133]],
-            (3, 1, 7): [[0o367, 0o331, 0o225]],
-            }
-        return cls(generator_matrix=DICT[num_output_bits, num_input_bits, overall_constraint_length])
