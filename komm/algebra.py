@@ -67,7 +67,7 @@ class BinaryPolynomial(int):
     @property
     def degree(self):
         """
-        Degree of the polynomial.
+        Degree of the polynomial. This property is read-only.
 
         Examples
         ========
@@ -195,13 +195,7 @@ class BinaryPolynomial(int):
 
 class BinaryFiniteExtensionField:
     """
-    Galois field with binary characteristic.
-
-    Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)`,
-    with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor
-    takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*,
-    :math:`p(X)` may be specified; if not, the following default values will be chosen
-    :cite:`Lin.Costello.04` (p. 42):
+    Galois field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)`, with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
 
     ===========   ==============  ===========   =====================
      :math:`k`     :math:`p(X)`    :math:`k`     :math:`p(X)`
@@ -216,20 +210,11 @@ class BinaryFiniteExtensionField:
      8             0b100011101     16            0b10001000000001011
     ===========   ==============  ===========   =====================
 
-    To construct *elements* of the finite field, call the finite field object.  For example,
-    :code:`field(0b1101)` will construct the element whose polynomial representation is
-    :math:`X^3 + X^2 + 1`.
-
-    Parameters
-    ==========
-    degree : :obj:`int`
-        The degree :math:`k` of the finite field. Must be a positive integer.
-    modulus : :obj:`int` or :obj:`BinaryPolynomial`, optional
-        The modulus (primitive polynomial) of the field. Must be an irreducible polynomial.
+    To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.
 
     Examples
     ========
-    >>> field = BinaryFiniteExtensionField(4)
+    >>> field = komm.BinaryFiniteExtensionField(4)
     >>> field
     BinaryFiniteExtensionField(4)
     >>> (field.characteristic, field.degree)
@@ -237,16 +222,16 @@ class BinaryFiniteExtensionField:
     >>> field.modulus
     0b10011
 
-    >>> field1 = BinaryFiniteExtensionField(3)
+    >>> field1 = komm.BinaryFiniteExtensionField(3, modulus=0b1011)
     >>> alpha1 = field1.primitive_element
     >>> [alpha1**i for i in range(7)]
     [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]
-    >>> field2 = BinaryFiniteExtensionField(3, modulus=0b1101)
+    >>> field2 = komm.BinaryFiniteExtensionField(3, modulus=0b1101)
     >>> alpha2 = field2.primitive_element
     >>> [alpha2**i for i in range(7)]
     [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]
 
-    >>> field = BinaryFiniteExtensionField(4)
+    >>> field = komm.BinaryFiniteExtensionField(4)
     >>> x = field(0b1011)
     >>> y = field(0b1100)
     >>> x + y
@@ -257,6 +242,14 @@ class BinaryFiniteExtensionField:
     0b10
     """
     def __init__(self, degree, modulus=None):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`degree` : :obj:`int`
+            Degree :math:`k` of the finite field. Must be a positive integer.
+        :code:`modulus` : :obj:`int` or :obj:`BinaryPolynomial`, optional
+            Modulus (primitive polynomial) of the field. Must be an irreducible polynomial.
+        """
         self._characteristic = 2
         self._degree = degree
         if modulus is None:
@@ -286,53 +279,58 @@ class BinaryFiniteExtensionField:
     @property
     def characteristic(self):
         """
-        The characteristic :math:`2` of the finite field.
+        Characteristic :math:`2` of the finite field. This property is read-only.
         """
         return self._characteristic
 
     @property
     def degree(self):
         """
-        The degree :math:`k` of the finite field.
+        Degree :math:`k` of the finite field. This property is read-only.
         """
         return self._degree
 
     @property
     def modulus(self):
         """
-        The modulus (primitive polynomial) of the field.
+        Modulus (primitive polynomial) of the field. This property is read-only.
         """
         return self._modulus
 
     @property
     def order(self):
         """
-        The order (number of elements) of the finite field, given by :math:`2^k`.
+        Order (number of elements) of the finite field, given by :math:`2^k`. This property is read-only.
         """
         return 2 ** self._degree
 
     @property
     def primitive_element(self):
         """
-        A primitive element :math:`\\alpha` of the finite field, satisfying :math:`p(\\alpha) = 0`,
-        where :math:`p(X)` is the modulus (primitive polynomial) of the finite field.
+        A primitive element :math:`\\alpha` of the finite field. It satisfies :math:`p(\\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.
         """
         return self(2)
 
-    @functools.lru_cache(maxsize=None)
-    def multiply(self, x, y):
+    # ~@functools.lru_cache(maxsize=None)
+    def _multiply(self, x, y):
         return self((BinaryPolynomial(x) * BinaryPolynomial(y)) % self._modulus)
 
-    @functools.lru_cache(maxsize=None)
+    # ~@functools.lru_cache(maxsize=None)
     def inverse(self, x):
+        """
+        Returns the multiplicative inverse of a given element.
+        """
         d, s, _ = BinaryPolynomial.xgcd(BinaryPolynomial(x), self._modulus)
         if d == 1:
             return self(s)
         else:
             raise ZeroDivisionError('This element does not have a multiplicative inverse')
 
-    @functools.lru_cache(maxsize=None)
+    # ~@functools.lru_cache(maxsize=None)
     def logarithm(self, x, base=None):
+        """
+        Returns the logarithm of a given element, with respect to a given base.
+        """
         if base is None:
             base = self.primitive_element
         for i in range(self.order):
@@ -341,6 +339,9 @@ class BinaryFiniteExtensionField:
         return -1
 
     def power(self, x, exponent):
+        """
+        Returns a power of a given element.
+        """
         if exponent < 0:
             return power(self, self.inverse(x), -exponent)
         else:
@@ -349,7 +350,7 @@ class BinaryFiniteExtensionField:
     @staticmethod
     def conjugates(x):
         """
-        Returns the conjugates of :code:`x` :cite:`Lin.Costello.04` (Sec. 2.5).
+        Returns the conjugates of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) for more details.
         """
         conjugate_list = []
         exponent = 0
@@ -365,7 +366,7 @@ class BinaryFiniteExtensionField:
     @staticmethod
     def minimal_polynomial(x):
         """
-        Returns the minimal polynomial of :code:`x` :cite:`Lin.Costello.04` (Sec. 2.5).
+        Returns the minimal polynomial of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) fore more details.
         """
         one = x.field(1)
         monomials = [np.array([y, one], dtype=np.object) for y in x.conjugates()]
@@ -394,7 +395,7 @@ class BinaryFiniteExtensionField:
         def __hash__(self): return hash((int(self), self.field._modulus))
         def __add__(self, other): return self.field(self ^ other)
         def __sub__(self, other): return self.field(self ^ other)
-        def __mul__(self, other): return self.field.multiply(self, other)
+        def __mul__(self, other): return self.field._multiply(self, other)
         def inverse(self): return self.field.inverse(self)
         def __truediv__(self, other): return self * other.inverse()
         def logarithm(self, base=None): return self.field.logarithm(self, base)
