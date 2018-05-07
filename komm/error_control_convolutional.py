@@ -199,12 +199,12 @@ class ConvolutionalCode:
         :code:`codeword` : 1D array of :obj:`int`
             Codeword corresponding to :code:`message`. Its length is equal to :math:`(n/k)` times the length of :code:`message`.
         """
-        inp = np.array(inp)
+        message = np.array(message)
         if method is None:
             method = self._default_encoder()
         encoder = getattr(self, '_encode_' + method)
-        outp = encoder(inp)  # TODO: check initial_state...
-        return outp
+        codeword = encoder(message)  # TODO: check initial_state...
+        return codeword
 
     def _encode_finite_state_machine(self, message, initial_state=0):
         k, n = self._num_input_bits, self._num_output_bits

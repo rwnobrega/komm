@@ -11,7 +11,7 @@ class TestHammingCode:
 
     def test_weight_distributions(self):
         assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 7, 7, 0, 0, 1])
-        assert np.array_equal(self.code.coset_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         n, k = self.code.length, self.code.dimension
@@ -26,7 +26,7 @@ class TestHammingCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords()
+        codewords = self.code.codeword_table()
         assert codewords.shape == (2**k, n)
 
     def test_exhaustive_search_hard_decoder(self):

@@ -1116,14 +1116,14 @@ class BCHCode(CyclicCode):
         :code:`tau` : :obj:`int`
             The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
         """
-        assert 1 <= designed_t < 2**(m - 1)
+        assert 1 <= tau < 2**(mu - 1)
 
-        field = BinaryFiniteExtensionField(m)
-        generator_polynomial, t = self._bch_code_generator_polynomial(field, m, designed_t)
-        super().__init__(length=2**m - 1, generator_polynomial=generator_polynomial)
+        field = BinaryFiniteExtensionField(mu)
+        generator_polynomial, t = self._bch_code_generator_polynomial(field, tau)
+        super().__init__(length=2**mu - 1, generator_polynomial=generator_polynomial)
 
         self._field = field
-        self._m = m
+        self._mu = mu
         self._packing_radius = t
         self._minimum_distance = 2*t + 1
 
@@ -1132,17 +1132,17 @@ class BCHCode(CyclicCode):
         self._beta_minimal_polynomial = [b.minimal_polynomial() for b in self._beta]
 
     def __repr__(self):
-        args = '{}, {}'.format(self._m, self._packing_radius)
+        args = '{}, {}'.format(self._mu, self._packing_radius)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
-    def _bch_code_generator_polynomial(field, m, designed_t):
+    def _bch_code_generator_polynomial(field, tau):
         """
-        Assumes 1 <= designed_t < 2**(m - 1). See :cite:`Lin.Costello.04` (p. 194--195)
+        Assumes 1 <= tau < 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195)
         """
         alpha = field.primitive_element
 
-        t = designed_t
+        t = tau
         lcm_set = {(alpha**(2*i + 1)).minimal_polynomial() for i in range(t)}
         while True:
             if (alpha**(2*t + 1)).minimal_polynomial() not in lcm_set:
@@ -1202,6 +1202,7 @@ class BCHCode(CyclicCode):
         discrepancy = {-1: field(1), 0: syndrome_poly[0]}
         degree = {-1: 0, 0: 0}
 
+        #TODO: This mu is not the same as the mu in __init__...
         for mu in range(2*t):
             if discrepancy[mu] == field(0):
                 degree[mu + 1] = degree[mu]
