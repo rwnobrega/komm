@@ -85,14 +85,13 @@ Pulses
     :toctree: stubs
     :nosignatures:
 
-    Pulse
+    FormattingPulse
     RectangularNRZPulse
     RectangularRZPulse
     ManchesterPulse
     SincPulse
     RaisedCosinePulse
     RootRaisedCosinePulse
-    GaussianPulse
 
 Sequences
 ---------
