@@ -161,7 +161,7 @@ class SincPulse(FormattingPulse):
 
     .. math::
 
-        h(t) = \\operatorname{sinc}(t) = \\frac{\\sin(t)}{t}.
+        h(t) = \\operatorname{sinc}(t) = \\frac{\\sin(\\pi t)}{\\pi t}.
 
     """
     def __init__(self, samples_per_symbol, length_in_symbols):
