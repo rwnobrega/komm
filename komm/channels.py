@@ -126,7 +126,7 @@ class DiscreteMemorylessChannel:
         """
         Constructor for the class. It expects the following parameter:
 
-        :code:`transition_matrix` : 2D array of :obj:`float`
+        :code:`transition_matrix` : 2D-array of :obj:`float`
             The channel transition matrix :math:`p_{Y \mid X}`.
         """
         self._transition_matrix = np.array(transition_matrix, dtype=np.float)

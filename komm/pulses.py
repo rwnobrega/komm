@@ -14,7 +14,7 @@ class FormattingPulse:
         """
         Constructor for the class. It expects the following parameters:
 
-        :code:`impulse_response` : 1D array of :obj:`float`
+        :code:`impulse_response` : 1D-array of :obj:`float`
             The filter finite impulse response.
 
         :code:`samples_per_symbol` : :obj:`int`
@@ -43,12 +43,12 @@ class FormattingPulse:
 
         **Input:**
 
-        :code:`symbols` : 1D array of :obj:`float`
+        :code:`symbols` : 1D-array of :obj:`float`
             The input signal, containing symbols of the modulation.
 
         **Output:**
 
-        :code:`formatted` : 1D array of :obj:`float`
+        :code:`formatted` : 1D-array of :obj:`float`
             The output, formatted signal.
         """
         sps = self._samples_per_symbol

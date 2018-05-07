@@ -74,24 +74,24 @@ class BlockCode:
 
         `komm.BlockCode(generator_matrix=generator_matrix)`
 
-        :code:`generator_matrix` : 2D array of :obj:`int`
+        :code:`generator_matrix` : 2D-array of :obj:`int`
             Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.
 
         **Via parity-check matrix**
 
         `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
 
-        :code:`parity_check_matrix` : 2D array of :obj:`int`
+        :code:`parity_check_matrix` : 2D-array of :obj:`int`
             Parity-check matrix :math:`H` for the code, which is an :math:`m \\times n` binary matrix.
 
         **Via parity submatrix and information set**
 
         `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
 
-        :code:`parity_submatrix` : 2D array of :obj:`int`
+        :code:`parity_submatrix` : 2D-array of :obj:`int`
             Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.
 
-        :code:`information_set` : (1D array of :obj:`int`) or :obj:`str`, optional
+        :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional
             Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
         """
 
@@ -210,7 +210,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`codeword_table` : 2D array of :obj:`int`
+        :code:`codeword_table` : 2D-array of :obj:`int`
             A :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
 
         This is a cached method.
@@ -240,7 +240,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`codeword_weight_distribution` : 1D array of :obj:`int`
+        :code:`codeword_weight_distribution` : 1D-array of :obj:`int`
             An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n)`.
 
         This is a cached method.
@@ -262,7 +262,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`coset_leader_table` : 2D array of :obj:`int`
+        :code:`coset_leader_table` : 2D-array of :obj:`int`
             A :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`.
 
         This is a cached method.
@@ -300,7 +300,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`coset_leader_weight_distribution` : 1D array of :obj:`int`
+        :code:`coset_leader_weight_distribution` : 1D-array of :obj:`int`
             An array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
 
         This is a cached method.
@@ -325,7 +325,7 @@ class BlockCode:
 
         **Input:**
 
-        :code:`message` : 1D array of :obj:`int`
+        :code:`message` : 1D-array of :obj:`int`
             The message to be encoded. Its length must be :math:`k`.
 
         :code:`method` : :obj:`str`, optional
@@ -333,7 +333,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`codeword` : 1D array of :obj:`int`
+        :code:`codeword` : 1D-array of :obj:`int`
             The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
         """
         message = np.array(message)
@@ -368,12 +368,12 @@ class BlockCode:
 
         **Input:**
 
-        :code:`codeword` : 1D array of :obj:`int`
+        :code:`codeword` : 1D-array of :obj:`int`
             A codeword from the code. Its length must be :math:`n`.
 
         **Output:**
 
-        :code:`message` : 1D array of :obj:`int`
+        :code:`message` : 1D-array of :obj:`int`
             The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
         """
         if self._is_systematic:
@@ -387,7 +387,7 @@ class BlockCode:
 
         **Input:**
 
-        :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
+        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
             The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
         :code:`method` : :obj:`str`, optional
@@ -395,7 +395,7 @@ class BlockCode:
 
         **Output:**
 
-        :code:`message_hat` : 1D array of :obj:`int`
+        :code:`message_hat` : 1D-array of :obj:`int`
             The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
         """
         recvword = np.array(recvword)
@@ -918,14 +918,14 @@ class CyclicCode(BlockCode):
 
     Examples of generator polynomials can be found in the table below.
 
-    ===============  ==============================================  ======================================
-    Code             Generator polynomial :math:`g(X)`               Integer representation
-    ===============  ==============================================  ======================================
-    Hamming (7,4,3)  :math:`X^3 + X + 1`                             :code:`0b1011 = 0o13 = 11`
-    Simplex (7,3,4)  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 0o27 = 23`
-    BCH (15,5,7)     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 0o2467 = 1335`
-    Golay (23,12,7)  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`
-    ===============  ==============================================  ======================================
+    =======================  ==============================================  ======================================
+    Code :math:`(n, k, d)`   Generator polynomial :math:`g(X)`               Integer representation
+    =======================  ==============================================  ======================================
+    Hamming :math:`(7,4,3)`  :math:`X^3 + X + 1`                             :code:`0b1011 = 0o13 = 11`
+    Simplex :math:`(7,3,4)`  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 0o27 = 23`
+    BCH :math:`(15,5,7)`     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 0o2467 = 1335`
+    Golay :math:`(23,12,7)`  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`
+    =======================  ==============================================  ======================================
 
     References: :cite:`Lin.Costello.04` (Chapter 5)
 
@@ -952,7 +952,7 @@ class CyclicCode(BlockCode):
             The length :math:`n` of the code.
 
         :code:`generator_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
-            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), represented as an integer. Bit :math:`i` (for :math:`0 \\leq i \\leq m`, counting from right to left, :term:`MSB` in the left) of :code:`generator_polynomial` is the coefficient of :math:`X^i` in :math:`g(X)`. For example, :math:`g(X) = X^3 + X + 1` is represented as :code:`generator_polynomial = 0b1011 = 0o13 = 11`.
+            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         :code:`systematic` : :obj:`bool`, optional
             Whether the encoder is systematic. Default is :code:`True`.

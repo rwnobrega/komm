@@ -67,8 +67,8 @@ class ConvolutionalCode:
     def __init__(self, generator_matrix):
         """ Constructor for the class. It expects the following parameter:
 
-        :code:`generator_matrix` : 2D array of :obj:`int`
-            Generator matrix :math:`G(D)` in polynomial form, which is a :math:`k \\times n` matrix with integer entries representing binary polynomials (:obj:`BinaryPolynomial`). For example, the integer :code:`0b1011 = 0o13 = 11`: stands for the polynomial :math:`D^3 + D + 1`.
+        :code:`generator_matrix` : 2D-array of :obj:`int`
+            Generator matrix :math:`G(D)` in polynomial form, which is a :math:`k \\times n` matrix with integer entries representing binary polynomials (:obj:`BinaryPolynomial`).
         """
         self._generator_matrix = np.empty_like(generator_matrix, dtype=np.object)
         for i, row in enumerate(generator_matrix):
@@ -136,7 +136,7 @@ class ConvolutionalCode:
     @property
     def constraint_lengths(self):
         """
-        Constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D array of :obj:`int`. It is given by
+        Constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. It is given by
 
         .. math::
 
@@ -185,7 +185,7 @@ class ConvolutionalCode:
 
         **Input:**
 
-        :code:`message` : 1D array of :obj:`int`
+        :code:`message` : 1D-array of :obj:`int`
             Binary message to be encoded. It may be of any length.
 
         :code:`initial_state` : :obj:`int`, optional
@@ -196,7 +196,7 @@ class ConvolutionalCode:
 
         **Output:**
 
-        :code:`codeword` : 1D array of :obj:`int`
+        :code:`codeword` : 1D-array of :obj:`int`
             Codeword corresponding to :code:`message`. Its length is equal to :math:`(n/k)` times the length of :code:`message`.
         """
         message = np.array(message)
@@ -226,7 +226,7 @@ class ConvolutionalCode:
 
         **Input:**
 
-        :code:`recvword` : 1D array of (:obj:`int` or :obj:`float`)
+        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
             Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). It may be of any length.
 
         :code:`method` : :obj:`str`, optional
@@ -234,7 +234,7 @@ class ConvolutionalCode:
 
         **Output:**
 
-        :code:`message_hat` : 1D array of :obj:`int`
+        :code:`message_hat` : 1D-array of :obj:`int`
             Message decoded from :code:`recvword`. Its length is equal to :math:`(k/n)` times the length of :code:`recvword`.
         """
 

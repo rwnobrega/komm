@@ -10,18 +10,9 @@ __all__ = ['BinaryPolynomial', 'BinaryFiniteExtensionField']
 
 class BinaryPolynomial(int):
     """
-    Binary polynomial.
+    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\\mathbb{F}_2 = \\{ 0, 1 \\}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
 
-    A *binary polynomial* is a polynomial whose coefficients are elements in the finite field
-    :math:`\\mathbb{F}_2 = \\{ 0, 1 \\}`.  The default constructor takes an :obj:`int` as input,
-    whose binary digits represent the coefficients of the polynomial---the leftmost bit standing
-    for the highest degree term.  For example, the integer :code:`0b11010` = :code:`0o32` =
-    :code:`26` represents the polynomial :math:`X^4 + X^3 + X`.
-
-    There are two alternative constructors for this class, the class methods
-    :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
-
-    This class supports addition, multiplication, and division of polynomials.
+    This class supports addition, multiplication, and division of binary polynomials.
 
     Examples
     ========
@@ -39,14 +30,17 @@ class BinaryPolynomial(int):
     0b100010000
     """
 
+    # TODO: Find a better solution.
+    denominator = imag = numerator = real = None
+    conjugate = from_bytes = to_bytes = None
+
     @classmethod
     def from_coefficients(cls, coefficients):
         """
-        Constructs a BinaryPolynomial from an :obj:`ndarray` (or :obj:`list`)
-        of :obj:`int` representing the coefficients of the polynomial---the
-        :math:`i`-th element of the array standing for the coefficient of
-        :math:`X^i`.  For example, :code:`[0, 1, 0, 1, 1]` represents the
-        polynomial :math:`X^4 + X^3 + X`.
+        Constructs a :obj:`BinaryPolynomial` from its coefficients. It expects the following parameter:
+
+        :code:`coefficients` : 1D-array of :obj:`int`
+            The coefficients of the binary polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
         Examples
         ========
@@ -58,10 +52,10 @@ class BinaryPolynomial(int):
     @classmethod
     def from_exponents(cls, exponents):
         """
-        Constructs a BinaryPolynomial from an :obj:`ndarray` (or :obj:`list`)
-        of :obj:`int` representing the exponents of the nonzero terms of the
-        polynomial.  For example, :code:`[1, 3, 4]` represents the polynomial
-        :math:`X^4 + X^3 + X`.
+        Constructs a :obj:`BinaryPolynomial` from its exponents. It expects the following parameter:
+
+        :code:`coefficients` : 1D-array of :obj:`int`
+            The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
         Examples
         ========
@@ -70,17 +64,32 @@ class BinaryPolynomial(int):
         """
         return cls(binlist2int(np.bincount(exponents)))
 
+    @property
+    def degree(self):
+        """
+        Degree of the polynomial.
+
+        Examples
+        ========
+        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+        >>> poly.degree
+        4
+        """
+        return self.bit_length() - 1
+
     def coefficients(self, width=None):
         """
-        Returns the coefficients of the polynomial as an :obj:`ndarray` of
-        :obj:`int`.  The :math:`i`-th element of the array stands for the
-        coefficient of :math:`X^i`.
+        Returns the coefficients of the binary polynomial.
 
-        Parameters
-        ==========
-        width : :obj:`int`, optional
-            If this parameter is specified, the output will be filled with zeros
-            on the right so that the its length will be the specified value.
+        **Input:**
+
+        :code:`width` : :obj:`int`, optional
+            If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+
+        **Output:**
+
+        :code:`coefficients` : 1D-array of :obj:`int`
+            Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
 
         Examples
         ========
@@ -94,9 +103,12 @@ class BinaryPolynomial(int):
 
     def exponents(self):
         """
-        Returns the exponents of the nonzero terms of the polynomial as an
-        :obj:`ndarray` of :obj:`int`.  The exponents are returned in ascending
-        order.
+        Returns the exponents of the binary polynomial.
+
+        **Output:**
+
+        :code:`exponents` : 1D-array of :obj:`int`
+            Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
         Examples
         ========
@@ -105,19 +117,6 @@ class BinaryPolynomial(int):
         array([1, 3, 4])
         """
         return np.flatnonzero(self.coefficients())
-
-    @property
-    def degree(self):
-        """
-        The degree of the polynomial.
-
-        Examples
-        ========
-        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly.degree
-        4
-        """
-        return self.bit_length() - 1
 
     def __lshift__(self, n):
         return self.__class__(super().__lshift__(n))
@@ -156,13 +155,17 @@ class BinaryPolynomial(int):
 #    @functools.lru_cache(maxsize=None)
     def evaluate(self, point):
         """
-        Returns the polynomial evaluated at a given point. See XXX
+        Evaluates the polynomial at a given point. Uses Horner's method.
 
-        Parameters
-        ==========
-        point
-            Any Python object supporting the operations of addition,
-            subtraction, and multiplication.
+        **Input:**
+
+        :code:`point` : ring-like type
+            Any Python object supporting the operations of addition, subtraction, and multiplication.
+
+        **Output:**
+
+        :code:`result` : ring-like type
+            The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
 
         Examples
         ========
@@ -185,7 +188,7 @@ class BinaryPolynomial(int):
     @classmethod
     def xgcd(cls, poly1, poly2):
         """
-        Performs the extended Euclidean algorithm with poly1 and poly2. See XXX
+        Performs the extended Euclidean algorithm on two given binary polynomials.
         """
         return xgcd(cls, poly1, poly2)
 
