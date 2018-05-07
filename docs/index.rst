@@ -3,7 +3,7 @@
 Komm
 ====
 
-Welcome to **Komm**'s documentation!
+Welcome to **Komm**'s documentation page!
 
 **Komm** is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems. This project is inspired by---but is not meant to be compatible with---the MATLAB® `Communications System Toolbox™ <https://www.mathworks.com/help/comm/>`_. Other sources of inspiration include `GNU Radio <https://gnuradio.org/>`_, `CommPy <http://veeresht.info/CommPy/>`_, and `SageMath <https://www.sagemath.org/>`_. **Komm** is licensed under the `GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.en.html>`_.
 
