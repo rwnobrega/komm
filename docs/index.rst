@@ -96,13 +96,26 @@ Pulses
 Sequences
 ---------
 
+Binary sequences
+~~~~~~~~~~~~~~~~
+
 .. autosummary::
     :toctree: stubs
     :nosignatures:
 
+    BinarySequence
     BarkerSequence
     WalshHadamardSequence
     LFSRSequence
+
+Other sequences
+~~~~~~~~~~~~~~~
+
+.. autosummary::
+    :toctree: stubs
+    :nosignatures:
+
+    ZadoffChuSequence
 
 Source coding
 -------------
