@@ -27,3 +27,5 @@
    {%- endfor %}
    {%- endif %}
    {%- endblock %}
+
+   .. rubric:: Documentation
