@@ -197,18 +197,18 @@ class BinaryFiniteExtensionField:
     """
     Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
 
-    ===========   ==============  ===========   =====================
-     :math:`k`     :math:`p(X)`    :math:`k`     :math:`p(X)`
-    ===========   ==============  ===========   =====================
-     1             0o11            9             0b1000010001
-     2             0b111           10            0b10000001001
-     3             0b1011          11            0b100000000101
-     4             0b10011         12            0b1000001010011
-     5             0b100101        13            0b10000000011011
-     6             0b1000011       14            0b100010001000011
-     7             0b10001001      15            0b1000000000000011
-     8             0b100011101     16            0b10001000000001011
-    ===========   ==============  ===========   =====================
+    ===========  =====================  ============  ============================
+     :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`
+    ===========  =====================  ============  ============================
+     :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`
+     :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`
+     :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`
+     :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`
+     :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`
+     :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`
+     :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`
+     :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`
+    ===========  =====================  ============  ============================
 
     To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.
 
