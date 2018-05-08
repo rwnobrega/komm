@@ -223,7 +223,7 @@ class WalshHadamardSequence(BinarySequence):
 
     The above matrix is said to be in *sequency ordering*. It has the property that row :math:`i` has exactly :math:`i` signal changes.
 
-    The Walsh--Hadamard sequence of *length* :math:`L = 2^n` and *index* :math:`i \\in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_{n}`, if assuming natural ordering, or :math:`H_{n}^{\\mathrm{s}}`, if assuming sequency ordering.
+    The Walsh--Hadamard sequence of *length* :math:`L = 2^n` and *index* :math:`i \\in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_{2^n}`, if assuming natural ordering, or :math:`H_{2^n}^{\\mathrm{s}}`, if assuming sequency ordering.
 
     [1] https://en.wikipedia.org/wiki/Hadamard_matrix; [2] https://en.wikipedia.org/wiki/Walsh_matrix
     """
