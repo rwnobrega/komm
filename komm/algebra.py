@@ -195,7 +195,7 @@ class BinaryPolynomial(int):
 
 class BinaryFiniteExtensionField:
     """
-    Galois field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)`, with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
+    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
 
     ===========   ==============  ===========   =====================
      :math:`k`     :math:`p(X)`    :math:`k`     :math:`p(X)`
@@ -247,8 +247,8 @@ class BinaryFiniteExtensionField:
 
         :code:`degree` : :obj:`int`
             Degree :math:`k` of the finite field. Must be a positive integer.
-        :code:`modulus` : :obj:`int` or :obj:`BinaryPolynomial`, optional
-            Modulus (primitive polynomial) of the field. Must be an irreducible polynomial.
+        :code:`modulus` : :obj:`BinaryPolynomial` or :obj:`int`, optional
+            Modulus (primitive polynomial) of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial.
         """
         self._characteristic = 2
         self._degree = degree
@@ -279,28 +279,28 @@ class BinaryFiniteExtensionField:
     @property
     def characteristic(self):
         """
-        Characteristic :math:`2` of the finite field. This property is read-only.
+        The characteristic :math:`2` of the finite field. This property is read-only.
         """
         return self._characteristic
 
     @property
     def degree(self):
         """
-        Degree :math:`k` of the finite field. This property is read-only.
+        The degree :math:`k` of the finite field. This property is read-only.
         """
         return self._degree
 
     @property
     def modulus(self):
         """
-        Modulus (primitive polynomial) of the field. This property is read-only.
+        The modulus (primitive polynomial) :math:`p(X)` of the finite field. This property is read-only.
         """
         return self._modulus
 
     @property
     def order(self):
         """
-        Order (number of elements) of the finite field, given by :math:`2^k`. This property is read-only.
+        The order (number of elements) of the finite field, given by :math:`2^k`. This property is read-only.
         """
         return 2 ** self._degree
 
@@ -340,7 +340,7 @@ class BinaryFiniteExtensionField:
 
     def power(self, x, exponent):
         """
-        Returns a power of a given element.
+        Returns a given power of a given element.
         """
         if exponent < 0:
             return power(self, self.inverse(x), -exponent)
@@ -404,9 +404,6 @@ class BinaryFiniteExtensionField:
         def minimal_polynomial(self): return self.field.minimal_polynomial(self)
         def __repr__(self): return bin(self)
         def __str__(self): return bin(self)
-
-
-
 
 
 
