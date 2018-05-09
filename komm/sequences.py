@@ -313,6 +313,14 @@ class LFSRSequence(BinarySequence):
     The constructor :func:`maximum_length_sequence` can be use to construct an MLS.
 
     [1] https://en.wikipedia.org/wiki/Linear-feedback_shift_register; [2] https://en.wikipedia.org/wiki/Maximum_length_sequence
+
+    .. rubric:: Examples
+
+    >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
+    >>> lfsr.bit_sequence
+    array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
+    >>> lfsr.cyclic_autocorrelation()
+    array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
     """
     def __init__(self, feedback_polynomial, start_state_polynomial=0b1):
         """
@@ -326,7 +334,7 @@ class LFSRSequence(BinarySequence):
         """
         self._feedback_polynomial = BinaryPolynomial(feedback_polynomial)
         self._start_state_polynomial = BinaryPolynomial(start_state_polynomial)
-        super().__init__(self._lfsr_sequence(self._feedback_polynomial, self._start_state_polynomial))
+        super().__init__(bit_sequence=self._lfsr_sequence(self._feedback_polynomial, self._start_state_polynomial))
 
     @classmethod
     def maximum_length_sequence(cls, degree):
