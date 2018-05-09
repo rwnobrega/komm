@@ -307,10 +307,10 @@ class LFSRSequence(BinarySequence):
         R[\\ell] =
         \\begin{cases}
             L, & \\ell = 0, \\pm L, \\pm 2L, \\ldots, \\\\
-            -1, & \\text{otherwise}.
+            -1, & \\text{otherwise},
         \\end{cases}
 
-    The constructor :func:`maximum_length_sequence` can be use to construct an MLS.
+    where :math:`L` is the length of the sequence. The constructor :func:`maximum_length_sequence` can be use to construct an MLS.
 
     [1] https://en.wikipedia.org/wiki/Linear-feedback_shift_register; [2] https://en.wikipedia.org/wiki/Maximum_length_sequence
 
