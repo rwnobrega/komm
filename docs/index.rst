@@ -17,7 +17,7 @@ Algebra
 -------
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     BinaryPolynomial
@@ -27,7 +27,7 @@ Channels
 --------
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     AWGNChannel
@@ -42,7 +42,7 @@ Block coding
 ~~~~~~~~~~~~
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     BlockCode
@@ -59,7 +59,7 @@ Convolutional coding
 ~~~~~~~~~~~~~~~~~~~~
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     ConvolutionalCode
@@ -68,7 +68,7 @@ Modulation
 ----------
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     RealModulation
@@ -82,7 +82,7 @@ Pulses
 ------
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     FormattingPulse
@@ -100,7 +100,7 @@ Binary sequences
 ~~~~~~~~~~~~~~~~
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     BinarySequence
@@ -112,7 +112,7 @@ Other sequences
 ~~~~~~~~~~~~~~~
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     ZadoffChuSequence
@@ -124,7 +124,7 @@ Lossless coding
 ~~~~~~~~~~~~~~~
 
 .. autosummary::
-    :toctree: stubs
+    :toctree:
     :nosignatures:
 
     SymbolCode
