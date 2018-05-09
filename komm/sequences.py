@@ -232,7 +232,7 @@ class WalshHadamardSequence(BinarySequence):
         Constructor for the class. It expects the following parameters:
 
         :code:`length` : :obj:`int`
-            Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two..
+            Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.
 
         :code:`ordering` : :obj:`str`, optional
             Ordering to be assumed. Should be one of :code:`'natural'`, :code:`'sequency'`, or :code:`'diadic'`. The default value is :code:`'natural'`.
