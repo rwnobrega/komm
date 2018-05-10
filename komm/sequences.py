@@ -294,6 +294,7 @@ class LFSRSequence(BinarySequence):
 
     .. image:: figures/lfsr_5_2.png
        :alt: Linear-feedback shift register example.
+       :scale: 67 %
        :align: center
 
     The start state of the machine is specified by the so called *start state polynomial*. More specifically, the coefficient of :math:`X^i` in the start state polynomial is equal to the initial value of bit :math:`i` of the LFSR.

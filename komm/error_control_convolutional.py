@@ -24,6 +24,7 @@ class ConvolutionalCode:
 
     .. image:: figures/cc_2_1_6.png
        :alt: Convolutional encoder example.
+       :scale: 67 %
        :align: center
 
     As another example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (3, 2)`; its generator matrix is given by
@@ -40,6 +41,7 @@ class ConvolutionalCode:
 
     .. image:: figures/cc_3_2_7.png
        :alt: Convolutional encoder example.
+       :scale: 67 %
        :align: center
 
     The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
