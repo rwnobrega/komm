@@ -11,34 +11,77 @@ __all__ = ['ConvolutionalCode']
 
 class ConvolutionalCode:
     """
-    Binary convolutional code. It is characterized by its (polynomial) *generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomials in :math:`D`. The element in row :math:`i` and column :math:`j` of :math:`G(D)` is denoted by :math:`g_{ij}(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
+    Binary convolutional code. It is characterized by its *(polynomial) generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomials in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively. For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
 
-    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Clark.Cain.81` (Appendix B, p. 402).
+    .. math::
+
+        G(D) =
+        \\begin{bmatrix}
+            D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
+        \\end{bmatrix},
+
+    whose integer representation is :code:`[[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
+
+    .. image:: figures/cc_2_1_6.png
+       :alt: Convolutional encoder example.
+       :align: center
+
+    As another example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (3, 2)`; its generator matrix is given by
+
+    .. math::
+
+        G(D) =
+        \\begin{bmatrix}
+            D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
+            0  &  D^3 + D  &  D^3 + D^2 + 1 \\\\
+        \\end{bmatrix},
+
+    whose integer representation is :code:`[[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
+
+    .. image:: figures/cc_3_2_7.png
+       :alt: Convolutional encoder example.
+       :align: center
+
+    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
     =================================  =================================
      Parameters :math:`(n, k, \\nu)`    Generator matrix :math:`G(D)`
     =================================  =================================
-     :math:`(2, 1, 1)`                  :code:`[[0o3, 0o1]]`
-     :math:`(2, 1, 2)`                  :code:`[[0o7, 0o5]]`
-     :math:`(2, 1, 3)`                  :code:`[[0o17, 0o15]]`
-     :math:`(2, 1, 4)`                  :code:`[[0o35, 0o23]]`
-     :math:`(2, 1, 5)`                  :code:`[[0o75, 0o53]]`
-     :math:`(2, 1, 6)`                  :code:`[[0o171, 0o133]]`
-     :math:`(2, 1, 7)`                  :code:`[[0o371, 0o247]]`
-     :math:`(2, 1, 8)`                  :code:`[[0o753, 0o561]]`
-     :math:`(3, 1, 1)`                  :code:`[[0o3, 0o3, 0o1]]`
-     :math:`(3, 1, 2)`                  :code:`[[0o7, 0o07, 0o5]]`
-     :math:`(3, 1, 3)`                  :code:`[[0o17, 0o15, 0o13]]`
-     :math:`(3, 1, 4)`                  :code:`[[0o37, 0o33, 0o25]]`
-     :math:`(3, 1, 5)`                  :code:`[[0o75, 0o53, 0o47]]`
-     :math:`(3, 1, 6)`                  :code:`[[0o171, 0o165, 0o133]]`
-     :math:`(3, 1, 7)`                  :code:`[[0o367, 0o331, 0o225]]`
+     :math:`(2, 1, 1)`                  :code:`[[0o1, 0o3]]`
+     :math:`(2, 1, 2)`                  :code:`[[0o5, 0o7]]`
+     :math:`(2, 1, 3)`                  :code:`[[0o13, 0o17]]`
+     :math:`(2, 1, 4)`                  :code:`[[0o27, 0o31]]`
+     :math:`(2, 1, 5)`                  :code:`[[0o53, 0o75]]`
+     :math:`(2, 1, 6)`                  :code:`[[0o117, 0o155]]`
+     :math:`(2, 1, 7)`                  :code:`[[0o247, 0o371]]`
+     :math:`(2, 1, 8)`                  :code:`[[0o561, 0o753]]`
     =================================  =================================
 
-    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Clark.Cain.81`
+    =================================  =================================
+     Parameters :math:`(n, k, \\nu)`    Generator matrix :math:`G(D)`
+    =================================  =================================
+     :math:`(3, 1, 1)`                  :code:`[[0o1, 0o3, 0o3]]`
+     :math:`(3, 1, 2)`                  :code:`[[0o5, 0o7, 0o7]]`
+     :math:`(3, 1, 3)`                  :code:`[[0o13, 0o15, 0o17]]`
+     :math:`(3, 1, 4)`                  :code:`[[0o25, 0o33, 0o37]]`
+     :math:`(3, 1, 5)`                  :code:`[[0o47, 0o53, 0o75]]`
+     :math:`(3, 1, 6)`                  :code:`[[0o117, 0o127, 0o155]]`
+     :math:`(3, 1, 7)`                  :code:`[[0o255, 0o331, 0o367]]`
+     :math:`(3, 1, 8)`                  :code:`[[0o575, 0o623, 0o727]]`
+    =================================  =================================
 
-    Examples
-    ========
+    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`
+
+    .. rubric:: Examples
+
+    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o117, 0o155]])
+    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+    (2, 1, 6)
+
+    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
+    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+    (3, 2, 7)
+
     >>> code = komm.ConvolutionalCode(generator_matrix=[[0o7, 0o5]])
     >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
     (2, 1, 2)
@@ -58,10 +101,6 @@ class ConvolutionalCode:
      (2, 1): array([1]),
      (3, 2): array([0]),
      (3, 3): array([1])}
-
-    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o31, 0o27, 0o00], [0o00, 0o05, 0o15]])
-    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-    (3, 2, 7)
     """
 
     def __init__(self, generator_matrix):
@@ -140,9 +179,9 @@ class ConvolutionalCode:
 
         .. math::
 
-            \\nu_i = \\max_{0 \\leq j < n} \\{ \\deg g_{ij}(D) \\}
+            \\nu_i = \\max_{0 \\leq j < n} \\{ \\deg g_{ij}(D) \\},
 
-        This property is read-only.
+        where :math:`g_{ij}(D)` denotes the element in row :math:`i` and column :math:`j` of :math:`G(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. This property is read-only.
         """
         return self._constraint_lengths
 

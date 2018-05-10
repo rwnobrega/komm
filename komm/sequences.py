@@ -292,7 +292,7 @@ class LFSRSequence(BinarySequence):
     """
     Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \\in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.
 
-    .. image:: figures/lfsr_52.png
+    .. image:: figures/lfsr_5_2.png
        :alt: Linear-feedback shift register example.
        :align: center
 
