@@ -3,7 +3,6 @@
 __pycache__
 tmp
 docs/_build
-docs/stubs
 .benchmarks
 .cache
 .spyproject
