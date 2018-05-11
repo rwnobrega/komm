@@ -10,17 +10,18 @@ __all__ = ['RealModulation', 'PAModulation',
 
 class Modulation:
     """
-    Modulation.
+    General modulation scheme.
     """
     def __init__(self, constellation, labeling='natural'):
         self._init_constellation(constellation)
         self._init_labeling(labeling)
         self._channel_snr = 1.0
+        self._channel_N0 = self.energy_per_symbol / self._channel_snr
 
         self._hard_symbol_demodulator = \
             lambda recv: minimum_distance_demodulator(recv, self._constellation)
         self._soft_bit_demodulator = \
-            lambda recv: soft_bit_demodulator(recv, self._constellation, self._inverse_mapping, self.channel_N0)
+            lambda recv: soft_bit_demodulator(recv, self._constellation, self._inverse_mapping, self._channel_N0)
 
     def __repr__(self):
         args = 'constellation={}, labeling={}'.format(self._constellation.tolist(), self._labeling.tolist())
@@ -57,66 +58,83 @@ class Modulation:
     @property
     def constellation(self):
         """
-        The modulation constellation :math:`\\mathcal{S}`.
+        The constellation :math:`\\mathcal{S}` of the modulation. This property is read-only.
         """
         return self._constellation
 
     @property
     def labeling(self):
         """
-        The modulation binary labeling :math:`\\mathcal{Q}`.
+        The binary labeling :math:`\\mathcal{Q}` of the modulation. This property is read-only.
         """
         return self._labeling
 
     @property
     def order(self):
         """
-        The modulation order :math:`M`.
+        The order :math:`M` of the modulation. This property is read-only.
         """
         return self._order
 
     @property
     def bits_per_symbol(self):
         """
-        :math:`\log_2(M)`.
+        The number of bits per symbol of the modulation. It is given by :math:`\log_2(M)`, where :math:`M` is the order of the modulation. This property is read-only.
         """
         return self._bits_per_symbol
 
     @property
     def energy_per_symbol(self):
         """
-        Mean symbol energy, supposing equiprobable symbols.
+        The average symbol energy :math:`E_\\mathrm{s}` of the constellation. It assumes equiprobable symbols. It is given by
+
+        .. math::
+
+            E_\\mathrm{s} = \\sum_{s \\in \\mathcal{S}} \\frac{1}{M} \\| s \\|^2,
+
+        where :math:`\| s \|^2` is the energy of symbol :math:`s \\in \\mathcal{S}` and :math:`M` is the order of the modulation. This property is read-only.
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
     @property
     def energy_per_bit(self):
         """
-        Mean bit energy, supposing equiprobable bits.
+        The average bit energy :math:`E_\\mathrm{b}` of the constellation. It assumes equiprobable symbols. It is given by :math:`E_\\mathrm{b} = `E_\\mathrm{s} / \\log_2(M)`, where :math:`E_\\mathrm{s}` is the average symbol energy, and :math:`M` is the order of the modulation.
         """
         return self.energy_per_symbol / np.log2(self._order)
 
+    @property
     def minimum_distance(self):
         """
-        Constellation minimum euclidean distance.
+        The minimum euclidean distance of the constellation.
         """
         pass
 
     @property
     def channel_snr(self):
+        """
+        The signal-to-noise radio :math:`\\mathrm{SNR}` of the channel. This is used in soft-decision methods. This is a read-and-write property.
+        """
         return self._channel_snr
-
-    @property
-    def channel_N0(self):
-        return self.energy_per_symbol / self._channel_snr
 
     @channel_snr.setter
     def channel_snr(self, value):
         self._channel_snr = value
+        self._channel_N0 = self.energy_per_symbol / self._channel_snr
 
     def bits_to_symbols(self, bits):
         """
-        Convert bits to symbols using the modulation labeling
+        Convert bits to symbols using the modulation labeling.
+
+        **Input:**
+
+        :code:`bits` : 1D-array of :obj:`int`
+            The bits to be converted. It should be a 1D-array of integers in the set :math:`\\{ 0, 1 \}}`. Its length must be a multiple of :math:`\\log_2 M`.
+
+        **Output:**
+
+        :code:`symbols` : 1D-array of :obj:`int`
+            The symbols corresponding to :code:`bits`. It is a 1D-array of integers in the set :math:`[O : M)`. Its length is equal to the length of :code:`bits` divided by :math:`\\log_2 M`.
         """
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
@@ -128,7 +146,10 @@ class Modulation:
 
     def symbols_to_bits(self, symbols):
         """
-        Convert symbols to bits using the modulation labeling
+        Convert symbols to bits using the modulation labeling.
+
+        TODO: Complete me.
+
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m
@@ -159,70 +180,43 @@ class Modulation:
 
 class RealModulation(Modulation):
     """
-    General real modulation scheme.
+    General real modulation scheme. A *real-valued modulation scheme* of order :math:`M` is defined by a *constellation* :math:`\\mathcal{S}`, which is an ordered subset (a list) of real numbers, with :math:`|\\mathcal{S}| = M`, and a *binary labeling* :math:`\\mathcal{Q}`, which is a permutation of :math:`[0: M)`. The order :math:`M` of the modulation must be a power of :math:`2`.
 
-    A *real-valued modulation scheme* of order :math:`M` is defined by:
+    .. rubric:: Examples
 
-    - A *constellation* :math:`\\mathcal{S}`, which is an ordered subset of real numbers,
-      with :math:`|\\mathcal{S}| = M`.
-    - A *binary labeling* :math:`\\mathcal{Q}`, which is a permutation of
-      :math:`\\{ 0, 1, \ldots, M - 1 \\}`
-
-    The order :math:`M` of the modulation must be a power of :math:`2`.
-
-    Parameters
-    ==========
-    constellation : `array_like` of `int`
-        Modulation constellation.
-    labeling : `array_like` of `int`, or `str`, optional
-        Modulation binary labeling, a permutation of range(M). Default is :code:`'natural'`.
-
-    Examples
-    ========
     >>> mod = komm.RealModulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
     >>> mod
     RealModulation(constellation=[-0.5, 0.0, 0.5, 2.0])
     >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
     array([-0.5,  0.5, -0.5,  0. ,  0. ])
-
-    See also
-    ========
-    PAModulation, ComplexModulation
     """
     def __init__(self, constellation, labeling='natural'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`constellation` : 1D-array of :obj:`float`
+            The constellation :math:`\\mathcal{S}` of the modulation. Must be a 1D-array of :math:`M` floats.
+
+        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as an 1D-array of integers, in which case must be permutation of :math:`[0:M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'natural'`.
+        """
+        if isinstance(labeling, str):
+            if labeling not in ['natural', 'reflected']:
+                raise ValueError("Only 'natural' or 'reflected' are supported for RealModulation")
         super().__init__(np.array(constellation, dtype=np.float), labeling)
 
 
 class PAModulation(RealModulation):
     """
-    Pulse-amplitude modulation (PAM).
-
-    A *pulse-amplitude modulation* (*PAM*) scheme of order :math:`M` is a real-valued modulation
-    scheme (:class:`RealModulation`) with *uniformly spaced* constellation points. There are two
-    options for the constellation :math:`\\mathcal{S}`:
+    Pulse-amplitude modulation (PAM). A *pulse-amplitude modulation* (*PAM*) scheme of order :math:`M` is a real-valued modulation scheme (:class:`RealModulation`) with *uniformly spaced* constellation points. There are two options for the constellation :math:`\\mathcal{S}`:
 
     - *Single polarity*, in which :math:`\\mathcal{S} = \{{ 0, A, \ldots, (M-1)A \}}`.
     - *Double polarity*, in which :math:`\\mathcal{S} = \{{ \\pm A, \\pm 3A, \ldots, \\pm (M-1)A \}}`.
 
     The parameter :math:`A` is called the *base amplitude*.
 
-    Parameters
-    ==========
-    order : `int`
-        Modulation order :math:`M`.
-        Must be a power of :math:`2`.
-    polarity : `str`, optional
-        Constellation polarity, either :code:`'single'` or :code:`'double'`.
-        Default is :code:`'double'`.
-    base_amplitude : `float`, optional
-        Modulation base amplitude :math:`A`.
-        Default is :code:`1.0`.
-    labeling : `array_like` of `int`, or `str`, optional
-        Modulation binary labeling, a permutation of :code:`range(M)`.
-        Default is :code:`'reflected'`.
+    .. rubric:: Examples
 
-    Examples
-    ========
     >>> pam = komm.PAModulation(order=4, polarity='single', base_amplitude=2.0)
     >>> pam
     PAModulation(order=4, polarity='single', base_amplitude=2.0)
@@ -232,12 +226,23 @@ class PAModulation(RealModulation):
     array([ 0.,  2.,  4.,  6.])
     >>> pam.demodulate([0.99, 1.01, 4.99, 5.01])
     array([0, 0, 1, 0, 1, 1, 0, 1])
-
-    See also
-    ========
-    RealModulation, ASKModulation
     """
     def __init__(self, order, polarity='double', base_amplitude=1.0, labeling='reflected'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`order` : :obj:`int`
+            The order :math:`M` of the modulation. It must be a power of :math:`2`.
+
+        :code:`polarity` : :obj:`str`, optional
+            The polarity of the constellation. Should be either :code:`'single'` or :code:`'double'`. The default value is :code:`'double'`.
+
+        :code:`base_amplitude` : :obj:`float`, optional
+            The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+
+        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as an 1D-array of integers, in which case must be permutation of :math:`[0:M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+        """
         if polarity == 'double':
             constellation = base_amplitude * np.linspace(-order + 1, order - 1, num=order, dtype=np.float)
         elif polarity == 'single':
@@ -258,87 +263,83 @@ class PAModulation(RealModulation):
             lambda recv: uniform_real_soft_bit_demodulator(np.array(recv) / base_amplitude, self._channel_snr)
 
     def __repr__(self):
-        args = '{}, polarity="{}", base_amplitude={}'.format(self._order, self._polarity, self._base_amplitude)
+        args = "{}, polarity='{}', base_amplitude={}".format(self._order, self._polarity, self._base_amplitude)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
 class ComplexModulation(Modulation):
     """
-    General complex modulation scheme.
+    General complex modulation scheme. A *complex-valued modulation scheme* of order :math:`M` is defined by a *constellation* :math:`\\mathcal{S}`, which is an ordered subset (a list) of complex numbers, with :math:`|\\mathcal{S}| = M`, and a *binary labeling* :math:`\\mathcal{Q}`, which is a permutation of :math:`[0: M)`. The order :math:`M` of the modulation must be a power of :math:`2`.
 
-    A *complex-valued modulation scheme* of order :math:`M` is defined by:
+    .. rubric:: Examples
 
-    - A *constellation* :math:`\\mathcal{S}`, which is an ordered subset of complex numbers,
-      with :math:`|\\mathcal{S}| = M`.
-    - A *binary labeling* :math:`\\mathcal{Q}`, which is a permutation of
-      :math:`\\{ 0, 1, \ldots, M - 1 \\}`
-
-    The order :math:`M` of the modulation must be a power of :math:`2`.
-
-    Parameters
-    ==========
-    constellation : `array_like` of `int`
-        Modulation constellation.
-    labeling : `array_like` of `int`, or `str`, optional
-        Modulation binary labeling, a permutation of range(M). Default is :code:`'natural'`.
-
-    Examples
-    ========
     >>> mod = komm.ComplexModulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])
     >>> mod
     ComplexModulation(constellation=[0j, (-1+0j), (1+0j), 1j])
     >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0])
     >>> array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j])
-
-    See also
-    ========
-    ASKModulation, PSKModulation, QAModulation, RealModulation
     """
     def __init__(self, constellation, labeling='natural'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`constellation` : 1D-array of :obj:`complex`
+            The constellation :math:`\\mathcal{S}` of the modulation. Must be a 1D-array of :math:`M` complex numbers.
+
+        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as an 1D-array of integers, in which case must be permutation of :math:`[0:M)`, or as a string, in which case must be one of :code:`'natural'`, :code:`'reflected'`, or :code:`'reflected_2d'` The default value is :code:`'natural'`.
+        """
+        if isinstance(labeling, str):
+            if labeling not in ['natural', 'reflected', 'reflected_2d']:
+                raise ValueError("Only 'natural', 'reflected', or 'reflected_2d' are supported for ComplexModulation")
+
         super().__init__(np.array(constellation, dtype=np.complex), labeling)
 
 
 class ASKModulation(ComplexModulation):
     """
-    Amplitude-shift keying (ASK) modulation.
+    Amplitude-shift keying (ASK) modulation. An *amplitude-shift keying* (*ASK*) modulation scheme of order :math:`M` is a complex-valued modulation scheme (:class:`ComplexModulation`) with *uniformly spaced* constellation points. The constellation is given by :math:`\\mathcal{S} = \{{ 0, A, \ldots, (M-1)A \}}`, where :math:`A` is called the *base amplitude*.
 
-    An *amplitude-shift keying* (*ASK*) modulation scheme of order :math:`M` is a complex-valued
-    modulation scheme (:class:`ComplexModulation`) with *uniformly spaced* constellation points.
-    There are two options for the constellation :math:`\\mathcal{S}`:
+    .. rubric:: Examples
 
-    - *Single polarity*, in which :math:`\\mathcal{S} = \{{ 0, A, \ldots, (M-1)A \}}`.
-    - *Double polarity*, in which :math:`\\mathcal{S} = \{{ \\pm A, \\pm 3A, \ldots, \\pm (M-1)A \}}`.
-
-    Here, :math:`A` is set to :math:`1`.
-
-    Parameters
-    ==========
-    order : `int`
-        Modulation order. Must be a power of :math:`2`.
-    polarity : `str`, optional
-        Constellation polarity, either :code:`'single'` or :code:`'double'`. Default is :code:`'double'`.
-    labeling : `array_like` of `int`, or `str`, optional
-        Modulation binary labeling, a permutation of range(M). Default is :code:`'reflected'`.
-
-    See also
-    ========
-    RealModulation, ASKModulation
-
-    Parameters
-    ==========
-    labeling:
-        Default is 'reflected' (Gray code)
+    >>> ask = komm.ASKModulation(order=4, base_amplitude=2.0)
+    >>> ask
+    ASKModulation(4, base_amplitude=2.0)
+    >>> ask.constellation
+    array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
+    >>> ask.modulate([0, 0, 1, 0, 1, 1, 0, 1])
+    array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
+    >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
+    array([0, 0, 1, 0, 1, 1, 0, 1])
     """
-    def __init__(self, order, labeling='reflected'):
-        constellation = np.linspace(-order + 1, order - 1, num=order, dtype=np.float)
+    def __init__(self, order, base_amplitude=1.0, labeling='reflected'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`order` : :obj:`int`
+            The order :math:`M` of the modulation. It must be a power of :math:`2`.
+
+        :code:`base_amplitude` : :obj:`float`, optional
+            The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+
+        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as an 1D-array of integers, in which case must be permutation of :math:`[0:M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+        """
+        constellation = base_amplitude * np.linspace(0, order - 1, num=order, dtype=np.float)
+
+        if isinstance(labeling, str):
+            if labeling not in ['natural', 'reflected']:
+                raise ValueError("Only 'natural' or 'reflected' are supported for ASKModulation")
 
         super().__init__(constellation, labeling)
 
+        self._base_amplitude = base_amplitude
+
         self._hard_symbol_demodulator = \
-            lambda recv: ask_hard_demodulator(np.array(recv), self.order)
+            lambda recv: ask_hard_demodulator(np.array(recv) / base_amplitude, self.order)
 
     def __repr__(self):
-        args = '{}'.format(self._order)
+        args = '{}, base_amplitude={}'.format(self._order, self._base_amplitude)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
