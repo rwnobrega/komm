@@ -350,7 +350,7 @@ class QAModulation(ComplexModulation):
     .. math::
         \\mathcal{S} = \\{ a + \\mathrm{j}b : a \\in \\mathcal{S_\\mathrm{I}}, b \\in \\mathcal{S}_\\mathrm{Q} \\}.
 
-    The size of the resulting complex-valued constellation is :math:`M = M_\\mathrm{I} M_\\mathrm{Q}`. In the special case where :math:`\\mathcal{S}_\\mathrm{I} = \\{ \\pm A, \\pm 3A, \\ldots, \\pm M_\\mathrm{I} \\}` and :math:`\\mathcal{S}_\\mathrm{Q} = \\{ \\pm A, \\pm 3A, \\ldots, \\pm M_\\mathrm{Q} \\}`, the constellation is said to be *uniform*; if, in addition, :math:`M_\\mathrm{I} = M_\\mathrm{Q}`, the constellation is said to be *square*.
+    The size of the resulting complex-valued constellation is :math:`M = M_\\mathrm{I} M_\\mathrm{Q}`. In the special case where :math:`\\mathcal{S}_\\mathrm{I} = \\{ \\pm A, \\pm 3A, \\ldots, \\pm (M_\\mathrm{I} - 1) \\}` and :math:`\\mathcal{S}_\\mathrm{Q} = \\{ \\pm A, \\pm 3A, \\ldots, \\pm (M_\\mathrm{Q} - 1) \\}`, the constellation is said to be *uniform*; if, in addition, :math:`M_\\mathrm{I} = M_\\mathrm{Q}`, the constellation is said to be *square*.
 
     .. rubric:: Examples
 
