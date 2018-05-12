@@ -67,16 +67,19 @@ Convolutional coding
 Modulation
 ----------
 
+Complex modulation schemes
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autosummary::
     :toctree:
     :nosignatures:
 
-    RealModulation
-    PAModulation
     ComplexModulation
     ASKModulation
     PSKModulation
+    APSKModulation
     QAModulation
+    CrossQAModulation
 
 Pulses
 ------
