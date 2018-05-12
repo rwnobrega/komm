@@ -152,7 +152,7 @@ class ComplexModulation:
         **Output:**
 
         :code:`bits` : 1D-array of :obj:`int`
-            The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length is equal to the length of :code:`symbols` time :math:`\\log_2 M`.
+            The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length is equal to the length of :code:`symbols` times :math:`\\log_2 M`.
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m
