@@ -418,7 +418,7 @@ class PSKModulation(ComplexModulation):
 
 class APSKModulation(ComplexModulation):
     """
-    Amplitude- and phase-shift keying (APSK) modulation.
+    Amplitude- and phase-shift keying (APSK) modulation [Not implemented yet].
     """
     def __init__(self):
        """

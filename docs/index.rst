@@ -141,6 +141,7 @@ Lossless coding
 
     SymbolCode
     HuffmanCode
+    TunstallCode
 
 Indices
 -------

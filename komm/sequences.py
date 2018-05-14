@@ -7,7 +7,8 @@ from .util import \
     int2binlist, binlist2int
 
 __all__ = ['BinarySequence',
-           'BarkerSequence', 'WalshHadamardSequence', 'LFSRSequence']
+           'BarkerSequence', 'WalshHadamardSequence', 'LFSRSequence',
+           'ZadoffChuSequence']
 
 
 class BinarySequence:
@@ -409,3 +410,10 @@ class LFSRSequence(BinarySequence):
             state[-1] = np.bitwise_xor.reduce(state[taps - 1])
             state = np.roll(state, 1)
         return code
+
+
+class ZadoffChuSequence:
+    """
+    A Zadoff–Chu sequence [Not implemented yet].
+    """
+    pass

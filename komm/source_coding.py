@@ -1,6 +1,6 @@
 import numpy as np
 
-__all__ = ['SymbolCode', 'HuffmanCode']
+__all__ = ['SymbolCode', 'HuffmanCode', 'TunstallCode']
 
 
 class SymbolCode:
@@ -55,16 +55,15 @@ class SymbolCode:
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class HuffmanCode(SymbolCode):
+class HuffmanCode:
     """
-    Huffman code.
+    Huffman code [Not implemented yet].
     """
-    def __init__(self, probabilities):
-        pass
+    pass
 
 
 class TunstallCode:
     """
-    Tunstall code
+    Tunstall code [Not implemented yet].
     """
     pass
