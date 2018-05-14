@@ -14,7 +14,7 @@ def test_lfsr_sequence():
     assert b2h(lfsr.bit_sequence[:200]) == '0029c2be33e317f3c10ff3e8cd4ddb2e5a28ef55db079896dc'
 
 
-@pytest.mark.parametrize('num_states', range(2, 17))
+@pytest.mark.parametrize('num_states', range(2, 16))
 def test_lfsr_mls(num_states):
     lfsr = komm.LFSRSequence.maximum_length_sequence(num_states)
     assert num_states == lfsr.feedback_polynomial.degree

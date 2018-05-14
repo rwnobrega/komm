@@ -45,14 +45,14 @@ def test_minimal_polynomial():
     assert field(alpha**7).minimal_polynomial() == komm.BinaryPolynomial(0b11001)
 
 
-@pytest.mark.parametrize('m', list(range(2, 9)))
+@pytest.mark.parametrize('m', list(range(2, 8)))
 def test_inverse(m):
     field = komm.BinaryFiniteExtensionField(m)
     for i in range(1, field.order):
         a = field(i)
         assert a * a.inverse() == field(1)
 
-@pytest.mark.parametrize('m', list(range(2, 9)))
+@pytest.mark.parametrize('m', list(range(2, 8)))
 def test_logarithm(m):
     field = komm.BinaryFiniteExtensionField(m)
     alpha = field.primitive_element
