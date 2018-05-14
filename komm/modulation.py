@@ -327,7 +327,7 @@ class ASKModulation(ComplexModulation):
     >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
     array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
     >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
-    array([0, 0, 1, 0, 1, 1, 0, 1])
+    array([1, 1, 1, 1, 0, 1, 0, 1])
     """
     def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling='reflected'):
         """
@@ -453,13 +453,13 @@ class QAModulation(ComplexModulation):
     >>> qam.modulate([0, 0, 1, 1, 0, 0, 1, 0])
     array([-3.+1.j, -3.-1.j])
 
-    >>> qam = komm.QAModulation(orders=(4, 2), base_amplitudes=(3.0, 5.0))
+    >>> qam = komm.QAModulation(orders=(4, 2), base_amplitudes=(1.0, 3.0))
     >>> qam.constellation
-    array([-9.-5.j, -3.-5.j,  3.-5.j,  9.-5.j, -9.+5.j, -3.+5.j,  3.+5.j, 9.+5.j])
+    array([-3.-3.j, -1.-3.j,  1.-3.j,  3.-3.j, -3.+3.j, -1.+3.j,  1.+3.j, 3.+3.j])
     >>> qam.labeling
     array([0, 1, 3, 2, 4, 5, 7, 6])
     >>> qam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1])
-    array([-9.+5.j, -3.-5.j, -3.+5.j])
+    array([-3.+3.j, -1.-3.j, -1.+3.j])
     """
     def __init__(self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling='reflected_2d'):
         """
