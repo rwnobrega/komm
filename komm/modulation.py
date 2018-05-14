@@ -327,7 +327,7 @@ class ASKModulation(ComplexModulation):
     >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
     array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
     >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
-    array([1, 1, 1, 1, 0, 1, 0, 1])
+    array([0, 0, 1, 0, 1, 1, 0, 1])
     """
     def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling='reflected'):
         """
@@ -357,9 +357,6 @@ class ASKModulation(ComplexModulation):
 
         self._base_amplitude = float(base_amplitude)
         self._phase_offset = float(phase_offset)
-
-        self._hard_symbol_demodulator = \
-            lambda x: ask_hard_demodulator(np.array(x) / base_amplitude, self.order)
 
     def __repr__(self):
         args = '{}, base_amplitude={}, phase_offset={}'.format(self._order, self._base_amplitude, self._phase_offset)
