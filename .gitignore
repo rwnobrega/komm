@@ -1,8 +1,11 @@
+*.egg-info
 *.pyc
 *.py~
 __pycache__
-tmp
-docs/_build
+build/
+docs/_build/
+dist/
+tmp/
 .benchmarks
 .cache
 .spyproject

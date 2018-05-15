@@ -19,12 +19,13 @@ Using pip
 
 .. code-block:: bash
 
-    # Comming soon!
+    # pip install komm
 
 From source
 ~~~~~~~~~~~
 
 .. code-block:: bash
 
-    git clone https://github.com/rwnobrega/komm
-    # Comming soon!
+    $ git clone https://github.com/rwnobrega/komm
+    $ cd komm/
+    # python setup.py install
