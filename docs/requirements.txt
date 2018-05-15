@@ -1,4 +1,4 @@
-sphinxcontrib-bibtex
 numpy
 scipy
 sphinx==1.7
+sphinxcontrib-bibtex

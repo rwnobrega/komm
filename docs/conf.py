@@ -19,7 +19,6 @@
 
 import os
 import sys
-import shutil
 
 sys.path.insert(0, os.path.abspath('../'))
 
@@ -188,14 +187,15 @@ texinfo_documents = [
 
 def builder_inited_handler(app):
     print('Removing _build/...')
-    shutil.rmtree('_build')
+    os.system('rm -rf _build/')
     print('Converting PDF to PNG...')
+    os.system('parallel "pdftoppm -cropbox -singlefile -png -r 75 {} {.}" ::: figures/*.pdf')
 
 def build_finished(app, exception):
     print('Removing komm.*.rst...')
-    for filename in os.listdir('.'):
-        if filename.startswith('komm.') and filename.endswith('.rst'):
-            os.remove(filename)
+    os.system('rm -rf komm.*.rst')
+    print('Removing figures/*.png...')
+    os.system('rm -rf figures/*.png')
 
 def setup(app):
     app.connect('builder-inited', builder_inited_handler)
