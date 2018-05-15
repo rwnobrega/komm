@@ -14,8 +14,8 @@ class BinaryPolynomial(int):
 
     This class supports addition, multiplication, and division of binary polynomials.
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
     >>> poly
     0b11010
@@ -42,8 +42,8 @@ class BinaryPolynomial(int):
         :code:`coefficients` : 1D-array of :obj:`int`
             The coefficients of the binary polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
         0b11010
         """
@@ -57,8 +57,8 @@ class BinaryPolynomial(int):
         :code:`coefficients` : 1D-array of :obj:`int`
             The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
         0b11010
         """
@@ -69,8 +69,8 @@ class BinaryPolynomial(int):
         """
         Degree of the polynomial. This property is read-only.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
         >>> poly.degree
         4
@@ -91,8 +91,8 @@ class BinaryPolynomial(int):
         :code:`coefficients` : 1D-array of :obj:`int`
             Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
         >>> poly.coefficients()
         array([0, 1, 0, 1, 1])
@@ -110,8 +110,8 @@ class BinaryPolynomial(int):
         :code:`exponents` : 1D-array of :obj:`int`
             Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
         >>> poly.exponents()
         array([1, 3, 4])
@@ -167,8 +167,8 @@ class BinaryPolynomial(int):
         :code:`result` : ring-like type
             The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
         >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
         2751
@@ -212,8 +212,8 @@ class BinaryFiniteExtensionField:
 
     To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> field = komm.BinaryFiniteExtensionField(4)
     >>> field
     BinaryFiniteExtensionField(4)

@@ -27,8 +27,7 @@ class BlockCode:
 
     [[0]]
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -215,8 +214,8 @@ class BlockCode:
 
         This is a cached method.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
         >>> code.codeword_table()
         array([[0, 0, 0, 0, 0, 0],
@@ -245,8 +244,8 @@ class BlockCode:
 
         This is a cached method.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
         >>> code.codeword_weight_distribution()
         array([1, 0, 0, 4, 3, 0, 0])
@@ -267,8 +266,8 @@ class BlockCode:
 
         This is a cached method.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
         >>> code.coset_leader_table()
         array([[0, 0, 0, 0, 0, 0],
@@ -488,8 +487,7 @@ class HammingCode(BlockCode):
     - Its dual is the simplex code (:class:`SimplexCode`).
     - Hamming codes are perfect codes.
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.HammingCode(3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -552,8 +550,7 @@ class SimplexCode(BlockCode):
     - Its dual is the Hamming code (:class:`HammingCode`).
     - Simplex codes are constant-weight codes.
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.SimplexCode(3)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -605,8 +602,7 @@ class GolayCode(BlockCode):
 
     - The binary Golay code is a perfect code.
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.GolayCode()
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -662,8 +658,7 @@ class RepetitionCode(BlockCode):
 
     - Its dual is the single parity check code (:class:`SingleParityCheckCode`).
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.RepetitionCode(5)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -726,8 +721,7 @@ class SingleParityCheckCode(BlockCode):
 
     - Its dual is the repetition code (:class:`RepetitionCode`).
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.SingleParityCheckCode(5)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -796,8 +790,7 @@ class ReedMullerCode(BlockCode):
     - For :math:`\\rho = \\mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
     - For :math:`\\rho = \\mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.ReedMullerCode(1, 5)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -933,8 +926,7 @@ class CyclicCode(BlockCode):
 
     [[0]]
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)  # Hamming (7, 4)
     >>> (code.length, code.dimension, code.minimum_distance)
@@ -992,8 +984,8 @@ class CyclicCode(BlockCode):
 
         This is a cached method.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
         >>> code.meggitt_table()
         {0b1011: 0b1000000,
@@ -1095,8 +1087,7 @@ class BCHCode(CyclicCode):
 
     References: :cite:`Lin.Costello.04` (Ch. 6)
 
-    Examples
-    ========
+    .. rubric:: Examples
 
     >>> code = komm.BCHCode(5, 3)
     >>> (code.length, code.dimension, code.minimum_distance)

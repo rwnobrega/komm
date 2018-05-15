@@ -28,8 +28,8 @@ class AWGNChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
     >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x
     array([ 1.,  3., -3., -1., -1.,  1.,  3.,  1., -1.,  3.])
@@ -75,8 +75,8 @@ class AWGNChannel:
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> awgn = komm.AWGNChannel(snr=63.0, signal_power=1.0)
         >>> awgn.capacity()
         3.0
@@ -114,8 +114,8 @@ class DiscreteMemorylessChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
     >>> x = np.random.randint(2, size=10); x
     array([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
@@ -158,8 +158,8 @@ class DiscreteMemorylessChannel:
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
         >>> dmc.capacity()
         0.1616318609548566
@@ -215,8 +215,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> bsc = komm.BinarySymmetricChannel(0.1)
     >>> x = np.random.randint(2, size=10); x
     array([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
@@ -244,8 +244,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> bsc = komm.BinarySymmetricChannel(0.25)
         >>> bsc.capacity()
         0.18872187554086717
@@ -279,8 +279,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Examples
-    ========
+    .. rubric:: Examples
+
     >>> bec = komm.BinaryErasureChannel(0.1)
     >>> x = np.random.randint(2, size=10); x
     array([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
@@ -308,8 +308,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
 
-        Examples
-        ========
+        .. rubric:: Examples
+
         >>> bec = komm.BinaryErasureChannel(0.25)
         >>> bec.capacity()
         0.75
