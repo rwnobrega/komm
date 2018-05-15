@@ -220,7 +220,7 @@ class ConvolutionalCode:
 
     def encode(self, message, initial_state=0, method=None):
         """
-        Encode a given message to its corresponding codeword.
+        Encodes a given message to its corresponding codeword.
 
         **Input:**
 
@@ -261,7 +261,7 @@ class ConvolutionalCode:
 
     def decode(self, recvword, method=None):
         """
-        Decode a received word to a message.
+        Decodes a received word to a message.
 
         **Input:**
 

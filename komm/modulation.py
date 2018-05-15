@@ -99,7 +99,7 @@ class _Modulation:
 
     def bits_to_symbols(self, bits):
         """
-        Convert bits to symbols using the modulation labeling.
+        Converts bits to symbols using the modulation binary labeling.
 
         **Input:**
 
@@ -121,7 +121,7 @@ class _Modulation:
 
     def symbols_to_bits(self, symbols):
         """
-        Convert symbols to bits using the modulation labeling.
+        Converts symbols to bits using the modulation binary labeling.
 
         **Input:**
 
@@ -142,7 +142,7 @@ class _Modulation:
 
     def modulate(self, bits):
         """
-        Modulate bits.
+        Modulates a sequence of bits to its corresponding constellation points.
         """
         symbols = self.bits_to_symbols(bits)
         return self._constellation[symbols]
@@ -156,7 +156,7 @@ class _Modulation:
         """Computes L-values of received points"""
         m = self._bits_per_symbol
 
-        def pdf_recv_given_bit(bit_index, bit_value):
+        def pdf_received_given_bit(bit_index, bit_value):
             bits = np.empty(m, dtype=np.int)
             bits[bit_index] = bit_value
             rest_index = np.setdiff1d(np.arange(m), [bit_index])
@@ -167,23 +167,23 @@ class _Modulation:
                 f += np.exp(-np.abs(received - point)**2 / self._channel_N0)
             return f
 
-        soft_bits = np.empty(len(recv)*m, dtype=np.float)
+        soft_bits = np.empty(len(received)*m, dtype=np.float)
         for bit_index in range(m):
-            p0 = pdf_recv_given_bit(bit_index, 0)
-            p1 = pdf_recv_given_bit(bit_index, 1)
+            p0 = pdf_received_given_bit(bit_index, 0)
+            p1 = pdf_received_given_bit(bit_index, 1)
             soft_bits[bit_index::m] = np.log(p0 / p1)
 
         return soft_bits
 
-    def demodulate(self, recv, decision_method='hard'):
+    def demodulate(self, received, decision_method='hard'):
         """
-        Demodulate.
+        Demodulates a sequence of received points to a sequence of bits.
         """
         if decision_method == 'hard':
-            symbols_hat = self._hard_symbol_demodulator(recv)
+            symbols_hat = self._hard_symbol_demodulator(received)
             return self.symbols_to_bits(symbols_hat)
         elif decision_method == 'soft':
-            return self._soft_bit_demodulator(recv)
+            return self._soft_bit_demodulator(received)
         else:
             raise ValueError("Parameter 'decision_method' should be either 'hard' or 'soft'")
 
@@ -510,37 +510,37 @@ class QAModulation(ComplexModulation):
 
 
 
-def uniform_real_hard_demodulator(recv, order):
-    return np.clip(np.around((recv + order - 1) / 2), 0, order - 1).astype(np.int)
+def uniform_real_hard_demodulator(received, order):
+    return np.clip(np.around((received + order - 1) / 2), 0, order - 1).astype(np.int)
 
 
-def uniform_real_soft_bit_demodulator(recv, snr):
-    return -4 * snr * recv
+def uniform_real_soft_bit_demodulator(received, snr):
+    return -4 * snr * received
 
 
-def ask_hard_demodulator(recv, order):
-    return np.clip(np.around((recv.real + order - 1) / 2), 0, order - 1).astype(np.int)
+def ask_hard_demodulator(received, order):
+    return np.clip(np.around((received.real + order - 1) / 2), 0, order - 1).astype(np.int)
 
 
-def psk_hard_demodulator(recv, order):
-    phase_in_turns = np.angle(recv) / (2 * np.pi)
+def psk_hard_demodulator(received, order):
+    phase_in_turns = np.angle(received) / (2 * np.pi)
     return np.mod(np.around(phase_in_turns * order).astype(np.int), order)
 
 
-def bpsk_soft_bit_demodulator(recv, snr):
-    return 4 * snr * recv.real
+def bpsk_soft_bit_demodulator(received, snr):
+    return 4 * snr * received.real
 
 
-def qpsk_soft_bit_demodulator_reflected(recv, snr):
-    recv_rotated = recv * np.exp(2j * np.pi / 8)
-    soft_bits = np.empty(2*recv.size, dtype=np.float)
-    soft_bits[0::2] = np.sqrt(8) * snr * recv_rotated.real
-    soft_bits[1::2] = np.sqrt(8) * snr * recv_rotated.imag
+def qpsk_soft_bit_demodulator_reflected(received, snr):
+    received_rotated = received * np.exp(2j * np.pi / 8)
+    soft_bits = np.empty(2*received.size, dtype=np.float)
+    soft_bits[0::2] = np.sqrt(8) * snr * received_rotated.real
+    soft_bits[1::2] = np.sqrt(8) * snr * received_rotated.imag
     return soft_bits
 
 
-def rectangular_hard_demodulator(recv, order):
+def rectangular_hard_demodulator(received, order):
     L = int(np.sqrt(order))
-    s_real = np.clip(np.around((recv.real + L - 1) / 2), 0, L - 1).astype(np.int)
-    s_imag = np.clip(np.around((recv.imag + L - 1) / 2), 0, L - 1).astype(np.int)
+    s_real = np.clip(np.around((received.real + L - 1) / 2), 0, L - 1).astype(np.int)
+    s_imag = np.clip(np.around((received.imag + L - 1) / 2), 0, L - 1).astype(np.int)
     return s_real + L * s_imag
