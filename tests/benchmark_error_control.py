@@ -93,7 +93,7 @@ def benchmark_wagner(benchmark, code, method, N_bits):
 @pytest.mark.parametrize('method', ['viterbi_hard', 'viterbi_soft'])
 @pytest.mark.parametrize('code', [
     komm.ConvolutionalCode(generator_matrix=[[0o7, 0o5]]),
-    komm.ConvolutionalCode(generator_matrix=[[0o171, 0o133]]),
+    komm.ConvolutionalCode(generator_matrix=[[0o117, 0o155]]),
 #    komm.ConvolutionalCode(generator_matrix=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]]),
 ], ids=repr)
 def benchmark_convolutional_decoders(benchmark, code, method, N_bits):

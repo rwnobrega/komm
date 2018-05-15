@@ -1,8 +1,8 @@
 import numpy as np
 import komm
 
-generator_matrix = [[0o7, 0o5]]
-#generator_matrix = [[0o171, 0o133]]
+#generator_matrix = [[0o7, 0o5]]
+generator_matrix = [[0o117, 0o155]]
 #generator_matrix = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]]
 
 code = komm.ConvolutionalCode(generator_matrix)
