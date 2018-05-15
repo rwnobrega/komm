@@ -189,7 +189,11 @@ def builder_inited_handler(app):
     print('Removing _build/...')
     os.system('rm -rf _build/')
     print('Converting PDF to PNG...')
-    os.system('parallel "pdftoppm -cropbox -singlefile -png -r 75 {} {.}" ::: figures/*.pdf')
+    for filename in os.listdir('figures'):
+        if filename.endswith('.pdf'):
+            pdf_path = os.path.join('figures', filename)
+            pdf_path_noext = pdf_path[:-4]
+            os.system('pdftoppm -cropbox -singlefile -png -r 75 {} {}'.format(pdf_path, pdf_path_noext))
 
 def build_finished(app, exception):
     print('Removing komm.*.rst...')
