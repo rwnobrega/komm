@@ -433,18 +433,18 @@ class PSKModulation(ComplexModulation):
 
 class APSKModulation(ComplexModulation):
     """
-    Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation is the union of many *component PSK constellations* (:class:`PSKModulation`). More precisely,
+    Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation is the union of component PSK constellations (:class:`PSKModulation`), called *rings*. More precisely,
 
     .. math::
         \\mathcal{S} = \\bigcup_{k \\in [0 : K)} \\mathcal{S}_k,
 
-    where :math:`K` is the number of component PSK modulations and
+    where :math:`K` is the number of rings and
 
     .. math::
 
         \\mathcal{S}_k = \\left \\{ A_k \\exp \\left( \mathrm{j} \\frac{2 \\pi i}{M_k} \\right) \\exp(\\mathrm{j} \\phi_k) : i \\in [0 : M_k) \\right \\},
 
-    where :math:`M_k` is the *order*, :math:`A_k` is the *amplitude*, and :math:`\\phi_k` is the *phase offset* of the :math:`k`-th component PSK constellation, for :math:`k \\in [0 : K)`. The size of the resulting complex-valued constellation is :math:`M = M_0 + M_1 + \\cdots + M_{K-1}`. The order :math:`M_k` of each component PSK modulation need not be a power of :math:`2`; however, the order :math:`M` of the constructed APSK modulation must be. The APSK constellation is depicted below for :math:`(M_0, M_1) = (8, 8)` with :math:`(A_0, A_1) = (A, 2A)` and :math:`(\\phi_0, \\phi_1) = (0, \\pi/8)`.
+    where :math:`M_k` is the *order*, :math:`A_k` is the *amplitude*, and :math:`\\phi_k` is the *phase offset* of the :math:`k`-th ring, for :math:`k \\in [0 : K)`. The size of the resulting complex-valued constellation is :math:`M = M_0 + M_1 + \\cdots + M_{K-1}`. The order :math:`M_k` of each ring need not be a power of :math:`2`; however, the order :math:`M` of the constructed APSK modulation must be. The APSK constellation is depicted below for :math:`(M_0, M_1) = (8, 8)` with :math:`(A_0, A_1) = (A, 2A)` and :math:`(\\phi_0, \\phi_1) = (0, \\pi/8)`.
 
     .. image:: figures/apsk_16.png
        :alt: 16-APSK constellation.
@@ -455,16 +455,16 @@ class APSKModulation(ComplexModulation):
         Constructor for the class. It expects the following parameters:
 
         :code:`orders` : :obj:`tuple` of :obj:`int`
-            A :math:`K`-tuple with the orders :math:`M_k`, for :math:`k \\in [0 : K)`, of the component PSK modulations. Each :math:`M_k` must be a power of :math:`2`.
+            A :math:`K`-tuple with the orders :math:`M_k`, for :math:`k \\in [0 : K)`, of the rings. Sum sum :math:`M_0 + M_1 + \\cdots + M_{K-1}` must be a power of :math:`2`.
 
         :code:`amplitudes` : :obj:`tuple` of :obj:`float`
-            A :math:`K`-tuple with the amplitudes :math:`A_k`, for :math:`k \\in [0 : K)`, of the component PSK constellations.
+            A :math:`K`-tuple with the amplitudes :math:`A_k`, for :math:`k \\in [0 : K)`, of the rings.
 
         :code:`phase_offsets` : (:obj:`tuple` of :obj:`float`) or :obj:`float`, optional
-            A :math:`K`-tuple with the phase offsets :math:`\\phi_k`, for :math:`k \\in [0 : K)`, of the component PSK constellations. If specified as a single float :math:`\\phi`, then it is assumed that :math:`\\phi_k = \\phi` for all :math:`k \\in [0 : K)`. The default value is :code:`0.0`.
+            A :math:`K`-tuple with the phase offsets :math:`\\phi_k`, for :math:`k \\in [0 : K)`, of the ring. If specified as a single float :math:`\\phi`, then it is assumed that :math:`\\phi_k = \\phi` for all :math:`k \\in [0 : K)`. The default value is :code:`0.0`.
 
         :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'natural'`.
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
 
         .. rubric:: Examples
 
