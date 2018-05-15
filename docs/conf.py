@@ -132,14 +132,14 @@ def builder_inited_handler(app):
     for filename in os.listdir('figures'):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join('figures', filename)
-            pdf_path_noext = pdf_path[:-4]
-            os.system('pdftoppm -cropbox -singlefile -png -r 75 {} {}'.format(pdf_path, pdf_path_noext))
+            noext_path = pdf_path[:-4]
+            png_path = noext_path + '.png'
+            if not os.path.isfile(png_path):
+                os.system('pdftoppm -cropbox -singlefile -png -r 75 {} {}'.format(pdf_path, noext_path))
 
 def build_finished(app, exception):
     print('Removing komm.*.rst...')
     os.system('rm -rf komm.*.rst')
-    print('Removing figures/*.png...')
-    os.system('rm -rf figures/*.png')
 
 def setup(app):
     app.connect('builder-inited', builder_inited_handler)
