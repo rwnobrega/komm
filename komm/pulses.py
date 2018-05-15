@@ -1,7 +1,7 @@
 import numpy as np
 
 __all__ = ['FormattingPulse',
-           'RectangularNRZPulse', 'RectangularRZPulse', 'ManchesterPulse',
+           'RectangularPulse', 'ManchesterPulse',
            'SincPulse', 'RaisedCosinePulse', 'RootRaisedCosinePulse',
            'GaussianPulse']
 
@@ -62,63 +62,69 @@ class FormattingPulse:
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class RectangularNRZPulse(FormattingPulse):
+class RectangularPulse(FormattingPulse):
     """
-    Rectangular non-return to zero (NRZ) pulse. Its impulse response is given by
+    Rectangular pulse. Its impulse response is given by
 
     .. math::
 
         h(t) =
         \\begin{cases}
-            1, & 0 \\leq t < 1, \\\\
+            1, & 0 \\leq t < w, \\\\
             0, & \\text{otherwise}.
-        \\end{cases}
+        \\end{cases},
+
+    where :math:`w` is the *width* of the pulse, which must satisfy :math:`0 \\leq w \\leq 1`. The rectangular pulse is depicted below for :math:`w = 1` (called the :term:`NRZ` pulse), and for :math:`w = 0.5` (called the halfway :term:`RZ` pulse).
+
+    .. rst-class:: centered
+
+       |fig1| |quad| |quad| |quad| |quad| |fig2|
+
+    .. |fig1| image:: figures/pulse_rectangular_nrz.png
+       :alt: Rectangular NRZ pulse
+
+    .. |fig2| image:: figures/pulse_rectangular_rz.png
+       :alt: Rectangular RZ pulse
+
+    .. |quad| unicode:: 0x2001
+       :trim:
     """
-    def __init__(self, samples_per_symbol):
+    def __init__(self, width, samples_per_symbol):
         """
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class. It expects the following parameters:
+
+        :code:`width` : :obj:`float`
+            The width :math:`w` of the pulse. Must satisfy :math:`0 \\leq w \\leq 1`.
 
         :code:`samples_per_symbol` : :obj:`int`
             The number of samples per symbol.
+
+        .. rubric:: Examples
+
+        >>> pulse =  komm.RectangularPulse(width=1.0, samples_per_symbol=10)
+        >>> pulse.impulse_response
+        array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])
+
+        >>> pulse =  komm.RectangularPulse(width=0.5, samples_per_symbol=10)
+        >>> pulse.impulse_response
+        array([1., 1., 1., 1., 1., 0., 0., 0., 0., 0.])
         """
-        super().__init__(np.ones(samples_per_symbol, dtype=np.float), samples_per_symbol)
-
-    def __repr__(self):
-        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
-        return '{}({})'.format(self.__class__.__name__, args)
-
-
-class RectangularRZPulse(FormattingPulse):
-    """
-    Rectangular return to zero (RZ) pulse. Its impulse response is given by
-
-    .. math::
-
-        h(t) =
-        \\begin{cases}
-            1, & 0 \\leq t < 1/2, \\\\
-            0, & \\text{otherwise},
-        \\end{cases}
-    """
-    def __init__(self, samples_per_symbol):
-        """
-        Constructor for the class. It expects the following parameter:
-
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
-        """
-        if samples_per_symbol % 2 == 0:
-            middle = np.array([])
-        else:
-            middle = np.array([0.5])
-        impulse_response = np.concatenate((np.ones(samples_per_symbol // 2, dtype=np.float),
-                                           middle,
-                                           np.zeros(samples_per_symbol // 2, dtype=np.float)))
+        L = round(samples_per_symbol * width)
+        impulse_response = np.zeros(samples_per_symbol, dtype=np.float)
+        impulse_response[:L] = 1.0
         super().__init__(impulse_response, samples_per_symbol)
+        self._width = width
 
     def __repr__(self):
         args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
         return '{}({})'.format(self.__class__.__name__, args)
+
+    @property
+    def width(self):
+        """
+        The width :math:`w` of the pulse. This property is read-only.
+        """
+        return self._width
 
 
 class ManchesterPulse(FormattingPulse):
@@ -133,6 +139,12 @@ class ManchesterPulse(FormattingPulse):
             1, & 1/2 \\leq t < 1, \\\\
             0, & \\text{otherwise},
         \\end{cases}
+
+    The Manchester pulse is depicted below.
+
+    .. image:: figures/pulse_manchester.png
+       :alt: Manchester pulse
+       :align: center
     """
     def __init__(self, samples_per_symbol):
         """
@@ -140,14 +152,17 @@ class ManchesterPulse(FormattingPulse):
 
         :code:`samples_per_symbol` : :obj:`int`
             The number of samples per symbol.
+
+        .. rubric:: Examples
+
+        >>> pulse = komm.ManchesterPulse(samples_per_symbol=10)
+        >>> pulse.impulse_response
+        array([-1., -1., -1., -1., -1., 1., 1., 1., 1., 1.])
         """
-        if samples_per_symbol % 2 == 0:
-            middle = np.array([])
-        else:
-            middle = np.array([0.0])
-        impulse_response = np.concatenate((-np.ones(samples_per_symbol // 2, dtype=np.float),
-                                           middle,
-                                           np.ones(samples_per_symbol // 2, dtype=np.float)))
+        L = round(0.5 * samples_per_symbol)
+        impulse_response = np.zeros(samples_per_symbol, dtype=np.float)
+        impulse_response[:L] = -1.0
+        impulse_response[L:] = 1.0
         super().__init__(impulse_response, samples_per_symbol)
 
     def __repr__(self):
@@ -163,6 +178,11 @@ class SincPulse(FormattingPulse):
 
         h(t) = \\operatorname{sinc}(t) = \\frac{\\sin(\\pi t)}{\\pi t}.
 
+    The sinc pulse is depicted below.
+
+    .. image:: figures/pulse_sinc.png
+       :alt: Sinc pulse
+       :align: center
     """
     def __init__(self, samples_per_symbol, length_in_symbols):
         """
@@ -200,7 +220,22 @@ class RaisedCosinePulse(FormattingPulse):
 
         h(t) = \\operatorname{sinc}(t) \\frac{\\cos(\\pi \\alpha t)}{1 - (2 \\alpha t)^2},
 
-    where :math:`\\alpha` is the rolloff factor.
+    where :math:`\\alpha` is the *rolloff factor*. The raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and and for :math:`\\alpha = 0.75`.
+
+    .. rst-class:: centered
+
+       |fig1| |quad| |quad| |quad| |fig2|
+
+    .. |fig1| image:: figures/pulse_raised_cosine_25.png
+       :alt: Raised cosine pulse with rolloff factor 0.25
+
+    .. |fig2| image:: figures/pulse_raised_cosine_75.png
+       :alt: Raised cosine pulse with rolloff factor 0.75
+
+    .. |quad| unicode:: 0x2001
+       :trim:
+
+    For  :math:`\\alpha = 0`, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
     """
     def __init__(self, rolloff, samples_per_symbol, length_in_symbols):
         """
@@ -250,7 +285,20 @@ class RootRaisedCosinePulse(FormattingPulse):
 
         h(t) = \\frac{\\sin[\\pi (1 - \\alpha) t] + 4 \\alpha t \\cos[\\pi (1 + \\alpha) t]}{\\pi t [1 - (4 \\alpha t)^2]},
 
-    where :math:`\\alpha` is the rolloff factor.
+    where :math:`\\alpha` is the *rolloff factor*. The root raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and and for :math:`\\alpha = 0.75`.
+
+    .. rst-class:: centered
+
+       |fig1| |quad| |quad| |quad| |fig2|
+
+    .. |fig1| image:: figures/pulse_root_raised_cosine_25.png
+       :alt: Root raised cosine pulse with rolloff factor 0.25
+
+    .. |fig2| image:: figures/pulse_root_raised_cosine_75.png
+       :alt: Root raised cosine pulse with rolloff factor 0.75
+
+    .. |quad| unicode:: 0x2001
+       :trim:
     """
     def __init__(self, rolloff, samples_per_symbol, length_in_symbols):
         """

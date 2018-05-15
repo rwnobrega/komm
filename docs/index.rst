@@ -98,8 +98,7 @@ Pulses
     :nosignatures:
 
     FormattingPulse
-    RectangularNRZPulse
-    RectangularRZPulse
+    RectangularPulse
     ManchesterPulse
     SincPulse
     RaisedCosinePulse

@@ -14,5 +14,11 @@ Glossary
     MSB
         Most significant bit.
 
+    NRZ
+        Non-return-to-zero.
+
     pmf
         Probability mass function.
+
+    RZ
+        Return-to-zero.
