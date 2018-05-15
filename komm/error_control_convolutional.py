@@ -161,21 +161,21 @@ class ConvolutionalCode:
     @property
     def num_input_bits(self):
         """
-        Number of input bits per block, :math:`k`. This property is read-only.
+        The number of input bits per block, :math:`k`. This property is read-only.
         """
         return self._num_input_bits
 
     @property
     def num_output_bits(self):
         """
-        Number of output bits per block, :math:`n`. This property is read-only.
+        The number of output bits per block, :math:`n`. This property is read-only.
         """
         return self._num_output_bits
 
     @property
     def constraint_lengths(self):
         """
-        Constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. It is given by
+        The constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. It is given by
 
         .. math::
 
@@ -188,7 +188,7 @@ class ConvolutionalCode:
     @property
     def overall_constraint_length(self):
         """
-        Overall constraint length :math:`\\nu` of the code. It is given by
+        The overall constraint length :math:`\\nu` of the code. It is given by
 
         .. math::
 
@@ -201,14 +201,14 @@ class ConvolutionalCode:
     @property
     def num_states(self):
         """
-        Number of states of the finite-state machine. It is given by :math:`2^{\\nu}`, where :math:`\\nu` is the overall constraint length of the code. This property is read-only.
+        The number of states of the finite-state machine. It is given by :math:`2^{\\nu}`, where :math:`\\nu` is the overall constraint length of the code. This property is read-only.
         """
         return self._num_states
 
     @property
     def memory_order(self):
         """
-        Memory order :math:`m` of the code. It is given by
+        The memory order :math:`m` of the code. It is given by
 
         .. math::
 

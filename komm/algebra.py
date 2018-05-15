@@ -67,7 +67,7 @@ class BinaryPolynomial(int):
     @property
     def degree(self):
         """
-        Degree of the polynomial. This property is read-only.
+        The degree of the polynomial. This property is read-only.
 
         .. rubric:: Examples
 
@@ -300,7 +300,7 @@ class BinaryFiniteExtensionField:
     @property
     def order(self):
         """
-        The order (number of elements) of the finite field, given by :math:`2^k`. This property is read-only.
+        The order (number of elements) of the finite field. It is given by :math:`2^k`. This property is read-only.
         """
         return 2 ** self._degree
 

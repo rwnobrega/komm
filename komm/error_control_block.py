@@ -157,22 +157,30 @@ class BlockCode:
 
     @property
     def length(self):
-        """Length :math:`n` of the code. This property is read-only."""
+        """
+        The length :math:`n` of the code. This property is read-only.
+        """
         return self._length
 
     @property
     def dimension(self):
-        """Dimension :math:`k` of the code. This property is read-only."""
+        """
+        The dimension :math:`k` of the code. This property is read-only.
+        """
         return self._dimension
 
     @property
     def redundancy(self):
-        """Redundancy :math:`m` of the code. This property is read-only."""
+        """
+        The redundancy :math:`m` of the code. This property is read-only.
+        """
         return self._redundancy
 
     @property
     def minimum_distance(self):
-        """Minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only."""
+        """
+        The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
+        """
         if not hasattr(self, '_minimum_distance'):
             codeword_weight_distribution = self.codeword_weight_distribution()
             self._minimum_distance = np.flatnonzero(codeword_weight_distribution)[1]  # TODO: optimize me
@@ -180,14 +188,18 @@ class BlockCode:
 
     @property
     def packing_radius(self):
-        """Packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only."""
+        """
+        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.
+        """
         if not hasattr(self, '_packing_radius'):
             self._packing_radius = self.minimum_distance // 2
         return self._packing_radius
 
     @property
     def covering_radius(self):
-        """Covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only."""
+        """
+        The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.
+        """
         if not hasattr(self, '_covering_radius'):
             coset_leader_weight_distribution = self.coset_leader_weight_distribution()
             self._covering_radius = np.flatnonzero(coset_leader_weight_distribution)[-1]
@@ -195,12 +207,16 @@ class BlockCode:
 
     @property
     def generator_matrix(self):
-        """Generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only."""
+        """
+        The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
+        """
         return self._generator_matrix
 
     @property
     def parity_check_matrix(self):
-        """Parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only."""
+        """
+        The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
+        """
         return self._parity_check_matrix
 
     def codeword_table(self):
@@ -822,14 +838,14 @@ class ReedMullerCode(BlockCode):
     @property
     def rho(self):
         """
-        Parameter :math:`\\rho` of the code. This property is read-only.
+        The parameter :math:`\\rho` of the code. This property is read-only.
         """
         return self._rho
 
     @property
     def mu(self):
         """
-        Parameter :math:`\\mu` of the code. This property is read-only.
+        The parameter :math:`\\mu` of the code. This property is read-only.
         """
         return self._mu
 
@@ -965,12 +981,16 @@ class CyclicCode(BlockCode):
 
     @property
     def generator_polynomial(self):
-        """Generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code."""
+        """
+        The generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code.
+        """
         return self._generator_polynomial
 
     @property
     def parity_polynomial(self):
-        """Parity polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code."""
+        """
+        The parity polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code.
+        """
         return self._parity_polynomial
 
     def meggitt_table(self):

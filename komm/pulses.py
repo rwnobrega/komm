@@ -18,7 +18,7 @@ class FormattingPulse:
             The filter finite impulse response.
 
         :code:`samples_per_symbol` : :obj:`int`
-            The number of samples (of the impulse response) per symbol (of the modulation). 
+            The number of samples (of the impulse response) per symbol (of the modulation).
         """
         self._impulse_response = np.array(impulse_response, dtype=np.float)
         self._samples_per_symbol = samples_per_symbol
@@ -26,14 +26,14 @@ class FormattingPulse:
     @property
     def impulse_response(self):
         """
-        Impulse response of the formatting pulse. This property is read-only.
+        The impulse response of the formatting pulse. This property is read-only.
         """
         return self._impulse_response
 
     @property
     def samples_per_symbol(self):
         """
-        Samples per symbol. This property is read-only.
+        The number of samples per symbol of the formatting pulse. This property is read-only.
         """
         return self._samples_per_symbol
 
@@ -68,7 +68,7 @@ class RectangularNRZPulse(FormattingPulse):
 
     .. math::
 
-        h(t) = 
+        h(t) =
         \\begin{cases}
             1, & 0 \\leq t < 1, \\\\
             0, & \\text{otherwise}.
@@ -79,7 +79,7 @@ class RectangularNRZPulse(FormattingPulse):
         Constructor for the class. It expects the following parameter:
 
         :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol. 
+            The number of samples per symbol.
         """
         super().__init__(np.ones(samples_per_symbol, dtype=np.float), samples_per_symbol)
 
@@ -94,7 +94,7 @@ class RectangularRZPulse(FormattingPulse):
 
     .. math::
 
-        h(t) = 
+        h(t) =
         \\begin{cases}
             1, & 0 \\leq t < 1/2, \\\\
             0, & \\text{otherwise},
@@ -105,7 +105,7 @@ class RectangularRZPulse(FormattingPulse):
         Constructor for the class. It expects the following parameter:
 
         :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol. 
+            The number of samples per symbol.
         """
         if samples_per_symbol % 2 == 0:
             middle = np.array([])
@@ -127,7 +127,7 @@ class ManchesterPulse(FormattingPulse):
 
     .. math::
 
-        h(t) = 
+        h(t) =
         \\begin{cases}
             -1, & 0 \\leq t <  1/2, \\\\
             1, & 1/2 \\leq t < 1, \\\\
@@ -139,7 +139,7 @@ class ManchesterPulse(FormattingPulse):
         Constructor for the class. It expects the following parameter:
 
         :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol. 
+            The number of samples per symbol.
         """
         if samples_per_symbol % 2 == 0:
             middle = np.array([])
@@ -183,7 +183,7 @@ class SincPulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         """
-        Length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols
 
@@ -208,7 +208,7 @@ class RaisedCosinePulse(FormattingPulse):
 
         :code:`rolloff` : :obj:`float`
             The rolloff factor :math:`\\alpha` of the pulse. Must satisfy :math:`0 \\leq \\alpha \\leq 1`.
-        
+
         :code:`samples_per_symbol` : :obj:`int`
             The number of samples per symbol.
 
@@ -226,14 +226,14 @@ class RaisedCosinePulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         """
-        Length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols
-    
+
     @property
     def rolloff_factor(self):
         """
-        Rolloff factor.
+        The rolloff factor :math:`\\alpha` of the pulse
         """
         return self._rolloff_factor
 
@@ -258,7 +258,7 @@ class RootRaisedCosinePulse(FormattingPulse):
 
         :code:`rolloff` : :obj:`float`
             The rolloff factor :math:`\\alpha` of the pulse. Must satisfy :math:`0 \\leq \\alpha \\leq 1`.
-        
+
         :code:`samples_per_symbol` : :obj:`int`
             The number of samples per symbol.
 
@@ -274,18 +274,18 @@ class RootRaisedCosinePulse(FormattingPulse):
         super().__init__(impulse_response, samples_per_symbol)
         self._length_in_symbols = length_in_symbols
         self._rolloff = rolloff
-    
+
     @property
     def length_in_symbols(self):
         """
-        Length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols
-    
+
     @property
     def rolloff_factor(self):
         """
-        Rolloff factor.
+        The rolloff factor :math:`\\alpha` of the pulse
         """
         return self._rolloff_factor
 

@@ -52,7 +52,7 @@ class AWGNChannel:
     @property
     def snr(self):
         """
-        Channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). This is a read-and-write property.
+        The signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.
         """
         return self._snr
 
@@ -63,7 +63,7 @@ class AWGNChannel:
     @property
     def signal_power(self):
         """
-        Input signal power :math:`P`. This is a read-and-write property.
+        The input signal power :math:`P`. This is a read-and-write property.
         """
         return self._signal_power
 
@@ -136,21 +136,21 @@ class DiscreteMemorylessChannel:
     @property
     def transition_matrix(self):
         """
-        Channel transition matrix :math:`p_{Y \mid X}`. This property is read-only.
+        The channel transition matrix :math:`p_{Y \mid X}`. This property is read-only.
         """
         return self._transition_matrix
 
     @property
     def input_cardinality(self):
         """
-        Channel input cardinality :math:`|\\mathcal{X}|`. This property is read-only.
+        The channel input cardinality :math:`|\\mathcal{X}|`. This property is read-only.
         """
         return self._input_cardinality
 
     @property
     def output_cardinality(self):
         """
-        Channel output cardinality :math:`|\\mathcal{Y}|`. This property is read-only.
+        The channel output cardinality :math:`|\\mathcal{Y}|`. This property is read-only.
         """
         return self._output_cardinality
 
@@ -236,7 +236,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     @property
     def crossover_probability(self):
         """
-        Channel crossover probability :math:`p`. This property is read-only.
+        The crossover probability :math:`p` of the channel. This property is read-only.
         """
         return self.crossover_probability
 
@@ -300,7 +300,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     @property
     def erasure_probability(self):
         """
-        Channel erasure probability :math:`\\epsilon`. This property is read-only.
+        The erasure probability :math:`\\epsilon` of the channel. This property is read-only.
         """
         return self._erasure_probability
 
