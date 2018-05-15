@@ -1000,26 +1000,26 @@ class CyclicCode(BlockCode):
             self._meggitt_table = {}
             for w in range(self.packing_radius):
                 for idx in itertools.combinations(range(self._length - 1), w):
-                    errorword_poly = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
-                    syndrome_poly = errorword_poly % self._generator_polynomial
-                    self._meggitt_table[syndrome_poly] = errorword_poly
+                    errorword_polynomial = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
+                    syndrome_polynomial = errorword_polynomial % self._generator_polynomial
+                    self._meggitt_table[syndrome_polynomial] = errorword_polynomial
         return self._meggitt_table
 
     def _encode_cyclic_direct(self, message):
         """
         Encoder for cyclic codes. Direct, non-systematic method.
         """
-        message_poly = BinaryPolynomial.from_coefficients(message)
-        return (message_poly * self._generator_polynomial).coefficients(width=self._length)
+        message_polynomial = BinaryPolynomial.from_coefficients(message)
+        return (message_polynomial * self._generator_polynomial).coefficients(width=self._length)
 
     def _encode_cyclic_systematic(self, message):
         """
         Encoder for cyclic codes. Systematic method.
         """
-        message_poly = BinaryPolynomial.from_coefficients(message)
-        message_poly_shifted = message_poly << self._generator_polynomial.degree
-        parity = message_poly_shifted % self._generator_polynomial
-        return (message_poly_shifted + parity).coefficients(width=self._length)
+        message_polynomial = BinaryPolynomial.from_coefficients(message)
+        message_polynomial_shifted = message_polynomial << self._generator_polynomial.degree
+        parity = message_polynomial_shifted % self._generator_polynomial
+        return (message_polynomial_shifted + parity).coefficients(width=self._length)
 
     def _default_encoder(self):
         if self._is_systematic:
@@ -1053,17 +1053,17 @@ class CyclicCode(BlockCode):
         Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
         meggitt_table = self.meggitt_table()
-        recvword_poly = BinaryPolynomial.from_coefficients(recvword)
-        syndrome_poly = recvword_poly % self._generator_polynomial
-        if syndrome_poly == 0:
+        recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
+        syndrome_polynomial = recvword_polynomial % self._generator_polynomial
+        if syndrome_polynomial == 0:
             return recvword
-        errorword_hat_poly = BinaryPolynomial(0)
+        errorword_polynomial_hat = BinaryPolynomial(0)
         for j in range(self._length):
-            if syndrome_poly in meggitt_table:
-                errorword_hat_poly = meggitt_table[syndrome_poly] // (1 << j)
+            if syndrome_polynomial in meggitt_table:
+                errorword_polynomial_hat = meggitt_table[syndrome_polynomial] // (1 << j)
                 break
-            syndrome_poly = (syndrome_poly << 1) % self._generator_polynomial
-        return (recvword_poly + errorword_hat_poly).coefficients(self._length)
+            syndrome_polynomial = (syndrome_polynomial << 1) % self._generator_polynomial
+        return (recvword_polynomial + errorword_polynomial_hat).coefficients(self._length)
 
     def _default_decoder(self, dtype):
         if dtype == np.int:
@@ -1147,23 +1147,23 @@ class BCHCode(CyclicCode):
         """
         General BCH decoder. See :cite:`Lin.Costello.04` (p. 205--209).
         """
-        recvword_poly = BinaryPolynomial.from_coefficients(recvword)
-        syndrome_poly = syndrome_computer(recvword_poly)
-        if np.all([x == self._field(0) for x in syndrome_poly]):
+        recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
+        syndrome_polynomial = syndrome_computer(recvword_polynomial)
+        if np.all([x == self._field(0) for x in syndrome_polynomial]):
             return recvword
-        error_location_poly = key_equation_solver(syndrome_poly)
-        error_locations = [e.inverse().logarithm() for e in root_finder(error_location_poly)]
+        error_location_polynomial = key_equation_solver(syndrome_polynomial)
+        error_locations = [e.inverse().logarithm() for e in root_finder(error_location_polynomial)]
         errorword = np.bincount(error_locations, minlength=recvword.size)
         return np.bitwise_xor(recvword, errorword)
 
-    def _bch_syndrome(self, recvword_poly):
+    def _bch_syndrome(self, recvword_polynomial):
         """
         BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).
         """
-        syndrome_poly = np.empty(len(self._beta), dtype=np.object)
-        for i, (b, b_min_poly) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
-            syndrome_poly[i] = (recvword_poly % b_min_poly).evaluate(b)
-        return syndrome_poly
+        syndrome_polynomial = np.empty(len(self._beta), dtype=np.object)
+        for i, (b, b_min_polynomial) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
+            syndrome_polynomial[i] = (recvword_polynomial % b_min_polynomial).evaluate(b)
+        return syndrome_polynomial
 
     def _find_roots(self, polynomial):
         """
@@ -1182,7 +1182,7 @@ class BCHCode(CyclicCode):
                     break
         return roots
 
-    def _berlekamp_algorithm(self, syndrome_poly):
+    def _berlekamp_algorithm(self, syndrome_polynomial):
         """
         Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).
         """
@@ -1190,7 +1190,7 @@ class BCHCode(CyclicCode):
         t = self._packing_radius
 
         sigma = {-1: np.array([field(1)], dtype=np.object), 0: np.array([field(1)], dtype=np.object)}
-        discrepancy = {-1: field(1), 0: syndrome_poly[0]}
+        discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
         degree = {-1: 0, 0: 0}
 
         #TODO: This mu is not the same as the mu in __init__...
@@ -1213,9 +1213,9 @@ class BCHCode(CyclicCode):
                 second_guy = np.array([e * x for x in second_guy], dtype=np.object)
                 sigma[mu + 1] = first_guy + second_guy
             if mu < 2*t - 1:
-                discrepancy[mu + 1] = syndrome_poly[mu + 1]
+                discrepancy[mu + 1] = syndrome_polynomial[mu + 1]
                 for idx in range(1, degree[mu + 1] + 1):
-                    discrepancy[mu + 1] += sigma[mu + 1][idx] * syndrome_poly[mu + 1 - idx]
+                    discrepancy[mu + 1] += sigma[mu + 1][idx] * syndrome_polynomial[mu + 1 - idx]
 
         return sigma[2*t]
 
