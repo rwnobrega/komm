@@ -139,7 +139,7 @@ Lossless coding
     :toctree:
     :nosignatures:
 
-    SymbolCode
+    PrefixCode
     HuffmanCode
     TunstallCode
 

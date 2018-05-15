@@ -13,3 +13,6 @@ Glossary
 
     MSB
         Most significant bit.
+
+    pmf
+        Probability mass function.
