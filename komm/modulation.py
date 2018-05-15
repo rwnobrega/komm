@@ -413,7 +413,7 @@ class PSKModulation(ComplexModulation):
         >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
         array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j, 0.70710678+0.70710678j, -0.70710678+0.70710678j, 0.70710678+0.70710678j])
         """
-        constellation = np.exp(2j*np.pi*np.arange(order) / order) * np.exp(1j * phase_offset)
+        constellation = amplitude * np.exp(2j*np.pi*np.arange(order) / order) * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
             if labeling in ['natural', 'reflected']:
@@ -433,13 +433,73 @@ class PSKModulation(ComplexModulation):
 
 class APSKModulation(ComplexModulation):
     """
-    Amplitude- and phase-shift keying (APSK) modulation [Not implemented yet].
+    Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation is the union of component PSK constellations (:class:`PSKModulation`), called *rings*. More precisely,
+
+    .. math::
+        \\mathcal{S} = \\bigcup_{k \\in [0 : K)} \\mathcal{S}_k,
+
+    where :math:`K` is the number of rings and
+
+    .. math::
+
+        \\mathcal{S}_k = \\left \\{ A_k \\exp \\left( \mathrm{j} \\frac{2 \\pi i}{M_k} \\right) \\exp(\\mathrm{j} \\phi_k) : i \\in [0 : M_k) \\right \\},
+
+    where :math:`M_k` is the *order*, :math:`A_k` is the *amplitude*, and :math:`\\phi_k` is the *phase offset* of the :math:`k`-th ring, for :math:`k \\in [0 : K)`. The size of the resulting complex-valued constellation is :math:`M = M_0 + M_1 + \\cdots + M_{K-1}`. The order :math:`M_k` of each ring need not be a power of :math:`2`; however, the order :math:`M` of the constructed APSK modulation must be. The APSK constellation is depicted below for :math:`(M_0, M_1) = (8, 8)` with :math:`(A_0, A_1) = (A, 2A)` and :math:`(\\phi_0, \\phi_1) = (0, \\pi/8)`.
+
+    .. image:: figures/apsk_16.png
+       :alt: 16-APSK constellation.
+       :align: center
     """
-    def __init__(self):
-       """
-       Here.
-       """
-       pass
+    def __init__(self, orders, amplitudes, phase_offsets=0.0, labeling='natural'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`orders` : :obj:`tuple` of :obj:`int`
+            A :math:`K`-tuple with the orders :math:`M_k`, for :math:`k \\in [0 : K)`, of the rings. Sum sum :math:`M_0 + M_1 + \\cdots + M_{K-1}` must be a power of :math:`2`.
+
+        :code:`amplitudes` : :obj:`tuple` of :obj:`float`
+            A :math:`K`-tuple with the amplitudes :math:`A_k`, for :math:`k \\in [0 : K)`, of the rings.
+
+        :code:`phase_offsets` : (:obj:`tuple` of :obj:`float`) or :obj:`float`, optional
+            A :math:`K`-tuple with the phase offsets :math:`\\phi_k`, for :math:`k \\in [0 : K)`, of the ring. If specified as a single float :math:`\\phi`, then it is assumed that :math:`\\phi_k = \\phi` for all :math:`k \\in [0 : K)`. The default value is :code:`0.0`.
+
+        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
+            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
+
+        .. rubric:: Examples
+
+        >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
+        >>> apsk.constellation
+        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j, 6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j, -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j, -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j, 1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j, -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j, -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j, 7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
+        """
+        if isinstance(phase_offsets, (tuple, list)):
+            phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)
+            self._phase_offsets = phase_offsets
+        else:
+            self._phase_offsets = float(phase_offsets)
+            phase_offsets = (float(phase_offsets), ) * len(orders)
+
+        constellation = []
+        for (M_k, A_k, phi_k) in zip(orders, amplitudes, phase_offsets):
+            ring_constellation = A_k * np.exp(2j*np.pi*np.arange(M_k) / M_k) * np.exp(1j * phi_k)
+            constellation = np.append(constellation, ring_constellation)
+
+        order = int(np.sum(orders))
+        if isinstance(labeling, str):
+            if labeling in ['natural', 'reflected']:
+                labeling = getattr(_Modulation, '_labeling_' + labeling)(order)
+            else:
+                raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
+
+        super().__init__(constellation, labeling)
+
+        self._orders = tuple(int(M_k) for M_k in orders)
+        self._amplitudes = tuple(float(A_k) for A_k in amplitudes)
+
+    def __repr__(self):
+        args = '{}, amplitudes={}, phase_offsets={}'.format(self._orders, self._amplitudes, self._phase_offsets)
+        return '{}({})'.format(self.__class__.__name__, args)
+
 
 
 class QAModulation(ComplexModulation):
