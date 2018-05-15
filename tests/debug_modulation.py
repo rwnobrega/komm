@@ -2,10 +2,10 @@ import numpy as np
 import komm
 
 
-#mod = komm.PAModulation(order=2, polarity='double')
+mod = komm.PAModulation(order=2)
 #mod = komm.ASKModulation(order=4)
 #mod = komm.PSKModulation(order=2)
-mod = komm.PSKModulation(order=4)                          ## # # ### #WHy FALSE???
+#mod = komm.PSKModulation(order=4)
 #mod = komm.PSKModulation(order=8)
 #mod = komm.QAModulation(order=16, labeling='reflected_2d')
 #mod = komm.ComplexModulation(constellation=[0, 1, 1j, -1])
