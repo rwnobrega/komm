@@ -455,13 +455,13 @@ class APSKModulation(ComplexModulation):
         Constructor for the class. It expects the following parameters:
 
         :code:`orders` : :obj:`tuple` of :obj:`int`
-            A :math:`K`-tuple with the orders :math:`M_k`, for :math:`k \\in [0 : K)`, of the rings. Sum sum :math:`M_0 + M_1 + \\cdots + M_{K-1}` must be a power of :math:`2`.
+            A :math:`K`-tuple with the orders :math:`M_k` of each ring, for :math:`k \\in [0 : K)`. The sum :math:`M_0 + M_1 + \\cdots + M_{K-1}` must be a power of :math:`2`.
 
         :code:`amplitudes` : :obj:`tuple` of :obj:`float`
-            A :math:`K`-tuple with the amplitudes :math:`A_k`, for :math:`k \\in [0 : K)`, of the rings.
+            A :math:`K`-tuple with the amplitudes :math:`A_k` of each ring, for :math:`k \\in [0 : K)`.
 
         :code:`phase_offsets` : (:obj:`tuple` of :obj:`float`) or :obj:`float`, optional
-            A :math:`K`-tuple with the phase offsets :math:`\\phi_k`, for :math:`k \\in [0 : K)`, of the ring. If specified as a single float :math:`\\phi`, then it is assumed that :math:`\\phi_k = \\phi` for all :math:`k \\in [0 : K)`. The default value is :code:`0.0`.
+            A :math:`K`-tuple with the phase offsets :math:`\\phi_k` of each ring, for :math:`k \\in [0 : K)`. If specified as a single float :math:`\\phi`, then it is assumed that :math:`\\phi_k = \\phi` for all :math:`k \\in [0 : K)`. The default value is :code:`0.0`.
 
         :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
             The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
