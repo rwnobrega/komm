@@ -220,7 +220,7 @@ class RaisedCosinePulse(FormattingPulse):
 
         h(t) = \\operatorname{sinc}(t) \\frac{\\cos(\\pi \\alpha t)}{1 - (2 \\alpha t)^2},
 
-    where :math:`\\alpha` is the *rolloff factor*. The raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and and for :math:`\\alpha = 0.75`.
+    where :math:`\\alpha` is the *rolloff factor*. The raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and for :math:`\\alpha = 0.75`.
 
     .. rst-class:: centered
 
@@ -285,7 +285,7 @@ class RootRaisedCosinePulse(FormattingPulse):
 
         h(t) = \\frac{\\sin[\\pi (1 - \\alpha) t] + 4 \\alpha t \\cos[\\pi (1 + \\alpha) t]}{\\pi t [1 - (4 \\alpha t)^2]},
 
-    where :math:`\\alpha` is the *rolloff factor*. The root raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and and for :math:`\\alpha = 0.75`.
+    where :math:`\\alpha` is the *rolloff factor*. The root raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and for :math:`\\alpha = 0.75`.
 
     .. rst-class:: centered
 
