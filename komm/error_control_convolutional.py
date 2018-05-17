@@ -212,7 +212,7 @@ class ConvolutionalCode:
 
         .. math::
 
-            \\nu = \\max_{0 \\leq i < k} \\nu_i
+            m = \\max_{0 \\leq i < k} \\nu_i
 
         This property is read-only.
         """
