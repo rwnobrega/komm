@@ -7,6 +7,22 @@ import komm
 h2b = komm.util.hexstr2binarray
 
 
+def test_convolutional_code():
+     code = komm.ConvolutionalCode(generator_matrix=[[0b1101, 0b1111]])
+     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
+     assert np.array_equal(code.encode([1,0,1,1,1,0,0,0]), [1,1,0,1,0,0,0,1,0,1,0,1,0,0,1,1])
+     assert np.array_equal(code.constraint_lengths, [3])
+     assert np.array_equal(code.memory_order, 3)
+     assert np.array_equal(code.overall_constraint_length, 3)
+
+     code = komm.ConvolutionalCode(generator_matrix=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
+     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
+     assert np.array_equal(code.encode([1,1,0,1,1,0,0,0]), [1,1,0,0,0,0,0,0,1,1,1,1])
+     assert np.array_equal(code.constraint_lengths, [1, 1])
+     assert np.array_equal(code.memory_order, 1)
+     assert np.array_equal(code.overall_constraint_length, 2)
+
+
 @pytest.mark.parametrize('generator_matrix, message, codeword', [
     ([[0o7, 0o5]],
      h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3', 200),
