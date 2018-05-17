@@ -1,3 +1,5 @@
+import pytest
+
 import numpy as np
 import komm
 
@@ -33,3 +35,14 @@ class TestHammingCode:
         assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 1]), [1, 1, 1, 1])
         assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 0]), [1, 1, 1, 1])
         assert np.array_equal(self.code.decode([1, 0, 1, 1, 1, 1, 0]), [1, 0, 1, 1])
+
+
+@pytest.mark.parametrize('length, generator_polynomial, parity_check_polynomial', [
+    (7, 0b1011, 0b10111),  # Hamming (7, 4)
+    (23, 0b110001110101, 0b1111100100101)  # Golay (23, 12)
+])
+def test_cyclic_code(length, generator_polynomial, parity_check_polynomial):
+    code_g = komm.CyclicCode(length, generator_polynomial=generator_polynomial)
+    code_h = komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial)
+    assert code_g.parity_check_polynomial == parity_check_polynomial
+    assert code_h.generator_polynomial == generator_polynomial

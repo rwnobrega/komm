@@ -136,7 +136,7 @@ class BinaryPolynomial(int):
     def __pow__(self, exponent):
         return power(self.__class__, self, exponent)
 
-    @functools.lru_cache(maxsize=None)
+#    @functools.lru_cache(maxsize=None)
     def __divmod__(self, den):
         div, mod = self.__class__(0), self
         d = mod.bit_length() - den.bit_length()

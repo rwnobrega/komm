@@ -979,15 +979,19 @@ class CyclicCode(BlockCode):
         (23, 12, 7)
         """
         self._length = length
-        self._modulus = BinaryPolynomial.from_exponents([1, self._length])
+        self._modulus = BinaryPolynomial.from_exponents([0, self._length])
         kwargs_set = set(kwargs.keys())
         if kwargs_set == {'generator_polynomial'}:
             self._generator_polynomial = BinaryPolynomial(kwargs['generator_polynomial'])
-            self._parity_check_polynomial = self._modulus // self._generator_polynomial
+            self._parity_check_polynomial, remainder = divmod(self._modulus, self._generator_polynomial)
+            if remainder != 0b0:
+                raise ValueError("The generator polynomial must be a factor of X^n + 1")
             self._constructed_from = 'generator_polynomial'
         elif kwargs_set == {'parity_check_polynomial'}:
             self._parity_check_polynomial = BinaryPolynomial(kwargs['parity_check_polynomial'])
-            self._generator_polynomial = self._modulus // self._parity_check_polynomial
+            self._generator_polynomial, remainder = divmod(self._modulus, self._parity_check_polynomial)
+            if remainder != 0b0:
+                raise ValueError("The parity-check polynomial must be a factor of X^n + 1")
             self._constructed_from = 'parity_check_polynomial'
         else:
             raise ValueError("Either specify 'generator_polynomial' or 'parity_check_polynomial'")
