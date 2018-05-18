@@ -108,7 +108,7 @@ class AWGNChannel:
 
 class DiscreteMemorylessChannel:
     """
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition matrix :math:`p_{Y \mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
+    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
 
     References: :cite:`Cover.Thomas.06` (Ch. 7)
 
@@ -127,7 +127,7 @@ class DiscreteMemorylessChannel:
         Constructor for the class. It expects the following parameter:
 
         :code:`transition_matrix` : 2D-array of :obj:`float`
-            The channel transition matrix :math:`p_{Y \mid X}`.
+            The channel transition probability matrix :math:`p_{Y \mid X}`.
         """
         self._transition_matrix = np.array(transition_matrix, dtype=np.float)
         self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
@@ -136,7 +136,7 @@ class DiscreteMemorylessChannel:
     @property
     def transition_matrix(self):
         """
-        The channel transition matrix :math:`p_{Y \mid X}`. This property is read-only.
+        The channel transition probability matrix :math:`p_{Y \mid X}`. This property is read-only.
         """
         return self._transition_matrix
 
@@ -198,7 +198,7 @@ class DiscreteMemorylessChannel:
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
     """
-    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition matrix given by
+    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition probability matrix given by
 
     .. math::
 
@@ -263,7 +263,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
     """
-    Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition matrix given by
+    Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition probability matrix given by
 
     .. math::
 
