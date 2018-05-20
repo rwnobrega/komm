@@ -20,6 +20,6 @@ def test_prefix_code():
     assert np.array_equal(prefix_code_2.encode(x), y_2)
     assert np.array_equal(prefix_code_2.decode(y_2), x)
 
-    assert prefix_code_1.average_length(pmf) == 3.0
-    assert prefix_code_2.average_length(pmf) == 2.2
+    assert np.isclose(prefix_code_1.average_length(pmf), 3.0)
+    assert np.isclose(prefix_code_2.average_length(pmf), 2.2)
 
