@@ -104,7 +104,6 @@ class FiniteStateMachine:
 
         # Backtrack
         s1 = 0  #@$% final_state
-        print(choices)
         input_sequence_hat = np.empty(L, dtype=np.int)
         for t in reversed(range(L)):
             s0 = choices[s1, t]
@@ -350,14 +349,18 @@ class ConvolutionalCode:
 
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
-        observed = pack(recvword, self._num_output_bits)
+        observed = pack(recvword, width=self._num_output_bits)
         input_sequence_hat = self._finite_state_machine.viterbi(observed, inf=recvword.size, dist_fun=hamming_distance_16)
-        message_hat = unpack(input_sequence_hat, self._num_input_bits)
+        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
     @tag(name='Viterbi (soft)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
-        return self._viterbi(recvword, inf=np.inf, dist_fun=np.dot)
+        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
+        dist_fun = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, inf=np.inf, dist_fun=dist_fun)
+        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
+        return message_hat
 
     def _decode_bcjr():
         pass
