@@ -25,8 +25,8 @@ class FiniteStateMachine:
         """
         self._next_states = np.array(next_states, dtype=np.int)
         self._outputs = np.array(outputs, dtype=np.int)
-        self._num_states, self._input_cardinality = self._next_states.shape
-        self._output_cardinality = np.max(self._outputs)
+        self._num_states, self._num_input_symbols = self._next_states.shape
+        self._num_output_symbols = np.max(self._outputs)
         self._state = start_state
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
@@ -41,7 +41,7 @@ class FiniteStateMachine:
     @property
     def state(self):
         """
-        The current state of the machine.
+        The current state of the machine. This is a read-and-write property.
         """
         return self._state
 
@@ -56,6 +56,20 @@ class FiniteStateMachine:
         """
         return self._num_states
 
+    @property
+    def num_input_symbols(self):
+        """
+        The size (cardinality) of the input alphabet :math:`\\mathcal{X}`. This property is read-only.
+        """
+        return self._num_input_symbols
+    
+    @property
+    def num_output_symbols(self):
+        """
+        The size (cardinality) of the output alphabet :math:`\\mathcal{Y}`. This property is read-only.
+        """
+        return self._num_output_symbols
+    
     def input_edges(self):
         """
         """
@@ -172,26 +186,6 @@ class ConvolutionalCode:
     >>> code = komm.ConvolutionalCode(generator_matrix=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
     >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
     (3, 2, 7)
-
-    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o7, 0o5]])
-    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-    (2, 1, 2)
-    >>> code._outgoing_states
-    {0: [0, 1], 1: [2, 3], 2: [0, 1], 3: [2, 3]}
-    >>> code._outgoing_outputs
-    {0: [array([0, 0]), array([1, 1])],
-     1: [array([1, 0]), array([0, 1])],
-     2: [array([1, 1]), array([0, 0])],
-     3: [array([0, 1]), array([1, 0])]}
-    >>> code._input_edge
-    {(0, 0): array([0]),
-     (0, 1): array([1]),
-     (1, 2): array([0]),
-     (1, 3): array([1]),
-     (2, 0): array([0]),
-     (2, 1): array([1]),
-     (3, 2): array([0]),
-     (3, 3): array([1])}
     """
 
     def __init__(self, generator_matrix):
@@ -217,28 +211,25 @@ class ConvolutionalCode:
 
     def _setup_finite_state_machine(self):
         n, k, nu = self._num_output_bits, self._num_input_bits, self._overall_constraint_length
+        nus = self._constraint_lengths
 
-        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
-        s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
-        s1_indices = s0_indices - 1
+        x_indices = np.concatenate(([0], np.cumsum(nus + 1)[:-1]))
+        s_indices = np.setdiff1d(np.arange(k + nu), x_indices)
 
         taps = np.empty((n, k + nu), dtype=np.int)
         for j in range(n):
-            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=self._constraint_lengths[i] + 1) for i in range(k)])
-
+            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=nus[i] + 1) for i in range(k)])
 
         next_states = np.empty((2**nu, 2**k), dtype=np.int)
         outputs = np.empty((2**nu, 2**k), dtype=np.int)
         bits = np.empty(k + nu, dtype=np.int)
 
         for s0 in range(2**nu):
-            for i in range(2**k):
-                bits[i_indices] = int2binlist(i, width=k)
-                bits[s0_indices] = int2binlist(s0, width=nu)
-                s1_bin = bits[s1_indices]
-                o_bin = np.dot(bits, taps.T) % 2
-                next_states[s0, i] = binlist2int(s1_bin)
-                outputs[s0, i] = binlist2int(o_bin)
+            for x in range(2**k):
+                bits[x_indices] = int2binlist(x, width=k)
+                bits[s_indices] = int2binlist(s0, width=nu)
+                next_states[s0, x] = binlist2int(bits[s_indices - 1])
+                outputs[s0, x] = binlist2int(np.dot(bits, taps.T) % 2)
 
         return FiniteStateMachine(next_states=next_states, outputs=outputs)
 
