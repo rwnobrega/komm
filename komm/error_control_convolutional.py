@@ -4,7 +4,7 @@ from .algebra import \
     BinaryPolynomial
 
 from .util import \
-    int2binlist, binlist2int, pack, unpack, tag
+    int2binlist, binlist2int, pack, unpack, hamming_distance_16, tag
 
 __all__ = ['FiniteStateMachine', 'ConvolutionalCode']
 
@@ -72,14 +72,15 @@ class FiniteStateMachine:
             output_sequence[t] = y
         return output_sequence
 
-    def viterbi(self, observed, inf, dist_fun, start_state=0):   #&* final-state (None or int)
+    def viterbi(self, observed_sequence, inf, dist_fun, start_state=0):   #&* final-state (None or int)
         """
         Applies the Viterbi algorithm on a given observed sequence.
         """
-        choices = np.empty((self._num_states, len(observed)), dtype=np.int)
-        metrics = np.full((self._num_states, len(observed) + 1), fill_value=inf, dtype=type(inf))
+        L = len(observed_sequence)
+        choices = np.empty((self._num_states, L), dtype=np.int)
+        metrics = np.full((self._num_states, L + 1), fill_value=inf, dtype=type(inf))
         metrics[start_state, 0] = 0
-        for (t, z) in enumerate(observed):
+        for (t, z) in enumerate(observed_sequence):
             for s0 in range(self._num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
                     candidate_metrics = metrics[s0, t] + dist_fun(y, z)
@@ -90,13 +91,13 @@ class FiniteStateMachine:
         # Backtrack
         s1 = 0  #@$% final_state
         print(choices)
-        input_hat = np.empty(len(observed), dtype=np.int)
-        for t in reversed(range(len(observed))):
+        input_sequence_hat = np.empty(L, dtype=np.int)
+        for t in reversed(range(L)):
             s0 = choices[s1, t]
-            input_hat[t] = self._input_edges[s0, s1]
+            input_sequence_hat[t] = self._input_edges[s0, s1]
             s1 = s0
 
-        return input_hat
+        return input_sequence_hat
 
 
 class ConvolutionalCode:
@@ -194,7 +195,8 @@ class ConvolutionalCode:
     """
 
     def __init__(self, generator_matrix):
-        """ Constructor for the class. It expects the following parameter:
+        """
+        Constructor for the class. It expects the following parameter:
 
         :code:`generator_matrix` : 2D-array of :obj:`int`
             Generator matrix :math:`G(D)` in polynomial form, which is a :math:`k \\times n` matrix with integer entries representing binary polynomials (:obj:`BinaryPolynomial`).
@@ -357,8 +359,10 @@ class ConvolutionalCode:
 
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
-        hamming_dist = lambda o, r: np.count_nonzero(o != r)
-        return self._viterbi(recvword, inf=recvword.size, dist_fun=hamming_dist)
+        observed = pack(recvword, self._num_output_bits)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, inf=recvword.size, dist_fun=hamming_distance_16)
+        message_hat = unpack(input_sequence_hat, self._num_input_bits)
+        return message_hat
 
     @tag(name='Viterbi (soft)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
