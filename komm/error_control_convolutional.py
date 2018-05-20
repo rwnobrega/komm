@@ -368,7 +368,6 @@ class ConvolutionalCode:
     def _decode_viterbi_soft(self, recvword):
         return self._viterbi(recvword, inf=np.inf, dist_fun=np.dot)
 
-
     def _decode_bcjr():
         pass
 
