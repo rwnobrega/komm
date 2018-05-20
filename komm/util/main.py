@@ -12,6 +12,11 @@ def binlist2int(list_):
 def int2binlist(int_, width=None):
     return [int(b) for b in reversed(np.binary_repr(int_, width=width))]
 
+def pack(list_, width):
+    return np.apply_along_axis(binlist2int, 1, np.reshape(list_, newshape=(-1, width)))
+
+def unpack(list_, width):
+    return np.ravel(np.array([int2binlist(i, width=width) for i in list_]))
 
 def binarray2hexstr(binarray):
     return hex(binlist2int(binarray))[:1:-1]

@@ -4,9 +4,99 @@ from .algebra import \
     BinaryPolynomial
 
 from .util import \
-    binary_iterator, binlist2int, tag
+    int2binlist, binlist2int, pack, unpack, tag
 
-__all__ = ['ConvolutionalCode']
+__all__ = ['FiniteStateMachine', 'ConvolutionalCode']
+
+
+class FiniteStateMachine:
+    """
+    Finite state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *start state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, a *state transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S}`, and an *output function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
+
+    For example ...
+
+    >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+    >>> fsm.process([1, 1, 0, 1, 0, 0])
+        array([3, 2, 2, 0, 1, 3])
+    """
+    def __init__(self, next_states, outputs, start_state=0):
+        """
+        Soon.
+        """
+        self._next_states = np.array(next_states, dtype=np.int)
+        self._outputs = np.array(outputs, dtype=np.int)
+        self._num_states, self._input_cardinality = self._next_states.shape
+        self._output_cardinality = np.max(self._outputs)
+        self._state = start_state
+
+        self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
+        for state_from in range(self._num_states):
+            for (i, state_to) in enumerate(self._next_states[state_from, :]):
+                self._input_edges[state_from][state_to] = i
+
+    def __repr__(self):
+        args = 'next_states={}, outputs={}'.format(self._next_states.tolist(), self._outputs.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
+
+    @property
+    def state(self):
+        """
+        The current state of the machine.
+        """
+        return self._state
+
+    @state.setter
+    def state(self, value):
+        self._state = value
+
+    @property
+    def num_states(self):
+        """
+        The number of states of the finite-state machine. This property is read-only.
+        """
+        return self._num_states
+
+    def input_edges(self):
+        """
+        """
+        return self._input_edges
+
+    def process(self, input_sequence):
+        """
+        Returns the output sequence corresponding to a given input sequence. This takes into account the current state of the machine.
+        """
+        output_sequence = np.empty_like(input_sequence, dtype=np.int)
+        for t, x in enumerate(input_sequence):
+            y = self._outputs[self._state, x]
+            self._state = self._next_states[self._state, x]
+            output_sequence[t] = y
+        return output_sequence
+
+    def viterbi(self, observed, inf, dist_fun, start_state=0):   #&* final-state (None or int)
+        """
+        Applies the Viterbi algorithm on a given observed sequence.
+        """
+        choices = np.empty((self._num_states, len(observed)), dtype=np.int)
+        metrics = np.full((self._num_states, len(observed) + 1), fill_value=inf, dtype=type(inf))
+        metrics[start_state, 0] = 0
+        for (t, z) in enumerate(observed):
+            for s0 in range(self._num_states):
+                for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
+                    candidate_metrics = metrics[s0, t] + dist_fun(y, z)
+                    if candidate_metrics < metrics[s1, t + 1]:
+                        metrics[s1, t + 1] = candidate_metrics
+                        choices[s1, t] = s0
+
+        # Backtrack
+        s1 = 0  #@$% final_state
+        print(choices)
+        input_hat = np.empty(len(observed), dtype=np.int)
+        for t in reversed(range(len(observed))):
+            s0 = choices[s1, t]
+            input_hat[t] = self._input_edges[s0, s1]
+            s1 = s0
+
+        return input_hat
 
 
 class ConvolutionalCode:
@@ -116,47 +206,39 @@ class ConvolutionalCode:
         self._num_input_bits, self._num_output_bits = self._generator_matrix.shape
         self._constraint_lengths = np.max(np.vectorize(lambda x: x.degree)(self._generator_matrix), axis=1)
         self._overall_constraint_length = np.sum(self._constraint_lengths)
-        self._num_states = 2**self._overall_constraint_length
-
-        self._init_finite_state_machine()
+        self._memory_order = np.max(self._constraint_lengths)
+        self._finite_state_machine = self._setup_finite_state_machine()
 
     def __repr__(self):
         args = str(np.vectorize(oct)(self._generator_matrix).tolist()).replace("'", "")
         return '{}({})'.format(self.__class__.__name__, args)
 
-    def _init_finite_state_machine(self):
-        k, n = self._num_input_bits, self._num_output_bits
-        nu, num_states = self._overall_constraint_length, self._num_states
+    def _setup_finite_state_machine(self):
+        n, k, nu = self._num_output_bits, self._num_input_bits, self._overall_constraint_length
 
-        bits = np.empty(k + nu, dtype=np.int)
+        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
+        s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
+        s1_indices = s0_indices - 1
+
         taps = np.empty((n, k + nu), dtype=np.int)
-
-        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
-        s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
-        s1_indices = s0_indices - 1
-
         for j in range(n):
-            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=self._constraint_lengths[i] + 1)
-                                         for i in range(k)])
+            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=self._constraint_lengths[i] + 1) for i in range(k)])
 
-        self._outgoing_states = {s: [] for s in range(num_states)}
-        self._outgoing_outputs = {s: [] for s in range(num_states)}
-        self._input_edge = {}
 
-        i_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
-        s0_indices = np.setdiff1d(np.arange(k + nu), i_indices)
-        s1_indices = s0_indices - 1
+        next_states = np.empty((2**nu, 2**k), dtype=np.int)
+        outputs = np.empty((2**nu, 2**k), dtype=np.int)
+        bits = np.empty(k + nu, dtype=np.int)
 
-        for s0, s0_bin in enumerate(binary_iterator(nu)):
-            for i, i_bin in enumerate(binary_iterator(k)):
-                bits[i_indices] = i_bin
-                bits[s0_indices] = s0_bin
+        for s0 in range(2**nu):
+            for i in range(2**k):
+                bits[i_indices] = int2binlist(i, width=k)
+                bits[s0_indices] = int2binlist(s0, width=nu)
                 s1_bin = bits[s1_indices]
-                s1 = binlist2int(s1_bin)
                 o_bin = np.dot(bits, taps.T) % 2
-                self._outgoing_states[s0].append(s1)
-                self._outgoing_outputs[s0].append(o_bin)
-                self._input_edge[s0, s1] = i_bin
+                next_states[s0, i] = binlist2int(s1_bin)
+                outputs[s0, i] = binlist2int(o_bin)
+
+        return FiniteStateMachine(next_states=next_states, outputs=outputs)
 
     @property
     def num_input_bits(self):
@@ -199,24 +281,17 @@ class ConvolutionalCode:
         return self._overall_constraint_length
 
     @property
-    def num_states(self):
-        """
-        The number of states of the finite-state machine. It is given by :math:`2^{\\nu}`, where :math:`\\nu` is the overall constraint length of the code. This property is read-only.
-        """
-        return self._num_states
-
-    @property
     def memory_order(self):
         """
-        The memory order :math:`m` of the code. It is given by
+        The memory order :math:`\\mu` of the code. It is given by
 
         .. math::
 
-            \\nu = \\max_{0 \\leq i < k} \\nu_i
+            \\mu = \\max_{0 \\leq i < k} \\nu_i
 
         This property is read-only.
         """
-        return  np.max(self._constraint_lengths)
+        return  self._memory_order
 
     def encode(self, message, initial_state=0, method=None):
         """
@@ -246,14 +321,11 @@ class ConvolutionalCode:
         return codeword
 
     def _encode_finite_state_machine(self, message, initial_state=0):
-        k, n = self._num_input_bits, self._num_output_bits
-        frame_size = message.size // k
-        codeword = np.empty(n * frame_size, dtype=np.int)
+        input_sequence = pack(message, width=self._num_input_bits)
+        self._finite_state_machine.state = initial_state
         state = initial_state
-        for (t, m) in enumerate(np.reshape(message, newshape=(frame_size, k))):
-            m_int = binlist2int(m)
-            codeword[n*t : n*(t+1)] = self._outgoing_outputs[state][m_int]
-            state = self._outgoing_states[state][m_int]
+        output_sequence = self._finite_state_machine.process(input_sequence)
+        codeword = unpack(output_sequence, width=self._num_output_bits)
         return codeword
 
     def _default_encoder(self):
@@ -276,7 +348,6 @@ class ConvolutionalCode:
         :code:`message_hat` : 1D-array of :obj:`int`
             Message decoded from :code:`recvword`. Its length is equal to :math:`(k/n)` times the length of :code:`recvword`.
         """
-
         recvword = np.array(recvword)
         if method is None:
             method = self._default_decoder(recvword.dtype)
@@ -293,31 +364,6 @@ class ConvolutionalCode:
     def _decode_viterbi_soft(self, recvword):
         return self._viterbi(recvword, inf=np.inf, dist_fun=np.dot)
 
-    def _viterbi(self, recvword, inf, dist_fun, initial_state=0):   #&* final-state (None or int)
-        k, n = self._num_input_bits, self._num_output_bits
-        num_states = self._num_states
-        frame_size = recvword.size // n
-
-        choices = np.empty((num_states, frame_size), dtype=np.int)
-        metrics = np.full((num_states, frame_size + 1), fill_value=inf, dtype=type(inf))
-        metrics[initial_state, 0] = 0
-        for (t, r) in enumerate(np.reshape(recvword, newshape=(frame_size, n))):
-            for s0 in range(num_states):
-                for i, (s1, o) in enumerate(zip(self._outgoing_states[s0], self._outgoing_outputs[s0])):
-                    candidate_metrics = metrics[s0, t] + dist_fun(o, r)
-                    if candidate_metrics < metrics[s1, t+1]:
-                        metrics[s1, t+1] = candidate_metrics
-                        choices[s1, t] = s0
-
-        # Backtrack
-        s1 = 0  #@$% final_state
-        message_hat = np.empty(k * frame_size, dtype=np.int)
-        for t in range(frame_size - 1, -1, -1):
-            s0 = choices[s1, t]
-            message_hat[k*t : k*(t+1)] = self._input_edge[s0, s1]
-            s1 = s0
-
-        return message_hat
 
     def _decode_bcjr():
         pass

@@ -62,6 +62,7 @@ Convolutional coding
     :toctree:
     :nosignatures:
 
+    FiniteStateMachine
     ConvolutionalCode
 
 Modulation
