@@ -62,14 +62,14 @@ class FiniteStateMachine:
         The size (cardinality) of the input alphabet :math:`\\mathcal{X}`. This property is read-only.
         """
         return self._num_input_symbols
-    
+
     @property
     def num_output_symbols(self):
         """
         The size (cardinality) of the output alphabet :math:`\\mathcal{Y}`. This property is read-only.
         """
         return self._num_output_symbols
-    
+
     def input_edges(self):
         """
         """
@@ -86,18 +86,20 @@ class FiniteStateMachine:
             output_sequence[t] = y
         return output_sequence
 
-    def viterbi(self, observed_sequence, inf, dist_fun, start_state=0):   #&* final-state (None or int)
+    def viterbi(self, observed_sequence, metric_fun, start_state=0):   #&* final-state (None or int)
         """
         Applies the Viterbi algorithm on a given observed sequence.
+
+        metric_fun: :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`
         """
         L = len(observed_sequence)
         choices = np.empty((self._num_states, L), dtype=np.int)
-        metrics = np.full((self._num_states, L + 1), fill_value=inf, dtype=type(inf))
+        metrics = np.full((self._num_states, L + 1), fill_value=np.inf)
         metrics[start_state, 0] = 0
         for (t, z) in enumerate(observed_sequence):
             for s0 in range(self._num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
-                    candidate_metrics = metrics[s0, t] + dist_fun(y, z)
+                    candidate_metrics = metrics[s0, t] + metric_fun(y, z)
                     if candidate_metrics < metrics[s1, t + 1]:
                         metrics[s1, t + 1] = candidate_metrics
                         choices[s1, t] = s0
@@ -350,15 +352,15 @@ class ConvolutionalCode:
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
         observed = pack(recvword, width=self._num_output_bits)
-        input_sequence_hat = self._finite_state_machine.viterbi(observed, inf=recvword.size, dist_fun=hamming_distance_16)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_fun=hamming_distance_16)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
     @tag(name='Viterbi (soft)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
         observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        dist_fun = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
-        input_sequence_hat = self._finite_state_machine.viterbi(observed, inf=np.inf, dist_fun=dist_fun)
+        metric_fun = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_fun=metric_fun)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
