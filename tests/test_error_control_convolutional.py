@@ -23,6 +23,20 @@ def test_convolutional_code():
      assert np.array_equal(code.overall_constraint_length, 2)
 
 
+def test_viterbi():
+     # Lin-Costello, Chapter 12.
+     code = komm.ConvolutionalCode(generator_matrix=[[0b011, 0b101, 0b111]])
+     recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
+     recvword_2 = (-1)**recvword_1
+     codeword_hat_1 = code.encode(code.decode(recvword_1, method='viterbi_hard'))
+     codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_hard'))
+     assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
+     assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
+
+     #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
+
+
+
 @pytest.mark.parametrize('generator_matrix, message, codeword', [
     ([[0o7, 0o5]],
      h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3', 200),
