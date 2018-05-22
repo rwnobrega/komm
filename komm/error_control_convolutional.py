@@ -117,7 +117,17 @@ class FiniteStateMachine:
 
 class ConvolutionalCode:
     """
-    Binary convolutional code. It is characterized by its *generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomial fractions in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively. For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. Both :math:`P(D)` and :math:`q(D)` are arrays whose elements are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
+
+    The *generator matrix* :math:`G(D)` of the convolutional code are related to :math:`P(D)` and :math:`q(D)` as follows: The element in position :math:`(i, j)` of :math:`G(D)` is given by
+
+    .. math::
+
+        g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
+
+    for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`, where :math:`p_{i,j}(D)` is the element in position  :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`q(D)`.
+
+    For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
 
     .. math::
 
@@ -184,10 +194,10 @@ class ConvolutionalCode:
         Constructor for the class. It expects the following parameters:
 
         :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)
-            The matrix of feedforward polynomials, which is a :math:`k \\times n` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \\times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
 
         :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional
-            The vector of feedback polynomials, which is a :math:`k` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value is :code:`None` (no feedback).
+            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \\in [0 : k)`.
 
         .. rubric:: Examples
 
@@ -344,20 +354,14 @@ class ConvolutionalCode:
     @property
     def feedback_polynomials(self):
         """
-        The vector of feedback polynomials :math:`Q(D)` of the code. This is a :math:`k` array of :obj:`BinaryPolynomial`. This property is read-only.
+        The vector of feedback polynomials :math:`q(D)` of the code. This is a :math:`k`-array of :obj:`BinaryPolynomial`. This property is read-only.
         """
         return self._feedback_polynomials
 
     @property
     def generator_matrix(self):
         """
-        The generator matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. The element in position :math:`(i, j)` of :math:`G(D)` is given by
-
-        .. math::
-
-            g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
-
-        for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`, where :math:`p_{i,j}(D)` is the element in position  :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`Q(D)`. This property is read-only.
+        The generator matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.
         """
         return self._generator_matrix
 
