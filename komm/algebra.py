@@ -5,7 +5,7 @@ import numpy as np
 from .util import \
     int2binlist, binlist2int
 
-__all__ = ['BinaryPolynomial', 'BinaryFiniteExtensionField']
+__all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'BinaryFiniteExtensionField']
 
 
 class BinaryPolynomial(int):
@@ -180,7 +180,8 @@ class BinaryPolynomial(int):
         return binary_horner(self, point)
 
     def __repr__(self):
-        return bin(self)
+        args = '{}'.format(bin(self))
+        return '{}({})'.format(self.__class__.__name__, args)
 
     def __str__(self):
         return bin(self)
@@ -191,6 +192,88 @@ class BinaryPolynomial(int):
         Performs the extended Euclidean algorithm on two given binary polynomials.
         """
         return xgcd(cls, poly1, poly2)
+
+    @classmethod
+    def gcd(cls, *poly_list):
+        gcd = poly_list[0]
+        for poly in poly_list[1:]:
+            gcd, _, _ = cls.xgcd(gcd, poly)
+        return gcd
+
+    @classmethod
+    def lcm(cls, *poly_list):   # TODO: do better
+        if len(poly_list) == 1:
+            return poly_list[0]
+        if len(poly_list) == 2:
+            a, b = poly_list
+            return (a*b) // cls.gcd(a, b)
+        else:
+            a, b, rest = poly_list[0], poly_list[1], poly_list[2:]
+            return cls.lcm(cls.lcm(a, b), *rest)
+
+
+class BinaryPolynomialFraction:
+    """
+    Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two binary polynomials (:class:`BinaryPolynomial`).
+    """
+    def __init__(self, numerator, denominator=0b1):
+        self._numerator = BinaryPolynomial(numerator)
+        self._denominator = BinaryPolynomial(denominator)
+        if denominator == 0:
+            raise ZeroDivisionError('Denominator cannot be zero')
+        self._reduce_to_lowest_terms()
+
+    def _reduce_to_lowest_terms(self):
+        gcd = BinaryPolynomial.gcd(self._numerator, self._denominator)
+        self._numerator //= gcd
+        self._denominator //= gcd
+
+    def __repr__(self):
+        args = '{}, {}'.format(self._numerator, self._denominator)
+        return '{}({})'.format(self.__class__.__name__, args)
+
+    def __str__(self):
+        if self._denominator == 0b1:
+            return str(self._numerator)
+        else:
+            return str(self._numerator) + '/' + str(self._denominator)
+
+    @property
+    def numerator(self):
+        return self._numerator
+
+    @property
+    def denominator(self):
+        return self._denominator
+
+    def __add__(self, other):
+        numerator = self._numerator * other._denominator + self._denominator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __sub__(self, other):
+        numerator = self._numerator * other._denominator - self._denominator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __mul__(self, other):
+        numerator = self._numerator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __truediv__(self, other):
+        numerator = self._numerator * other._denominator
+        denominator = self._denominator * other._numerator
+        return self.__class__(numerator, denominator)
+
+    def __pow__(self, exponent):
+        return power(self.__class__, self, exponent)
+
+    def __eq__(self, other):
+        return self._numerator * other._denominator == self._denominator * other._numerator
+
+    def inverse(self):
+        return self.__class__(self._denominator, self._numerator)
 
 
 class BinaryFiniteExtensionField:

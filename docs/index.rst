@@ -21,6 +21,7 @@ Algebra
     :nosignatures:
 
     BinaryPolynomial
+    BinaryPolynomialFraction
     BinaryFiniteExtensionField
 
 Channels
