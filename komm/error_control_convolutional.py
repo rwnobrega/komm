@@ -372,7 +372,7 @@ class ConvolutionalCode:
         **Input:**
 
         :code:`message` : 1D-array of :obj:`int`
-            Binary message to be encoded. It may be of any length.
+            Binary message to be encoded. Its length must be a multiple of :math:`k`.
 
         :code:`initial_state` : :obj:`int`, optional
             Initial state of the machine. The default value is :code:`0`.
@@ -409,7 +409,7 @@ class ConvolutionalCode:
         **Input:**
 
         :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
-            Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). It may be of any length.
+            Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be a multiple of :math:`n`.
 
         :code:`method` : :obj:`str`, optional
             Decoding method to be used.
