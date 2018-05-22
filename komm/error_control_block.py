@@ -9,7 +9,7 @@ from .algebra import \
     BinaryPolynomial, BinaryFiniteExtensionField
 
 from .util import \
-    binlist2int, int2binlist, binary_iterator, binary_iterator_weight, \
+    binlist2int, binary_iterator, binary_iterator_weight, \
     tag, rst_table
 
 __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',

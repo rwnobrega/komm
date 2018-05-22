@@ -1,7 +1,7 @@
 import numpy as np
 
 from .algebra import \
-    BinaryPolynomial
+    BinaryPolynomial, BinaryPolynomialFraction
 
 from .util import \
     int2binlist, binlist2int, pack, unpack, hamming_distance_16, tag
@@ -117,7 +117,7 @@ class FiniteStateMachine:
 
 class ConvolutionalCode:
     """
-    Binary convolutional code. It is characterized by its *(polynomial) generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomials in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively. For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
+    Binary convolutional code. It is characterized by its *generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomial fractions in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively. For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
 
     .. math::
 
@@ -177,62 +177,109 @@ class ConvolutionalCode:
     =================================  =================================
 
     References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`
-
-    .. rubric:: Examples
-
-    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o117, 0o155]])
-    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-    (2, 1, 6)
-
-    >>> code = komm.ConvolutionalCode(generator_matrix=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
-    >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-    (3, 2, 7)
     """
 
-    def __init__(self, generator_matrix):
+    def __init__(self, feedforward_polynomials, feedback_polynomials=None):
         """
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class. It expects the following parameters:
 
-        :code:`generator_matrix` : 2D-array of :obj:`int`
-            Generator matrix :math:`G(D)` in polynomial form, which is a :math:`k \\times n` matrix with integer entries representing binary polynomials (:obj:`BinaryPolynomial`).
+        :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)
+            The matrix of feedforward polynomials, which is a :math:`k \\times n` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+
+        :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional
+            The vector of feedback polynomials, which is a :math:`k` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value is :code:`None` (no feedback).
+
+        .. rubric:: Examples
+
+        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
+        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+        (2, 1, 6)
+
+        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
+        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+        (3, 2, 7)
+
+        >>> feedforward_polynomials = [[0b11, 0b0, 0b1001], [0b101, 0b11, 0b10]]
+        >>> feedback_polynomials = [0b111, 0b101]
+        code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+        (3, 2, 5)
         """
-        self._generator_matrix = np.empty_like(generator_matrix, dtype=np.object)
-        for i, row in enumerate(generator_matrix):
-            self._generator_matrix[i] = [BinaryPolynomial(x) for x in row]
+        self._feedforward_polynomials = np.empty_like(feedforward_polynomials, dtype=BinaryPolynomial)
+        for (i, j), p in np.ndenumerate(feedforward_polynomials):
+            self._feedforward_polynomials[i, j] = BinaryPolynomial(p)
 
-        self._num_input_bits, self._num_output_bits = self._generator_matrix.shape
-        self._constraint_lengths = np.max(np.vectorize(lambda x: x.degree)(self._generator_matrix), axis=1)
-        self._overall_constraint_length = np.sum(self._constraint_lengths)
-        self._memory_order = np.max(self._constraint_lengths)
-        self._finite_state_machine = self._setup_finite_state_machine()
+        k, n = self._feedforward_polynomials.shape
+
+        if feedback_polynomials == None:
+            self._feedback_polynomials = np.array([BinaryPolynomial(0b1) for _ in range(k)], dtype=np.object)
+            self._constructed_from = 'no_feedback_polynomials'
+        else:
+            self._feedback_polynomials = np.empty_like(feedback_polynomials, dtype=np.object)
+            for i, q in np.ndenumerate(feedback_polynomials):
+                self._feedback_polynomials[i] = BinaryPolynomial(q)
+            self._constructed_from = 'feedback_polynomials'
+
+        nus = np.empty(k, dtype=np.int)
+        for i, (ps, q) in enumerate(zip(self._feedforward_polynomials, self._feedback_polynomials)):
+            nus[i] = max(np.max([p.degree for p in ps]), q.degree)
+
+        self._num_input_bits = k
+        self._num_output_bits = n
+        self._constraint_lengths = nus
+        self._overall_constraint_length = np.sum(nus)
+        self._memory_order = np.max(nus)
+
+        self._generator_matrix = np.empty((k, n), dtype=np.object)
+        for (i, j), p in np.ndenumerate(feedforward_polynomials):
+            q = self._feedback_polynomials[i]
+            self._generator_matrix[i, j] = BinaryPolynomialFraction(p) / BinaryPolynomialFraction(q)
+
+        self._setup_finite_state_machine_direct_form()
 
     def __repr__(self):
-        args = str(np.vectorize(oct)(self._generator_matrix).tolist()).replace("'", "")
+        feedforward_polynomials_str = str(np.vectorize(str)(self._feedforward_polynomials).tolist()).replace("'", "")
+        args = 'feedforward_polynomials={}'.format(feedforward_polynomials_str)
+        if self._constructed_from == 'feedback_polynomials':
+            feedback_polynomials_str = str(np.vectorize(str)(self._feedback_polynomials).tolist()).replace("'", "")
+            args = '{}, feedback_polynomials={}'.format(args, feedback_polynomials_str)
         return '{}({})'.format(self.__class__.__name__, args)
 
-    def _setup_finite_state_machine(self):
+    def _setup_finite_state_machine_direct_form(self):
         n, k, nu = self._num_output_bits, self._num_input_bits, self._overall_constraint_length
-        nus = self._constraint_lengths
 
-        x_indices = np.concatenate(([0], np.cumsum(nus + 1)[:-1]))
+        x_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
         s_indices = np.setdiff1d(np.arange(k + nu), x_indices)
 
-        taps = np.empty((n, k + nu), dtype=np.int)
+        feedforward_taps = []
         for j in range(n):
-            taps[j, :] = np.concatenate([self._generator_matrix[i, j].coefficients(width=nus[i] + 1) for i in range(k)])
+            taps = np.concatenate([self._feedforward_polynomials[i, j].exponents() + x_indices[i] for i in range(k)])
+            feedforward_taps.append(taps)
 
+        feedback_taps = []
+        for i in range(k):
+            taps = (BinaryPolynomial(0b1) + self._feedback_polynomials[i]).exponents() + x_indices[i]
+            feedback_taps.append(taps)
+
+        bits = np.empty(k + nu, dtype=np.int)
         next_states = np.empty((2**nu, 2**k), dtype=np.int)
         outputs = np.empty((2**nu, 2**k), dtype=np.int)
-        bits = np.empty(k + nu, dtype=np.int)
 
-        for s0 in range(2**nu):
-            for x in range(2**k):
-                bits[x_indices] = int2binlist(x, width=k)
-                bits[s_indices] = int2binlist(s0, width=nu)
-                next_states[s0, x] = binlist2int(bits[s_indices - 1])
-                outputs[s0, x] = binlist2int(np.dot(bits, taps.T) % 2)
+        for s, x in np.ndindex(2**nu, 2**k):
+            bits[s_indices] = int2binlist(s, width=nu)
+            bits[x_indices] = int2binlist(x, width=k)
+            bits[x_indices] ^= [np.bitwise_xor.reduce(bits[feedback_taps[i]]) for i in range(k)]
 
-        return FiniteStateMachine(next_states=next_states, outputs=outputs)
+            next_state_bits = bits[s_indices - 1]
+            output_bits = [np.bitwise_xor.reduce(bits[feedforward_taps[j]]) for j in range(n)]
+
+            next_states[s, x] = binlist2int(next_state_bits)
+            outputs[s, x] = binlist2int(output_bits)
+
+        self._finite_state_machine =  FiniteStateMachine(next_states=next_states, outputs=outputs)
+
+    def _setup_finite_state_machine_transposed_form(self):
+        pass
 
     @property
     def num_input_bits(self):
@@ -255,9 +302,9 @@ class ConvolutionalCode:
 
         .. math::
 
-            \\nu_i = \\max_{0 \\leq j < n} \\{ \\deg g_{ij}(D) \\},
+            \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},
 
-        where :math:`g_{ij}(D)` denotes the element in row :math:`i` and column :math:`j` of :math:`G(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. This property is read-only.
+        where :math:`p_{i,j}(D)` is the element in position :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`Q(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. This property is read-only.
         """
         return self._constraint_lengths
 
@@ -286,6 +333,33 @@ class ConvolutionalCode:
         This property is read-only.
         """
         return  self._memory_order
+
+    @property
+    def feedforward_polynomials(self):
+        """
+        The matrix of feedforward polynomials :math:`P(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomial`. This property is read-only.
+        """
+        return self._feedforward_polynomials
+
+    @property
+    def feedback_polynomials(self):
+        """
+        The vector of feedback polynomials :math:`Q(D)` of the code. This is a :math:`k` array of :obj:`BinaryPolynomial`. This property is read-only.
+        """
+        return self._feedback_polynomials
+
+    @property
+    def generator_matrix(self):
+        """
+        The generator matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. The element in position :math:`(i, j)` of :math:`G(D)` is given by
+
+        .. math::
+
+            g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
+
+        for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`, where :math:`p_{i,j}(D)` is the element in position  :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`Q(D)`. This property is read-only.
+        """
+        return self._generator_matrix
 
     def encode(self, message, initial_state=0, method=None):
         """
@@ -317,7 +391,6 @@ class ConvolutionalCode:
     def _encode_finite_state_machine(self, message, initial_state=0):
         input_sequence = pack(message, width=self._num_input_bits)
         self._finite_state_machine.state = initial_state
-        state = initial_state
         output_sequence = self._finite_state_machine.process(input_sequence)
         codeword = unpack(output_sequence, width=self._num_output_bits)
         return codeword
