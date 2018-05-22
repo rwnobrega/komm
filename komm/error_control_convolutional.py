@@ -117,7 +117,20 @@ class FiniteStateMachine:
 
 class ConvolutionalCode:
     """
-    Binary convolutional code. It is characterized by its *generator matrix* :math:`G(D)`, a :math:`k \\times n` matrix whose elements are binary polynomial fractions in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively. For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
+
+
+
+    The *generator matrix* :math:`G(D)` of the convolutional code, of shape :math:`k \\times n`, is such that the element in row :math:`i` and column :math:`j` is given by
+
+    .. math::
+        g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
+
+    for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.
+
+    .. rubric:: Examples
+
+    The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
 
     .. math::
 
@@ -184,10 +197,10 @@ class ConvolutionalCode:
         Constructor for the class. It expects the following parameters:
 
         :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)
-            The matrix of feedforward polynomials, which is a :math:`k \\times n` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \\times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
 
         :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional
-            The vector of feedback polynomials, which is a :math:`k` array whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value is :code:`None` (no feedback).
+            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \\in [0 : k)`.
 
         .. rubric:: Examples
 
@@ -344,20 +357,14 @@ class ConvolutionalCode:
     @property
     def feedback_polynomials(self):
         """
-        The vector of feedback polynomials :math:`Q(D)` of the code. This is a :math:`k` array of :obj:`BinaryPolynomial`. This property is read-only.
+        The vector of feedback polynomials :math:`q(D)` of the code. This is a :math:`k`-array of :obj:`BinaryPolynomial`. This property is read-only.
         """
         return self._feedback_polynomials
 
     @property
     def generator_matrix(self):
         """
-        The generator matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. The element in position :math:`(i, j)` of :math:`G(D)` is given by
-
-        .. math::
-
-            g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
-
-        for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`, where :math:`p_{i,j}(D)` is the element in position  :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`Q(D)`. This property is read-only.
+        The generator matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.
         """
         return self._generator_matrix
 
@@ -368,7 +375,7 @@ class ConvolutionalCode:
         **Input:**
 
         :code:`message` : 1D-array of :obj:`int`
-            Binary message to be encoded. It may be of any length.
+            Binary message to be encoded. Its length must be a multiple of :math:`k`.
 
         :code:`initial_state` : :obj:`int`, optional
             Initial state of the machine. The default value is :code:`0`.
@@ -405,7 +412,7 @@ class ConvolutionalCode:
         **Input:**
 
         :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
-            Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). It may be of any length.
+            Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be a multiple of :math:`n`.
 
         :code:`method` : :obj:`str`, optional
             Decoding method to be used.
