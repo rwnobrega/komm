@@ -117,17 +117,20 @@ class FiniteStateMachine:
 
 class ConvolutionalCode:
     """
-    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. Both :math:`P(D)` and :math:`q(D)` are arrays whose elements are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
 
-    The *generator matrix* :math:`G(D)` of the convolutional code are related to :math:`P(D)` and :math:`q(D)` as follows: The element in position :math:`(i, j)` of :math:`G(D)` is given by
+
+
+    The *generator matrix* :math:`G(D)` of the convolutional code, of shape :math:`k \\times n`, is such that the element in row :math:`i` and column :math:`j` is given by
 
     .. math::
-
         g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},
 
-    for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`, where :math:`p_{i,j}(D)` is the element in position  :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`q(D)`.
+    for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.
 
-    For example, the convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
+    .. rubric:: Examples
+
+    The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k) = (2, 1)`; its generator matrix is given by
 
     .. math::
 
