@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='komm',
-    version='0.1.1',
+    version='0.2',
     description='An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems.',
     url='https://github.com/rwnobrega/komm/',
     author='Roberto W. Nobrega',
