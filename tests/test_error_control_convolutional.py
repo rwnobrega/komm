@@ -3,8 +3,7 @@ import pytest
 import numpy as np
 import komm
 
-
-h2b = komm.util.hexstr2binarray
+from komm.util import int2binlist
 
 
 def test_convolutional_simple():
@@ -45,14 +44,16 @@ def test_viterbi():
 
 @pytest.mark.parametrize('feedforward_polynomials, message, codeword', [
     ([[0o7, 0o5]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3', 200),
-     h2b('00003befbd4bd486a7d736a7ecd91aa70d9c00daaaa73673bd917e2191a48b3692f88b0386aa922221a4b0d92fb35f85217d', 400)),
+     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     int2binlist(0xbe84a1facdf49b0d258444495561c0d11f496cd12589847e89bdce6ce5555b0039b0e5589b37e56cebe5612bd2bdf7dc0000, 400)),
+
     ([[0o117, 0o155]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3', 200),
-     h2b('00003b2bad06a0512ebfed5e84c6f38266a2acd94ff25d8901dfefa37336ec816b6580b48a23c7bccf46d7aac66320e5a49c', 400)),
+     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     int2binlist(0x3925a704c66355eb62f33de3c4512d01a6d681376ccec5f7fb8091ba4ff29b35456641cf63217ab7fd748a0560b5d4dc0000, 400)),
+
     ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3', 200),
-     h2b('0002b80a13036198804da0b2581a8f8ea739a2ebe91202aef3319272f5bc978016f92291136', 300)),
+     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     int2binlist(0x6c889449f6801e93daf4e498ccf75404897d7459ce571f1581a4d05b2011986c0c8501d4000, 300)),
 ])
 def test_convolutional_encoder(feedforward_polynomials, message, codeword):
     code = komm.ConvolutionalCode(feedforward_polynomials=feedforward_polynomials)
@@ -61,14 +62,16 @@ def test_convolutional_encoder(feedforward_polynomials, message, codeword):
 
 @pytest.mark.parametrize('feedforward_polynomials, recvword, message_hat', [
     ([[0o7, 0o5]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3d633f2a9994fa708d914deeae67773a9d07b70c4a59a22d2e9', 400),
-     h2b('030c854859304137db3f83b91aa7ee3c0ed8a71be0f0d3aa08', 200)),
+     int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
+     int2binlist(0x1055cb0f07d8e51b703c77e5589dc1fcdbec820c9a12a130c0, 200)),
+
     ([[0o117, 0o155]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3d633f2a9994fa708d914deeae67773a9d07b70c4a59a22d2e9', 400),
-     h2b('0fb7d444810049609ab4e7e37915b50d86024aef8500c95380', 200)),
+     int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
+     int2binlist(0x1ca9300a1f7524061b0ada89ec7e72d5906920081222bedf0, 200)),
+
     ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
-     h2b('004934d7cc7c8efc380ffc713b2bbd47a5417faabd0e9196b3d633f2a9994fa708d914deeae', 300),
-     h2b('06b79347558abe89f285ff36c15f3ae79396761e2ef49ad200', 200)),
+     int2binlist(0x7577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 300),
+     int2binlist(0x4b592f74786e69c9e75cfa836cffa14f917d51aae2c9ed60, 200)),
 ])
 def test_convolutional_decoder_viterbi(feedforward_polynomials, recvword, message_hat):
     code = komm.ConvolutionalCode(feedforward_polynomials=feedforward_polynomials)

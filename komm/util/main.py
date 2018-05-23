@@ -18,16 +18,6 @@ def pack(list_, width):
 def unpack(list_, width):
     return np.ravel(np.array([int2binlist(i, width=width) for i in list_]))
 
-def binarray2hexstr(binarray):
-    return hex(binlist2int(binarray))[:1:-1]
-
-def hexstr2binarray(hexstr, width):
-    intarray = np.array([int(x, 16) for x in hexstr], dtype=np.int)
-    binstr = ''.join(['{:04b}'.format(x) for x in intarray])
-    binarray = np.array([int(x) for x in binstr], dtype=np.int)
-    return binarray[len(binarray)-width:]
-
-
 def binary_iterator(shape):
     """
     [1] https://stackoverflow.com/a/30854608/3435475
