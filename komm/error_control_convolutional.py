@@ -11,9 +11,26 @@ __all__ = ['FiniteStateMachine', 'ConvolutionalCode']
 
 class FiniteStateMachine:
     """
-    Finite state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *start state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, a *state transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S}`, and an *output function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
+    Finite state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *start state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
 
-    For example ...
+    For example, the finite state machine with state diagram depicted in the figure below has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, initial state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function given by the table below.
+
+    .. csv-table:: Transition function
+       :align: center
+       :header: State, Input, State, Output
+
+       0, 0, 0, 0
+       0, 1, 1, 3
+       1, 0, 2, 1
+       1, 1, 3, 2
+       2, 0, 0, 3
+       2, 1, 1, 0
+       3, 0, 2, 2
+       3, 1, 3, 1
+
+    .. image:: figures/mealy.png
+       :alt: Finite state machine (Mealy machine) example.
+       :align: center
 
     >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
     >>> fsm.process([1, 1, 0, 1, 0, 0])
