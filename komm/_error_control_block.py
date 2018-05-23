@@ -4,7 +4,7 @@ import operator
 
 import numpy as np
 
-from .algebra import \
+from ._algebra import \
     null_matrix, right_inverse, \
     BinaryPolynomial, BinaryFiniteExtensionField
 

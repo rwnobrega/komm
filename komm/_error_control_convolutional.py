@@ -1,6 +1,6 @@
 import numpy as np
 
-from .algebra import \
+from ._algebra import \
     BinaryPolynomial, BinaryPolynomialFraction
 
 from .util import \
