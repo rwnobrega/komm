@@ -13,7 +13,13 @@ class FiniteStateMachine:
     """
     Finite state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *start state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
 
-    For example, the finite state machine with state diagram depicted in the figure below has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, initial state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function given by the table below.
+    For example, consider the finite state machine whose state diagram depicted in the figure below.
+
+    .. image:: figures/mealy.png
+       :alt: Finite state machine (Mealy machine) example.
+       :align: center
+
+    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, start state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.
 
     .. csv-table:: Transition function
        :align: center
@@ -28,17 +34,28 @@ class FiniteStateMachine:
        3, 0, 2, 2
        3, 1, 3, 1
 
-    .. image:: figures/mealy.png
-       :alt: Finite state machine (Mealy machine) example.
-       :align: center
-
-    >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
-    >>> fsm.process([1, 1, 0, 1, 0, 0])
-        array([3, 2, 2, 0, 1, 3])
+    |
     """
     def __init__(self, next_states, outputs, start_state=0):
         """
-        Soon.
+        Constructor for the class. It expects the following parameters:
+
+        :code:`next_states` : 2D-array of :obj:`int`
+            The matrix of next states of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the next state of the machine (an element in :math:`\\mathcal{S}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.
+
+        :code:`outputs` : 2D-array of :obj:`int`
+            The matrix of outputs of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.
+
+        :code:`start_state` : :obj:`int`, optional
+            The start state :math:`s_\\mathrm{i} = 0` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+
+        .. rubric:: Examples
+
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+        >>> fsm.process([1, 1, 0, 1, 0])
+        array([3, 2, 2, 0, 1])
+        >>> fsm.process([1, 1, 0, 1, 0])
+        array([0, 2, 2, 0, 1])
         """
         self._next_states = np.array(next_states, dtype=np.int)
         self._outputs = np.array(outputs, dtype=np.int)
@@ -69,7 +86,7 @@ class FiniteStateMachine:
     @property
     def num_states(self):
         """
-        The number of states of the finite-state machine. This property is read-only.
+        The number of states of the machine. This property is read-only.
         """
         return self._num_states
 
@@ -87,17 +104,52 @@ class FiniteStateMachine:
         """
         return self._num_output_symbols
 
+    @property
+    def next_states(self):
+        """
+        The matrix of next states of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` is the next state of the machine (an element in :math:`\\mathcal{S}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`. This property is read-only.
+        """
+        return self._next_states
+
+    @property
+    def outputs(self):
+        """
+        The matrix of outputs of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` is the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`. This property is read-only.
+        """
+        return self._outputs
+
+    @property
     def input_edges(self):
         """
+        The matrix of input edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the input associated with that edge (an element of :math:`\\mathcal{X}`; if there is no such edge, then the element is :math:`-1`. This property is read-only.
+
+        .. rubric:: Example
+
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+        >>> fsm.input_edges
+        array([[ 0,  1, -1, -1],
+               [-1, -1,  0,  1],
+               [ 0,  1, -1, -1],
+               [-1, -1,  0,  1]])
         """
         return self._input_edges
 
     def process(self, input_sequence):
         """
         Returns the output sequence corresponding to a given input sequence. This takes into account the current state of the machine.
+
+        **Input:**
+
+        :code:`input_sequence` : 1D-array of :obj:`int`
+            Input sequence. It should be a 1D-array with elements in :math:`\\mathcal{X}`.
+
+        **Output:**
+
+        :code:`output_sequence` : 1D-array of :obj:`int`
+            Output sequence corresponding to :code:`input_sequence`, taking into account the current state of the machine. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
         """
         output_sequence = np.empty_like(input_sequence, dtype=np.int)
-        for t, x in enumerate(input_sequence):
+        for t, x in np.ndenumerate(input_sequence):
             y = self._outputs[self._state, x]
             self._state = self._next_states[self._state, x]
             output_sequence[t] = y
@@ -135,8 +187,6 @@ class FiniteStateMachine:
 class ConvolutionalCode:
     """
     Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
-
-
 
     The *generator matrix* :math:`G(D)` of the convolutional code, of shape :math:`k \\times n`, is such that the element in row :math:`i` and column :math:`j` is given by
 
