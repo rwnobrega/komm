@@ -831,9 +831,22 @@ class ReedMullerCode(BlockCode):
         self._rho = rho
         self._mu = mu
 
+        self._setup_reed_partitions()
+
     def __repr__(self):
         args = '{}, {}'.format(self._rho, self._mu)
         return '{}({})'.format(self.__class__.__name__, args)
+
+    def _setup_reed_partitions(self):
+        self._reed_partitions = []
+        for ell in range(self._rho, -1, -1):
+            binary_vectors_I = np.array(list(binary_iterator(ell)), dtype=np.int)
+            binary_vectors_J = np.array(list(binary_iterator(self._mu - ell)), dtype=np.int)
+            for I in itertools.combinations(range(self._mu), ell):
+                E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
+                S = np.dot(binary_vectors_I, 2**np.array(I, dtype=np.int))
+                Q = np.dot(binary_vectors_J, 2**np.array(E, dtype=np.int))
+                self._reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
 
     @property
     def rho(self):
@@ -848,6 +861,13 @@ class ReedMullerCode(BlockCode):
         The parameter :math:`\\mu` of the code. This property is read-only.
         """
         return self._mu
+
+    @property
+    def reed_partitions(self):
+        """
+        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
+        """
+        return self._reed_partitions
 
     @staticmethod
     def _reed_muller_generator_matrix(rho, mu):
@@ -868,31 +888,15 @@ class ReedMullerCode(BlockCode):
 
         return np.array(G_list, dtype=np.int)
 
-    @functools.lru_cache(maxsize=None)
-    def _reed_partitions(self):
-        """
-        Get Reed partitions from Reed-Muller generator matrix. See Lin, Costello, 2Ed, p. 105--114.
-        """
-        reed_partitions = []
-        for ell in range(self._rho, -1, -1):
-            binary_vectors_I = np.array(list(binary_iterator(ell)), dtype=np.int)
-            binary_vectors_J = np.array(list(binary_iterator(self._mu - ell)), dtype=np.int)
-            for I in itertools.combinations(range(self._mu), ell):
-                E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
-                S = np.dot(binary_vectors_I, 2**np.array(I, dtype=np.int))
-                Q = np.dot(binary_vectors_J, 2**np.array(E, dtype=np.int))
-                reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
-        return reed_partitions
 
     @tag(name='Reed', input_type='hard', target='message')
     def _decode_reed(self, recvword):
         """
         Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
         """
-        reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = np.copy(recvword)
-        for idx, partition in enumerate(reed_partitions):
+        for idx, partition in enumerate(self._reed_partitions):
             checksums = np.bitwise_xor.reduce(bx[partition], axis=1)
             message_hat[idx] = np.count_nonzero(checksums) > len(checksums) // 2
             bx ^= message_hat[idx] * self._generator_matrix[idx]
@@ -903,10 +907,9 @@ class ReedMullerCode(BlockCode):
         """
         Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
         """
-        reed_partitions = self._reed_partitions()
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = (recvword < 0) * 1
-        for idx, partition in enumerate(reed_partitions):
+        for idx, partition in enumerate(self._reed_partitions):
             checksums = np.bitwise_xor.reduce(bx[partition], axis=1)
             min_reliability = np.min(np.abs(recvword[partition]), axis=1)
             decision_var = np.dot(1 - 2*checksums, min_reliability)
