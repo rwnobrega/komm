@@ -47,7 +47,7 @@ class FiniteStateMachine:
             The matrix of outputs of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.
 
         :code:`start_state` : :obj:`int`, optional
-            The start state :math:`s_\\mathrm{i} = 0` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+            The start state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         .. rubric:: Examples
 
