@@ -1,6 +1,3 @@
-import itertools
-
-
 import numpy as np
 
 from scipy.special import erfc
@@ -17,27 +14,6 @@ def pack(list_, width):
 
 def unpack(list_, width):
     return np.ravel(np.array([int2binlist(i, width=width) for i in list_]))
-
-def binary_iterator(shape):
-    """
-    [1] https://stackoverflow.com/a/30854608/3435475
-    """
-    size = np.prod(shape)
-    shift = np.reshape(np.arange(size, dtype=np.int), newshape=shape)
-    for j in range(2**size):
-        yield j >> shift & 1
-
-
-def binary_iterator_weight(n, w):
-    """
-    Generate all binary lists of length n and weight w.
-    [1] http://stackoverflow.com/a/1851138/3435475
-    """
-    for bits in itertools.combinations(range(n), w):
-        s = [0] * n
-        for bit in bits:
-            s[bit] = 1
-        yield s
 
 
 #http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetTable

@@ -9,8 +9,7 @@ from ._algebra import \
     BinaryPolynomial, BinaryFiniteExtensionField
 
 from .util import \
-    binlist2int, binary_iterator, binary_iterator_weight, \
-    tag, rst_table
+    int2binlist, binlist2int, tag, rst_table
 
 __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
            'RepetitionCode', 'SingleParityCheckCode', 'ReedMullerCode',
@@ -245,7 +244,8 @@ class BlockCode:
         """
         if not hasattr(self, '_codeword_table'):
             self._codeword_table = np.empty([2**self._dimension, self._length], dtype=np.int)
-            for (i, message) in enumerate(binary_iterator(self._dimension)):
+            for i in range(2**self._dimension):
+                message = int2binlist(i, width=self._dimension)
                 self._codeword_table[i] = self.encode(message)
         return self._codeword_table
 
@@ -299,7 +299,9 @@ class BlockCode:
             self._coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=np.int)
             taken = []
             for w in range(self._length + 1):
-                for errorword in binary_iterator_weight(self._length, w):
+                for idx in itertools.combinations(range(self._length), w):
+                    errorword = np.zeros(self._length, dtype=np.int)
+                    errorword[list(idx)] = 1
                     syndrome = np.dot(errorword, self._parity_check_matrix.T) % 2
                     syndrome_int = binlist2int(syndrome)
                     if syndrome_int not in taken:
@@ -538,11 +540,13 @@ class HammingCode(BlockCode):
 
     @staticmethod
     def _hamming_parity_submatrix(m):
-        P_list = []
+        parity_submatrix = np.zeros((2**m - m - 1, m), dtype=np.int)
+        i = 0
         for w in range(2, m + 1):
-            for row in binary_iterator_weight(m, w):
-                P_list.append(row)
-        return np.array(P_list, dtype=np.int)
+            for idx in itertools.combinations(range(m), w):
+                parity_submatrix[i, list(idx)] = 1
+                i += 1
+        return parity_submatrix
 
 
 class SimplexCode(BlockCode):
@@ -830,7 +834,6 @@ class ReedMullerCode(BlockCode):
         self._minimum_distance = 2**(mu - rho)
         self._rho = rho
         self._mu = mu
-
         self._setup_reed_partitions()
 
     def __repr__(self):
@@ -840,12 +843,12 @@ class ReedMullerCode(BlockCode):
     def _setup_reed_partitions(self):
         self._reed_partitions = []
         for ell in range(self._rho, -1, -1):
-            binary_vectors_I = np.array(list(binary_iterator(ell)), dtype=np.int)
-            binary_vectors_J = np.array(list(binary_iterator(self._mu - ell)), dtype=np.int)
+            binary_vectors_I = np.fliplr(list(itertools.product([0, 1], repeat=ell)))
+            binary_vectors_J = np.fliplr(list(itertools.product([0, 1], repeat=self._mu - ell)))
             for I in itertools.combinations(range(self._mu), ell):
                 E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
-                S = np.dot(binary_vectors_I, 2**np.array(I, dtype=np.int))
-                Q = np.dot(binary_vectors_J, 2**np.array(E, dtype=np.int))
+                S = np.dot(binary_vectors_I, 2**np.array(I))
+                Q = np.dot(binary_vectors_J, 2**np.array(E))
                 self._reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
 
     @property
@@ -887,7 +890,6 @@ class ReedMullerCode(BlockCode):
         G_list.append(np.ones(2**mu, dtype=np.int))
 
         return np.array(G_list, dtype=np.int)
-
 
     @tag(name='Reed', input_type='hard', target='message')
     def _decode_reed(self, recvword):
