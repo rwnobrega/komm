@@ -70,8 +70,7 @@ class TestReedMuller:
         assert (n, k, d) == (16, 11, 4)
 
     def test_generator_matrix(self):
-        G = [int2binlist(i) for i in [0x8888, 0xa0a0, 0xaa00, 0xc0c0, 0xcc00, 0xf000, 0xaaaa, 0xcccc, 0xf0f0, 0xff00, 0xffff]]
-        assert np.array_equal(self.code.generator_matrix, G)
+        assert np.array_equal(self.code.generator_matrix, [int2binlist(i) for i in [0x8888, 0xa0a0, 0xaa00, 0xc0c0, 0xcc00, 0xf000, 0xaaaa, 0xcccc, 0xf0f0, 0xff00, 0xffff]])
 
     def test_weight_distributions(self):
         assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1])
