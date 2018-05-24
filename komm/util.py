@@ -35,22 +35,11 @@ def entropy(pmf):
     pmf_nonzero = pmf[pmf != 0.0]
     return -np.dot(pmf_nonzero, np.log2(pmf_nonzero))
 
-
 def mutual_information(input_pmf, transition_probabilities):
     output_pmf = np.dot(input_pmf, transition_probabilities)
     entropy_output_prior = entropy(output_pmf)
     entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(entropy, 1, transition_probabilities))
     return entropy_output_prior - entropy_output_posterior
-
-
-def binomial(n, k):
-    k = min(k, n - k)
-    if k == 0:
-        return 1
-    if k < 0 or k > n:
-        return 0
-    else:
-        return np.prod(range(n, n - k, -1)) // np.prod(range(1, k + 1))
 
 
 def tag(**tags):
