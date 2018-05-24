@@ -18,10 +18,10 @@ class TestHammingCode:
         assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
-        n, k = self.code.length, self.code.dimension
+        k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, n - k), dtype=np.int))
+        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_encoding(self):
         assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1])
@@ -51,10 +51,10 @@ class TestGolayCode:
         assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 23, 253, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
-        n, k = self.code.length, self.code.dimension
+        k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, n - k), dtype=np.int))
+        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
@@ -77,10 +77,10 @@ class TestReedMuller:
         assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
-        n, k = self.code.length, self.code.dimension
+        k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, n - k), dtype=np.int))
+        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_reed_partitions(self):
         # Lin.Costello.04, p. 111-113
@@ -99,6 +99,3 @@ def test_cyclic_code(length, generator_polynomial, parity_check_polynomial):
     code_h = komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial)
     assert code_g.parity_check_polynomial == parity_check_polynomial
     assert code_h.generator_polynomial == generator_polynomial
-
-
-
