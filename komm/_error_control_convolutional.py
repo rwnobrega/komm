@@ -277,7 +277,7 @@ class ConvolutionalCode:
         >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
         (3, 2, 7)
 
-        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 4)`; its generator matrix is given by
+        The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 4)`; its generator matrix is given by
 
         .. math::
 
