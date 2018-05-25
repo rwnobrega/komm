@@ -393,9 +393,9 @@ class ConvolutionalCode:
 
         .. math::
 
-            \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},
+            \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\}.
 
-        where :math:`p_{i,j}(D)` is the element in position :math:`(i, j)` of :math:`P(D)`, and :math:`q_{i}(D)` is the element in position :math:`i` of :math:`Q(D)`, for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`. This property is read-only.
+        This property is read-only.
         """
         return self._constraint_lengths
 
