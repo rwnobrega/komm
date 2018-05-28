@@ -414,6 +414,6 @@ class LFSRSequence(BinarySequence):
 
 class ZadoffChuSequence:
     """
-    A Zadoff–Chu sequence [Not implemented yet].
+    Zadoff–Chu sequence [Not implemented yet].
     """
     pass
