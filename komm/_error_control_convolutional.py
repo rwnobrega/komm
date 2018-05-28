@@ -64,9 +64,11 @@ class FiniteStateMachine:
         self._state = initial_state
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
+        self._output_edges = np.full((self._num_states, self._num_states), fill_value=-1)
         for state_from in range(self._num_states):
-            for (i, state_to) in enumerate(self._next_states[state_from, :]):
-                self._input_edges[state_from][state_to] = i
+            for x, state_to in enumerate(self._next_states[state_from, :]):
+                self._input_edges[state_from, state_to] = x
+                self._output_edges[state_from, state_to] = self._outputs[state_from, x]
 
     def __repr__(self):
         args = 'next_states={}, outputs={}'.format(self._next_states.tolist(), self._outputs.tolist())
@@ -133,6 +135,22 @@ class FiniteStateMachine:
                [-1, -1,  0,  1]])
         """
         return self._input_edges
+
+    @property
+    def output_edges(self):
+        """
+        The matrix of output edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the output associated with that edge (an element of :math:`\\mathcal{Y}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.
+
+        .. rubric:: Example
+
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+        >>> fsm.output_edges
+        array([[ 0,  3, -1, -1],
+               [-1, -1,  1,  2],
+               [ 3,  0, -1, -1],
+               [-1, -1,  2,  1]])
+        """
+        return self._output_edges
 
     def process(self, input_sequence):
         """
