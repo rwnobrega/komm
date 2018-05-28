@@ -250,35 +250,35 @@ class FiniteStateMachine:
         :code:`input_posteriors` : 1D-array of :obj:`int`
             Soon.
         """
-        L, num_states = len(observed_sequence), self._num_states
+        L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 
         if input_priors is None:
-            log_input_priors = np.full((L, self._num_input_symbols), fill_value=0.0)
+            log_input_priors = np.full((L, num_input_symbols), fill_value=0.0)
         else:
             log_input_priors = np.log(input_priors)
 
         log_gamma = np.empty((L, num_states, num_states), dtype=np.float)
         for t, z in enumerate(observed_sequence):
-            for x, s0 in np.ndindex(self._num_input_symbols, num_states):
+            for x, s0 in np.ndindex(num_input_symbols, num_states):
                 y, s1 = self._outputs[s0, x], self._next_states[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(z, y)
 
         log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
         log_alpha[0, initial_state] = 0.0
         for t in range(0, L - 1):
-            for s1 in range(self._num_states):
+            for s1 in range(num_states):
                 log_alpha[t + 1, s1] = logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
 
         log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
         log_beta[L, final_state] = 0.0
         for t in range(L - 1, -1, -1):
-            for s0 in range(self._num_states):
+            for s0 in range(num_states):
                 log_beta[t, s0] = logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
 
-        log_input_posteriors = np.empty((L, self._num_input_symbols), dtype=np.float)
+        log_input_posteriors = np.empty((L, num_input_symbols), dtype=np.float)
         edge_labels = np.empty(num_states, dtype=np.float)
         for t in range(L):
-            for x in range(self._num_input_symbols):
+            for x in range(num_input_symbols):
                 for s0 in range(num_states):
                     s1 = self._next_states[s0, x]
                     edge_labels[s0] = log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
