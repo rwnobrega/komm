@@ -7,39 +7,39 @@ from komm.util import int2binlist
 
 
 def test_convolutional_simple():
-     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
-     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
-     assert np.array_equal(code.encode([1,0,1,1,1,0,0,0]), [1,1,0,1,0,0,0,1,0,1,0,1,0,0,1,1])
-     assert np.array_equal(code.constraint_lengths, [3])
-     assert np.array_equal(code.memory_order, 3)
-     assert np.array_equal(code.overall_constraint_length, 3)
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
+    assert (code.num_output_bits, code.num_input_bits) == (2, 1)
+    assert np.array_equal(code.encode([1,0,1,1,1,0,0,0]), [1,1,0,1,0,0,0,1,0,1,0,1,0,0,1,1])
+    assert np.array_equal(code.constraint_lengths, [3])
+    assert np.array_equal(code.memory_order, 3)
+    assert np.array_equal(code.overall_constraint_length, 3)
 
-     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
-     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
-     assert np.array_equal(code.encode([1,1,0,1,1,0,0,0]), [1,1,0,0,0,0,0,0,1,1,1,1])
-     assert np.array_equal(code.constraint_lengths, [1, 1])
-     assert np.array_equal(code.memory_order, 1)
-     assert np.array_equal(code.overall_constraint_length, 2)
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
+    assert (code.num_output_bits, code.num_input_bits) == (3, 2)
+    assert np.array_equal(code.encode([1,1,0,1,1,0,0,0]), [1,1,0,0,0,0,0,0,1,1,1,1])
+    assert np.array_equal(code.constraint_lengths, [1, 1])
+    assert np.array_equal(code.memory_order, 1)
+    assert np.array_equal(code.overall_constraint_length, 2)
 
 
 def test_convolutional_feedback():
     # Ryan.Lin.09, p. 154.
-     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-     assert np.array_equal(code.encode([1,0,0,0]), [1,1,1,0,1,1,0,0])
-     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
-     assert np.array_equal(code.encode([1,1,1,0]), [1,1,1,0,1,1,0,0])
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+    assert np.array_equal(code.encode([1,0,0,0]), [1,1,1,0,1,1,0,0])
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
+    assert np.array_equal(code.encode([1,1,1,0]), [1,1,1,0,1,1,0,0])
 
 
 def test_viterbi():
-     # Lin.Costello.04, p. 519-522.
-     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
-     recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
-     recvword_2 = (-1)**recvword_1
-     codeword_hat_1 = code.encode(code.decode(recvword_1, method='viterbi_hard'))
-     codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_hard'))
-     assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
-     assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
-     #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
+    # Lin.Costello.04, p. 519-522.
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
+    recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
+    recvword_2 = (-1)**recvword_1
+    codeword_hat_1 = code.encode(code.decode(recvword_1, method='viterbi_hard'))
+    codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_hard'))
+    assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
+    assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
+    #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
 
 
 def test_fsm_forward_backward():
