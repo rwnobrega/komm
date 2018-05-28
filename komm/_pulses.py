@@ -343,4 +343,7 @@ class RootRaisedCosinePulse(FormattingPulse):
 
 
 class GaussianPulse(FormattingPulse):
+    """
+    Gaussian pulse [Not implemented yet].
+    """
     pass

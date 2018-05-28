@@ -105,6 +105,7 @@ Pulses
     SincPulse
     RaisedCosinePulse
     RootRaisedCosinePulse
+    GaussianPulse
 
 Sequences
 ---------
