@@ -632,11 +632,8 @@ class ConvolutionalCode:
     def _decode_bcjr(self, recvword, SNR=1.0):
         observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
         metric_function = lambda y, z: 4 * SNR * np.dot((-1)**np.array(int2binlist(y, width=len(z))), z)
-        print(observed)
         input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
-        print(input_posteriors)
         input_sequence_hat = np.argmax(input_posteriors, axis=1)
-        print(input_sequence_hat)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
