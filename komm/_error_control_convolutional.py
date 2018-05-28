@@ -236,18 +236,18 @@ class FiniteStateMachine:
             :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
             Soon.
 
-        :code:`input_priors` : 1D-array, optional
+        :code:`input_priors` : 2D-array of :obj:`float`, optional
             Soon.
 
         :code:`initial_state` : :obj:`int`, optional
             Soon.
 
-        :code:`end_state` : :obj:`int`, optional
+        :code:`final_state` : :obj:`int`, optional
             Soon.
 
         **Output:**
 
-        :code:`input_posteriors` : 1D-array of :obj:`int`
+        :code:`input_posteriors` : 2D-array of :obj:`float`
             Soon.
         """
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
