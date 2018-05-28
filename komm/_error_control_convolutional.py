@@ -224,7 +224,7 @@ class FiniteStateMachine:
 
     def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state=0, final_state=0):
         """
-        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior probabilities of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior probabilities of each input may also be provided.
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.
 
         References: :cite:`Lin.Costello.04` (Sec. 12.6).
 
