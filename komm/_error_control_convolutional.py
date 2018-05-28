@@ -634,7 +634,8 @@ class ConvolutionalCode:
     @tag(name='Viterbi (soft)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
         observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        metric_function = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
+        cache = np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
+        metric_function = lambda y, z: np.dot(cache[y], z)
         input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_function=metric_function)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
@@ -642,7 +643,8 @@ class ConvolutionalCode:
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, SNR=1.0):
         observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        metric_function = lambda y, z: 4 * SNR * np.dot((-1)**np.array(int2binlist(y, width=len(z))), z)
+        cache = (-1)**np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
+        metric_function = lambda y, z: 4 * SNR * np.dot(cache[y], z)
         input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
         input_sequence_hat = np.argmax(input_posteriors, axis=1)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
