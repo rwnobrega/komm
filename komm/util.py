@@ -7,7 +7,9 @@ def binlist2int(list_):
     return sum(1 << n for (n, b) in enumerate(list_) if b != 0)
 
 def int2binlist(int_, width=None):
-    return [int(b) for b in reversed(np.binary_repr(int_, width=width))]
+    if width is None:
+        width = max(int_.bit_length(), 1)
+    return [(int_ >> i) & 1 for i in range(width)]
 
 def pack(list_, width):
     return np.apply_along_axis(binlist2int, 1, np.reshape(list_, newshape=(-1, width)))
