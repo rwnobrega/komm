@@ -11,7 +11,7 @@ __all__ = ['FiniteStateMachine', 'ConvolutionalCode']
 
 class FiniteStateMachine:
     """
-    Finite-state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *start state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
+    Finite-state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *initial state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
 
     For example, consider the finite-state machine whose state diagram depicted in the figure below.
 
@@ -19,7 +19,7 @@ class FiniteStateMachine:
        :alt: Finite-state machine (Mealy machine) example.
        :align: center
 
-    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, start state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.
+    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, initial state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.
 
     .. csv-table:: Transition function
        :align: center
@@ -36,7 +36,7 @@ class FiniteStateMachine:
 
     |
     """
-    def __init__(self, next_states, outputs, start_state=0):
+    def __init__(self, next_states, outputs, initial_state=0):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -46,8 +46,8 @@ class FiniteStateMachine:
         :code:`outputs` : 2D-array of :obj:`int`
             The matrix of outputs of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.
 
-        :code:`start_state` : :obj:`int`, optional
-            The start state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+        :code:`initial_state` : :obj:`int`, optional
+            The initial state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         .. rubric:: Examples
 
@@ -61,7 +61,7 @@ class FiniteStateMachine:
         self._outputs = np.array(outputs, dtype=np.int)
         self._num_states, self._num_input_symbols = self._next_states.shape
         self._num_output_symbols = np.max(self._outputs)
-        self._state = start_state
+        self._state = initial_state
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
         for state_from in range(self._num_states):
