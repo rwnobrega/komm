@@ -36,7 +36,7 @@ def test_viterbi():
     recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
     recvword_2 = (-1)**recvword_1
     codeword_hat_1 = code.encode(code.decode(recvword_1, method='viterbi_hard'))
-    codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_hard'))
+    codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_soft'))
     assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
     assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
     #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
