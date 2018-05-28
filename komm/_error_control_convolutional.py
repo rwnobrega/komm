@@ -257,7 +257,7 @@ class FiniteStateMachine:
         else:
             log_input_priors = np.log(input_priors)
 
-        log_gamma = np.empty((L, num_states, num_states), dtype=np.float)
+        log_gamma = np.full((L, num_states, num_states), fill_value=-np.inf)
         for t, z in enumerate(observed_sequence):
             for x, s0 in np.ndindex(num_input_symbols, num_states):
                 y, s1 = self._outputs[s0, x], self._next_states[s0, x]
@@ -628,8 +628,17 @@ class ConvolutionalCode:
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
-    def _decode_bcjr():
-        pass
+    @tag(name='BCJR', input_type='soft', target='message')
+    def _decode_bcjr(self, recvword, SNR=1.0):
+        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
+        metric_function = lambda y, z: 4 * SNR * np.dot((-1)**np.array(int2binlist(y, width=len(z))), z)
+        print(observed)
+        input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
+        print(input_posteriors)
+        input_sequence_hat = np.argmax(input_posteriors, axis=1)
+        print(input_sequence_hat)
+        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
+        return message_hat
 
     def _default_decoder(self, dtype):
         if dtype == np.int:
