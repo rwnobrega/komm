@@ -200,22 +200,22 @@ class FiniteStateMachine:
             Soon.
         """
         L, num_states = len(observed_sequence), self._num_states
-        choices = np.empty((num_states, L), dtype=np.int)
-        metrics = np.full((num_states, L + 1), fill_value=np.inf)
-        metrics[initial_state, 0] = 0
+        choices = np.empty((L, num_states), dtype=np.int)
+        metrics = np.full((L + 1, num_states), fill_value=np.inf)
+        metrics[0, initial_state] = 0
         for t, z in enumerate(observed_sequence):
             for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
-                    candidate_metrics = metrics[s0, t] + metric_function(y, z)
-                    if candidate_metrics < metrics[s1, t + 1]:
-                        metrics[s1, t + 1] = candidate_metrics
-                        choices[s1, t] = s0
+                    candidate_metrics = metrics[t, s0] + metric_function(y, z)
+                    if candidate_metrics < metrics[t + 1, s1]:
+                        metrics[t + 1, s1] = candidate_metrics
+                        choices[t, s1] = s0
 
         # Backtrack
         s1 = final_state
         input_sequence_hat = np.empty(L, dtype=np.int)
         for t in reversed(range(L)):
-            s0 = choices[s1, t]
+            s0 = choices[t, s1]
             input_sequence_hat[t] = self._input_edges[s0, s1]
             s1 = s0
 
