@@ -21,7 +21,7 @@ class TestHammingCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_encoding(self):
         assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1])
@@ -54,7 +54,7 @@ class TestGolayCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
@@ -80,7 +80,7 @@ class TestReedMuller:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal((G @ H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
 
     def test_reed_partitions(self):
         # Lin.Costello.04, p. 111-113
