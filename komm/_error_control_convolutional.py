@@ -175,26 +175,44 @@ class FiniteStateMachine:
             output_sequence[t] = y
         return output_sequence
 
-    def viterbi(self, observed_sequence, metric_fun, start_state=0):   #&* final-state (None or int)
+    def viterbi(self, observed_sequence, metric_function, initial_state=0, final_state=0):
         """
         Applies the Viterbi algorithm on a given observed sequence.
 
-        metric_fun: :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`
+        **Input:**
+
+        :code:`observed_sequence` : 1D-array
+            The observed sequence. It should be a 1D-array with elements in a set :math:`\\mathcal{Z}`.
+
+        :code:`metric_function` : function
+            :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
+            Soon.
+
+        :code:`initial_state` : :obj:`int`, optional
+            Soon.
+
+        :code:`final_state` : :obj:`int`, optional
+            Soon.
+
+        **Output:**
+
+        :code:`input_sequence_hat` : 1D-array of :obj:`int`
+            Soon.
         """
-        L = len(observed_sequence)
-        choices = np.empty((self._num_states, L), dtype=np.int)
-        metrics = np.full((self._num_states, L + 1), fill_value=np.inf)
-        metrics[start_state, 0] = 0
-        for (t, z) in enumerate(observed_sequence):
-            for s0 in range(self._num_states):
+        L, num_states = len(observed_sequence), self._num_states
+        choices = np.empty((num_states, L), dtype=np.int)
+        metrics = np.full((num_states, L + 1), fill_value=np.inf)
+        metrics[initial_state, 0] = 0
+        for t, z in enumerate(observed_sequence):
+            for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
-                    candidate_metrics = metrics[s0, t] + metric_fun(y, z)
+                    candidate_metrics = metrics[s0, t] + metric_function(y, z)
                     if candidate_metrics < metrics[s1, t + 1]:
                         metrics[s1, t + 1] = candidate_metrics
                         choices[s1, t] = s0
 
         # Backtrack
-        s1 = 0  #@$% final_state
+        s1 = final_state
         input_sequence_hat = np.empty(L, dtype=np.int)
         for t in reversed(range(L)):
             s0 = choices[s1, t]
