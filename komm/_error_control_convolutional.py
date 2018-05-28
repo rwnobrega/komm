@@ -156,17 +156,17 @@ class FiniteStateMachine:
 
     def process(self, input_sequence):
         """
-        Returns the output sequence corresponding to a given input sequence. This takes into account the current state of the machine.
+        Returns the output sequence corresponding to a given input sequence. The input sequence and the output sequence are denoted by :math:`\\mathbf{x} = (x_0, x_1, \\ldots, x_{L-1}) \\in \\mathcal{X}^L` and :math:`\\mathbf{y} = (y_0, y_1, \\ldots, y_{L-1}) \\in \\mathcal{Y}^L`, respectively. This method takes into account the current state of the machine.
 
         **Input:**
 
         :code:`input_sequence` : 1D-array of :obj:`int`
-            Input sequence. It should be a 1D-array with elements in :math:`\\mathcal{X}`.
+            The input sequence :math:`\\mathbf{x} \\in \\mathcal{X}^L`. It should be a 1D-array with elements in :math:`\\mathcal{X}`.
 
         **Output:**
 
         :code:`output_sequence` : 1D-array of :obj:`int`
-            Output sequence corresponding to :code:`input_sequence`, taking into account the current state of the machine. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
+            The output sequence :math:`\\mathbf{y} \\in \\mathcal{Y}^L` corresponding to :code:`input_sequence`, taking into account the current state of the machine. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
         """
         output_sequence = np.empty_like(input_sequence, dtype=np.int)
         for t, x in np.ndenumerate(input_sequence):
@@ -177,32 +177,33 @@ class FiniteStateMachine:
 
     def viterbi(self, observed_sequence, metric_function, initial_state=0, final_state=0):
         """
-        Applies the Viterbi algorithm on a given observed sequence.
+        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\\hat{\\mathbf{x}} = (\\hat{x}_0, \\hat{x}_1, \\ldots, \\hat{x}_{L-1}) \\in \\mathcal{X}^L` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. It is assumed uniform priors.
+
+        References: :cite:`Lin.Costello.04` (Sec. 12.1).
 
         **Input:**
 
         :code:`observed_sequence` : 1D-array
-            The observed sequence. It should be a 1D-array with elements in a set :math:`\\mathcal{Z}`.
+            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
 
         :code:`metric_function` : function
-            :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
-            Soon.
+            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
 
         :code:`initial_state` : :obj:`int`, optional
-            Soon.
+            The initial state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         :code:`final_state` : :obj:`int`, optional
-            Soon.
+            The final state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         **Output:**
 
         :code:`input_sequence_hat` : 1D-array of :obj:`int`
-            Soon.
+            The most probable input sequence :math:`\\hat{\\mathbf{x}} \\in \\mathcal{X}^L`.
         """
         L, num_states = len(observed_sequence), self._num_states
         choices = np.empty((L, num_states), dtype=np.int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
-        metrics[0, initial_state] = 0
+        metrics[0, initial_state] = 0.0
         for t, z in enumerate(observed_sequence):
             for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
@@ -223,32 +224,31 @@ class FiniteStateMachine:
 
     def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state=0, final_state=0):
         """
-        Applies the BCJR algorithm on a given observed sequence.
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior probabilities of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior probabilities of each input may also be provided.
 
         References: :cite:`Lin.Costello.04` (Sec. 12.6).
 
         **Input:**
 
         :code:`observed_sequence` : 1D-array
-            The observed sequence. It should be a 1D-array with elements in a set :math:`\\mathcal{Z}`.
+            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
 
         :code:`metric_function` : function
-            :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
-            Soon.
+            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
 
         :code:`input_priors` : 2D-array of :obj:`float`, optional
-            Soon.
+            The prior :term:`pmf` of each input, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` should be :math:`p(x_t = x)`. The default value considers uniform priors.
 
         :code:`initial_state` : :obj:`int`, optional
-            Soon.
+            The initial state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         :code:`final_state` : :obj:`int`, optional
-            Soon.
+            The final state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
 
         **Output:**
 
         :code:`input_posteriors` : 2D-array of :obj:`float`
-            Soon.
+            The posterior :term:`pmf` of each input, given the observed sequence, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` is :math:`p(x_t = x \mid \\mathbf{z})`.
         """
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 
