@@ -62,7 +62,7 @@ class FiniteStateMachine:
         self._next_states = np.array(next_states, dtype=np.int)
         self._outputs = np.array(outputs, dtype=np.int)
         self._num_states, self._num_input_symbols = self._next_states.shape
-        self._num_output_symbols = np.max(self._outputs)
+        self._num_output_symbols = np.amax(self._outputs)
         self._state = initial_state
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
@@ -419,13 +419,13 @@ class ConvolutionalCode:
 
         nus = np.empty(k, dtype=np.int)
         for i, (ps, q) in enumerate(zip(self._feedforward_polynomials, self._feedback_polynomials)):
-            nus[i] = max(np.max([p.degree for p in ps]), q.degree)
+            nus[i] = max(np.amax([p.degree for p in ps]), q.degree)
 
         self._num_input_bits = k
         self._num_output_bits = n
         self._constraint_lengths = nus
         self._overall_constraint_length = np.sum(nus)
-        self._memory_order = np.max(nus)
+        self._memory_order = np.amax(nus)
 
         self._generator_matrix = np.empty((k, n), dtype=np.object)
         for (i, j), p in np.ndenumerate(feedforward_polynomials):

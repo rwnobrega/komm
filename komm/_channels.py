@@ -186,7 +186,7 @@ class DiscreteMemorylessChannel:
         r = initial_guess
         last_r = np.full_like(r, fill_value=np.inf)
         iters = 0
-        while iters < max_iters and np.max(np.abs(r - last_r)) > error_tolerance:
+        while iters < max_iters and np.amax(np.abs(r - last_r)) > error_tolerance:
             last_r = r
             q = r[np.newaxis].T * p
             q /= np.sum(q, axis=0)
