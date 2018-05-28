@@ -1,6 +1,6 @@
 import numpy as np
 
-from scipy.special import erfc
+from scipy.special import erfc, erfcinv
 
 
 def binlist2int(list_):
@@ -29,6 +29,9 @@ def hamming_distance_16(a, b):
 
 def qfunc(x):
     return 0.5 * erfc(x / np.sqrt(2))
+
+def qfuncinv(y):
+    return np.sqrt(2) * erfcinv(2 * y)
 
 
 def entropy(pmf):
