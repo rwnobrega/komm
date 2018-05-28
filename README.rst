@@ -5,7 +5,7 @@ Komm
    :target: https://travis-ci.org/rwnobrega/komm
    :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/komm/badge/?version=lates
+.. image:: https://readthedocs.org/projects/komm/badge/?version=latest
    :target: https://komm.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status 
 
