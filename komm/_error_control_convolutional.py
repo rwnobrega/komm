@@ -616,15 +616,15 @@ class ConvolutionalCode:
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
         observed = pack(recvword, width=self._num_output_bits)
-        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_fun=hamming_distance_16)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_function=hamming_distance_16)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
     @tag(name='Viterbi (soft)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
         observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        metric_fun = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
-        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_fun=metric_fun)
+        metric_function = lambda y, z: np.dot(np.array(int2binlist(y, width=self._num_output_bits)), z)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_function=metric_function)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
