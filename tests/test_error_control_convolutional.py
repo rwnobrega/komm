@@ -44,7 +44,7 @@ def test_viterbi():
 
 def test_fsm_forward_backward():
     # Lin.Costello.04, p. 572-575.
-    def metric(z, y):
+    def metric(y, z):
         s = (-1)**np.array(int2binlist(y, width=len(z)))
         return 0.5 * np.dot(z, s)
     fsm = komm.FiniteStateMachine(next_states=[[0,1], [1,0]], outputs=[[0,3], [2,1]])

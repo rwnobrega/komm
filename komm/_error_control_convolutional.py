@@ -261,7 +261,7 @@ class FiniteStateMachine:
         for t, z in enumerate(observed_sequence):
             for x, s0 in np.ndindex(num_input_symbols, num_states):
                 y, s1 = self._outputs[s0, x], self._next_states[s0, x]
-                log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(z, y)
+                log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
 
         log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
         log_alpha[0, initial_state] = 0.0
