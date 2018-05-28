@@ -301,6 +301,17 @@ class ConvolutionalCode:
 
     for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.
 
+    **Decoding methods**
+
+    .. csv-table::
+       :header: Method, Identifier, Input type
+
+       Viterbi (hard-decision), :code:`viterbi_hard`, hard
+       Viterbi (soft-decision), :code:`viterbi_soft`, soft
+       BCJR, :code:`bcjr`, soft
+
+    **Table of convolutional codes**
+
     The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
     =================================  =================================
