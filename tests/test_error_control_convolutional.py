@@ -42,6 +42,18 @@ def test_viterbi():
      #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
 
 
+def test_fsm_forward_backward():
+    # Lin.Costello.04, p. 572-575.
+    def metric(z, y):
+        s = (-1)**np.array(int2binlist(y, width=len(z)))
+        return 0.5 * np.dot(z, s)
+    fsm = komm.FiniteStateMachine(next_states=[[0,1], [1,0]], outputs=[[0,3], [2,1]])
+    z = -np.array([(0.8, 0.1), (1.0, -0.5), (-1.8, 1.1), (1.6, -1.6)])
+    input_posteriors = fsm.forward_backward(z, metric_function=metric)
+    llr = np.log(input_posteriors[:,0] / input_posteriors[:,1])
+    assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
+
+
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials, message, codeword', [
     ([[0o7, 0o5]], None,
      int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
