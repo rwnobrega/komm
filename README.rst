@@ -19,7 +19,7 @@ Using pip
 
 .. code-block:: bash
 
-    $ sudo pip install komm
+    $ sudo pip3 install komm
 
 From source
 ~~~~~~~~~~~
@@ -28,4 +28,4 @@ From source
 
     $ git clone https://github.com/rwnobrega/komm
     $ cd komm/
-    $ sudo python setup.py install
+    $ sudo python3 setup.py install
