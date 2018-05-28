@@ -12,7 +12,7 @@ This software is still under development.
 Installation
 ------------
 
-Before you start, make sure you have both `Python <https://www.python.org/>`_ (version 3.4 or later) and `NumPy <https://www.numpy.org/>`_ (version 1.9 or later) installed.
+Before you start, make sure you have `Python <https://www.python.org/>`_ (version 3.4 or later), `NumPy <https://www.numpy.org/>`_, and `SciPy <https://www.scipy.org/>`_ installed.
 
 Using pip
 ~~~~~~~~~
