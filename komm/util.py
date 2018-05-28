@@ -51,25 +51,3 @@ def tag(**tags):
             setattr(function, key, value)
         return function
     return a
-
-def rst_table(table):
-    lengths = [0] * len(table[0])
-    for row in table:
-        for i, entry in enumerate(row):
-            lengths[i] = max(lengths[i], len(entry))
-
-    border = '  '.join('=' * x for x in lengths)
-    header, body = table[0], table[1:]
-
-    rst = border + '\n    '
-    header_str = '  '.join(entry.ljust(length) for length, entry in zip(lengths, header))
-
-    rst += header_str + '\n    ' + border + '\n    '
-
-    body_str = ''
-    for row in body:
-        body_str += '  '.join(entry.ljust(length) for length, entry in zip(lengths, row)) + '\n    '
-
-    rst += body_str + border
-
-    return rst

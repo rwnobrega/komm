@@ -9,7 +9,7 @@ from ._algebra import \
     BinaryPolynomial, BinaryFiniteExtensionField
 
 from .util import \
-    int2binlist, binlist2int, tag, rst_table
+    int2binlist, binlist2int, tag
 
 __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
            'RepetitionCode', 'SingleParityCheckCode', 'ReedMullerCode',
@@ -152,7 +152,13 @@ class BlockCode:
 
     @classmethod
     def _process_docstring(cls):
-        cls.__doc__ = cls.__doc__.replace('[[0]]', rst_table(cls._available_decoding_methods()))
+        table = cls._available_decoding_methods()
+        indent = ' ' * 4
+        rst = '.. csv-table::\n'
+        rst += '{indent}   :header: {header}\n\n'.format(indent=indent, header=', '.join(table[0]))
+        for row in table[1:]:
+            rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
+        cls.__doc__ = cls.__doc__.replace('[[0]]', rst)
 
     @property
     def length(self):
