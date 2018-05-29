@@ -1,3 +1,5 @@
+__version__ = '0.3'
+
 from ._algebra import *
 from ._channels import *
 from ._error_control_block import *
