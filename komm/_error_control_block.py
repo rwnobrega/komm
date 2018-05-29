@@ -9,7 +9,9 @@ from ._algebra import \
     BinaryPolynomial, BinaryFiniteExtensionField
 
 from .util import \
-    int2binlist, binlist2int, tag
+    int2binlist, binlist2int
+
+from ._aux import tag
 
 __all__ = ['BlockCode', 'HammingCode', 'SimplexCode', 'GolayCode',
            'RepetitionCode', 'SingleParityCheckCode', 'ReedMullerCode',

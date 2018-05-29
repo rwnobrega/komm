@@ -32,14 +32,3 @@ def mutual_information(input_pmf, transition_probabilities):
     entropy_output_prior = entropy(output_pmf)
     entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(entropy, 1, transition_probabilities))
     return entropy_output_prior - entropy_output_posterior
-
-
-def tag(**tags):
-    """
-    See PEP 232
-    """
-    def a(function):
-        for key, value in tags.items():
-            setattr(function, key, value)
-        return function
-    return a

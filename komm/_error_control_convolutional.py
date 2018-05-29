@@ -6,7 +6,9 @@ from ._algebra import \
     BinaryPolynomial, BinaryPolynomialFraction
 
 from .util import \
-    int2binlist, binlist2int, pack, unpack, tag
+    int2binlist, binlist2int, pack, unpack
+
+from ._aux import tag
 
 __all__ = ['FiniteStateMachine', 'ConvolutionalCode']
 
