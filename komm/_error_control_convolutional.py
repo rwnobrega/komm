@@ -6,7 +6,7 @@ from ._algebra import \
     BinaryPolynomial, BinaryPolynomialFraction
 
 from .util import \
-    int2binlist, binlist2int, pack, unpack, hamming_distance_16, tag
+    int2binlist, binlist2int, pack, unpack, tag
 
 __all__ = ['FiniteStateMachine', 'ConvolutionalCode']
 
@@ -626,8 +626,10 @@ class ConvolutionalCode:
 
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
     def _decode_viterbi_hard(self, recvword):
-        observed = pack(recvword, width=self._num_output_bits)
-        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_function=hamming_distance_16)
+        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
+        cache = np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
+        metric_function = lambda y, z: np.count_nonzero(cache[y] != z)
+        input_sequence_hat = self._finite_state_machine.viterbi(observed, metric_function=metric_function)
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
 
