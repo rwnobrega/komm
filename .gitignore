@@ -10,3 +10,4 @@ tmp/
 .cache
 .spyproject
 .pytest_cache
+.ttxfolder
