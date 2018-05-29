@@ -4,7 +4,7 @@ from scipy.special import erfc, erfcinv
 
 
 def binlist2int(list_):
-    return sum(1 << n for (n, b) in enumerate(list_) if b != 0)
+    return sum(1 << i for (i, b) in enumerate(list_) if b != 0)
 
 def int2binlist(int_, width=None):
     if width is None:
