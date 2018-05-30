@@ -194,8 +194,8 @@ class SincPulse(FormattingPulse):
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols // 2
-        t = np.arange(-L, L) / samples_per_symbol
+        L = samples_per_symbol * length_in_symbols
+        t = np.arange(-L//2, L//2) / samples_per_symbol
         impulse_response = np.sinc(t)
         super().__init__(impulse_response, samples_per_symbol)
         self._length_in_symbols = length_in_symbols
@@ -250,9 +250,9 @@ class RaisedCosinePulse(FormattingPulse):
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols // 2
+        L = samples_per_symbol * length_in_symbols
         epsilon = np.finfo(np.float).eps
-        t = np.arange(-L, L) / samples_per_symbol + epsilon
+        t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
         impulse_response = np.sinc(t) * np.cos(np.pi * rolloff * t) / (1 - (2 * rolloff * t)**2)
         super().__init__(impulse_response, samples_per_symbol)
         self._length_in_symbols = length_in_symbols
@@ -313,9 +313,9 @@ class RootRaisedCosinePulse(FormattingPulse):
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols // 2
+        L = samples_per_symbol * length_in_symbols
         epsilon = np.finfo(np.float).eps
-        t = np.arange(-L, L) / samples_per_symbol + epsilon
+        t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
         impulse_response = (np.sin(np.pi * (1 - rolloff) * t) +
                             4 * rolloff * t * np.cos(np.pi * (1 + rolloff) * t)) / \
                            (np.pi * t * (1 - (4 * rolloff * t)**2))
@@ -381,8 +381,8 @@ class GaussianPulse(FormattingPulse):
 
         >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, samples_per_symbol=20, length_in_symbols=4)
         """
-        L = samples_per_symbol * length_in_symbols // 2
-        t = np.arange(-L, L) / samples_per_symbol
+        L = samples_per_symbol * length_in_symbols
+        t = np.arange(-L//2, L//2) / samples_per_symbol
         B_bar = half_power_bandwidth / np.sqrt(np.log(2))
         impulse_response = np.exp(-0.5 * (2 * np.pi * B_bar * t)**2)
         super().__init__(impulse_response, samples_per_symbol)
