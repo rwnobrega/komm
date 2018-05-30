@@ -203,7 +203,7 @@ class SincPulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         """
-        The length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols
 
@@ -261,14 +261,14 @@ class RaisedCosinePulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         """
-        The length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols
 
     @property
     def rolloff_factor(self):
         """
-        The rolloff factor :math:`\\alpha` of the pulse
+        The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
         return self._rolloff_factor
 
@@ -326,14 +326,14 @@ class RootRaisedCosinePulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         """
-        The length (span) of the truncated impulse response.
+        The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols
 
     @property
     def rolloff_factor(self):
         """
-        The rolloff factor :math:`\\alpha` of the pulse
+        The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
         return self._rolloff_factor
 
@@ -344,6 +344,65 @@ class RootRaisedCosinePulse(FormattingPulse):
 
 class GaussianPulse(FormattingPulse):
     """
-    Gaussian pulse [Not implemented yet].
+    Gaussian pulse. Its impulse response is given by
+
+    .. math::
+
+        h(t) = \\mathrm{e}^{-\\frac{1}{2} (2 \pi \\bar{B} t)^2}
+
+    where the :math:`\\bar{B} = B / \\sqrt{\\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
+
+    The gaussian pulse is depicted below for :math:`B = 0.5`, and for :math:`B = 1`.
+
+    .. rst-class:: centered
+
+       |fig1| |quad| |quad| |quad| |quad| |fig2|
+
+    .. |fig1| image:: figures/pulse_gaussian_50.png
+       :alt: Gaussian pulse with half-power bandwidth of 0.5
+
+    .. |fig2| image:: figures/pulse_gaussian_100.png
+       :alt: Gaussian pulse with half-power bandwidth of 1
+
+    .. |quad| unicode:: 0x2001
+       :trim:
     """
-    pass
+    def __init__(self, half_power_bandwidth, samples_per_symbol, length_in_symbols):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`half_power_bandwidth` : :obj:`float`
+            The half-power bandwidth :math:`B` of the pulse.
+
+        :code:`samples_per_symbol` : :obj:`int`
+            The number of samples per symbol.
+
+        .. rubric:: Examples
+
+        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, samples_per_symbol=20, length_in_symbols=4)
+        """
+        L = samples_per_symbol * length_in_symbols // 2
+        t = np.arange(-L, L) / samples_per_symbol
+        B_bar = half_power_bandwidth / np.sqrt(np.log(2))
+        impulse_response = np.exp(-0.5 * (2 * np.pi * B_bar * t)**2)
+        super().__init__(impulse_response, samples_per_symbol)
+        self._length_in_symbols = length_in_symbols
+        self._half_power_bandwidth = half_power_bandwidth
+
+    def __repr__(self):
+        args = 'half_power_bandwidth={}, samples_per_symbol={}, length_in_symbols={}'.format(self._bandwidth, self._samples_per_symbol, self._length_in_symbols)
+        return '{}({})'.format(self.__class__.__name__, args)
+
+    @property
+    def half_power_bandwidth(self):
+        """
+        The half-power bandwidth :math:`B` of the pulse. This property is read-only.
+        """
+        return self._half_power_bandwidth
+
+    @property
+    def length_in_symbols(self):
+        """
+        The length (span) of the truncated impulse response. This property is read-only.
+        """
+        return self._length_in_symbols
