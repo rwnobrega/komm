@@ -52,10 +52,10 @@ class FormattingPulse:
             The output, formatted signal.
         """
         sps = self._samples_per_symbol
-        signal_interp = np.zeros(len(signal) * sps, dtype=np.float)
+        signal_interp = np.zeros(len(symbols) * sps, dtype=np.float)
         signal_interp[::sps] = symbols
         formatted = np.convolve(self._impulse_response, signal_interp)
-        return filtered
+        return formatted
 
     def __repr__(self):
         args = 'impulse_response={}, samples_per_symbol={}'.format(self._impulse_response.tolist(), self._samples_per_symbol)
