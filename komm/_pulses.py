@@ -251,7 +251,7 @@ class RaisedCosinePulse(FormattingPulse):
             The length (span) of the truncated impulse response, in symbols.
         """
         L = samples_per_symbol * length_in_symbols
-        epsilon = np.finfo(np.float).eps
+        epsilon = 1e-8
         t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
         impulse_response = np.sinc(t) * np.cos(np.pi * rolloff * t) / (1 - (2 * rolloff * t)**2)
         super().__init__(impulse_response, samples_per_symbol)
@@ -314,7 +314,7 @@ class RootRaisedCosinePulse(FormattingPulse):
             The length (span) of the truncated impulse response, in symbols.
         """
         L = samples_per_symbol * length_in_symbols
-        epsilon = np.finfo(np.float).eps
+        epsilon = 1e-8
         t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
         impulse_response = (np.sin(np.pi * (1 - rolloff) * t) +
                             4 * rolloff * t * np.cos(np.pi * (1 + rolloff) * t)) / \
