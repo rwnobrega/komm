@@ -182,6 +182,13 @@ class BlockCode:
         return self._redundancy
 
     @property
+    def rate(self):
+        """
+        The code rate :math:`R = k/n` of the code. This property is read-only.
+        """
+        return self._dimension / self._length
+
+    @property
     def minimum_distance(self):
         """
         The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
