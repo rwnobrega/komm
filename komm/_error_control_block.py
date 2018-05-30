@@ -107,7 +107,6 @@ class BlockCode:
 
     def _init_from_generator_matrix(self, generator_matrix):
         self._generator_matrix = np.array(generator_matrix, dtype=np.int) % 2
-        self._parity_check_matrix = null_matrix(self._generator_matrix)
         self._dimension, self._length = self._generator_matrix.shape
         self._redundancy = self._length - self._dimension
         self._is_systematic = False
@@ -115,7 +114,6 @@ class BlockCode:
 
     def _init_from_parity_check_matrix(self, parity_check_matrix):
         self._parity_check_matrix = np.array(parity_check_matrix, dtype=np.int) % 2
-        self._generator_matrix = null_matrix(self._parity_check_matrix)
         self._redundancy, self._length = self._parity_check_matrix.shape
         self._dimension = self._length - self._redundancy
         self._is_systematic = False
@@ -217,6 +215,8 @@ class BlockCode:
         """
         The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
         """
+        if not hasattr(self, '_generator_matrix'):
+            self._generator_matrix = null_matrix(self._parity_check_matrix)
         return self._generator_matrix
 
     @property
@@ -224,6 +224,8 @@ class BlockCode:
         """
         The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
         """
+        if not hasattr(self, '_parity_check_matrix'):
+            self._parity_check_matrix = null_matrix(self._generator_matrix)
         return self._parity_check_matrix
 
     def codeword_table(self):
@@ -310,7 +312,7 @@ class BlockCode:
                 for idx in itertools.combinations(range(self._length), w):
                     errorword = np.zeros(self._length, dtype=np.int)
                     errorword[list(idx)] = 1
-                    syndrome = np.dot(errorword, self._parity_check_matrix.T) % 2
+                    syndrome = np.dot(errorword, self.parity_check_matrix.T) % 2
                     syndrome_int = binlist2int(syndrome)
                     if syndrome_int not in taken:
                         self._coset_leader_table[syndrome_int] = np.array(errorword)
@@ -372,7 +374,7 @@ class BlockCode:
         return codeword
 
     def _encode_generator_matrix(self, message):
-        codeword = np.dot(message, self._generator_matrix) % 2
+        codeword = np.dot(message, self.generator_matrix) % 2
         return codeword
 
     def _encode_systematic_generator_matrix(self, message):
@@ -463,7 +465,7 @@ class BlockCode:
         Syndrome table decoder.
         """
         coset_leader_table = self.coset_leader_table()
-        syndrome = np.dot(recvword, self._parity_check_matrix.T) % 2
+        syndrome = np.dot(recvword, self.parity_check_matrix.T) % 2
         syndrome_int = binlist2int(syndrome)
         errorword_hat = coset_leader_table[syndrome_int]
         codeword_hat = np.bitwise_xor(recvword, errorword_hat)
