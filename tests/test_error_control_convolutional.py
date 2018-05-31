@@ -71,6 +71,17 @@ def test_terminated_convolutional_code():
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
 
 
+@pytest.mark.parametrize('mode', ['zero-tail', 'truncated', 'tail-biting'])
+def test_terminated_convolutional_code_encoders(mode):
+    feedforward_polynomials = [[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]
+    num_blocks = 3
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode=mode)
+    for i in range(2**code.dimension):
+        message = int2binlist(i, width=code.dimension)
+        assert np.array_equal(code.encode(message, method='generator_matrix'),
+                              code.encode(message, method='finite_state_machine'))
+
+
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials, message, codeword', [
     ([[0o7, 0o5]], None,
      int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
