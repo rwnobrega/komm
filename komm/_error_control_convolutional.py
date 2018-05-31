@@ -666,15 +666,13 @@ class ConvolutionalCode:
 
 class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
     """
-    Terminated binary convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k` information bits) is encoded.
+    Terminated binary convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k` information bits) is encoded. The dimension of the resulting block code is thus :math:`K = kh`; its length depends on the termination mode employed. There are three possible modes of termination:
 
-    There are three possible modes of termination:
+    **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`N = nh`.
 
-    **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`N = nh` and dimension :math:`K = kh`.
+    **Zero-tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`km` zero bits is appended to the information bits, where :math:`m` is the memory order of the convolutional code. The resulting block code will have length :math:`N = n(h + m)`.
 
-    **Zero-tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`km` zero bits is appended to the information bits, where :math:`m` is the memory order of the convolutional code. The resulting block code will have length :math:`N = n(h + m)` and dimension :math:`K = kh`.
-
-    **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`N = nh` and dimension :math:`K = kh`.
+    **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`N = nh`.
 
     Only feedforward convolutional codes are supported.
 
