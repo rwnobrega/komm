@@ -65,6 +65,7 @@ Convolutional coding
 
     FiniteStateMachine
     ConvolutionalCode
+    TerminatedConvolutionalCode
 
 Modulation
 ----------

@@ -5,12 +5,15 @@ from scipy.special import logsumexp
 from ._algebra import \
     BinaryPolynomial, BinaryPolynomialFraction
 
+from ._error_control_block import \
+    BlockCode
+
 from .util import \
     int2binlist, binlist2int, pack, unpack
 
 from ._aux import tag
 
-__all__ = ['FiniteStateMachine', 'ConvolutionalCode']
+__all__ = ['FiniteStateMachine', 'ConvolutionalCode', 'TerminatedConvolutionalCode']
 
 
 class FiniteStateMachine:
@@ -659,3 +662,125 @@ class ConvolutionalCode:
             return 'viterbi_hard'
         elif dtype == np.float:
             return 'viterbi_soft'
+
+
+class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
+    """
+    Terminated binary convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k` information bits) is encoded.
+
+    There are three possible modes of termination:
+
+    **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`N = nh` and dimension :math:`K = kh`.
+
+    **Zero-tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`km` zero bits is appended to the information bits, where :math:`m` is the memory order of the convolutional code. The resulting block code will have length :math:`N = n(h + m)` and dimension :math:`K = kh`.
+
+    **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`N = nh` and dimension :math:`K = kh`.
+
+    Only feedforward convolutional codes are supported.
+
+    References: :cite:`Lin.Costello.04`
+    """
+    def __init__(self, feedforward_polynomials, num_blocks, mode='zero-tail'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)
+            The matrix of feedforward polynomials :math:`P(D)` of the convolutional code. For more details, check the documentation in :class:`ConvolutionalCode`.
+
+        :code:`num_blocks` : :obj:`int`
+            The number :math:`h` of information blocks.
+
+        :code:`mode` : :obj:`str`, optional
+            The termination mode. It must be one of :code:`'truncated'`, :code:`'zero-tail'`, or :code:`'tail-biting'`. The default value is :code:`'zero-tail'`.
+
+        .. rubric:: Examples
+
+        >>> code = komm.TerminatedConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]], num_blocks=3, mode='zero-tail')
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (8, 3, 3)
+        >>> code.generator_matrix
+        array([[1, 1, 0, 1, 0, 0, 0, 0],
+               [0, 0, 1, 1, 0, 1, 0, 0],
+               [0, 0, 0, 0, 1, 1, 0, 1]])
+
+        >>> code = komm.TerminatedConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]], num_blocks=3, mode='truncated')
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (6, 3, 2)
+        >>> code.generator_matrix
+        array([[1, 1, 0, 1, 0, 0],
+               [0, 0, 1, 1, 0, 1],
+               [0, 0, 0, 0, 1, 1]])
+
+        >>> code = komm.TerminatedConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]], num_blocks=3, mode='tail-biting')
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (6, 3, 3)
+        >>> code.generator_matrix
+        array([[1, 1, 0, 1, 0, 0],
+               [0, 0, 1, 1, 0, 1],
+               [0, 1, 0, 0, 1, 1]])
+        """
+        ConvolutionalCode.__init__(self, feedforward_polynomials)
+
+        k, n, m = self._num_input_bits, self._num_output_bits, self.memory_order
+
+        sliced_generator_matrices = np.empty((m + 1, k, n), dtype=np.int)
+
+        for i, j in np.ndindex(k, n):
+            sliced_generator_matrices[:, i, j] = self._feedforward_polynomials[i, j].coefficients(width=m + 1)
+
+        base_rows_left = np.concatenate([sliced_generator_matrices[ell, :, :] for ell in range(m + 1)], axis=1)
+        base_rows_right = np.zeros((k, n*(num_blocks - m - 1)), dtype=np.int)
+        base_rows = np.concatenate([base_rows_left, base_rows_right], axis=1)
+
+        if mode == 'truncated':
+            generator_matrix = np.zeros((k*num_blocks, n*num_blocks), dtype=np.int)
+            for t in range(num_blocks):
+                generator_matrix[k*t : k*(t + 1), :] = np.roll(base_rows, shift=n*t,  axis=1)
+                generator_matrix[k*t : k*(t + 1), : n*t] = 0
+        elif mode == 'zero-tail':
+            generator_matrix = np.zeros((k*num_blocks, n*(num_blocks + m)), dtype=np.int)
+            for t in range(num_blocks):
+                generator_matrix[k*t : k*(t + 1), n*t : n*t + n*(m + 1)] = base_rows_left
+        elif mode == 'tail-biting':
+            generator_matrix = np.zeros((k*num_blocks, n*num_blocks), dtype=np.int)
+            for t in range(num_blocks):
+                generator_matrix[k*t : k*(t + 1), :] = np.roll(base_rows, shift=n*t,  axis=1)
+        else:
+            raise ValueError("Parameter 'mode' must be in {'truncated', 'zero-tail', 'tail-biting'}")
+
+        BlockCode.__init__(self, generator_matrix=generator_matrix)
+
+        self._mode = mode
+        self._num_blocks = num_blocks
+
+    @property
+    def num_blocks(self):
+        """
+        The number :math:`h` of information blocks of the terminated convolutional code.
+        """
+        return self._num_blocks
+
+    @property
+    def mode(self):
+        """
+        The termination mode of the terminated convolutional code.
+        """
+        return self._mode
+
+    def _encode_finite_state_machine(self, message):
+        if self._mode == 'truncated':
+            tail = np.empty(0, dtype=np.int)
+            self._finite_state_machine.state = 0
+        elif self._mode == 'zero-tail':
+            tail = np.zeros(self._num_input_bits*self.memory_order, dtype=np.int)
+            self._finite_state_machine.state = 0
+        elif self._mode == 'tail-biting':
+            tail = np.empty(0, dtype=np.int)
+            self._finite_state_machine.state = binlist2int(message[-self._num_input_bits*self.memory_order :])
+        input_sequence = pack(np.concatenate([message, tail]), width=self._num_input_bits)
+        output_sequence = self._finite_state_machine.process(input_sequence)
+        codeword = unpack(output_sequence, width=self._num_output_bits)
+        return codeword
+
+    def _default_encoder(self):
+        return 'finite_state_machine'
