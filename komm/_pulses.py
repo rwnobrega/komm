@@ -64,7 +64,7 @@ class FormattingPulse:
 
 class RectangularPulse(FormattingPulse):
     """
-    Rectangular pulse. Its impulse response is given by
+    Rectangular pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
@@ -129,7 +129,7 @@ class RectangularPulse(FormattingPulse):
 
 class ManchesterPulse(FormattingPulse):
     """
-    Manchester pulse. Its impulse response is given by
+    Manchester pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
@@ -172,7 +172,7 @@ class ManchesterPulse(FormattingPulse):
 
 class SincPulse(FormattingPulse):
     """
-    Sinc pulse. Its impulse response is given by
+    Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
@@ -214,7 +214,7 @@ class SincPulse(FormattingPulse):
 
 class RaisedCosinePulse(FormattingPulse):
     """
-    Raised cosine pulse. Its impulse response is given by
+    Raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
@@ -279,7 +279,7 @@ class RaisedCosinePulse(FormattingPulse):
 
 class RootRaisedCosinePulse(FormattingPulse):
     """
-    Root raised cosine pulse. Its impulse response is given by
+    Root raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
@@ -344,7 +344,7 @@ class RootRaisedCosinePulse(FormattingPulse):
 
 class GaussianPulse(FormattingPulse):
     """
-    Gaussian pulse. Its impulse response is given by
+    Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response is given by
 
     .. math::
 
