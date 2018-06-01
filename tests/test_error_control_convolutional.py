@@ -76,18 +76,6 @@ def test_convolutional_code():
     assert np.array_equal(code.encode([1, 1, 1, 0]), [1,1, 1,0, 1,1, 0,0])
 
 
-def test_convolutional_viterbi():
-    # Lin.Costello.04, p. 519-522.
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
-    recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
-    recvword_2 = (-1)**recvword_1
-    codeword_hat_1 = code.encode(code.decode(recvword_1, method='viterbi_hard'))
-    codeword_hat_2 = code.encode(code.decode(recvword_2, method='viterbi_soft'))
-    assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
-    assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
-    #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
-
-
 def test_terminated_convolutional_code():
     feedforward_polynomials = [[0b1, 0b11]]
     num_blocks = 3
@@ -103,6 +91,24 @@ def test_terminated_convolutional_code():
     code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='tail-biting')
     assert (code.length, code.dimension) == (6, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
+
+
+def test_terminated_convolutional_code_viterbi():
+    # Lin.Costello.04, p. 522-523.
+    feedforward_polynomials=[[0b011, 0b101, 0b111]]
+    num_blocks = 5
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='zero-tail')
+    recvword = np.array([1,1,0, 1,1,0, 1,1,0, 1,1,1, 0,1,0, 1,0,1, 1,0,1])
+    message_hat = code.decode(recvword, method='viterbi_hard')
+    assert np.array_equal(message_hat, [1,1,0,0,1])
+
+    # Ryan.Lin.09, p. 176-177
+    feedforward_polynomials=[[0b111, 0b101]]
+    num_blocks = 5
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='truncated')
+    recvword = np.array([-0.7,-0.5, -0.8,-0.6, -1.1,+0.4, +0.9,+0.8])
+    message_hat = code.decode(recvword, method='viterbi_soft')
+    assert np.array_equal(message_hat, [1,0,0,0])
 
 
 @pytest.mark.parametrize('mode', ['zero-tail', 'truncated', 'tail-biting'])
