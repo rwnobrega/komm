@@ -6,6 +6,31 @@ import komm
 from komm.util import int2binlist
 
 
+def test_fsm_forward_viterbi():
+    # Sklar.01, p. 401-405.
+    def metric_function(y, z):
+        s = np.array(int2binlist(y, width=len(z)))
+        return np.count_nonzero(z != s)
+    fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+    z = np.array([(1, 1), (0, 1), (0, 1), (1, 0), (0, 1)])
+    initial_metrics = [0.0, np.inf, np.inf, np.inf]
+    input_sequences_hat, final_metrics = fsm.viterbi(z, metric_function, initial_metrics)
+    assert np.allclose(final_metrics, [2.0, 2.0, 2.0, 1.0])
+    assert np.array_equal(input_sequences_hat.T, [[1,1,0,0,0], [1,1,0,0,1], [1,1,1,1,0], [1,1,0,1,1]])
+
+
+def test_fsm_forward_backward():
+    # Lin.Costello.04, p. 572-575.
+    def metric_function(y, z):
+        s = (-1)**np.array(int2binlist(y, width=len(z)))
+        return 0.5 * np.dot(z, s)
+    fsm = komm.FiniteStateMachine(next_states=[[0,1], [1,0]], outputs=[[0,3], [2,1]])
+    z = -np.array([(0.8, 0.1), (1.0, -0.5), (-1.8, 1.1), (1.6, -1.6)])
+    input_posteriors = fsm.forward_backward(z, metric_function)
+    llr = np.log(input_posteriors[:,0] / input_posteriors[:,1])
+    assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
+
+
 def test_convolutional_simple():
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
@@ -30,7 +55,7 @@ def test_convolutional_feedback():
     assert np.array_equal(code.encode([1,1,1,0]), [1,1,1,0,1,1,0,0])
 
 
-def test_viterbi():
+def test_convolutional_viterbi():
     # Lin.Costello.04, p. 519-522.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
     recvword_1 = np.array([1,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,1])
@@ -40,18 +65,6 @@ def test_viterbi():
     assert np.array_equal(codeword_hat_1, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
     assert np.array_equal(codeword_hat_2, [1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1])
     #recvword = [2,3,0,2,2,1,2,2,0,2,2,2,0,3,0,3,1,2,3,0,2]
-
-
-def test_fsm_forward_backward():
-    # Lin.Costello.04, p. 572-575.
-    def metric(y, z):
-        s = (-1)**np.array(int2binlist(y, width=len(z)))
-        return 0.5 * np.dot(z, s)
-    fsm = komm.FiniteStateMachine(next_states=[[0,1], [1,0]], outputs=[[0,3], [2,1]])
-    z = -np.array([(0.8, 0.1), (1.0, -0.5), (-1.8, 1.1), (1.6, -1.6)])
-    input_posteriors = fsm.forward_backward(z, metric_function=metric)
-    llr = np.log(input_posteriors[:,0] / input_posteriors[:,1])
-    assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
 
 
 def test_terminated_convolutional_code():
