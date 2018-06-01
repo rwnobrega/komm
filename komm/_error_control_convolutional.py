@@ -752,6 +752,10 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
 
         BlockCode.__init__(self, generator_matrix=generator_matrix)
 
+        cache = np.array([int2binlist(y, width=n) for y in range(2**n)])
+        self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache[y] != z)
+        self._metric_function_viterbi_soft = lambda y, z: np.dot(cache[y], z)
+
         self._mode = mode
         self._num_blocks = num_blocks
 
@@ -786,3 +790,48 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
 
     def _default_encoder(self):
         return 'finite_state_machine'
+
+    def _helper_decode_viterbi(self, recvword, metric_function):
+        if self._mode in ['truncated', 'zero-tail']:
+            initial_metrics = np.full(2**self._overall_constraint_length, fill_value=np.inf)
+            initial_metrics[0] = 0.0
+        elif self._mode == 'tail-biting':
+            initial_metrics = np.zeros(2**self._overall_constraint_length, dtype=np.float)
+
+        observed_sequence = np.reshape(recvword, newshape=(-1, self._num_output_bits))
+        input_sequences_hat, final_metrics = self._finite_state_machine.viterbi(observed_sequence, metric_function, initial_metrics)
+
+        if self._mode == 'truncated':
+            final_state_hat = np.argmin(final_metrics)
+            input_sequence_hat = input_sequences_hat[:, final_state_hat]
+        elif self._mode == 'zero-tail':
+            input_sequence_hat = input_sequences_hat[:, 0][: -self._num_input_bits*self._memory_order]
+        elif self._mode == 'tail-biting':
+            pass
+
+        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
+        return message_hat
+
+    @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
+    def _decode_viterbi_hard(self, recvword):
+        return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_hard)
+
+    @tag(name='Viterbi (soft)', input_type='soft', target='message')
+    def _decode_viterbi_soft(self, recvword):
+        return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_soft)
+
+    @tag(name='BCJR', input_type='soft', target='message')
+    def _decode_bcjr(self, recvword, SNR=1.0):
+        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
+        cache = (-1)**np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
+        metric_function = lambda y, z: 4 * SNR * np.dot(cache[y], z)
+        input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
+        input_sequence_hat = np.argmax(input_posteriors, axis=1)
+        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
+        return message_hat
+
+    def _default_decoder(self, dtype):
+        if dtype == np.int:
+            return 'viterbi_hard'
+        elif dtype == np.float:
+            return 'viterbi_soft'
