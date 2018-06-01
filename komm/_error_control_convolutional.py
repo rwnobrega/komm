@@ -683,6 +683,15 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
 
     Only feedforward convolutional codes are supported.
 
+    **Decoding methods**
+
+    .. csv-table::
+       :header: Method, Identifier, Input type
+
+       Viterbi (hard-decision), :code:`viterbi_hard`, hard
+       Viterbi (soft-decision), :code:`viterbi_soft`, soft
+       BCJR, :code:`bcjr`, soft
+
     References: :cite:`Lin.Costello.04`
     """
     def __init__(self, feedforward_polynomials, num_blocks, mode='zero-tail'):
