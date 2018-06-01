@@ -93,6 +93,14 @@ def test_terminated_convolutional_code():
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
 
 
+def test_terminated_convolutional_golay():
+    # Lin.Costello.04, p.602
+    feedforward_polynomials = [[3,0,1,0,3,1,1,1], [0,3,1,1,2,3,1,0], [2,2,3,0,0,2,3,1], [0,2,0,3,2,2,2,3]]
+    num_blocks = 3
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='tail-biting')
+    assert (code.length, code.dimension, code.minimum_distance) == (24, 12, 8)
+
+
 def test_terminated_convolutional_code_viterbi():
     # Lin.Costello.04, p. 522-523.
     feedforward_polynomials=[[0b011, 0b101, 0b111]]
