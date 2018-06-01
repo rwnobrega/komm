@@ -31,28 +31,38 @@ def test_fsm_forward_backward():
     assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
 
 
-def test_convolutional_simple():
+def test_convolutional_code():
+    # Lin.Costello.04, p. 454--456
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
-    assert np.array_equal(code.encode([1,0,1,1,1,0,0,0]), [1,1,0,1,0,0,0,1,0,1,0,1,0,0,1,1])
     assert np.array_equal(code.constraint_lengths, [3])
     assert np.array_equal(code.memory_order, 3)
     assert np.array_equal(code.overall_constraint_length, 3)
+    assert np.array_equal(code.encode([1, 0, 1, 1, 1, 0, 0, 0]), [1,1, 0,1, 0,0, 0,1, 0,1, 0,1, 0,0, 1,1])
 
+    # Lin.Costello.04, p. 456--458
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
-    assert np.array_equal(code.encode([1,1,0,1,1,0,0,0]), [1,1,0,0,0,0,0,0,1,1,1,1])
     assert np.array_equal(code.constraint_lengths, [1, 1])
     assert np.array_equal(code.memory_order, 1)
     assert np.array_equal(code.overall_constraint_length, 2)
+    assert np.array_equal(code.encode([1,1, 0,1, 1,0, 0,0]), [1,1,0, 0,0,0, 0,0,1, 1,1,1])
 
-
-def test_convolutional_feedback():
     # Ryan.Lin.09, p. 154.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-    assert np.array_equal(code.encode([1,0,0,0]), [1,1,1,0,1,1,0,0])
+    assert (code.num_output_bits, code.num_input_bits) == (2, 1)
+    assert np.array_equal(code.constraint_lengths, [2])
+    assert np.array_equal(code.memory_order, 2)
+    assert np.array_equal(code.overall_constraint_length, 2)
+    assert np.array_equal(code.encode([1, 0, 0, 0]), [1,1, 1,0, 1,1, 0,0])
+
+    # Ibid.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
-    assert np.array_equal(code.encode([1,1,1,0]), [1,1,1,0,1,1,0,0])
+    assert (code.num_output_bits, code.num_input_bits) == (2, 1)
+    assert np.array_equal(code.constraint_lengths, [2])
+    assert np.array_equal(code.memory_order, 2)
+    assert np.array_equal(code.overall_constraint_length, 2)
+    assert np.array_equal(code.encode([1, 1, 1, 0]), [1,1, 1,0, 1,1, 0,0])
 
 
 def test_convolutional_viterbi():
