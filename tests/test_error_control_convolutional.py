@@ -18,6 +18,17 @@ def test_fsm_forward_viterbi():
     assert np.allclose(final_metrics, [2.0, 2.0, 2.0, 1.0])
     assert np.array_equal(input_sequences_hat.T, [[1,1,0,0,0], [1,1,0,0,1], [1,1,1,1,0], [1,1,0,1,1]])
 
+    # Ryan.Lin.09, p. 176-177
+    def metric_function(y, z):
+        y = (-1)**np.array(int2binlist(y, width=len(z)))
+        return -np.dot(z, y)
+    fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+    z = np.array([(-0.7, -0.5), (-0.8, -0.6), (-1.1, +0.4), (+0.9, +0.8)])
+    initial_metrics = [0.0, np.inf, np.inf, np.inf]
+    input_sequences_hat, final_metrics = fsm.viterbi(z, metric_function, initial_metrics)
+    assert np.allclose(final_metrics, [-3.8, -3.4, -2.6, -2.4])
+    assert np.array_equal(input_sequences_hat.T, [[1,0,0,0], [0,1,0,1], [1,1,1,0], [1,1,1,1]])
+
 
 def test_fsm_forward_backward():
     # Lin.Costello.04, p. 572-575.
