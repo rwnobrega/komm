@@ -8,7 +8,7 @@
 
    {% block attributes %}
    {%- if attributes %}
-   .. rubric:: Attributes
+   .. rubric:: Properties
 
    .. autosummary::
    {%- for item in attributes %}
