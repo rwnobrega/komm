@@ -180,9 +180,9 @@ class FiniteStateMachine:
             output_sequence[t] = y
         return output_sequence
 
-    def viterbi(self, observed_sequence, metric_function, initial_state=0, final_state=0):
+    def viterbi(self, observed_sequence, metric_function, initial_metrics=None):
         """
-        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\\hat{\\mathbf{x}} = (\\hat{x}_0, \\hat{x}_1, \\ldots, \\hat{x}_{L-1}) \\in \\mathcal{X}^L` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. It is assumed uniform priors.
+        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\\hat{\\mathbf{x}}(s) \\in \\mathcal{X}^L` ending in state :math:`s`, for all :math:`s \\in \\mathcal{S}`, given an observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`. It is assumed uniform input priors.
 
         References: :cite:`Lin.Costello.04` (Sec. 12.1).
 
@@ -194,21 +194,24 @@ class FiniteStateMachine:
         :code:`metric_function` : function
             The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
 
-        :code:`initial_state` : :obj:`int`, optional
-            The initial state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
-
-        :code:`final_state` : :obj:`int`, optional
-            The final state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+        :code:`initial_metrics` : 1D-array of :obj:`float`, optional
+            The initial metrics for each state. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is :code:`0.0` for all states.
 
         **Output:**
 
-        :code:`input_sequence_hat` : 1D-array of :obj:`int`
-            The most probable input sequence :math:`\\hat{\\mathbf{x}} \\in \\mathcal{X}^L`.
+        :code:`input_sequences_hat` : 2D-array of :obj:`int`
+            The most probable input sequence :math:`\\hat{\\mathbf{x}}(s) \\in \\mathcal{X}^L` ending in state :math:`s`, for all :math:`s \\in \\mathcal{S}`. It is a 2D-array of shape :math:`L \\times |\\mathcal{S}|`, in which column :math:`s` is equal to :math:`\\hat{\\mathbf{x}}(s)`.
+
+        :code:`final_metrics` : 1D-array of :obj:`float`
+            The final metrics for each state. It is a 1D-array of length :math:`|\\mathcal{S}|`.
         """
         L, num_states = len(observed_sequence), self._num_states
         choices = np.empty((L, num_states), dtype=np.int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
-        metrics[0, initial_state] = 0.0
+        if initial_metrics is None:
+            metrics[0, :] = np.zeros(num_states, dtype=np.float)
+        else:
+            metrics[0, :] = initial_metrics
         for t, z in enumerate(observed_sequence):
             for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
@@ -218,14 +221,15 @@ class FiniteStateMachine:
                         choices[t, s1] = s0
 
         # Backtrack
-        s1 = final_state
-        input_sequence_hat = np.empty(L, dtype=np.int)
-        for t in reversed(range(L)):
-            s0 = choices[t, s1]
-            input_sequence_hat[t] = self._input_edges[s0, s1]
-            s1 = s0
+        input_sequences_hat = np.empty((L, num_states), dtype=np.int)
+        for final_state in range(num_states):
+            s1 = final_state
+            for t in reversed(range(L)):
+                s0 = choices[t, s1]
+                input_sequences_hat[t, final_state] = self._input_edges[s0, s1]
+                s1 = s0
 
-        return input_sequence_hat
+        return input_sequences_hat, metrics[L, :]
 
     def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state=0, final_state=0):
         """
