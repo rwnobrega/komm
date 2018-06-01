@@ -112,7 +112,7 @@ def test_terminated_convolutional_code_viterbi():
 
     # Ryan.Lin.09, p. 176-177
     feedforward_polynomials=[[0b111, 0b101]]
-    num_blocks = 5
+    num_blocks = 4
     code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='truncated')
     recvword = np.array([-0.7,-0.5, -0.8,-0.6, -1.1,+0.4, +0.9,+0.8])
     message_hat = code.decode(recvword, method='viterbi_soft')

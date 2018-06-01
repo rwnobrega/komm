@@ -372,6 +372,9 @@ class BlockCode:
         """
         message = np.array(message)
 
+        if message.size != self._dimension:
+            raise ValueError("Length of 'message' must be equal to the code dimension")
+
         if method is None:
             method = self._default_encoder()
 
@@ -433,6 +436,9 @@ class BlockCode:
             The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
         """
         recvword = np.array(recvword)
+
+        if recvword .size != self._length:
+            raise ValueError("Length of 'recvword' must be equal to the code length")
 
         if method is None:
             method = self._default_decoder(recvword.dtype)

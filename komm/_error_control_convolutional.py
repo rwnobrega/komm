@@ -786,16 +786,15 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
         return self._mode
 
     def _encode_finite_state_machine(self, message):
+        input_sequence = pack(message, width=self._num_input_bits)
         if self._mode == 'truncated':
-            tail = np.empty(0, dtype=np.int)
             self._finite_state_machine.state = 0
         elif self._mode == 'zero-tail':
-            tail = np.zeros(self._num_input_bits*self.memory_order, dtype=np.int)
+            input_sequence = np.pad(input_sequence, (0, self.memory_order), mode='constant')
             self._finite_state_machine.state = 0
         elif self._mode == 'tail-biting':
-            tail = np.empty(0, dtype=np.int)
-            self._finite_state_machine.state = binlist2int(message[-self._num_input_bits*self.memory_order :])
-        input_sequence = pack(np.concatenate([message, tail]), width=self._num_input_bits)
+            self._finite_state_machine.state = input_sequence[-self.memory_order :]
+
         output_sequence = self._finite_state_machine.process(input_sequence)
         codeword = unpack(output_sequence, width=self._num_output_bits)
         return codeword
@@ -817,7 +816,7 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
             final_state_hat = np.argmin(final_metrics)
             input_sequence_hat = input_sequences_hat[:, final_state_hat]
         elif self._mode == 'zero-tail':
-            input_sequence_hat = input_sequences_hat[:, 0][: -self._num_input_bits*self._memory_order]
+            input_sequence_hat = input_sequences_hat[:, 0][: -self._memory_order]
         elif self._mode == 'tail-biting':
             pass
 
@@ -847,3 +846,4 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
             return 'viterbi_hard'
         elif dtype == np.float:
             return 'viterbi_soft'
+
