@@ -87,6 +87,24 @@ def test_convolutional_code():
     assert np.array_equal(code.encode([1, 1, 1, 0]), [1,1, 1,0, 1,1, 0,0])
 
 
+def test_convolutional_code_bcjr():
+    # Lin.Costello.04, p. 572-575.
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
+    recvword = -np.array([+0.8,+0.1, +1.0,-0.5, -1.8,+1.1, +1.6,-1.6])
+    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=0.25)
+    assert np.allclose(-message_llr, [0.48, 0.62, -1.02], atol=0.05)
+    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=0.25)
+    assert np.allclose(message_hat, [1, 1, 0])
+
+    # Abrantes.10, p.434-437
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+    recvword = -np.array([+0.3,+0.1, -0.5,+0.2, +0.8,+0.5, -0.5,+0.3, +0.1,-0.7, +1.5,-0.4])
+    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=1.25)
+    assert np.allclose(-message_llr, [1.78, 0.24, -1.97, 5.52], atol=0.05)
+    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=1.25)
+    assert np.allclose(message_hat, [1, 1, 0, 1])
+
+
 def test_terminated_convolutional_code():
     feedforward_polynomials = [[0b1, 0b11]]
     num_blocks = 3
@@ -139,6 +157,18 @@ def test_terminated_convolutional_code_viterbi():
     recvword = np.array([-0.7,-0.5, -0.8,-0.6, -1.1,+0.4, +0.9,+0.8])
     message_hat = code.decode(recvword, method='viterbi_soft')
     assert np.array_equal(message_hat, [1,0,0,0])
+
+
+def test_terminated_convolutional_code_bcjr():
+    # Abrantes.10, p.434-437
+    feedforward_polynomials = [[0b111, 0b101]]
+    num_blocks = 4
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='zero-tail')
+    recvword = -np.array([+0.3,+0.1, -0.5,+0.2, +0.8,+0.5, -0.5,+0.3, +0.1,-0.7, +1.5,-0.4])
+    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=1.25)
+    assert np.allclose(-message_llr, [1.78, 0.24, -1.97, 5.52], atol=0.05)
+    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=1.25)
+    assert np.allclose(message_hat, [1, 1, 0, 1])
 
 
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials, message, codeword', [
