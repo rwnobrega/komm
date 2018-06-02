@@ -454,9 +454,11 @@ class ConvolutionalCode:
 
         self._setup_finite_state_machine_direct_form()
 
-        cache = np.array([int2binlist(y, width=n) for y in range(2**n)])
-        self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache[y] != z)
-        self._metric_function_viterbi_soft = lambda y, z: np.dot(cache[y], z)
+        cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
+        self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
+        self._metric_function_viterbi_soft = lambda y, z: np.dot(cache_bit[y], z)
+        cache_polar = (-1)**cache_bit
+        self._metric_function_bcjr = lambda SNR, y, z: 2.0 * SNR * np.dot(cache_polar[y], z)
 
     def __repr__(self):
         feedforward_polynomials_str = str(np.vectorize(str)(self._feedforward_polynomials).tolist()).replace("'", "")
@@ -766,10 +768,6 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
 
         self._mode = mode
         self._num_blocks = num_blocks
-
-        cache = np.array([int2binlist(y, width=n) for y in range(2**n)])
-        self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache[y] != z)
-        self._metric_function_viterbi_soft = lambda y, z: np.dot(cache[y], z)
 
     @property
     def num_blocks(self):
