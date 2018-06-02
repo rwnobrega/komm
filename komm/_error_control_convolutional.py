@@ -231,7 +231,7 @@ class FiniteStateMachine:
 
         return input_sequences_hat, metrics[L, :]
 
-    def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state=0, final_state=0):
+    def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state_distribution=None, final_state_distribution=None):
         """
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.
 
@@ -248,11 +248,11 @@ class FiniteStateMachine:
         :code:`input_priors` : 2D-array of :obj:`float`, optional
             The prior :term:`pmf` of each input, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` should be :math:`p(x_t = x)`. The default value considers uniform priors.
 
-        :code:`initial_state` : :obj:`int`, optional
-            The initial state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+        :code:`initial_state_distribution` : 1D-array of :obj:`float`, optional
+            The :term:`pmf` of the initial state of the machine. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is uniform over all states.
 
-        :code:`final_state` : :obj:`int`, optional
-            The final state of the machine. It must be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
+        :code:`final_state_distribution` : 1D-array of :obj:`float`, optional
+            The :term:`pmf` of the final state of the machine. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is uniform over all states.
 
         **Output:**
 
@@ -264,7 +264,8 @@ class FiniteStateMachine:
         if input_priors is None:
             log_input_priors = np.full((L, num_input_symbols), fill_value=0.0)
         else:
-            log_input_priors = np.log(input_priors)
+            with np.errstate(divide='ignore'):
+                log_input_priors = np.log(input_priors)
 
         log_gamma = np.full((L, num_states, num_states), fill_value=-np.inf)
         for t, z in enumerate(observed_sequence):
@@ -272,14 +273,25 @@ class FiniteStateMachine:
                 y, s1 = self._outputs[s0, x], self._next_states[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
 
+
         log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
-        log_alpha[0, initial_state] = 0.0
+        if initial_state_distribution is None:
+            log_alpha[0, :] = 0.0
+        else:
+            with np.errstate(divide='ignore'):
+                log_alpha[0, :] = np.log(initial_state_distribution)
+
         for t in range(0, L - 1):
             for s1 in range(num_states):
                 log_alpha[t + 1, s1] = logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
 
         log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
-        log_beta[L, final_state] = 0.0
+        if final_state_distribution is None:
+            log_beta[L, :] = 0.0
+        else:
+            with np.errstate(divide='ignore'):
+                log_beta[L, :] = np.log(final_state_distribution)
+
         for t in range(L - 1, -1, -1):
             for s0 in range(num_states):
                 log_beta[t, s0] = logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
