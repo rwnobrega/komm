@@ -670,9 +670,14 @@ class ConvolutionalCode:
 
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
+        initial_state_distribution = np.eye(1, 2**self._overall_constraint_length, 0)
+        final_state_distribution = np.eye(1, 2**self._overall_constraint_length, 0)
+
         input_posteriors = self._finite_state_machine.forward_backward(
             observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
-            metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z))
+            metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z),
+            initial_state_distribution=initial_state_distribution,
+            final_state_distribution=final_state_distribution)
 
         input_posteriors = input_posteriors[:-self._memory_order]
 
@@ -821,7 +826,7 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
             initial_metrics = np.full(2**self._overall_constraint_length, fill_value=np.inf)
             initial_metrics[0] = 0.0
         elif self._mode == 'tail-biting':
-            initial_metrics = np.zeros(2**self._overall_constraint_length, dtype=np.float)
+            raise NotImplementedError("Viterbi algorithm not yet implemented for 'tail-biting'")
 
         input_sequences_hat, final_metrics = self._finite_state_machine.viterbi(
             observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
@@ -833,8 +838,6 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
             input_sequence_hat = input_sequences_hat[:, final_state_hat]
         elif self._mode == 'zero-tail':
             input_sequence_hat = input_sequences_hat[:, 0][: -self._memory_order]
-        elif self._mode == 'tail-biting':
-            raise NotImplementedError("Viterbi algorithm not yet implemented for 'tail-biting'")
 
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
@@ -849,14 +852,20 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
 
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
-        if self._mode != 'zero-tail':
-            raise NotImplementedError("BCJR algorithm only implemented for 'zero-tail'")
+        if self._mode == 'truncated':
+            initial_state_distribution = np.eye(1, 2**self._overall_constraint_length, 0)
+            final_state_distribution = np.zeros(2**self._overall_constraint_length)
+        elif self._mode == 'zero-tail':
+            initial_state_distribution = np.eye(1, 2**self._overall_constraint_length, 0)
+            final_state_distribution = np.eye(1, 2**self._overall_constraint_length, 0)
+        else:
+            raise NotImplementedError("BCJR algorithm not yet implemented for 'tail-biting'")
 
         input_posteriors = self._finite_state_machine.forward_backward(
             observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
             metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z),
-            initial_state=0,
-            final_state=0)
+            initial_state_distribution=initial_state_distribution,
+            final_state_distribution=final_state_distribution)
 
         input_posteriors = input_posteriors[:-self._memory_order]
 
