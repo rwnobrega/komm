@@ -142,6 +142,8 @@ def builder_inited_handler(app):
 def build_finished(app, exception):
     print('Removing komm.*.rst...')
     os.system('rm -rf komm.*.rst')
+    print('Fixing annoying anchor links...')
+    os.system(r'perl -pi -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" _build/html/index.html')
 
 def setup(app):
     app.connect('builder-inited', builder_inited_handler)
