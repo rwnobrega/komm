@@ -811,8 +811,10 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
         elif self._mode == 'tail-biting':
             initial_metrics = np.zeros(2**self._overall_constraint_length, dtype=np.float)
 
-        observed_sequence = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        input_sequences_hat, final_metrics = self._finite_state_machine.viterbi(observed_sequence, metric_function, initial_metrics)
+        input_sequences_hat, final_metrics = self._finite_state_machine.viterbi(
+            observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
+            metric_function=metric_function,
+            initial_metrics=initial_metrics)
 
         if self._mode == 'truncated':
             final_state_hat = np.argmin(final_metrics)
@@ -820,7 +822,7 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
         elif self._mode == 'zero-tail':
             input_sequence_hat = input_sequences_hat[:, 0][: -self._memory_order]
         elif self._mode == 'tail-biting':
-            pass
+            raise NotImplementedError("Viterbi algorithm not yet implemented for 'tail-biting'")
 
         message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
         return message_hat
