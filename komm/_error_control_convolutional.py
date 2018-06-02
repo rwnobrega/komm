@@ -613,7 +613,7 @@ class ConvolutionalCode:
     def _default_encoder(self):
         return 'finite_state_machine'
 
-    def decode(self, recvword, method=None):
+    def decode(self, recvword, method=None, **kwargs):
         """
         Decodes a received word to a message.
 
@@ -634,7 +634,7 @@ class ConvolutionalCode:
         if method is None:
             method = self._default_decoder(recvword.dtype)
         decoder = getattr(self, '_decode_' + method)
-        message_hat = decoder(recvword)
+        message_hat = decoder(recvword, **kwargs)
         return message_hat
 
     def _helper_decode_viterbi(self, recvword, metric_function):

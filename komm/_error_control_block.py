@@ -418,7 +418,7 @@ class BlockCode:
         else:
             return np.dot(codeword, self._generator_matrix_right_inverse) % 2
 
-    def decode(self, recvword, method=None):
+    def decode(self, recvword, method=None, **kwargs):
         """
         Decodes a received word to a message.
 
@@ -446,9 +446,9 @@ class BlockCode:
         decoder = getattr(self, '_decode_' + method)
 
         if decoder.target == 'codeword':
-            message_hat = self.message_from_codeword(decoder(recvword))
+            message_hat = self.message_from_codeword(decoder(recvword, **kwargs))
         elif decoder.target == 'message':
-            message_hat = decoder(recvword)
+            message_hat = decoder(recvword, **kwargs)
 
         return message_hat
 
