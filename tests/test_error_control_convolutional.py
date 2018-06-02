@@ -49,7 +49,7 @@ def test_fsm_forward_backward():
     z = -np.array([(0.3, 0.1), (-0.5, 0.2), (0.8, 0.5), (-0.5, 0.3), (0.1, -0.7), (1.5, -0.4)])
     input_posteriors = fsm.forward_backward(z, metric_function)
     llr = np.log(input_posteriors[:,0] / input_posteriors[:,1])
-    assert np.allclose(-llr[:-2], [1.78, 0.24, -1.97, 5.52], atol=0.05)
+    assert np.allclose(-llr, [1.78, 0.24, -1.97, 5.52, -np.inf, -np.inf], atol=0.05)
 
 
 def test_convolutional_code():
