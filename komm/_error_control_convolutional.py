@@ -657,14 +657,18 @@ class ConvolutionalCode:
         return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_soft)
 
     @tag(name='BCJR', input_type='soft', target='message')
-    def _decode_bcjr(self, recvword, SNR=1.0):
-        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        cache = (-1)**np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
-        metric_function = lambda y, z: 4 * SNR * np.dot(cache[y], z)
-        input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
-        input_sequence_hat = np.argmax(input_posteriors, axis=1)
-        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
-        return message_hat
+    def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
+        input_posteriors = self._finite_state_machine.forward_backward(
+            observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
+            metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z))
+
+        input_posteriors = input_posteriors[:-self._memory_order]
+
+        if output_type == 'soft':
+            return np.log(input_posteriors[:,0] / input_posteriors[:,1])
+        elif output_type == 'hard':
+            input_sequence_hat = np.argmax(input_posteriors, axis=1)
+            return unpack(input_sequence_hat, width=self._num_input_bits)
 
     def _default_decoder(self, dtype):
         if dtype == np.int:
@@ -830,18 +834,26 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
         return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_soft)
 
     @tag(name='BCJR', input_type='soft', target='message')
-    def _decode_bcjr(self, recvword, SNR=1.0):
-        observed = np.reshape(recvword, newshape=(-1, self._num_output_bits))
-        cache = (-1)**np.array([int2binlist(y, width=self._num_output_bits) for y in range(2**self._num_output_bits)])
-        metric_function = lambda y, z: 4 * SNR * np.dot(cache[y], z)
-        input_posteriors = self._finite_state_machine.forward_backward(observed, metric_function=metric_function)
-        input_sequence_hat = np.argmax(input_posteriors, axis=1)
-        message_hat = unpack(input_sequence_hat, width=self._num_input_bits)
-        return message_hat
+    def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
+        if self._mode != 'zero-tail':
+            raise NotImplementedError("BCJR algorithm only implemented for 'zero-tail'")
+
+        input_posteriors = self._finite_state_machine.forward_backward(
+            observed_sequence=np.reshape(recvword, newshape=(-1, self._num_output_bits)),
+            metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z),
+            initial_state=0,
+            final_state=0)
+
+        input_posteriors = input_posteriors[:-self._memory_order]
+
+        if output_type == 'soft':
+            return np.log(input_posteriors[:,0] / input_posteriors[:,1])
+        elif output_type == 'hard':
+            input_sequence_hat = np.argmax(input_posteriors, axis=1)
+            return unpack(input_sequence_hat, width=self._num_input_bits)
 
     def _default_decoder(self, dtype):
         if dtype == np.int:
             return 'viterbi_hard'
         elif dtype == np.float:
             return 'viterbi_soft'
-
