@@ -381,7 +381,7 @@ class TransmitFilter:
             The pulse filter.
 
         :code:`samples_per_symbol` : :obj:`int`
-            The number of samples (of the impulse response) per symbol (of the modulation).
+            The number of samples (of the output) per symbol (of the input).
         """
         self.Pulse = pulse
         self._samples_per_symbol = int(samples_per_symbol)
@@ -396,7 +396,7 @@ class TransmitFilter:
     @property
     def samples_per_symbol(self):
         """
-        The number of samples per symbol of the formatting pulse. This property is read-only.
+        The number of samples per symbol. This property is read-only.
         """
         return self._samples_per_symbol
 
