@@ -13,12 +13,13 @@ from .util import \
 
 from ._aux import tag
 
-__all__ = ['FiniteStateMachine', 'ConvolutionalCode', 'TerminatedConvolutionalCode']
+__all__ = ['FiniteStateMachine', 'ConvolutionalCode', 'TerminatedConvolutionalCode',
+           'ConvolutionalEncoder', 'ConvolutionalDecoder']
 
 
 class FiniteStateMachine:
     """
-    Finite-state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, a *initial state* :math:`s_\\mathrm{i} \\in \\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
+    Finite-state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively.
 
     For example, consider the finite-state machine whose state diagram depicted in the figure below.
 
@@ -26,7 +27,7 @@ class FiniteStateMachine:
        :alt: Finite-state machine (Mealy machine) example.
        :align: center
 
-    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, initial state :math:`s_\\mathrm{i} = 0`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.
+    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.
 
     .. csv-table:: Transition function
        :align: center
@@ -43,7 +44,7 @@ class FiniteStateMachine:
 
     |
     """
-    def __init__(self, next_states, outputs, initial_state=0):
+    def __init__(self, next_states, outputs):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -53,22 +54,14 @@ class FiniteStateMachine:
         :code:`outputs` : 2D-array of :obj:`int`
             The matrix of outputs of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.
 
-        :code:`initial_state` : :obj:`int`, optional
-            The initial state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`. The default value is :code:`0`.
-
         .. rubric:: Examples
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
-        >>> fsm.process([1, 1, 0, 1, 0])
-        array([3, 2, 2, 0, 1])
-        >>> fsm.process([1, 1, 0, 1, 0])
-        array([0, 2, 2, 0, 1])
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         """
         self._next_states = np.array(next_states, dtype=np.int)
         self._outputs = np.array(outputs, dtype=np.int)
         self._num_states, self._num_input_symbols = self._next_states.shape
         self._num_output_symbols = np.amax(self._outputs)
-        self._state = initial_state
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
         self._output_edges = np.full((self._num_states, self._num_states), fill_value=-1)
@@ -80,17 +73,6 @@ class FiniteStateMachine:
     def __repr__(self):
         args = 'next_states={}, outputs={}'.format(self._next_states.tolist(), self._outputs.tolist())
         return '{}({})'.format(self.__class__.__name__, args)
-
-    @property
-    def state(self):
-        """
-        The current state of the machine. This is a read-and-write property.
-        """
-        return self._state
-
-    @state.setter
-    def state(self, value):
-        self._state = value
 
     @property
     def num_states(self):
@@ -159,26 +141,44 @@ class FiniteStateMachine:
         """
         return self._output_edges
 
-    def process(self, input_sequence):
+    def process(self, input_sequence, initial_state):
         """
-        Returns the output sequence corresponding to a given input sequence. The input sequence and the output sequence are denoted by :math:`\\mathbf{x} = (x_0, x_1, \\ldots, x_{L-1}) \\in \\mathcal{X}^L` and :math:`\\mathbf{y} = (y_0, y_1, \\ldots, y_{L-1}) \\in \\mathcal{Y}^L`, respectively. This method takes into account the current state of the machine.
+        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state :math:`s_\\mathrm{i}`. The input sequence and the output sequence are denoted by :math:`\\mathbf{x} = (x_0, x_1, \\ldots, x_{L-1}) \\in \\mathcal{X}^L` and :math:`\\mathbf{y} = (y_0, y_1, \\ldots, y_{L-1}) \\in \\mathcal{Y}^L`, respectively.
 
         **Input:**
 
         :code:`input_sequence` : 1D-array of :obj:`int`
             The input sequence :math:`\\mathbf{x} \\in \\mathcal{X}^L`. It should be a 1D-array with elements in :math:`\\mathcal{X}`.
 
+        :code:`initial_state` : :obj:`int`
+            The initial state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`.
+
         **Output:**
 
         :code:`output_sequence` : 1D-array of :obj:`int`
-            The output sequence :math:`\\mathbf{y} \\in \\mathcal{Y}^L` corresponding to :code:`input_sequence`, taking into account the current state of the machine. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
+            The output sequence :math:`\\mathbf{y} \\in \\mathcal{Y}^L` corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
+
+        :code:`final_state` : :obj:`int`
+            The final state :math:`s_\\mathrm{f}` of the machine. It is an integer in :math:`\\mathcal{S}`.
+
+        .. rubric:: Example
+
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+        >>> input_sequence, initial_state = [1, 1, 0, 1, 0], 0
+        >>> output_sequence, final_state = fsm.process(input_sequence, initial_state)
+        >>> output_sequence
+        array([3, 2, 2, 0, 1])
+        >>> final_state
+        2
         """
         output_sequence = np.empty_like(input_sequence, dtype=np.int)
+        s = initial_state
         for t, x in np.ndenumerate(input_sequence):
-            y = self._outputs[self._state, x]
-            self._state = self._next_states[self._state, x]
+            y = self._outputs[s, x]
+            s = self._next_states[s, x]
             output_sequence[t] = y
-        return output_sequence
+        final_state = s
+        return output_sequence, final_state
 
     def viterbi(self, observed_sequence, metric_function, initial_metrics=None):
         """
@@ -807,14 +807,14 @@ class TerminatedConvolutionalCode(BlockCode, ConvolutionalCode):
     def _encode_finite_state_machine(self, message):
         input_sequence = pack(message, width=self._num_input_bits)
         if self._mode == 'truncated':
-            self._finite_state_machine.state = 0
+            initial_state = 0
         elif self._mode == 'zero-tail':
             input_sequence = np.pad(input_sequence, (0, self.memory_order), mode='constant')
-            self._finite_state_machine.state = 0
+            initial_state = 0
         elif self._mode == 'tail-biting':
-            self._finite_state_machine.state = input_sequence[-self.memory_order :]
+            initial_state = input_sequence[-self.memory_order :]
 
-        output_sequence = self._finite_state_machine.process(input_sequence)
+        output_sequence, _ = self._finite_state_machine.process(input_sequence, initial_state)
         codeword = unpack(output_sequence, width=self._num_output_bits)
         return codeword
 
