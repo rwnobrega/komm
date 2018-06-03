@@ -184,7 +184,7 @@ class BlockCode:
     @property
     def rate(self):
         """
-        The code rate :math:`R = k/n` of the code. This property is read-only.
+        The rate :math:`R = k/n` of the code. This property is read-only.
         """
         return self._dimension / self._length
 
