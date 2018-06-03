@@ -55,6 +55,7 @@ Block coding
     ReedMullerCode
     CyclicCode
     BCHCode
+    TerminatedConvolutionalCode
 
 Convolutional coding
 ~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +68,6 @@ Convolutional coding
     ConvolutionalCode
     ConvolutionalEncoder
     ConvolutionalDecoder
-    TerminatedConvolutionalCode
 
 Modulation
 ----------
