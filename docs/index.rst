@@ -93,20 +93,32 @@ Complex modulation schemes
     APSKModulation
     QAModulation
 
+Pulse formatting
+----------------
+
 Pulses
-------
+~~~~~~
 
 .. autosummary::
     :toctree:
     :nosignatures:
 
-    FormattingPulse
     RectangularPulse
     ManchesterPulse
     SincPulse
     RaisedCosinePulse
     RootRaisedCosinePulse
     GaussianPulse
+
+Filtering
+~~~~~~~~~
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    TransmitFilter
+    ReceiveFilter
 
 Sequences
 ---------

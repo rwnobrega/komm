@@ -1,68 +1,45 @@
 import numpy as np
 
-__all__ = ['FormattingPulse',
-           'RectangularPulse', 'ManchesterPulse',
+__all__ = ['RectangularPulse', 'ManchesterPulse',
            'SincPulse', 'RaisedCosinePulse', 'RootRaisedCosinePulse',
-           'GaussianPulse']
+           'GaussianPulse',
+           'TransmitFilter', 'ReceiveFilter']
 
 
-class FormattingPulse:
+class Pulse:
     """
-    General formatting pulse.
+    General pulse.
     """
-    def __init__(self, impulse_response, samples_per_symbol):
+    def __init__(self, impulse_response, interval):
         """
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class. It expects the following parameter:
 
-        :code:`impulse_response` : 1D-array of :obj:`float`
-            The filter finite impulse response.
-
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples (of the impulse response) per symbol (of the modulation).
+        :code:`impulse_response` : :obj:`function`
+            The impulse response of the pulse.
         """
-        self._impulse_response = np.array(impulse_response, dtype=np.float)
-        self._samples_per_symbol = samples_per_symbol
+        self._impulse_response = impulse_response
+        self._interval = interval
+
+    def __repr__(self):
+        args = 'impulse_response={}, interval={}'.format(self._impulse_response, self._interval)
+        return '{}({})'.format(self.__class__.__name__, args)
 
     @property
     def impulse_response(self):
         """
-        The impulse response of the formatting pulse. This property is read-only.
+        The impulse response of the pulse. This property is read-only.
         """
         return self._impulse_response
 
     @property
-    def samples_per_symbol(self):
+    def interval(self):
         """
-        The number of samples per symbol of the formatting pulse. This property is read-only.
+        The interval the pulse. This property is read-only.
         """
-        return self._samples_per_symbol
-
-    def format(self, symbols):
-        """
-        Formats a sequence of symbols.
-
-        **Input:**
-
-        :code:`symbols` : 1D-array of :obj:`float`
-            The input signal, containing symbols of the modulation.
-
-        **Output:**
-
-        :code:`formatted` : 1D-array of :obj:`float`
-            The output, formatted signal.
-        """
-        sps = self._samples_per_symbol
-        signal_interp = np.zeros(len(symbols) * sps, dtype=np.float)
-        signal_interp[::sps] = symbols
-        formatted = np.convolve(self._impulse_response, signal_interp)
-        return formatted
-
-    def __repr__(self):
-        args = 'impulse_response={}, samples_per_symbol={}'.format(self._impulse_response.tolist(), self._samples_per_symbol)
-        return '{}({})'.format(self.__class__.__name__, args)
+        return self._interval
 
 
-class RectangularPulse(FormattingPulse):
+class RectangularPulse(Pulse):
     """
     Rectangular pulse. Its impulse response is given by
 
@@ -89,34 +66,29 @@ class RectangularPulse(FormattingPulse):
     .. |quad| unicode:: 0x2001
        :trim:
     """
-    def __init__(self, width, samples_per_symbol):
+    def __init__(self, width=1.0):
         """
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class. It expects the following parameter:
 
         :code:`width` : :obj:`float`
-            The width :math:`w` of the pulse. Must satisfy :math:`0 \\leq w \\leq 1`.
-
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
+            The width :math:`w` of the pulse. Must satisfy :math:`0 \\leq w \\leq 1`. The default value is :code:`1.0`.
 
         .. rubric:: Examples
 
-        >>> pulse =  komm.RectangularPulse(width=1.0, samples_per_symbol=10)
-        >>> pulse.impulse_response
-        array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])
+        >>> pulse =  komm.RectangularPulse(width=1.0)
+        >>>
 
-        >>> pulse =  komm.RectangularPulse(width=0.5, samples_per_symbol=10)
-        >>> pulse.impulse_response
-        array([1., 1., 1., 1., 1., 0., 0., 0., 0., 0.])
+        >>> pulse =  komm.RectangularPulse(width=0.5)
+        >>>
         """
-        L = round(samples_per_symbol * width)
-        impulse_response = np.zeros(samples_per_symbol, dtype=np.float)
-        impulse_response[:L] = 1.0
-        super().__init__(impulse_response, samples_per_symbol)
-        self._width = width
+        w = float(width)
+        def impulse_response(t):
+            return 1.0 * (0 <= t < w)
+        super().__init__(impulse_response, interval=(0.0, 1.0))
+        self._width = w
 
     def __repr__(self):
-        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
+        args = 'width={}'.format(self._width)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @property
@@ -127,7 +99,7 @@ class RectangularPulse(FormattingPulse):
         return self._width
 
 
-class ManchesterPulse(FormattingPulse):
+class ManchesterPulse(Pulse):
     """
     Manchester pulse. Its impulse response is given by
 
@@ -146,31 +118,26 @@ class ManchesterPulse(FormattingPulse):
        :alt: Manchester pulse
        :align: center
     """
-    def __init__(self, samples_per_symbol):
+    def __init__(self):
         """
-        Constructor for the class. It expects the following parameter:
-
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
+        Constructor for the class. It expects no parameters.
 
         .. rubric:: Examples
 
-        >>> pulse = komm.ManchesterPulse(samples_per_symbol=10)
+        >>> pulse = komm.ManchesterPulse()
         >>> pulse.impulse_response
         array([-1., -1., -1., -1., -1., 1., 1., 1., 1., 1.])
         """
-        L = round(0.5 * samples_per_symbol)
-        impulse_response = np.zeros(samples_per_symbol, dtype=np.float)
-        impulse_response[:L] = -1.0
-        impulse_response[L:] = 1.0
-        super().__init__(impulse_response, samples_per_symbol)
+        def impulse_response(t):
+            return -1.0 * (0 <= t < 0.5) + 1.0 * (0.5 <= t < 1)
+        super().__init__(impulse_response, interval=(0.0, 1.0))
 
     def __repr__(self):
-        args = 'samples_per_symbol={}'.format(self._samples_per_symbol)
+        args = ''
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class SincPulse(FormattingPulse):
+class SincPulse(Pulse):
     """
     Sinc pulse. Its impulse response is given by
 
@@ -184,21 +151,18 @@ class SincPulse(FormattingPulse):
        :alt: Sinc pulse
        :align: center
     """
-    def __init__(self, samples_per_symbol, length_in_symbols):
+    def __init__(self, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
-
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
 
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols
-        t = np.arange(-L//2, L//2) / samples_per_symbol
-        impulse_response = np.sinc(t)
-        super().__init__(impulse_response, samples_per_symbol)
-        self._length_in_symbols = length_in_symbols
+        L = int(length_in_symbols)
+        def impulse_response(t):
+            return np.sinc(t) * (-L/2 <= t < L/2)
+        super().__init__(impulse_response, interval=(-L/2, L/2))
+        self._length_in_symbols = L
 
     @property
     def length_in_symbols(self):
@@ -208,11 +172,11 @@ class SincPulse(FormattingPulse):
         return self._length_in_symbols
 
     def __repr__(self):
-        args = 'samples_per_symbol={}, length_in_symbols={}'.format(self._samples_per_symbol, self._length_in_symbols)
+        args = 'length_in_symbols={}'.format(self._length_in_symbols)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class RaisedCosinePulse(FormattingPulse):
+class RaisedCosinePulse(Pulse):
     """
     Raised cosine pulse. Its impulse response is given by
 
@@ -237,26 +201,24 @@ class RaisedCosinePulse(FormattingPulse):
 
     For  :math:`\\alpha = 0`, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
     """
-    def __init__(self, rolloff, samples_per_symbol, length_in_symbols):
+    def __init__(self, rolloff, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
 
         :code:`rolloff` : :obj:`float`
             The rolloff factor :math:`\\alpha` of the pulse. Must satisfy :math:`0 \\leq \\alpha \\leq 1`.
 
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
-
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols
-        epsilon = 1e-8
-        t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
-        impulse_response = np.sinc(t) * np.cos(np.pi * rolloff * t) / (1 - (2 * rolloff * t)**2)
-        super().__init__(impulse_response, samples_per_symbol)
-        self._length_in_symbols = length_in_symbols
-        self._rolloff = rolloff
+        L = int(length_in_symbols)
+        a = float(rolloff)
+        def impulse_response(t):
+            t += 1e-8
+            return np.sinc(t) * np.cos(np.pi*a*t) / (1 - (2*a*t)**2) * (-L/2 <= t < L/2)
+        super().__init__(impulse_response, interval=(-L/2, L/2))
+        self._length_in_symbols = L
+        self._rolloff = a
 
     @property
     def length_in_symbols(self):
@@ -273,11 +235,11 @@ class RaisedCosinePulse(FormattingPulse):
         return self._rolloff_factor
 
     def __repr__(self):
-        args = 'rolloff={}, samples_per_symbol={}, length_in_symbols={}'.format(self._rolloff, self._samples_per_symbol, self._length_in_symbols)
+        args = 'rolloff={}, length_in_symbols={}'.format(self._rolloff, self._length_in_symbols)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class RootRaisedCosinePulse(FormattingPulse):
+class RootRaisedCosinePulse(Pulse):
     """
     Root raised cosine pulse. Its impulse response is given by
 
@@ -300,28 +262,26 @@ class RootRaisedCosinePulse(FormattingPulse):
     .. |quad| unicode:: 0x2001
        :trim:
     """
-    def __init__(self, rolloff, samples_per_symbol, length_in_symbols):
+    def __init__(self, rolloff, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
 
         :code:`rolloff` : :obj:`float`
             The rolloff factor :math:`\\alpha` of the pulse. Must satisfy :math:`0 \\leq \\alpha \\leq 1`.
 
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
-
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
         """
-        L = samples_per_symbol * length_in_symbols
-        epsilon = 1e-8
-        t = np.arange(-L//2, L//2) / samples_per_symbol + epsilon
-        impulse_response = (np.sin(np.pi * (1 - rolloff) * t) +
-                            4 * rolloff * t * np.cos(np.pi * (1 + rolloff) * t)) / \
-                           (np.pi * t * (1 - (4 * rolloff * t)**2))
-        super().__init__(impulse_response, samples_per_symbol)
-        self._length_in_symbols = length_in_symbols
-        self._rolloff = rolloff
+        L = int(length_in_symbols)
+        a = float(rolloff)
+        def impulse_response(t):
+            t += 1e-8
+            return (np.sin(np.pi*(1 - a)*t) + 4*a*t * np.cos(np.pi*(1 + a)*t)) / \
+                   (np.pi*t*(1 - (4*a*t)**2)) * (-L/2 <= t < L/2)
+
+        super().__init__(impulse_response, interval=(-L/2, L/2))
+        self._length_in_symbols = L
+        self._rolloff = a
 
     @property
     def length_in_symbols(self):
@@ -338,11 +298,11 @@ class RootRaisedCosinePulse(FormattingPulse):
         return self._rolloff_factor
 
     def __repr__(self):
-        args = 'rolloff={}, samples_per_symbol={}, length_in_symbols={}'.format(self._rolloff, self._samples_per_symbol, self._length_in_symbols)
+        args = 'rolloff={}, length_in_symbols={}'.format(self._rolloff, self._length_in_symbols)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class GaussianPulse(FormattingPulse):
+class GaussianPulse(Pulse):
     """
     Gaussian pulse. Its impulse response is given by
 
@@ -367,30 +327,31 @@ class GaussianPulse(FormattingPulse):
     .. |quad| unicode:: 0x2001
        :trim:
     """
-    def __init__(self, half_power_bandwidth, samples_per_symbol, length_in_symbols):
+    def __init__(self, half_power_bandwidth, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
 
         :code:`half_power_bandwidth` : :obj:`float`
             The half-power bandwidth :math:`B` of the pulse.
 
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples per symbol.
+        :code:`length_in_symbols` : :obj:`int`
+            The length (span) of the truncated impulse response, in symbols.
 
         .. rubric:: Examples
 
-        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, samples_per_symbol=20, length_in_symbols=4)
+        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
         """
-        L = samples_per_symbol * length_in_symbols
-        t = np.arange(-L//2, L//2) / samples_per_symbol
-        B_bar = half_power_bandwidth / np.sqrt(np.log(2))
-        impulse_response = np.exp(-0.5 * (2 * np.pi * B_bar * t)**2)
-        super().__init__(impulse_response, samples_per_symbol)
-        self._length_in_symbols = length_in_symbols
-        self._half_power_bandwidth = half_power_bandwidth
+        B = float(half_power_bandwidth)
+        L = int(length_in_symbols)
+        B_bar = B / np.sqrt(np.log(2))
+        def impulse_response(t):
+            return np.exp(-0.5 * (2*np.pi*B_bar*t)**2) * (-L/2 <= t < L/2)
+        super().__init__(impulse_response, interval=(-L/2, L/2))
+        self._length_in_symbols = L
+        self._half_power_bandwidth = B
 
     def __repr__(self):
-        args = 'half_power_bandwidth={}, samples_per_symbol={}, length_in_symbols={}'.format(self._bandwidth, self._samples_per_symbol, self._length_in_symbols)
+        args = 'half_power_bandwidth={}, length_in_symbols={}'.format(self._half_power_bandwidth, self._length_in_symbols)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @property
@@ -406,3 +367,65 @@ class GaussianPulse(FormattingPulse):
         The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols
+
+
+class TransmitFilter:
+    """
+    Transmit filter.
+    """
+    def __init__(self, pulse, samples_per_symbol):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`pulse` : :class:`komm.Pulse`
+            The pulse filter.
+
+        :code:`samples_per_symbol` : :obj:`int`
+            The number of samples (of the impulse response) per symbol (of the modulation).
+        """
+        self.Pulse = pulse
+        self._samples_per_symbol = int(samples_per_symbol)
+
+    @property
+    def pulse(self):
+        """
+        The pulse filter. This property is read-only.
+        """
+        return self.Pulse
+
+    @property
+    def samples_per_symbol(self):
+        """
+        The number of samples per symbol of the formatting pulse. This property is read-only.
+        """
+        return self._samples_per_symbol
+
+    def __call__(self, inp):
+        """
+        Formats a sequence of symbols.
+
+        **Input:**
+
+        :code:`inp` : 1D-array of :obj:`float`
+            The input signal, containing symbols of a modulation.
+
+        **Output:**
+
+        :code:`outp` : 1D-array of :obj:`float`
+            The output signal, formatted.
+        """
+        sps = self._samples_per_symbol
+        t0, t1 = self.Pulse._interval
+        t = np.arange(t0, t1, step=1/sps)
+        taps = (np.vectorize(self.Pulse._impulse_response))(t)
+        inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=np.float)
+        inp_interp[::sps] = inp
+        outp = np.convolve(taps, inp_interp)
+        return outp
+
+
+class ReceiveFilter:
+    """
+    Receive filter [Not implemented yet].
+    """
+    pass
