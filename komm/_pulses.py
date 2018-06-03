@@ -217,14 +217,14 @@ class RaisedCosinePulse(Pulse):
 
         >>> pulse = komm.RaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
-        L = int(length_in_symbols)
         a = float(rolloff)
+        L = int(length_in_symbols)
         def impulse_response(t):
             t += 1e-8
             return np.sinc(t) * np.cos(np.pi*a*t) / (1 - (2*a*t)**2) * (-L/2 <= t < L/2)
         super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._length_in_symbols = L
         self._rolloff = a
+        self._length_in_symbols = L
 
     @property
     def rolloff_factor(self):
@@ -284,16 +284,16 @@ class RootRaisedCosinePulse(Pulse):
 
         >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
-        L = int(length_in_symbols)
         a = float(rolloff)
+        L = int(length_in_symbols)
         def impulse_response(t):
             t += 1e-8
             return (np.sin(np.pi*(1 - a)*t) + 4*a*t * np.cos(np.pi*(1 + a)*t)) / \
                    (np.pi*t*(1 - (4*a*t)**2)) * (-L/2 <= t < L/2)
 
         super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._length_in_symbols = L
         self._rolloff = a
+        self._length_in_symbols = L
 
     @property
     def rolloff_factor(self):
@@ -356,13 +356,13 @@ class GaussianPulse(Pulse):
         >>> pulse =  komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
         """
         B = float(half_power_bandwidth)
-        L = int(length_in_symbols)
         B_bar = B / np.sqrt(np.log(2))
+        L = int(length_in_symbols)
         def impulse_response(t):
             return np.exp(-0.5 * (2*np.pi*B_bar*t)**2) * (-L/2 <= t < L/2)
         super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._length_in_symbols = L
         self._half_power_bandwidth = B
+        self._length_in_symbols = L
 
     def __repr__(self):
         args = 'half_power_bandwidth={}, length_in_symbols={}'.format(self._half_power_bandwidth, self._length_in_symbols)
