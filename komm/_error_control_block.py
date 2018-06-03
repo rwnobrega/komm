@@ -1316,7 +1316,7 @@ class BCHCode(CyclicCode):
 
 class TerminatedConvolutionalCode(BlockCode):
     """
-    Terminated binary convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`H` information blocks (each containing :math:`K` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = KH`; its length depends on the termination mode employed. There are three possible termination modes:
+    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`H` information blocks (each containing :math:`K` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = KH`; its length depends on the termination mode employed. There are three possible termination modes:
 
     - **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = NH`.
 
