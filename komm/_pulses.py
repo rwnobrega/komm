@@ -76,10 +76,8 @@ class RectangularPulse(Pulse):
         .. rubric:: Examples
 
         >>> pulse =  komm.RectangularPulse(width=1.0)
-        >>>
 
         >>> pulse =  komm.RectangularPulse(width=0.5)
-        >>>
         """
         w = float(width)
         def impulse_response(t):
@@ -125,8 +123,6 @@ class ManchesterPulse(Pulse):
         .. rubric:: Examples
 
         >>> pulse = komm.ManchesterPulse()
-        >>> pulse.impulse_response
-        array([-1., -1., -1., -1., -1., 1., 1., 1., 1., 1.])
         """
         def impulse_response(t):
             return -1.0 * (0 <= t < 0.5) + 1.0 * (0.5 <= t < 1)
@@ -157,6 +153,10 @@ class SincPulse(Pulse):
 
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
+
+        .. rubric:: Examples
+
+        >>> pulse = komm.SincPulse(length_in_symbols=64)
         """
         L = int(length_in_symbols)
         def impulse_response(t):
@@ -210,6 +210,12 @@ class RaisedCosinePulse(Pulse):
 
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
+
+        .. rubric:: Examples
+
+        >>> pulse = komm.RaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
+
+        >>> pulse = komm.RaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
         L = int(length_in_symbols)
         a = float(rolloff)
@@ -271,6 +277,12 @@ class RootRaisedCosinePulse(Pulse):
 
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
+
+        .. rubric:: Examples
+
+        >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
+
+        >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
         L = int(length_in_symbols)
         a = float(rolloff)
@@ -340,6 +352,8 @@ class GaussianPulse(Pulse):
         .. rubric:: Examples
 
         >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
+
+        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
         """
         B = float(half_power_bandwidth)
         L = int(length_in_symbols)
