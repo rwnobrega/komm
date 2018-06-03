@@ -116,7 +116,7 @@ class FiniteStateMachine:
 
         .. rubric:: Example
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         >>> fsm.input_edges
         array([[ 0,  1, -1, -1],
                [-1, -1,  0,  1],
@@ -132,7 +132,7 @@ class FiniteStateMachine:
 
         .. rubric:: Example
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         >>> fsm.output_edges
         array([[ 0,  3, -1, -1],
                [-1, -1,  1,  2],
