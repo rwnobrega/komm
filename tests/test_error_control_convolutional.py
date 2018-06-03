@@ -117,6 +117,12 @@ def test_convolutional_decoder_viterbi():
     convolutional_decoder = komm.ConvolutionalDecoder(code, input_type='hard', method='viterbi')
     assert np.array_equal(convolutional_decoder([1,1, 0,0, 0,0, 0,0, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1]), [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
 
+    # Abrantes.10, p.313
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+    convolutional_decoder = komm.ConvolutionalDecoder(code, input_type='soft', method='viterbi')
+    recvword = -np.array([-0.6,+0.8, +0.3,-0.6, +0.1,+0.1, +0.7,+0.1, +0.6,+0.4])
+    assert np.array_equal(convolutional_decoder(recvword), [1, 0, 1, 0, 0])
+
 
 def test_convolutional_decoder_bcjr():
     # Lin.Costello.04, p. 572-575.
