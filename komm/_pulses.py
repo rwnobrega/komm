@@ -227,18 +227,18 @@ class RaisedCosinePulse(Pulse):
         self._rolloff = a
 
     @property
-    def length_in_symbols(self):
-        """
-        The length (span) of the truncated impulse response. This property is read-only.
-        """
-        return self._length_in_symbols
-
-    @property
     def rolloff_factor(self):
         """
         The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
         return self._rolloff_factor
+
+    @property
+    def length_in_symbols(self):
+        """
+        The length (span) of the truncated impulse response. This property is read-only.
+        """
+        return self._length_in_symbols
 
     def __repr__(self):
         args = 'rolloff={}, length_in_symbols={}'.format(self._rolloff, self._length_in_symbols)
@@ -296,18 +296,18 @@ class RootRaisedCosinePulse(Pulse):
         self._rolloff = a
 
     @property
-    def length_in_symbols(self):
-        """
-        The length (span) of the truncated impulse response. This property is read-only.
-        """
-        return self._length_in_symbols
-
-    @property
     def rolloff_factor(self):
         """
         The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
         return self._rolloff_factor
+
+    @property
+    def length_in_symbols(self):
+        """
+        The length (span) of the truncated impulse response. This property is read-only.
+        """
+        return self._length_in_symbols
 
     def __repr__(self):
         args = 'rolloff={}, length_in_symbols={}'.format(self._rolloff, self._length_in_symbols)
