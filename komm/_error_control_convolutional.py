@@ -598,7 +598,7 @@ class ConvolutionalEncoder:
         """
         Constructor for the class. It expects the following parameters:
 
-        :code:`convolutional_code` : :class:`komm.ConvolutionalCode`
+        :code:`convolutional_code` : :class:`ConvolutionalCode`
             The convolutional code.
 
         :code:`initial_state` : :obj:`int`, optional
@@ -653,7 +653,7 @@ class ConvolutionalDecoder:
         """
         Constructor for the class. It expects the following parameters:
 
-        :code:`convolutional_code` : :class:`komm.ConvolutionalCode`
+        :code:`convolutional_code` : :class:`ConvolutionalCode`
             The convolutional code.
 
         :code:`initial_state` : :obj:`int`, optional
