@@ -705,11 +705,11 @@ class ConvolutionalDecoder:
         message_hat = unpack(input_sequence_hat, width=k)
         return message_hat
 
-    @tag(name='Viterbi', input_type='hard', target='message')
+    @tag(name='Viterbi', input_type='hard', output_type='hard', target='message')
     def _decode_viterbi_hard_hard(self, recvword):
         return self._helper_decode_viterbi(recvword, input_type='hard')
 
-    @tag(name='Viterbi', input_type='soft', target='message')
+    @tag(name='Viterbi', input_type='soft', output_type='hard', target='message')
     def _decode_viterbi_soft_hard(self, recvword):
         return self._helper_decode_viterbi(recvword, input_type='soft')
 

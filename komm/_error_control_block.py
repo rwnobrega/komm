@@ -1472,7 +1472,7 @@ class TerminatedConvolutionalCode(BlockCode):
     def _decode_viterbi_hard(self, recvword):
         return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_hard)
 
-    @tag(name='Viterbi (soft)', input_type='soft', target='message')
+    @tag(name='Viterbi (soft-decision)', input_type='soft', target='message')
     def _decode_viterbi_soft(self, recvword):
         return self._helper_decode_viterbi(recvword, self._metric_function_viterbi_soft)
 
