@@ -67,7 +67,8 @@ Convolutional coding
     FiniteStateMachine
     ConvolutionalCode
     ConvolutionalEncoder
-    ConvolutionalDecoder
+    ConvolutionalDecoderViterbi
+    ConvolutionalDecoderBCJR
 
 Modulation
 ----------

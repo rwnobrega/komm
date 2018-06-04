@@ -11,7 +11,7 @@ from .util import \
 from ._aux import tag
 
 __all__ = ['FiniteStateMachine', 'ConvolutionalCode',
-           'ConvolutionalEncoder', 'ConvolutionalDecoder']
+           'ConvolutionalEncoder', 'ConvolutionalDecoderViterbi', 'ConvolutionalDecoderBCJR']
 
 
 class FiniteStateMachine:
@@ -655,9 +655,75 @@ class ConvolutionalEncoder:
         return codeword
 
 
-class ConvolutionalDecoder:
+class ConvolutionalDecoderViterbi:
     """
-    Convolutional decoder.
+    Convolutional Viterbi decoder.
+
+    **Input:**
+
+    :code:`inp` : 1D-array of (:obj:`int` or :obj:`float`)
+        Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be a multiple of :math:`n`.
+
+    **Output:**
+
+    :code:`outp` : 1D-array of :obj:`int`
+        Message decoded from :code:`recvword`. Its length is equal to :math:`(k/n)` times the length of :code:`recvword`.
+
+    .. rubric:: Examples
+
+    >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    >>> convolutional_decoder = komm.ConvolutionalDecoderViterbi(convolutional_code, traceback_length=10)
+    >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
+    array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    >>> convolutional_decoder(np.zeros(2*10, dtype=np.int))
+    array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+    """
+    def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type='hard', output_type='hard'):
+        """
+        Constructor for the class. It expects the following parameters:
+
+        :code:`convolutional_code` : :class:`ConvolutionalCode`
+            The convolutional code.
+
+        :code:`traceback_length` : :obj:`int`
+            Soon.
+
+        :code:`initial_state` : :obj:`int`, optional
+            Initial state of the machine. The default value is :code:`0`.
+        """
+        self._convolutional_code = convolutional_code
+        self._traceback_length = int(traceback_length)
+        self._initial_state = int(initial_state)
+        self._input_type = input_type
+
+        n = convolutional_code._num_output_bits
+        num_states = convolutional_code._finite_state_machine._num_states
+
+        self._metrics = np.full((num_states, traceback_length + 1), fill_value=np.inf)
+        self._metrics[initial_state, -1] = 0.0
+        self._paths = np.zeros((num_states, traceback_length + 1), dtype=np.int)
+
+        cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
+        self._metric_function_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
+        self._metric_function_soft = lambda y, z: np.dot(cache_bit[y], z)
+
+    def __call__(self, inp):
+        code = self._convolutional_code
+        n, k = code._num_output_bits, code._num_input_bits
+
+        input_sequence_hat, self._metrics, self._paths = code._finite_state_machine.viterbi_streaming(
+            observed_sequence=np.reshape(inp, newshape=(-1, n)),
+            metric_function=getattr(self, '_metric_function_' + self._input_type),
+            metrics=self._metrics,
+            paths=self._paths)
+
+        outp = unpack(input_sequence_hat, width=k)
+        return outp
+
+
+class ConvolutionalDecoderBCJR:
+    """
+    Convolutional BCJR decoder.
 
     **Input:**
 
@@ -676,7 +742,7 @@ class ConvolutionalDecoder:
     >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
     array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
     """
-    def __init__(self, convolutional_code, initial_state=0, channel_snr=1.0, input_type='hard', output_type='hard', method='viterbi'):
+    def __init__(self, convolutional_code, initial_state=0, channel_snr=1.0, input_type='hard', output_type='hard'):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -690,67 +756,29 @@ class ConvolutionalDecoder:
             Decoding method to be used.
         """
         self._convolutional_code = convolutional_code
-        self._state = int(initial_state)
+        self._initial_state = int(initial_state)
         self._channel_snr = float(channel_snr)
-        self._method = method
+        self._input_type = input_type
+        self._output_type = output_type
 
-        try:
-            self._decoder = getattr(self, '_decode_{}_{}_{}'.format(method, input_type, output_type))
-        except AttributeError:
-            raise ValueError("Unsupported decoding method")
-
-        n = self._convolutional_code._num_output_bits
-        cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
-        self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
-        self._metric_function_viterbi_soft = lambda y, z: np.dot(cache_bit[y], z)
-        cache_polar = (-1)**cache_bit
+        n = convolutional_code._num_output_bits
+        cache_polar = (-1)**np.array([int2binlist(y, width=n) for y in range(2**n)])
         self._metric_function_bcjr = lambda y, z: 2.0 * self._channel_snr * np.dot(cache_polar[y], z)
 
     def __call__(self, inp):
-        return self._decoder(np.array(inp))
-
-    def _helper_decode_viterbi(self, recvword, input_type):
-        code = self._convolutional_code
-        n, k = code._num_output_bits, code._num_input_bits
-        num_states = code._finite_state_machine._num_states
-        initial_metrics = np.full(num_states, fill_value=np.inf)
-        initial_metrics[0] = 0.0
-        input_sequences_hat, final_metrics = code._finite_state_machine.viterbi(
-            observed_sequence=np.reshape(recvword, newshape=(-1, n)),
-            metric_function=getattr(self, '_metric_function_viterbi_' + input_type),
-            initial_metrics=initial_metrics)
-        input_sequence_hat = input_sequences_hat[:, 0]
-        message_hat = unpack(input_sequence_hat, width=k)
-        return message_hat
-
-    @tag(name='Viterbi', input_type='hard', output_type='hard', target='message')
-    def _decode_viterbi_hard_hard(self, recvword):
-        return self._helper_decode_viterbi(recvword, input_type='hard')
-
-    @tag(name='Viterbi', input_type='soft', output_type='hard', target='message')
-    def _decode_viterbi_soft_hard(self, recvword):
-        return self._helper_decode_viterbi(recvword, input_type='soft')
-
-    def _helper_decode_bcjr(self, recvword, output_type):
         code = self._convolutional_code
         n, k, m = code._num_output_bits, code._num_input_bits, code._memory_order
         num_states = code._finite_state_machine._num_states
+
         input_posteriors = code._finite_state_machine.forward_backward(
-            observed_sequence=np.reshape(recvword, newshape=(-1, n)),
+            observed_sequence=np.reshape(inp, newshape=(-1, n)),
             metric_function=lambda y, z: self._metric_function_bcjr(y, z),
             initial_state_distribution=np.eye(1, num_states, 0),
             final_state_distribution=np.eye(1, num_states, 0))
         input_posteriors = input_posteriors[:-m]
-        if output_type == 'soft':
+
+        if self._output_type == 'soft':
             return np.log(input_posteriors[:,0] / input_posteriors[:,1])
-        elif output_type == 'hard':
+        elif self._output_type == 'hard':
             input_sequence_hat = np.argmax(input_posteriors, axis=1)
             return unpack(input_sequence_hat, width=k)
-
-    @tag(name='BCJR', input_type='soft', output_type='hard', target='message')
-    def _decode_bcjr_soft_hard(self, recvword, output_type='hard'):
-        return self._helper_decode_bcjr(recvword, output_type='hard')
-
-    @tag(name='BCJR', input_type='soft', output_type='soft', target='message')
-    def _decode_bcjr_soft_soft(self, recvword, output_type='hard', SNR=1.0):
-        return self._helper_decode_bcjr(recvword, output_type='soft')
