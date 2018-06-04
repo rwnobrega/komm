@@ -228,6 +228,33 @@ class FiniteStateMachine:
 
         return input_sequences_hat, metrics[L, :]
 
+    def viterbi_streaming(self, observed_sequence, metric_function, metrics, paths):
+        num_states = self._num_states
+        input_sequences_hat = np.empty(len(observed_sequence), dtype=np.int)
+        for t, z in enumerate(observed_sequence):
+            new_metrics = np.full(num_states, fill_value=np.inf)
+            choices = np.zeros(num_states, dtype=np.int)
+            for s0 in range(num_states):
+                for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
+                    candidate_metric = metrics[s0, -1] + metric_function(y, z)
+                    if candidate_metric < new_metrics[s1]:
+                        new_metrics[s1] = candidate_metric
+                        choices[s1] = s0
+
+            s_star = np.argmin(new_metrics)
+            input_sequences_hat[t] = self._input_edges[paths[s_star, 0], paths[s_star, 1]]
+
+            metrics = np.roll(metrics, shift=-1, axis=1)
+            metrics[:, -1] = new_metrics
+            paths = np.roll(paths, shift=-1, axis=1)
+
+            paths_copy = np.copy(paths)
+            for s1, s0 in enumerate(choices):
+                paths[s1, :-1] = paths_copy[s0, :-1]
+                paths[s1, -1] = s1
+
+        return input_sequences_hat, metrics, paths
+
     def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state_distribution=None, final_state_distribution=None):
         """
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.
