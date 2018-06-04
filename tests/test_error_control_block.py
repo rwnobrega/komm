@@ -154,6 +154,22 @@ def test_terminated_convolutional_code_viterbi():
     message_hat = code.decode(recvword, method='viterbi_soft')
     assert np.array_equal(message_hat, [1,0,0,0])
 
+    # Abrantes.10, p.307
+    feedforward_polynomials=[[0b111, 0b101]]
+    num_blocks = 10
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='truncated')
+    recvword = np.array([1,1, 0,0, 0,0, 0,0, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1])
+    message_hat = code.decode(recvword, method='viterbi_hard')
+    assert np.array_equal(message_hat, [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+
+    # Abrantes.10, p.313
+    feedforward_polynomials=[[0b111, 0b101]]
+    num_blocks = 5
+    code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode='truncated')
+    recvword = -np.array([-0.6,+0.8, +0.3,-0.6, +0.1,+0.1, +0.7,+0.1, +0.6,+0.4])
+    message_hat = code.decode(recvword,  method='viterbi_soft')
+    assert np.array_equal(message_hat, [1, 0, 1, 0, 0])
+
 
 def test_terminated_convolutional_code_bcjr():
     # Abrantes.10, p.434-437

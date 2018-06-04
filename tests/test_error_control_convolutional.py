@@ -6,7 +6,7 @@ import komm
 from komm.util import int2binlist
 
 
-def test_fsm_forward_viterbi():
+def test_fsm_viterbi():
     # Sklar.01, p. 401-405.
     def metric_function(y, z):
         s = np.array(int2binlist(y, width=len(z)))
@@ -114,29 +114,28 @@ def test_convolutional_encoder():
 def test_convolutional_decoder_viterbi():
     # Abrantes.10, p.307
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-    convolutional_decoder = komm.ConvolutionalDecoder(code, input_type='hard', method='viterbi')
-    assert np.array_equal(convolutional_decoder([1,1, 0,0, 0,0, 0,0, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1]), [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
-
-    # Abrantes.10, p.313
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-    convolutional_decoder = komm.ConvolutionalDecoder(code, input_type='soft', method='viterbi')
-    recvword = -np.array([-0.6,+0.8, +0.3,-0.6, +0.1,+0.1, +0.7,+0.1, +0.6,+0.4])
-    assert np.array_equal(convolutional_decoder(recvword), [1, 0, 1, 0, 0])
+    traceback_length = 12
+    convolutional_decoder = komm.ConvolutionalDecoderViterbi(code, traceback_length, input_type='hard')
+    recvword = np.array([1,1, 0,0, 0,0, 0,0, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1])
+    recvword_ = np.concatenate([recvword, np.zeros(traceback_length*code.num_output_bits, dtype=np.int)])
+    message_hat = convolutional_decoder(recvword_)
+    message_hat_ = message_hat[traceback_length :]
+    assert np.array_equal(message_hat_, [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
 
 
 def test_convolutional_decoder_bcjr():
     # Lin.Costello.04, p. 572-575.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
-    convolutional_decoder_1 = komm.ConvolutionalDecoder(code, channel_snr=0.25, input_type='soft', output_type='soft', method='bcjr')
-    convolutional_decoder_2 = komm.ConvolutionalDecoder(code, channel_snr=0.25, input_type='soft', output_type='hard', method='bcjr')
+    convolutional_decoder_1 = komm.ConvolutionalDecoderBCJR(code, channel_snr=0.25, input_type='soft', output_type='soft')
+    convolutional_decoder_2 = komm.ConvolutionalDecoderBCJR(code, channel_snr=0.25, input_type='soft', output_type='hard')
     recvword = -np.array([+0.8,+0.1, +1.0,-0.5, -1.8,+1.1, +1.6,-1.6])
     assert np.allclose(-convolutional_decoder_1(recvword), [0.48, 0.62, -1.02], atol=0.05)
     assert np.allclose(convolutional_decoder_2(recvword), [1, 1, 0])
 
     # Abrantes.10, p.434-437
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-    convolutional_decoder_1 = komm.ConvolutionalDecoder(code, channel_snr=1.25, input_type='soft', output_type='soft', method='bcjr')
-    convolutional_decoder_2 = komm.ConvolutionalDecoder(code, channel_snr=1.25, input_type='soft', output_type='hard', method='bcjr')
+    convolutional_decoder_1 = komm.ConvolutionalDecoderBCJR(code, channel_snr=1.25, input_type='soft', output_type='soft')
+    convolutional_decoder_2 = komm.ConvolutionalDecoderBCJR(code, channel_snr=1.25, input_type='soft', output_type='hard')
     recvword = -np.array([+0.3,+0.1, -0.5,+0.2, +0.8,+0.5, -0.5,+0.3, +0.1,-0.7, +1.5,-0.4])
     assert np.allclose(-convolutional_decoder_1(recvword), [1.78, 0.24, -1.97, 5.52], atol=0.05)
     assert np.allclose(convolutional_decoder_2(recvword), [1, 1, 0, 1])
@@ -184,7 +183,9 @@ def test_convolutional_encoder_2(feedforward_polynomials, feedback_polynomials, 
 ])
 def test_convolutional_decoder_viterbi_2(feedforward_polynomials, feedback_polynomials, recvword, message_hat):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    L = len(message_hat) // code.num_input_bits
     convolutional_encoder = komm.ConvolutionalEncoder(code)
-    convolutional_decoder = komm.ConvolutionalDecoder(code, input_type='hard', method='viterbi')
-    assert np.count_nonzero(recvword != convolutional_encoder(message_hat)) == \
-           np.count_nonzero(recvword != convolutional_encoder(convolutional_decoder(recvword)))
+    recvword = np.concatenate([recvword, np.zeros(code.num_output_bits*L)])
+    convolutional_decoder = komm.ConvolutionalDecoderViterbi(code, traceback_length=L, input_type='hard')
+    message_hat = np.pad(message_hat, (len(message_hat), 0), mode='constant')
+    assert np.array_equal(message_hat, convolutional_decoder(recvword))
