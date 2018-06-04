@@ -8,7 +8,6 @@ from ._algebra import \
 from .util import \
     int2binlist, binlist2int, pack, unpack
 
-from ._aux import tag
 
 __all__ = ['FiniteStateMachine', 'ConvolutionalCode',
            'ConvolutionalEncoder', 'ConvolutionalDecoderViterbi', 'ConvolutionalDecoderBCJR']
