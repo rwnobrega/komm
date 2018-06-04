@@ -8,19 +8,16 @@ snr = 2.0
 decoding_method = 'viterbi_soft'
 # ----
 
-code = komm.ConvolutionalCode(feedforward_polynomials)
+code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks=L)
 awgn = komm.AWGNChannel(snr=snr)
 bpsk = komm.PAModulation(2)
-k, n, nu = code.num_input_bits, code.num_output_bits, code.overall_constraint_length
 soft_or_hard = getattr(code, '_decode_' + decoding_method).input_type
 
-message = np.random.randint(2, size=k*L)
-message_tail = np.concatenate((message, np.zeros(k*nu, dtype=np.int)))
-codeword = code.encode(message_tail)
+message = np.random.randint(2, size=L)
+codeword = code.encode(message)
 sentword = bpsk.modulate(codeword)
 recvword = awgn(sentword)
 demodulated = bpsk.demodulate(recvword, decision_method=soft_or_hard)
-message_tail_hat = code.decode(demodulated, method=decoding_method)
-message_hat = message_tail_hat[:-k*nu]
+message_hat = code.decode(demodulated, method=decoding_method)
 
 print(f'{np.count_nonzero(message != message_hat)} / {len(message)}')

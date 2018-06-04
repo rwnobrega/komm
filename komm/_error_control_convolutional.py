@@ -227,7 +227,31 @@ class FiniteStateMachine:
 
         return input_sequences_hat, metrics[L, :]
 
-    def viterbi_streaming(self, observed_sequence, metric_function, metrics, paths):
+    def viterbi_streaming(self, observed_sequence, metric_function, memory):
+        """
+        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by :math:`\\tau`. It chooses the survivor with best metric and selects the information block on this path.
+
+        References: :cite:`Lin.Costello.04` (Sec. 12.3).
+
+        **Input:**
+
+        :code:`observed_sequence` : 1D-array
+            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
+
+        :code:`metric_function` : function
+            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
+
+        **Output:**
+
+        :code:`input_sequence_hat` : 1D-array of :obj:`int`
+            The most probable input sequence. It is a 1D-array of length :math:`L`.
+
+        **Input and output:**
+
+        :code:`memory` : :obj:`dict`
+            The past metrics for each state. It must be a 2D-array of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
+            The initial metrics for each state. It must be a 2D-array of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
+        """
         num_states = self._num_states
         input_sequences_hat = np.empty(len(observed_sequence), dtype=np.int)
         for t, z in enumerate(observed_sequence):
@@ -235,24 +259,25 @@ class FiniteStateMachine:
             choices = np.zeros(num_states, dtype=np.int)
             for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
-                    candidate_metric = metrics[s0, -1] + metric_function(y, z)
+                    candidate_metric = memory['metrics'][s0, -1] + metric_function(y, z)
                     if candidate_metric < new_metrics[s1]:
                         new_metrics[s1] = candidate_metric
                         choices[s1] = s0
 
             s_star = np.argmin(new_metrics)
-            input_sequences_hat[t] = self._input_edges[paths[s_star, 0], paths[s_star, 1]]
+            s0, s1 = memory['paths'][s_star, :2]
+            input_sequences_hat[t] = self._input_edges[s0, s1]
 
-            metrics = np.roll(metrics, shift=-1, axis=1)
-            metrics[:, -1] = new_metrics
-            paths = np.roll(paths, shift=-1, axis=1)
+            memory['metrics'] = np.roll(memory['metrics'], shift=-1, axis=1)
+            memory['metrics'][:, -1] = new_metrics
+            memory['paths'] = np.roll(memory['paths'], shift=-1, axis=1)
 
-            paths_copy = np.copy(paths)
+            paths_copy = np.copy(memory['paths'])
             for s1, s0 in enumerate(choices):
-                paths[s1, :-1] = paths_copy[s0, :-1]
-                paths[s1, -1] = s1
+                memory['paths'][s1, :-1] = paths_copy[s0, :-1]
+                memory['paths'][s1, -1] = s1
 
-        return input_sequences_hat, metrics, paths
+        return input_sequences_hat
 
     def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state_distribution=None, final_state_distribution=None):
         """
@@ -698,9 +723,10 @@ class ConvolutionalDecoderViterbi:
         n = convolutional_code._num_output_bits
         num_states = convolutional_code._finite_state_machine._num_states
 
-        self._metrics = np.full((num_states, traceback_length + 1), fill_value=np.inf)
-        self._metrics[initial_state, -1] = 0.0
-        self._paths = np.zeros((num_states, traceback_length + 1), dtype=np.int)
+        self._memory = {}
+        self._memory['metrics'] = np.full((num_states, traceback_length + 1), fill_value=np.inf)
+        self._memory['metrics'][initial_state, -1] = 0.0
+        self._memory['paths'] = np.zeros((num_states, traceback_length + 1), dtype=np.int)
 
         cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
         self._metric_function_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
@@ -710,11 +736,10 @@ class ConvolutionalDecoderViterbi:
         code = self._convolutional_code
         n, k = code._num_output_bits, code._num_input_bits
 
-        input_sequence_hat, self._metrics, self._paths = code._finite_state_machine.viterbi_streaming(
+        input_sequence_hat = code._finite_state_machine.viterbi_streaming(
             observed_sequence=np.reshape(inp, newshape=(-1, n)),
             metric_function=getattr(self, '_metric_function_' + self._input_type),
-            metrics=self._metrics,
-            paths=self._paths)
+            memory=self._memory)
 
         outp = unpack(input_sequence_hat, width=k)
         return outp
