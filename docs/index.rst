@@ -64,11 +64,19 @@ Convolutional coding
     :toctree:
     :nosignatures:
 
-    FiniteStateMachine
     ConvolutionalCode
     ConvolutionalEncoder
     ConvolutionalDecoderViterbi
     ConvolutionalDecoderBCJR
+
+Finite-state machine
+--------------------
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    FiniteStateMachine
 
 Modulation
 ----------
