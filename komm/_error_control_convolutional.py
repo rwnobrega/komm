@@ -417,9 +417,9 @@ class ConvolutionalDecoderBCJR:
     .. rubric:: Examples
 
     >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-    >>> convolutional_decoder = komm.ConvolutionalDecoder(convolutional_code)
+    >>> convolutional_decoder = komm.ConvolutionalDecoderBCJR(convolutional_code, output_type='hard')
     >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
-    array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+    array([1, 0, 1, 1, 1, 0, 1, 1])
     """
     def __init__(self, convolutional_code, initial_state=0, channel_snr=1.0, input_type='hard', output_type='hard'):
         """
@@ -442,22 +442,25 @@ class ConvolutionalDecoderBCJR:
 
         n = convolutional_code._num_output_bits
         cache_polar = (-1)**np.array([int2binlist(y, width=n) for y in range(2**n)])
-        self._metric_function_bcjr = lambda y, z: 2.0 * self._channel_snr * np.dot(cache_polar[y], z)
+        self._metric_function = lambda y, z: 2.0 * self._channel_snr * np.dot(cache_polar[y], z)
 
     def __call__(self, inp):
         code = self._convolutional_code
         n, k, m = code._num_output_bits, code._num_input_bits, code._memory_order
         num_states = code._finite_state_machine._num_states
 
+        if self._input_type == 'hard':
+            inp = (-1)**np.array(inp)
+
         input_posteriors = code._finite_state_machine.forward_backward(
             observed_sequence=np.reshape(inp, newshape=(-1, n)),
-            metric_function=lambda y, z: self._metric_function_bcjr(y, z),
+            metric_function=self._metric_function,
             initial_state_distribution=np.eye(1, num_states, 0),
             final_state_distribution=np.eye(1, num_states, 0))
         input_posteriors = input_posteriors[:-m]
 
-        if self._output_type == 'soft':
-            return np.log(input_posteriors[:,0] / input_posteriors[:,1])
-        elif self._output_type == 'hard':
+        if self._output_type == 'hard':
             input_sequence_hat = np.argmax(input_posteriors, axis=1)
             return unpack(input_sequence_hat, width=k)
+        elif self._output_type == 'soft':
+            return np.log(input_posteriors[:,0] / input_posteriors[:,1])
