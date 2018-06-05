@@ -336,7 +336,7 @@ class ConvolutionalEncoder:
 
 class ConvolutionalDecoderViterbi:
     """
-    Convolutional Viterbi decoder.
+    Convolutional decoder using Viterbi algorithm.
 
     **Input:**
 
@@ -402,7 +402,7 @@ class ConvolutionalDecoderViterbi:
 
 class ConvolutionalDecoderBCJR:
     """
-    Convolutional BCJR decoder.
+    Convolutional decoder using Bahl--Cocke--Jelinek--Raviv (BCJR) algorithm.
 
     **Input:**
 
