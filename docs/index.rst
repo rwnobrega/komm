@@ -55,6 +55,7 @@ Block coding
     ReedMullerCode
     CyclicCode
     BCHCode
+    TerminatedConvolutionalCode
 
 Convolutional coding
 ~~~~~~~~~~~~~~~~~~~~
@@ -63,8 +64,19 @@ Convolutional coding
     :toctree:
     :nosignatures:
 
-    FiniteStateMachine
     ConvolutionalCode
+    ConvolutionalEncoder
+    ConvolutionalDecoderViterbi
+    ConvolutionalDecoderBCJR
+
+Finite-state machine
+--------------------
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    FiniteStateMachine
 
 Modulation
 ----------
@@ -92,20 +104,32 @@ Complex modulation schemes
     APSKModulation
     QAModulation
 
+Pulse formatting
+----------------
+
 Pulses
-------
+~~~~~~
 
 .. autosummary::
     :toctree:
     :nosignatures:
 
-    FormattingPulse
     RectangularPulse
     ManchesterPulse
     SincPulse
     RaisedCosinePulse
     RootRaisedCosinePulse
     GaussianPulse
+
+Filtering
+~~~~~~~~~
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    TransmitFilter
+    ReceiveFilter
 
 Sequences
 ---------
