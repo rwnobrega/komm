@@ -1173,7 +1173,12 @@ class BCHCode(CyclicCode):
     >>> code.generator_polynomial
     0b1000111110101111
 
-    >>> # TODO: Example of tau being replaced by its true value.
+    >>> # The true error-correcting capability is equal to the designed one:
+    >>> code = komm.BCHCode(7, 15); code
+    BCHCode(7, 15)
+    >>> # The true error-correcting capability is greater than the designed one:
+    >>> code = komm.BCHCode(7, 16); code
+    BCHCode(7, 21)
     """
     def __init__(self, mu, tau):
         """
