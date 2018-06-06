@@ -1372,7 +1372,7 @@ class TerminatedConvolutionalCode(BlockCode):
                [0, 1, 0, 0, 1, 1]])
         """
         code = ConvolutionalCode(feedforward_polynomials)
-        K, N, mu = code._num_input_bits, code._num_output_bits, code.memory_order
+        K, N, mu = code._num_input_bits, code._num_output_bits, code._memory_order
         h = int(num_blocks)
 
         sliced_generator_matrices = np.empty((mu + 1, K, N), dtype=np.int)
@@ -1427,16 +1427,19 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _encode_finite_state_machine(self, message):
         code = self._convolutional_code
-        K, N, mu = code._num_input_bits, code._num_output_bits, code.memory_order
-        input_sequence = pack(message, width=K)
+        K, N, mu = code._num_input_bits, code._num_output_bits, code._memory_order
+        nus = code._constraint_lengths
         if self._mode == 'truncated':
             initial_state = 0
         elif self._mode == 'zero-tail':
-            input_sequence = np.pad(input_sequence, (0, mu), mode='constant')
+            message = np.pad(message, (0, mu*K), mode='constant')
             initial_state = 0
         elif self._mode == 'tail-biting':
-            initial_state = input_sequence[-mu :]
-        output_sequence, _ = code._finite_state_machine.process(input_sequence, initial_state)
+            message_reshaped = np.reshape(message, newshape=(K, -1), order='F')
+            state_bits = np.concatenate([message_reshaped[i, -nus[i]:][::-1] for i in range(K)])
+            initial_state = binlist2int(state_bits)
+        input_sequence = pack(message, width=K)
+        output_sequence, FSSS = code._finite_state_machine.process(input_sequence, initial_state)
         codeword = unpack(output_sequence, width=N)
         return codeword
 
@@ -1445,7 +1448,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _helper_decode_viterbi(self, recvword, metric_function):
         code = self._convolutional_code
-        K, N, mu = code._num_input_bits, code._num_output_bits, code.memory_order
+        K, N, mu = code._num_input_bits, code._num_output_bits, code._memory_order
         num_states = code._finite_state_machine._num_states
 
         if self._mode in ['truncated', 'zero-tail']:
@@ -1479,7 +1482,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
         code = self._convolutional_code
-        K, N, mu = code._num_input_bits, code._num_output_bits, code.memory_order
+        K, N, mu = code._num_input_bits, code._num_output_bits, code._memory_order
         num_states = code._finite_state_machine._num_states
 
         if self._mode == 'truncated':
