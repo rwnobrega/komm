@@ -852,7 +852,8 @@ class ReedMullerCode(BlockCode):
 
         The parameters must satisfy :math:`0 \\leq \\rho < \\mu`.
         """
-        assert 0 <= rho < mu
+        if not 0 <= rho < mu:
+            raise ValueError("Parameters must satisfy 0 <= rho < mu")
 
         super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(rho, mu))
         self._minimum_distance = 2**(mu - rho)
@@ -1190,7 +1191,8 @@ class BCHCode(CyclicCode):
         :code:`tau` : :obj:`int`
             The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
         """
-        assert 1 <= tau < 2**(mu - 1)
+        if not 1 <= tau < 2**(mu - 1):
+            raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
 
         field = BinaryFiniteExtensionField(mu)
         generator_polynomial, t = self._bch_code_generator_polynomial(field, tau)
