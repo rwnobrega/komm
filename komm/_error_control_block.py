@@ -544,9 +544,9 @@ class HammingCode(BlockCode):
            [1, 0, 1, 1, 0, 1, 0],
            [0, 1, 1, 1, 0, 0, 1]])
     >>> code.encode([1, 0, 1, 1])
-    array([0, 1, 0, 1, 0, 1, 1])
+    array([1, 0, 1, 1, 0, 1, 0])
     >>> code.decode([0, 1, 0, 0, 0, 1, 1])
-    array([1, 0, 1, 1])
+    array([1, 1, 0, 0])
     """
     def __init__(self, m):
         """
@@ -1066,14 +1066,15 @@ class CyclicCode(BlockCode):
         .. rubric:: Examples
 
         >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
-        >>> code.meggitt_table()
-        {0b1011: 0b1000000,
-         0b1010: 0b1000001,
-         0b1001: 0b1000010,
-         0b1111: 0b1000100,
-         0b11: 0b1001000,
-         0b1100: 0b1010000,
-         0b101: 0b1100000}
+        >>> meggit_table = code.meggitt_table()
+        >>> for key, value in meggit_table.items(): print('{:<6} : {}'.format(bin(key), value))
+        0b1011 : 0b1000000
+        0b1010 : 0b1000001
+        0b1001 : 0b1000010
+        0b1111 : 0b1000100
+        0b11   : 0b1001000
+        0b1100 : 0b1010000
+        0b101  : 0b1100000
         """
         if not hasattr(self, '_meggitt_table'):
             self._meggitt_table = {}
@@ -1172,7 +1173,7 @@ class BCHCode(CyclicCode):
     >>> (code.length, code.dimension, code.minimum_distance)
     (31, 16, 7)
     >>> code.generator_polynomial
-    0b1000111110101111
+    BinaryPolynomial(0b1000111110101111)
 
     >>> # The true error-correcting capability is equal to the designed one:
     >>> code = komm.BCHCode(7, 15); code

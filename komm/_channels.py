@@ -31,9 +31,9 @@ class AWGNChannel:
     .. rubric:: Examples
 
     >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
-    >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x
+    >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x  #doctest:+SKIP
     array([ 1.,  3., -3., -1., -1.,  1.,  3.,  1., -1.,  3.])
-    >>> y = awgn(x); y
+    >>> y = awgn(x); y  #doctest:+SKIP
     array([ 0.98966376,  2.99349135, -3.05371748, -0.71632748, -1.06163275,
             0.75899613,  2.86905731,  1.16039474, -1.02437047,  2.91492338])
     """
@@ -117,9 +117,9 @@ class DiscreteMemorylessChannel:
     .. rubric:: Examples
 
     >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-    >>> x = np.random.randint(2, size=10); x
+    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
     array([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
-    >>> y = dmc(x); y
+    >>> y = dmc(x); y  #doctest:+SKIP
     array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
     """
     def __init__(self, transition_matrix):
@@ -218,9 +218,9 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     .. rubric:: Examples
 
     >>> bsc = komm.BinarySymmetricChannel(0.1)
-    >>> x = np.random.randint(2, size=10); x
+    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
     array([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-    >>> y = bsc(x); y
+    >>> y = bsc(x); y  #doctest:+SKIP
     array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
     """
     def __init__(self, crossover_probability=0.0):
@@ -282,9 +282,9 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     .. rubric:: Examples
 
     >>> bec = komm.BinaryErasureChannel(0.1)
-    >>> x = np.random.randint(2, size=10); x
+    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
     array([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
-    >>> y = bec(x); y
+    >>> y = bec(x); y  #doctest:+SKIP
     array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
     """
     def __init__(self, erasure_probability=0.0):

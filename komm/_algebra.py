@@ -18,16 +18,16 @@ class BinaryPolynomial(int):
 
     >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
     >>> poly
-    0b11010
+    BinaryPolynomial(0b11010)
 
     >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
     >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
     >>> poly1 + poly2  # X^3 + X^2 + X
-    0b1110
+    BinaryPolynomial(0b1110)
     >>> poly1 * poly2  # X^8 + X^7 + X^6 + X^3
-    0b111001000
+    BinaryPolynomial(0b111001000)
     >>> poly1**2  # X^8 + X^4
-    0b100010000
+    BinaryPolynomial(0b100010000)
     """
 
     # TODO: Find a better solution.
@@ -45,7 +45,7 @@ class BinaryPolynomial(int):
         .. rubric:: Examples
 
         >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
-        0b11010
+        BinaryPolynomial(0b11010)
         """
         return cls(binlist2int(coefficients))
 
@@ -60,7 +60,7 @@ class BinaryPolynomial(int):
         .. rubric:: Examples
 
         >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
-        0b11010
+        BinaryPolynomial(0b11010)
         """
         return cls(binlist2int(np.bincount(exponents)))
 
@@ -303,7 +303,7 @@ class BinaryFiniteExtensionField:
     >>> (field.characteristic, field.degree)
     (2, 4)
     >>> field.modulus
-    0b10011
+    BinaryPolynomial(0b10011)
 
     >>> field1 = komm.BinaryFiniteExtensionField(3, modulus=0b1011)
     >>> alpha1 = field1.primitive_element
