@@ -118,9 +118,9 @@ def test_terminated_convolutional_code():
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
 
 
+@pytest.mark.parametrize('feedforward_polynomials', [[[0o7, 0o5]], [[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]])
 @pytest.mark.parametrize('mode', ['zero-tail', 'truncated', 'tail-biting'])
-def test_terminated_convolutional_code_encoders(mode):
-    feedforward_polynomials = [[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]
+def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     num_blocks = 3
     code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks, mode=mode)
     for i in range(2**code.dimension):
