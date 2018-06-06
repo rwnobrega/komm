@@ -143,7 +143,7 @@ def build_finished(app, exception):
     print('Removing komm.*.rst...')
     os.system('rm -rf komm.*.rst')
     print('Fixing annoying anchor links...')
-    os.system(r'perl -p -i -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" `find ./_build/html/ -name *.html`')
+    os.system(r'perl -p -i -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" `find ./_build/ -name *.html`')
 
 def setup(app):
     app.connect('builder-inited', builder_inited_handler)
