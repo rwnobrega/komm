@@ -347,11 +347,11 @@ class ASKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> ask = komm.ASKModulation(4, base_amplitude=2.0)
-        >>> ask.constellation  #doctest: +NORMALIZE_WHITESPACE
+        >>> ask.constellation  #doctest: +SKIP
         array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
         >>> ask.labeling
         array([0, 1, 3, 2])
-        >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
+        >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +SKIP
         array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
         >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
         array([0, 0, 1, 0, 1, 1, 0, 1])
@@ -406,12 +406,12 @@ class PSKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4)
-        >>> psk.constellation  #doctest: +NORMALIZE_WHITESPACE
-        array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])
+        >>> psk.constellation  #doctest: +SKIP
+        array([+0.7071+0.7071j, -0.7071+0.7071j, -0.7071-0.7071j, +0.7071-0.7071j])
         >>> psk.labeling
         array([0, 1, 3, 2])
-        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
-        array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
+        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +SKIP
+        array([+0.7071+0.7071j, -0.7071-0.7071j, +0.7071+0.7071j, -0.7071+0.7071j, -0.7071+0.7071j])
         """
         constellation = amplitude * np.exp(2j*np.pi*np.arange(order) / order) * np.exp(1j * phase_offset)
 
@@ -470,14 +470,10 @@ class APSKModulation(ComplexModulation):
 
         >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
         >>> apsk.constellation  #doctest: +SKIP
-        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j,
-                6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j,
-               -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j,
-               -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j,
-                1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j,
-               -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j,
-               -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j,
-                7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
+        array([+1.0000+0.0000j, +0.7071+0.7071j, +0.0000+1.0000j, -0.7071+0.7071j,
+               -1.0000+0.0000j, -0.7071-0.7071j, -0.0000-1.0000j, +0.7071-0.7071j,
+               +1.8478+0.7654j, +0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
+               -1.8478-0.7654j, -0.7654-1.8478j, +0.7654-1.8478j, +1.8478-0.7654j])
         """
         if isinstance(phase_offsets, (tuple, list)):
             phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)
