@@ -406,15 +406,12 @@ class PSKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4)
-        >>> psk.constellation
-        array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j,
-               -0.70710678-0.70710678j,  0.70710678-0.70710678j])
+        >>> psk.constellation  #doctest: +NORMALIZE_WHITESPACE
+        array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])
         >>> psk.labeling
         array([0, 1, 3, 2])
-        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,
-                0.70710678+0.70710678j, -0.70710678+0.70710678j,
-               -0.70710678+0.70710678j])
+        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
+        array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
         """
         constellation = amplitude * np.exp(2j*np.pi*np.arange(order) / order) * np.exp(1j * phase_offset)
 
@@ -472,15 +469,11 @@ class APSKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-        >>> apsk.constellation
-        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j,
-                6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j,
-               -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j,
-               -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j,
-                1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j,
-               -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j,
-               -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j,
-                7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
+        >>> apsk.constellation  #doctest: +NORMALIZE_WHITESPACE
+        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j,  6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j,
+               -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j, -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j,
+                1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j, -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j,
+               -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j,  7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
         """
         if isinstance(phase_offsets, (tuple, list)):
             phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)
@@ -553,10 +546,11 @@ class QAModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> qam = komm.QAModulation(16)
-        >>> qam.constellation
-        array([-3.-3.j, -1.-3.j,  1.-3.j,  3.-3.j, -3.-1.j, -1.-1.j,  1.-1.j,
-                3.-1.j, -3.+1.j, -1.+1.j,  1.+1.j,  3.+1.j, -3.+3.j, -1.+3.j,
-                1.+3.j,  3.+3.j])
+        >>> qam.constellation  #doctest: +NORMALIZE_WHITESPACE
+        array([-3.-3.j, -1.-3.j,  1.-3.j,  3.-3.j,
+               -3.-1.j, -1.-1.j,  1.-1.j,  3.-1.j,
+               -3.+1.j, -1.+1.j,  1.+1.j,  3.+1.j,
+               -3.+3.j, -1.+3.j,  1.+3.j,  3.+3.j])
         >>> qam.labeling
         array([ 0,  1,  3,  2,  4,  5,  7,  6, 12, 13, 15, 14,  8,  9, 11, 10])
         >>> qam.modulate([0, 0, 1, 1, 0, 0, 1, 0])

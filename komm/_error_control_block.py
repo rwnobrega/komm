@@ -1066,8 +1066,10 @@ class CyclicCode(BlockCode):
         .. rubric:: Examples
 
         >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
-        >>> meggit_table = code.meggitt_table()
-        >>> for key, value in meggit_table.items(): print('{:<6} : {}'.format(bin(key), value))
+        >>> meggitt_table = code.meggitt_table()
+        >>> from operator import itemgetter
+        >>> for syndrome_polynomial, errorword_polynomial in sorted(meggitt_table.items(), key=itemgetter(1)):
+        ...     print('0b{:<4b} : 0b{:<7b}'.format(syndrome_polynomial, errorword_polynomial))
         0b1011 : 0b1000000
         0b1010 : 0b1000001
         0b1001 : 0b1000010
