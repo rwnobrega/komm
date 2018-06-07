@@ -1327,7 +1327,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     - **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = hN`.
 
-    - **Zero-tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` zero bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu)N`.
+    - **Tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu)N`.
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = hN`.
 
@@ -1337,7 +1337,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     References: :cite:`Lin.Costello.04`
     """
-    def __init__(self, convolutional_code, num_blocks, mode='zero-tail'):
+    def __init__(self, convolutional_code, num_blocks, mode='tail'):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -1348,12 +1348,12 @@ class TerminatedConvolutionalCode(BlockCode):
             The number :math:`h` of information blocks.
 
         :code:`mode` : :obj:`str`, optional
-            The termination mode. It must be one of :code:`'truncated'`, :code:`'zero-tail'`, or :code:`'tail-biting'`. The default value is :code:`'zero-tail'`.
+            The termination mode. It must be one of :code:`'truncated'`, :code:`'tail'`, or :code:`'tail-biting'`. The default value is :code:`'tail'`.
 
         .. rubric:: Examples
 
         >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-tail')
+        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail')
         >>> (code.length, code.dimension, code.minimum_distance)
         (8, 3, 3)
         >>> code.generator_matrix
@@ -1379,8 +1379,8 @@ class TerminatedConvolutionalCode(BlockCode):
         self._mode = mode
         self._num_blocks = h = num_blocks
 
-        if mode not in ['truncated', 'zero-tail', 'tail-biting']:
-            raise ValueError("Parameter 'mode' must be in {'truncated', 'zero-tail', 'tail-biting'}")
+        if mode not in ['truncated', 'tail', 'tail-biting']:
+            raise ValueError("Parameter 'mode' must be in {'truncated', 'tail', 'tail-biting'}")
 
         try:
             A = convolutional_code._state_matrix
@@ -1422,7 +1422,7 @@ class TerminatedConvolutionalCode(BlockCode):
         if self._mode == 'truncated':
             input_sequence = pack(message, width=K)
             initial_state = 0
-        elif self._mode == 'zero-tail':
+        elif self._mode == 'tail':
             input_sequence = np.pad(pack(message, width=K), (0, mu), mode='constant')
             initial_state = 0
         elif self._mode == 'tail-biting':
@@ -1443,7 +1443,7 @@ class TerminatedConvolutionalCode(BlockCode):
         K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
         num_states = convolutional_code._finite_state_machine._num_states
 
-        if self._mode in ['truncated', 'zero-tail']:
+        if self._mode in ['truncated', 'tail']:
             initial_metrics = np.full(num_states, fill_value=np.inf)
             initial_metrics[0] = 0.0
         elif self._mode == 'tail-biting':
@@ -1457,7 +1457,7 @@ class TerminatedConvolutionalCode(BlockCode):
         if self._mode == 'truncated':
             final_state_hat = np.argmin(final_metrics)
             input_sequence_hat = input_sequences_hat[:, final_state_hat]
-        elif self._mode == 'zero-tail':
+        elif self._mode == 'tail':
             input_sequence_hat = input_sequences_hat[:, 0][: -mu]
 
         message_hat = unpack(input_sequence_hat, width=K)
@@ -1480,7 +1480,7 @@ class TerminatedConvolutionalCode(BlockCode):
         if self._mode == 'truncated':
             initial_state_distribution = np.eye(1, num_states, 0)
             final_state_distribution = np.zeros(num_states)
-        elif self._mode == 'zero-tail':
+        elif self._mode == 'tail':
             initial_state_distribution = np.eye(1, num_states, 0)
             final_state_distribution = np.eye(1, num_states, 0)
         else:

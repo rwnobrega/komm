@@ -104,7 +104,7 @@ def test_cyclic_code(length, generator_polynomial, parity_check_polynomial):
 def test_terminated_convolutional_code():
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
 
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-tail')
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail')
     assert (code.length, code.dimension, code.minimum_distance) == (8, 3, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0,0,0], [0,0,1,1,0,1,0,0], [0,0,0,0,1,1,0,1]])
 
@@ -132,7 +132,7 @@ def test_terminated_convolutional_code():
 
 @pytest.mark.parametrize('feedforward_polynomials',
     [[[0o7, 0o5]], [[0o3, 0o2, 0o3], [0o2, 0o1, 0o1]], [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]]])
-@pytest.mark.parametrize('mode', ['zero-tail', 'truncated', 'tail-biting'])
+@pytest.mark.parametrize('mode', ['tail', 'truncated', 'tail-biting'])
 def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=feedforward_polynomials)
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
@@ -153,7 +153,7 @@ def test_terminated_convolutional_golay():
 def test_terminated_convolutional_code_viterbi():
     # Lin.Costello.04, p. 522-523.
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-tail')
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='tail')
     recvword = np.array([1,1,0, 1,1,0, 1,1,0, 1,1,1, 0,1,0, 1,0,1, 1,0,1])
     message_hat = code.decode(recvword, method='viterbi_hard')
     assert np.array_equal(message_hat, [1,1,0,0,1])
@@ -183,7 +183,7 @@ def test_terminated_convolutional_code_viterbi():
 def test_terminated_convolutional_code_bcjr():
     # Abrantes.10, p.434-437
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode='zero-tail')
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode='tail')
     recvword = -np.array([+0.3,+0.1, -0.5,+0.2, +0.8,+0.5, -0.5,+0.3, +0.1,-0.7, +1.5,-0.4])
     message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=1.25)
     assert np.allclose(-message_llr, [1.78, 0.24, -1.97, 5.52], atol=0.05)
