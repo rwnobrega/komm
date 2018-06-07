@@ -1325,9 +1325,9 @@ class TerminatedConvolutionalCode(BlockCode):
     """
     Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`K` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = hK`; its length depends on the termination mode employed. There are three possible termination modes:
 
-    - **Truncated** (or direct). The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = hN`.
+    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = hN`.
 
-    - **Tail**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu)N`.
+    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu)N`.
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = hN`.
 
@@ -1335,9 +1335,9 @@ class TerminatedConvolutionalCode(BlockCode):
 
     [[0]]
 
-    References: :cite:`Lin.Costello.04`
+    References: :cite:`Lin.Costello.04`, :cite:`Weiss.01`
     """
-    def __init__(self, convolutional_code, num_blocks, mode='tail'):
+    def __init__(self, convolutional_code, num_blocks, mode='zero-termination'):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -1348,19 +1348,19 @@ class TerminatedConvolutionalCode(BlockCode):
             The number :math:`h` of information blocks.
 
         :code:`mode` : :obj:`str`, optional
-            The termination mode. It must be one of :code:`'truncated'`, :code:`'tail'`, or :code:`'tail-biting'`. The default value is :code:`'tail'`.
+            The termination mode. It must be one of :code:`'direct-truncation'` | :code:`'zero-termination'` | :code:`'tail-biting'`. The default value is :code:`'zero-termination'`.
 
         .. rubric:: Examples
 
         >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail')
+        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
         >>> (code.length, code.dimension, code.minimum_distance)
         (8, 3, 3)
         >>> code.generator_matrix
         array([[1, 1, 0, 1, 0, 0, 0, 0],
                [0, 0, 1, 1, 0, 1, 0, 0],
                [0, 0, 0, 0, 1, 1, 0, 1]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='truncated')
+        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='direct-truncation')
         >>> (code.length, code.dimension, code.minimum_distance)
         (6, 3, 2)
         >>> code.generator_matrix
@@ -1379,8 +1379,8 @@ class TerminatedConvolutionalCode(BlockCode):
         self._mode = mode
         self._num_blocks = h = num_blocks
 
-        if mode not in ['truncated', 'tail', 'tail-biting']:
-            raise ValueError("Parameter 'mode' must be in {'truncated', 'tail', 'tail-biting'}")
+        if mode not in ['direct-truncation', 'zero-termination', 'tail-biting']:
+            raise ValueError("Parameter 'mode' must be in {'direct-truncation', 'zero-termination', 'tail-biting'}")
 
         try:
             A = convolutional_code._state_matrix
@@ -1419,19 +1419,22 @@ class TerminatedConvolutionalCode(BlockCode):
         convolutional_code = self._convolutional_code
         K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
         nu, mu = convolutional_code._overall_constraint_length, convolutional_code._memory_order
-        if self._mode == 'truncated':
+        if self._mode == 'direct-truncation':
             input_sequence = pack(message, width=K)
             initial_state = 0
-        elif self._mode == 'tail':
+        elif self._mode == 'zero-termination':
             input_sequence = np.pad(pack(message, width=K), (0, mu), mode='constant')
             initial_state = 0
         elif self._mode == 'tail-biting':
-            # See Weiß, Bettstetter, Riedel, Costello: Turbo Decoding with Tail--Biting Trellises.
+            # See Weiss.01.
             input_sequence = pack(message, width=K)
             _, zero_state_solution = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
             initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
 
-        output_sequence, _ = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+        output_sequence, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+        if self._mode == 'zero-termination':
+            assert fs == 0
+
         codeword = unpack(output_sequence, width=N)
         return codeword
 
@@ -1443,7 +1446,7 @@ class TerminatedConvolutionalCode(BlockCode):
         K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
         num_states = convolutional_code._finite_state_machine._num_states
 
-        if self._mode in ['truncated', 'tail']:
+        if self._mode in ['direct-truncation', 'zero-termination']:
             initial_metrics = np.full(num_states, fill_value=np.inf)
             initial_metrics[0] = 0.0
         elif self._mode == 'tail-biting':
@@ -1454,10 +1457,10 @@ class TerminatedConvolutionalCode(BlockCode):
             metric_function=metric_function,
             initial_metrics=initial_metrics)
 
-        if self._mode == 'truncated':
+        if self._mode == 'direct-truncation':
             final_state_hat = np.argmin(final_metrics)
             input_sequence_hat = input_sequences_hat[:, final_state_hat]
-        elif self._mode == 'tail':
+        elif self._mode == 'zero-termination':
             input_sequence_hat = input_sequences_hat[:, 0][: -mu]
 
         message_hat = unpack(input_sequence_hat, width=K)
@@ -1477,10 +1480,10 @@ class TerminatedConvolutionalCode(BlockCode):
         K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
         num_states = convolutional_code._finite_state_machine._num_states
 
-        if self._mode == 'truncated':
+        if self._mode == 'direct-truncation':
             initial_state_distribution = np.eye(1, num_states, 0)
             final_state_distribution = np.zeros(num_states)
-        elif self._mode == 'tail':
+        elif self._mode == 'zero-termination':
             initial_state_distribution = np.eye(1, num_states, 0)
             final_state_distribution = np.eye(1, num_states, 0)
         else:
