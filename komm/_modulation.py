@@ -347,11 +347,11 @@ class ASKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> ask = komm.ASKModulation(4, base_amplitude=2.0)
-        >>> ask.constellation
+        >>> ask.constellation  #doctest: +NORMALIZE_WHITESPACE
         array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
         >>> ask.labeling
         array([0, 1, 3, 2])
-        >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+        >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
         array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
         >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
         array([0, 0, 1, 0, 1, 1, 0, 1])
@@ -469,11 +469,15 @@ class APSKModulation(ComplexModulation):
         .. rubric:: Examples
 
         >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-        >>> apsk.constellation  #doctest: +NORMALIZE_WHITESPACE
-        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j,  6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j,
-               -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j, -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j,
-                1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j, -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j,
-               -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j,  7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
+        >>> apsk.constellation  #doctest: +SKIP
+        array([ 1.00000000e+00+0.00000000e+00j,  7.07106781e-01+7.07106781e-01j,
+                6.12323400e-17+1.00000000e+00j, -7.07106781e-01+7.07106781e-01j,
+               -1.00000000e+00+1.22464680e-16j, -7.07106781e-01-7.07106781e-01j,
+               -1.83697020e-16-1.00000000e+00j,  7.07106781e-01-7.07106781e-01j,
+                1.84775907e+00+7.65366865e-01j,  7.65366865e-01+1.84775907e+00j,
+               -7.65366865e-01+1.84775907e+00j, -1.84775907e+00+7.65366865e-01j,
+               -1.84775907e+00-7.65366865e-01j, -7.65366865e-01-1.84775907e+00j,
+                7.65366865e-01-1.84775907e+00j,  1.84775907e+00-7.65366865e-01j])
         """
         if isinstance(phase_offsets, (tuple, list)):
             phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)
