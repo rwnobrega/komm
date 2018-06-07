@@ -1382,8 +1382,13 @@ class TerminatedConvolutionalCode(BlockCode):
         if mode not in ['truncated', 'zero-tail', 'tail-biting']:
             raise ValueError("Parameter 'mode' must be in {'truncated', 'zero-tail', 'tail-biting'}")
 
-        if convolutional_code._constructed_from == 'feedback_polynomials' and mode == 'tail-biting':
-            raise NotImplementedError("Tail-biting termination mode not implemented for recursive convolutional codes")
+        try:
+            A = convolutional_code._state_matrix
+            nu = convolutional_code._overall_constraint_length
+            M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=np.int)) % 2
+            self._M_inv = right_inverse(M)
+        except:
+            raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
 
         K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
 
@@ -1412,18 +1417,20 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _encode_finite_state_machine(self, message):
         convolutional_code = self._convolutional_code
-        K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
-        nus = convolutional_code._constraint_lengths
+        K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
+        nu, mu = convolutional_code._overall_constraint_length, convolutional_code._memory_order
         if self._mode == 'truncated':
+            input_sequence = pack(message, width=K)
             initial_state = 0
         elif self._mode == 'zero-tail':
-            message = np.pad(message, (0, mu*K), mode='constant')
+            input_sequence = np.pad(pack(message, width=K), (0, mu), mode='constant')
             initial_state = 0
         elif self._mode == 'tail-biting':
-            message_reshaped = np.reshape(message, newshape=(K, -1), order='F')
-            state_bits = np.concatenate([message_reshaped[i, -nus[i]:][::-1] for i in range(K)])
-            initial_state = binlist2int(state_bits)
-        input_sequence = pack(message, width=K)
+            # See Weiß, Bettstetter, Riedel, Costello: Turbo Decoding with Tail--Biting Trellises.
+            input_sequence = pack(message, width=K)
+            _, zero_state_solution = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
+            initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
+
         output_sequence, _ = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
         codeword = unpack(output_sequence, width=N)
         return codeword

@@ -105,16 +105,29 @@ def test_terminated_convolutional_code():
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
 
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-tail')
-    assert (code.length, code.dimension) == (8, 3)
+    assert (code.length, code.dimension, code.minimum_distance) == (8, 3, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0,0,0], [0,0,1,1,0,1,0,0], [0,0,0,0,1,1,0,1]])
 
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='truncated')
-    assert (code.length, code.dimension) == (6, 3)
+    assert (code.length, code.dimension, code.minimum_distance) == (6, 3, 2)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,0,0,0,1,1]])
 
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail-biting')
-    assert (code.length, code.dimension) == (6, 3)
+    assert (code.length, code.dimension, code.minimum_distance) == (6, 3, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
+
+    # Lin.Costello.04, p.586-587
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=6, mode='tail-biting')
+    assert (code.length, code.dimension, code.minimum_distance) == (12, 6, 3)
+    assert np.array_equal(code.generator_matrix[0, :], [1,1,1,0,1,1,0,0,0,0,0,0])
+
+    # Lin.Costello.04, p.587-590
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='tail-biting')
+    assert (code.length, code.dimension, code.minimum_distance) == (10, 5, 3)
+    gen_mat = [[1,0,0,0,0,1,0,1,0,0], [0,0,1,0,0,0,0,1,0,1], [0,1,0,0,1,0,0,0,0,1], [0,1,0,1,0,0,1,0,0,0], [0,0,0,1,0,1,0,0,1,0]]
+    assert np.array_equal(code.generator_matrix, gen_mat)
 
 
 @pytest.mark.parametrize('feedforward_polynomials',
