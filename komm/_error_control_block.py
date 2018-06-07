@@ -1432,9 +1432,6 @@ class TerminatedConvolutionalCode(BlockCode):
             initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
 
         output_sequence, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
-        if self._mode == 'zero-termination':
-            assert fs == 0
-
         codeword = unpack(output_sequence, width=N)
         return codeword
 
