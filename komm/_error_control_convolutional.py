@@ -159,6 +159,7 @@ class ConvolutionalCode:
             self._transfer_function_matrix[i, j] = BinaryPolynomialFraction(p) / BinaryPolynomialFraction(q)
 
         self._setup_finite_state_machine_direct_form()
+        self._setup_space_state_representation()
 
     def __repr__(self):
         feedforward_polynomials_str = str(np.vectorize(str)(self._feedforward_polynomials).tolist()).replace("'", "")
@@ -203,6 +204,14 @@ class ConvolutionalCode:
 
     def _setup_finite_state_machine_transposed_form(self):
         pass
+
+    def _setup_space_state_representation(self):
+        nu = self._overall_constraint_length
+        self._state_matrix = np.empty((nu, nu), dtype=np.int)
+        for s in range(nu):
+            state = 2**s
+            next_state = self._finite_state_machine._next_states[state, 0]
+            self._state_matrix[s, :] = int2binlist(next_state, width=nu)
 
     @property
     def num_input_bits(self):
@@ -277,6 +286,13 @@ class ConvolutionalCode:
         The transfer function matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.
         """
         return self._transfer_function_matrix
+
+    @property
+    def state_matrix(self):
+        """
+        The state matrix :math:`A` of the state-space representation.
+        """
+        return self._state_matrix
 
 
 class ConvolutionalEncoder:
