@@ -538,18 +538,18 @@ def rref(M):
 
     Loosely based on
     [1] https://gist.github.com/rgov/1499136
-
     """
     M_rref = np.copy(M)
+    n_rows, n_cols = M_rref.shape
 
     def pivot(row):
         f_list = np.flatnonzero(row)
         if f_list.size > 0:
             return f_list[0]
         else:
-            return None
+            return n_rows
 
-    for r in range(M_rref.shape[0]):
+    for r in range(n_rows):
         # Choose the pivot.
         possible_pivots = [pivot(row) for row in M_rref[r:]]
         p = np.argmin(possible_pivots) + r
@@ -559,9 +559,11 @@ def rref(M):
 
         # Pivot column.
         f = pivot(M_rref[r])
+        if f >= n_cols:
+            continue
 
         # Subtract the row from others.
-        for i in range(M_rref.shape[0]):
+        for i in range(n_rows):
             if i != r and M_rref[i, f] != 0:
                 M_rref[i] = (M_rref[i] + M_rref[r]) % 2
 
@@ -583,21 +585,18 @@ def xrref(M):
     pivots
 
     Such that :obj:`M_rref = P @ M` (where :obj:`@` stands for matrix multiplication).
-
-    Loosely based on
-    [1] https://gist.github.com/rgov/1499136
-
     """
     eye = np.eye(M.shape[0], dtype=np.int)
 
     augmented_M = np.concatenate((np.copy(M), np.copy(eye)), axis=1)
     augmented_M_rref = rref(augmented_M)
+
     M_rref = augmented_M_rref[:, :M.shape[1]]
     P = augmented_M_rref[:, M.shape[1]:]
 
     pivots = []
     j = 0
-    while len(pivots) < M_rref.shape[0]:
+    while len(pivots) < M_rref.shape[0] and j < M_rref.shape[1]:
         if np.array_equal(M_rref[:, j], eye[len(pivots)]):
             pivots.append(j)
         j += 1
@@ -608,9 +607,10 @@ def xrref(M):
 def right_inverse(M):
     """
     """
-    M_rref_ri = np.zeros(M.T.shape, dtype=np.int)
     P, _, s_indices = xrref(M)
-    M_rref_ri[s_indices] = np.eye(M.shape[0])
+    M_rref_ri = np.zeros(M.T.shape, dtype=np.int)
+
+    M_rref_ri[s_indices] = np.eye(len(s_indices), M.shape[0])
     M_ri = np.dot(M_rref_ri, P) % 2
     return M_ri
 
