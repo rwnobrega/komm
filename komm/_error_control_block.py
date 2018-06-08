@@ -437,7 +437,7 @@ class BlockCode:
         """
         recvword = np.array(recvword)
 
-        if recvword .size != self._length:
+        if recvword.size != self._length:
             raise ValueError("Length of 'recvword' must be equal to the code length")
 
         if method is None:
