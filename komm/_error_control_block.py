@@ -500,7 +500,7 @@ class BlockCode:
         rst = '.. csv-table::\n'
         rst += '{indent}   :header: Method, Identifier, Input type\n'.format(indent=indent, header=', '.join(table[0]))
         rst += '{indent}   :widths: 5, 5, 2\n\n'.format(indent=indent)
-        for row in table[1:]:
+        for row in table:
             rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
         cls.__doc__ = cls.__doc__.replace('[[0]]', rst)
 
