@@ -95,7 +95,6 @@ class BlockCode:
         :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional
             Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
         """
-
         if 'generator_matrix' in kwargs:
             self._init_from_generator_matrix(**kwargs)
         elif 'parity_check_matrix' in kwargs:
