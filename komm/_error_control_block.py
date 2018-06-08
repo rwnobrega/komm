@@ -1381,17 +1381,21 @@ class TerminatedConvolutionalCode(BlockCode):
         if mode not in ['direct-truncation', 'zero-termination', 'tail-biting']:
             raise ValueError("Parameter 'mode' must be in {'direct-truncation', 'zero-termination', 'tail-biting'}")
 
+        if mode == 'zero-termination' and convolutional_code._constructed_from == 'feedback_polynomials':
+            raise ValueError("Zero termination mode for feedback convolutional codes not implemented.")
+
+        K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
+        nu = convolutional_code._overall_constraint_length
+        A = convolutional_code._state_matrix
+
+        # For tail-biting:
         try:
-            A = convolutional_code._state_matrix
-            nu = convolutional_code._overall_constraint_length
             M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=np.int)) % 2
             self._M_inv = right_inverse(M)
         except:
             raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
 
-        K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
-
-        generator_matrix = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(h*K))
+        generator_matrix = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(h*K, dtype=np.int))
         super().__init__(generator_matrix=generator_matrix)
 
         cache_bit = np.array([int2binlist(y, width=N) for y in range(2**N)])
@@ -1422,7 +1426,8 @@ class TerminatedConvolutionalCode(BlockCode):
             input_sequence = pack(message, width=K)
             initial_state = 0
         elif self._mode == 'zero-termination':
-            input_sequence = np.pad(pack(message, width=K), (0, mu), mode='constant')
+            tail = np.zeros(mu*K)
+            input_sequence = pack(np.concatenate([message, tail]), width=K)
             initial_state = 0
         elif self._mode == 'tail-biting':
             # See Weiss.01.
@@ -1430,7 +1435,8 @@ class TerminatedConvolutionalCode(BlockCode):
             _, zero_state_solution = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
             initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
 
-        output_sequence, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+        output_sequence, _ = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+
         codeword = unpack(output_sequence, width=N)
         return codeword
 
