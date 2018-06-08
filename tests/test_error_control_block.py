@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 import komm
 
-from komm.util import int2binlist
+from komm.util import int2binlist, pack
 
 
 class TestHammingCode:
@@ -116,9 +116,6 @@ def test_terminated_convolutional_code():
     assert (code.length, code.dimension, code.minimum_distance) == (6, 3, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
 
-#    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
-#    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-termination')
-
     # Lin.Costello.04, p.586-587
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=6, mode='tail-biting')
@@ -131,6 +128,22 @@ def test_terminated_convolutional_code():
     assert (code.length, code.dimension, code.minimum_distance) == (10, 5, 3)
     gen_mat = [[1,0,0,0,0,1,0,1,0,0], [0,0,1,0,0,0,0,1,0,1], [0,1,0,0,1,0,0,0,0,1], [0,1,0,1,0,0,1,0,0,0], [0,0,0,1,0,1,0,0,1,0]]
     assert np.array_equal(code.generator_matrix, gen_mat)
+
+
+@pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials', [
+    ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]], None),
+    ([[0o7, 0o5]], [0o7]),
+])
+def test_terminated_convolutional_code_zero_termination(feedforward_polynomials, feedback_polynomials):
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-termination')
+    for message_int in range(2**code.dimension):
+        print(message_int, 2**code.dimension)
+        message = int2binlist(message_int, width=code.dimension)
+        tail = np.dot(message, code._tail_projector) % 2
+        input_sequence = pack(np.concatenate([message, tail]), width=convolutional_code._num_input_bits)
+        _, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
+        assert fs == 0
 
 
 @pytest.mark.parametrize('feedforward_polynomials',
@@ -193,11 +206,11 @@ def test_terminated_convolutional_code_bcjr():
     message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=1.25)
     assert np.allclose(message_hat, [1, 1, 0, 1])
 
-#    # Lin.Costello.04, p. 572-575.
-#    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
-#    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode='zero-termination')
-#    recvword = -np.array([+0.8,+0.1, +1.0,-0.5, -1.8,+1.1, +1.6,-1.6])
-#    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=0.25)
-#    assert np.allclose(-message_llr, [0.48, 0.62, -1.02], atol=0.05)
-#    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=0.25)
-#    assert np.allclose(message_hat, [1, 1, 0])
+    # Lin.Costello.04, p. 572-575.
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
+    recvword = -np.array([+0.8,+0.1, +1.0,-0.5, -1.8,+1.1, +1.6,-1.6])
+    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=0.25)
+    assert np.allclose(-message_llr, [0.48, 0.62, -1.02], atol=0.05)
+    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=0.25)
+    assert np.allclose(message_hat, [1, 1, 0])
