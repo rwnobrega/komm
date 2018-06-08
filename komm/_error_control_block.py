@@ -150,16 +150,6 @@ class BlockCode:
             args = 'parity_submatrix={}, information_set={}'.format(self._parity_submatrix.tolist(), self._information_set.tolist())
         return '{}({})'.format(self.__class__.__name__, args)
 
-    @classmethod
-    def _process_docstring(cls):
-        table = cls._available_decoding_methods()
-        indent = ' ' * 4
-        rst = '.. csv-table::\n'
-        rst += '{indent}   :header: {header}\n\n'.format(indent=indent, header=', '.join(table[0]))
-        for row in table[1:]:
-            rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
-        cls.__doc__ = cls.__doc__.replace('[[0]]', rst)
-
     @property
     def length(self):
         """
@@ -495,14 +485,24 @@ class BlockCode:
 
     @classmethod
     def _available_decoding_methods(cls):
-        header = ['Method', 'Identifier', 'Input\xa0type']
-        table = [header]
+        table = []
         for name in dir(cls):
             if name.startswith('_decode_'):
                 identifier = name[8:]
                 method = getattr(cls, name)
                 table.append([method.name, ':code:`{}`'.format(identifier), method.input_type])
         return table
+
+    @classmethod
+    def _process_docstring(cls):
+        table = cls._available_decoding_methods()
+        indent = ' ' * 4
+        rst = '.. csv-table::\n'
+        rst += '{indent}   :header: Method, Identifier, Input type\n'.format(indent=indent, header=', '.join(table[0]))
+        rst += '{indent}   :widths: 5, 5, 2\n\n'.format(indent=indent)
+        for row in table[1:]:
+            rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
+        cls.__doc__ = cls.__doc__.replace('[[0]]', rst)
 
 
 class HammingCode(BlockCode):
