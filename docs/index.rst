@@ -55,7 +55,6 @@ Block coding
     ReedMullerCode
     CyclicCode
     BCHCode
-    TerminatedConvolutionalCode
 
 Convolutional coding
 ~~~~~~~~~~~~~~~~~~~~
@@ -67,6 +66,7 @@ Convolutional coding
     ConvolutionalCode
     ConvolutionalStreamEncoder
     ConvolutionalStreamDecoder
+    TerminatedConvolutionalCode
 
 Finite-state machine
 --------------------
