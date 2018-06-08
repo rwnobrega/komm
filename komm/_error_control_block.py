@@ -1388,12 +1388,12 @@ class TerminatedConvolutionalCode(BlockCode):
         nu = convolutional_code._overall_constraint_length
         A = convolutional_code._state_matrix
 
-        # For tail-biting:
-        try:
-            M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=np.int)) % 2
-            self._M_inv = right_inverse(M)
-        except:
-            raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
+        if mode == 'tail-biting':
+            try:
+                M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=np.int)) % 2
+                self._M_inv = right_inverse(M)
+            except:
+                raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
 
         generator_matrix = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(h*K, dtype=np.int))
         super().__init__(generator_matrix=generator_matrix)

@@ -65,9 +65,8 @@ Convolutional coding
     :nosignatures:
 
     ConvolutionalCode
-    ConvolutionalEncoder
-    ConvolutionalDecoderViterbi
-    ConvolutionalDecoderBCJR
+    ConvolutionalStreamEncoder
+    ConvolutionalStreamDecoder
 
 Finite-state machine
 --------------------

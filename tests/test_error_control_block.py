@@ -116,8 +116,8 @@ def test_terminated_convolutional_code():
     assert (code.length, code.dimension, code.minimum_distance) == (6, 3, 3)
     assert np.array_equal(code.generator_matrix, [[1,1,0,1,0,0], [0,0,1,1,0,1], [0,1,0,0,1,1]])
 
-    #convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
-    #code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-termination')
+#    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
+#    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-termination')
 
     # Lin.Costello.04, p.586-587
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
@@ -193,3 +193,11 @@ def test_terminated_convolutional_code_bcjr():
     message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=1.25)
     assert np.allclose(message_hat, [1, 1, 0, 1])
 
+#    # Lin.Costello.04, p. 572-575.
+#    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
+#    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode='zero-termination')
+#    recvword = -np.array([+0.8,+0.1, +1.0,-0.5, -1.8,+1.1, +1.6,-1.6])
+#    message_llr = code.decode(recvword, method='bcjr', output_type='soft', SNR=0.25)
+#    assert np.allclose(-message_llr, [0.48, 0.62, -1.02], atol=0.05)
+#    message_hat = code.decode(recvword, method='bcjr', output_type='hard', SNR=0.25)
+#    assert np.allclose(message_hat, [1, 1, 0])
