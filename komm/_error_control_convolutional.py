@@ -206,12 +206,18 @@ class ConvolutionalCode:
         pass
 
     def _setup_space_state_representation(self):
-        nu = self._overall_constraint_length
+        k, nu = self._num_input_bits, self._overall_constraint_length
         self._state_matrix = np.empty((nu, nu), dtype=np.int)
-        for s in range(nu):
-            state = 2**s
-            next_state = self._finite_state_machine._next_states[state, 0]
-            self._state_matrix[s, :] = int2binlist(next_state, width=nu)
+        for i in range(nu):
+            s0 = 2**i
+            s1 = self._finite_state_machine._next_states[s0, 0]
+            self._state_matrix[i, :] = int2binlist(s1, width=nu)
+
+        self._control_matrix = np.empty((k, nu), dtype=np.int)
+        for i in range(k):
+            x = 2**i
+            s1 = self._finite_state_machine._next_states[0, x]
+            self._control_matrix[i, :] = int2binlist(s1, width=nu)
 
     @property
     def num_input_bits(self):
@@ -290,9 +296,16 @@ class ConvolutionalCode:
     @property
     def state_matrix(self):
         """
-        The state matrix :math:`A` of the state-space representation.
+        The state matrix :math:`A` of the state-space representation. This is a :math:`\\nu \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
         """
         return self._state_matrix
+
+    @property
+    def control_matrix(self):
+        """
+        The control matrix :math:`B` of the state-space representation. This is a :math:`k \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
+        """
+        return self._control_matrix
 
 
 class ConvolutionalEncoder:
