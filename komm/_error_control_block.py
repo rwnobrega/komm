@@ -1410,6 +1410,10 @@ class TerminatedConvolutionalCode(BlockCode):
         cache_polar = (-1)**cache_bit
         self._metric_function_bcjr = lambda SNR, y, z: 2.0 * SNR * np.dot(cache_polar[y], z)
 
+    def __repr__(self):
+        args = "convolutional_code={}, num_blocks={}, mode='{}'".format(self._convolutional_code, self._num_blocks, self._mode)
+        return '{}({})'.format(self.__class__.__name__, args)
+
     @property
     def num_blocks(self):
         """
