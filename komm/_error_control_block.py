@@ -1484,7 +1484,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
         if self._mode == 'direct-truncation':
             initial_state_distribution = np.eye(1, num_states, 0)
-            final_state_distribution = np.zeros(num_states)
+            final_state_distribution = np.ones(num_states) / num_states
         elif self._mode == 'zero-termination':
             initial_state_distribution = np.eye(1, num_states, 0)
             final_state_distribution = np.eye(1, num_states, 0)
