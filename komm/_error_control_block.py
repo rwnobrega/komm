@@ -1383,6 +1383,14 @@ class TerminatedConvolutionalCode(BlockCode):
 
         K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
         nu, mu = convolutional_code._overall_constraint_length, convolutional_code._memory_order
+
+        self._dimension = h * K
+        if mode in ['direct-truncation', 'tail-biting']:
+            self._length = h * N
+        elif mode == 'zero-termination':
+            self._length = (h + mu) * N
+        self._redundancy = self._length - self._dimension
+
         A, B = convolutional_code._state_matrix, convolutional_code._control_matrix
 
         if mode == 'zero-termination':
@@ -1395,9 +1403,6 @@ class TerminatedConvolutionalCode(BlockCode):
                 self._M_inv = right_inverse(M)
             except:
                 raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
-
-        generator_matrix = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(h*K, dtype=np.int))
-        super().__init__(generator_matrix=generator_matrix)
 
         cache_bit = np.array([int2binlist(y, width=N) for y in range(2**N)])
         self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
@@ -1418,6 +1423,11 @@ class TerminatedConvolutionalCode(BlockCode):
         The termination mode of the terminated convolutional code.
         """
         return self._mode
+
+    @property
+    @functools.lru_cache(maxsize=None)
+    def generator_matrix(self):
+        return np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(self._dimension, dtype=np.int))
 
     def _encode_finite_state_machine(self, message):
         convolutional_code = self._convolutional_code
