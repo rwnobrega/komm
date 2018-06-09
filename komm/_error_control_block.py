@@ -1417,14 +1417,14 @@ class TerminatedConvolutionalCode(BlockCode):
     @property
     def num_blocks(self):
         """
-        The number :math:`h` of information blocks of the terminated convolutional code.
+        The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.
         """
         return self._num_blocks
 
     @property
     def mode(self):
         """
-        The termination mode of the terminated convolutional code.
+        The termination mode of the terminated convolutional code. This property is read-only.
         """
         return self._mode
 
