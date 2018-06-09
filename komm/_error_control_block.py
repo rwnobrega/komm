@@ -1497,7 +1497,8 @@ class TerminatedConvolutionalCode(BlockCode):
             initial_state_distribution=initial_state_distribution,
             final_state_distribution=final_state_distribution)
 
-        input_posteriors = input_posteriors[:-mu]
+        if self._mode == 'zero-termination':
+            input_posteriors = input_posteriors[:-mu]
 
         if output_type == 'soft':
             return np.log(input_posteriors[:,0] / input_posteriors[:,1])
