@@ -144,6 +144,8 @@ Binary sequences
     BarkerSequence
     WalshHadamardSequence
     LFSRSequence
+    GoldSequence
+    KasamiSequence
 
 Other sequences
 ~~~~~~~~~~~~~~~

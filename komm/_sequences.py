@@ -7,7 +7,8 @@ from .util import \
     int2binlist, binlist2int
 
 __all__ = ['BinarySequence',
-           'BarkerSequence', 'WalshHadamardSequence', 'LFSRSequence',
+           'BarkerSequence', 'WalshHadamardSequence',
+           'LFSRSequence', 'GoldSequence', 'KasamiSequence',
            'ZadoffChuSequence']
 
 
@@ -410,6 +411,20 @@ class LFSRSequence(BinarySequence):
             state[-1] = np.bitwise_xor.reduce(state[taps - 1])
             state = np.roll(state, 1)
         return code
+
+
+class GoldSequence:
+    """
+    Gold sequence [Not implemented yet].
+    """
+    pass
+
+
+class KasamiSequence:
+    """
+    Kasami sequence [Not implemented yet].
+    """
+    pass
 
 
 class ZadoffChuSequence:
