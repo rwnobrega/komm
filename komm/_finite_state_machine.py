@@ -303,35 +303,29 @@ class FiniteStateMachine:
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 
         if input_priors is None:
-            log_input_priors = np.full((L, num_input_symbols), fill_value=0.0)
-        else:
-            with np.errstate(divide='ignore'):
-                log_input_priors = np.log(input_priors)
+            input_priors = np.ones((L, num_input_symbols)) / num_input_symbols
+        if initial_state_distribution is None:
+            initial_state_distribution = np.ones(num_states) / num_states
+        if initial_state_distribution is None:
+            final_state_distribution = np.ones(num_states) / num_states
 
         log_gamma = np.full((L, num_states, num_states), fill_value=-np.inf)
+        log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
+        log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
+
+        with np.errstate(divide='ignore'):
+            log_input_priors = np.log(input_priors)
+            log_alpha[0, :] = np.log(initial_state_distribution)
+            log_beta[L, :] = np.log(final_state_distribution)
+
         for t, z in enumerate(observed_sequence):
             for x, s0 in np.ndindex(num_input_symbols, num_states):
                 y, s1 = self._outputs[s0, x], self._next_states[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
 
-
-        log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
-        if initial_state_distribution is None:
-            log_alpha[0, :] = 0.0
-        else:
-            with np.errstate(divide='ignore'):
-                log_alpha[0, :] = np.log(initial_state_distribution)
-
         for t in range(0, L - 1):
             for s1 in range(num_states):
                 log_alpha[t + 1, s1] = logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
-
-        log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
-        if final_state_distribution is None:
-            log_beta[L, :] = 0.0
-        else:
-            with np.errstate(divide='ignore'):
-                log_beta[L, :] = np.log(final_state_distribution)
 
         for t in range(L - 1, -1, -1):
             for s0 in range(num_states):
