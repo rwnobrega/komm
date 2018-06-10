@@ -309,17 +309,7 @@ class ConvolutionalCode:
 
 class ConvolutionalStreamEncoder:
     """
-    Convolutional stream encoder.
-
-    **Input:**
-
-    :code:`message` : 1D-array of :obj:`int`
-        Binary message to be encoded. Its length must be a multiple of :math:`k`.
-
-    **Output:**
-
-    :code:`codeword` : 1D-array of :obj:`int`
-        Codeword corresponding to :code:`message`. Its length is equal to :math:`(n/k)` times the length of :code:`message`.
+    Convolutional stream encoder. Encode a bit stream using a given convolutional code (:class:`ConvolutionalCode`). The internal state of the encoder is maintained across each call.
 
     .. rubric:: Examples
 
@@ -338,7 +328,7 @@ class ConvolutionalStreamEncoder:
             The convolutional code.
 
         :code:`initial_state` : :obj:`int`, optional
-            Initial state of the machine. The default value is :code:`0`.
+            Initial state of the encoder. The default value is :code:`0`.
 
         :code:`method` : :obj:`str`, optional
             Encoding method to be used.
@@ -366,17 +356,7 @@ class ConvolutionalStreamEncoder:
 
 class ConvolutionalStreamDecoder:
     """
-    Convolutional stream decoder using Viterbi algorithm.
-
-    **Input:**
-
-    :code:`inp` : 1D-array of (:obj:`int` or :obj:`float`)
-        Word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be a multiple of :math:`n`.
-
-    **Output:**
-
-    :code:`outp` : 1D-array of :obj:`int`
-        Message decoded from :code:`recvword`. Its length is equal to :math:`(k/n)` times the length of :code:`recvword`.
+    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \\tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \\tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as :math:`\\tau = 5\\mu`, where :math:`\\mu` is the memory order of the convolutional code.
 
     .. rubric:: Examples
 
@@ -395,10 +375,10 @@ class ConvolutionalStreamDecoder:
             The convolutional code.
 
         :code:`traceback_length` : :obj:`int`
-            Soon.
+            The traceback length (path memory) :math:`\\tau` of the decoder.
 
         :code:`initial_state` : :obj:`int`, optional
-            Initial state of the machine. The default value is :code:`0`.
+            Initial state of the encoder. The default value is :code:`0`.
         """
         self._convolutional_code = convolutional_code
         self._traceback_length = int(traceback_length)
