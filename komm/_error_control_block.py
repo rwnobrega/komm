@@ -1322,13 +1322,13 @@ class BCHCode(CyclicCode):
 
 class TerminatedConvolutionalCode(BlockCode):
     """
-    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`K` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = hK`; its length depends on the termination mode employed. There are three possible termination modes:
+    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a :math:`(n_0, k_0)` convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k_0` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = h k_0`; its length depends on the termination mode employed. There are three possible termination modes:
 
-    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = hN`.
+    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = h n_0`.
 
-    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu)N`.
+    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu) n_0`.
 
-    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = hN`.
+    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.
 
     **Decoding methods**
 
@@ -1381,8 +1381,16 @@ class TerminatedConvolutionalCode(BlockCode):
         if mode not in ['direct-truncation', 'zero-termination', 'tail-biting']:
             raise ValueError("Parameter 'mode' must be in {'direct-truncation', 'zero-termination', 'tail-biting'}")
 
-        K, N = convolutional_code._num_input_bits, convolutional_code._num_output_bits
+        k0, n0 = convolutional_code._num_input_bits, convolutional_code._num_output_bits
         nu, mu = convolutional_code._overall_constraint_length, convolutional_code._memory_order
+
+        self._dimension = h * k0
+        if mode in ['direct-truncation', 'tail-biting']:
+            self._length = h * n0
+        elif mode == 'zero-termination':
+            self._length = (h + mu) * n0
+        self._redundancy = self._length - self._dimension
+
         A, B = convolutional_code._state_matrix, convolutional_code._control_matrix
 
         if mode == 'zero-termination':
@@ -1396,48 +1404,54 @@ class TerminatedConvolutionalCode(BlockCode):
             except:
                 raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
 
-        generator_matrix = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(h*K, dtype=np.int))
-        super().__init__(generator_matrix=generator_matrix)
-
-        cache_bit = np.array([int2binlist(y, width=N) for y in range(2**N)])
+        cache_bit = np.array([int2binlist(y, width=n0) for y in range(2**n0)])
         self._metric_function_viterbi_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
         self._metric_function_viterbi_soft = lambda y, z: np.dot(cache_bit[y], z)
         cache_polar = (-1)**cache_bit
         self._metric_function_bcjr = lambda SNR, y, z: 2.0 * SNR * np.dot(cache_polar[y], z)
 
+    def __repr__(self):
+        args = "convolutional_code={}, num_blocks={}, mode='{}'".format(self._convolutional_code, self._num_blocks, self._mode)
+        return '{}({})'.format(self.__class__.__name__, args)
+
     @property
     def num_blocks(self):
         """
-        The number :math:`h` of information blocks of the terminated convolutional code.
+        The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.
         """
         return self._num_blocks
 
     @property
     def mode(self):
         """
-        The termination mode of the terminated convolutional code.
+        The termination mode of the terminated convolutional code. This property is read-only.
         """
         return self._mode
 
+    @property
+    @functools.lru_cache(maxsize=None)
+    def generator_matrix(self):
+        return np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(self._dimension, dtype=np.int))
+
     def _encode_finite_state_machine(self, message):
         convolutional_code = self._convolutional_code
-        K, N, nu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._overall_constraint_length
+        k0, n0, nu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._overall_constraint_length
 
         if self._mode == 'direct-truncation':
-            input_sequence = pack(message, width=K)
+            input_sequence = pack(message, width=k0)
             initial_state = 0
         elif self._mode == 'zero-termination':
             tail = np.dot(message, self._tail_projector) % 2
-            input_sequence = pack(np.concatenate([message, tail]), width=K)
+            input_sequence = pack(np.concatenate([message, tail]), width=k0)
             initial_state = 0
         elif self._mode == 'tail-biting':
             # See Weiss.01.
-            input_sequence = pack(message, width=K)
+            input_sequence = pack(message, width=k0)
             _, zero_state_solution = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
             initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
 
-        output_sequence, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
-        codeword = unpack(output_sequence, width=N)
+        output_sequence, _ = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+        codeword = unpack(output_sequence, width=n0)
         return codeword
 
     def _default_encoder(self):
@@ -1445,7 +1459,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _helper_decode_viterbi(self, recvword, metric_function):
         convolutional_code = self._convolutional_code
-        K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
+        k0, n0, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
         num_states = convolutional_code._finite_state_machine._num_states
 
         if self._mode in ['direct-truncation', 'zero-termination']:
@@ -1455,7 +1469,7 @@ class TerminatedConvolutionalCode(BlockCode):
             raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
         input_sequences_hat, final_metrics = convolutional_code._finite_state_machine.viterbi(
-            observed_sequence=np.reshape(recvword, newshape=(-1, N)),
+            observed_sequence=np.reshape(recvword, newshape=(-1, n0)),
             metric_function=metric_function,
             initial_metrics=initial_metrics)
 
@@ -1465,7 +1479,7 @@ class TerminatedConvolutionalCode(BlockCode):
         elif self._mode == 'zero-termination':
             input_sequence_hat = input_sequences_hat[:, 0][: -mu]
 
-        message_hat = unpack(input_sequence_hat, width=K)
+        message_hat = unpack(input_sequence_hat, width=k0)
         return message_hat
 
     @tag(name='Viterbi (hard-decision)', input_type='hard', target='message')
@@ -1479,7 +1493,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
         convolutional_code = self._convolutional_code
-        K, N, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
+        k0, n0, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
         num_states = convolutional_code._finite_state_machine._num_states
 
         if self._mode == 'direct-truncation':
@@ -1492,18 +1506,19 @@ class TerminatedConvolutionalCode(BlockCode):
             raise NotImplementedError("BCJR algorithm not implemented for 'tail-biting'")
 
         input_posteriors = convolutional_code._finite_state_machine.forward_backward(
-            observed_sequence=np.reshape(recvword, newshape=(-1, N)),
+            observed_sequence=np.reshape(recvword, newshape=(-1, n0)),
             metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z),
             initial_state_distribution=initial_state_distribution,
             final_state_distribution=final_state_distribution)
 
-        input_posteriors = input_posteriors[:-mu]
+        if self._mode == 'zero-termination':
+            input_posteriors = input_posteriors[:-mu]
 
         if output_type == 'soft':
             return np.log(input_posteriors[:,0] / input_posteriors[:,1])
         elif output_type == 'hard':
             input_sequence_hat = np.argmax(input_posteriors, axis=1)
-            return unpack(input_sequence_hat, width=K)
+            return unpack(input_sequence_hat, width=k0)
 
     def _default_decoder(self, dtype):
         if dtype == np.int:
