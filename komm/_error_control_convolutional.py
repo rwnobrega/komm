@@ -320,7 +320,7 @@ class ConvolutionalStreamEncoder:
     >>> convolutional_encoder([1, 1, 1, 1])
     array([1, 0, 1, 0, 1, 0, 1, 0])
     """
-    def __init__(self, convolutional_code, initial_state=0, method='finite_state_machine'):
+    def __init__(self, convolutional_code, initial_state=0):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -329,29 +329,19 @@ class ConvolutionalStreamEncoder:
 
         :code:`initial_state` : :obj:`int`, optional
             Initial state of the encoder. The default value is :code:`0`.
-
-        :code:`method` : :obj:`str`, optional
-            Encoding method to be used.
         """
         self._convolutional_code = convolutional_code
         self._state = int(initial_state)
-        self._method = method
-
-        try:
-            self._encoder = getattr(self, '_encode_' + method)
-        except AttributeError:
-            raise ValueError("Unsupported encoding method")
 
     def __call__(self, inp):
-        return self._encoder(np.array(inp))
-
-    def _encode_finite_state_machine(self, message):
         n, k = self._convolutional_code._num_output_bits, self._convolutional_code._num_input_bits
-        fsm = self._convolutional_code._finite_state_machine
-        input_sequence = pack(message, width=k)
-        output_sequence, self._state = fsm.process(input_sequence, self._state)
-        codeword = unpack(output_sequence, width=n)
-        return codeword
+
+        output_sequence, self._state = self._convolutional_code._finite_state_machine.process(
+                input_sequence=pack(inp, width=k),
+                initial_state=self._state)
+
+        outp = unpack(output_sequence, width=n)
+        return outp
 
 
 class ConvolutionalStreamDecoder:
@@ -398,10 +388,9 @@ class ConvolutionalStreamDecoder:
         self._metric_function_soft = lambda y, z: np.dot(cache_bit[y], z)
 
     def __call__(self, inp):
-        code = self._convolutional_code
-        n, k = code._num_output_bits, code._num_input_bits
+        n, k = self._convolutional_code._num_output_bits, self._convolutional_code._num_input_bits
 
-        input_sequence_hat = code._finite_state_machine.viterbi_streaming(
+        input_sequence_hat = self._convolutional_code._finite_state_machine.viterbi_streaming(
             observed_sequence=np.reshape(inp, newshape=(-1, n)),
             metric_function=getattr(self, '_metric_function_' + self._input_type),
             memory=self._memory)
