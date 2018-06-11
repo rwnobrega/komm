@@ -30,9 +30,9 @@ class ConvolutionalCode:
 
     .. math::
        \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},
-   
+
     for :math:`i \\in [0 : k)`.
-    
+
     The *overall constraint length* of the code is defined by
 
     .. math::
@@ -234,18 +234,25 @@ class ConvolutionalCode:
         pass
 
     def _setup_space_state_representation(self):
-        k, nu = self._num_input_bits, self._overall_constraint_length
+        k, n, nu = self._num_input_bits, self._num_output_bits, self._overall_constraint_length
+
         self._state_matrix = np.empty((nu, nu), dtype=np.int)
+        self._observation_matrix = np.empty((nu, n), dtype=np.int)
         for i in range(nu):
             s0 = 2**i
             s1 = self._finite_state_machine._next_states[s0, 0]
+            y = self._finite_state_machine._outputs[s0, 0]
             self._state_matrix[i, :] = int2binlist(s1, width=nu)
+            self._observation_matrix[i, :] = int2binlist(y, width=n)
 
         self._control_matrix = np.empty((k, nu), dtype=np.int)
+        self._transition_matrix = np.empty((k, n), dtype=np.int)
         for i in range(k):
             x = 2**i
             s1 = self._finite_state_machine._next_states[0, x]
+            y = self._finite_state_machine._outputs[0, x]
             self._control_matrix[i, :] = int2binlist(s1, width=nu)
+            self._transition_matrix[i, :] = int2binlist(y, width=n)
 
     @property
     def num_input_bits(self):
@@ -316,6 +323,20 @@ class ConvolutionalCode:
         The control matrix :math:`B` of the state-space representation. This is a :math:`k \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
         """
         return self._control_matrix
+
+    @property
+    def observation_matrix(self):
+        """
+        The observation matrix :math:`C` of the state-space representation. This is a :math:`\\nu \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
+        """
+        return self._observation_matrix
+
+    @property
+    def transition_matrix(self):
+        """
+        The transition matrix :math:`D` of the state-space representation. This is a :math:`k \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
+        """
+        return self._transition_matrix
 
 
 class ConvolutionalStreamEncoder:
