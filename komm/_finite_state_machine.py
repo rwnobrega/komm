@@ -20,7 +20,7 @@ class FiniteStateMachine:
 
     .. csv-table:: Transition function
        :align: center
-       :header: State, Input, State, Output
+       :header: State, Input, Next state, Output
 
        0, 0, 0, 0
        0, 1, 1, 3
