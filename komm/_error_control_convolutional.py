@@ -24,7 +24,36 @@ class ConvolutionalCode:
 
     for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.
 
-    **Table of convolutional codes**
+    .. rubric:: Constraint lenghts and related parameters
+
+    The *constraint lengths* of the code are defined by
+
+    .. math::
+       \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},
+   
+    for :math:`i \\in [0 : k)`.
+    
+    The *overall constraint length* of the code is defined by
+
+    .. math::
+       \\nu = \\sum_{0 \\leq i < k} \\nu_i.
+
+    The *memory order* of the code is defined by
+
+    .. math::
+        \\mu = \\max_{0 \\leq i < k} \\nu_i.
+
+    .. rubric:: Space-state representation
+
+    A convolutional code may also be described via the *space-state representation*. Let :math:`\\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \\ldots, u_t^{(k-1)})` be the input block, :math:`\\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \\ldots, v_t^{(n-1)})` be the output block, and :math:`\\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \\ldots, s_t^{(\\nu-1)})` be the state, all defined at time instant :math:`t`. Then,
+
+    .. math::
+       \\mathbf{s}_{t+1} & = \\mathbf{s}_t A + \\mathbf{u}_t B, \\\\
+       \\mathbf{v}_{t} & = \\mathbf{s}_t C + \\mathbf{u}_t D,
+
+    where :math:`A` is the :math:`\\nu \\times \\nu` *state matrix*, :math:`B` is the :math:`k \\times \\nu` *control matrix*, :math:`C` is the :math:`\\nu \\times n` *observation matrix*, and :math:`D` is the :math:`k \\times n` *transition matrix*.
+
+    .. rubric:: Table of convolutional code
 
     The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
@@ -54,7 +83,7 @@ class ConvolutionalCode:
      :math:`(3, 1, 8)`                  :code:`[[0o575, 0o623, 0o727]]`
     =================================  ======================================
 
-    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`
+    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`, :cite:`Weiss.01`
     """
 
     def __init__(self, feedforward_polynomials, feedback_polynomials=None):
@@ -235,39 +264,21 @@ class ConvolutionalCode:
     @property
     def constraint_lengths(self):
         """
-        The constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. It is given by
-
-        .. math::
-
-            \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\}.
-
-        This property is read-only.
+        The constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. This property is read-only.
         """
         return self._constraint_lengths
 
     @property
     def overall_constraint_length(self):
         """
-        The overall constraint length :math:`\\nu` of the code. It is given by
-
-        .. math::
-
-            \\nu = \\sum_{0 \\leq i < k} \\nu_i
-
-        This property is read-only.
+        The overall constraint length :math:`\\nu` of the code. This property is read-only.
         """
         return self._overall_constraint_length
 
     @property
     def memory_order(self):
         """
-        The memory order :math:`\\mu` of the code. It is given by
-
-        .. math::
-
-            \\mu = \\max_{0 \\leq i < k} \\nu_i
-
-        This property is read-only.
+        The memory order :math:`\\mu` of the code. This property is read-only.
         """
         return  self._memory_order
 
