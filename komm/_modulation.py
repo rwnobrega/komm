@@ -54,7 +54,7 @@ class _Modulation:
     @property
     def bits_per_symbol(self):
         """
-        The number :math:`m` of bits per symbol of the modulation. It is given by :math:`m = \log_2 M`, where :math:`M` is the order of the modulation. This property is read-only.
+        The number :math:`m` of bits per symbol of the modulation. It is given by :math:`m = \\log_2 M`, where :math:`M` is the order of the modulation. This property is read-only.
         """
         return self._bits_per_symbol
 
@@ -379,7 +379,7 @@ class PSKModulation(ComplexModulation):
     Phase-shift keying (PSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\\mathcal{S}` are *uniformly arranged* in a circle. More precisely,
 
     .. math::
-        \\mathcal{S} = \\left \\{ A \\exp \\left( \mathrm{j} \\frac{2 \\pi i}{M} \\right) \\exp(\\mathrm{j} \\phi) : i \\in [0 : M) \\right \\}
+        \\mathcal{S} = \\left \\{ A \\exp \\left( \\mathrm{j} \\frac{2 \\pi i}{M} \\right) \\exp(\\mathrm{j} \\phi) : i \\in [0 : M) \\right \\}
 
     where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *amplitude*, and :math:`\\phi` is the *phase offset* of the modulation. The PSK constellation is depicted below for :math:`M = 8`.
 
@@ -442,7 +442,7 @@ class APSKModulation(ComplexModulation):
 
     .. math::
 
-        \\mathcal{S}_k = \\left \\{ A_k \\exp \\left( \mathrm{j} \\frac{2 \\pi i}{M_k} \\right) \\exp(\\mathrm{j} \\phi_k) : i \\in [0 : M_k) \\right \\},
+        \\mathcal{S}_k = \\left \\{ A_k \\exp \\left( \\mathrm{j} \\frac{2 \\pi i}{M_k} \\right) \\exp(\\mathrm{j} \\phi_k) : i \\in [0 : M_k) \\right \\},
 
     where :math:`M_k` is the *order*, :math:`A_k` is the *amplitude*, and :math:`\\phi_k` is the *phase offset* of the :math:`k`-th ring, for :math:`k \\in [0 : K)`. The size of the resulting complex-valued constellation is :math:`M = M_0 + M_1 + \\cdots + M_{K-1}`. The order :math:`M_k` of each ring need not be a power of :math:`2`; however, the order :math:`M` of the constructed APSK modulation must be. The APSK constellation is depicted below for :math:`(M_0, M_1) = (8, 8)` with :math:`(A_0, A_1) = (A, 2A)` and :math:`(\\phi_0, \\phi_1) = (0, \\pi/8)`.
 
