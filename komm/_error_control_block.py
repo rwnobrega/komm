@@ -505,6 +505,14 @@ class BlockCode:
         cls.__doc__ = cls.__doc__.replace('[[decoding_methods]]', rst)
 
 
+def _get_extended_parity_check_matrix(parity_check_matrix):
+    m, n = parity_check_matrix.shape
+    H = parity_check_matrix
+    Z = np.zeros((n - m - 1, 1), dtype=np.int)
+    U = np.ones((1, n), dtype=np.int)
+    return np.block([[H, Z], [U, 1]])
+
+
 class HammingCode(BlockCode):
     """
     Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:
@@ -546,19 +554,51 @@ class HammingCode(BlockCode):
     array([1, 0, 1, 1, 0, 1, 0])
     >>> code.decode([0, 1, 0, 0, 0, 1, 1])
     array([1, 1, 0, 0])
+
+    >>> code = komm.HammingCode(3, extended=True)
+    >>> (code.length, code.dimension, code.minimum_distance)
+    (8, 4, 4)
+    >>> code.generator_matrix
+    array([[1, 1, 0, 1, 1, 0, 0, 0],
+           [1, 0, 1, 1, 0, 1, 0, 0],
+           [0, 1, 1, 1, 0, 0, 1, 0],
+           [1, 1, 1, 0, 0, 0, 0, 1]])
+    >>> code.parity_check_matrix
+    array([[1, 1, 0, 1, 1, 0, 0, 0],
+           [1, 0, 1, 1, 0, 1, 0, 0],
+           [0, 1, 1, 1, 0, 0, 1, 0],
+           [1, 1, 1, 1, 1, 1, 1, 1]])
+    >>> code.encode([1, 0, 1, 1])
+    array([0, 1, 0, 0, 1, 0, 1, 1])
+    >>> code.decode([0, 1, 0, 0, 0, 1, 1, 0])
+    array([0, 1, 1, 0])
     """
-    def __init__(self, m):
+    def __init__(self, m, extended=False):
         """
         Constructor for the class. It expects the following parameter:
 
         :code:`m` : :obj:`int`
             The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.
+
+        :code:`extended` : :obj:`bool'`
+            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """
-        super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(m))
-        self._minimum_distance = 3
+        P = HammingCode._hamming_parity_submatrix(m)
+        if extended:
+            H = np.hstack([P.T, np.eye(m, dtype=np.int)])
+            super().__init__(parity_check_matrix=_get_extended_parity_check_matrix(H))
+            self._minimum_distance = 4
+        else:
+            super().__init__(parity_submatrix=P)
+            self._minimum_distance = 3
+
+        self._m = m
+        self._extended = extended
 
     def __repr__(self):
-        args = 'redundancy={}'.format(self._redundancy)
+        args = 'redundancy={}'.format(self._m)
+        if self._extended:
+            args += ', extended=True'
         return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
