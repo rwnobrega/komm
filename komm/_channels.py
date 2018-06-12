@@ -108,7 +108,7 @@ class AWGNChannel:
 
 class DiscreteMemorylessChannel:
     """
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
+    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \\mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \\ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \\ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \\mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
 
     References: :cite:`Cover.Thomas.06` (Ch. 7)
 
@@ -127,7 +127,7 @@ class DiscreteMemorylessChannel:
         Constructor for the class. It expects the following parameter:
 
         :code:`transition_matrix` : 2D-array of :obj:`float`
-            The channel transition probability matrix :math:`p_{Y \mid X}`.
+            The channel transition probability matrix :math:`p_{Y \\mid X}`.
         """
         self._transition_matrix = np.array(transition_matrix, dtype=np.float)
         self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
@@ -136,7 +136,7 @@ class DiscreteMemorylessChannel:
     @property
     def transition_matrix(self):
         """
-        The channel transition probability matrix :math:`p_{Y \mid X}`. This property is read-only.
+        The channel transition probability matrix :math:`p_{Y \\mid X}`. This property is read-only.
         """
         return self._transition_matrix
 
@@ -202,7 +202,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     .. math::
 
-        p_{Y \mid X} = \\begin{bmatrix} 1-p & p \\\\ p & 1-p \\end{bmatrix},
+        p_{Y \\mid X} = \\begin{bmatrix} 1-p & p \\\\ p & 1-p \\end{bmatrix},
 
     where the parameter :math:`p` is called the *crossover probability* of the channel. Equivalently, a BSC with crossover probability :math:`p` may be defined by
 
@@ -228,7 +228,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         Constructor for the class. It expects the following parameter:
 
         :code:`crossover_probability` : :obj:`float`, optional
-            The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`.
+            The channel crossover probability :math:`p`. Must satisfy :math:`0 \\leq p \\leq 1`. The default value is :code:`0.0`.
         """
         super().__init__([[1 - crossover_probability, crossover_probability], [crossover_probability, 1 - crossover_probability]])
         self._crossover_probability = crossover_probability
@@ -267,7 +267,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     .. math::
 
-        p_{Y \mid X} =
+        p_{Y \\mid X} =
         \\begin{bmatrix}
             1 - \\epsilon & 0 & \\epsilon \\\\
             0 & 1 - \\epsilon & \\epsilon
@@ -292,7 +292,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         Constructor for the class. It expects the following parameter:
 
         :code:`erasure_probability` : :obj:`float`, optional
-            The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \leq \\epsilon \leq 1`. Default value is :code:`0.0`.
+            The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \\leq \\epsilon \\leq 1`. Default value is :code:`0.0`.
         """
         super().__init__([[1 - erasure_probability, 0, erasure_probability], [0, 1 - erasure_probability, erasure_probability]])
         self._erasure_probability = erasure_probability
