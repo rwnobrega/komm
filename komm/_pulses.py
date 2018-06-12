@@ -227,11 +227,11 @@ class RaisedCosinePulse(Pulse):
         self._length_in_symbols = L
 
     @property
-    def rolloff_factor(self):
+    def rolloff(self):
         """
         The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
-        return self._rolloff_factor
+        return self._rolloff
 
     @property
     def length_in_symbols(self):
@@ -296,11 +296,11 @@ class RootRaisedCosinePulse(Pulse):
         self._length_in_symbols = L
 
     @property
-    def rolloff_factor(self):
+    def rolloff(self):
         """
         The rolloff factor :math:`\\alpha` of the pulse. This property is read-only.
         """
-        return self._rolloff_factor
+        return self._rolloff
 
     @property
     def length_in_symbols(self):
@@ -320,7 +320,7 @@ class GaussianPulse(Pulse):
 
     .. math::
 
-        h(t) = \\mathrm{e}^{-\\frac{1}{2} (2 \pi \\bar{B} t)^2}
+        h(t) = \\mathrm{e}^{-\\frac{1}{2} (2 \\pi \\bar{B} t)^2}
 
     where the :math:`\\bar{B} = B / \\sqrt{\\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
 
@@ -429,9 +429,9 @@ class TransmitFilter:
             The output signal, formatted.
         """
         sps = self._samples_per_symbol
-        t0, t1 = self.Pulse._interval
+        t0, t1 = self.Pulse.interval
         t = np.arange(t0, t1, step=1/sps)
-        taps = (np.vectorize(self.Pulse._impulse_response))(t)
+        taps = (np.vectorize(self.Pulse.impulse_response))(t)
         inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=np.float)
         inp_interp[::sps] = inp
         outp = np.convolve(taps, inp_interp)
