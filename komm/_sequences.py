@@ -73,7 +73,7 @@ class BinarySequence:
 
             R[\\ell] = \\sum_{n \\in \\mathbb{Z}} a[n] a_{\\ell}[n],
 
-        where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\\ell}[n] = a[n - \ell]` is the sequence :math:`a[n]` shifted by :math:`\\ell` positions. The autocorrelation :math:`R[\\ell]` is even and satisfies :math:`R[\\ell] = 0` for :math:`|\ell| \geq L`, where :math:`L` is the length of the binary sequence.
+        where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\\ell}[n] = a[n - \\ell]` is the sequence :math:`a[n]` shifted by :math:`\\ell` positions. The autocorrelation :math:`R[\\ell]` is even and satisfies :math:`R[\\ell] = 0` for :math:`|\\ell| \\geq L`, where :math:`L` is the length of the binary sequence.
 
         **Parameters:**
 
@@ -93,10 +93,10 @@ class BinarySequence:
         autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0
                                     for ell in shifts])
 
-        if not normalized:
-            return autocorrelation
-        else:
-            return autocorrelation / L
+        if normalized:
+            autocorrelation /= L
+
+        return autocorrelation
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
         """
@@ -125,10 +125,10 @@ class BinarySequence:
 
         cyclic_autocorrelation = self._cyclic_autocorrelation[shifts % L]
 
-        if not normalized:
-            return cyclic_autocorrelation
-        else:
-            return cyclic_autocorrelation / L
+        if normalized:
+            cyclic_autocorrelation /= L
+
+        return cyclic_autocorrelation
 
 
 class BarkerSequence(BinarySequence):
@@ -362,15 +362,15 @@ class LFSRSequence(BinarySequence):
         ================  ================================  ================  ================================
         """
         PRIMITIVE_POLYNOMIALS = {
-             1: 0b11,
-             2: 0b111,
-             3: 0b1011,
-             4: 0b10011,
-             5: 0b100101,
-             6: 0b1000011,
-             7: 0b10001001,
-             8: 0b100011101,
-             9: 0b1000010001,
+            1: 0b11,
+            2: 0b111,
+            3: 0b1011,
+            4: 0b10011,
+            5: 0b100101,
+            6: 0b1000011,
+            7: 0b10001001,
+            8: 0b100011101,
+            9: 0b1000010001,
             10: 0b10000001001,
             11: 0b100000000101,
             12: 0b1000001010011,
