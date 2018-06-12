@@ -779,7 +779,7 @@ class RepetitionCode(BlockCode):
         self._minimum_distance = n
 
     def __repr__(self):
-        args = 'length={}'.format(self._length)
+        args = '{}'.format(self._length)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @tag(name='Majority-logic', input_type='hard', target='codeword')
@@ -840,7 +840,7 @@ class SingleParityCheckCode(BlockCode):
         self._minimum_distance = 2
 
     def __repr__(self):
-        args = 'length={}'.format(self._length)
+        args = '{}'.format(self._length)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @tag(name='Wagner', input_type='soft', target='codeword')
