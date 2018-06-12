@@ -415,7 +415,7 @@ class BlockCode:
         **Input:**
 
         :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
-            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
+            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\\{ 0, 1 \\}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
         :code:`method` : :obj:`str`, optional
             The decoding method to be used.
@@ -498,7 +498,7 @@ class BlockCode:
         table = cls._available_decoding_methods()
         indent = ' ' * 4
         rst = '.. csv-table::\n'
-        rst += '{indent}   :header: Method, Identifier, Input type\n'.format(indent=indent, header=', '.join(table[0]))
+        rst += '{indent}   :header: Method, Identifier, Input type\n'.format(indent=indent)
         rst += '{indent}   :widths: 5, 5, 2\n\n'.format(indent=indent)
         for row in table:
             rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
@@ -506,7 +506,6 @@ class BlockCode:
 
 
 def _get_extended_parity_submatrix(parity_submatrix):
-    k, m = parity_submatrix.shape
     last_column = (1 + np.sum(parity_submatrix, axis=1)) % 2
     extended_parity_submatrix = np.hstack([parity_submatrix, last_column[np.newaxis].T])
     return extended_parity_submatrix
@@ -1218,10 +1217,10 @@ class CyclicCode(BlockCode):
 
 class BCHCode(CyclicCode):
     """
-    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau < 2^{\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:
+    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau < 2^{\\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:
 
     - Length: :math:`n = 2^{\\mu} - 1`
-    - Dimension: :math:`k \geq n - \\mu \\tau`
+    - Dimension: :math:`k \\geq n - \\mu \\tau`
     - Redundancy: :math:`m \\leq \\mu \\tau`
     - Minimum distance: :math:`d \\geq 2\\tau + 1`
 
@@ -1444,8 +1443,8 @@ class TerminatedConvolutionalCode(BlockCode):
         if mode not in ['direct-truncation', 'zero-termination', 'tail-biting']:
             raise ValueError("Parameter 'mode' must be in {'direct-truncation', 'zero-termination', 'tail-biting'}")
 
-        k0, n0 = convolutional_code._num_input_bits, convolutional_code._num_output_bits
-        nu, mu = convolutional_code._overall_constraint_length, convolutional_code._memory_order
+        k0, n0 = convolutional_code.num_input_bits, convolutional_code.num_output_bits
+        nu, mu = convolutional_code.overall_constraint_length, convolutional_code.memory_order
 
         self._dimension = h * k0
         if mode in ['direct-truncation', 'tail-biting']:
@@ -1454,7 +1453,7 @@ class TerminatedConvolutionalCode(BlockCode):
             self._length = (h + mu) * n0
         self._redundancy = self._length - self._dimension
 
-        A, B = convolutional_code._state_matrix, convolutional_code._control_matrix
+        A, B = convolutional_code.state_matrix, convolutional_code.control_matrix
 
         if mode == 'zero-termination':
             AnB_message = np.concatenate([np.dot(B, np.linalg.matrix_power(A, j)) % 2 for j in range(mu + h - 1, mu - 1, -1)], axis=0)
@@ -1494,7 +1493,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @property
     @functools.lru_cache(maxsize=None)
     def generator_matrix(self):
-        k0, n0 = self._convolutional_code._num_input_bits, self._convolutional_code._num_output_bits
+        k0, n0 = self._convolutional_code.num_input_bits, self._convolutional_code.num_output_bits
         generator_matrix = np.zeros((self._dimension, self._length), dtype=np.int)
         top_rows = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(k0, self._dimension, dtype=np.int))
         for t in range(self._num_blocks):
@@ -1505,7 +1504,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _encode_finite_state_machine(self, message):
         convolutional_code = self._convolutional_code
-        k0, n0, nu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._overall_constraint_length
+        k0, n0, nu = convolutional_code.num_input_bits, convolutional_code.num_output_bits, convolutional_code.overall_constraint_length
 
         if self._mode == 'direct-truncation':
             input_sequence = pack(message, width=k0)
@@ -1517,10 +1516,10 @@ class TerminatedConvolutionalCode(BlockCode):
         elif self._mode == 'tail-biting':
             # See Weiss.01.
             input_sequence = pack(message, width=k0)
-            _, zero_state_solution = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
+            _, zero_state_solution = convolutional_code.finite_state_machine.process(input_sequence, initial_state=0)
             initial_state = binlist2int(np.dot(int2binlist(zero_state_solution, width=nu), self._M_inv) % 2)
 
-        output_sequence, _ = convolutional_code._finite_state_machine.process(input_sequence, initial_state)
+        output_sequence, _ = convolutional_code.finite_state_machine.process(input_sequence, initial_state)
         codeword = unpack(output_sequence, width=n0)
         return codeword
 
@@ -1529,8 +1528,8 @@ class TerminatedConvolutionalCode(BlockCode):
 
     def _helper_decode_viterbi(self, recvword, metric_function):
         convolutional_code = self._convolutional_code
-        k0, n0, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
-        num_states = convolutional_code._finite_state_machine._num_states
+        k0, n0, mu = convolutional_code.num_input_bits, convolutional_code.num_output_bits, convolutional_code.memory_order
+        num_states = convolutional_code.finite_state_machine.num_states
 
         if self._mode in ['direct-truncation', 'zero-termination']:
             initial_metrics = np.full(num_states, fill_value=np.inf)
@@ -1538,7 +1537,7 @@ class TerminatedConvolutionalCode(BlockCode):
         elif self._mode == 'tail-biting':
             raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
-        input_sequences_hat, final_metrics = convolutional_code._finite_state_machine.viterbi(
+        input_sequences_hat, final_metrics = convolutional_code.finite_state_machine.viterbi(
             observed_sequence=np.reshape(recvword, newshape=(-1, n0)),
             metric_function=metric_function,
             initial_metrics=initial_metrics)
@@ -1563,8 +1562,8 @@ class TerminatedConvolutionalCode(BlockCode):
     @tag(name='BCJR', input_type='soft', target='message')
     def _decode_bcjr(self, recvword, output_type='hard', SNR=1.0):
         convolutional_code = self._convolutional_code
-        k0, n0, mu = convolutional_code._num_input_bits, convolutional_code._num_output_bits, convolutional_code._memory_order
-        num_states = convolutional_code._finite_state_machine._num_states
+        k0, n0, mu = convolutional_code.num_input_bits, convolutional_code.num_output_bits, convolutional_code.memory_order
+        num_states = convolutional_code.finite_state_machine.num_states
 
         if self._mode == 'direct-truncation':
             initial_state_distribution = np.eye(1, num_states, 0)
@@ -1575,7 +1574,7 @@ class TerminatedConvolutionalCode(BlockCode):
         else:
             raise NotImplementedError("BCJR algorithm not implemented for 'tail-biting'")
 
-        input_posteriors = convolutional_code._finite_state_machine.forward_backward(
+        input_posteriors = convolutional_code.finite_state_machine.forward_backward(
             observed_sequence=np.reshape(recvword, newshape=(-1, n0)),
             metric_function=lambda y, z: self._metric_function_bcjr(SNR, y, z),
             initial_state_distribution=initial_state_distribution,
@@ -1597,5 +1596,5 @@ class TerminatedConvolutionalCode(BlockCode):
             return 'viterbi_soft'
 
 
-for cls in __all__:
-    eval(cls)._process_docstring()
+for cls_name in __all__:
+    eval(cls_name)._process_docstring()
