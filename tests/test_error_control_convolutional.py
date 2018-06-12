@@ -47,6 +47,17 @@ def test_convolutional_space_state_representation():
     assert np.array_equal(C, [[1, 0], [1, 1]])
     assert np.array_equal(D, [[1, 1]])
 
+    # Heide Gluesing-Luerssen: On the Weight Distribution of Convolutional Codes, p. 9
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1111, 0b1101]])
+    A = code.state_matrix
+    B = code.control_matrix
+    C = code.observation_matrix
+    D = code.transition_matrix
+    assert np.array_equal(A, [[0, 1, 0], [0, 0, 1], [0, 0, 0]])
+    assert np.array_equal(B, [[1, 0, 0]])
+    assert np.array_equal(C, [[1, 0], [1, 1], [1, 1]])
+    assert np.array_equal(D, [[1, 1]])
+
 
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials', [
     ([[0o7, 0o5]], None),
