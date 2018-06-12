@@ -574,7 +574,7 @@ class HammingCode(BlockCode):
     """
     def __init__(self, m, extended=False):
         """
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class. It expects the following parameters:
 
         :code:`m` : :obj:`int`
             The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.
@@ -586,13 +586,12 @@ class HammingCode(BlockCode):
         if extended:
             P = _get_extended_parity_submatrix(P)
         super().__init__(parity_submatrix=P)
-
         self._minimum_distance = 4 if extended else 3
         self._m = m
         self._extended = extended
 
     def __repr__(self):
-        args = 'redundancy={}'.format(self._m)
+        args = '{}'.format(self._m)
         if self._extended:
             args += ', extended=True'
         return '{}({})'.format(self.__class__.__name__, args)
@@ -655,11 +654,13 @@ class SimplexCode(BlockCode):
         :code:`k` : :obj:`int`
             The dimension :math:`k` of the code. Must satisfy :math:`k \\geq 2`.
         """
-        super().__init__(parity_submatrix=HammingCode._hamming_parity_submatrix(k).T)
+        P = HammingCode._hamming_parity_submatrix(k).T
+        super().__init__(parity_submatrix=P)
         self._minimum_distance = 2**(k - 1)
+        self._k = k
 
     def __repr__(self):
-        args = 'dimension={}'.format(self._dimension)
+        args = '{}'.format(self._k)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
