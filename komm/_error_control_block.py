@@ -838,6 +838,18 @@ class ReedMullerCode(BlockCode):
     >>> code = komm.ReedMullerCode(1, 5)
     >>> (code.length, code.dimension, code.minimum_distance)
     (32, 6, 16)
+    >>> code.generator_matrix  #doctest: +NORMALIZE_WHITESPACE
+    array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+           [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+           [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+           [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+    >>> code.encode([0, 0, 0, 0, 0, 1]  #doctest: +NORMALIZE_WHITESPACE)
+    array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    >>> recvword = np.ones(32, dtype=np.int); recvword[[2, 10, 15, 16, 17, 19, 29]] = 0
+    >>> code.decode(recvword)
+    array([0, 0, 0, 0, 0, 1])
     """
     def __init__(self, rho, mu):
         """
@@ -867,12 +879,13 @@ class ReedMullerCode(BlockCode):
     def _setup_reed_partitions(self):
         self._reed_partitions = []
         for ell in range(self._rho, -1, -1):
-            binary_vectors_I = np.fliplr(list(itertools.product([0, 1], repeat=ell)))
-            binary_vectors_J = np.fliplr(list(itertools.product([0, 1], repeat=self._mu - ell)))
+            binary_vectors_I = np.fliplr(np.array(list(itertools.product([0, 1], repeat=ell)), dtype=np.int))
+            binary_vectors_J = np.fliplr(np.array(list(itertools.product([0, 1], repeat=self._mu - ell)), dtype=np.int))
             for I in itertools.combinations(range(self._mu), ell):
+                I = np.array(I, dtype=np.int)
                 E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
-                S = np.dot(binary_vectors_I, 2**np.array(I))
-                Q = np.dot(binary_vectors_J, 2**np.array(E))
+                S = np.dot(binary_vectors_I, 2**I)
+                Q = np.dot(binary_vectors_J, 2**E)
                 self._reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
 
     @property
