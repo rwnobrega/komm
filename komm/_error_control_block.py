@@ -1498,7 +1498,7 @@ class TerminatedConvolutionalCode(BlockCode):
         generator_matrix = np.zeros((self._dimension, self._length), dtype=np.int)
         top_rows = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(k0, self._dimension, dtype=np.int))
         for t in range(self._num_blocks):
-            generator_matrix[k0*t : k0*(t + 1), :] = np.roll(top_rows, shift=n0*t,  axis=1)
+            generator_matrix[k0*t : k0*(t + 1), :] = np.roll(top_rows, shift=n0*t, axis=1)
             if self._mode == 'direct-truncation':
                 generator_matrix[k0*t : k0*(t + 1), : n0*t] = 0
         return generator_matrix
@@ -1585,7 +1585,7 @@ class TerminatedConvolutionalCode(BlockCode):
             input_posteriors = input_posteriors[:-mu]
 
         if output_type == 'soft':
-            return np.log(input_posteriors[:,0] / input_posteriors[:,1])
+            return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
         elif output_type == 'hard':
             input_sequence_hat = np.argmax(input_posteriors, axis=1)
             return unpack(input_sequence_hat, width=k0)
