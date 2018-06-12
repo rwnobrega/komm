@@ -25,9 +25,9 @@ class BlockCode:
 
     References: :cite:`Lin.Costello.04` (Ch. 3)
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     .. rubric:: Examples
 
@@ -502,7 +502,7 @@ class BlockCode:
         rst += '{indent}   :widths: 5, 5, 2\n\n'.format(indent=indent)
         for row in table:
             rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
-        cls.__doc__ = cls.__doc__.replace('[[0]]', rst)
+        cls.__doc__ = cls.__doc__.replace('[[decoding_methods]]', rst)
 
 
 class HammingCode(BlockCode):
@@ -518,9 +518,9 @@ class HammingCode(BlockCode):
 
     References: :cite:`Lin.Costello.04` (Sec 4.1)
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -583,9 +583,9 @@ class SimplexCode(BlockCode):
 
     This class constructs the code in systematic form, with the information set on the left.
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -637,9 +637,9 @@ class GolayCode(BlockCode):
 
     This class constructs the code in systematic form, with the information set on the left.
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -693,9 +693,9 @@ class RepetitionCode(BlockCode):
     - Dimension: :math:`k = 1`
     - Minimum distance: :math:`d = n`
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -756,9 +756,9 @@ class SingleParityCheckCode(BlockCode):
     - Dimension: :math:`k = n - 1`.
     - Minimum distance: :math:`d = 2`.
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -822,9 +822,9 @@ class ReedMullerCode(BlockCode):
 
     References: :cite:`Lin.Costello.04` (p. 105--114)
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     **Notes**
 
@@ -967,9 +967,9 @@ class CyclicCode(BlockCode):
 
     References: :cite:`Lin.Costello.04` (Chapter 5)
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
     """
     def __init__(self, length, systematic=True, **kwargs):
         """
@@ -1162,9 +1162,9 @@ class BCHCode(CyclicCode):
     - Redundancy: :math:`m \\leq \\mu \\tau`
     - Minimum distance: :math:`d \\geq 2\\tau + 1`
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     References: :cite:`Lin.Costello.04` (Ch. 6)
 
@@ -1330,9 +1330,9 @@ class TerminatedConvolutionalCode(BlockCode):
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.
 
-    **Decoding methods**
+    .. rubric:: Decoding methods
 
-    [[0]]
+    [[decoding_methods]]
 
     References: :cite:`Lin.Costello.04`, :cite:`Weiss.01`
     """
