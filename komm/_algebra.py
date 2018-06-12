@@ -195,6 +195,9 @@ class BinaryPolynomial(int):
 
     @classmethod
     def gcd(cls, *poly_list):
+        """
+        Computes the greatest common divisor (gcd) of polynomials in a given list.
+        """
         gcd = poly_list[0]
         for poly in poly_list[1:]:
             gcd, _, _ = cls.xgcd(gcd, poly)
@@ -202,9 +205,12 @@ class BinaryPolynomial(int):
 
     @classmethod
     def lcm(cls, *poly_list):   # TODO: do better
+        """
+        Computes the least common multiple (lcm) of polynomials in a given list.
+        """
         if len(poly_list) == 1:
             return poly_list[0]
-        if len(poly_list) == 2:
+        elif len(poly_list) == 2:
             a, b = poly_list
             return (a*b) // cls.gcd(a, b)
         else:
@@ -240,10 +246,16 @@ class BinaryPolynomialFraction:
 
     @property
     def numerator(self):
+        """
+        The numerator of the polynomial fraction.
+        """
         return self._numerator
 
     @property
     def denominator(self):
+        """
+        The denominator of the polynomial fraction.
+        """
         return self._denominator
 
     def __add__(self, other):
@@ -273,6 +285,9 @@ class BinaryPolynomialFraction:
         return self._numerator * other._denominator == self._denominator * other._numerator
 
     def inverse(self):
+        """
+        Returns the multiplicative inverse the polynomial fraction.
+        """
         return self.__class__(self._denominator, self._numerator)
 
 
@@ -337,15 +352,15 @@ class BinaryFiniteExtensionField:
         self._degree = degree
         if modulus is None:
             PRIMITIVE_POLYNOMIALS = {
-                 1: 0b11,
-                 2: 0b111,
-                 3: 0b1011,
-                 4: 0b10011,
-                 5: 0b100101,
-                 6: 0b1000011,
-                 7: 0b10001001,
-                 8: 0b100011101,
-                 9: 0b1000010001,
+                1: 0b11,
+                2: 0b111,
+                3: 0b1011,
+                4: 0b10011,
+                5: 0b100101,
+                6: 0b1000011,
+                7: 0b10001001,
+                8: 0b100011101,
+                9: 0b1000010001,
                 10: 0b10000001001,
                 11: 0b100000000101,
                 12: 0b1000001010011,
@@ -489,8 +504,6 @@ class BinaryFiniteExtensionField:
         def __str__(self): return bin(self)
 
 
-
-
 def xgcd(ring, x, y):
     """
     Performs the `extended Euclidean algorithm
@@ -605,8 +618,6 @@ def xrref(M):
 
 
 def right_inverse(M):
-    """
-    """
     P, _, s_indices = xrref(M)
     M_rref_ri = np.zeros(M.T.shape, dtype=np.int)
 
@@ -616,10 +627,8 @@ def right_inverse(M):
 
 
 def null_matrix(M):
-    """
-    """
     (k, n) = M.shape
-    P, M_rref, s_indices = xrref(M)
+    _, M_rref, s_indices = xrref(M)
     N = np.empty((n - k, n), dtype=np.int)
     p_indices = np.setdiff1d(np.arange(M.shape[1]), s_indices)
     N[:, p_indices] = np.eye(n - k, dtype=np.int)
