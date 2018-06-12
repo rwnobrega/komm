@@ -1,6 +1,5 @@
 import numpy as np
-
-from scipy.special import erfc, erfcinv
+import scipy as sp
 
 
 def binlist2int(list_):
@@ -18,10 +17,10 @@ def unpack(list_, width):
     return np.ravel(np.array([int2binlist(i, width=width) for i in list_]))
 
 def qfunc(x):
-    return 0.5 * erfc(x / np.sqrt(2))
+    return 0.5 * sp.special.erfc(x / np.sqrt(2))
 
 def qfuncinv(y):
-    return np.sqrt(2) * erfcinv(2 * y)
+    return np.sqrt(2) * sp.special.erfcinv(2 * y)
 
 def entropy(pmf):
     pmf_nonzero = pmf[pmf != 0.0]
