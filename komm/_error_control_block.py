@@ -693,16 +693,29 @@ class GolayCode(BlockCode):
     >>> recvword = np.zeros(23, dtype=np.int); recvword[[2, 3, 10, 19]] = 1
     >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
     array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
+
+    >>> code = komm.GolayCode(extended=True)
+    >>> (code.length, code.dimension, code.minimum_distance)
+    (24, 12, 8)
     """
-    def __init__(self):
+    def __init__(self, extended=False):
         """
-        Constructor for the class. It expects no parameters.
+        Constructor for the class. It expects the following parameter:
+
+        :code:`extended` : :obj:`bool`, optional
+            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """
-        super().__init__(parity_submatrix=GolayCode._golay_parity_submatrix())
-        self._minimum_distance = 7
+        P = GolayCode._golay_parity_submatrix()
+        if extended:
+            P = _get_extended_parity_submatrix(P)
+        super().__init__(parity_submatrix=P)
+        self._minimum_distance = 8 if extended else 7
+        self._extended = extended
 
     def __repr__(self):
         args = ''
+        if self._extended:
+            args += ', extended=True'
         return '{}({})'.format(self.__class__.__name__, args)
 
     @staticmethod
