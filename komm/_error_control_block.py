@@ -579,7 +579,7 @@ class HammingCode(BlockCode):
         :code:`m` : :obj:`int`
             The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.
 
-        :code:`extended` : :obj:`bool'`
+        :code:`extended` : :obj:`bool`
             If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """
         P = HammingCode._hamming_parity_submatrix(m)
