@@ -522,7 +522,7 @@ class HammingCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.
     - Its dual is the simplex code (:class:`SimplexCode`).
@@ -587,7 +587,7 @@ class SimplexCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - For :math:`k = 2` it reduces to the single parity check code (:class:`SingleParityCheckCode`) of length :math:`3`.
     - Its dual is the Hamming code (:class:`HammingCode`).
@@ -641,7 +641,7 @@ class GolayCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - The binary Golay code is a perfect code.
 
@@ -697,7 +697,7 @@ class RepetitionCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - Its dual is the single parity check code (:class:`SingleParityCheckCode`).
 
@@ -760,7 +760,7 @@ class SingleParityCheckCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - Its dual is the repetition code (:class:`RepetitionCode`).
 
@@ -826,7 +826,7 @@ class ReedMullerCode(BlockCode):
 
     [[decoding_methods]]
 
-    **Notes**
+    .. rubric:: Notes
 
     - For :math:`\\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
     - For :math:`\\rho = 1` it reduces to an extended simplex code (:class:`SimplexCode`).
