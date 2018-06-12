@@ -311,6 +311,13 @@ class ConvolutionalCode:
         return self._transfer_function_matrix
 
     @property
+    def finite_state_machine(self):
+        """
+        The finite-state machine of the code.
+        """
+        return self._finite_state_machine
+
+    @property
     def state_matrix(self):
         """
         The state matrix :math:`A` of the state-space representation. This is a :math:`\\nu \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.
