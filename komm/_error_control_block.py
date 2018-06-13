@@ -232,10 +232,6 @@ class BlockCode:
     def codeword_table(self):
         """
         The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
-
-        .. rubric:: Examples
-
-        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
         """
         codeword_table = np.empty([2**self._dimension, self._length], dtype=np.int)
         for i in range(2**self._dimension):
