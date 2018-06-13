@@ -787,7 +787,7 @@ class SingleParityCheckCode(BlockCode):
         Wagner decoder. A soft-decision decoder for SingleParityCheck codes only. See Costello, Forney: Channel Coding: The Road to Channel Capacity.
         """
         codeword_hat = (recvword < 0)
-        if np.bitwise_xor.reduce(codeword_hat) != 0:
+        if np.count_nonzero(codeword_hat) % 2 != 0:
             i = np.argmin(np.abs(recvword))
             codeword_hat[i] ^= 1
         return codeword_hat.astype(np.int)
@@ -924,7 +924,7 @@ class ReedMullerCode(BlockCode):
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = np.copy(recvword)
         for idx, partition in enumerate(self._reed_partitions):
-            checksums = np.bitwise_xor.reduce(bx[partition], axis=1)
+            checksums = np.count_nonzero(bx[partition], axis=1) % 2
             message_hat[idx] = np.count_nonzero(checksums) > len(checksums) // 2
             bx ^= message_hat[idx] * self._generator_matrix[idx]
         return message_hat
@@ -937,7 +937,7 @@ class ReedMullerCode(BlockCode):
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = (recvword < 0) * 1
         for idx, partition in enumerate(self._reed_partitions):
-            checksums = np.bitwise_xor.reduce(bx[partition], axis=1)
+            checksums = np.count_nonzero(bx[partition], axis=1) % 2
             min_reliability = np.min(np.abs(recvword[partition]), axis=1)
             decision_var = np.dot(1 - 2*checksums, min_reliability)
             message_hat[idx] = decision_var < 0
