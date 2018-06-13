@@ -272,7 +272,7 @@ class BlockCode:
     @functools.lru_cache()
     def coset_leader_weight_distribution(self):
         """
-        Returns the coset leader weight distribution. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
+        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
         """
         return np.bincount([np.count_nonzero(s) for s in self.coset_leader_table], minlength=self._length + 1)
 
