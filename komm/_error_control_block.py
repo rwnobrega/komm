@@ -1055,14 +1055,7 @@ class CyclicCode(BlockCode):
     @functools.lru_cache()
     def meggitt_table(self):
         """
-        Returns the Meggit table for the cyclic code. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
-
-        **Output:**
-
-        :code:`meggitt_table` : :obj:`dict`
-            A dictionary where the keys are syndromes and the values are error patterns.
-
-        This is a cached method.
+        The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
 
         .. rubric:: Examples
 
