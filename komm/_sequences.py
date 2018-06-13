@@ -156,6 +156,14 @@ class BarkerSequence(BinarySequence):
 
         :code:`length` : :obj:`int`
             Length of the Barker sequence. Must be in the set :math:`\\{ 2, 3, 4, 5, 7, 11, 13 \\}`.
+
+        .. rubric:: Examples
+
+        >>> barker = komm.BarkerSequence(length=13)
+        >>> barker.polar_sequence
+        array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])
+        >>> barker.autocorrelation()
+        array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])
         """
         super().__init__(bit_sequence=self._barker_sequence(length))
 
@@ -242,6 +250,16 @@ class WalshHadamardSequence(BinarySequence):
 
         :code:`index` : :obj:`int`, optional
             Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.
+
+        .. rubric:: Examples
+
+        >>> walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering='sequency', index=60)
+        >>> walsh_hadamard.polar_sequence[:16]
+        array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])
+
+        >>> walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering='natural', index=60)
+        >>> walsh_hadamard.polar_sequence[:16]
+        array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])
         """
         if length & (length - 1):
             raise ValueError("The length of sequence must be a power of two")
