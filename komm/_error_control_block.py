@@ -1532,7 +1532,3 @@ class TerminatedConvolutionalCode(BlockCode):
             return 'viterbi_hard'
         elif dtype == np.float:
             return 'viterbi_soft'
-
-
-for cls_name in __all__:
-    eval(cls_name)._process_docstring()
