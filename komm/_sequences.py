@@ -1,3 +1,5 @@
+import functools
+
 import numpy as np
 
 from ._algebra import \
@@ -65,6 +67,20 @@ class BinarySequence:
         """
         return self._length
 
+    @property
+    @functools.lru_cache()
+    def _autocorrelation(self):
+        seq = self._polar_sequence
+        L = self._length
+        return np.correlate(seq, seq, mode='full')[L - 1:]
+
+    @property
+    @functools.lru_cache()
+    def _cyclic_autocorrelation(self):
+        seq = self._polar_sequence
+        L = self._length
+        return np.array([np.dot(seq, np.roll(seq, ell)) for ell in range(L)])
+
     def autocorrelation(self, shifts=None, normalized=False):
         """
         Returns the autocorrelation :math:`R[\\ell]` of the binary sequence. This is defined as
@@ -83,19 +99,11 @@ class BinarySequence:
         :code:`normalized` : :obj:`boolean`, optional
             If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.
         """
-        seq = self._polar_sequence
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
-
-        if not hasattr(self, '_autocorrelation'):
-            self._autocorrelation = np.correlate(seq, seq, mode='full')[L - 1:]
-
-        autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0
-                                    for ell in shifts])
-
+        autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0 for ell in shifts])
         if normalized:
             autocorrelation /= L
-
         return autocorrelation
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
@@ -116,18 +124,11 @@ class BinarySequence:
         :code:`normalized` : :obj:`boolean`, optional
             If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\\tilde{R}[0] = 1`. The default value is :code:`False`.
         """
-        seq = self._polar_sequence
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
-
-        if not hasattr(self, '_cyclic_autocorrelation'):
-            self._cyclic_autocorrelation = np.array([np.dot(seq, np.roll(seq, ell)) for ell in range(L)])
-
         cyclic_autocorrelation = self._cyclic_autocorrelation[shifts % L]
-
         if normalized:
             cyclic_autocorrelation /= L
-
         return cyclic_autocorrelation
 
 
