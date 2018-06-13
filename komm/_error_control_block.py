@@ -184,7 +184,10 @@ class BlockCode:
         """
         The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
         """
-        return np.flatnonzero(self.codeword_weight_distribution)[1]
+        try:
+            return self._minimum_distance
+        except AttributeError:
+            return np.flatnonzero(self.codeword_weight_distribution)[1]
 
     @property
     @functools.lru_cache()
@@ -208,10 +211,10 @@ class BlockCode:
         """
         The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
         """
-        if self._constructed_from == 'parity_check_matrix':
-            return null_matrix(self._parity_check_matrix)
-        else:
+        try:
             return self._generator_matrix
+        except AttributeError:
+            return null_matrix(self._parity_check_matrix)
 
     @property
     @functools.lru_cache()
@@ -219,10 +222,10 @@ class BlockCode:
         """
         The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
         """
-        if self._constructed_from == 'generator_matrix':
-            return null_matrix(self._generator_matrix)
-        else:
+        try:
             return self._parity_check_matrix
+        except AttributeError:
+            return null_matrix(self._generator_matrix)
 
     @property
     @functools.lru_cache()
