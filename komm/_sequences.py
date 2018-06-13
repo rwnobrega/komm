@@ -103,8 +103,9 @@ class BinarySequence:
         shifts = np.arange(L) if shifts is None else np.array(shifts)
         autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0 for ell in shifts])
         if normalized:
-            autocorrelation /= L
-        return autocorrelation
+            return autocorrelation / L
+        else:
+            return autocorrelation
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
         """
@@ -128,8 +129,9 @@ class BinarySequence:
         shifts = np.arange(L) if shifts is None else np.array(shifts)
         cyclic_autocorrelation = self._cyclic_autocorrelation[shifts % L]
         if normalized:
-            cyclic_autocorrelation /= L
-        return cyclic_autocorrelation
+            return cyclic_autocorrelation / L
+        else:
+            return cyclic_autocorrelation
 
 
 class BarkerSequence(BinarySequence):
