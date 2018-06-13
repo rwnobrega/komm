@@ -816,7 +816,7 @@ class ReedMullerCode(BlockCode):
     .. rubric:: Notes
 
     - For :math:`\\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
-    - For :math:`\\rho = 1` it reduces to an lenghtened simplex code (:class:`SimplexCode`).
+    - For :math:`\\rho = 1` it reduces to a lenghtened simplex code (:class:`SimplexCode`).
     - For :math:`\\rho = \\mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
     - For :math:`\\rho = \\mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
