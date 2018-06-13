@@ -857,23 +857,10 @@ class ReedMullerCode(BlockCode):
         self._minimum_distance = 2**(mu - rho)
         self._rho = rho
         self._mu = mu
-        self._setup_reed_partitions()
 
     def __repr__(self):
         args = '{}, {}'.format(self._rho, self._mu)
         return '{}({})'.format(self.__class__.__name__, args)
-
-    def _setup_reed_partitions(self):
-        self._reed_partitions = []
-        for ell in range(self._rho, -1, -1):
-            binary_vectors_I = np.fliplr(np.array(list(itertools.product([0, 1], repeat=ell)), dtype=np.int))
-            binary_vectors_J = np.fliplr(np.array(list(itertools.product([0, 1], repeat=self._mu - ell)), dtype=np.int))
-            for I in itertools.combinations(range(self._mu), ell):
-                I = np.array(I, dtype=np.int)
-                E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
-                S = np.dot(binary_vectors_I, 2**I)
-                Q = np.dot(binary_vectors_J, 2**E)
-                self._reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
 
     @property
     def rho(self):
@@ -890,11 +877,40 @@ class ReedMullerCode(BlockCode):
         return self._mu
 
     @property
+    @functools.lru_cache()
     def reed_partitions(self):
         """
         The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
+
+        .. rubric:: Examples
+
+        >>> code = komm.ReedMullerCode(2, 4)
+        >>> code.reed_partitions[1]
+        array([[ 0,  1,  4,  5],
+               [ 2,  3,  6,  7],
+               [ 8,  9, 12, 13],
+               [10, 11, 14, 15]])
+        >>> code.reed_partitions[8]
+        array([[ 0,  4],
+               [ 1,  5],
+               [ 2,  6],
+               [ 3,  7],
+               [ 8, 12],
+               [ 9, 13],
+               [10, 14],
+               [11, 15]])
         """
-        return self._reed_partitions
+        reed_partitions = []
+        for ell in range(self._rho, -1, -1):
+            binary_vectors_I = np.fliplr(np.array(list(itertools.product([0, 1], repeat=ell)), dtype=np.int))
+            binary_vectors_J = np.fliplr(np.array(list(itertools.product([0, 1], repeat=self._mu - ell)), dtype=np.int))
+            for I in itertools.combinations(range(self._mu), ell):
+                I = np.array(I, dtype=np.int)
+                E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
+                S = np.dot(binary_vectors_I, 2**I)
+                Q = np.dot(binary_vectors_J, 2**E)
+                reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
+        return reed_partitions
 
     @staticmethod
     def _reed_muller_generator_matrix(rho, mu):
@@ -922,7 +938,7 @@ class ReedMullerCode(BlockCode):
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = np.copy(recvword)
-        for idx, partition in enumerate(self._reed_partitions):
+        for idx, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
             message_hat[idx] = np.count_nonzero(checksums) > len(checksums) // 2
             bx ^= message_hat[idx] * self._generator_matrix[idx]
@@ -935,7 +951,7 @@ class ReedMullerCode(BlockCode):
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
         bx = (recvword < 0) * 1
-        for idx, partition in enumerate(self._reed_partitions):
+        for idx, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
             min_reliability = np.min(np.abs(recvword[partition]), axis=1)
             decision_var = np.dot(1 - 2*checksums, min_reliability)
