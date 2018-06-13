@@ -220,10 +220,10 @@ class ConvolutionalCode:
         for s, x in np.ndindex(2**nu, 2**k):
             bits[s_indices] = int2binlist(s, width=nu)
             bits[x_indices] = int2binlist(x, width=k)
-            bits[x_indices] ^= [np.bitwise_xor.reduce(bits[feedback_taps[i]]) for i in range(k)]
+            bits[x_indices] ^= [np.count_nonzero(bits[feedback_taps[i]]) % 2 for i in range(k)]
 
             next_state_bits = bits[s_indices - 1]
-            output_bits = [np.bitwise_xor.reduce(bits[feedforward_taps[j]]) for j in range(n)]
+            output_bits = [np.count_nonzero(bits[feedforward_taps[j]]) % 2 for j in range(n)]
 
             next_states[s, x] = binlist2int(next_state_bits)
             outputs[s, x] = binlist2int(output_bits)

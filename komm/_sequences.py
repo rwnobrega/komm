@@ -408,7 +408,7 @@ class LFSRSequence(BinarySequence):
         code = np.empty(L, dtype=np.int)
         for i in range(L):
             code[i] = state[-1]
-            state[-1] = np.bitwise_xor.reduce(state[taps - 1])
+            state[-1] = np.count_nonzero(state[taps - 1]) % 2
             state = np.roll(state, 1)
         return code
 
