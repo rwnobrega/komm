@@ -14,8 +14,8 @@ class TestHammingCode:
         assert (n, k, d) == (7, 4, 3)
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 7, 7, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 7, 7, 0, 0, 1])
+        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 7, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -30,7 +30,7 @@ class TestHammingCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table()
+        codewords = self.code.codeword_table
         assert codewords.shape == (2**k, n)
 
     def test_decoding(self):
@@ -47,8 +47,8 @@ class TestExtendedHammingCode:
         assert (n, k, d) == (8, 4, 4)
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 0, 14, 0, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 8, 7, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 14, 0, 0, 0, 1])
+        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 8, 7, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -63,7 +63,7 @@ class TestExtendedHammingCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table()
+        codewords = self.code.codeword_table
         assert codewords.shape == (2**k, n)
 
     def test_decoding(self):
@@ -80,8 +80,8 @@ class TestGolayCode:
         assert (n, k, d) == (23, 12, 7)
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 0, 0, 0, 0, 253, 506, 0, 0, 1288, 1288, 0, 0, 506, 253, 0, 0, 0, 0, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 23, 253, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 0, 0, 0, 253, 506, 0, 0, 1288, 1288, 0, 0, 506, 253, 0, 0, 0, 0, 0, 0, 1])
+        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 23, 253, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -91,7 +91,7 @@ class TestGolayCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table()
+        codewords = self.code.codeword_table
         assert codewords.shape == (2**k, n)
 
 
@@ -103,8 +103,8 @@ class TestExtndedGolayCode:
         assert (n, k, d) == (24, 12, 8)
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 0, 0, 0, 0, 0, 759, 0, 0, 0, 2576, 0, 0, 0, 759, 0, 0, 0, 0, 0, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 24, 276, 2024, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 0, 0, 0, 0, 759, 0, 0, 0, 2576, 0, 0, 0, 759, 0, 0, 0, 0, 0, 0, 0, 1])
+        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 24, 276, 2024, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -114,7 +114,7 @@ class TestExtndedGolayCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table()
+        codewords = self.code.codeword_table
         assert codewords.shape == (2**k, n)
 
 
@@ -129,8 +129,8 @@ class TestReedMuller:
         assert np.array_equal(self.code.generator_matrix, [int2binlist(i) for i in [0x8888, 0xa0a0, 0xaa00, 0xc0c0, 0xcc00, 0xf000, 0xaaaa, 0xcccc, 0xf0f0, 0xff00, 0xffff]])
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution(), [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution(), [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1])
+        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
