@@ -102,8 +102,7 @@ class BlockCode:
         elif 'parity_submatrix' in kwargs:
             self._init_from_parity_submatrix(**kwargs)
         else:
-            raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix'" \
-                             "or 'parity_submatrix')")
+            raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix')")
 
     def _init_from_generator_matrix(self, generator_matrix):
         self._generator_matrix = np.array(generator_matrix, dtype=np.int) % 2
@@ -443,10 +442,20 @@ class BlockCode:
         cls.__doc__ = cls.__doc__.replace('[[decoding_methods]]', rst)
 
 
-def _get_extended_parity_submatrix(parity_submatrix):
+def _extended_parity_submatrix(parity_submatrix):
     last_column = (1 + np.sum(parity_submatrix, axis=1)) % 2
     extended_parity_submatrix = np.hstack([parity_submatrix, last_column[np.newaxis].T])
     return extended_parity_submatrix
+
+
+def _hamming_parity_submatrix(m):
+    parity_submatrix = np.zeros((2**m - m - 1, m), dtype=np.int)
+    i = 0
+    for w in range(2, m + 1):
+        for idx in itertools.combinations(range(m), w):
+            parity_submatrix[i, list(idx)] = 1
+            i += 1
+    return parity_submatrix
 
 
 class HammingCode(BlockCode):
@@ -519,9 +528,9 @@ class HammingCode(BlockCode):
         :code:`extended` : :obj:`bool`, optional
             If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """
-        P = HammingCode._hamming_parity_submatrix(m)
+        P = _hamming_parity_submatrix(m)
         if extended:
-            P = _get_extended_parity_submatrix(P)
+            P = _extended_parity_submatrix(P)
         super().__init__(parity_submatrix=P)
         self._minimum_distance = 4 if extended else 3
         self._m = m
@@ -533,15 +542,6 @@ class HammingCode(BlockCode):
             args += ', extended=True'
         return '{}({})'.format(self.__class__.__name__, args)
 
-    @staticmethod
-    def _hamming_parity_submatrix(m):
-        parity_submatrix = np.zeros((2**m - m - 1, m), dtype=np.int)
-        i = 0
-        for w in range(2, m + 1):
-            for idx in itertools.combinations(range(m), w):
-                parity_submatrix[i, list(idx)] = 1
-                i += 1
-        return parity_submatrix
 
 
 class SimplexCode(BlockCode):
@@ -591,7 +591,7 @@ class SimplexCode(BlockCode):
         :code:`k` : :obj:`int`
             The dimension :math:`k` of the code. Must satisfy :math:`k \\geq 2`.
         """
-        P = HammingCode._hamming_parity_submatrix(k).T
+        P = _hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)
         self._minimum_distance = 2**(k - 1)
         self._k = k
@@ -644,7 +644,7 @@ class GolayCode(BlockCode):
         """
         P = GolayCode._golay_parity_submatrix()
         if extended:
-            P = _get_extended_parity_submatrix(P)
+            P = _extended_parity_submatrix(P)
         super().__init__(parity_submatrix=P)
         self._minimum_distance = 8 if extended else 7
         self._extended = extended
@@ -1051,6 +1051,8 @@ class CyclicCode(BlockCode):
         """
         return self._parity_check_polynomial
 
+    @property
+    @functools.lru_cache()
     def meggitt_table(self):
         """
         Returns the Meggit table for the cyclic code. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
@@ -1065,9 +1067,8 @@ class CyclicCode(BlockCode):
         .. rubric:: Examples
 
         >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
-        >>> meggitt_table = code.meggitt_table()
         >>> from operator import itemgetter
-        >>> for syndrome_polynomial, errorword_polynomial in sorted(meggitt_table.items(), key=itemgetter(1)):
+        >>> for syndrome_polynomial, errorword_polynomial in sorted(code.meggitt_table.items(), key=itemgetter(1)):
         ...     print('0b{:<4b} : 0b{:<7b}'.format(syndrome_polynomial, errorword_polynomial))
         0b1011 : 0b1000000
         0b1010 : 0b1000001
@@ -1077,14 +1078,13 @@ class CyclicCode(BlockCode):
         0b1100 : 0b1010000
         0b101  : 0b1100000
         """
-        if not hasattr(self, '_meggitt_table'):
-            self._meggitt_table = {}
-            for w in range(self.packing_radius):
-                for idx in itertools.combinations(range(self._length - 1), w):
-                    errorword_polynomial = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
-                    syndrome_polynomial = errorword_polynomial % self._generator_polynomial
-                    self._meggitt_table[syndrome_polynomial] = errorword_polynomial
-        return self._meggitt_table
+        meggitt_table = {}
+        for w in range(self.packing_radius):
+            for idx in itertools.combinations(range(self._length - 1), w):
+                errorword_polynomial = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
+                syndrome_polynomial = errorword_polynomial % self._generator_polynomial
+                meggitt_table[syndrome_polynomial] = errorword_polynomial
+        return meggitt_table
 
     def _encode_cyclic_direct(self, message):
         """
@@ -1133,7 +1133,7 @@ class CyclicCode(BlockCode):
         """
         Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
-        meggitt_table = self.meggitt_table()
+        meggitt_table = self.meggitt_table
         recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
         syndrome_polynomial = recvword_polynomial % self._generator_polynomial
         if syndrome_polynomial == 0:
