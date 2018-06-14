@@ -6,7 +6,10 @@
 # In[1]:
 
 
-get_ipython().run_line_magic('matplotlib', 'notebook')
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+from ipywidgets import interact, interactive, fixed, interact_manual
+import ipywidgets as widgets
 
 import numpy as np
 import matplotlib.pylab as plt
@@ -18,12 +21,26 @@ import komm
 # In[2]:
 
 
-barker = komm.BarkerSequence(length=13)
-fig = plt.figure()
-ax = plt.axes()
-ax.stem(np.arange(barker.length), barker.polar_sequence)
-ax.set_title(repr(barker))
-fig.show()
+def barker_demo(index):
+    length = [2, 3, 4, 5, 7, 11, 13][index]
+    barker = komm.BarkerSequence(length=length)
+    shifts = np.arange(-2*length + 1, 2*length)
+    _, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
+    ax0.stem(np.arange(barker.length), barker.polar_sequence)
+    ax0.set_title(repr(barker))
+    ax0.set_xlabel('$n$')
+    ax0.set_ylabel('$a[n]$')
+    ax0.set_xticks(np.arange(length))
+    ax0.set_yticks([-1, 0, 1])
+    ax1.stem(shifts, barker.autocorrelation(shifts))
+    ax1.set_title('Autocorrelation')
+    ax1.set_xlabel('$\\ell$')
+    ax1.set_ylabel('$R[\\ell]$')
+    ax1.set_xticks([-length + 1, 0, length - 1])
+    ax1.set_yticks(np.arange(-1, length + 1))
+    plt.show()
+
+interact(barker_demo, index=(0, 6));
 
 
 # ## Walsh-Hadamard sequence
@@ -36,7 +53,7 @@ fig = plt.figure()
 ax = plt.axes()
 ax.stem(np.arange(walsh_hadamard.length), walsh_hadamard.polar_sequence)
 ax.set_title(repr(walsh_hadamard))
-fig.show()
+plt.show()
 
 
 # ## Linear-feedback shift register (LFSR) sequence
@@ -57,5 +74,5 @@ ax1.plot(shifts, cyclic_acorr)
 ax1.set_title('Cyclic autocorrelation')
 ax1.grid(True)
 
-fig.show()
+plt.show()
 
