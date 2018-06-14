@@ -10,14 +10,20 @@ class Pulse:
     """
     General pulse.
     """
-    def __init__(self, impulse_response, interval):
+    def __init__(self, impulse_response=None, frequency_response=None, interval=None):
         """
         Constructor for the class. It expects the following parameter:
 
         :code:`impulse_response` : :obj:`function`
             The impulse response of the pulse.
+
+        :code:`frequency_response` : :obj:`function`
+            The frequency response of the pulse.
         """
-        self._impulse_response = impulse_response
+        if impulse_response:
+            self._impulse_response = np.vectorize(impulse_response)
+        if frequency_response:
+            self._frequency_response = np.vectorize(frequency_response)
         self._interval = interval
 
     def __repr__(self):
@@ -30,6 +36,13 @@ class Pulse:
         The impulse response of the pulse. This property is read-only.
         """
         return self._impulse_response
+
+    @property
+    def frequency_response(self):
+        """
+        The frequency response of the pulse. This property is read-only.
+        """
+        return self._frequency_response
 
     @property
     def interval(self):
@@ -79,11 +92,12 @@ class RectangularPulse(Pulse):
 
         >>> pulse =  komm.RectangularPulse(width=0.5)
         """
-        w = float(width)
+        w = self._width = float(width)
+
         def impulse_response(t):
             return 1.0 * (0 <= t < w)
+
         super().__init__(impulse_response, interval=(0.0, 1.0))
-        self._width = w
 
     def __repr__(self):
         args = 'width={}'.format(self._width)
@@ -126,6 +140,7 @@ class ManchesterPulse(Pulse):
         """
         def impulse_response(t):
             return -1.0 * (0 <= t < 0.5) + 1.0 * (0.5 <= t < 1)
+
         super().__init__(impulse_response, interval=(0.0, 1.0))
 
     def __repr__(self):
@@ -158,11 +173,12 @@ class SincPulse(Pulse):
 
         >>> pulse = komm.SincPulse(length_in_symbols=64)
         """
-        L = int(length_in_symbols)
+        L = self._length_in_symbols = int(length_in_symbols)
+
         def impulse_response(t):
-            return np.sinc(t) * (-L/2 <= t < L/2)
+            return np.sinc(t)
+
         super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._length_in_symbols = L
 
     @property
     def length_in_symbols(self):
@@ -217,14 +233,22 @@ class RaisedCosinePulse(Pulse):
 
         >>> pulse = komm.RaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
-        a = float(rolloff)
-        L = int(length_in_symbols)
+        a = self._rolloff = float(rolloff)
+        L = self._length_in_symbols = int(length_in_symbols)
+
         def impulse_response(t):
             t += 1e-8
-            return np.sinc(t) * np.cos(np.pi*a*t) / (1 - (2*a*t)**2) * (-L/2 <= t < L/2)
-        super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._rolloff = a
-        self._length_in_symbols = L
+            return np.sinc(t) * np.cos(np.pi*a*t) / (1 - (2*a*t)**2)
+
+        def frequency_response(f):
+            f1 = (1 - a) / 2
+            f2 = (1 + a) / 2
+            H = 1.0 * (abs(f) < f1)
+            if a > 0:
+                H += (f1 < abs(f) < f2) * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1)))
+            return H
+
+        super().__init__(impulse_response, frequency_response, interval=(-L/2, L/2))
 
     @property
     def rolloff(self):
@@ -284,16 +308,14 @@ class RootRaisedCosinePulse(Pulse):
 
         >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
-        a = float(rolloff)
-        L = int(length_in_symbols)
+        a = self._rolloff = float(rolloff)
+        L = self._length_in_symbols = int(length_in_symbols)
+
         def impulse_response(t):
             t += 1e-8
-            return (np.sin(np.pi*(1 - a)*t) + 4*a*t * np.cos(np.pi*(1 + a)*t)) / \
-                   (np.pi*t*(1 - (4*a*t)**2)) * (-L/2 <= t < L/2)
+            return (np.sin(np.pi*(1 - a)*t) + 4*a*t * np.cos(np.pi*(1 + a)*t)) / (np.pi*t*(1 - (4*a*t)**2))
 
         super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._rolloff = a
-        self._length_in_symbols = L
 
     @property
     def rolloff(self):
@@ -355,14 +377,17 @@ class GaussianPulse(Pulse):
 
         >>> pulse =  komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
         """
-        B = float(half_power_bandwidth)
+        B = self._half_power_bandwidth = float(half_power_bandwidth)
+        L = self._length_in_symbols = int(length_in_symbols)
         B_bar = B / np.sqrt(np.log(2))
-        L = int(length_in_symbols)
+
         def impulse_response(t):
-            return np.exp(-0.5 * (2*np.pi*B_bar*t)**2) * (-L/2 <= t < L/2)
-        super().__init__(impulse_response, interval=(-L/2, L/2))
-        self._half_power_bandwidth = B
-        self._length_in_symbols = L
+            return np.exp(-0.5 * (2*np.pi*B_bar*t)**2)
+
+        def frequency_response(f):
+            return 1 / (np.sqrt(2*np.pi) * B_bar) * np.exp(-0.5 * (f / B_bar)**2)
+
+        super().__init__(impulse_response, frequency_response, interval=(-L/2, L/2))
 
     def __repr__(self):
         args = 'half_power_bandwidth={}, length_in_symbols={}'.format(self._half_power_bandwidth, self._length_in_symbols)
