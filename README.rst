@@ -7,7 +7,11 @@ Komm
 
 .. image:: https://readthedocs.org/projects/komm/badge/?version=latest
    :target: https://komm.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status 
+   :alt: Documentation Status
+
+.. image:: https://mybinder.org/badge.svg
+   :target: https://mybinder.org/v2/gh/rwnobrega/komm/master?filepath=demo
+   :alt: Binder
 
 Welcome to **Komm**'s development page!
 
