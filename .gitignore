@@ -8,6 +8,7 @@ dist/
 tmp/
 .benchmarks
 .cache
+.ipynb_checkpoints
 .spyproject
 .pytest_cache
 .ttxfolder
