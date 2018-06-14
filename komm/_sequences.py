@@ -402,7 +402,9 @@ class LFSRSequence(BinarySequence):
         return cls(PRIMITIVE_POLYNOMIALS[degree])
 
     def __repr__(self):
-        args = 'feedback_polynomial={}, start_state_polynomial={}'.format(self._feedback_polynomial, self._start_state_polynomial)
+        args = 'feedback_polynomial={}'.format(self._feedback_polynomial)
+        if self._start_state_polynomial != BinaryPolynomial(0b1):
+            args += ', start_state_polynomial={}'.format(self._start_state_polynomial)
         return '{}({})'.format(self.__class__.__name__, args)
 
     @property
