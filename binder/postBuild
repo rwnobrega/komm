@@ -1,2 +1,1 @@
-cd komm/
 python setup.py install
