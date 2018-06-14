@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# # Binary sequences
+# # Komm demo: Binary sequences
 
 # In[1]:
 
