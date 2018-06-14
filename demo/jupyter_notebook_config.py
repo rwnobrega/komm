@@ -8,6 +8,6 @@ def post_save(model, os_path, contents_manager):
         return # only do this for notebooks
     d, fname = os.path.split(os_path)
     check_call(['jupyter', 'nbconvert', '--to', 'script', fname], cwd=d)
-    check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
+    #check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
 
 c.FileContentsManager.post_save_hook = post_save
