@@ -19,8 +19,7 @@ import komm
 # In[2]:
 
 
-def barker_demo(index):
-    length = [2, 3, 4, 5, 7, 11, 13][index]
+def barker_demo(length):
     barker = komm.BarkerSequence(length=length)
     shifts = np.arange(-2*length + 1, 2*length)
     _, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
@@ -38,7 +37,7 @@ def barker_demo(index):
     ax1.set_yticks(np.arange(-1, length + 1))
     plt.show()
 
-ipywidgets.interact(barker_demo, index=(0, 6));
+ipywidgets.interact(barker_demo, length=ipywidgets.SelectionSlider(options=[2, 3, 4, 5, 7, 11, 13]));
 
 
 # ## Walsh-Hadamard sequence
@@ -46,8 +45,7 @@ ipywidgets.interact(barker_demo, index=(0, 6));
 # In[3]:
 
 
-def walsh_hadamard_demo(log_length, ordering, index):
-    length = 2**log_length
+def walsh_hadamard_demo(length, ordering, index):
     walsh_hadamard = komm.WalshHadamardSequence(length=length, ordering=ordering, index=index)
     ax = plt.axes()
     ax.stem(np.arange(length), walsh_hadamard.polar_sequence)
@@ -58,14 +56,14 @@ def walsh_hadamard_demo(log_length, ordering, index):
     ax.set_ylim([-1.2, 1.2])
     plt.show()
 
-log_length_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=3)
+length_widget = ipywidgets.SelectionSlider(options=[2**i for i in range(1, 8)])
 index_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=0)
 
 def update_index_widget(*args):
-    index_widget.max = 2 ** log_length_widget.value - 1
-log_length_widget.observe(update_index_widget, 'value')
+    index_widget.max = length_widget.value - 1
+length_widget.observe(update_index_widget, 'value')
 
-ipywidgets.interact(walsh_hadamard_demo, log_length=log_length_widget, ordering=['natural', 'sequency'], index=index_widget);
+ipywidgets.interact(walsh_hadamard_demo, length=length_widget, ordering=['natural', 'sequency'], index=index_widget);
 
 
 # ## Linear-feedback shift register (LFSR) sequence -- Maximum-length sequence (MLS)
