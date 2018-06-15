@@ -24,6 +24,7 @@ def sinc_demo(show_individual, show_signal):
     pulse = komm.SincPulse(length_in_symbols=20)
     t0, t1 = pulse.interval
     tx_filter = komm.TransmitFilter(pulse, samples_per_symbol=32)
+    signal = tx_filter(info)
     t = np.arange(t0, t1 + len(info) - 1, step=1/tx_filter.samples_per_symbol)
 
     _, ax = plt.subplots(figsize=(16, 10))
@@ -31,7 +32,7 @@ def sinc_demo(show_individual, show_signal):
         for k, a in enumerate(info):
             ax.plot(t, a*pulse.impulse_response(t - k), 'k--')
     if show_signal:
-        ax.plot(t, tx_filter(info), 'b', linewidth=3)
+        ax.plot(t, signal, 'b', linewidth=3)
     ax.stem(info, 'r', markerfmt='ro')
     ax.set_xlabel('$t$')
     ax.set_ylabel('$s(t)$')
