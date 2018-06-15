@@ -14,9 +14,39 @@ import ipywidgets
 import komm
 
 
-# ## Raised cosine pulse
+# ## Sinc pulse (zero ISI)
 
 # In[2]:
+
+
+def sinc_demo(show_individual, show_signal):
+    info = [1, -1, 1, 1, -1, -1, 1]
+    pulse = komm.SincPulse(length_in_symbols=20)
+    t0, t1 = pulse.interval
+    tx_filter = komm.TransmitFilter(pulse, samples_per_symbol=32)
+    t = np.arange(t0, t1 + len(info) - 1, step=1/tx_filter.samples_per_symbol)
+
+    _, ax = plt.subplots(figsize=(16, 10))
+    if show_individual:
+        for k, a in enumerate(info):
+            ax.plot(t, a*pulse.impulse_response(t - k), 'k--')
+    if show_signal:
+        ax.plot(t, tx_filter(info), 'b', linewidth=3)
+    ax.stem(info, 'r', markerfmt='ro')
+    ax.set_xlabel('$t$')
+    ax.set_ylabel('$s(t)$')
+    ax.set_xticks(np.arange(-2.0, 11.0))
+    ax.set_xlim([-2.0, 10.0])
+    ax.set_ylim([-1.75, 1.75])
+    ax.grid()
+    plt.show()
+
+ipywidgets.interact(sinc_demo, show_individual=False, show_signal=False);
+
+
+# ## Raised cosine pulse
+
+# In[3]:
 
 
 def raised_cosine_demo(rolloff):
@@ -48,7 +78,7 @@ ipywidgets.interact(raised_cosine_demo, rolloff=rolloff_widget);
 
 # ## Gaussian pulse
 
-# In[3]:
+# In[4]:
 
 
 def gaussian_pulse_demo(half_power_bandwidth):
@@ -66,10 +96,10 @@ def gaussian_pulse_demo(half_power_bandwidth):
     ax0.set_ylabel('$h(t)$')
     ax0.grid()
     ax1.plot(f, H(f), 'r')
-    ax1.plot([-4.0, 4.0], [H(0.0) / np.sqrt(2), H(0.0) / np.sqrt(2)], linestyle='dashed', color='gray')
-    ax1.plot([half_power_bandwidth, half_power_bandwidth], [-0.1*H(0.0), 1.1 * H(0.0)], linestyle='dashed', color='gray')
-    ax1.plot([-half_power_bandwidth, -half_power_bandwidth], [-0.1*H(0.0), 1.1 * H(0.0)], linestyle='dashed', color='gray')
-    ax1.axis([-2.0, 2.0, -0.1*H(0.0), 1.1 * H(0.0)])
+    ax1.plot([-4.0, 4.0], [H(0) / np.sqrt(2), H(0) / np.sqrt(2)], linestyle='dashed', color='gray')
+    ax1.plot([half_power_bandwidth, half_power_bandwidth], [-0.1*H(0), 1.1*H(0)], linestyle='dashed', color='gray')
+    ax1.plot([-half_power_bandwidth, -half_power_bandwidth], [-0.1*H(0), 1.1*H(0)], linestyle='dashed', color='gray')
+    ax1.axis([-2.0, 2.0, -0.1*H(0), 1.1*H(0)])
     ax1.set_title('Gaussian pulse (spectrum)')
     ax1.set_xlabel('$f$')
     ax1.set_ylabel('$H(f)$')
