@@ -46,13 +46,6 @@ ipywidgets.interact(barker_demo, index=(0, 6));
 # In[3]:
 
 
-log_length_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=3)
-index_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=0)
-
-def update_index_widget(*args):
-    index_widget.max = 2 ** log_length_widget.value - 1
-log_length_widget.observe(update_index_widget, 'value')
-
 def walsh_hadamard_demo(log_length, ordering, index):
     length = 2**log_length
     walsh_hadamard = komm.WalshHadamardSequence(length=length, ordering=ordering, index=index)
@@ -64,7 +57,14 @@ def walsh_hadamard_demo(log_length, ordering, index):
     ax.set_yticks([-1, 0, 1])
     ax.set_ylim([-1.2, 1.2])
     plt.show()
-    
+
+log_length_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=3)
+index_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=0)
+
+def update_index_widget(*args):
+    index_widget.max = 2 ** log_length_widget.value - 1
+log_length_widget.observe(update_index_widget, 'value')
+
 ipywidgets.interact(walsh_hadamard_demo, log_length=log_length_widget, ordering=['natural', 'sequency'], index=index_widget);
 
 

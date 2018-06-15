@@ -19,8 +19,6 @@ import komm
 # In[2]:
 
 
-rolloff_widget = ipywidgets.FloatSlider(min=0, max=1.0, step=0.1, value=0.5)
-
 def raised_cosine_demo(rolloff):
     pulse = komm.RaisedCosinePulse(rolloff, length_in_symbols=20)
     h = pulse.impulse_response
@@ -42,7 +40,9 @@ def raised_cosine_demo(rolloff):
     ax1.set_ylabel('$H(f)$')
     ax1.grid()
     plt.show()
-    
+
+rolloff_widget = ipywidgets.FloatSlider(min=0, max=1.0, step=0.1, value=0.5)
+
 ipywidgets.interact(raised_cosine_demo, rolloff=rolloff_widget);
 
 
@@ -50,8 +50,6 @@ ipywidgets.interact(raised_cosine_demo, rolloff=rolloff_widget);
 
 # In[3]:
 
-
-half_power_bandwidth_widget = ipywidgets.FloatSlider(min=0.05, max=1.0, step=0.01, value=0.5)
 
 def gaussian_pulse_demo(half_power_bandwidth):
     pulse = komm.GaussianPulse(half_power_bandwidth, length_in_symbols=4)
@@ -77,6 +75,8 @@ def gaussian_pulse_demo(half_power_bandwidth):
     ax1.set_ylabel('$H(f)$')
     ax1.grid()
     plt.show()
-    
+
+half_power_bandwidth_widget = ipywidgets.FloatSlider(min=0.05, max=1.0, step=0.01, value=0.5)
+
 ipywidgets.interact(gaussian_pulse_demo, half_power_bandwidth=half_power_bandwidth_widget);
 
