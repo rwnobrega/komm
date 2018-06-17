@@ -8,7 +8,8 @@ snr = 2.0
 decoding_method = 'viterbi_soft'
 # ----
 
-code = komm.TerminatedConvolutionalCode(feedforward_polynomials, num_blocks=L)
+convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
+code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=L)
 awgn = komm.AWGNChannel(snr=snr)
 bpsk = komm.PAModulation(2)
 soft_or_hard = getattr(code, '_decode_' + decoding_method).input_type
