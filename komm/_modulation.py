@@ -584,8 +584,10 @@ class QAModulation(ComplexModulation):
         constellation = (constellation_I + 1j*constellation_Q[np.newaxis].T).flatten() * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
-            if labeling in ['natural', 'reflected_2d']:
-                labeling = getattr(_Modulation, '_labeling_' + labeling)(order_I, order_Q)
+            if labeling == 'natural':
+                labeling = _Modulation._labeling_natural(order_I * order_Q)
+            elif labeling == 'reflected_2d':
+                labeling = _Modulation._labeling_reflected_2d(order_I, order_Q)
             else:
                 raise ValueError("Only 'natural' or 'reflected_2d' are supported for {}".format(self.__class__.__name__))
 
