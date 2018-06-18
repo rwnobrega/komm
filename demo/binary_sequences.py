@@ -57,7 +57,7 @@ def walsh_hadamard_demo(length, ordering, index):
     plt.show()
 
 length_widget = ipywidgets.SelectionSlider(options=[2**i for i in range(1, 8)])
-index_widget = ipywidgets.IntSlider(min=0, max=7, step=1, value=0)
+index_widget = ipywidgets.IntSlider(min=0, max=1, step=1, value=0)
 
 def update_index_widget(*args):
     index_widget.max = length_widget.value - 1
