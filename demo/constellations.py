@@ -34,7 +34,7 @@ def constellation_demo(modulation, noise_power_db, xlim, ylim):
     ax.scatter(modulation.constellation.real, modulation.constellation.imag, color='xkcd:blue', s=8**2)
     for (i, point) in enumerate(modulation.constellation):
         binary_label = ''.join(str(b) for b in komm.util.int2binlist(modulation.labeling[i], width=modulation.bits_per_symbol))
-        ax.text(point.real, point.imag + 0.125, binary_label, horizontalalignment='center')
+        ax.text(point.real, point.imag + 0.075 * xlim[0], binary_label, horizontalalignment='center')
     ax.set_title(repr(modulation))
     ax.set_xlabel('Re')
     ax.set_ylabel('Im')
