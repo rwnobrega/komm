@@ -44,7 +44,7 @@ import numpy as np
 )
 def barker_sequence_update(length):
     barker = komm.BarkerSequence(length=length)
-    shifts = np.arange(-2*length + 1, 2*length)
+    shifts = np.arange(-length - 1, length + 2)
 
     figure_barker_sequence = dcc.Graph(
         figure=go.Figure(
@@ -70,7 +70,7 @@ def barker_sequence_update(length):
                 ),
             ),
         ),
-        style={'display': 'inline-block'},
+        style={'display': 'inline-block', 'width': '50%'},
         id='barker-sequence',
     )
 
@@ -93,7 +93,7 @@ def barker_sequence_update(length):
                 ),
             ),
         ),
-        style={'display': 'inline-block'},
+        style={'display': 'inline-block', 'width': '50%'},
         id='barker-autocorrelation',
     )
 
