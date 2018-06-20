@@ -9,19 +9,19 @@ app = dash.Dash()
 app.config.supress_callback_exceptions = True
 
 app.layout = html.Div([
-    html.H1('Komm demo: Barker sequence'),
+    html.H1('Komm demo: Linear-feedback shift register (LFSR) sequence -- Maximum-length sequence (MLS)'),
 
-    html.P('Documentation reference: http://komm.readthedocs.io/en/latest/komm.BarkerSequence/'),
+    html.P('Documentation reference: http://komm.readthedocs.io/en/latest/komm.LFSRSequence/'),
 
-    html.Label('Length:'),
+    html.Label('Degree:'),
 
     html.Div([
         dcc.Slider(
-            id='length-slider',
+            id='degree-slider',
             min=2,
-            max=13,
+            max=7,
             value=2,
-            marks={length: str(length) for length in [2, 3, 4, 5, 7, 11, 13]},
+            marks={length: str(length) for length in range(2, 8)},
             step=None,
             updatemode='drag',
         )
@@ -40,18 +40,19 @@ import numpy as np
 
 @app.callback(
     dash.dependencies.Output(component_id='graphs', component_property='children'),
-    [dash.dependencies.Input(component_id='length-slider', component_property='value')]
+    [dash.dependencies.Input(component_id='degree-slider', component_property='value')]
 )
-def barker_sequence_update(length):
-    barker = komm.BarkerSequence(length=length)
-    shifts = np.arange(-length - 1, length + 2)
+def lfsr_sequence_update(degree):
+    lfsr = komm.LFSRSequence.maximum_length_sequence(degree=degree)
+    length = lfsr.length
+    shifts = np.arange(-2*length + 1, 2*length)
 
     figure_sequence = dcc.Graph(
         figure=go.Figure(
             data=[
                 go.Scatter(
                     x=np.arange(length + 1),
-                    y=np.pad(barker.polar_sequence, (0, 1), mode='edge'),
+                    y=np.pad(lfsr.polar_sequence, (0, 1), mode='edge'),
                     mode='lines',
                     line=dict(
                         shape='hv',
@@ -59,11 +60,7 @@ def barker_sequence_update(length):
                 ),
             ],
             layout=go.Layout(
-                title=str(barker),
-                xaxis=dict(
-                    title='n',
-                    dtick=1.0,
-                ),
+                title=str(lfsr),
                 yaxis=dict(
                     title='a[n]',
                     dtick=1.0,
@@ -74,30 +71,30 @@ def barker_sequence_update(length):
         id='sequence',
     )
 
-    figure_autocorrelation = dcc.Graph(
+    figure_cyclic_autocorrelation = dcc.Graph(
         figure=go.Figure(
             data=[
                 go.Scatter(
                     x=shifts,
-                    y=barker.autocorrelation(shifts),
+                    y=lfsr.cyclic_autocorrelation(shifts, normalized=True),
                     mode='lines',
                 ),
             ],
             layout=go.Layout(
-                title='Autocorrelation',
+                title='Cyclic autocorrelation (normalized)',
                 xaxis=dict(
                     title='ℓ',
                 ),
                 yaxis=dict(
-                    title='R[ℓ]',
+                    title='R~[ℓ]',
                 ),
             ),
         ),
         style={'display': 'inline-block', 'width': '50%'},
-        id='autocorrelation',
+        id='cyclic-autocorrelation',
     )
 
-    return [figure_sequence, figure_autocorrelation]
+    return [figure_sequence, figure_cyclic_autocorrelation]
 
 
 if __name__ == '__main__':
