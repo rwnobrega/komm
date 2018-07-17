@@ -81,7 +81,7 @@ class AWGNChannel:
         >>> awgn.capacity()
         3.0
         """
-        return 0.5 * np.log2(1 + self._snr)
+        return 0.5 * np.log1p(self._snr) / np.log(2.0)
 
     def __call__(self, input_signal):
         input_signal = np.array(input_signal)
