@@ -22,12 +22,16 @@ def qfunc(x):
 def qfuncinv(y):
     return np.sqrt(2) * sp.special.erfcinv(2 * y)
 
-def entropy(pmf):
+def entropy(pmf, base=2.0):
+    base = np.exp(1) if base == 'e' else float(base)
+    pmf = np.array(pmf, dtype=np.float)
     pmf_nonzero = pmf[pmf != 0.0]
-    return -np.dot(pmf_nonzero, np.log2(pmf_nonzero))
+    if not np.allclose(np.sum(pmf_nonzero), 1.0) or not np.alltrue(pmf_nonzero >= 0.0):
+        raise ValueError("Invalid pmf")
+    return -np.dot(pmf_nonzero, np.log(pmf_nonzero) / np.log(base))
 
-def mutual_information(input_pmf, transition_probabilities):
+def mutual_information(input_pmf, transition_probabilities, base=2.0):
     output_pmf = np.dot(input_pmf, transition_probabilities)
-    entropy_output_prior = entropy(output_pmf)
+    entropy_output_prior = entropy(output_pmf, base)
     entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(entropy, 1, transition_probabilities))
     return entropy_output_prior - entropy_output_posterior
