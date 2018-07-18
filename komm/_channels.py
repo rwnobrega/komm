@@ -162,7 +162,7 @@ class DiscreteMemorylessChannel:
 
         >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
         >>> dmc.capacity()
-        0.1616318609548566
+        0.16163186095485682
         """
         initial_guess = np.ones(self._input_cardinality, dtype=np.float) / self._input_cardinality
         optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)
