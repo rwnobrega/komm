@@ -3,8 +3,6 @@ import pytest
 import numpy as np
 import komm
 
-from komm.util import int2binlist
-
 
 def test_convolutional_code():
     # Lin.Costello.04, p. 454--456
@@ -128,20 +126,20 @@ def test_convolutional_stream_decoder():
 
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials, message, codeword', [
     ([[0o7, 0o5]], None,
-     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
-     int2binlist(0xbe84a1facdf49b0d258444495561c0d11f496cd12589847e89bdce6ce5555b0039b0e5589b37e56cebe5612bd2bdf7dc0000, 400)),
+     komm.int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     komm.int2binlist(0xbe84a1facdf49b0d258444495561c0d11f496cd12589847e89bdce6ce5555b0039b0e5589b37e56cebe5612bd2bdf7dc0000, 400)),
 
     ([[0o117, 0o155]], None,
-     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
-     int2binlist(0x3925a704c66355eb62f33de3c4512d01a6d681376ccec5f7fb8091ba4ff29b35456641cf63217ab7fd748a0560b5d4dc0000, 400)),
+     komm.int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     komm.int2binlist(0x3925a704c66355eb62f33de3c4512d01a6d681376ccec5f7fb8091ba4ff29b35456641cf63217ab7fd748a0560b5d4dc0000, 400)),
 
     ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]], None,
-     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
-     int2binlist(0x6c889449f6801e93daf4e498ccf75404897d7459ce571f1581a4d05b2011986c0c8501d4000, 300)),
+     komm.int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     komm.int2binlist(0x6c889449f6801e93daf4e498ccf75404897d7459ce571f1581a4d05b2011986c0c8501d4000, 300)),
 
     ([[0o27, 0o31]], [0o27],
-     int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
-     int2binlist(0x525114c160c91f2ac5511933f5d6ea2eceb9f48cc779f998d9d86a762d57df2a23daa7551f298d762d85d6e70e526b2c0000, 400)),
+     komm.int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200),
+     komm.int2binlist(0x525114c160c91f2ac5511933f5d6ea2eceb9f48cc779f998d9d86a762d57df2a23daa7551f298d762d85d6e70e526b2c0000, 400)),
 ])
 def test_convolutional_stream_encoder_2(feedforward_polynomials, feedback_polynomials, message, codeword):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
@@ -151,20 +149,20 @@ def test_convolutional_stream_encoder_2(feedforward_polynomials, feedback_polyno
 
 @pytest.mark.parametrize('feedforward_polynomials, feedback_polynomials, recvword, message_hat', [
     ([[0o7, 0o5]], None,
-     int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
-     int2binlist(0x1055cb0f07d8e51b703c77e5589dc1fcdbec820c9a12a130c0, 200)),
+     komm.int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
+     komm.int2binlist(0x1055cb0f07d8e51b703c77e5589dc1fcdbec820c9a12a130c0, 200)),
 
     ([[0o117, 0o155]], None,
-     int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
-     int2binlist(0x1ca9300a1f7524061b0ada89ec7e72d5906920081222bedf0, 200)),
+     komm.int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
+     komm.int2binlist(0x1ca9300a1f7524061b0ada89ec7e72d5906920081222bedf0, 200)),
 
     ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]], None,
-     int2binlist(0x7577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 300),
-     int2binlist(0x4b592f74786e69c9e75cfa836cffa14f917d51aae2c9ed60, 200)),
+     komm.int2binlist(0x7577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 300),
+     komm.int2binlist(0x4b592f74786e69c9e75cfa836cffa14f917d51aae2c9ed60, 200)),
 
     ([[0o27, 0o31]], [0o27],
-     int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
-     int2binlist(0x192f33ae3eba2f9050b8577adb33477613a7ea67cc7965da40, 200)),
+     komm.int2binlist(0x974b4459a5230ede0b95ceee67577b289b10e5f299954fcc6bcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 400),
+     komm.int2binlist(0x192f33ae3eba2f9050b8577adb33477613a7ea67cc7965da40, 200)),
 ])
 def test_convolutional_stream_decoder_2(feedforward_polynomials, feedback_polynomials, recvword, message_hat):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)

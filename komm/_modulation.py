@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 
-from .util import int2binlist
+from ._util import int2binlist
 
 __all__ = ['RealModulation', 'PAModulation',
            'ComplexModulation', 'ASKModulation', 'PSKModulation', 'APSKModulation', 'QAModulation']

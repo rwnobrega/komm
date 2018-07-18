@@ -5,7 +5,7 @@ import numpy as np
 from ._algebra import \
     BinaryPolynomial
 
-from .util import \
+from ._util import \
     int2binlist, binlist2int
 
 __all__ = ['BinarySequence',

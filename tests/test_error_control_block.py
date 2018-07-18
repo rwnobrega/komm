@@ -3,8 +3,6 @@ import pytest
 import numpy as np
 import komm
 
-from komm.util import int2binlist, pack
-
 
 class TestHammingCode:
     code = komm.HammingCode(3)
@@ -126,7 +124,7 @@ class TestReedMuller:
         assert (n, k, d) == (16, 11, 4)
 
     def test_generator_matrix(self):
-        assert np.array_equal(self.code.generator_matrix, [int2binlist(i) for i in [0x8888, 0xa0a0, 0xaa00, 0xc0c0, 0xcc00, 0xf000, 0xaaaa, 0xcccc, 0xf0f0, 0xff00, 0xffff]])
+        assert np.array_equal(self.code.generator_matrix, [komm.int2binlist(i) for i in [0x8888, 0xa0a0, 0xaa00, 0xc0c0, 0xcc00, 0xf000, 0xaaaa, 0xcccc, 0xf0f0, 0xff00, 0xffff]])
 
     def test_weight_distributions(self):
         assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1])
@@ -195,9 +193,9 @@ def test_terminated_convolutional_code_zero_termination(feedforward_polynomials,
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode='zero-termination')
     for message_int in range(2**code.dimension):
         print(message_int, 2**code.dimension)
-        message = int2binlist(message_int, width=code.dimension)
+        message = komm.int2binlist(message_int, width=code.dimension)
         tail = np.dot(message, code._tail_projector) % 2
-        input_sequence = pack(np.concatenate([message, tail]), width=convolutional_code._num_input_bits)
+        input_sequence = komm.pack(np.concatenate([message, tail]), width=convolutional_code._num_input_bits)
         _, fs = convolutional_code._finite_state_machine.process(input_sequence, initial_state=0)
         assert fs == 0
 
@@ -209,7 +207,7 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=feedforward_polynomials)
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
     for i in range(2**code.dimension):
-        message = int2binlist(i, width=code.dimension)
+        message = komm.int2binlist(i, width=code.dimension)
         assert np.array_equal(code.encode(message, method='generator_matrix'),
                               code.encode(message, method='finite_state_machine'))
 

@@ -2,8 +2,8 @@ import functools
 
 import numpy as np
 
-from .util import \
-    int2binlist, binlist2int
+from ._util import \
+    _int2binlist, _binlist2int
 
 __all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'BinaryFiniteExtensionField']
 
@@ -47,7 +47,7 @@ class BinaryPolynomial(int):
         >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
         BinaryPolynomial(0b11010)
         """
-        return cls(binlist2int(coefficients))
+        return cls(_binlist2int(coefficients))
 
     @classmethod
     def from_exponents(cls, exponents):
@@ -62,7 +62,7 @@ class BinaryPolynomial(int):
         >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
         BinaryPolynomial(0b11010)
         """
-        return cls(binlist2int(np.bincount(exponents)))
+        return cls(_binlist2int(np.bincount(exponents)))
 
     @property
     def degree(self):
@@ -99,7 +99,7 @@ class BinaryPolynomial(int):
         >>> poly.coefficients(width=8)
         array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return np.array(int2binlist(self, width=width), dtype=np.int)
+        return np.array(_int2binlist(self, width=width), dtype=np.int)
 
     def exponents(self):
         """

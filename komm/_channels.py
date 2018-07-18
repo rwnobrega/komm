@@ -1,7 +1,7 @@
 import numpy as np
 
-from .util import \
-    entropy, mutual_information
+from ._util import \
+    _entropy, _mutual_information
 
 __all__ = ['AWGNChannel',
            'DiscreteMemorylessChannel',
@@ -162,11 +162,11 @@ class DiscreteMemorylessChannel:
 
         >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
         >>> dmc.capacity()
-        0.16163186095485682
+        0.1616318609548566
         """
         initial_guess = np.ones(self._input_cardinality, dtype=np.float) / self._input_cardinality
         optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)
-        return mutual_information(optimal_input_pmf, self._transition_matrix)
+        return _mutual_information(optimal_input_pmf, self._transition_matrix)
 
     def __call__(self, input_sequence):
         output_sequence = [np.random.choice(self.output_cardinality, p=self.transition_matrix[input_symbol])
@@ -250,7 +250,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         >>> bsc.capacity()
         0.18872187554086717
         """
-        return 1.0 - entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
+        return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
 
     def __call__(self, input_sequence):
         error_pattern = (np.random.rand(input_sequence.size) < self._crossover_probability).astype(np.int)

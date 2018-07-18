@@ -170,6 +170,22 @@ Lossless coding
     HuffmanCode
     TunstallCode
 
+Utilities
+---------
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    binlist2int
+    int2binlist
+    pack
+    unpack
+    qfunc
+    qfuncinv
+    entropy
+    mutual_information
+
 Indices
 -------
 

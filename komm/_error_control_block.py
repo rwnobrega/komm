@@ -8,7 +8,7 @@ from ._algebra import \
     null_matrix, right_inverse, \
     BinaryPolynomial, BinaryFiniteExtensionField
 
-from .util import \
+from ._util import \
     int2binlist, binlist2int, pack, unpack
 
 from ._aux import tag

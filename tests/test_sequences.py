@@ -3,14 +3,12 @@ import pytest
 import numpy as np
 import komm
 
-from komm.util import int2binlist
-
 
 def test_lfsr_sequence():
     lfsr = komm.LFSRSequence(feedback_polynomial=komm.BinaryPolynomial.from_exponents([5, 2, 0]))
     assert np.array_equal(lfsr.bit_sequence, [0,0,0,0,1,0,1,0,1,1,1,0,1,1,0,0,0,1,1,1,1,1,0,0,1,1,0,1,0,0,1])
     lfsr = komm.LFSRSequence(feedback_polynomial=0b10000001001)
-    assert np.array_equal(lfsr.bit_sequence[:200], int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200))
+    assert np.array_equal(lfsr.bit_sequence[:200], komm.int2binlist(0xcd698970bd55fe82a5e2bdd4dc8e3ff01c3f713e33eb2c9200, 200))
 
 
 @pytest.mark.parametrize('num_states', range(2, 16))

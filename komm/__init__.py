@@ -9,6 +9,7 @@ from ._modulation import *
 from ._pulses import *
 from ._sequences import *
 from ._source_coding import *
+from ._util import *
 
 import inspect as _inspect
 import sys as _sys

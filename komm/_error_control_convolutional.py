@@ -6,7 +6,7 @@ from ._algebra import \
 from ._finite_state_machine import \
     FiniteStateMachine
 
-from .util import \
+from ._util import \
     int2binlist, binlist2int, pack, unpack
 
 
