@@ -48,7 +48,7 @@ def _pack(list_, width):
 
 def pack(list_, width):
     """
-    Pack a given integer array.
+    Packs a given integer array.
     """
     return _pack(list_, width)
 
@@ -58,7 +58,7 @@ def _unpack(list_, width):
 
 def unpack(list_, width):
     """
-    Unpack a given bit array.
+    Unpacks a given bit array.
     """
     return _unpack(list_, width)
 
@@ -68,7 +68,7 @@ def _qfunc(x):
 
 def qfunc(x):
     """
-    Computes the gaussian Q-function of the input.
+    Computes the gaussian Q-function.
     """
     return _qfunc(x)
 
@@ -78,7 +78,7 @@ def _qfuncinv(y):
 
 def qfuncinv(x):
     """
-    Computes the inverse gaussian Q-function of the input.
+    Computes the inverse gaussian Q-function.
     """
     return _qfuncinv(x)
 

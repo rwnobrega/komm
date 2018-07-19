@@ -34,11 +34,11 @@ class PrefixCode:
 
     def average_length(self, pmf):
         """
-        Computes the average length :math:`E[\\ell]` of the symbol code assuming a given :term:`pmf`. It is given by
+        Computes the average length :math:`\\mathrm{E}[\\ell]` of the symbol code assuming a given :term:`pmf`. It is given by
 
         .. math::
 
-            E[\\ell] = \\sum_{x \\in \\mathcal{X}} p_X(x) \\ell(x),
+            \\mathrm{E}[\\ell] = \\sum_{x \\in \\mathcal{X}} p_X(x) \\ell(x),
 
         where :math:`p_X(x)` is the :term:`pmf` to be assumed, and :math:`\\ell(x)` is the number of bits in :math:`\\mathrm{Enc}(x)`.
 
@@ -50,7 +50,7 @@ class PrefixCode:
         **Output:**
 
         :code:`average_length` : :obj:`float`
-            The average length :math:`E[\\ell]` of the symbol code assuming the given :term:`pmf`.
+            The average length :math:`\\mathrm{E}[\\ell]` of the symbol code assuming the given :term:`pmf`.
         """
         return np.dot([len(bit_sequence) for bit_sequence in self._mapping], pmf) / np.sum(pmf)
 
