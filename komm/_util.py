@@ -104,7 +104,41 @@ def _entropy(pmf, base=2.0):
 
 def entropy(pmf, base=2.0):
     """
-    Computes the entropy of a given pmf.
+    Computes the entropy of a random variable with a given :term:`pmf`. Let :math:`X` be a random variable with :term:`pmf` :math:`p_X` and alphabet :math:`\\mathcal{X}`. Its entropy is given by
+
+    .. math::
+
+       \\mathrm{H}(X) = \\sum_{x \\in \\mathcal{X}} p_X(x) \\log \\frac{1}{p_X(x)},
+
+    By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits.
+
+    References: :cite:`Cover.Thomas.06` (Ch. 2)
+
+    **Input:**
+
+    :code:`pmf` : 1D-array of :obj:`float`
+        The probability mass function of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
+
+    :code:`base` : :obj:`float` or :obj:`str`, optional
+        The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+
+    **Output:**
+
+    :code:`entropy` : :obj:`float`
+        The entropy of the random variable.
+
+    .. rubric:: Examples
+
+    >>> komm.entropy([1/4, 1/4, 1/4, 1/4])
+    2.0
+
+    >>> komm.entropy([1/3, 1/3, 1/3], base=3.0)  #doctest:+SKIP
+    1.0
+
+    >>> komm.entropy([1.0, 1.0])
+    Traceback (most recent call last):
+     ...
+    ValueError: Invalid pmf
     """
     pmf = np.array(pmf, dtype=np.float)
     if not np.allclose(np.sum(pmf), 1.0) or not np.alltrue(pmf >= 0.0):
