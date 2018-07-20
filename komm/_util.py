@@ -68,7 +68,29 @@ def _qfunc(x):
 
 def qfunc(x):
     """
-    Computes the gaussian Q-function.
+    Computes the gaussian Q-function. It is given by
+
+    .. math::
+
+       \\mathrm{Q}(x) = \\frac{1}{\\sqrt{2\\pi}} \\int_x^\\infty \\mathrm{e}^{-u^2/2} \\, \\mathrm{d}u.
+
+    **Input:**
+
+    :code:`x` : :obj:`float` or array of :obj:`float`
+        The input to the function. May be any float or array of floats.
+
+    **Output:**
+
+    :code:`y` : same as input
+        The value :math:`y = \\mathrm{Q}(x)`.
+
+    .. rubric:: Examples
+
+    >>> komm.qfunc(0.0)
+    0.5
+
+    >>> komm.qfunc([-1.0, 0.0, 1.0])  #doctest:+NORMALIZE_WHITESPACE
+    array([0.84134475, 0.5, 0.15865525])
     """
     return _qfunc(x)
 
@@ -79,8 +101,24 @@ def _qfuncinv(y):
 def qfuncinv(x):
     """
     Computes the inverse gaussian Q-function.
+
+    **Input:**
+
+    :code:`y` : :obj:`float` or array of :obj:`float`
+        The input to the function. Should be a float or array of floats in the real interval :math:`[0, 1]`.
+
+    **Output:**
+
+    :code:`x` : same as input
+        The value :math:`x = \\mathrm{Q^{-1}}(y)`.
+
+    >>> komm.qfuncinv(0.5)  #doctest:+SKIP
+    0.0
+
+    >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest:+SKIP
+    array([-1., 0.,  1.])
     """
-    return _qfuncinv(x)
+    return _qfuncinv(np.array(x))
 
 
 def _entropy_base_e(pmf):
