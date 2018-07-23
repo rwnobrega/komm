@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 
 __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
-           'qfunc', 'qfuncinv',  'entropy', 'mutual_information']
+           'qfunc', 'qfuncinv',  'entropy']
 
 
 # Functions beggining with underscore:
@@ -189,9 +189,3 @@ def _mutual_information(input_pmf, transition_probabilities, base=2.0):
     entropy_output_prior = _entropy(output_pmf, base)
     entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(_entropy, 1, transition_probabilities))
     return entropy_output_prior - entropy_output_posterior
-
-def mutual_information(input_pmf, transition_probabilities, base=2.0):
-    """
-    Computes the mutual information between a given pmf and transition probabilities.
-    """
-    return _mutual_information(input_pmf, transition_probabilities, base)

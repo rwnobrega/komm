@@ -184,7 +184,6 @@ Utilities
     qfunc
     qfuncinv
     entropy
-    mutual_information
 
 Indices
 -------

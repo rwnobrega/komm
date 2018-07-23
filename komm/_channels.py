@@ -154,6 +154,40 @@ class DiscreteMemorylessChannel:
         """
         return self._output_cardinality
 
+    def mutual_information(self, input_pmf, base=2.0):
+        """
+        Computes the mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by
+
+        .. math::
+
+           \\mathrm{I}(X ; Y) = \\mathrm{H}(X) - \\mathrm{H}(X \\mid Y),
+
+        where :math:`\\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\\mathrm{H}(X \\mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.
+
+        References: :cite:`Cover.Thomas.06` (Ch. 2)
+
+        **Input:**
+
+        :code:`input_pmf` : 1D-array of :obj:`float`
+            The probability mass function :math:`p_X` of the channel input :math:`X`. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
+
+        :code:`base` : :obj:`float` or :obj:`str`, optional
+            The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+
+        **Output:**
+
+        :code:`mutual_information` : :obj:`float`
+            The mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.
+
+        .. rubric:: Examples
+
+        >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
+        >>> dmc.mutual_information([1/3, 1/3, 1/3])
+        0.12381109879798724
+        """
+        return _mutual_information(input_pmf, self._transition_matrix, base)
+
+
     def capacity(self):
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
