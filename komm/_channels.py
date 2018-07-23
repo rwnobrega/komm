@@ -27,15 +27,6 @@ class AWGNChannel:
     References: :cite:`Cover.Thomas.06` (Ch. 9)
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
-
-    .. rubric:: Examples
-
-    >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
-    >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x  #doctest:+SKIP
-    array([ 1.,  3., -3., -1., -1.,  1.,  3.,  1., -1.,  3.])
-    >>> y = awgn(x); y  #doctest:+SKIP
-    array([ 0.98966376,  2.99349135, -3.05371748, -0.71632748, -1.06163275,
-            0.75899613,  2.86905731,  1.16039474, -1.02437047,  2.91492338])
     """
     def __init__(self, snr=np.inf, signal_power=1.0):
         """Constructor for the class. It expects the following parameters:
@@ -45,6 +36,15 @@ class AWGNChannel:
 
         :code:`signal_power` : :obj:`float` or :obj:`str`, optional
             The input signal power :math:`P`.  If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
+
+        .. rubric:: Examples
+
+        >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
+        >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x  #doctest:+SKIP
+        array([ 1.,  3., -3., -1., -1.,  1.,  3.,  1., -1.,  3.])
+        >>> y = awgn(x); y  #doctest:+SKIP
+        array([ 0.98966376,  2.99349135, -3.05371748, -0.71632748, -1.06163275,
+                0.75899613,  2.86905731,  1.16039474, -1.02437047,  2.91492338])
         """
         self._snr = snr
         self._signal_power = signal_power
@@ -113,21 +113,21 @@ class DiscreteMemorylessChannel:
     References: :cite:`Cover.Thomas.06` (Ch. 7)
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
-
-    .. rubric:: Examples
-
-    >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-    array([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
-    >>> y = dmc(x); y  #doctest:+SKIP
-    array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
     """
     def __init__(self, transition_matrix):
         """
         Constructor for the class. It expects the following parameter:
 
         :code:`transition_matrix` : 2D-array of :obj:`float`
-            The channel transition probability matrix :math:`p_{Y \\mid X}`.
+            The channel transition probability matrix :math:`p_{Y \\mid X}`. The element in row :math:`x \\in \\mathcal{X}` and column :math:`y \\in \\mathcal{Y}` must be equal to :math:`p_{Y \\mid X}(y \\mid x)`.
+
+        .. rubric:: Examples
+
+        >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
+        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
+        array([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
+        >>> y = dmc(x); y  #doctest:+SKIP
+        array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
         """
         self._transition_matrix = np.array(transition_matrix, dtype=np.float)
         self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
@@ -214,14 +214,6 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     References: :cite:`Cover.Thomas.06` (Sec. 7.1.4)
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
-
-    .. rubric:: Examples
-
-    >>> bsc = komm.BinarySymmetricChannel(0.1)
-    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-    array([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-    >>> y = bsc(x); y  #doctest:+SKIP
-    array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
     """
     def __init__(self, crossover_probability=0.0):
         """
@@ -229,6 +221,14 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
         :code:`crossover_probability` : :obj:`float`, optional
             The channel crossover probability :math:`p`. Must satisfy :math:`0 \\leq p \\leq 1`. The default value is :code:`0.0`.
+
+        .. rubric:: Examples
+
+        >>> bsc = komm.BinarySymmetricChannel(0.1)
+        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
+        array([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
+        >>> y = bsc(x); y  #doctest:+SKIP
+        array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
         """
         super().__init__([[1 - crossover_probability, crossover_probability], [crossover_probability, 1 - crossover_probability]])
         self._crossover_probability = crossover_probability
@@ -278,14 +278,6 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     References: :cite:`Cover.Thomas.06` (Sec. 7.1.5)
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
-
-    .. rubric:: Examples
-
-    >>> bec = komm.BinaryErasureChannel(0.1)
-    >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-    array([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
-    >>> y = bec(x); y  #doctest:+SKIP
-    array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
     """
     def __init__(self, erasure_probability=0.0):
         """
@@ -293,6 +285,14 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
         :code:`erasure_probability` : :obj:`float`, optional
             The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \\leq \\epsilon \\leq 1`. Default value is :code:`0.0`.
+
+        .. rubric:: Examples
+
+        >>> bec = komm.BinaryErasureChannel(0.1)
+        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
+        array([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+        >>> y = bec(x); y  #doctest:+SKIP
+        array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
         """
         super().__init__([[1 - erasure_probability, 0, erasure_probability], [0, 1 - erasure_probability, erasure_probability]])
         self._erasure_probability = erasure_probability
