@@ -83,7 +83,7 @@ class UniformQuantizer(ScalarQuantizer):
     """
     Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\\Delta`, and the thresholds are the mid-point between adjacent levels.
     """
-    def __init__(self, num_levels, input_peak=1.0, type_='mid-riser'):
+    def __init__(self, num_levels, input_peak=1.0, choice='mid-riser'):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -106,42 +106,42 @@ class UniformQuantizer(ScalarQuantizer):
         array([[-0.5 , -0.4 , -0.3 , -0.2 , -0.1 ,  0.  ,  0.1 ,  0.2 ,  0.3 ,  0.4 ,  0.5 ],
                [-0.5 , -0.5 , -0.25, -0.25,  0.  ,  0.  ,  0.  ,  0.25,  0.25,  0.5 ,  0.5 ]])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='unsigned')
+        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='unsigned')
         >>> quantizer.levels
         array([0.  , 0.25, 0.5 , 0.75])
         >>> quantizer.thresholds
         array([0.125, 0.375, 0.625])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='mid-riser')
+        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-riser')
         >>> quantizer.levels
         array([-0.75, -0.25,  0.25,  0.75])
         >>> quantizer.thresholds
         array([-0.5,  0. ,  0.5])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='mid-tread')
+        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-tread')
         >>> quantizer.levels
         array([-1. , -0.5,  0. ,  0.5])
         >>> quantizer.thresholds
         array([-0.75, -0.25,  0.25])
         """
-        if type_ == 'unsigned':
+        if choice == 'unsigned':
             delta = input_peak / num_levels
             levels = input_peak * np.arange(num_levels) / num_levels
-        elif type_ == 'mid-riser':
+        elif choice == 'mid-riser':
             delta = (2.0 * input_peak) / num_levels
             levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2) + delta/2
-        elif type_ == 'mid-tread':
+        elif choice == 'mid-tread':
             delta = (2.0 * input_peak) / num_levels
             levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2)
         else:
-            raise ValueError("Parameter 'type_' must be 'unsigned' or 'mid-riser' or 'mid-tread'")
+            raise ValueError("Parameter 'choice' must be 'unsigned' or 'mid-riser' or 'mid-tread'")
 
         thresholds = (levels + delta/2)[:-1]
         super().__init__(levels, thresholds)
 
         self._quantization_step = delta
         self._input_peak = float(input_peak)
-        self._type = type_
+        self._choice = choice
 
     @property
     def quantization_step(self):
@@ -158,11 +158,11 @@ class UniformQuantizer(ScalarQuantizer):
         return self._input_peak
 
     def __call__(self, input_signal):
-        if self._type == 'unsigned':
+        if self._choice == 'unsigned':
             return 0
-        elif self._type == 'mid-riser':
+        elif self._choice == 'mid-riser':
             return self._quantize_mid_riser(input_signal)
-        elif self._type == 'mid-tread':
+        elif self._choice == 'mid-tread':
             return self._quantize_mid_tread(input_signal)
 
     def _quantize_mid_riser(self, input_signal):
@@ -178,5 +178,5 @@ class UniformQuantizer(ScalarQuantizer):
         return output_signal
 
     def __repr__(self):
-        args = "num_levels={}, input_peak={}, type_='{}'".format(self._num_levels, self._input_peak, self._type)
+        args = "num_levels={}, input_peak={}, choice='{}'".format(self._num_levels, self._input_peak, self._choice)
         return '{}({})'.format(self.__class__.__name__, args)
