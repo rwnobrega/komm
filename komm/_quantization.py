@@ -91,7 +91,7 @@ class UniformQuantizer(ScalarQuantizer):
             The number of quantization levels, :math:`L`.
 
         :code:`input_peak` : :obj:`float`, optional
-            The peak of the input signal.
+            The peak of the input signal, :math:`x_\\mathrm{p}`.
 
         .. rubric:: Examples
 
@@ -153,7 +153,7 @@ class UniformQuantizer(ScalarQuantizer):
     @property
     def input_peak(self):
         """
-        The peak of the input signal, :math:`m_\\mathrm{p}`.
+        The peak of the input signal, :math:`x_\\mathrm{p}`.
         """
         return self._input_peak
 
