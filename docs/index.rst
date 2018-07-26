@@ -130,6 +130,16 @@ Filtering
     TransmitFilter
     ReceiveFilter
 
+Quantization
+------------
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    ScalarQuantizer
+    UniformQuantizer
+
 Sequences
 ---------
 
