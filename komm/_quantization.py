@@ -97,9 +97,9 @@ class UniformQuantizer(ScalarQuantizer):
 
         >>> quantizer = komm.UniformQuantizer(num_levels=8)
         >>> quantizer.levels
-        array([-1.  , -0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])
+        array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])
         >>> quantizer.thresholds
-        array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625])
+        array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])
         >>> x = np.linspace(-0.5, 0.5, num=11)
         >>> y = quantizer(x)
         >>> np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE
@@ -114,25 +114,25 @@ class UniformQuantizer(ScalarQuantizer):
 
         >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='mid-riser')
         >>> quantizer.levels
-        array([-1. , -0.5,  0. ,  0.5])
-        >>> quantizer.thresholds
-        array([-0.75, -0.25,  0.25])
-
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='mid-tread')
-        >>> quantizer.levels
         array([-0.75, -0.25,  0.25,  0.75])
         >>> quantizer.thresholds
         array([-0.5,  0. ,  0.5])
+
+        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, type_='mid-tread')
+        >>> quantizer.levels
+        array([-1. , -0.5,  0. ,  0.5])
+        >>> quantizer.thresholds
+        array([-0.75, -0.25,  0.25])
         """
         if type_ == 'unsigned':
             delta = input_peak / num_levels
             levels = input_peak * np.arange(num_levels) / num_levels
         elif type_ == 'mid-riser':
             delta = (2.0 * input_peak) / num_levels
-            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2)
+            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2) + delta/2
         elif type_ == 'mid-tread':
             delta = (2.0 * input_peak) / num_levels
-            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2) + delta/2
+            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2)
         else:
             raise ValueError("Parameter 'type_' must be 'unsigned' or 'mid-riser' or 'mid-tread'")
 
