@@ -134,7 +134,7 @@ class UniformQuantizer(ScalarQuantizer):
             delta = (2.0 * input_peak) / num_levels
             levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2)
         else:
-            raise ValueError("Parameter 'choice' must be 'unsigned' or 'mid-riser' or 'mid-tread'")
+            raise ValueError("Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}")
 
         thresholds = (levels + delta/2)[:-1]
         super().__init__(levels, thresholds)
