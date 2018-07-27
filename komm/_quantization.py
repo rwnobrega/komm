@@ -91,7 +91,10 @@ class UniformQuantizer(ScalarQuantizer):
             The number of quantization levels, :math:`L`.
 
         :code:`input_peak` : :obj:`float`, optional
-            The peak of the input signal, :math:`x_\\mathrm{p}`.
+            The peak of the input signal, :math:`x_\\mathrm{p}`. The default value is :code:`1.0`.
+
+        :code:`choice` : :obj:`str`, optional
+            The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
 
         .. rubric:: Examples
 
@@ -156,6 +159,14 @@ class UniformQuantizer(ScalarQuantizer):
         The peak of the input signal, :math:`x_\\mathrm{p}`.
         """
         return self._input_peak
+
+    @property
+    def choice(self):
+        """
+        The choice for the uniform quantizer (:code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`).
+        """
+        return self._choice
+
 
     def __call__(self, input_signal):
         input_signal = np.array(input_signal, dtype=np.float, ndmin=1)
