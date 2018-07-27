@@ -138,6 +138,7 @@ Quantization
     :nosignatures:
 
     ScalarQuantizer
+    LloydMaxQuantizer
     UniformQuantizer
 
 Sequences

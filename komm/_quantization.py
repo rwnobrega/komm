@@ -1,6 +1,6 @@
 import numpy as np
 
-__all__ = ['ScalarQuantizer', 'UniformQuantizer']
+__all__ = ['ScalarQuantizer', 'LloydMaxQuantizer', 'UniformQuantizer']
 
 
 class ScalarQuantizer:
@@ -77,6 +77,13 @@ class ScalarQuantizer:
     def __repr__(self):
         args = 'levels={}, thresholds={}'.format(self._levels.tolist(), self._thresholds.tolist())
         return '{}({})'.format(self.__class__.__name__, args)
+
+
+class LloydMaxQuantizer(ScalarQuantizer):
+    """
+    Lloyd--Max scalar quantizer [Not implemented yet].
+    """
+    pass
 
 
 class UniformQuantizer(ScalarQuantizer):
