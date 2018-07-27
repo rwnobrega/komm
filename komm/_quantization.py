@@ -32,7 +32,7 @@ class ScalarQuantizer:
         >>> y = quantizer(x)
         >>> np.vstack([x, y])
         array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
-               [-1. , -1. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  1. ,  1. ,  1. ]])
+               [-1. , -1. , -1. , -1. ,  0. ,  0. ,  0. ,  1. ,  1. ,  1. ,  1. ]])
         """
         self._levels = np.array(levels, dtype=np.float)
         self._thresholds = np.array(thresholds, dtype=np.float)
@@ -71,7 +71,7 @@ class ScalarQuantizer:
 
     def __call__(self, input_signal):
         input_signal_tile = np.tile(input_signal, reps=(self._thresholds.size, 1)).transpose()
-        output_signal = self._levels[np.sum(input_signal_tile > self._thresholds, axis=1)]
+        output_signal = self._levels[np.sum(input_signal_tile >= self._thresholds, axis=1)]
         return output_signal
 
     def __repr__(self):
