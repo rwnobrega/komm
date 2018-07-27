@@ -158,23 +158,13 @@ class UniformQuantizer(ScalarQuantizer):
         return self._input_peak
 
     def __call__(self, input_signal):
-        if self._choice == 'unsigned':
-            return 0
+        input_signal = np.array(input_signal, dtype=np.float, ndmin=1)
+        delta = self._quantization_step
+        if self._choice in ['unsigned', 'mid-tread']:
+            quantized = delta * np.floor(input_signal / delta + 0.5)
         elif self._choice == 'mid-riser':
-            return self._quantize_mid_riser(input_signal)
-        elif self._choice == 'mid-tread':
-            return self._quantize_mid_tread(input_signal)
-
-    def _quantize_mid_riser(self, input_signal):
-        input_signal = np.array(input_signal, dtype=np.float)
-        delta = self._quantization_step
-        output_signal = delta * np.floor(input_signal / delta + 0.5)
-        return output_signal
-
-    def _quantize_mid_tread(self, input_signal):
-        input_signal = np.array(input_signal, dtype=np.float)
-        delta = self._quantization_step
-        output_signal = delta * (np.floor(input_signal / delta) + 0.5)
+            quantized = delta * (np.floor(input_signal / delta) + 0.5)
+        output_signal = np.clip(quantized, a_min=self._levels[0], a_max=self._levels[-1])
         return output_signal
 
     def __repr__(self):
