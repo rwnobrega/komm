@@ -32,5 +32,5 @@ def test_uniform_quantizer_1():
 def test_uniform_quantizer_2(num_levels, input_peak, choice):
     quantizer_1 = komm.UniformQuantizer(num_levels, input_peak, choice)
     quantizer_2 = komm.ScalarQuantizer(quantizer_1.levels, quantizer_1.thresholds)
-    x = np.linspace(-20.0, 20.0, num=10_000)
+    x = np.linspace(-20.0, 20.0, num=10000)
     assert np.allclose(quantizer_1(x), quantizer_2(x))
