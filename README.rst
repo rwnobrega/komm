@@ -3,12 +3,13 @@ Komm
 
 .. image:: https://travis-ci.org/rwnobrega/komm.svg?branch=master
    :target: https://travis-ci.org/rwnobrega/komm
-   :alt: Build Status
-
+   :alt: Build status
 .. image:: https://readthedocs.org/projects/komm/badge/?version=latest
    :target: https://komm.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
-
+   :alt: Documentation status
+.. image:: https://badge.fury.io/py/komm.svg
+   :target: https://badge.fury.io/py/komm   
+   :alt: PyPI page
 .. image:: https://mybinder.org/badge.svg
    :target: https://mybinder.org/v2/gh/rwnobrega/komm/master?filepath=demo
    :alt: Binder
