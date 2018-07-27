@@ -127,15 +127,18 @@ class UniformQuantizer(ScalarQuantizer):
         >>> quantizer.thresholds
         array([-0.75, -0.25,  0.25])
         """
+        delta = input_peak / num_levels if choice == 'unsigned' else 2.0 * input_peak / num_levels
+
         if choice == 'unsigned':
-            delta = input_peak / num_levels
-            levels = input_peak * np.arange(num_levels) / num_levels
+            min_level = 0.0
+            max_level = input_peak
+            levels = np.linspace(min_level, max_level, num=num_levels, endpoint=False)
         elif choice == 'mid-riser':
-            delta = (2.0 * input_peak) / num_levels
-            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2) + delta/2
+            min_level = -input_peak + (delta / 2) * (num_levels % 2 == 0)
+            levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 0))
         elif choice == 'mid-tread':
-            delta = (2.0 * input_peak) / num_levels
-            levels = input_peak * np.arange(-num_levels//2, num_levels//2) / (num_levels // 2)
+            min_level = -input_peak + (delta / 2) * (num_levels % 2 == 1)
+            levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 1))
         else:
             raise ValueError("Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}")
 
@@ -166,7 +169,6 @@ class UniformQuantizer(ScalarQuantizer):
         The choice for the uniform quantizer (:code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`).
         """
         return self._choice
-
 
     def __call__(self, input_signal):
         input_signal = np.array(input_signal, dtype=np.float, ndmin=1)
