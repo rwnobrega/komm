@@ -89,8 +89,8 @@ def qfunc(x):
     >>> komm.qfunc(0.0)
     0.5
 
-    >>> komm.qfunc([-1.0, 0.0, 1.0])  #doctest:+SKIP
-    array([ 0.84134475,  0.5       ,  0.15865525])
+    >>> komm.qfunc([-1.0, 0.0, 1.0])
+    array([0.84134475, 0.5       , 0.15865525])
     """
     return _qfunc(x)
 
