@@ -27,12 +27,26 @@ class ScalarQuantizer:
 
         .. rubric:: Examples
 
-        >>> quantizer = komm.ScalarQuantizer(levels=[-1.0, 0.0, 1.0], thresholds=[-0.5, 0.8])
+        The :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels
+
+        .. math::
+           v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,
+
+        and thresholds
+
+        .. math::
+           t_0 = -\\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \\infty.
+
+        .. image:: figures/scalar_quantizer_5.png
+           :alt: Scalar quantizer example.
+           :align: center
+
+        >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
         >>> x = np.linspace(-2.5, 2.5, num=11)
         >>> y = quantizer(x)
         >>> np.vstack([x, y])
         array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
-               [-1. , -1. , -1. , -1. ,  0. ,  0. ,  0. ,  1. ,  1. ,  1. ,  1. ]])
+               [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
         """
         self._levels = np.array(levels, dtype=np.float)
         self._thresholds = np.array(thresholds, dtype=np.float)
