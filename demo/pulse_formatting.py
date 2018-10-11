@@ -33,7 +33,7 @@ def sinc_demo(show_individual, show_signal):
             ax.plot(t, a*pulse.impulse_response(t - k), 'k--')
     if show_signal:
         ax.plot(t, signal, 'b', linewidth=3)
-    ax.stem(info, 'r', markerfmt='ro')
+    ax.stem(info, linefmt='r', markerfmt='ro')
     ax.set_xlabel('$t$')
     ax.set_ylabel('$s(t)$')
     ax.set_xticks(np.arange(-2.0, 11.0))
