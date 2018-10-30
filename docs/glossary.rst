@@ -8,6 +8,9 @@ Glossary
     i.i.d.
         Independent and identically distributed.
 
+    BSC
+        Binary symmetric channel.
+
     LUT
         Lookup table.
 

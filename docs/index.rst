@@ -52,6 +52,7 @@ Block coding
     GolayCode
     RepetitionCode
     SingleParityCheckCode
+    CordaroWagnerCode
     ReedMullerCode
     CyclicCode
     BCHCode
