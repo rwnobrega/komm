@@ -3,6 +3,7 @@ import itertools
 import operator
 
 import numpy as np
+import scipy.special
 
 from ._algebra import \
     null_matrix, right_inverse, \
@@ -245,7 +246,10 @@ class BlockCode:
         """
         The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n)`.
         """
-        return np.bincount(np.sum(self.codeword_table, axis=1), minlength=self._length + 1)
+        try:
+            return self._codeword_weight_distribution
+        except AttributeError:
+            return np.bincount(np.sum(self.codeword_table, axis=1), minlength=self._length + 1)
 
     @property
     @functools.lru_cache()
@@ -274,7 +278,10 @@ class BlockCode:
         """
         The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
         """
-        return np.bincount([np.count_nonzero(s) for s in self.coset_leader_table], minlength=self._length + 1)
+        try:
+            return self._coset_leader_weight_distribution
+        except AttributeError:
+            return np.bincount(np.sum(self.coset_leader_table, axis=1), minlength=self._length + 1)
 
     @property
     @functools.lru_cache(maxsize=None)
