@@ -721,6 +721,11 @@ class RepetitionCode(BlockCode):
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int))
         self._minimum_distance = n
+        self._coset_leader_weight_distribution = np.zeros(n+1, dtype=np.int)
+        for w in range((n + 1)//2):
+            self._coset_leader_weight_distribution[w] = scipy.special.comb(n, w, exact=True)
+        if n % 2 == 0:
+            self._coset_leader_weight_distribution[n//2] = scipy.special.comb(n, n//2, exact=True) // 2
 
     def __repr__(self):
         args = '{}'.format(self._length)
@@ -833,7 +838,7 @@ class CordaroWagnerCode(BlockCode):
         Constructor for the class. It expects the following parameter:
 
         :code:`n` : :obj:`int`
-            The length :math:`n` of the code. Must satisfy :math:`n \geq 2`.
+            The length :math:`n` of the code. Must satisfy :math:`n \\geq 2`.
         """
         r = (n + 1) // 3
         s = n - 3*r

@@ -116,6 +116,14 @@ class TestExtndedGolayCode:
         assert codewords.shape == (2**k, n)
 
 
+@pytest.mark.parametrize('length,', range(2, 11))
+def test_repetition_code(length):
+    code1 = komm.RepetitionCode(length)
+    code2 = komm.BlockCode(generator_matrix=np.ones((1, length), dtype=np.int))
+    assert np.array_equal(code1.codeword_weight_distribution, code2.codeword_weight_distribution)
+    assert np.array_equal(code1.coset_leader_weight_distribution, code2.coset_leader_weight_distribution)
+
+
 class TestReedMuller:
     code = komm.ReedMullerCode(2, 4)
 
