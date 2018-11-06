@@ -787,6 +787,9 @@ class SingleParityCheckCode(BlockCode):
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int).T)
         self._minimum_distance = 2
+        self._codeword_weight_distribution = np.zeros(n+1, dtype=np.int)
+        for w in range(0, n + 1, 2):
+            self._codeword_weight_distribution[w] = scipy.special.comb(n, w, exact=True)
 
     def __repr__(self):
         args = '{}'.format(self._length)
