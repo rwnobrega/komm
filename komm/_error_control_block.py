@@ -244,7 +244,7 @@ class BlockCode:
     @functools.lru_cache()
     def codeword_weight_distribution(self):
         """
-        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n)`.
+        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n]`.
         """
         try:
             return self._codeword_weight_distribution
@@ -276,7 +276,7 @@ class BlockCode:
     @functools.lru_cache()
     def coset_leader_weight_distribution(self):
         """
-        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n)`.
+        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n]`.
         """
         try:
             return self._coset_leader_weight_distribution
