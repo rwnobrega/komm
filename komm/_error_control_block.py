@@ -196,7 +196,7 @@ class BlockCode:
         """
         The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.
         """
-        return self.minimum_distance // 2
+        return (self.minimum_distance - 1) // 2
 
     @property
     @functools.lru_cache()
@@ -1159,7 +1159,7 @@ class CyclicCode(BlockCode):
         0b101  : 0b1100000
         """
         meggitt_table = {}
-        for w in range(self.packing_radius):
+        for w in range(self.packing_radius + 1):
             for idx in itertools.combinations(range(self._length - 1), w):
                 errorword_polynomial = BinaryPolynomial.from_exponents(list(idx) + [self._length - 1])
                 syndrome_polynomial = errorword_polynomial % self._generator_polynomial
