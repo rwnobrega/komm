@@ -129,16 +129,20 @@ class DiscreteMemorylessChannel:
         >>> y = dmc(x); y  #doctest:+SKIP
         array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
         """
-        self._transition_matrix = np.array(transition_matrix, dtype=np.float)
-        self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
+        self.transition_matrix = transition_matrix
         self._arimoto_blahut_kwargs = {'max_iters': 1000, 'error_tolerance': 1e-12}
 
     @property
     def transition_matrix(self):
         """
-        The channel transition probability matrix :math:`p_{Y \\mid X}`. This property is read-only.
+        The channel transition probability matrix :math:`p_{Y \\mid X}`. This is a read-and-write property.
         """
         return self._transition_matrix
+
+    @transition_matrix.setter
+    def transition_matrix(self, value):
+        self._transition_matrix = np.array(value, dtype=np.float)
+        self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
 
     @property
     def input_cardinality(self):
@@ -264,15 +268,19 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         >>> y = bsc(x); y  #doctest:+SKIP
         array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
         """
-        super().__init__([[1 - crossover_probability, crossover_probability], [crossover_probability, 1 - crossover_probability]])
-        self._crossover_probability = crossover_probability
+        self.crossover_probability = crossover_probability
 
     @property
     def crossover_probability(self):
         """
-        The crossover probability :math:`p` of the channel. This property is read-only.
+        The crossover probability :math:`p` of the channel. This is a read-and-write property.
         """
-        return self.crossover_probability
+        return self._crossover_probability
+
+    @crossover_probability.setter
+    def crossover_probability(self, value):
+        self._crossover_probability = p = float(value)
+        self.transition_matrix = np.array([[1 - p, p], [p, 1 - p]])
 
     def capacity(self):
         """
@@ -328,15 +336,19 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         >>> y = bec(x); y  #doctest:+SKIP
         array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
         """
-        super().__init__([[1 - erasure_probability, 0, erasure_probability], [0, 1 - erasure_probability, erasure_probability]])
-        self._erasure_probability = erasure_probability
+        self.erasure_probability = erasure_probability
 
     @property
     def erasure_probability(self):
         """
-        The erasure probability :math:`\\epsilon` of the channel. This property is read-only.
+        The erasure probability :math:`\\epsilon` of the channel. This is a read-and-write property.
         """
         return self._erasure_probability
+
+    @erasure_probability.setter
+    def erasure_probability(self, value):
+        self._erasure_probability = e = float(value)
+        self.transition_matrix  = [[1 - e, 0, e], [0, 1 - e, e]]
 
     def capacity(self):
         """
