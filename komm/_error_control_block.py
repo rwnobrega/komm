@@ -3,7 +3,8 @@ import itertools
 import operator
 
 import numpy as np
-import scipy.special
+
+from scipy import special
 
 from ._algebra import \
     null_matrix, right_inverse, \
@@ -723,9 +724,9 @@ class RepetitionCode(BlockCode):
         self._minimum_distance = n
         self._coset_leader_weight_distribution = np.zeros(n+1, dtype=np.int)
         for w in range((n + 1)//2):
-            self._coset_leader_weight_distribution[w] = scipy.special.comb(n, w, exact=True)
+            self._coset_leader_weight_distribution[w] = special.comb(n, w, exact=True)
         if n % 2 == 0:
-            self._coset_leader_weight_distribution[n//2] = scipy.special.comb(n, n//2, exact=True) // 2
+            self._coset_leader_weight_distribution[n//2] = special.comb(n, n//2, exact=True) // 2
 
     def __repr__(self):
         args = '{}'.format(self._length)
@@ -789,7 +790,7 @@ class SingleParityCheckCode(BlockCode):
         self._minimum_distance = 2
         self._codeword_weight_distribution = np.zeros(n+1, dtype=np.int)
         for w in range(0, n + 1, 2):
-            self._codeword_weight_distribution[w] = scipy.special.comb(n, w, exact=True)
+            self._codeword_weight_distribution[w] = special.comb(n, w, exact=True)
 
     def __repr__(self):
         args = '{}'.format(self._length)

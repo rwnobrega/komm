@@ -1,5 +1,6 @@
 import numpy as np
-import scipy as sp
+
+from scipy import special
 
 __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
            'qfunc', 'qfuncinv',  'entropy']
@@ -12,7 +13,7 @@ __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
 #   (e.g., may assume the input is a list, or a numpy array, etc.).
 #
 # Functions without underscore:
-# - Are available to the end-user.
+# - Are available to the end user.
 # - Should work when the input is a list, a numpy array, etc.
 # - Should check the input whenever possible.
 # - Should return a numpy array (intead of a list) whenever possible.
@@ -64,7 +65,7 @@ def unpack(list_, width):
 
 
 def _qfunc(x):
-    return 0.5 * sp.special.erfc(x / np.sqrt(2))
+    return 0.5 * special.erfc(x / np.sqrt(2))
 
 def qfunc(x):
     """
@@ -96,7 +97,7 @@ def qfunc(x):
 
 
 def _qfuncinv(y):
-    return np.sqrt(2) * sp.special.erfcinv(2 * y)
+    return np.sqrt(2) * special.erfcinv(2 * y)
 
 def qfuncinv(x):
     """

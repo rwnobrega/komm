@@ -1,6 +1,6 @@
 import numpy as np
 
-from scipy.special import logsumexp
+from scipy import special
 
 
 __all__ = ['FiniteStateMachine']
@@ -325,11 +325,11 @@ class FiniteStateMachine:
 
         for t in range(0, L - 1):
             for s1 in range(num_states):
-                log_alpha[t + 1, s1] = logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
+                log_alpha[t + 1, s1] = special.logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
 
         for t in range(L - 1, -1, -1):
             for s0 in range(num_states):
-                log_beta[t, s0] = logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
+                log_beta[t, s0] = special.logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
 
         log_input_posteriors = np.empty((L, num_input_symbols), dtype=np.float)
         edge_labels = np.empty(num_states, dtype=np.float)
@@ -338,7 +338,7 @@ class FiniteStateMachine:
                 for s0 in range(num_states):
                     s1 = self._next_states[s0, x]
                     edge_labels[s0] = log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
-                log_input_posteriors[t, x] = logsumexp(edge_labels)
+                log_input_posteriors[t, x] = special.logsumexp(edge_labels)
 
         input_posteriors = np.exp(log_input_posteriors - np.amax(log_input_posteriors, axis=1, keepdims=True))
         input_posteriors /= np.sum(input_posteriors, axis=1, keepdims=True)
