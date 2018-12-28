@@ -1,5 +1,3 @@
-import pytest
-
 import numpy as np
 import komm
 
@@ -22,4 +20,27 @@ def test_prefix_code():
 
     assert np.isclose(prefix_code_1.average_length(pmf), 3.0)
     assert np.isclose(prefix_code_2.average_length(pmf), 2.2)
+
+
+def test_huffman_code():
+    # Sayood.06, p. 47.
+    code = komm.HuffmanCode([0.2, 0.4, 0.2, 0.1, 0.1])
+    assert code.mapping == [(1, 1), (0, 0), (1, 0), (0, 1, 1), (0, 1, 0)]
+    assert code.average_length(code.pmf) == 2.2
+
+    # Sayood.06, p. 44.
+    code = komm.HuffmanCode([0.2, 0.4, 0.2, 0.1, 0.1], policy='low')
+    assert code.mapping == [(0, 1), (1,), (0, 0, 0), (0, 0, 1, 0), (0, 0, 1, 1)]
+    assert code.average_length(code.pmf) == 2.2
+
+
+    # Haykin.04, p. 620
+    code = komm.HuffmanCode([0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1], policy='high')
+    assert code.mapping == [(1, 1, 1), (1, 1, 0), (0, 0, 1), (1, 0, 1), (1, 0, 0), (0, 0, 0), (0, 1, 1), (0, 1, 0)]
+    assert code.average_length(code.pmf) == 3.0
+    assert code.variance(code.pmf) == 0.0
+    code = komm.HuffmanCode([0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1], policy='low')
+    assert code.mapping == [(1, 1, 0), (1, 1, 1), (0, 1), (1, 0, 0), (1, 0, 1), (0, 0, 0), (0, 0, 1, 0), (0, 0, 1, 1)]
+    assert code.average_length(code.pmf) == 3.0
+    assert code.variance(code.pmf) == 0.4
 
