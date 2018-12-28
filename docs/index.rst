@@ -171,6 +171,15 @@ Other sequences
 Source coding
 -------------
 
+Sources
+~~~~~~~
+
+.. autosummary::
+    :toctree:
+    :nosignatures:
+
+    DiscreteMemorylessSource
+
 Lossless coding
 ~~~~~~~~~~~~~~~
 
