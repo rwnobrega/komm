@@ -5,14 +5,14 @@ import komm
 
 
 def test_convolutional_code():
-    # Lin.Costello.04, p. 454--456
+    # Lin.Costello.04, p. 454--456.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
     assert np.array_equal(code.constraint_lengths, [3])
     assert np.array_equal(code.memory_order, 3)
     assert np.array_equal(code.overall_constraint_length, 3)
 
-    # Lin.Costello.04, p. 456--458
+    # Lin.Costello.04, p. 456--458.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
     assert np.array_equal(code.constraint_lengths, [1, 1])
@@ -45,7 +45,7 @@ def test_convolutional_space_state_representation():
     assert np.array_equal(C, [[1, 0], [1, 1]])
     assert np.array_equal(D, [[1, 1]])
 
-    # Heide Gluesing-Luerssen: On the Weight Distribution of Convolutional Codes, p. 9
+    # Heide Gluesing-Luerssen: On the Weight Distribution of Convolutional Codes, p. 9.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1111, 0b1101]])
     A = code.state_matrix
     B = code.control_matrix
@@ -86,17 +86,17 @@ def test_convolutional_space_state_representation_2(feedforward_polynomials, fee
 
 
 def test_convolutional_stream_encoder():
-    # Abrantes.10, p.307
+    # Abrantes.10, p. 307.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(convolutional_encoder([1, 0, 1, 1, 1, 0, 1, 1, 0, 0]), [1,1, 1,0, 0,0, 0,1, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1])
 
-    # Lin.Costello.04, p. 454--456
+    # Lin.Costello.04, p. 454--456.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(convolutional_encoder([1, 0, 1, 1, 1, 0, 0, 0]), [1,1, 0,1, 0,0, 0,1, 0,1, 0,1, 0,0, 1,1])
 
-    # Lin.Costello.04, p. 456--458
+    # Lin.Costello.04, p. 456--458.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(convolutional_encoder([1,1, 0,1, 1,0, 0,0]), [1,1,0, 0,0,0, 0,0,1, 1,1,1])
@@ -113,7 +113,7 @@ def test_convolutional_stream_encoder():
 
 
 def test_convolutional_stream_decoder():
-    # Abrantes.10, p.307
+    # Abrantes.10, p. 307.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     traceback_length = 12
     convolutional_decoder = komm.ConvolutionalStreamDecoder(code, traceback_length, input_type='hard')
