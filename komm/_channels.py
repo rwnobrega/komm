@@ -40,14 +40,13 @@ class AWGNChannel:
         .. rubric:: Examples
 
         >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
-        >>> x = np.random.choice([-3.0, -1.0, 1.0, 3.0], size=10); x  #doctest:+SKIP
-        array([ 1.,  3., -3., -1., -1.,  1.,  3.,  1., -1.,  3.])
+        >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
         >>> y = awgn(x); y  #doctest:+SKIP
-        array([ 0.98966376,  2.99349135, -3.05371748, -0.71632748, -1.06163275,
-                0.75899613,  2.86905731,  1.16039474, -1.02437047,  2.91492338])
+        array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,
+                1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])
         """
-        self._snr = snr
-        self._signal_power = signal_power
+        self.snr = snr
+        self.signal_power = signal_power
 
     @property
     def snr(self):
@@ -58,7 +57,7 @@ class AWGNChannel:
 
     @snr.setter
     def snr(self, value):
-        self._snr = value
+        self._snr = float(value)
 
     @property
     def signal_power(self):
@@ -69,7 +68,7 @@ class AWGNChannel:
 
     @signal_power.setter
     def signal_power(self, value):
-        self._signal_power = value
+        self._signal_power = float(value)
 
     def capacity(self):
         """
@@ -77,7 +76,7 @@ class AWGNChannel:
 
         .. rubric:: Examples
 
-        >>> awgn = komm.AWGNChannel(snr=63.0, signal_power=1.0)
+        >>> awgn = komm.AWGNChannel(snr=63.0)
         >>> awgn.capacity()
         3.0
         """
@@ -92,7 +91,7 @@ class AWGNChannel:
         else:
             signal_power = self._signal_power
 
-        noise_power = signal_power / self.snr
+        noise_power = signal_power / self._snr
 
         if input_signal.dtype == np.complex:
             noise = np.sqrt(noise_power / 2) * (np.random.normal(size=size) + 1j * np.random.normal(size=size))
@@ -102,7 +101,7 @@ class AWGNChannel:
         return input_signal + noise
 
     def __repr__(self):
-        args = 'snr={}, signal_power={}'.format(self.snr, self.signal_power)
+        args = 'snr={}, signal_power={}'.format(self._snr, self._signal_power)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
@@ -124,8 +123,7 @@ class DiscreteMemorylessChannel:
         .. rubric:: Examples
 
         >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-        array([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
+        >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
         >>> y = dmc(x); y  #doctest:+SKIP
         array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
         """
@@ -207,7 +205,7 @@ class DiscreteMemorylessChannel:
         return _mutual_information(optimal_input_pmf, self._transition_matrix)
 
     def __call__(self, input_sequence):
-        output_sequence = [np.random.choice(self.output_cardinality, p=self.transition_matrix[input_symbol])
+        output_sequence = [np.random.choice(self._output_cardinality, p=self._transition_matrix[input_symbol])
                            for input_symbol in input_sequence]
         return np.array(output_sequence)
 
@@ -263,8 +261,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         .. rubric:: Examples
 
         >>> bsc = komm.BinarySymmetricChannel(0.1)
-        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-        array([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
+        >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
         >>> y = bsc(x); y  #doctest:+SKIP
         array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
         """
@@ -295,7 +292,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
 
     def __call__(self, input_sequence):
-        error_pattern = (np.random.rand(input_sequence.size) < self._crossover_probability).astype(np.int)
+        error_pattern = (np.random.rand(np.size(input_sequence)) < self._crossover_probability).astype(np.int)
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):
@@ -331,8 +328,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         .. rubric:: Examples
 
         >>> bec = komm.BinaryErasureChannel(0.1)
-        >>> x = np.random.randint(2, size=10); x  #doctest:+SKIP
-        array([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+        >>> x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]
         >>> y = bec(x); y  #doctest:+SKIP
         array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
         """
@@ -363,7 +359,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         return 1.0 - self._erasure_probability
 
     def __call__(self, input_sequence):
-        erasure_pattern = (np.random.rand(input_sequence.size) < self._erasure_probability)
+        erasure_pattern = (np.random.rand(np.size(input_sequence)) < self._erasure_probability)
         output_sequence = np.copy(input_sequence)
         output_sequence[erasure_pattern] = 2
         return output_sequence
