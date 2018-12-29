@@ -8,7 +8,7 @@ __all__ = ['FixedToVariableLengthCode', 'VariableToFixedLengthCode',
 
 class FixedToVariableLengthCode:
     """
-    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be a finite set, called the *source alphabet*, and let :math:`\\{ 0, 1 \\}^+` denote the set of all the non-empty binary strings. A *binary fixed-to-variable code* is defined by a mapping :math:`\\mathrm{Enc} : \\mathcal{X} \\to \\{ 0, 1 \\}^+`. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be a finite set, called the *source alphabet*, and let :math:`\\{ 0, 1 \\}^+` denote the set of all the non-empty binary strings. A *binary fixed-to-variable length code* is defined by a mapping :math:`\\mathrm{Enc} : \\mathcal{X} \\to \\{ 0, 1 \\}^+`. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
 
     Also, we only consider *prefix-free* codes, in which the following property is satisfied: no codeword in the codebook (the image of the encoding map) is a prefix of any other codeword.
 
