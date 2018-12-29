@@ -187,7 +187,8 @@ Lossless coding
     :toctree:
     :nosignatures:
 
-    PrefixCode
+    FixedToVariableLengthCode
+    VariableToFixedLengthCode
     HuffmanCode
     TunstallCode
 

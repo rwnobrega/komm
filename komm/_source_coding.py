@@ -2,16 +2,19 @@ import heapq
 
 import numpy as np
 
-__all__ = ['PrefixCode', 'HuffmanCode', 'TunstallCode']
+__all__ = ['FixedToVariableLengthCode', 'VariableToFixedLengthCode',
+           'HuffmanCode', 'TunstallCode']
 
 
-class PrefixCode:
+class FixedToVariableLengthCode:
     """
-    Binary prefix code. Let :math:`\\mathcal{X}` be a finite set, called the *input alphabet*, and let :math:`\\{ 0, 1 \\}^+` denote the set of all the non-empty binary strings. A *binary prefix code* is defined by a mapping :math:`\\mathrm{Enc} : \\mathcal{X} \\to \\{ 0, 1 \\}^+` in which the *prefix-free* (or *instantaneous*) property is satisfied: no codeword in the codebook (the image of the encoding map) is a prefix of any other codeword.  Here, for simplicity, the input alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be a finite set, called the *source alphabet*, and let :math:`\\{ 0, 1 \\}^+` denote the set of all the non-empty binary strings. A *binary fixed-to-variable code* is defined by a mapping :math:`\\mathrm{Enc} : \\mathcal{X} \\to \\{ 0, 1 \\}^+`. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+
+    Also, we only consider *prefix-free* codes, in which the following property is satisfied: no codeword in the codebook (the image of the encoding map) is a prefix of any other codeword.
 
     .. rubric:: Examples
 
-    >>> code = komm.PrefixCode([(0,0), (1,0), (1,1), (0,1,0), (0,1,1,0), (0,1,1,1)])
+    >>> code = komm.FixedToVariableLengthCode([(0, 0), (1, 0), (1, 1), (0, 1, 0), (0, 1, 1, 0), (0, 1, 1, 1)])
     >>> code.encode([0, 5, 3, 0, 1, 2])
     array([0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1])
     >>> code.decode([0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1])
@@ -22,7 +25,7 @@ class PrefixCode:
         Constructor for the class. It expects the following parameter:
 
         :code:`mapping` : :obj:`list` of :obj:`tuple` of :obj:`int`
-            The encoding mapping :math:`\\mathrm{Enc}` of the prefix code. Must be a list containing tuples of integers in :math:`\\{ 0, 1 \\}`. The tuple in index :math:`x` of :code:`mapping` should be equal to :math:`\\mathrm{Enc}(x)`, for all :math:`x \\in \\mathcal{X}`.
+            The encoding mapping :math:`\\mathrm{Enc}` of the code. Must be a list containing tuples of integers in :math:`\\{ 0, 1 \\}`. The tuple in index :math:`x` of :code:`mapping` should be equal to :math:`\\mathrm{Enc}(x)`, for all :math:`x \\in \\mathcal{X}`.
         """
         self._mapping = [tuple(bits) for bits in mapping]
         self._reverse_mapping = {tuple(bits): symbol for (symbol, bits) in enumerate(mapping)}
@@ -36,7 +39,7 @@ class PrefixCode:
 
     def average_length(self, pmf):
         """
-        Computes the average length :math:`\\bar{\\ell}` of the symbol code assuming a given :term:`pmf`. It is given by
+        Computes the average length :math:`\\bar{\\ell}` of the code, assuming a given :term:`pmf`. It is given by
 
         .. math::
 
@@ -52,13 +55,13 @@ class PrefixCode:
         **Output:**
 
         :code:`average_length` : :obj:`float`
-            The average length :math:`\\bar{\\ell}` of the symbol code assuming the given :term:`pmf`.
+            The average length :math:`\\bar{\\ell}` of the code, assuming the given :term:`pmf`.
         """
         return np.dot([len(bit_sequence) for bit_sequence in self._mapping], pmf) / np.sum(pmf)
 
     def variance(self, pmf):
         """
-        Computes the variance of the length of the symbol code assuming a given :term:`pmf`. It is given by
+        Computes the variance of the length of the code, assuming a given :term:`pmf`. It is given by
 
         .. math::
 
@@ -74,7 +77,7 @@ class PrefixCode:
         **Output:**
 
         :code:`variance` : :obj:`float`
-            The variance :math:`\\mathrm{var}[\\ell(X)]` of the symbol code assuming the given :term:`pmf`.
+            The variance :math:`\\mathrm{var}[\\ell(X)]` of the code, assuming the given :term:`pmf`.
         """
         average_length = self.average_length(pmf)
         return np.dot([(len(bit_sequence) - average_length)**2 for bit_sequence in self._mapping], pmf) / np.sum(pmf)
@@ -128,7 +131,12 @@ class PrefixCode:
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class HuffmanCode(PrefixCode):
+class VariableToFixedLengthCode:
+    pass
+
+
+
+class HuffmanCode(FixedToVariableLengthCode):
     """
     Huffman code. It is an optimum prefix code (:class:`PrefixCode`) for a given probability mass function.
 
@@ -209,7 +217,7 @@ class HuffmanCode(PrefixCode):
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class TunstallCode:
+class TunstallCode(VariableToFixedLengthCode):
     """
     Tunstall code [Not implemented yet].
     """
