@@ -40,7 +40,7 @@ def test_huffman_code():
     #assert np.isclose(code2.variance(code2.pmf), 0.4)
 
     # Haykin.04, p. 620.
-    code1 = komm.HuffmanCode([0.7, 0.15, 0.15], block_size=1)
+    code1 = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=1)
     assert np.isclose(code1.rate(code1.pmf), 1.3)
-    code2 = komm.HuffmanCode([0.7, 0.15, 0.15], block_size=2)
+    code2 = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
     assert np.isclose(code2.rate(code2.pmf), 1.1975)

@@ -40,6 +40,13 @@ class DiscreteMemorylessSource:
         self._pmf = np.array(value, dtype=np.float)
         self._cardinality = self._pmf.size
 
+    @property
+    def cardinality(self):
+        """
+        The cardinality :math:`|\\mathcal{X}|` of the source alphabet. This property is read-only.
+        """
+        return self._cardinality
+
     def entropy(self):
         """
         Returns the source entropy :math:`\\mathrm{H}(X)`.

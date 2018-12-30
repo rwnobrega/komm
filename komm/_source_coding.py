@@ -9,7 +9,7 @@ __all__ = ['FixedToVariableCode', 'VariableToFixedCode',
 
 class FixedToVariableCode:
     """
-    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of block size :math:`k` is defined by an encoding mapping :math:`\\mathrm{Enc} : \\mathcal{X}^k \\to \\{ 0, 1 \\}^+`, where :math:`\\{ 0, 1 \\}^+` denotes the set of all finite-length, non-empty binary strings. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of source block size :math:`k` is defined by an encoding mapping :math:`\\mathrm{Enc} : \\mathcal{X}^k \\to \\{ 0, 1 \\}^+`, where :math:`\\{ 0, 1 \\}^+` denotes the set of all finite-length, non-empty binary strings. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. The elements in the image of :math:`\\mathrm{Enc}` are called *codewords*.
 
     Also, we only consider *prefix-free* codes, in which no codeword is a prefix of any other codeword.
     """
@@ -21,7 +21,9 @@ class FixedToVariableCode:
             The codewords of the code. Must be a list of length :math:`|\\mathcal{X}|^k` containing tuples of integers in :math:`\\{ 0, 1 \\}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\\mathcal{X}^k`.
 
         :code:`source_cardinality` : :obj:`int`, optional
-            The cardinality :math:`|\\mathcal{X}|` of the source. The default value is :code:`len(codewords)`, yielding a block size :math:`k = 1`.
+            The cardinality :math:`|\\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
+
+        *Note:* The source block size :math:`k` is inferred from :code:`len(codewords)` and :code:`source_cardinality`.
 
         .. rubric:: Examples
 
@@ -40,32 +42,32 @@ class FixedToVariableCode:
         # TODO: Assert prefix-free
         self._codewords = codewords
         self._source_cardinality = len(codewords) if source_cardinality is None else int(source_cardinality)
-        self._block_size = 1
-        while self._source_cardinality ** self._block_size < len(codewords):
-            self._block_size += 1
+        self._source_block_size = 1
+        while self._source_cardinality ** self._source_block_size < len(codewords):
+            self._source_block_size += 1
 
-        if self._source_cardinality ** self.block_size != len(codewords):
+        if self._source_cardinality ** self._source_block_size != len(codewords):
             raise ValueError("Invalid number of codewords")
 
         self._enc_mapping = {}
         self._dec_mapping = {}
-        for symbols, bits in zip(itertools.product(range(self._source_cardinality), repeat=self._block_size), codewords):
+        for symbols, bits in zip(itertools.product(range(self._source_cardinality), repeat=self._source_block_size), codewords):
             self._enc_mapping[symbols] = tuple(bits)
             self._dec_mapping[tuple(bits)] = symbols
 
     @property
     def source_cardinality(self):
         """
-        The cardinality :math:`|\\mathcal{X}|` of the source.
+        The cardinality :math:`|\\mathcal{X}|` of the source alphabet.
         """
         return self._source_cardinality
 
     @property
-    def block_size(self):
+    def source_block_size(self):
         """
-        The block size :math:`k` of the code.
+        The source block size :math:`k`.
         """
-        return self._block_size
+        return self._source_block_size
 
     @property
     def enc_mapping(self):
@@ -101,9 +103,9 @@ class FixedToVariableCode:
         >>> code.rate([0.5, 0.25, 0.25])
         1.5
         """
-        probabilities = np.array([np.prod(ps) for ps in itertools.product(pmf, repeat=self._block_size)])
+        probabilities = np.array([np.prod(ps) for ps in itertools.product(pmf, repeat=self._source_block_size)])
         lengths = [len(bits) for bits in self._codewords]
-        return np.dot(lengths, probabilities) / self._block_size
+        return np.dot(lengths, probabilities) / self._source_block_size
 
     def encode(self, symbol_sequence):
         """
@@ -125,7 +127,7 @@ class FixedToVariableCode:
         >>> code.encode([1, 0, 1, 0, 2, 0])
         array([1, 0, 0, 1, 0, 0, 1, 1, 0])
         """
-        symbols_reshaped = np.reshape(symbol_sequence, newshape=(-1, self._block_size))
+        symbols_reshaped = np.reshape(symbol_sequence, newshape=(-1, self._source_block_size))
         return np.concatenate([self._enc_mapping[tuple(symbols)] for symbols in symbols_reshaped])
 
     def decode(self, bit_sequence):
@@ -167,7 +169,7 @@ class HuffmanCode(FixedToVariableCode):
     >>> code.encode([1, 0, 1, 0, 2, 0])
     array([1, 1, 0, 1, 1, 0, 1, 0, 0])
 
-    >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], block_size=2)
+    >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
     >>> pprint(code.enc_mapping)
     {(0, 0): (1,),
      (0, 1): (0, 0, 0, 0),
@@ -181,15 +183,15 @@ class HuffmanCode(FixedToVariableCode):
     >>> code.encode([1, 0, 1, 0, 2, 0])
     array([0, 1, 0, 0, 1, 0, 0, 0, 1])
     """
-    def __init__(self, pmf, block_size=1, policy='high'):
+    def __init__(self, pmf, source_block_size=1, policy='high'):
         """
         Constructor for the class. It expects the following parameters:
 
         :code:`pmf` : 1D-array of :obj:`float`
             The probability mass function used to construct the code.
 
-        :code:`block_size` : :obj:`int`, optional
-            The block size :math:`k` of the code. The default value is :math:`k = 1`.
+        :code:`source_block_size` : :obj:`int`, optional
+            The source block size :math:`k`. The default value is :math:`k = 1`.
 
         :code:`policy` : :obj:`str`, optional
             The policy to be used when constructing the code. It must be either :code:`'high'` (move combined symbols as high as possible) or :code:`'low'` (move combined symbols as low as possible). The default value is :code:`'high'`.
@@ -200,7 +202,8 @@ class HuffmanCode(FixedToVariableCode):
         if policy not in ['high', 'low']:
             raise ValueError("Parameter 'policy' must be in {'high', 'low'}")
 
-        super().__init__(codewords=HuffmanCode._huffman_algorithm(pmf, block_size, policy), source_cardinality=self._pmf.size)
+        super().__init__(codewords=HuffmanCode._huffman_algorithm(pmf, source_block_size, policy),
+                         source_cardinality=self._pmf.size)
 
     @property
     def pmf(self):
@@ -210,7 +213,7 @@ class HuffmanCode(FixedToVariableCode):
         return self._pmf
 
     @staticmethod
-    def _huffman_algorithm(pmf, block_size, policy):
+    def _huffman_algorithm(pmf, source_block_size, policy):
         class Node:
             def __init__(self, index, probability):
                 self.index = index
@@ -223,7 +226,7 @@ class HuffmanCode(FixedToVariableCode):
                 elif policy == 'low':
                     return (self.probability, -self.index) < (other.probability, -other.index)
 
-        tree = [Node(i, np.prod(probs)) for (i, probs) in enumerate(itertools.product(pmf, repeat=block_size))]
+        tree = [Node(i, np.prod(probs)) for (i, probs) in enumerate(itertools.product(pmf, repeat=source_block_size))]
         queue = [node for node in tree]
         heapq.heapify(queue)
         while len(queue) > 1:
@@ -237,7 +240,7 @@ class HuffmanCode(FixedToVariableCode):
             tree.append(node)
 
         codewords = []
-        for symbol in range(len(pmf)**block_size):
+        for symbol in range(len(pmf)**source_block_size):
             node = tree[symbol]
             bits = []
             while node.parent is not None:
@@ -254,7 +257,7 @@ class HuffmanCode(FixedToVariableCode):
 
 class VariableToFixedCode:
     """
-    Binary (prefix-free) variable-to-fixed length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of block size :math:`n` is defined by a decoding mapping :math:`\\mathrm{Dec} : \\{ 0, 1 \\}^n \\to \\mathcal{X}^+`, where :math:`\\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+    Binary (prefix-free) variable-to-fixed length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of code block size :math:`n` is defined by a (possibly partial) decoding mapping :math:`\\mathrm{Dec} : \\{ 0, 1 \\}^n \\to \\mathcal{X}^+`, where :math:`\\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. The elements in the image of :math:`\\mathrm{Enc}` are called *sourcewords*.
 
     Also, we only consider *prefix-free* codes, in which no sourceword is a prefix of any other sourceword.
     """
@@ -264,6 +267,8 @@ class VariableToFixedCode:
 
         :code:`sourcewords` : :obj:`list` of :obj:`tuple` of :obj:`int`
             The sourcewords of the code. Must be a list of length at most :math:`2^n` containing tuples of integers in :math:`\\mathcal{X}`. The tuple in position :math:`i` of :code:`sourcewords` should be equal to :math:`\\mathrm{Dec}(v)`, where :math:`v` is the :math:`i`-th element in the lexicographic ordering of :math:`\\{ 0, 1 \\}^n`.
+
+        *Note:* The code block size :math:`n` is inferred from :code:`len(sourcewords)`.
 
         .. rubric:: Examples
 
@@ -288,26 +293,26 @@ class VariableToFixedCode:
         # TODO: Assert prefix-free
         self._sourcewords = sourcewords
         self._source_cardinality = max(itertools.chain(*sourcewords)) + 1
-        self._block_size = (len(sourcewords) - 1).bit_length()
+        self._code_block_size = (len(sourcewords) - 1).bit_length()
         self._enc_mapping = {}
         self._dec_mapping = {}
-        for symbols, bits in zip(itertools.product(range(2), repeat=self._block_size), sourcewords):
+        for symbols, bits in zip(itertools.product(range(2), repeat=self._code_block_size), sourcewords):
             self._enc_mapping[bits] = tuple(symbols)
             self._dec_mapping[tuple(symbols)] = bits
 
     @property
     def source_cardinality(self):
         """
-        The cardinality :math:`|\\mathcal{X}|` of the source.
+        The cardinality :math:`|\\mathcal{X}|` of the source alphabet.
         """
         return self._source_cardinality
 
     @property
-    def block_size(self):
+    def code_block_size(self):
         """
-        The block size :math:`n` of the code.
+        The code block size :math:`n`.
         """
-        return self._block_size
+        return self._code_block_size
 
     @property
     def enc_mapping(self):
@@ -345,7 +350,7 @@ class VariableToFixedCode:
         """
         probabilities = np.array([np.prod([pmf[x] for x in symbols]) for symbols in self._sourcewords])
         lengths = [len(symbols) for symbols in self._sourcewords]
-        return self._block_size / np.dot(lengths, probabilities)
+        return self._code_block_size / np.dot(lengths, probabilities)
 
     def encode(self, symbol_sequence):
         """
@@ -389,7 +394,7 @@ class VariableToFixedCode:
         >>> code.decode([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
         array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
         """
-        bits_reshaped = np.reshape(bit_sequence, newshape=(-1, self._block_size))
+        bits_reshaped = np.reshape(bit_sequence, newshape=(-1, self._code_block_size))
         return np.concatenate([self._dec_mapping[tuple(bits)] for bits in bits_reshaped])
 
     def __repr__(self):
