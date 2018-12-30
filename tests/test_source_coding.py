@@ -29,7 +29,7 @@ def test_huffman_code():
     assert code.enc_mapping == {(0,): (0, 1), (1,): (1,), (2,): (0, 0, 0), (3,): (0, 0, 1, 0), (4,): (0, 0, 1, 1)}
     assert code.rate(code.pmf) == 2.2
 
-    # Haykin.04, p. 620
+    # Haykin.04, p. 620.
     code1 = komm.HuffmanCode([0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1], policy='high')
     assert code1.enc_mapping == {(0,): (1, 1, 1), (1,): (1, 1, 0), (2,): (0, 0, 1), (3,): (1, 0, 1), (4,): (1, 0, 0), (5,): (0, 0, 0), (6,): (0, 1, 1), (7,): (0, 1, 0)}
     assert np.isclose(code1.rate(code1.pmf), 3.0)
@@ -39,7 +39,7 @@ def test_huffman_code():
     assert np.isclose(code2.rate(code2.pmf), 3.0)
     #assert np.isclose(code2.variance(code2.pmf), 0.4)
 
-    # Haykin.04, p. 620
+    # Haykin.04, p. 620.
     code1 = komm.HuffmanCode([0.7, 0.15, 0.15], block_size=1)
     assert np.isclose(code1.rate(code1.pmf), 1.3)
     code2 = komm.HuffmanCode([0.7, 0.15, 0.15], block_size=2)
