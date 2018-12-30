@@ -30,7 +30,6 @@ def test_huffman_code():
     assert code.rate(code.pmf) == 2.2
 
     # Haykin.04, p. 620
-
     code1 = komm.HuffmanCode([0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1], policy='high')
     assert code1.enc_mapping == {(0,): (1, 1, 1), (1,): (1, 1, 0), (2,): (0, 0, 1), (3,): (1, 0, 1), (4,): (1, 0, 0), (5,): (0, 0, 0), (6,): (0, 1, 1), (7,): (0, 1, 0)}
     assert np.isclose(code1.rate(code1.pmf), 3.0)
