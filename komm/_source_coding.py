@@ -26,16 +26,16 @@ class FixedToVariableCode:
         .. rubric:: Examples
 
         >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0), (1,1)])
-        >>> code.enc_mapping
+        >>> pprint(code.enc_mapping)
         {(0,): (0,), (1,): (1, 0), (2,): (1, 1)}
-        >>> code.dec_mapping
+        >>> pprint(code.dec_mapping)
         {(0,): (0,), (1, 0): (1,), (1, 1): (2,)}
 
         >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0,0), (1,1), (1,0,1)], source_cardinality=2)
-        >>> code.enc_mapping
+        >>> pprint(code.enc_mapping)
         {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
-        >>> code.dec_mapping
-        {(0,): (0, 0), (1, 0, 0): (0, 1), (1, 1): (1, 0), (1, 0, 1): (1, 1)}
+        >>> pprint(code.dec_mapping)
+        {(0,): (0, 0), (1, 0, 0): (0, 1), (1, 0, 1): (1, 1), (1, 1): (1, 0)}
         """
         # TODO: Assert prefix-free
         self._codewords = codewords
