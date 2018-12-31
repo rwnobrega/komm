@@ -206,10 +206,3 @@ Utilities
     qfunc
     qfuncinv
     entropy
-
-Indices
--------
-
-* :ref:`glossary`
-* :ref:`references`
-* :ref:`genindex`
