@@ -20,7 +20,7 @@ Welcome to **Komm**'s development page!
 
 For library reference, please check the project's `documentation page at Read the Docs <http://komm.readthedocs.io/>`_.
  
-This software is still under development.
+This software is still under development. Contributions are very welcome!
 
 Installation
 ------------
