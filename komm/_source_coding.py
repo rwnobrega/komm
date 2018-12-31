@@ -166,8 +166,6 @@ class HuffmanCode(FixedToVariableCode):
     >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
     >>> pprint(code.enc_mapping)
     {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}
-    >>> code.encode([1, 0, 1, 0, 2, 0])
-    array([1, 1, 0, 1, 1, 0, 1, 0, 0])
 
     >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
     >>> pprint(code.enc_mapping)
@@ -180,8 +178,6 @@ class HuffmanCode(FixedToVariableCode):
      (2, 0): (0, 0, 1),
      (2, 1): (0, 0, 0, 1, 0, 1),
      (2, 2): (0, 0, 0, 1, 0, 0)}
-    >>> code.encode([1, 0, 1, 0, 2, 0])
-    array([0, 1, 0, 0, 1, 0, 0, 0, 1])
     """
     def __init__(self, pmf, source_block_size=1, policy='high'):
         """
@@ -251,7 +247,7 @@ class HuffmanCode(FixedToVariableCode):
         return codewords
 
     def __repr__(self):
-        args = 'pmf={}'.format(self._pmf.tolist())
+        args = 'pmf={}, source_block_size={}'.format(self._pmf.tolist(), self._source_block_size)
         return '{}({})'.format(self.__class__.__name__, args)
 
 
