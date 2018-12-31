@@ -422,9 +422,12 @@ class TunstallCode(VariableToFixedCode):
             The probability mass function used to construct the code.
 
         :code:`code_block_size` : :obj:`int`, optional
-            The code block size :math:`n`.
+            The code block size :math:`n`. Must satisfy :math:`2^n \geq |\\mathcal{X}|`, where :math:`|\\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.
         """
         self._pmf = np.array(pmf)
+
+        if 2**code_block_size < len(pmf):
+            raise ValueError("Code block size is too low")
 
         super().__init__(sourcewords=TunstallCode._tunstall_algorithm(pmf, code_block_size))
 
