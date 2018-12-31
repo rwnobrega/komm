@@ -44,3 +44,18 @@ def test_huffman_code():
     assert np.isclose(code1.rate(code1.pmf), 1.3)
     code2 = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
     assert np.isclose(code2.rate(code2.pmf), 1.1975)
+
+
+def test_variable_to_fixed_code():
+    # Sayood.06, p. 69.
+    code = komm.VariableToFixedCode([(0,0,0), (0,0,1), (0,1), (1,)])
+    assert np.array_equal(code.encode([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]), [0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
+    assert np.array_equal(code.decode([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0]), [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
+    assert np.isclose(code.rate([2/3, 1/3]), 18 / 19)
+
+
+def test_tunstall_code():
+    # Sayood.06, p. 71.
+    code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
+    assert code.enc_mapping == {(0, 0, 0): (0, 0, 0), (0, 0, 1): (0, 0, 1), (0, 0, 2): (0, 1, 0), (0, 1): (0, 1, 1), (0, 2): (1, 0, 0), (1,): (1, 0, 1), (2,): (1, 1, 0)}
+    assert np.isclose(code.rate(code.pmf), 3 / 1.96)
