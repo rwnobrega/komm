@@ -8,7 +8,7 @@ For installation instructions and source code, please check the project's `devel
 
 For library reference, please check the project's `documentation page at Read the Docs <http://komm.readthedocs.io/>`_.
 
-This software is still under development.
+This software is still under development. Contributions are very welcome!
 '''
 
 setup(

@@ -9,7 +9,7 @@ Welcome to **Komm**'s documentation page!
 
 For installation instructions and source code, please check the project's `development page at GitHub <https://github.com/rwnobrega/komm>`_.
 
-This software is still under development.
+This software is still under development. Contributions are very welcome!
 
 .. currentmodule:: komm
 
