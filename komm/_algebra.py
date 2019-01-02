@@ -8,7 +8,7 @@ from ._util import \
 __all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'BinaryFiniteExtensionField']
 
 
-class BinaryPolynomial(int):
+class BinaryPolynomial:
     """
     Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\\mathbb{F}_2 = \\{ 0, 1 \\}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
 
@@ -29,10 +29,8 @@ class BinaryPolynomial(int):
     >>> poly1**2  # X^8 + X^4
     BinaryPolynomial(0b100010000)
     """
-
-    # TODO: Find a better solution.
-    denominator = imag = numerator = real = None
-    conjugate = from_bytes = to_bytes = None
+    def __init__(self, integer):
+        self._integer = int(integer)
 
     @classmethod
     def from_coefficients(cls, coefficients):
@@ -75,7 +73,7 @@ class BinaryPolynomial(int):
         >>> poly.degree
         4
         """
-        return self.bit_length() - 1
+        return self._integer.bit_length() - 1
 
     def coefficients(self, width=None):
         """
@@ -99,7 +97,7 @@ class BinaryPolynomial(int):
         >>> poly.coefficients(width=8)
         array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return np.array(_int2binlist(self, width=width), dtype=np.int)
+        return np.array(_int2binlist(self._integer, width=width), dtype=np.int)
 
     def exponents(self):
         """
@@ -118,17 +116,26 @@ class BinaryPolynomial(int):
         """
         return np.flatnonzero(self.coefficients())
 
+    def __int__(self):
+        return self._integer
+
+    def __hash__(self):
+        return self._integer
+
+    def __eq__(self, other):
+        return int(self) == int(other)
+
     def __lshift__(self, n):
-        return self.__class__(super().__lshift__(n))
+        return self.__class__(self._integer.__lshift__(n))
 
     def __rshift__(self, n):
-        return self.__class__(super().__rshift__(n))
+        return self.__class__(self._integer.__rshift__(n))
 
     def __add__(self, other):
-        return self.__class__(super().__xor__(other))
+        return self.__class__(self._integer.__xor__(other._integer))
 
     def __sub__(self, other):
-        return self.__class__(super().__xor__(other))
+        return self.__class__(self._integer.__xor__(other._integer))
 
     def __mul__(self, other):
         return self.from_coefficients(np.convolve(self.coefficients(), other.coefficients()) % 2)
@@ -136,15 +143,14 @@ class BinaryPolynomial(int):
     def __pow__(self, exponent):
         return power(self.__class__, self, exponent)
 
-#    @functools.lru_cache(maxsize=None)
     def __divmod__(self, den):
-        div, mod = self.__class__(0), self
+        div, mod, den = 0, self._integer, den._integer
         d = mod.bit_length() - den.bit_length()
         while d >= 0:
-            div += (1 << d)
-            mod += (den << d)
+            div ^= (1 << d)
+            mod ^= (den << d)
             d = mod.bit_length() - den.bit_length()
-        return div, mod
+        return self.__class__(div), self.__class__(mod)
 
     def __floordiv__(self, other):
         return self.__divmod__(other)[0]
@@ -152,7 +158,6 @@ class BinaryPolynomial(int):
     def __mod__(self, other):
         return self.__divmod__(other)[1]
 
-#    @functools.lru_cache(maxsize=None)
     def evaluate(self, point):
         """
         Evaluates the polynomial at a given point. Uses Horner's method.
@@ -180,11 +185,11 @@ class BinaryPolynomial(int):
         return binary_horner(self, point)
 
     def __repr__(self):
-        args = '{}'.format(bin(self))
+        args = '{}'.format(bin(self._integer))
         return '{}({})'.format(self.__class__.__name__, args)
 
     def __str__(self):
-        return bin(self)
+        return bin(self._integer)
 
     @classmethod
     def xgcd(cls, poly1, poly2):
@@ -196,7 +201,7 @@ class BinaryPolynomial(int):
     @classmethod
     def gcd(cls, *poly_list):
         """
-        Computes the greatest common divisor (gcd) of polynomials in a given list.
+        Computes the greatest common divisor (gcd) of the arguments.
         """
         gcd = poly_list[0]
         for poly in poly_list[1:]:
@@ -206,7 +211,7 @@ class BinaryPolynomial(int):
     @classmethod
     def lcm(cls, *poly_list):   # TODO: do better
         """
-        Computes the least common multiple (lcm) of polynomials in a given list.
+        Computes the least common multiple (lcm) of the arguments.
         """
         if len(poly_list) == 1:
             return poly_list[0]
@@ -419,7 +424,7 @@ class BinaryFiniteExtensionField:
         Returns the multiplicative inverse of a given element.
         """
         d, s, _ = BinaryPolynomial.xgcd(BinaryPolynomial(x), self._modulus)
-        if d == 1:
+        if d._integer == 1:
             return self(s)
         else:
             raise ZeroDivisionError('This element does not have a multiplicative inverse')
@@ -506,10 +511,9 @@ class BinaryFiniteExtensionField:
 
 def xgcd(ring, x, y):
     """
-    Performs the `extended Euclidean algorithm
-    <https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
+    Performs the `extended Euclidean algorithm<https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
     """
-    if x == 0:
+    if x == ring(0):
         return y, ring(0), ring(1)
     else:
         d, s, t = xgcd(ring, y % x, x)
@@ -518,8 +522,7 @@ def xgcd(ring, x, y):
 
 def power(ring, x, n):
     """
-    Returns :code:`x**n` using the `exponentiation by squaring
-    <https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_ algorithm.
+    Returns :code:`x**n` using the `exponentiation by squaring<https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_ algorithm.
     """
     if n == 0:
         return ring(1)
@@ -533,9 +536,7 @@ def power(ring, x, n):
 
 def binary_horner(poly, x):
     """
-    Returns the binary polynomial :code:`poly` evaluated at point :code:`x`, using `Horner's
-    method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting
-    the operations of addition, subtraction, and multiplication may serve as the input point.
+    Returns the binary polynomial :code:`poly` evaluated at point :code:`x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
     """
     result = x - x  # zero
     for coefficient in reversed(poly.coefficients()):

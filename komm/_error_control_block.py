@@ -1144,20 +1144,6 @@ class CyclicCode(BlockCode):
     def meggitt_table(self):
         """
         The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
-
-        .. rubric:: Examples
-
-        >>> code = komm.CyclicCode(length=7, generator_polynomial=0b10111)
-        >>> from operator import itemgetter
-        >>> for syndrome_polynomial, errorword_polynomial in sorted(code.meggitt_table.items(), key=itemgetter(1)):
-        ...     print('0b{:<4b} : 0b{:<7b}'.format(syndrome_polynomial, errorword_polynomial))
-        0b1011 : 0b1000000
-        0b1010 : 0b1000001
-        0b1001 : 0b1000010
-        0b1111 : 0b1000100
-        0b11   : 0b1001000
-        0b1100 : 0b1010000
-        0b101  : 0b1100000
         """
         meggitt_table = {}
         for w in range(self.packing_radius + 1):

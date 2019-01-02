@@ -1,11 +1,51 @@
 import pytest
 
+import numpy as np
 import komm
 
 
-def test_simple():
+def test_binary_polynomial():
+    poly = komm.BinaryPolynomial(0b10100110111)
+    assert komm.BinaryPolynomial.from_coefficients([1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1]) == poly
+    assert komm.BinaryPolynomial.from_exponents([0, 1, 2, 4, 5, 8, 10]) == poly
+    assert poly.degree == 10
+    assert np.array_equal(poly.coefficients(), [1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1])
+    assert np.array_equal(poly.exponents(), [0, 1, 2, 4, 5, 8, 10])
+    assert poly == komm.BinaryPolynomial(0b10100110111)
+    assert poly >> 2 == komm.BinaryPolynomial(0b101001101)
+    assert poly << 2 == komm.BinaryPolynomial(0b1010011011100)
+    assert poly ** 2 == komm.BinaryPolynomial(0b100010000010100010101)
+    assert poly.evaluate(2) == 0b10100110111
+    assert poly.evaluate(10) == 10100110111
+    assert poly.evaluate(16) == 0x10100110111
+
+    poly0 = komm.BinaryPolynomial(0b101011)
+    poly1 = komm.BinaryPolynomial(0b10011101)
+    assert poly0 + poly1 == komm.BinaryPolynomial(0b10110110)
+    assert poly0 - poly1 == komm.BinaryPolynomial(0b10110110)
+    assert poly0 * poly1 == komm.BinaryPolynomial(0b1011011101111)
+
+    poly_dividend = komm.BinaryPolynomial(0b1110011)
+    poly_divisor = komm.BinaryPolynomial(0b1011)
+    poly_quotient = komm.BinaryPolynomial(0b1100)
+    poly_remainder = komm.BinaryPolynomial(0b111)
+    assert poly_quotient * poly_divisor + poly_remainder == poly_dividend
+    assert divmod(poly_dividend, poly_divisor) == (poly_quotient, poly_remainder)
+    assert poly_dividend // poly_divisor == poly_quotient
+    assert poly_dividend % poly_divisor == poly_remainder
+
+    poly0 = komm.BinaryPolynomial(0b1101011)
+    poly1 = komm.BinaryPolynomial(0b11011)
+    poly_gcd = komm.BinaryPolynomial(0b111)
+    poly_lcm = komm.BinaryPolynomial(0b111000111)
+
+    assert komm.BinaryPolynomial.gcd(poly0, poly1) == poly_gcd
+    assert komm.BinaryPolynomial.lcm(poly0, poly1) == poly_lcm
+
+
+def test_finite_bifield():
     """
-    Lin--Costello, Example 2.7,  p. 46
+    Lin--Costello, Example 2.7,  p. 46.
     """
     field = komm.BinaryFiniteExtensionField(4, 0b10011)
     alpha = field.primitive_element
@@ -13,14 +53,14 @@ def test_simple():
     assert alpha**4 == one + alpha == field(0b0011)
     assert alpha**5 == alpha + alpha**2 == field(0b0110)
     assert alpha**6 == alpha**2 + alpha**3 == field(0b1100)
-    assert alpha**7 == one + alpha + alpha**3 == alpha**4 / alpha**12 == \
-                       alpha**12 / alpha**5 == field(0b1011)
+    assert alpha**7 == one + alpha + alpha**3 == alpha**4 / alpha**12 == alpha**12 / alpha**5 == field(0b1011)
     assert alpha**13 == alpha**5 + alpha**7 == field(0b1101)
     assert one + alpha**5 + alpha**10 == field(0)
 
+
 def test_conjugates():
     """
-    Lin--Costello, Table 2.9,  p. 52
+    Lin--Costello, Table 2.9,  p. 52.
     """
     field = komm.BinaryFiniteExtensionField(4, 0b10011)
     alpha = field.primitive_element
@@ -31,9 +71,10 @@ def test_conjugates():
     assert set(field(alpha**5).conjugates()) == {alpha**5, alpha**10}
     assert set(field(alpha**7).conjugates()) == {alpha**7, alpha**11, alpha**13, alpha**14}
 
+
 def test_minimal_polynomial():
     """
-    Lin--Costello, Table 2.9,  p. 52
+    Lin--Costello, Table 2.9,  p. 52.
     """
     field = komm.BinaryFiniteExtensionField(4, 0b10011)
     alpha = field.primitive_element
@@ -51,6 +92,7 @@ def test_inverse(m):
     for i in range(1, field.order):
         a = field(i)
         assert a * a.inverse() == field(1)
+
 
 @pytest.mark.parametrize('m', list(range(2, 8)))
 def test_logarithm(m):
