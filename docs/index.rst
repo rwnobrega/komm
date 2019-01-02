@@ -23,6 +23,7 @@ Algebra
     BinaryPolynomial
     BinaryPolynomialFraction
     FiniteBifield
+    IntegerPolynomial
 
 Channels
 --------

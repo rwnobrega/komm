@@ -5,7 +5,8 @@ import numpy as np
 from ._util import \
     _int2binlist, _binlist2int
 
-__all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'FiniteBifield']
+__all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'FiniteBifield',
+           'IntegerPolynomial']
 
 
 class BinaryPolynomial:
@@ -509,6 +510,116 @@ class FiniteBifield:
         def __str__(self): return bin(self)
 
 
+class IntegerPolynomial:
+    """
+    Integer polynomial. An *integer polynomial* is a polynomial whose coefficients are all integers.
+
+    .. rubric:: Examples
+
+    >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+    >>> poly
+    IntegerPolynomial([1, 0, 3])
+    """
+    def __init__(self, coefficients):
+        self._coefficients = np.array(np.trim_zeros(coefficients, trim='b'), dtype=np.int)
+
+    def coefficients(self, width=None):
+        """
+        Returns the coefficients of the binary polynomial.
+
+        **Input:**
+
+        :code:`width` : :obj:`int`, optional
+            If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+
+        **Output:**
+
+        :code:`coefficients` : 1D-array of :obj:`int`
+            Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+
+        .. rubric:: Examples
+
+        >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+        >>> poly.coefficients()
+        array([1, 0, 3])
+        >>> poly.coefficients(width=5)
+        array([1, 0, 3, 0, 0])
+        """
+        if width is None:
+            coefficients = self._coefficients
+        else:
+            coefficients = np.zeros((width, ), dtype=np.int)
+            coefficients[:self._coefficients.size] = self._coefficients
+        return coefficients
+
+    @property
+    def degree(self):
+        """
+        The degree of the polynomial. This property is read-only.
+
+        .. rubric:: Examples
+
+        >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+        >>> poly.degree
+        2
+        """
+        return self._coefficients.size - 1
+
+    def __eq__(self, other):
+        return np.array_equal(self._coefficients, other._coefficients)
+
+    def __add__(self, other):
+        if self.degree > other.degree:
+            return self.__class__(self._coefficients + np.resize(other._coefficients, self._coefficients.size))
+        else:
+            return self.__class__(np.resize(self._coefficients, other._coefficients.size) + other._coefficients)
+
+    def __sub__(self, other):
+        if self.degree > other.degree:
+            return self.__class__(self._coefficients - np.resize(other._coefficients, self._coefficients.size))
+        else:
+            return self.__class__(np.resize(self._coefficients, other._coefficients.size) - other._coefficients)
+
+    def __neg__(self):
+        return self.__class__(-self._coefficients)
+
+    def __mul__(self, other):
+        return self.__class__(np.convolve(self._coefficients, other._coefficients))
+
+    def __pow__(self, exponent):
+        return power(self.__class__, self, exponent)
+
+    def evaluate(self, point):
+        """
+        Evaluates the polynomial at a given point. Uses Horner's method.
+
+        **Input:**
+
+        :code:`point` : ring-like type
+            Any Python object supporting the operations of addition, subtraction, and multiplication.
+
+        **Output:**
+
+        :code:`result` : ring-like type
+            The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
+
+        .. rubric:: Examples
+
+        >>> poly = komm.IntegerPolynomial([0, 1, 0, -1, 2])  # 2X^4 - X^3 + X
+        >>> poly.evaluate(7)  # same as 2*7**4 - 7**3 + 7
+        4466
+        >>> point = np.array([[1, 2], [3, 4]])
+        >>> poly.evaluate(point)  # same as 2*point**4 - point**3 + point
+        array([[  2,  26],
+               [138, 452]])
+        """
+        return horner(self, point)
+
+    def __repr__(self):
+        args = '{}'.format(self._coefficients.tolist())
+        return '{}({})'.format(self.__class__.__name__, args)
+
+
 def xgcd(ring, x, y):
     """
     Performs the `extended Euclidean algorithm<https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
@@ -543,6 +654,16 @@ def binary_horner(poly, x):
         result *= x
         if coefficient:
             result += coefficient
+    return result
+
+
+def horner(poly, x):
+    """
+    Returns the polynomial :code:`poly` evaluated at point :code:`x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
+    """
+    result = x - x  # zero
+    for coefficient in reversed(poly.coefficients()):
+        result = result * x + coefficient
     return result
 
 
