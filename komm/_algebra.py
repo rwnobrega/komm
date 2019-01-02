@@ -5,7 +5,7 @@ import numpy as np
 from ._util import \
     _int2binlist, _binlist2int
 
-__all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'BinaryFiniteExtensionField']
+__all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'FiniteBifield']
 
 
 class BinaryPolynomial:
@@ -296,7 +296,7 @@ class BinaryPolynomialFraction:
         return self.__class__(self._denominator, self._numerator)
 
 
-class BinaryFiniteExtensionField:
+class FiniteBifield:
     """
     Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
 
@@ -317,24 +317,24 @@ class BinaryFiniteExtensionField:
 
     .. rubric:: Examples
 
-    >>> field = komm.BinaryFiniteExtensionField(4)
+    >>> field = komm.FiniteBifield(4)
     >>> field
-    BinaryFiniteExtensionField(4)
+    FiniteBifield(4)
     >>> (field.characteristic, field.degree)
     (2, 4)
     >>> field.modulus
     BinaryPolynomial(0b10011)
 
-    >>> field1 = komm.BinaryFiniteExtensionField(3, modulus=0b1011)
+    >>> field1 = komm.FiniteBifield(3, modulus=0b1011)
     >>> alpha1 = field1.primitive_element
     >>> [alpha1**i for i in range(7)]
     [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]
-    >>> field2 = komm.BinaryFiniteExtensionField(3, modulus=0b1101)
+    >>> field2 = komm.FiniteBifield(3, modulus=0b1101)
     >>> alpha2 = field2.primitive_element
     >>> [alpha2**i for i in range(7)]
     [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]
 
-    >>> field = komm.BinaryFiniteExtensionField(4)
+    >>> field = komm.FiniteBifield(4)
     >>> x = field(0b1011)
     >>> y = field(0b1100)
     >>> x + y
@@ -490,7 +490,7 @@ class BinaryFiniteExtensionField:
 
     class _Element(int):
         """
-        Elements of a BinaryFiniteExtensionField.
+        Elements of a FiniteBifield.
 
         Objects of this class represents *elements* of the finite field :math:`\\mathrm{GF}(2^k)`.
         """

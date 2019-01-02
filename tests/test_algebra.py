@@ -47,7 +47,7 @@ def test_finite_bifield():
     """
     Lin--Costello, Example 2.7,  p. 46.
     """
-    field = komm.BinaryFiniteExtensionField(4, 0b10011)
+    field = komm.FiniteBifield(4, 0b10011)
     alpha = field.primitive_element
     one = field(1)
     assert alpha**4 == one + alpha == field(0b0011)
@@ -62,7 +62,7 @@ def test_conjugates():
     """
     Lin--Costello, Table 2.9,  p. 52.
     """
-    field = komm.BinaryFiniteExtensionField(4, 0b10011)
+    field = komm.FiniteBifield(4, 0b10011)
     alpha = field.primitive_element
     assert set(field(0).conjugates()) == {field(0)}
     assert set(field(1).conjugates()) == {field(1)}
@@ -76,7 +76,7 @@ def test_minimal_polynomial():
     """
     Lin--Costello, Table 2.9,  p. 52.
     """
-    field = komm.BinaryFiniteExtensionField(4, 0b10011)
+    field = komm.FiniteBifield(4, 0b10011)
     alpha = field.primitive_element
     assert field(0).minimal_polynomial() == komm.BinaryPolynomial(0b10)
     assert field(1).minimal_polynomial() == komm.BinaryPolynomial(0b11)
@@ -88,7 +88,7 @@ def test_minimal_polynomial():
 
 @pytest.mark.parametrize('m', list(range(2, 8)))
 def test_inverse(m):
-    field = komm.BinaryFiniteExtensionField(m)
+    field = komm.FiniteBifield(m)
     for i in range(1, field.order):
         a = field(i)
         assert a * a.inverse() == field(1)
@@ -96,7 +96,7 @@ def test_inverse(m):
 
 @pytest.mark.parametrize('m', list(range(2, 8)))
 def test_logarithm(m):
-    field = komm.BinaryFiniteExtensionField(m)
+    field = komm.FiniteBifield(m)
     alpha = field.primitive_element
     for i in range(1, field.order - 1):
         assert (alpha**i).logarithm() == i

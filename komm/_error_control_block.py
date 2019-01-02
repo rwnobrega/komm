@@ -8,7 +8,7 @@ from scipy import special
 
 from ._algebra import \
     null_matrix, right_inverse, \
-    BinaryPolynomial, BinaryFiniteExtensionField
+    BinaryPolynomial, FiniteBifield
 
 from ._util import \
     int2binlist, binlist2int, pack, unpack
@@ -1263,7 +1263,7 @@ class BCHCode(CyclicCode):
         if not 1 <= tau < 2**(mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
 
-        field = BinaryFiniteExtensionField(mu)
+        field = FiniteBifield(mu)
         generator_polynomial, t = self._bch_code_generator_polynomial(field, tau)
         super().__init__(length=2**mu - 1, generator_polynomial=generator_polynomial)
 

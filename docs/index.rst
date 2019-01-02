@@ -22,7 +22,7 @@ Algebra
 
     BinaryPolynomial
     BinaryPolynomialFraction
-    BinaryFiniteExtensionField
+    FiniteBifield
 
 Channels
 --------
