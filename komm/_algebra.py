@@ -514,6 +514,9 @@ class IntegerPolynomial:
     def __init__(self, coefficients):
         if isinstance(coefficients, int):
             coefficients = [coefficients]
+        elif isinstance(coefficients, self.__class__):
+            coefficients = coefficients._coefficients.tolist()
+
         self._coefficients = np.array(np.trim_zeros(coefficients, trim='b'), dtype=np.int)
 
     @classmethod
@@ -581,15 +584,15 @@ class IntegerPolynomial:
 
     def __add__(self, other):
         if self.degree > other.degree:
-            return self.__class__(self._coefficients + np.resize(other._coefficients, self._coefficients.size))
+            return self.__class__(self._coefficients + np.pad(other._coefficients, (0, self.degree - other.degree), mode='constant'))
         else:
-            return self.__class__(np.resize(self._coefficients, other._coefficients.size) + other._coefficients)
+            return self.__class__(np.pad(self._coefficients, (0, other.degree - self.degree), mode='constant') + other._coefficients)
 
     def __sub__(self, other):
         if self.degree > other.degree:
-            return self.__class__(self._coefficients - np.resize(other._coefficients, self._coefficients.size))
+            return self.__class__(self._coefficients - np.pad(other._coefficients, (0, self.degree - other.degree), mode='constant'))
         else:
-            return self.__class__(np.resize(self._coefficients, other._coefficients.size) - other._coefficients)
+            return self.__class__(np.pad(self._coefficients, (0, other.degree - self.degree), mode='constant') - other._coefficients)
 
     def __neg__(self):
         return self.__class__(-self._coefficients)
