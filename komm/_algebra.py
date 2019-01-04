@@ -1,4 +1,5 @@
 import functools
+import operator
 
 import numpy as np
 
@@ -142,7 +143,7 @@ class BinaryPolynomial:
         return self.from_coefficients(np.convolve(self.coefficients(), other.coefficients()) % 2)
 
     def __pow__(self, exponent):
-        return power(self.__class__, self, exponent)
+        return power(self, exponent, self.__class__)
 
     def __divmod__(self, den):
         div, mod, den = 0, self._integer, den._integer
@@ -197,31 +198,21 @@ class BinaryPolynomial:
         """
         Performs the extended Euclidean algorithm on two given binary polynomials.
         """
-        return xgcd(cls, poly1, poly2)
+        return xgcd(poly1, poly2, cls)
 
     @classmethod
     def gcd(cls, *poly_list):
         """
         Computes the greatest common divisor (gcd) of the arguments.
         """
-        gcd = poly_list[0]
-        for poly in poly_list[1:]:
-            gcd, _, _ = cls.xgcd(gcd, poly)
-        return gcd
+        return functools.reduce(functools.partial(gcd, ring=cls), poly_list)
 
     @classmethod
-    def lcm(cls, *poly_list):   # TODO: do better
+    def lcm(cls, *poly_list):
         """
         Computes the least common multiple (lcm) of the arguments.
         """
-        if len(poly_list) == 1:
-            return poly_list[0]
-        elif len(poly_list) == 2:
-            a, b = poly_list
-            return (a*b) // cls.gcd(a, b)
-        else:
-            a, b, rest = poly_list[0], poly_list[1], poly_list[2:]
-            return cls.lcm(cls.lcm(a, b), *rest)
+        return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
 
 
 class BinaryPolynomialFraction:
@@ -285,7 +276,7 @@ class BinaryPolynomialFraction:
         return self.__class__(numerator, denominator)
 
     def __pow__(self, exponent):
-        return power(self.__class__, self, exponent)
+        return power(self, exponent, self.__class__)
 
     def __eq__(self, other):
         return self._numerator * other._denominator == self._denominator * other._numerator
@@ -447,9 +438,9 @@ class FiniteBifield:
         Returns a given power of a given element.
         """
         if exponent < 0:
-            return power(self, self.inverse(x), -exponent)
+            return power(self.inverse(x), -exponent, self)
         else:
-            return power(self, x, exponent)
+            return power(x, exponent, self)
 
     @staticmethod
     def conjugates(x):
@@ -521,6 +512,8 @@ class IntegerPolynomial:
     IntegerPolynomial([1, 0, 3])
     """
     def __init__(self, coefficients):
+        if isinstance(coefficients, int):
+            coefficients = [coefficients]
         self._coefficients = np.array(np.trim_zeros(coefficients, trim='b'), dtype=np.int)
 
     @classmethod
@@ -602,10 +595,12 @@ class IntegerPolynomial:
         return self.__class__(-self._coefficients)
 
     def __mul__(self, other):
+        if self.degree == -1 or other.degree == -1:
+            return self.__class__(0)
         return self.__class__(np.convolve(self._coefficients, other._coefficients))
 
     def __pow__(self, exponent):
-        return power(self.__class__, self, exponent)
+        return power(self, exponent, self.__class__)
 
     def __divmod__(self, other):
         if other.degree == -1:
@@ -656,18 +651,28 @@ class IntegerPolynomial:
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-def xgcd(ring, x, y):
+def gcd(x, y, ring):
+    """
+    Performs the `Euclidean algorithm<https://en.wikipedia.org/wiki/Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
+    """
+    if y == ring(0):
+       return x
+    else:
+       return gcd(y, x % y, ring)
+
+
+def xgcd(x, y, ring):
     """
     Performs the `extended Euclidean algorithm<https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
     """
     if x == ring(0):
         return y, ring(0), ring(1)
     else:
-        d, s, t = xgcd(ring, y % x, x)
+        d, s, t = xgcd(y % x, x, ring)
         return d, t - s * (y // x), s
 
 
-def power(ring, x, n):
+def power(x, n, ring):
     """
     Returns :code:`x**n` using the `exponentiation by squaring<https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_ algorithm.
     """
@@ -676,9 +681,9 @@ def power(ring, x, n):
     elif n == 1:
         return x
     elif n % 2 == 0:
-        return power(ring, x * x, n // 2)
+        return power(x * x, n // 2, ring)
     else:
-        return x * power(ring, x * x, n // 2)
+        return x * power(x * x, n // 2, ring)
 
 
 def binary_horner(poly, x):
