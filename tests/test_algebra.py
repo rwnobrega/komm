@@ -114,5 +114,16 @@ def test_integer_polynomial():
     poly1 = komm.IntegerPolynomial([2, 5])
     assert poly0 * poly1 == komm.IntegerPolynomial([10, 25, 0, 0, 0, 4, 16, 15])
 
-    #X = komm.IntegerPolynomial([0, 1])
-    #assert 5*X**3 - 2*X + 1 == komm.IntegerPolynomial([1, -2, 0, 5])
+def test_integer_polynomial_divmod():
+    poly_dividend = komm.IntegerPolynomial([-4, 0, -2,  1])
+    poly_divisor = komm.IntegerPolynomial([-3, 1])
+    poly_quotient = komm.IntegerPolynomial([3, 1, 1])
+    poly_remainder = komm.IntegerPolynomial([5])
+    assert divmod(poly_dividend, poly_divisor) == (poly_quotient, poly_remainder)
+
+    poly_dividend = komm.IntegerPolynomial([12, -26, 21, -9, 2])
+    poly_divisor = komm.IntegerPolynomial([-3, 2])
+    poly_quotient = komm.IntegerPolynomial([-4, 6, -3, 1])
+    poly_remainder = komm.IntegerPolynomial([0])
+    assert poly_dividend // poly_divisor == poly_quotient
+    assert poly_dividend % poly_divisor == poly_remainder

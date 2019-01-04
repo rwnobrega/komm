@@ -523,6 +523,24 @@ class IntegerPolynomial:
     def __init__(self, coefficients):
         self._coefficients = np.array(np.trim_zeros(coefficients, trim='b'), dtype=np.int)
 
+    @classmethod
+    def monomial(cls, degree, coefficient=1):
+        """
+        Constructs a monomial. This is an integer polynomial of the form :math:`cX^d`. It expects the following parameters:
+
+        :code:`degree` : :obj:`int`
+            The degree :math:`d` of the monomial.
+
+        :code:`coefficient` : :obj:`int`, optional
+            The coefficient :math:`c` of the monomial. The default value is :math:`1`.
+
+        .. rubric:: Examples
+
+        >>> komm.IntegerPolynomial.monomial(4, 2)  # 2X^4
+        IntegerPolynomial([0, 0, 0, 0, 2])
+        """
+        return cls([0] * degree + [coefficient])
+
     def coefficients(self, width=None):
         """
         Returns the coefficients of the binary polynomial.
@@ -588,6 +606,24 @@ class IntegerPolynomial:
 
     def __pow__(self, exponent):
         return power(self.__class__, self, exponent)
+
+    def __divmod__(self, other):
+        if other.degree == -1:
+            raise ZeroDivisionError
+        remainder = self._coefficients.tolist()
+        quotient = [0] * (self.degree - other.degree + 1)
+        for i in range(len(quotient)):
+            quotient[-i - 1] = remainder[-1] // other._coefficients[-1]
+            for j in range(1, len(other._coefficients)):
+                remainder[-j - 1] -= quotient[-i - 1] * other._coefficients[-j - 1]
+            del remainder[-1]
+        return self.__class__(quotient), self.__class__(remainder)
+
+    def __floordiv__(self, other):
+        return divmod(self, other)[0]
+
+    def __mod__(self, other):
+        return divmod(self, other)[1]
 
     def evaluate(self, point):
         """
