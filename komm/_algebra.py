@@ -663,7 +663,12 @@ class RationalPolynomial:
         """
         Computes the greatest common divisor (gcd) of the arguments.
         """
-        return functools.reduce(functools.partial(gcd, ring=cls), poly_list)
+        ans = functools.reduce(functools.partial(gcd, ring=cls), poly_list)
+        a = np.lcm(*(coeff.denominator for coeff in ans._coefficients))
+        ans *= cls([Fraction(a, 1)])
+        b = np.gcd(*(coeff.numerator for coeff in ans._coefficients))
+        ans *= cls([Fraction(1, b)])
+        return ans
 
     @classmethod
     def lcm(cls, *poly_list):

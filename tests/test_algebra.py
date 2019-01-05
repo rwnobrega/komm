@@ -144,3 +144,10 @@ def test_rational_polynomial_divmod():
     poly_remainder = komm.RationalPolynomial([])
     assert poly_dividend // poly_divisor == poly_quotient
     assert poly_dividend % poly_divisor == poly_remainder
+
+
+def test_rational_polynomial_gcd():
+    poly0 = komm.RationalPolynomial([0, 2, 4])
+    poly1 = komm.RationalPolynomial([0, 0, 0, 10])
+    poly_gcd = komm.RationalPolynomial([0, 1])
+    assert komm.RationalPolynomial.gcd(poly0, poly1) == poly_gcd
