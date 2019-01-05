@@ -664,9 +664,9 @@ class RationalPolynomial:
         Computes the greatest common divisor (gcd) of the arguments.
         """
         ans = functools.reduce(functools.partial(gcd, ring=cls), poly_list)
-        a = np.lcm(*(coeff.denominator for coeff in ans._coefficients))
+        a = np.lcm.reduce([coeff.denominator for coeff in ans._coefficients])
         ans *= cls([Fraction(a, 1)])
-        b = np.gcd(*(coeff.numerator for coeff in ans._coefficients))
+        b = np.gcd.reduce([coeff.numerator for coeff in ans._coefficients])
         ans *= cls([Fraction(1, b)])
         return ans
 
@@ -680,23 +680,37 @@ class RationalPolynomial:
 
 class RationalPolynomialFraction:
     """
-    Integer polynomial fraction. A *integer polynomial fraction* is a ratio of two integer polynomials (:class:`IntegerPolynomial`).
+    Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).
     """
     def __init__(self, numerator, denominator=1):
-        self._numerator = IntegerPolynomial(numerator)
-        self._denominator = IntegerPolynomial(denominator)
+        self._numerator = RationalPolynomial(numerator)
+        self._denominator = RationalPolynomial(denominator)
         if self._denominator.degree == -1:
             raise ZeroDivisionError('Denominator cannot be zero')
         self._reduce_to_lowest_terms()
+        self._reduce_to_integer_coefficients()
 
     @classmethod
     def monomial(cls, degree, coefficient=1):
-        return cls(IntegerPolynomial.monomial(degree, coefficient))
+        return cls(RationalPolynomial.monomial(degree, coefficient))
 
     def _reduce_to_lowest_terms(self):
-        gcd = IntegerPolynomial.gcd(self._numerator, self._denominator)
+        gcd = RationalPolynomial.gcd(self._numerator, self._denominator)
         self._numerator //= gcd
         self._denominator //= gcd
+
+    def _reduce_to_integer_coefficients(self):
+        all_denominators = [x.denominator for x in self._numerator._coefficients] + \
+                           [x.denominator for x in self._denominator._coefficients]
+        a = np.lcm.reduce([n for n in all_denominators if n != 0])
+        self._numerator *= RationalPolynomial([Fraction(a, 1)])
+        self._denominator *= RationalPolynomial([Fraction(a, 1)])
+
+        all_numerators = [x.numerator for x in self._numerator._coefficients] + \
+                         [x.numerator for x in self._denominator._coefficients]
+        b = np.gcd.reduce([n for n in all_numerators if n != 0])
+        self._numerator *= RationalPolynomial([Fraction(1, b)])
+        self._denominator *= RationalPolynomial([Fraction(1, b)])
 
     def __repr__(self):
         args = '{}, {}'.format(self._numerator, self._denominator)

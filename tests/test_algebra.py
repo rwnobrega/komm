@@ -151,3 +151,13 @@ def test_rational_polynomial_gcd():
     poly1 = komm.RationalPolynomial([0, 0, 0, 10])
     poly_gcd = komm.RationalPolynomial([0, 1])
     assert komm.RationalPolynomial.gcd(poly0, poly1) == poly_gcd
+
+
+def test_rational_polynomial_fractions():
+    fraction = komm.RationalPolynomialFraction([0, 1, 2], [0, 0, 0, 1])
+    assert fraction.numerator == komm.RationalPolynomial([1, 2])
+    assert fraction.denominator == komm.RationalPolynomial([0, 0, 1])
+
+    fraction = komm.RationalPolynomialFraction([0, '5/14'], [0, 0, 0, '55/21'])
+    assert fraction.numerator == komm.RationalPolynomial([3])
+    assert fraction.denominator == komm.RationalPolynomial([0, 0, 22])
