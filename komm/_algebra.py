@@ -9,7 +9,7 @@ from ._util import \
     _int2binlist, _binlist2int
 
 __all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'FiniteBifield',
-           'RationalPolynomial']
+           'RationalPolynomial', 'RationalPolynomialFraction']
 
 
 class BinaryPolynomial:

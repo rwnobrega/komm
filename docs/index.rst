@@ -24,6 +24,7 @@ Algebra
     BinaryPolynomialFraction
     FiniteBifield
     RationalPolynomial
+    RationalPolynomialFraction
 
 Channels
 --------
