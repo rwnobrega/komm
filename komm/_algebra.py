@@ -1,13 +1,15 @@
 import functools
 import operator
 
+from fractions import Fraction
+
 import numpy as np
 
 from ._util import \
     _int2binlist, _binlist2int
 
 __all__ = ['BinaryPolynomial', 'BinaryPolynomialFraction', 'FiniteBifield',
-           'IntegerPolynomial']
+           'RationalPolynomial']
 
 
 class BinaryPolynomial:
@@ -501,28 +503,29 @@ class FiniteBifield:
         def __str__(self): return bin(self)
 
 
-class IntegerPolynomial:
+class RationalPolynomial:
     """
-    Integer polynomial. An *integer polynomial* is a polynomial whose coefficients are all integers.
+    Rational polynomial. A *rational polynomial* is a polynomial whose coefficients are all rational numbers.
 
     .. rubric:: Examples
 
-    >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+    >>> from fractions import Fraction
+    >>> poly = komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
     >>> poly
-    IntegerPolynomial([1, 0, 3])
+    RationalPolynomial(['1/2', '0', '3'])
     """
     def __init__(self, coefficients):
-        if isinstance(coefficients, int):
-            coefficients = [coefficients]
+        if isinstance(coefficients, (int, Fraction)):
+            coefficients = [Fraction(coefficients)]
         elif isinstance(coefficients, self.__class__):
-            coefficients = coefficients._coefficients.tolist()
+            coefficients = coefficients._coefficients
 
-        self._coefficients = np.array(np.trim_zeros(coefficients, trim='b'), dtype=np.int)
+        self._coefficients = np.array(np.trim_zeros([Fraction(x) for x in coefficients], trim='b'))
 
     @classmethod
     def monomial(cls, degree, coefficient=1):
         """
-        Constructs a monomial. This is an integer polynomial of the form :math:`cX^d`. It expects the following parameters:
+        Constructs a monomial. This is an polynomial of the form :math:`cX^d`. It expects the following parameters:
 
         :code:`degree` : :obj:`int`
             The degree :math:`d` of the monomial.
@@ -532,14 +535,14 @@ class IntegerPolynomial:
 
         .. rubric:: Examples
 
-        >>> komm.IntegerPolynomial.monomial(4, 2)  # 2X^4
-        IntegerPolynomial([0, 0, 0, 0, 2])
+        >>> komm.RationalPolynomial.monomial(4, 2)  # 2 X^4
+        RationalPolynomial(['0', '0', '0', '0', '2'])
         """
         return cls([0] * degree + [coefficient])
 
     def coefficients(self, width=None):
         """
-        Returns the coefficients of the binary polynomial.
+        Returns the coefficients of the polynomial.
 
         **Input:**
 
@@ -549,21 +552,23 @@ class IntegerPolynomial:
         **Output:**
 
         :code:`coefficients` : 1D-array of :obj:`int`
-            Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+            Coefficients of the polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
 
         .. rubric:: Examples
 
-        >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+        >>> poly = komm.RationalPolynomial(['0', '1/3', '2/3'])  # (1/3) X + (2/3) X^2
         >>> poly.coefficients()
-        array([1, 0, 3])
+        array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)
         >>> poly.coefficients(width=5)
-        array([1, 0, 3, 0, 0])
+        array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1),
+               Fraction(0, 1)], dtype=object)
         """
         if width is None:
             coefficients = self._coefficients
         else:
-            coefficients = np.zeros((width, ), dtype=np.int)
+            coefficients = np.empty((width, ), dtype=np.object)
             coefficients[:self._coefficients.size] = self._coefficients
+            coefficients[self._coefficients.size:] = Fraction(0)
         return coefficients
 
     @property
@@ -573,7 +578,7 @@ class IntegerPolynomial:
 
         .. rubric:: Examples
 
-        >>> poly = komm.IntegerPolynomial([1, 0, 3])  # 3X^2 + 1
+        >>> poly = komm.RationalPolynomial([1, 0, 3])  # 1 + 3X^2
         >>> poly.degree
         2
         """
@@ -611,7 +616,7 @@ class IntegerPolynomial:
         remainder = self._coefficients.tolist()
         quotient = [0] * (self.degree - other.degree + 1)
         for i in range(len(quotient)):
-            quotient[-i - 1] = remainder[-1] // other._coefficients[-1]
+            quotient[-i - 1] = remainder[-1] / other._coefficients[-1]
             for j in range(1, len(other._coefficients)):
                 remainder[-j - 1] -= quotient[-i - 1] * other._coefficients[-j - 1]
             del remainder[-1]
@@ -639,19 +644,107 @@ class IntegerPolynomial:
 
         .. rubric:: Examples
 
-        >>> poly = komm.IntegerPolynomial([0, 1, 0, -1, 2])  # 2X^4 - X^3 + X
-        >>> poly.evaluate(7)  # same as 2*7**4 - 7**3 + 7
-        4466
+        >>> poly = komm.RationalPolynomial([0, 1, 0, -1, 2])  # X - X^3 + 2 X^4
+        >>> poly.evaluate(7)  # same as 7 - 7**3 + 2 * 7**4
+        Fraction(4466, 1)
         >>> point = np.array([[1, 2], [3, 4]])
-        >>> poly.evaluate(point)  # same as 2*point**4 - point**3 + point
-        array([[  2,  26],
-               [138, 452]])
+        >>> poly.evaluate(point)  # same as point - point**3 + 2 * point**4
+        array([[Fraction(2, 1), Fraction(26, 1)],
+               [Fraction(138, 1), Fraction(452, 1)]], dtype=object)
         """
         return horner(self, point)
 
     def __repr__(self):
-        args = '{}'.format(self._coefficients.tolist())
+        args = '{}'.format([str(f) for f in self._coefficients])
         return '{}({})'.format(self.__class__.__name__, args)
+
+    @classmethod
+    def gcd(cls, *poly_list):
+        """
+        Computes the greatest common divisor (gcd) of the arguments.
+        """
+        return functools.reduce(functools.partial(gcd, ring=cls), poly_list)
+
+    @classmethod
+    def lcm(cls, *poly_list):
+        """
+        Computes the least common multiple (lcm) of the arguments.
+        """
+        return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
+
+
+class RationalPolynomialFraction:
+    """
+    Integer polynomial fraction. A *integer polynomial fraction* is a ratio of two integer polynomials (:class:`IntegerPolynomial`).
+    """
+    def __init__(self, numerator, denominator=1):
+        self._numerator = IntegerPolynomial(numerator)
+        self._denominator = IntegerPolynomial(denominator)
+        if self._denominator.degree == -1:
+            raise ZeroDivisionError('Denominator cannot be zero')
+        self._reduce_to_lowest_terms()
+
+    @classmethod
+    def monomial(cls, degree, coefficient=1):
+        return cls(IntegerPolynomial.monomial(degree, coefficient))
+
+    def _reduce_to_lowest_terms(self):
+        gcd = IntegerPolynomial.gcd(self._numerator, self._denominator)
+        self._numerator //= gcd
+        self._denominator //= gcd
+
+    def __repr__(self):
+        args = '{}, {}'.format(self._numerator, self._denominator)
+        return '{}({})'.format(self.__class__.__name__, args)
+
+    @property
+    def numerator(self):
+        """
+        The numerator of the fraction.
+        """
+        return self._numerator
+
+    @property
+    def denominator(self):
+        """
+        The denominator of the fraction.
+        """
+        return self._denominator
+
+    def __add__(self, other):
+        numerator = self._numerator * other._denominator + self._denominator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __sub__(self, other):
+        numerator = self._numerator * other._denominator - self._denominator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __neg__(self):
+        return self.__class__(-self._numerator, self._denominator)
+
+    def __mul__(self, other):
+        numerator = self._numerator * other._numerator
+        denominator = self._denominator * other._denominator
+        return self.__class__(numerator, denominator)
+
+    def __truediv__(self, other):
+        numerator = self._numerator * other._denominator
+        denominator = self._denominator * other._numerator
+        return self.__class__(numerator, denominator)
+
+    def __pow__(self, exponent):
+        return power(self, exponent, self.__class__)
+
+    def __eq__(self, other):
+        return self._numerator * other._denominator == self._denominator * other._numerator
+
+    def inverse(self):
+        """
+        Returns the multiplicative inverse the fraction.
+        """
+        return self.__class__(self._denominator, self._numerator)
 
 
 def gcd(x, y, ring):
@@ -659,9 +752,9 @@ def gcd(x, y, ring):
     Performs the `Euclidean algorithm<https://en.wikipedia.org/wiki/Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
     """
     if y == ring(0):
-       return x
+        return x
     else:
-       return gcd(y, x % y, ring)
+        return gcd(y, x % y, ring)
 
 
 def xgcd(x, y, ring):
