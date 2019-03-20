@@ -315,7 +315,15 @@ class RootRaisedCosinePulse(Pulse):
             t += 1e-8
             return (np.sin(np.pi*(1 - a)*t) + 4*a*t * np.cos(np.pi*(1 + a)*t)) / (np.pi*t*(1 - (4*a*t)**2))
 
-        super().__init__(impulse_response, interval=(-L/2, L/2))
+        def frequency_response(f):
+            f1 = (1 - a) / 2
+            f2 = (1 + a) / 2
+            H = 1.0 * (abs(f) < f1)
+            if a > 0:
+                H += np.sqrt((f1 < abs(f) < f2) * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1))))
+            return H
+
+        super().__init__(impulse_response, frequency_response, interval=(-L/2, L/2))
 
     @property
     def rolloff(self):
