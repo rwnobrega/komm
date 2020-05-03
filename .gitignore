@@ -12,3 +12,4 @@ tmp/
 .spyproject
 .pytest_cache
 .ttxfolder
+.vscode
