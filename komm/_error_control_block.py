@@ -105,7 +105,7 @@ class BlockCode:
         elif 'parity_submatrix' in kwargs:
             self._init_from_parity_submatrix(**kwargs)
         else:
-            raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix')")
+            raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix'")
 
     def _init_from_generator_matrix(self, generator_matrix):
         self._generator_matrix = np.array(generator_matrix, dtype=np.int) % 2
