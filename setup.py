@@ -24,5 +24,5 @@ setup(
         'Source': 'https://github.com/rwnobrega/komm/'},
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     install_requires=['numpy', 'scipy'],
-    python_requires='>=3.5',
+    python_requires='>=3.4',
 )
