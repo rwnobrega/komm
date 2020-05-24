@@ -1,16 +1,16 @@
 language: python
 
 python:
-    - "3.4"
-    - "3.5"
-    - "3.6"
-    - "3.7"
-    - "3.8"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
 install:
-    - pip install numpy scipy pytest
-    - pip install .
+  - pip install numpy scipy pytest
+  - pip install .
 
 script:
-    - python -m pytest komm/ --doctest-modules
-    - python -m pytest tests/
+  - python -m pytest komm/ --doctest-modules
+  - python -m pytest tests/
