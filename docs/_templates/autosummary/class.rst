@@ -4,8 +4,6 @@
 
 .. autoclass:: {{ objname }}
 
-   .. automethod:: __init__
-
    {% block attributes %}
    {%- if attributes %}
    .. rubric:: Properties
@@ -29,3 +27,7 @@
    {%- endblock %}
 
    .. rubric:: Documentation
+
+   {% for item in (attributes + methods)|sort %}
+   .. automethod:: {{ item }}
+   {%- endfor %}
