@@ -237,13 +237,12 @@ class FiniteStateMachine:
         .. rubric:: Output
 
         :code:`input_sequence_hat` : 1D-array of :obj:`int`
-            The most probable input sequence. It is a 1D-array of length :math:`L`.
+            The most probable input sequence :math:`\\hat{\\mathbf{x}} \\in \\mathcal{X}^L`
 
         .. rubric:: Input and Output
 
         :code:`memory` : :obj:`dict`
-            The past metrics for each state. It must be a 2D-array of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
-            The initial metrics for each state. It must be a 2D-array of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
+            The metrics for each state. It must be a dictionary containing two keys: :code:`'paths'`, a 2D-array of :obj:`int` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`; and :code:`'metrics'`, a 2D-array of :obj:`float` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
         """
         num_states = self._num_states
         input_sequences_hat = np.empty(len(observed_sequence), dtype=np.int)
