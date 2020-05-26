@@ -168,7 +168,7 @@ class DiscreteMemorylessChannel:
 
         References: :cite:`Cover.Thomas.06` (Ch. 2)
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`input_pmf` : 1D-array of :obj:`float`
             The probability mass function :math:`p_X` of the channel input :math:`X`. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
@@ -176,7 +176,7 @@ class DiscreteMemorylessChannel:
         :code:`base` : :obj:`float` or :obj:`str`, optional
             The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`mutual_information` : :obj:`float`
             The mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.

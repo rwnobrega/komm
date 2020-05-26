@@ -451,12 +451,12 @@ class TransmitFilter:
         """
         Formats a sequence of symbols.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`inp` : 1D-array of :obj:`float`
             The input signal, containing symbols of a modulation.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`outp` : 1D-array of :obj:`float`
             The output signal, formatted.

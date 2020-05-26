@@ -103,7 +103,7 @@ class FiniteStateMachine:
         """
         The matrix of input edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the input associated with that edge (an element of :math:`\\mathcal{X}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.
 
-        .. rubric:: Example
+        .. rubric:: Examples
 
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         >>> fsm.input_edges
@@ -119,7 +119,7 @@ class FiniteStateMachine:
         """
         The matrix of output edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the output associated with that edge (an element of :math:`\\mathcal{Y}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.
 
-        .. rubric:: Example
+        .. rubric:: Examples
 
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         >>> fsm.output_edges
@@ -134,7 +134,7 @@ class FiniteStateMachine:
         """
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state :math:`s_\\mathrm{i}`. The input sequence and the output sequence are denoted by :math:`\\mathbf{x} = (x_0, x_1, \\ldots, x_{L-1}) \\in \\mathcal{X}^L` and :math:`\\mathbf{y} = (y_0, y_1, \\ldots, y_{L-1}) \\in \\mathcal{Y}^L`, respectively.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`input_sequence` : 1D-array of :obj:`int`
             The input sequence :math:`\\mathbf{x} \\in \\mathcal{X}^L`. It should be a 1D-array with elements in :math:`\\mathcal{X}`.
@@ -142,7 +142,7 @@ class FiniteStateMachine:
         :code:`initial_state` : :obj:`int`
             The initial state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`output_sequence` : 1D-array of :obj:`int`
             The output sequence :math:`\\mathbf{y} \\in \\mathcal{Y}^L` corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in :math:`\\mathcal{Y}`.
@@ -150,7 +150,7 @@ class FiniteStateMachine:
         :code:`final_state` : :obj:`int`
             The final state :math:`s_\\mathrm{f}` of the machine. It is an integer in :math:`\\mathcal{S}`.
 
-        .. rubric:: Example
+        .. rubric:: Examples
 
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         >>> input_sequence, initial_state = [1, 1, 0, 1, 0], 0
@@ -175,7 +175,7 @@ class FiniteStateMachine:
 
         References: :cite:`Lin.Costello.04` (Sec. 12.1).
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`observed_sequence` : 1D-array
             The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
@@ -186,7 +186,7 @@ class FiniteStateMachine:
         :code:`initial_metrics` : 1D-array of :obj:`float`, optional
             The initial metrics for each state. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is :code:`0.0` for all states.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`input_sequences_hat` : 2D-array of :obj:`int`
             The most probable input sequence :math:`\\hat{\\mathbf{x}}(s) \\in \\mathcal{X}^L` ending in state :math:`s`, for all :math:`s \\in \\mathcal{S}`. It is a 2D-array of shape :math:`L \\times |\\mathcal{S}|`, in which column :math:`s` is equal to :math:`\\hat{\\mathbf{x}}(s)`.
@@ -226,7 +226,7 @@ class FiniteStateMachine:
 
         References: :cite:`Lin.Costello.04` (Sec. 12.3).
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`observed_sequence` : 1D-array
             The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
@@ -234,12 +234,12 @@ class FiniteStateMachine:
         :code:`metric_function` : function
             The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`input_sequence_hat` : 1D-array of :obj:`int`
             The most probable input sequence. It is a 1D-array of length :math:`L`.
 
-        **Input and output:**
+        .. rubric:: Input and Output
 
         :code:`memory` : :obj:`dict`
             The past metrics for each state. It must be a 2D-array of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
@@ -278,7 +278,7 @@ class FiniteStateMachine:
 
         References: :cite:`Lin.Costello.04` (Sec. 12.6).
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`observed_sequence` : 1D-array
             The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.
@@ -295,7 +295,7 @@ class FiniteStateMachine:
         :code:`final_state_distribution` : 1D-array of :obj:`float`, optional
             The :term:`pmf` of the final state of the machine. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is uniform over all states.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`input_posteriors` : 2D-array of :obj:`float`
             The posterior :term:`pmf` of each input, given the observed sequence, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` is :math:`p(x_t = x \\mid \\mathbf{z})`.

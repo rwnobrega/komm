@@ -87,12 +87,12 @@ class FixedToVariableCode:
         """
         Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`pmf` : 1D-array of :obj:`float`
             The (first-order) probability mass function :math:`p_X(x)` to be assumed.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`rate` : :obj:`float`
             The expected rate :math:`R` of the code.
@@ -111,12 +111,12 @@ class FixedToVariableCode:
         """
         Encodes a given sequence of symbols to its corresponding sequence of bits.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
             The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. Its length must be a multiple of :math:`k`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
             The sequence of bits corresponding to :code:`symbol_sequence`.
@@ -134,12 +134,12 @@ class FixedToVariableCode:
         """
         Decodes a given sequence of bits to its corresponding sequence of symbols.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
             The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\\{ 0, 1 \\}`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
             The sequence of symbols corresponding to :code:`bits`.
@@ -328,12 +328,12 @@ class VariableToFixedCode:
         """
         Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`pmf` : 1D-array of :obj:`float`
             The (first-order) probability mass function :math:`p_X(x)` to be assumed.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`rate` : :obj:`float`
             The expected rate :math:`R` of the code.
@@ -352,12 +352,12 @@ class VariableToFixedCode:
         """
         Encodes a given sequence of symbols to its corresponding sequence of bits.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
             The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
             The sequence of bits corresponding to :code:`symbol_sequence`.
@@ -374,12 +374,12 @@ class VariableToFixedCode:
         """
         Decodes a given sequence of bits to its corresponding sequence of symbols.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
             The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\\{ 0, 1 \\}`.  Its length must be a multiple of :math:`n`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
             The sequence of symbols corresponding to :code:`bits`.

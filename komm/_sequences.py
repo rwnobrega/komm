@@ -91,7 +91,7 @@ class BinarySequence:
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\\ell}[n] = a[n - \\ell]` is the sequence :math:`a[n]` shifted by :math:`\\ell` positions. The autocorrelation :math:`R[\\ell]` is even and satisfies :math:`R[\\ell] = 0` for :math:`|\\ell| \\geq L`, where :math:`L` is the length of the binary sequence.
 
-        **Parameters:**
+        .. rubric:: Parameters:
 
         :code:`shifts` : 1D-array of :obj:`int`, optional.
             An 1D array containing the values of :math:`\\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
@@ -117,7 +117,7 @@ class BinarySequence:
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`\\tilde{a}_{\\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\\ell` positions. The cyclic autocorrelation :math:`\\tilde{R}[\\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.
 
-        **Parameters:**
+        .. rubric:: Parameters:
 
         :code:`shifts` : 1D-array of :obj:`int`, optional.
             An 1D array containing the values of :math:`\\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.

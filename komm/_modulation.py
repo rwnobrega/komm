@@ -101,12 +101,12 @@ class _Modulation:
         """
         Converts bits to symbols using the modulation binary labeling.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`bits` : 1D-array of :obj:`int`
             The bits to be converted. It should be a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length must be a multiple of :math:`m`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`symbols` : 1D-array of :obj:`int`
             The symbols corresponding to :code:`bits`. It is a 1D-array of integers in the set :math:`[0 : M)`. Its length is equal to the length of :code:`bits` divided by :math:`m`.
@@ -123,12 +123,12 @@ class _Modulation:
         """
         Converts symbols to bits using the modulation binary labeling.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`symbols` : 1D-array of :obj:`int`
             The symbols to be converted. It should be a 1D-array of integers in the set :math:`[0 : M)`. It may be of any length.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`bits` : 1D-array of :obj:`int`
             The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length is equal to the length of :code:`symbols` multiplied by :math:`m`.

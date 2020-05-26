@@ -293,7 +293,7 @@ class BlockCode:
         """
         Encodes a given message to its corresponding codeword.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`message` : 1D-array of :obj:`int`
             The message to be encoded. Its length must be :math:`k`.
@@ -301,7 +301,7 @@ class BlockCode:
         :code:`method` : :obj:`str`, optional
             The encoding method to be used.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`codeword` : 1D-array of :obj:`int`
             The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
@@ -339,12 +339,12 @@ class BlockCode:
         """
         Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`codeword` : 1D-array of :obj:`int`
             A codeword from the code. Its length must be :math:`n`.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`message` : 1D-array of :obj:`int`
             The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
@@ -358,7 +358,7 @@ class BlockCode:
         """
         Decodes a received word to a message.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
             The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\\{ 0, 1 \\}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
@@ -366,7 +366,7 @@ class BlockCode:
         :code:`method` : :obj:`str`, optional
             The decoding method to be used.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`message_hat` : 1D-array of :obj:`int`
             The message decoded from :code:`recvword`. Its length is equal to :math:`k`.

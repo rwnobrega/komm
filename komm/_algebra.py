@@ -83,12 +83,12 @@ class BinaryPolynomial:
         """
         Returns the coefficients of the binary polynomial.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`width` : :obj:`int`, optional
             If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`coefficients` : 1D-array of :obj:`int`
             Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
@@ -107,7 +107,7 @@ class BinaryPolynomial:
         """
         Returns the exponents of the binary polynomial.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`exponents` : 1D-array of :obj:`int`
             Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
@@ -166,12 +166,12 @@ class BinaryPolynomial:
         """
         Evaluates the polynomial at a given point. Uses Horner's method.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`point` : ring-like type
             Any Python object supporting the operations of addition, subtraction, and multiplication.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`result` : ring-like type
             The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
@@ -544,12 +544,12 @@ class RationalPolynomial:
         """
         Returns the coefficients of the polynomial.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`width` : :obj:`int`, optional
             If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`coefficients` : 1D-array of :obj:`int`
             Coefficients of the polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
@@ -632,12 +632,12 @@ class RationalPolynomial:
         """
         Evaluates the polynomial at a given point. Uses Horner's method.
 
-        **Input:**
+        .. rubric:: Input
 
         :code:`point` : ring-like type
             Any Python object supporting the operations of addition, subtraction, and multiplication.
 
-        **Output:**
+        .. rubric:: Output
 
         :code:`result` : ring-like type
             The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
