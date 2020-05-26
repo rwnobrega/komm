@@ -27,7 +27,10 @@
    {%- endblock %}
 
    .. rubric:: Documentation
-
    {% for item in (attributes + methods)|sort %}
+   {%- if item in attributes %}
+   .. autoproperty:: {{ item }}
+   {%- else %}
    .. automethod:: {{ item }}
+   {%- endif %}
    {%- endfor %}
