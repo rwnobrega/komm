@@ -6,7 +6,7 @@ chardet==3.0.4
 docutils==0.16
 idna==2.9
 imagesize==1.2.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 latexcodec==2.0.0
 MarkupSafe==1.1.1
 more-itertools==8.3.0
