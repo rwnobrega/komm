@@ -6,7 +6,7 @@ __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
            'qfunc', 'qfuncinv',  'entropy']
 
 
-# Functions beggining with underscore:
+# Functions beginning with underscore:
 # - Should not be used by the end user.
 # - Should be as fast as possible.
 # - May have assumptions on the input and on the output
@@ -16,7 +16,7 @@ __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
 # - Are available to the end user.
 # - Should work when the input is a list, a numpy array, etc.
 # - Should check the input whenever possible.
-# - Should return a numpy array (intead of a list) whenever possible.
+# - Should return a numpy array (instead of a list) whenever possible.
 
 # TODO: Rename binlist2int and int2binlist to something better.
 # TODO: Vectorize those functions (e.g., axis=1).
