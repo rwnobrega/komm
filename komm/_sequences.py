@@ -30,11 +30,11 @@ class BinarySequence:
         """
         kwargs_set = set(kwargs.keys())
         if kwargs_set == {'bit_sequence'}:
-            self._bit_sequence = np.array(kwargs['bit_sequence'], dtype=np.int)
+            self._bit_sequence = np.array(kwargs['bit_sequence'], dtype=int)
             self._polar_sequence = (-1)**self._bit_sequence
             self._constructed_from = 'bit_sequence'
         elif kwargs_set == {'polar_sequence'}:
-            self._polar_sequence = np.array(kwargs['polar_sequence'], dtype=np.int)
+            self._polar_sequence = np.array(kwargs['polar_sequence'], dtype=int)
             self._bit_sequence = 1 * (self._polar_sequence < 0)
             self._constructed_from = 'polar_sequence'
         else:
@@ -428,7 +428,7 @@ class LFSRSequence(BinarySequence):
         m = taps[-1]
         L = 2**m - 1
         state = np.copy(start_state)
-        code = np.empty(L, dtype=np.int)
+        code = np.empty(L, dtype=int)
         for i in range(L):
             code[i] = state[-1]
             state[-1] = np.count_nonzero(state[taps - 1]) % 2

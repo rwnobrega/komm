@@ -16,6 +16,6 @@ def test_lfsr_mls(num_states):
     lfsr = komm.LFSRSequence.maximum_length_sequence(num_states)
     assert num_states == lfsr.feedback_polynomial.degree
     assert lfsr.length == 2**lfsr.feedback_polynomial.degree - 1
-    cyclic_autocorrelation_expected = np.full(lfsr.length, fill_value=-1, dtype=np.int)
+    cyclic_autocorrelation_expected = np.full(lfsr.length, fill_value=-1, dtype=int)
     cyclic_autocorrelation_expected[0] = lfsr.length
     assert(np.array_equal(lfsr.cyclic_autocorrelation(), cyclic_autocorrelation_expected))

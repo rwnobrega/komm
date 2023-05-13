@@ -101,7 +101,7 @@ class BinaryPolynomial:
         >>> poly.coefficients(width=8)
         array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return np.array(_int2binlist(self._integer, width=width), dtype=np.int)
+        return np.array(_int2binlist(self._integer, width=width), dtype=int)
 
     def exponents(self):
         """
@@ -466,7 +466,7 @@ class FiniteBifield:
         Returns the minimal polynomial of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) fore more details.
         """
         one = x.field(1)
-        monomials = [np.array([y, one], dtype=np.object) for y in x.conjugates()]
+        monomials = [np.array([y, one], dtype=object) for y in x.conjugates()]
         coefficients = functools.reduce(np.convolve, monomials)
         return BinaryPolynomial.from_coefficients(int(c) for c in coefficients)
 
@@ -566,7 +566,7 @@ class RationalPolynomial:
         if width is None:
             coefficients = self._coefficients
         else:
-            coefficients = np.empty((width, ), dtype=np.object)
+            coefficients = np.empty((width, ), dtype=object)
             coefficients[:self._coefficients.size] = self._coefficients
             coefficients[self._coefficients.size:] = Fraction(0)
         return coefficients
@@ -877,7 +877,7 @@ def xrref(M):
 
     Such that :obj:`M_rref = P @ M` (where :obj:`@` stands for matrix multiplication).
     """
-    eye = np.eye(M.shape[0], dtype=np.int)
+    eye = np.eye(M.shape[0], dtype=int)
 
     augmented_M = np.concatenate((np.copy(M), np.copy(eye)), axis=1)
     augmented_M_rref = rref(augmented_M)
@@ -897,7 +897,7 @@ def xrref(M):
 
 def right_inverse(M):
     P, _, s_indices = xrref(M)
-    M_rref_ri = np.zeros(M.T.shape, dtype=np.int)
+    M_rref_ri = np.zeros(M.T.shape, dtype=int)
 
     M_rref_ri[s_indices] = np.eye(len(s_indices), M.shape[0])
     M_ri = np.dot(M_rref_ri, P) % 2
@@ -907,8 +907,8 @@ def right_inverse(M):
 def null_matrix(M):
     (k, n) = M.shape
     _, M_rref, s_indices = xrref(M)
-    N = np.empty((n - k, n), dtype=np.int)
+    N = np.empty((n - k, n), dtype=int)
     p_indices = np.setdiff1d(np.arange(M.shape[1]), s_indices)
-    N[:, p_indices] = np.eye(n - k, dtype=np.int)
+    N[:, p_indices] = np.eye(n - k, dtype=int)
     N[:, s_indices] = M_rref[:, p_indices].T
     return N

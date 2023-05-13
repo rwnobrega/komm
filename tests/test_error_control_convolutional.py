@@ -73,9 +73,9 @@ def test_convolutional_space_state_representation_2(feedforward_polynomials, fee
     D = code.transition_matrix
 
     input_bits = np.random.randint(2, size=100*k)
-    output_bits = np.empty(n * input_bits.size // k, dtype=np.int)
+    output_bits = np.empty(n * input_bits.size // k, dtype=int)
 
-    s = np.zeros(nu, dtype=np.int)
+    s = np.zeros(nu, dtype=int)
 
     for t, u in enumerate(np.reshape(input_bits, newshape=(-1, k))):
         s, v = (np.dot(s, A) + np.dot(u, B)) % 2, (np.dot(s, C) + np.dot(u, D)) % 2
@@ -118,7 +118,7 @@ def test_convolutional_stream_decoder():
     traceback_length = 12
     convolutional_decoder = komm.ConvolutionalStreamDecoder(code, traceback_length, input_type='hard')
     recvword = np.array([1,1, 0,0, 0,0, 0,0, 1,0, 0,1, 0,0, 0,1, 0,1, 1,1])
-    recvword_ = np.concatenate([recvword, np.zeros(traceback_length*code.num_output_bits, dtype=np.int)])
+    recvword_ = np.concatenate([recvword, np.zeros(traceback_length*code.num_output_bits, dtype=int)])
     message_hat = convolutional_decoder(recvword_)
     message_hat_ = message_hat[traceback_length :]
     assert np.array_equal(message_hat_, [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])

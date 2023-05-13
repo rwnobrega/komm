@@ -163,15 +163,15 @@ class ConvolutionalCode:
         k, n = self._feedforward_polynomials.shape
 
         if feedback_polynomials is None:
-            self._feedback_polynomials = np.array([BinaryPolynomial(0b1) for _ in range(k)], dtype=np.object)
+            self._feedback_polynomials = np.array([BinaryPolynomial(0b1) for _ in range(k)], dtype=object)
             self._constructed_from = 'no_feedback_polynomials'
         else:
-            self._feedback_polynomials = np.empty_like(feedback_polynomials, dtype=np.object)
+            self._feedback_polynomials = np.empty_like(feedback_polynomials, dtype=object)
             for i, q in np.ndenumerate(feedback_polynomials):
                 self._feedback_polynomials[i] = BinaryPolynomial(q)
             self._constructed_from = 'feedback_polynomials'
 
-        nus = np.empty(k, dtype=np.int)
+        nus = np.empty(k, dtype=int)
         for i, (ps, q) in enumerate(zip(self._feedforward_polynomials, self._feedback_polynomials)):
             nus[i] = max(np.amax([p.degree for p in ps]), q.degree)
 
@@ -181,7 +181,7 @@ class ConvolutionalCode:
         self._overall_constraint_length = np.sum(nus)
         self._memory_order = np.amax(nus)
 
-        self._transfer_function_matrix = np.empty((k, n), dtype=np.object)
+        self._transfer_function_matrix = np.empty((k, n), dtype=object)
         for (i, j), p in np.ndenumerate(feedforward_polynomials):
             q = self._feedback_polynomials[i]
             self._transfer_function_matrix[i, j] = BinaryPolynomialFraction(p) / BinaryPolynomialFraction(q)
@@ -213,9 +213,9 @@ class ConvolutionalCode:
             taps = (BinaryPolynomial(0b1) + self._feedback_polynomials[i]).exponents() + x_indices[i]
             feedback_taps.append(taps)
 
-        bits = np.empty(k + nu, dtype=np.int)
-        next_states = np.empty((2**nu, 2**k), dtype=np.int)
-        outputs = np.empty((2**nu, 2**k), dtype=np.int)
+        bits = np.empty(k + nu, dtype=int)
+        next_states = np.empty((2**nu, 2**k), dtype=int)
+        outputs = np.empty((2**nu, 2**k), dtype=int)
 
         for s, x in np.ndindex(2**nu, 2**k):
             bits[s_indices] = int2binlist(s, width=nu)
@@ -236,8 +236,8 @@ class ConvolutionalCode:
     def _setup_space_state_representation(self):
         k, n, nu = self._num_input_bits, self._num_output_bits, self._overall_constraint_length
 
-        self._state_matrix = np.empty((nu, nu), dtype=np.int)
-        self._observation_matrix = np.empty((nu, n), dtype=np.int)
+        self._state_matrix = np.empty((nu, nu), dtype=int)
+        self._observation_matrix = np.empty((nu, n), dtype=int)
         for i in range(nu):
             s0 = 2**i
             s1 = self._finite_state_machine.next_states[s0, 0]
@@ -245,8 +245,8 @@ class ConvolutionalCode:
             self._state_matrix[i, :] = int2binlist(s1, width=nu)
             self._observation_matrix[i, :] = int2binlist(y, width=n)
 
-        self._control_matrix = np.empty((k, nu), dtype=np.int)
-        self._transition_matrix = np.empty((k, n), dtype=np.int)
+        self._control_matrix = np.empty((k, nu), dtype=int)
+        self._transition_matrix = np.empty((k, n), dtype=int)
         for i in range(k):
             x = 2**i
             s1 = self._finite_state_machine.next_states[0, x]
@@ -393,7 +393,7 @@ class ConvolutionalStreamDecoder:
     >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
     >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
     array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    >>> convolutional_decoder(np.zeros(2*10, dtype=np.int))
+    >>> convolutional_decoder(np.zeros(2*10, dtype=int))
     array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
     """
     def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type='hard'):
@@ -420,7 +420,7 @@ class ConvolutionalStreamDecoder:
         self._memory = {}
         self._memory['metrics'] = np.full((num_states, traceback_length + 1), fill_value=np.inf)
         self._memory['metrics'][initial_state, -1] = 0.0
-        self._memory['paths'] = np.zeros((num_states, traceback_length + 1), dtype=np.int)
+        self._memory['paths'] = np.zeros((num_states, traceback_length + 1), dtype=int)
 
         cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
         self._metric_function_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)

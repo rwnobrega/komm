@@ -37,7 +37,7 @@ class DiscreteMemorylessSource:
 
     @pmf.setter
     def pmf(self, value):
-        self._pmf = np.array(value, dtype=np.float)
+        self._pmf = np.array(value, dtype=float)
         self._cardinality = self._pmf.size
 
     @property

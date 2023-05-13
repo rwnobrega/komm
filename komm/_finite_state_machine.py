@@ -47,8 +47,8 @@ class FiniteStateMachine:
 
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         """
-        self._next_states = np.array(next_states, dtype=np.int)
-        self._outputs = np.array(outputs, dtype=np.int)
+        self._next_states = np.array(next_states, dtype=int)
+        self._outputs = np.array(outputs, dtype=int)
         self._num_states, self._num_input_symbols = self._next_states.shape
         self._num_output_symbols = np.amax(self._outputs)
 
@@ -160,7 +160,7 @@ class FiniteStateMachine:
         >>> final_state
         2
         """
-        output_sequence = np.empty_like(input_sequence, dtype=np.int)
+        output_sequence = np.empty_like(input_sequence, dtype=int)
         s = initial_state
         for t, x in np.ndenumerate(input_sequence):
             y = self._outputs[s, x]
@@ -195,10 +195,10 @@ class FiniteStateMachine:
             The final metrics for each state. It is a 1D-array of length :math:`|\\mathcal{S}|`.
         """
         L, num_states = len(observed_sequence), self._num_states
-        choices = np.empty((L, num_states), dtype=np.int)
+        choices = np.empty((L, num_states), dtype=int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
         if initial_metrics is None:
-            metrics[0, :] = np.zeros(num_states, dtype=np.float)
+            metrics[0, :] = np.zeros(num_states, dtype=float)
         else:
             metrics[0, :] = initial_metrics
         for t, z in enumerate(observed_sequence):
@@ -210,7 +210,7 @@ class FiniteStateMachine:
                         choices[t, s1] = s0
 
         # Backtrack
-        input_sequences_hat = np.empty((L, num_states), dtype=np.int)
+        input_sequences_hat = np.empty((L, num_states), dtype=int)
         for final_state in range(num_states):
             s1 = final_state
             for t in reversed(range(L)):
@@ -245,10 +245,10 @@ class FiniteStateMachine:
             The metrics for each state. It must be a dictionary containing two keys: :code:`'paths'`, a 2D-array of :obj:`int` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`; and :code:`'metrics'`, a 2D-array of :obj:`float` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.
         """
         num_states = self._num_states
-        input_sequences_hat = np.empty(len(observed_sequence), dtype=np.int)
+        input_sequences_hat = np.empty(len(observed_sequence), dtype=int)
         for t, z in enumerate(observed_sequence):
             new_metrics = np.full(num_states, fill_value=np.inf)
-            choices = np.zeros(num_states, dtype=np.int)
+            choices = np.zeros(num_states, dtype=int)
             for s0 in range(num_states):
                 for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
                     candidate_metric = memory['metrics'][s0, -1] + metric_function(y, z)
@@ -330,8 +330,8 @@ class FiniteStateMachine:
             for s0 in range(num_states):
                 log_beta[t, s0] = special.logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
 
-        log_input_posteriors = np.empty((L, num_input_symbols), dtype=np.float)
-        edge_labels = np.empty(num_states, dtype=np.float)
+        log_input_posteriors = np.empty((L, num_input_symbols), dtype=float)
+        edge_labels = np.empty(num_states, dtype=float)
         for t in range(L):
             for x in range(num_input_symbols):
                 for s0 in range(num_states):

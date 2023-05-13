@@ -48,14 +48,14 @@ class ScalarQuantizer:
         array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
                [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
         """
-        self._levels = np.array(levels, dtype=np.float)
-        self._thresholds = np.array(thresholds, dtype=np.float)
+        self._levels = np.array(levels, dtype=float)
+        self._thresholds = np.array(thresholds, dtype=float)
         self._num_levels = self._levels.size
 
         if self._thresholds.size != self._num_levels - 1:
             raise ValueError("The length of 'thresholds' must be 'num_levels - 1'")
 
-        interleaved = np.empty(2*self._num_levels - 1, dtype=np.float)
+        interleaved = np.empty(2*self._num_levels - 1, dtype=float)
         interleaved[0::2] = self._levels
         interleaved[1::2] = self._thresholds
 
@@ -192,7 +192,7 @@ class UniformQuantizer(ScalarQuantizer):
         return self._choice
 
     def __call__(self, input_signal):
-        input_signal = np.array(input_signal, dtype=np.float, ndmin=1)
+        input_signal = np.array(input_signal, dtype=float, ndmin=1)
         delta = self._quantization_step
         if self._choice in ['unsigned', 'mid-tread']:
             quantized = delta * np.floor(input_signal / delta + 0.5)

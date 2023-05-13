@@ -465,7 +465,7 @@ class TransmitFilter:
         t0, t1 = self.Pulse.interval
         t = np.arange(t0, t1, step=1/sps)
         taps = (np.vectorize(self.Pulse.impulse_response))(t)
-        inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=np.float)
+        inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=float)
         inp_interp[::sps] = inp
         outp = np.convolve(taps, inp_interp)
         return outp

@@ -19,7 +19,7 @@ class TestHammingCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
     def test_encoding(self):
         assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1])
@@ -52,7 +52,7 @@ class TestExtendedHammingCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
     def test_encoding(self):
         assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1, 1])
@@ -85,7 +85,7 @@ class TestGolayCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
@@ -108,7 +108,7 @@ class TestExtndedGolayCode:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
@@ -119,7 +119,7 @@ class TestExtndedGolayCode:
 @pytest.mark.parametrize('length,', range(2, 11))
 def test_repetition_code(length):
     code1 = komm.RepetitionCode(length)
-    code2 = komm.BlockCode(generator_matrix=np.ones((1, length), dtype=np.int))
+    code2 = komm.BlockCode(generator_matrix=np.ones((1, length), dtype=int))
     assert np.array_equal(code1.codeword_weight_distribution, code2.codeword_weight_distribution)
     assert np.array_equal(code1.coset_leader_weight_distribution, code2.coset_leader_weight_distribution)
 
@@ -127,7 +127,7 @@ def test_repetition_code(length):
 @pytest.mark.parametrize('length,', range(2, 11))
 def test_single_parity_check_code(length):
     code1 = komm.SingleParityCheckCode(length)
-    code2 = komm.BlockCode(parity_check_matrix=np.ones((1, length), dtype=np.int))
+    code2 = komm.BlockCode(parity_check_matrix=np.ones((1, length), dtype=int))
     assert np.array_equal(code1.codeword_weight_distribution, code2.codeword_weight_distribution)
     assert np.array_equal(code1.coset_leader_weight_distribution, code2.coset_leader_weight_distribution)
 
@@ -150,7 +150,7 @@ class TestReedMuller:
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
         H = self.code.parity_check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=np.int))
+        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
     def test_reed_partitions(self):
         # Lin.Costello.04, p. 111--113.

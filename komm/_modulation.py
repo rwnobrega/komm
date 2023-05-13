@@ -16,7 +16,7 @@ class _Modulation:
             raise ValueError("The length of constellation must be a power of two")
         self._bits_per_symbol = (self._order - 1).bit_length()
 
-        self._labeling = np.array(labeling, dtype=np.int)
+        self._labeling = np.array(labeling, dtype=int)
         if not np.array_equal(np.sort(self._labeling), np.arange(self._order)):
             raise ValueError("The labeling must be a permutation of [0 : order)")
         self._mapping = {symbol: tuple(int2binlist(label, width=self._bits_per_symbol)) \
@@ -114,7 +114,7 @@ class _Modulation:
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
         assert len(bits) == n_symbols * m
-        symbols = np.empty(n_symbols, dtype=np.int)
+        symbols = np.empty(n_symbols, dtype=int)
         for i, bit_sequence in enumerate(np.reshape(bits, newshape=(n_symbols, m))):
             symbols[i] = self._inverse_mapping[tuple(bit_sequence)]
         return symbols
@@ -135,7 +135,7 @@ class _Modulation:
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m
-        bits = np.empty(n_bits, dtype=np.int)
+        bits = np.empty(n_bits, dtype=int)
         for i, symbol in enumerate(symbols):
             bits[i*m : (i + 1)*m] = self._mapping[symbol]
         return bits
@@ -157,7 +157,7 @@ class _Modulation:
         m = self._bits_per_symbol
 
         def pdf_received_given_bit(bit_index, bit_value):
-            bits = np.empty(m, dtype=np.int)
+            bits = np.empty(m, dtype=int)
             bits[bit_index] = bit_value
             rest_index = np.setdiff1d(np.arange(m), [bit_index])
             f = 0.0
@@ -167,7 +167,7 @@ class _Modulation:
                 f += np.exp(-np.abs(received - point)**2 / self._channel_N0)
             return f
 
-        soft_bits = np.empty(len(received)*m, dtype=np.float)
+        soft_bits = np.empty(len(received)*m, dtype=float)
         for bit_index in range(m):
             p0 = pdf_received_given_bit(bit_index, 0)
             p1 = pdf_received_given_bit(bit_index, 1)
@@ -202,7 +202,7 @@ class _Modulation:
     def _labeling_reflected_2d(order_I, order_Q):
         labeling_I = _Modulation._labeling_reflected(order_I)
         labeling_Q = _Modulation._labeling_reflected(order_Q)
-        labeling = np.empty(order_I * order_Q, dtype=np.int)
+        labeling = np.empty(order_I * order_Q, dtype=int)
         for i, (i_Q, i_I) in enumerate(itertools.product(labeling_Q, labeling_I)):
             labeling[i] = i_I + order_I * i_Q
         return labeling
@@ -230,7 +230,7 @@ class RealModulation(_Modulation):
         >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
         array([-0.5,  0.5, -0.5,  0. ,  0. ])
         """
-        super().__init__(np.array(constellation, dtype=np.float), labeling)
+        super().__init__(np.array(constellation, dtype=float), labeling)
 
 
 class PAModulation(RealModulation):
@@ -272,7 +272,7 @@ class PAModulation(RealModulation):
         array([-6.,  2., -6., -2., -2.])
 
         """
-        constellation = base_amplitude * np.arange(-order + 1, order, step=2, dtype=np.int)
+        constellation = base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
 
         if isinstance(labeling, str):
             if labeling in ['natural', 'reflected']:
@@ -311,7 +311,7 @@ class ComplexModulation(_Modulation):
         >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
         array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])
         """
-        super().__init__(np.array(constellation, dtype=np.complex), labeling)
+        super().__init__(np.array(constellation, dtype=complex), labeling)
 
 
 class ASKModulation(ComplexModulation):
@@ -356,7 +356,7 @@ class ASKModulation(ComplexModulation):
         >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
         array([0, 0, 1, 0, 1, 1, 0, 1])
         """
-        constellation = base_amplitude * np.arange(order, dtype=np.int) * np.exp(1j*phase_offset)
+        constellation = base_amplitude * np.arange(order, dtype=int) * np.exp(1j*phase_offset)
 
         if isinstance(labeling, str):
             if labeling in ['natural', 'reflected']:
@@ -579,8 +579,8 @@ class QAModulation(ComplexModulation):
             base_amplitude_I = base_amplitude_Q = float(base_amplitudes)
             self._base_amplitudes = base_amplitude_I
 
-        constellation_I = base_amplitude_I * np.arange(-order_I + 1, order_I, step=2, dtype=np.int)
-        constellation_Q = base_amplitude_Q * np.arange(-order_Q + 1, order_Q, step=2, dtype=np.int)
+        constellation_I = base_amplitude_I * np.arange(-order_I + 1, order_I, step=2, dtype=int)
+        constellation_Q = base_amplitude_Q * np.arange(-order_Q + 1, order_Q, step=2, dtype=int)
         constellation = (constellation_I + 1j*constellation_Q[np.newaxis].T).flatten() * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
@@ -604,7 +604,7 @@ class QAModulation(ComplexModulation):
 
 
 def uniform_real_hard_demodulator(received, order):
-    return np.clip(np.around((received + order - 1) / 2), 0, order - 1).astype(np.int)
+    return np.clip(np.around((received + order - 1) / 2), 0, order - 1).astype(int)
 
 
 def uniform_real_soft_bit_demodulator(received, snr):
@@ -612,12 +612,12 @@ def uniform_real_soft_bit_demodulator(received, snr):
 
 
 def ask_hard_demodulator(received, order):
-    return np.clip(np.around((received.real + order - 1) / 2), 0, order - 1).astype(np.int)
+    return np.clip(np.around((received.real + order - 1) / 2), 0, order - 1).astype(int)
 
 
 def psk_hard_demodulator(received, order):
     phase_in_turns = np.angle(received) / (2 * np.pi)
-    return np.mod(np.around(phase_in_turns * order).astype(np.int), order)
+    return np.mod(np.around(phase_in_turns * order).astype(int), order)
 
 
 def bpsk_soft_bit_demodulator(received, snr):
@@ -626,7 +626,7 @@ def bpsk_soft_bit_demodulator(received, snr):
 
 def qpsk_soft_bit_demodulator_reflected(received, snr):
     received_rotated = received * np.exp(2j * np.pi / 8)
-    soft_bits = np.empty(2*received.size, dtype=np.float)
+    soft_bits = np.empty(2*received.size, dtype=float)
     soft_bits[0::2] = np.sqrt(8) * snr * received_rotated.real
     soft_bits[1::2] = np.sqrt(8) * snr * received_rotated.imag
     return soft_bits
@@ -634,6 +634,6 @@ def qpsk_soft_bit_demodulator_reflected(received, snr):
 
 def rectangular_hard_demodulator(received, order):
     L = int(np.sqrt(order))
-    s_real = np.clip(np.around((received.real + L - 1) / 2), 0, L - 1).astype(np.int)
-    s_imag = np.clip(np.around((received.imag + L - 1) / 2), 0, L - 1).astype(np.int)
+    s_real = np.clip(np.around((received.real + L - 1) / 2), 0, L - 1).astype(int)
+    s_imag = np.clip(np.around((received.imag + L - 1) / 2), 0, L - 1).astype(int)
     return s_real + L * s_imag

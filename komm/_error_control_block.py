@@ -108,38 +108,38 @@ class BlockCode:
             raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix'")
 
     def _init_from_generator_matrix(self, generator_matrix):
-        self._generator_matrix = np.array(generator_matrix, dtype=np.int) % 2
+        self._generator_matrix = np.array(generator_matrix, dtype=int) % 2
         self._dimension, self._length = self._generator_matrix.shape
         self._redundancy = self._length - self._dimension
         self._is_systematic = False
         self._constructed_from = 'generator_matrix'
 
     def _init_from_parity_check_matrix(self, parity_check_matrix):
-        self._parity_check_matrix = np.array(parity_check_matrix, dtype=np.int) % 2
+        self._parity_check_matrix = np.array(parity_check_matrix, dtype=int) % 2
         self._redundancy, self._length = self._parity_check_matrix.shape
         self._dimension = self._length - self._redundancy
         self._is_systematic = False
         self._constructed_from = 'parity_check_matrix'
 
     def _init_from_parity_submatrix(self, parity_submatrix, information_set='left'):
-        self._parity_submatrix = np.array(parity_submatrix, dtype=np.int) % 2
+        self._parity_submatrix = np.array(parity_submatrix, dtype=int) % 2
         self._dimension, self._redundancy = self._parity_submatrix.shape
         self._length = self._dimension + self._redundancy
         if information_set == 'left':
             information_set = np.arange(self._dimension)
         elif information_set == 'right':
             information_set = np.arange(self._redundancy, self._length)
-        self._information_set = np.array(information_set, dtype=np.int)
+        self._information_set = np.array(information_set, dtype=int)
         if self._information_set.size != self._dimension or \
            self._information_set.min() < 0 or self._information_set.max() > self._length:
             raise ValueError("Parameter 'information_set' must be a 'k'-subset of 'range(n)'")
         self._parity_set = np.setdiff1d(np.arange(self._length), self._information_set)
-        self._generator_matrix = np.empty((self._dimension, self._length), dtype=np.int)
-        self._generator_matrix[:, self._information_set] = np.eye(self._dimension, dtype=np.int)
+        self._generator_matrix = np.empty((self._dimension, self._length), dtype=int)
+        self._generator_matrix[:, self._information_set] = np.eye(self._dimension, dtype=int)
         self._generator_matrix[:, self._parity_set] = self._parity_submatrix
-        self._parity_check_matrix = np.empty((self._redundancy, self._length), dtype=np.int)
+        self._parity_check_matrix = np.empty((self._redundancy, self._length), dtype=int)
         self._parity_check_matrix[:, self._information_set] = self._parity_submatrix.T
-        self._parity_check_matrix[:, self._parity_set] = np.eye(self._redundancy, dtype=np.int)
+        self._parity_check_matrix[:, self._parity_set] = np.eye(self._redundancy, dtype=int)
         self._is_systematic = True
         self._constructed_from = 'parity_submatrix'
 
@@ -235,7 +235,7 @@ class BlockCode:
         """
         The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
         """
-        codeword_table = np.empty([2**self._dimension, self._length], dtype=np.int)
+        codeword_table = np.empty([2**self._dimension, self._length], dtype=int)
         for i in range(2**self._dimension):
             message = int2binlist(i, width=self._dimension)
             codeword_table[i] = self.encode(message)
@@ -258,11 +258,11 @@ class BlockCode:
         """
         The coset leader table of the code. This is a :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.
         """
-        coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=np.int)
+        coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=int)
         taken = []
         for w in range(self._length + 1):
             for idx in itertools.combinations(range(self._length), w):
-                errorword = np.zeros(self._length, dtype=np.int)
+                errorword = np.zeros(self._length, dtype=int)
                 errorword[list(idx)] = 1
                 syndrome = np.dot(errorword, self.parity_check_matrix.T) % 2
                 syndrome_int = binlist2int(syndrome)
@@ -324,7 +324,7 @@ class BlockCode:
         return codeword
 
     def _encode_systematic_generator_matrix(self, message):
-        codeword = np.empty(self._length, dtype=np.int)
+        codeword = np.empty(self._length, dtype=int)
         codeword[self._information_set] = message
         codeword[self._parity_set] = np.dot(message, self._parity_submatrix) % 2
         return codeword
@@ -421,12 +421,12 @@ class BlockCode:
         return codeword_hat
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             if self._dimension >= self._redundancy:
                 return 'syndrome_table'
             else:
                 return 'exhaustive_search_hard'
-        elif dtype == np.float:
+        elif dtype == float:
             return 'exhaustive_search_soft'
 
     @classmethod
@@ -458,7 +458,7 @@ def _extended_parity_submatrix(parity_submatrix):
 
 
 def _hamming_parity_submatrix(m):
-    parity_submatrix = np.zeros((2**m - m - 1, m), dtype=np.int)
+    parity_submatrix = np.zeros((2**m - m - 1, m), dtype=int)
     i = 0
     for w in range(2, m + 1):
         for idx in itertools.combinations(range(m), w):
@@ -632,10 +632,10 @@ class GolayCode(BlockCode):
     >>> code = komm.GolayCode()
     >>> (code.length, code.dimension, code.minimum_distance)
     (23, 12, 7)
-    >>> recvword = np.zeros(23, dtype=np.int); recvword[[2, 10, 19]] = 1
+    >>> recvword = np.zeros(23, dtype=int); recvword[[2, 10, 19]] = 1
     >>> code.decode(recvword)  # Golay code can correct up to 3 errors.
     array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    >>> recvword = np.zeros(23, dtype=np.int); recvword[[2, 3, 10, 19]] = 1
+    >>> recvword = np.zeros(23, dtype=int); recvword[[2, 3, 10, 19]] = 1
     >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
     array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
 
@@ -720,9 +720,9 @@ class RepetitionCode(BlockCode):
         :code:`n` : :obj:`int`
             The length :math:`n` of the code. Must be a positive integer.
         """
-        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int))
+        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
         self._minimum_distance = n
-        self._coset_leader_weight_distribution = np.zeros(n+1, dtype=np.int)
+        self._coset_leader_weight_distribution = np.zeros(n+1, dtype=int)
         for w in range((n + 1)//2):
             self._coset_leader_weight_distribution[w] = special.comb(n, w, exact=True)
         if n % 2 == 0:
@@ -742,7 +742,7 @@ class RepetitionCode(BlockCode):
         return codeword_hat
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'majority_logic'
         else:
             return super()._default_decoder(dtype)
@@ -786,9 +786,9 @@ class SingleParityCheckCode(BlockCode):
         :code:`n` : :obj:`int`
             The length :math:`n` of the code. Must be a positive integer.
         """
-        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=np.int).T)
+        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int).T)
         self._minimum_distance = 2
-        self._codeword_weight_distribution = np.zeros(n+1, dtype=np.int)
+        self._codeword_weight_distribution = np.zeros(n+1, dtype=int)
         for w in range(0, n + 1, 2):
             self._codeword_weight_distribution[w] = special.comb(n, w, exact=True)
 
@@ -805,10 +805,10 @@ class SingleParityCheckCode(BlockCode):
         if np.count_nonzero(codeword_hat) % 2 != 0:
             i = np.argmin(np.abs(recvword))
             codeword_hat[i] ^= 1
-        return codeword_hat.astype(np.int)
+        return codeword_hat.astype(int)
 
     def _default_decoder(self, dtype):
-        if dtype == np.float:
+        if dtype == float:
             return 'wagner'
         else:
             return super()._default_decoder(dtype)
@@ -864,9 +864,9 @@ class CordaroWagnerCode(BlockCode):
         return '{}({})'.format(self.__class__.__name__, args)
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'exhaustive_search_hard'
-        elif dtype == np.float:
+        elif dtype == float:
             return 'exhaustive_search_soft'
 
 
@@ -906,7 +906,7 @@ class ReedMullerCode(BlockCode):
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
     >>> code.encode([0, 0, 0, 0, 0, 1])  #doctest: +NORMALIZE_WHITESPACE
     array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    >>> recvword = np.ones(32, dtype=np.int); recvword[[2, 10, 15, 16, 17, 19, 29]] = 0
+    >>> recvword = np.ones(32, dtype=int); recvword[[2, 10, 15, 16, 17, 19, 29]] = 0
     >>> code.decode(recvword)
     array([0, 0, 0, 0, 0, 1])
     """
@@ -974,10 +974,10 @@ class ReedMullerCode(BlockCode):
         """
         reed_partitions = []
         for ell in range(self._rho, -1, -1):
-            binary_vectors_I = np.fliplr(np.array(list(itertools.product([0, 1], repeat=ell)), dtype=np.int))
-            binary_vectors_J = np.fliplr(np.array(list(itertools.product([0, 1], repeat=self._mu - ell)), dtype=np.int))
+            binary_vectors_I = np.fliplr(np.array(list(itertools.product([0, 1], repeat=ell)), dtype=int))
+            binary_vectors_J = np.fliplr(np.array(list(itertools.product([0, 1], repeat=self._mu - ell)), dtype=int))
             for I in itertools.combinations(range(self._mu), ell):
-                I = np.array(I, dtype=np.int)
+                I = np.array(I, dtype=int)
                 E = np.setdiff1d(np.arange(self._mu), I, assume_unique=True)
                 S = np.dot(binary_vectors_I, 2**I)
                 Q = np.dot(binary_vectors_J, 2**E)
@@ -989,9 +989,9 @@ class ReedMullerCode(BlockCode):
         """
         [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= rho < mu.
         """
-        v = np.empty((mu, 2**mu), dtype=np.int)
+        v = np.empty((mu, 2**mu), dtype=int)
         for i in range(mu):
-            block = np.hstack((np.zeros(2**(mu - i - 1), dtype=np.int), np.ones(2**(mu - i - 1), dtype=np.int)))
+            block = np.hstack((np.zeros(2**(mu - i - 1), dtype=int), np.ones(2**(mu - i - 1), dtype=int)))
             v[mu - i - 1] = np.tile(block, 2**i)
 
         G_list = []
@@ -999,16 +999,16 @@ class ReedMullerCode(BlockCode):
             for I in itertools.combinations(range(mu), ell):
                 row = functools.reduce(np.multiply, v[I, :])
                 G_list.append(row)
-        G_list.append(np.ones(2**mu, dtype=np.int))
+        G_list.append(np.ones(2**mu, dtype=int))
 
-        return np.array(G_list, dtype=np.int)
+        return np.array(G_list, dtype=int)
 
     @tag(name='Reed', input_type='hard', target='message')
     def _decode_reed(self, recvword):
         """
         Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
         """
-        message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
+        message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
         bx = np.copy(recvword)
         for idx, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
@@ -1021,7 +1021,7 @@ class ReedMullerCode(BlockCode):
         """
         Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
         """
-        message_hat = np.empty(self._generator_matrix.shape[0], dtype=np.int)
+        message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
         bx = (recvword < 0) * 1
         for idx, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
@@ -1032,9 +1032,9 @@ class ReedMullerCode(BlockCode):
         return message_hat
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'reed'
-        elif dtype == np.float:
+        elif dtype == float:
             return 'weighted_reed'
 
 
@@ -1179,7 +1179,7 @@ class CyclicCode(BlockCode):
     @functools.lru_cache(maxsize=None)
     def generator_matrix(self):
         n, k = self.length, self.dimension
-        generator_matrix = np.empty((k, n), dtype=np.int)
+        generator_matrix = np.empty((k, n), dtype=int)
         row = self._generator_polynomial.coefficients(width=n)
         for i in range(k):
             generator_matrix[i] = np.roll(row, i)
@@ -1189,7 +1189,7 @@ class CyclicCode(BlockCode):
     @functools.lru_cache(maxsize=None)
     def parity_check_matrix(self):
         n, k = self.length, self.dimension
-        parity_check_matrix = np.empty((n - k, n), dtype=np.int)
+        parity_check_matrix = np.empty((n - k, n), dtype=int)
         row = self._parity_check_polynomial.coefficients(width=n)[::-1]
         for i in range(n - k):
             parity_check_matrix[n - k - i - 1] = np.roll(row, -i)
@@ -1214,7 +1214,7 @@ class CyclicCode(BlockCode):
         return (recvword_polynomial + errorword_polynomial_hat).coefficients(self._length)
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'meggitt'
         else:
             return super()._default_decoder(dtype)
@@ -1314,7 +1314,7 @@ class BCHCode(CyclicCode):
         """
         BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).
         """
-        syndrome_polynomial = np.empty(len(self._beta), dtype=np.object)
+        syndrome_polynomial = np.empty(len(self._beta), dtype=object)
         for i, (b, b_min_polynomial) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
             syndrome_polynomial[i] = (recvword_polynomial % b_min_polynomial).evaluate(b)
         return syndrome_polynomial
@@ -1343,7 +1343,7 @@ class BCHCode(CyclicCode):
         field = self._field
         t = self._packing_radius
 
-        sigma = {-1: np.array([field(1)], dtype=np.object), 0: np.array([field(1)], dtype=np.object)}
+        sigma = {-1: np.array([field(1)], dtype=object), 0: np.array([field(1)], dtype=object)}
         discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
         degree = {-1: 0, 0: 0}
 
@@ -1358,13 +1358,13 @@ class BCHCode(CyclicCode):
                     if discrepancy[i] != field(0) and i - degree[i] > max_so_far:
                         rho, max_so_far = i, i - degree[i]
                 degree[mu + 1] = max(degree[mu], degree[rho] + mu - rho)
-                sigma[mu + 1] = np.array([field(0)] * (degree[mu + 1] + 1), dtype=np.object)
-                first_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=np.object)
+                sigma[mu + 1] = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
+                first_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
                 first_guy[:degree[mu] + 1] = sigma[mu]
-                second_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=np.object)
+                second_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
                 second_guy[mu-rho : degree[rho] + mu - rho + 1] = sigma[rho]
                 e = discrepancy[mu] / discrepancy[rho]
-                second_guy = np.array([e * x for x in second_guy], dtype=np.object)
+                second_guy = np.array([e * x for x in second_guy], dtype=object)
                 sigma[mu + 1] = first_guy + second_guy
             if mu < 2*t - 1:
                 discrepancy[mu + 1] = syndrome_polynomial[mu + 1]
@@ -1381,7 +1381,7 @@ class BCHCode(CyclicCode):
                                          root_finder=self._find_roots)
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'berlekamp'
         else:
             return super()._default_decoder(dtype)
@@ -1466,7 +1466,7 @@ class TerminatedConvolutionalCode(BlockCode):
             self._tail_projector = np.dot(AnB_message, right_inverse(AnB_tail)) % 2
         elif mode == 'tail-biting':
             try:
-                M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=np.int)) % 2
+                M = (np.linalg.matrix_power(A, h) + np.eye(nu, dtype=int)) % 2
                 self._M_inv = right_inverse(M)
             except:
                 raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
@@ -1499,8 +1499,8 @@ class TerminatedConvolutionalCode(BlockCode):
     @functools.lru_cache(maxsize=None)
     def generator_matrix(self):
         k0, n0 = self._convolutional_code.num_input_bits, self._convolutional_code.num_output_bits
-        generator_matrix = np.zeros((self._dimension, self._length), dtype=np.int)
-        top_rows = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(k0, self._dimension, dtype=np.int))
+        generator_matrix = np.zeros((self._dimension, self._length), dtype=int)
+        top_rows = np.apply_along_axis(self._encode_finite_state_machine, 1, np.eye(k0, self._dimension, dtype=int))
         for t in range(self._num_blocks):
             generator_matrix[k0*t : k0*(t + 1), :] = np.roll(top_rows, shift=n0*t, axis=1)
             if self._mode == 'direct-truncation':
@@ -1595,7 +1595,7 @@ class TerminatedConvolutionalCode(BlockCode):
             return unpack(input_sequence_hat, width=k0)
 
     def _default_decoder(self, dtype):
-        if dtype == np.int:
+        if dtype == int:
             return 'viterbi_hard'
-        elif dtype == np.float:
+        elif dtype == float:
             return 'viterbi_soft'

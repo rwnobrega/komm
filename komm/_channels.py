@@ -139,7 +139,7 @@ class DiscreteMemorylessChannel:
 
     @transition_matrix.setter
     def transition_matrix(self, value):
-        self._transition_matrix = np.array(value, dtype=np.float)
+        self._transition_matrix = np.array(value, dtype=float)
         self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
 
     @property
@@ -200,7 +200,7 @@ class DiscreteMemorylessChannel:
         >>> dmc.capacity()
         0.1616318609548566
         """
-        initial_guess = np.ones(self._input_cardinality, dtype=np.float) / self._input_cardinality
+        initial_guess = np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
         optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)
         return _mutual_information(optimal_input_pmf, self._transition_matrix)
 
@@ -292,7 +292,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
 
     def __call__(self, input_sequence):
-        error_pattern = (np.random.rand(np.size(input_sequence)) < self._crossover_probability).astype(np.int)
+        error_pattern = (np.random.rand(np.size(input_sequence)) < self._crossover_probability).astype(int)
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):
