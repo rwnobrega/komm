@@ -25,7 +25,7 @@ This software is still under development. Contributions are very welcome!
 Installation
 ------------
 
-Before you start, make sure you have `Python <https://www.python.org/>`_ (version 3.4 or later), `NumPy <https://www.numpy.org/>`_, and `SciPy <https://www.scipy.org/>`_ installed.
+Before you start, make sure you have `Python <https://www.python.org/>`_ (version 3.8 or later), `NumPy <https://www.numpy.org/>`_, and `SciPy <https://www.scipy.org/>`_ installed.
 
 Using pip
 ~~~~~~~~~

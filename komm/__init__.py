@@ -17,5 +17,5 @@ for _, _cls in _inspect.getmembers(_sys.modules[__name__], _inspect.isclass):
     if hasattr(_cls, '_process_docstring'):
         _cls._process_docstring()
 
-from pkg_resources import get_distribution as _get_distribution
-__version__ = _get_distribution('komm').version
+from importlib import metadata
+__version__ = metadata.version('komm')
