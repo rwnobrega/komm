@@ -93,7 +93,7 @@ class AWGNChannel:
 
         noise_power = signal_power / self._snr
 
-        if input_signal.dtype == np.complex:
+        if input_signal.dtype == complex:
             noise = np.sqrt(noise_power / 2) * (np.random.normal(size=size) + 1j * np.random.normal(size=size))
         else:
             noise = np.sqrt(noise_power) * np.random.normal(size=size)
