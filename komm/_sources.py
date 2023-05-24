@@ -47,17 +47,24 @@ class DiscreteMemorylessSource:
         """
         return self._cardinality
 
-    def entropy(self):
+    def entropy(self, base=2.0):
         """
         Returns the source entropy :math:`\\mathrm{H}(X)`.
+
+        .. rubric:: Input
+
+        :code:`base` : :obj:`float` or :obj:`str`, optional
+            The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
         .. rubric:: Examples
 
         >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
         >>> dms.entropy()
         1.75
+        >>> dms.entropy(base=4)
+        0.875
         """
-        return _entropy(self._pmf)
+        return _entropy(self._pmf, base=base)
 
     def __call__(self, size):
         return np.random.choice(self._cardinality, p=self._pmf, size=size)

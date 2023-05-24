@@ -186,23 +186,32 @@ class DiscreteMemorylessChannel:
         >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
         >>> dmc.mutual_information([1/3, 1/3, 1/3])
         0.12381109879798724
+        >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)
+        0.07811610605402552
         """
         return _mutual_information(input_pmf, self._transition_matrix, base)
 
 
-    def capacity(self):
+    def capacity(self, base=2.0):
         """
         Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+
+        .. rubric:: Input
+
+        :code:`base` : :obj:`float` or :obj:`str`, optional
+            The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
         .. rubric:: Examples
 
         >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
         >>> dmc.capacity()
         0.1616318609548566
+        >>> dmc.capacity(base=3)
+        0.10197835020154389
         """
         initial_guess = np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
         optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)
-        return _mutual_information(optimal_input_pmf, self._transition_matrix)
+        return _mutual_information(optimal_input_pmf, self._transition_matrix, base=base)
 
     def __call__(self, input_sequence):
         output_sequence = [np.random.choice(self._output_cardinality, p=self._transition_matrix[input_symbol])

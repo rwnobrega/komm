@@ -187,6 +187,7 @@ def entropy(pmf, base=2.0):
 
 def _mutual_information(input_pmf, transition_probabilities, base=2.0):
     output_pmf = np.dot(input_pmf, transition_probabilities)
-    entropy_output_prior = _entropy(output_pmf, base)
-    entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(_entropy, 1, transition_probabilities))
+    entropy_output_prior = _entropy(output_pmf, base=base)
+    entropy_base = lambda pmf: _entropy(pmf, base=base)
+    entropy_output_posterior = np.dot(input_pmf, np.apply_along_axis(entropy_base, 1, transition_probabilities))
     return entropy_output_prior - entropy_output_posterior
