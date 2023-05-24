@@ -12,7 +12,7 @@ This software is still under development. Contributions are very welcome!
 
 setup(
     name='komm',
-    version='0.7.3',
+    version='0.7.4',
     description='An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems.',
     long_description=_long_description,
     url='https://github.com/rwnobrega/komm/',
