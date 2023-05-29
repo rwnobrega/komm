@@ -88,9 +88,9 @@ class RectangularPulse(Pulse):
 
         .. rubric:: Examples
 
-        >>> pulse =  komm.RectangularPulse(width=1.0)
+        >>> pulse = komm.RectangularPulse(width=1.0)
 
-        >>> pulse =  komm.RectangularPulse(width=0.5)
+        >>> pulse = komm.RectangularPulse(width=0.5)
         """
         w = self._width = float(width)
 
@@ -381,9 +381,9 @@ class GaussianPulse(Pulse):
 
         .. rubric:: Examples
 
-        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
+        >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
 
-        >>> pulse =  komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
+        >>> pulse = komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
         """
         B = self._half_power_bandwidth = float(half_power_bandwidth)
         L = self._length_in_symbols = int(length_in_symbols)
