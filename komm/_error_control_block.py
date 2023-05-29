@@ -180,8 +180,7 @@ class BlockCode:
         """
         return self._dimension / self._length
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def minimum_distance(self):
         """
         The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
@@ -191,24 +190,21 @@ class BlockCode:
         except AttributeError:
             return np.flatnonzero(self.codeword_weight_distribution)[1]
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def packing_radius(self):
         """
         The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.
         """
         return (self.minimum_distance - 1) // 2
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def covering_radius(self):
         """
         The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.
         """
         return np.flatnonzero(self.coset_leader_weight_distribution)[-1]
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def generator_matrix(self):
         """
         The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
@@ -218,8 +214,7 @@ class BlockCode:
         except AttributeError:
             return null_matrix(self._parity_check_matrix)
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def parity_check_matrix(self):
         """
         The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
@@ -229,8 +224,7 @@ class BlockCode:
         except AttributeError:
             return null_matrix(self._generator_matrix)
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def codeword_table(self):
         """
         The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
@@ -241,8 +235,7 @@ class BlockCode:
             codeword_table[i] = self.encode(message)
         return codeword_table
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def codeword_weight_distribution(self):
         """
         The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n]`.
@@ -252,8 +245,7 @@ class BlockCode:
         except AttributeError:
             return np.bincount(np.sum(self.codeword_table, axis=1), minlength=self._length + 1)
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def coset_leader_table(self):
         """
         The coset leader table of the code. This is a :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.
@@ -273,8 +265,7 @@ class BlockCode:
                     break
         return coset_leader_table
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def coset_leader_weight_distribution(self):
         """
         The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n]`.
@@ -284,8 +275,7 @@ class BlockCode:
         except AttributeError:
             return np.bincount(np.sum(self.coset_leader_table, axis=1), minlength=self._length + 1)
 
-    @property
-    @functools.lru_cache(maxsize=None)
+    @functools.cached_property
     def _generator_matrix_right_inverse(self):
         return right_inverse(self.generator_matrix)
 
@@ -948,8 +938,7 @@ class ReedMullerCode(BlockCode):
         """
         return self._mu
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def reed_partitions(self):
         """
         The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
@@ -1139,8 +1128,7 @@ class CyclicCode(BlockCode):
         """
         return self._parity_check_polynomial
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def meggitt_table(self):
         """
         The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
@@ -1175,8 +1163,7 @@ class CyclicCode(BlockCode):
         else:
             return 'cyclic_direct'
 
-    @property
-    @functools.lru_cache(maxsize=None)
+    @functools.cached_property
     def generator_matrix(self):
         n, k = self.length, self.dimension
         generator_matrix = np.empty((k, n), dtype=int)
@@ -1185,8 +1172,7 @@ class CyclicCode(BlockCode):
             generator_matrix[i] = np.roll(row, i)
         return generator_matrix
 
-    @property
-    @functools.lru_cache(maxsize=None)
+    @functools.cached_property
     def parity_check_matrix(self):
         n, k = self.length, self.dimension
         parity_check_matrix = np.empty((n - k, n), dtype=int)
@@ -1495,8 +1481,7 @@ class TerminatedConvolutionalCode(BlockCode):
         """
         return self._mode
 
-    @property
-    @functools.lru_cache(maxsize=None)
+    @functools.cached_property
     def generator_matrix(self):
         k0, n0 = self._convolutional_code.num_input_bits, self._convolutional_code.num_output_bits
         generator_matrix = np.zeros((self._dimension, self._length), dtype=int)

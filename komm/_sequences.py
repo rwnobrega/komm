@@ -67,15 +67,13 @@ class BinarySequence:
         """
         return self._length
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def _autocorrelation(self):
         seq = self._polar_sequence
         L = self._length
         return np.correlate(seq, seq, mode='full')[L - 1:]
 
-    @property
-    @functools.lru_cache()
+    @functools.cached_property
     def _cyclic_autocorrelation(self):
         seq = self._polar_sequence
         L = self._length
