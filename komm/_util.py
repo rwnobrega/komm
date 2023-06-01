@@ -69,7 +69,7 @@ def _qfunc(x):
 
 def qfunc(x):
     """
-    Computes the gaussian Q-function. It is given by
+    Computes the Gaussian Q-function. It is given by
 
     .. math::
 
@@ -101,7 +101,7 @@ def _qfuncinv(y):
 
 def qfuncinv(x):
     """
-    Computes the inverse gaussian Q-function.
+    Computes the inverse Gaussian Q-function.
 
     .. rubric:: Input
 
