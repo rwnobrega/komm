@@ -1,9 +1,6 @@
 Komm
 ====
 
-.. image:: https://travis-ci.org/rwnobrega/komm.svg?branch=master
-   :target: https://travis-ci.org/rwnobrega/komm/
-   :alt: Build status
 .. image:: https://readthedocs.org/projects/komm/badge/?version=latest
    :target: https://komm.readthedocs.io/en/latest/
    :alt: Documentation status
@@ -42,3 +39,13 @@ From source
    $ git clone https://github.com/rwnobrega/komm
    $ cd komm/
    $ pip install .
+
+Testing
+-------
+
+To run the tests, you need to have `pytest <https://pytest.org/>`_ installed. Then, from the root directory of the project, run:
+
+.. code-block:: bash
+
+   $ python -m pytest komm/ --doctest-modules
+   $ python -m pytest tests/
