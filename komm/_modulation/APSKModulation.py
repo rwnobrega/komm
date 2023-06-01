@@ -1,6 +1,7 @@
 import numpy as np
-from .Modulation import Modulation
+
 from .ComplexModulation import ComplexModulation
+from .Modulation import Modulation
 
 
 class APSKModulation(ComplexModulation):
@@ -22,7 +23,8 @@ class APSKModulation(ComplexModulation):
        :alt: 16-APSK constellation.
        :align: center
     """
-    def __init__(self, orders, amplitudes, phase_offsets=0.0, labeling='natural'):
+
+    def __init__(self, orders, amplitudes, phase_offsets=0.0, labeling="natural"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -52,17 +54,17 @@ class APSKModulation(ComplexModulation):
             self._phase_offsets = phase_offsets
         else:
             self._phase_offsets = float(phase_offsets)
-            phase_offsets = (float(phase_offsets), ) * len(orders)
+            phase_offsets = (float(phase_offsets),) * len(orders)
 
         constellation = []
-        for (M_k, A_k, phi_k) in zip(orders, amplitudes, phase_offsets):
-            ring_constellation = A_k * np.exp(2j*np.pi*np.arange(M_k) / M_k) * np.exp(1j * phi_k)
+        for M_k, A_k, phi_k in zip(orders, amplitudes, phase_offsets):
+            ring_constellation = A_k * np.exp(2j * np.pi * np.arange(M_k) / M_k) * np.exp(1j * phi_k)
             constellation = np.append(constellation, ring_constellation)
 
         order = int(np.sum(orders))
         if isinstance(labeling, str):
-            if labeling in ['natural', 'reflected']:
-                labeling = getattr(Modulation, '_labeling_' + labeling)(order)
+            if labeling in ["natural", "reflected"]:
+                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
             else:
                 raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
 
@@ -72,5 +74,5 @@ class APSKModulation(ComplexModulation):
         self._amplitudes = tuple(float(A_k) for A_k in amplitudes)
 
     def __repr__(self):
-        args = '{}, amplitudes={}, phase_offsets={}'.format(self._orders, self._amplitudes, self._phase_offsets)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, amplitudes={}, phase_offsets={}".format(self._orders, self._amplitudes, self._phase_offsets)
+        return "{}({})".format(self.__class__.__name__, args)

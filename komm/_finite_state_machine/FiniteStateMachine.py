@@ -29,6 +29,7 @@ class FiniteStateMachine:
 
     |
     """
+
     def __init__(self, next_states, outputs):
         """
         Constructor for the class. It expects the following parameters:
@@ -56,8 +57,8 @@ class FiniteStateMachine:
                 self._output_edges[state_from, state_to] = self._outputs[state_from, x]
 
     def __repr__(self):
-        args = 'next_states={}, outputs={}'.format(self._next_states.tolist(), self._outputs.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "next_states={}, outputs={}".format(self._next_states.tolist(), self._outputs.tolist())
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def num_states(self):
@@ -199,7 +200,7 @@ class FiniteStateMachine:
             metrics[0, :] = initial_metrics
         for t, z in enumerate(observed_sequence):
             for s0 in range(num_states):
-                for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
+                for s1, y in zip(self._next_states[s0], self._outputs[s0]):
                     candidate_metrics = metrics[t, s0] + metric_function(y, z)
                     if candidate_metrics < metrics[t + 1, s1]:
                         metrics[t + 1, s1] = candidate_metrics
@@ -246,28 +247,35 @@ class FiniteStateMachine:
             new_metrics = np.full(num_states, fill_value=np.inf)
             choices = np.zeros(num_states, dtype=int)
             for s0 in range(num_states):
-                for (s1, y) in zip(self._next_states[s0], self._outputs[s0]):
-                    candidate_metric = memory['metrics'][s0, -1] + metric_function(y, z)
+                for s1, y in zip(self._next_states[s0], self._outputs[s0]):
+                    candidate_metric = memory["metrics"][s0, -1] + metric_function(y, z)
                     if candidate_metric < new_metrics[s1]:
                         new_metrics[s1] = candidate_metric
                         choices[s1] = s0
 
             s_star = np.argmin(new_metrics)
-            s0, s1 = memory['paths'][s_star, :2]
+            s0, s1 = memory["paths"][s_star, :2]
             input_sequences_hat[t] = self._input_edges[s0, s1]
 
-            memory['metrics'] = np.roll(memory['metrics'], shift=-1, axis=1)
-            memory['metrics'][:, -1] = new_metrics
-            memory['paths'] = np.roll(memory['paths'], shift=-1, axis=1)
+            memory["metrics"] = np.roll(memory["metrics"], shift=-1, axis=1)
+            memory["metrics"][:, -1] = new_metrics
+            memory["paths"] = np.roll(memory["paths"], shift=-1, axis=1)
 
-            paths_copy = np.copy(memory['paths'])
+            paths_copy = np.copy(memory["paths"])
             for s1, s0 in enumerate(choices):
-                memory['paths'][s1, :-1] = paths_copy[s0, :-1]
-                memory['paths'][s1, -1] = s1
+                memory["paths"][s1, :-1] = paths_copy[s0, :-1]
+                memory["paths"][s1, -1] = s1
 
         return input_sequences_hat
 
-    def forward_backward(self, observed_sequence, metric_function, input_priors=None, initial_state_distribution=None, final_state_distribution=None):
+    def forward_backward(
+        self,
+        observed_sequence,
+        metric_function,
+        input_priors=None,
+        initial_state_distribution=None,
+        final_state_distribution=None,
+    ):
         """
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.
 
@@ -308,7 +316,7 @@ class FiniteStateMachine:
         log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
         log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
 
-        with np.errstate(divide='ignore'):
+        with np.errstate(divide="ignore"):
             log_input_priors = np.log(input_priors)
             log_alpha[0, :] = np.log(initial_state_distribution)
             log_beta[L, :] = np.log(final_state_distribution)

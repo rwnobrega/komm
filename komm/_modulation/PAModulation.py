@@ -19,7 +19,8 @@ class PAModulation(RealModulation):
        :alt: 8-PAM constellation.
        :align: center
     """
-    def __init__(self, order, base_amplitude=1.0, labeling='reflected'):
+
+    def __init__(self, order, base_amplitude=1.0, labeling="reflected"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -46,8 +47,8 @@ class PAModulation(RealModulation):
         constellation = base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
 
         if isinstance(labeling, str):
-            if labeling in ['natural', 'reflected']:
-                labeling = getattr(Modulation, '_labeling_' + labeling)(order)
+            if labeling in ["natural", "reflected"]:
+                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
             else:
                 raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
 
@@ -56,5 +57,5 @@ class PAModulation(RealModulation):
         self._base_amplitude = float(base_amplitude)
 
     def __repr__(self):
-        args = '{}, base_amplitude={}'.format(self._order, self._base_amplitude)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, base_amplitude={}".format(self._order, self._base_amplitude)
+        return "{}({})".format(self.__class__.__name__, args)

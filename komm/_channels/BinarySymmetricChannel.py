@@ -1,8 +1,8 @@
 import numpy as np
 
-from . import DiscreteMemorylessChannel
-
 from .._util import _entropy
+from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
+
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
     """
@@ -23,6 +23,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
+
     def __init__(self, crossover_probability=0.0):
         """
         Constructor for the class. It expects the following parameter:
@@ -68,5 +69,5 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):
-        args = 'crossover_probability={}'.format(self._crossover_probability)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "crossover_probability={}".format(self._crossover_probability)
+        return "{}({})".format(self.__class__.__name__, args)

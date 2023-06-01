@@ -1,17 +1,21 @@
-import numpy as np
 from fractions import Fraction
+
+import numpy as np
+
 from . import RationalPolynomial
 from .util import power
+
 
 class RationalPolynomialFraction:
     """
     Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).
     """
+
     def __init__(self, numerator, denominator=1):
         self._numerator = RationalPolynomial(numerator)
         self._denominator = RationalPolynomial(denominator)
         if self._denominator.degree == -1:
-            raise ZeroDivisionError('Denominator cannot be zero')
+            raise ZeroDivisionError("Denominator cannot be zero")
         self._reduce_to_lowest_terms()
         self._reduce_to_integer_coefficients()
 
@@ -25,21 +29,23 @@ class RationalPolynomialFraction:
         self._denominator //= gcd
 
     def _reduce_to_integer_coefficients(self):
-        all_denominators = [x.denominator for x in self._numerator._coefficients] + \
-                           [x.denominator for x in self._denominator._coefficients]
+        all_denominators = [x.denominator for x in self._numerator._coefficients] + [
+            x.denominator for x in self._denominator._coefficients
+        ]
         a = np.lcm.reduce([n for n in all_denominators if n != 0])
         self._numerator *= RationalPolynomial([Fraction(a, 1)])
         self._denominator *= RationalPolynomial([Fraction(a, 1)])
 
-        all_numerators = [x.numerator for x in self._numerator._coefficients] + \
-                         [x.numerator for x in self._denominator._coefficients]
+        all_numerators = [x.numerator for x in self._numerator._coefficients] + [
+            x.numerator for x in self._denominator._coefficients
+        ]
         b = np.gcd.reduce([n for n in all_numerators if n != 0])
         self._numerator *= RationalPolynomial([Fraction(1, b)])
         self._denominator *= RationalPolynomial([Fraction(1, b)])
 
     def __repr__(self):
-        args = '{}, {}'.format(self._numerator, self._denominator)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, {}".format(self._numerator, self._denominator)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def numerator(self):

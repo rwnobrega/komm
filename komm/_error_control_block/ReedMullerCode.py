@@ -3,8 +3,9 @@ import itertools
 
 import numpy as np
 
-from .BlockCode import BlockCode
 from .._aux import tag
+from .BlockCode import BlockCode
+
 
 class ReedMullerCode(BlockCode):
     """
@@ -46,6 +47,7 @@ class ReedMullerCode(BlockCode):
     >>> code.decode(recvword)
     array([0, 0, 0, 0, 0, 1])
     """
+
     def __init__(self, rho, mu):
         """
         Constructor for the class. It expects the following parameters:
@@ -62,13 +64,13 @@ class ReedMullerCode(BlockCode):
             raise ValueError("Parameters must satisfy 0 <= rho < mu")
 
         super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(rho, mu))
-        self._minimum_distance = 2**(mu - rho)
+        self._minimum_distance = 2 ** (mu - rho)
         self._rho = rho
         self._mu = mu
 
     def __repr__(self):
-        args = '{}, {}'.format(self._rho, self._mu)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, {}".format(self._rho, self._mu)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def rho(self):
@@ -126,7 +128,7 @@ class ReedMullerCode(BlockCode):
         """
         v = np.empty((mu, 2**mu), dtype=int)
         for i in range(mu):
-            block = np.hstack((np.zeros(2**(mu - i - 1), dtype=int), np.ones(2**(mu - i - 1), dtype=int)))
+            block = np.hstack((np.zeros(2 ** (mu - i - 1), dtype=int), np.ones(2 ** (mu - i - 1), dtype=int)))
             v[mu - i - 1] = np.tile(block, 2**i)
 
         G_list = []
@@ -138,7 +140,7 @@ class ReedMullerCode(BlockCode):
 
         return np.array(G_list, dtype=int)
 
-    @tag(name='Reed', input_type='hard', target='message')
+    @tag(name="Reed", input_type="hard", target="message")
     def _decode_reed(self, recvword):
         """
         Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
@@ -151,7 +153,7 @@ class ReedMullerCode(BlockCode):
             bx ^= message_hat[idx] * self._generator_matrix[idx]
         return message_hat
 
-    @tag(name='Weighted Reed', input_type='soft', target='message')
+    @tag(name="Weighted Reed", input_type="soft", target="message")
     def _decode_weighted_reed(self, recvword):
         """
         Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
@@ -161,13 +163,13 @@ class ReedMullerCode(BlockCode):
         for idx, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
             min_reliability = np.min(np.abs(recvword[partition]), axis=1)
-            decision_var = np.dot(1 - 2*checksums, min_reliability)
+            decision_var = np.dot(1 - 2 * checksums, min_reliability)
             message_hat[idx] = decision_var < 0
             bx ^= message_hat[idx] * self._generator_matrix[idx]
         return message_hat
 
     def _default_decoder(self, dtype):
         if dtype == int:
-            return 'reed'
+            return "reed"
         elif dtype == float:
-            return 'weighted_reed'
+            return "weighted_reed"

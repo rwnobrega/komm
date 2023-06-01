@@ -1,5 +1,7 @@
 import itertools
+
 import numpy as np
+
 
 def _extended_parity_submatrix(parity_submatrix):
     last_column = (1 + np.sum(parity_submatrix, axis=1)) % 2

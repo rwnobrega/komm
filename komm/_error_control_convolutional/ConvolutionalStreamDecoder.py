@@ -2,6 +2,7 @@ import numpy as np
 
 from .._util import int2binlist, unpack
 
+
 class ConvolutionalStreamDecoder:
     """
     Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \\tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \\tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as :math:`\\tau = 5\\mu`, where :math:`\\mu` is the memory order of the convolutional code.
@@ -15,7 +16,8 @@ class ConvolutionalStreamDecoder:
     >>> convolutional_decoder(np.zeros(2*10, dtype=int))
     array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
     """
-    def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type='hard'):
+
+    def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type="hard"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -37,9 +39,9 @@ class ConvolutionalStreamDecoder:
         num_states = convolutional_code.finite_state_machine.num_states
 
         self._memory = {}
-        self._memory['metrics'] = np.full((num_states, traceback_length + 1), fill_value=np.inf)
-        self._memory['metrics'][initial_state, -1] = 0.0
-        self._memory['paths'] = np.zeros((num_states, traceback_length + 1), dtype=int)
+        self._memory["metrics"] = np.full((num_states, traceback_length + 1), fill_value=np.inf)
+        self._memory["metrics"][initial_state, -1] = 0.0
+        self._memory["paths"] = np.zeros((num_states, traceback_length + 1), dtype=int)
 
         cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
         self._metric_function_hard = lambda y, z: np.count_nonzero(cache_bit[y] != z)
@@ -50,8 +52,9 @@ class ConvolutionalStreamDecoder:
 
         input_sequence_hat = self._convolutional_code.finite_state_machine.viterbi_streaming(
             observed_sequence=np.reshape(inp, newshape=(-1, n)),
-            metric_function=getattr(self, '_metric_function_' + self._input_type),
-            memory=self._memory)
+            metric_function=getattr(self, "_metric_function_" + self._input_type),
+            memory=self._memory,
+        )
 
         outp = unpack(input_sequence_hat, width=k)
         return outp

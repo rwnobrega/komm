@@ -54,6 +54,7 @@ class FiniteBifield:
     >>> x / y
     0b10
     """
+
     def __init__(self, degree, modulus=None):
         """
         Constructor for the class. It expects the following parameters:
@@ -82,7 +83,8 @@ class FiniteBifield:
                 13: 0b10000000011011,
                 14: 0b100010001000011,
                 15: 0b1000000000000011,
-                16: 0b10001000000001011}
+                16: 0b10001000000001011,
+            }
             self._modulus = BinaryPolynomial(PRIMITIVE_POLYNOMIALS[degree])
         else:
             self._modulus = BinaryPolynomial(modulus)
@@ -115,7 +117,7 @@ class FiniteBifield:
         """
         The order (number of elements) of the finite field. It is given by :math:`2^k`. This property is read-only.
         """
-        return 2 ** self._degree
+        return 2**self._degree
 
     @property
     def primitive_element(self):
@@ -137,7 +139,7 @@ class FiniteBifield:
         if d._integer == 1:
             return self(s)
         else:
-            raise ZeroDivisionError('This element does not have a multiplicative inverse')
+            raise ZeroDivisionError("This element does not have a multiplicative inverse")
 
     # ~@functools.lru_cache(maxsize=None)
     def logarithm(self, x, base=None):
@@ -168,7 +170,7 @@ class FiniteBifield:
         conjugate_list = []
         exponent = 0
         while True:
-            y = x**(2**exponent)
+            y = x ** (2**exponent)
             if y not in conjugate_list:
                 conjugate_list.append(y)
             else:
@@ -187,8 +189,8 @@ class FiniteBifield:
         return BinaryPolynomial.from_coefficients(int(c) for c in coefficients)
 
     def __repr__(self):
-        args = '{}'.format(self._degree)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format(self._degree)
+        return "{}({})".format(self.__class__.__name__, args)
 
     def __call__(self, value):
         """
@@ -204,16 +206,42 @@ class FiniteBifield:
 
         Objects of this class represents *elements* of the finite field :math:`\\mathrm{GF}(2^k)`.
         """
-        def __eq__(self, other): return int(self) == int(other) and self.field._modulus == other.field._modulus
-        def __hash__(self): return hash((int(self), self.field._modulus))
-        def __add__(self, other): return self.field(self ^ other)
-        def __sub__(self, other): return self.field(self ^ other)
-        def __mul__(self, other): return self.field._multiply(self, other)
-        def inverse(self): return self.field.inverse(self)
-        def __truediv__(self, other): return self * other.inverse()
-        def logarithm(self, base=None): return self.field.logarithm(self, base)
-        def __pow__(self, exponent): return self.field.power(self, exponent)
-        def conjugates(self): return self.field.conjugates(self)
-        def minimal_polynomial(self): return self.field.minimal_polynomial(self)
-        def __repr__(self): return bin(self)
-        def __str__(self): return bin(self)
+
+        def __eq__(self, other):
+            return int(self) == int(other) and self.field._modulus == other.field._modulus
+
+        def __hash__(self):
+            return hash((int(self), self.field._modulus))
+
+        def __add__(self, other):
+            return self.field(self ^ other)
+
+        def __sub__(self, other):
+            return self.field(self ^ other)
+
+        def __mul__(self, other):
+            return self.field._multiply(self, other)
+
+        def inverse(self):
+            return self.field.inverse(self)
+
+        def __truediv__(self, other):
+            return self * other.inverse()
+
+        def logarithm(self, base=None):
+            return self.field.logarithm(self, base)
+
+        def __pow__(self, exponent):
+            return self.field.power(self, exponent)
+
+        def conjugates(self):
+            return self.field.conjugates(self)
+
+        def minimal_polynomial(self):
+            return self.field.minimal_polynomial(self)
+
+        def __repr__(self):
+            return bin(self)
+
+        def __str__(self):
+            return bin(self)

@@ -1,4 +1,5 @@
 import numpy as np
+
 from .Pulse import Pulse
 
 
@@ -27,6 +28,7 @@ class GaussianPulse(Pulse):
     .. |quad| unicode:: 0x2001
        :trim:
     """
+
     def __init__(self, half_power_bandwidth, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
@@ -48,16 +50,18 @@ class GaussianPulse(Pulse):
         B_bar = B / np.sqrt(np.log(2))
 
         def impulse_response(t):
-            return np.exp(-0.5 * (2*np.pi*B_bar*t)**2)
+            return np.exp(-0.5 * (2 * np.pi * B_bar * t) ** 2)
 
         def frequency_response(f):
-            return 1 / (np.sqrt(2*np.pi) * B_bar) * np.exp(-0.5 * (f / B_bar)**2)
+            return 1 / (np.sqrt(2 * np.pi) * B_bar) * np.exp(-0.5 * (f / B_bar) ** 2)
 
-        super().__init__(impulse_response, frequency_response, interval=(-L/2, L/2))
+        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
 
     def __repr__(self):
-        args = 'half_power_bandwidth={}, length_in_symbols={}'.format(self._half_power_bandwidth, self._length_in_symbols)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "half_power_bandwidth={}, length_in_symbols={}".format(
+            self._half_power_bandwidth, self._length_in_symbols
+        )
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def half_power_bandwidth(self):

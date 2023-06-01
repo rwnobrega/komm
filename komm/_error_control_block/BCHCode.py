@@ -3,9 +3,9 @@ import operator
 
 import numpy as np
 
-from .CyclicCode import CyclicCode
 from .._algebra import BinaryPolynomial, FiniteBifield
 from .._aux import tag
+from .CyclicCode import CyclicCode
 
 
 class BCHCode(CyclicCode):
@@ -38,6 +38,7 @@ class BCHCode(CyclicCode):
     >>> code = komm.BCHCode(7, 16); code
     BCHCode(7, 21)
     """
+
     def __init__(self, mu, tau):
         """
         Constructor for the class. It expects the following parameters:
@@ -48,7 +49,7 @@ class BCHCode(CyclicCode):
         :code:`tau` : :obj:`int`
             The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
         """
-        if not 1 <= tau < 2**(mu - 1):
+        if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
 
         field = FiniteBifield(mu)
@@ -58,15 +59,15 @@ class BCHCode(CyclicCode):
         self._field = field
         self._mu = mu
         self._packing_radius = t
-        self._minimum_distance = 2*t + 1
+        self._minimum_distance = 2 * t + 1
 
         alpha = field.primitive_element
-        self._beta = [alpha**(i + 1) for i in range(2*t)]
+        self._beta = [alpha ** (i + 1) for i in range(2 * t)]
         self._beta_minimal_polynomial = [b.minimal_polynomial() for b in self._beta]
 
     def __repr__(self):
-        args = '{}, {}'.format(self._mu, self._packing_radius)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, {}".format(self._mu, self._packing_radius)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @staticmethod
     def _bch_code_generator_polynomial(field, tau):
@@ -76,9 +77,9 @@ class BCHCode(CyclicCode):
         alpha = field.primitive_element
 
         t = tau
-        lcm_set = {(alpha**(2*i + 1)).minimal_polynomial() for i in range(t)}
+        lcm_set = {(alpha ** (2 * i + 1)).minimal_polynomial() for i in range(t)}
         while True:
-            if (alpha**(2*t + 1)).minimal_polynomial() not in lcm_set:
+            if (alpha ** (2 * t + 1)).minimal_polynomial() not in lcm_set:
                 break
             t += 1
         generator_polynomial = functools.reduce(operator.mul, lcm_set)
@@ -135,8 +136,8 @@ class BCHCode(CyclicCode):
         discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
         degree = {-1: 0, 0: 0}
 
-        #TODO: This mu is not the same as the mu in __init__...
-        for mu in range(2*t):
+        # TODO: This mu is not the same as the mu in __init__...
+        for mu in range(2 * t):
             if discrepancy[mu] == field(0):
                 degree[mu + 1] = degree[mu]
                 sigma[mu + 1] = sigma[mu]
@@ -148,28 +149,30 @@ class BCHCode(CyclicCode):
                 degree[mu + 1] = max(degree[mu], degree[rho] + mu - rho)
                 sigma[mu + 1] = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
                 first_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
-                first_guy[:degree[mu] + 1] = sigma[mu]
+                first_guy[: degree[mu] + 1] = sigma[mu]
                 second_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
-                second_guy[mu-rho : degree[rho] + mu - rho + 1] = sigma[rho]
+                second_guy[mu - rho : degree[rho] + mu - rho + 1] = sigma[rho]
                 e = discrepancy[mu] / discrepancy[rho]
                 second_guy = np.array([e * x for x in second_guy], dtype=object)
                 sigma[mu + 1] = first_guy + second_guy
-            if mu < 2*t - 1:
+            if mu < 2 * t - 1:
                 discrepancy[mu + 1] = syndrome_polynomial[mu + 1]
                 for idx in range(1, degree[mu + 1] + 1):
                     discrepancy[mu + 1] += sigma[mu + 1][idx] * syndrome_polynomial[mu + 1 - idx]
 
-        return sigma[2*t]
+        return sigma[2 * t]
 
-    @tag(name='Berlekamp decoder', input_type='hard', target='codeword')
+    @tag(name="Berlekamp decoder", input_type="hard", target="codeword")
     def _decode_berlekamp(self, recvword):
-        return self._bch_general_decoder(recvword,
-                                         syndrome_computer=self._bch_syndrome,
-                                         key_equation_solver=self._berlekamp_algorithm,
-                                         root_finder=self._find_roots)
+        return self._bch_general_decoder(
+            recvword,
+            syndrome_computer=self._bch_syndrome,
+            key_equation_solver=self._berlekamp_algorithm,
+            root_finder=self._find_roots,
+        )
 
     def _default_decoder(self, dtype):
         if dtype == int:
-            return 'berlekamp'
+            return "berlekamp"
         else:
             return super()._default_decoder(dtype)

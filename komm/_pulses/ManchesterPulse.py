@@ -20,6 +20,7 @@ class ManchesterPulse(Pulse):
        :alt: Manchester pulse
        :align: center
     """
+
     def __init__(self):
         """
         Constructor for the class. It expects no parameters.
@@ -28,11 +29,12 @@ class ManchesterPulse(Pulse):
 
         >>> pulse = komm.ManchesterPulse()
         """
+
         def impulse_response(t):
             return -1.0 * (0 <= t < 0.5) + 1.0 * (0.5 <= t < 1)
 
         super().__init__(impulse_response, interval=(0.0, 1.0))
 
     def __repr__(self):
-        args = ''
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = ""
+        return "{}({})".format(self.__class__.__name__, args)

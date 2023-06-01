@@ -5,6 +5,7 @@ class TransmitFilter:
     """
     Transmit filter.
     """
+
     def __init__(self, pulse, samples_per_symbol):
         """
         Constructor for the class. It expects the following parameters:
@@ -48,7 +49,7 @@ class TransmitFilter:
         """
         sps = self._samples_per_symbol
         t0, t1 = self.Pulse.interval
-        t = np.arange(t0, t1, step=1/sps)
+        t = np.arange(t0, t1, step=1 / sps)
         taps = (np.vectorize(self.Pulse.impulse_response))(t)
         inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=float)
         inp_interp[::sps] = inp

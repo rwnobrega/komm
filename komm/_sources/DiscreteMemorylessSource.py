@@ -9,6 +9,7 @@ class DiscreteMemorylessSource:
 
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example below).
     """
+
     def __init__(self, pmf):
         """
         Constructor for the class. It expects the following parameter:
@@ -66,5 +67,5 @@ class DiscreteMemorylessSource:
         return np.random.choice(self._cardinality, p=self._pmf, size=size)
 
     def __repr__(self):
-        args = 'pmf={}'.format(self._pmf.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "pmf={}".format(self._pmf.tolist())
+        return "{}({})".format(self.__class__.__name__, args)

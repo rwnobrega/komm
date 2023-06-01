@@ -1,7 +1,7 @@
 import numpy as np
-from .BinarySequence import BinarySequence
 
-from .._util import int2binlist, binlist2int
+from .._util import binlist2int, int2binlist
+from .BinarySequence import BinarySequence
 
 
 class WalshHadamardSequence(BinarySequence):
@@ -57,7 +57,8 @@ class WalshHadamardSequence(BinarySequence):
 
     [1] https://en.wikipedia.org/wiki/Hadamard_matrix; [2] https://en.wikipedia.org/wiki/Walsh_matrix
     """
-    def __init__(self, length, ordering='natural', index=0):
+
+    def __init__(self, length, ordering="natural", index=0):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -86,13 +87,13 @@ class WalshHadamardSequence(BinarySequence):
         if not 0 <= index < length:
             raise ValueError("Parameter 'index' must be in [0, ..., length)")
 
-        if ordering == 'natural':
+        if ordering == "natural":
             natural_index = index
-        elif ordering == 'sequency':
+        elif ordering == "sequency":
             width = (length - 1).bit_length()
             index_gray = index ^ (index >> 1)
             natural_index = binlist2int(reversed(int2binlist(index_gray, width)))
-        elif ordering == 'dyadic':
+        elif ordering == "dyadic":
             raise NotImplementedError
         else:
             raise ValueError("Parameter 'ordering' must be 'natural', 'sequency' or 'dyadic'")
@@ -103,7 +104,7 @@ class WalshHadamardSequence(BinarySequence):
 
     def __repr__(self):
         args = "length={}, ordering='{}', index={}".format(self._length, self._ordering, self._index)
-        return '{}({})'.format(self.__class__.__name__, args)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def index(self):

@@ -10,6 +10,9 @@ Komm
 .. image:: https://mybinder.org/badge.svg
    :target: https://mybinder.org/v2/gh/rwnobrega/komm/master?filepath=demo
    :alt: Binder
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black/
+   :alt: Code style: black
 
 Welcome to **Komm**'s development page!
 

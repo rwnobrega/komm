@@ -28,6 +28,7 @@ class RectangularPulse(Pulse):
     .. |quad| unicode:: 0x2001
        :trim:
     """
+
     def __init__(self, width=1.0):
         """
         Constructor for the class. It expects the following parameter:
@@ -49,8 +50,8 @@ class RectangularPulse(Pulse):
         super().__init__(impulse_response, interval=(0.0, 1.0))
 
     def __repr__(self):
-        args = 'width={}'.format(self._width)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "width={}".format(self._width)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def width(self):

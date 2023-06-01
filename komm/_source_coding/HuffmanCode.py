@@ -1,5 +1,6 @@
 import heapq
 import itertools
+
 import numpy as np
 
 from .FixedToVariableCode import FixedToVariableCode
@@ -27,7 +28,8 @@ class HuffmanCode(FixedToVariableCode):
      (2, 1): (0, 0, 0, 1, 0, 1),
      (2, 2): (0, 0, 0, 1, 0, 0)}
     """
-    def __init__(self, pmf, source_block_size=1, policy='high'):
+
+    def __init__(self, pmf, source_block_size=1, policy="high"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -43,11 +45,12 @@ class HuffmanCode(FixedToVariableCode):
         self._pmf = np.array(pmf)
         self._policy = policy
 
-        if policy not in ['high', 'low']:
+        if policy not in ["high", "low"]:
             raise ValueError("Parameter 'policy' must be in {'high', 'low'}")
 
-        super().__init__(codewords=HuffmanCode._huffman_algorithm(pmf, source_block_size, policy),
-                         source_cardinality=self._pmf.size)
+        super().__init__(
+            codewords=HuffmanCode._huffman_algorithm(pmf, source_block_size, policy), source_cardinality=self._pmf.size
+        )
 
     @property
     def pmf(self):
@@ -64,10 +67,11 @@ class HuffmanCode(FixedToVariableCode):
                 self.probability = probability
                 self.parent = None
                 self.bit = None
+
             def __lt__(self, other):
-                if policy == 'high':
+                if policy == "high":
                     return (self.probability, self.index) < (other.probability, other.index)
-                elif policy == 'low':
+                elif policy == "low":
                     return (self.probability, -self.index) < (other.probability, -other.index)
 
         tree = [Node(i, np.prod(probs)) for (i, probs) in enumerate(itertools.product(pmf, repeat=source_block_size))]
@@ -84,7 +88,7 @@ class HuffmanCode(FixedToVariableCode):
             tree.append(node)
 
         codewords = []
-        for symbol in range(len(pmf)**source_block_size):
+        for symbol in range(len(pmf) ** source_block_size):
             node = tree[symbol]
             bits = []
             while node.parent is not None:
@@ -95,5 +99,5 @@ class HuffmanCode(FixedToVariableCode):
         return codewords
 
     def __repr__(self):
-        args = 'pmf={}, source_block_size={}'.format(self._pmf.tolist(), self._source_block_size)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "pmf={}, source_block_size={}".format(self._pmf.tolist(), self._source_block_size)
+        return "{}({})".format(self.__class__.__name__, args)

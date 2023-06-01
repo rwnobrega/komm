@@ -38,6 +38,7 @@ class GolayCode(BlockCode):
     >>> (code.length, code.dimension, code.minimum_distance)
     (24, 12, 8)
     """
+
     def __init__(self, extended=False):
         """
         Constructor for the class. It expects the following parameter:
@@ -53,23 +54,26 @@ class GolayCode(BlockCode):
         self._extended = extended
 
     def __repr__(self):
-        args = ''
+        args = ""
         if self._extended:
-            args += ', extended=True'
-        return '{}({})'.format(self.__class__.__name__, args)
+            args += ", extended=True"
+        return "{}({})".format(self.__class__.__name__, args)
 
     @staticmethod
     def _golay_parity_submatrix():
         return np.array(
-            [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-             [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-             [0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
-             [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1],
-             [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
-             [1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1],
-             [0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
-             [0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
-             [0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1],
-             [1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1],
-             [1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1],
-             [1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1]])
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+                [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+                [0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
+                [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1],
+                [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
+                [1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1],
+                [0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+                [0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
+                [0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+                [1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1],
+                [1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1],
+                [1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1],
+            ]
+        )

@@ -1,4 +1,5 @@
 import itertools
+
 import numpy as np
 
 from .util import _parse_prefix_free
@@ -10,6 +11,7 @@ class FixedToVariableCode:
 
     Also, we only consider *prefix-free* codes, in which no codeword is a prefix of any other codeword.
     """
+
     def __init__(self, codewords, source_cardinality=None):
         """
         Constructor for the class. It expects the following parameters:
@@ -40,15 +42,17 @@ class FixedToVariableCode:
         self._codewords = codewords
         self._source_cardinality = len(codewords) if source_cardinality is None else int(source_cardinality)
         self._source_block_size = 1
-        while self._source_cardinality ** self._source_block_size < len(codewords):
+        while self._source_cardinality**self._source_block_size < len(codewords):
             self._source_block_size += 1
 
-        if self._source_cardinality ** self._source_block_size != len(codewords):
+        if self._source_cardinality**self._source_block_size != len(codewords):
             raise ValueError("Invalid number of codewords")
 
         self._enc_mapping = {}
         self._dec_mapping = {}
-        for symbols, bits in zip(itertools.product(range(self._source_cardinality), repeat=self._source_block_size), codewords):
+        for symbols, bits in zip(
+            itertools.product(range(self._source_cardinality), repeat=self._source_block_size), codewords
+        ):
             self._enc_mapping[symbols] = tuple(bits)
             self._dec_mapping[tuple(bits)] = symbols
 
@@ -150,5 +154,5 @@ class FixedToVariableCode:
         return np.array(_parse_prefix_free(bit_sequence, self._dec_mapping))
 
     def __repr__(self):
-        args = 'codewords={}'.format(self._codewords)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "codewords={}".format(self._codewords)
+        return "{}({})".format(self.__class__.__name__, args)

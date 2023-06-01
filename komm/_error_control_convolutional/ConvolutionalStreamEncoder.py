@@ -14,6 +14,7 @@ class ConvolutionalStreamEncoder:
     >>> convolutional_encoder([1, 1, 1, 1])
     array([1, 0, 1, 0, 1, 0, 1, 0])
     """
+
     def __init__(self, convolutional_code, initial_state=0):
         """
         Constructor for the class. It expects the following parameters:
@@ -31,8 +32,8 @@ class ConvolutionalStreamEncoder:
         n, k = self._convolutional_code.num_output_bits, self._convolutional_code.num_input_bits
 
         output_sequence, self._state = self._convolutional_code.finite_state_machine.process(
-            input_sequence=pack(inp, width=k),
-            initial_state=self._state)
+            input_sequence=pack(inp, width=k), initial_state=self._state
+        )
 
         outp = unpack(output_sequence, width=n)
         return outp

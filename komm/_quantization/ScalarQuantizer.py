@@ -11,6 +11,7 @@ class ScalarQuantizer:
 
     Given an input :math:`x \\in \\mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \\leq x < t_{i+1}`, where :math:`i \\in [0:L)`.
     """
+
     def __init__(self, levels, thresholds):
         """
         Constructor for the class. It expects the following parameters:
@@ -53,7 +54,7 @@ class ScalarQuantizer:
         if self._thresholds.size != self._num_levels - 1:
             raise ValueError("The length of 'thresholds' must be 'num_levels - 1'")
 
-        interleaved = np.empty(2*self._num_levels - 1, dtype=float)
+        interleaved = np.empty(2 * self._num_levels - 1, dtype=float)
         interleaved[0::2] = self._levels
         interleaved[1::2] = self._thresholds
 
@@ -87,5 +88,5 @@ class ScalarQuantizer:
         return output_signal
 
     def __repr__(self):
-        args = 'levels={}, thresholds={}'.format(self._levels.tolist(), self._thresholds.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "levels={}, thresholds={}".format(self._levels.tolist(), self._thresholds.tolist())
+        return "{}({})".format(self.__class__.__name__, args)

@@ -5,6 +5,7 @@ class Pulse:
     """
     General pulse.
     """
+
     def __init__(self, impulse_response=None, frequency_response=None, interval=None):
         """
         Constructor for the class. It expects the following parameter:
@@ -22,8 +23,8 @@ class Pulse:
         self._interval = interval
 
     def __repr__(self):
-        args = 'impulse_response={}, interval={}'.format(self._impulse_response, self._interval)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "impulse_response={}, interval={}".format(self._impulse_response, self._interval)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def impulse_response(self):

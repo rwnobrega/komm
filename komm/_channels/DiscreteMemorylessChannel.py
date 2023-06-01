@@ -2,6 +2,7 @@ import numpy as np
 
 from .._util import _mutual_information
 
+
 class DiscreteMemorylessChannel:
     """
     Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \\mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \\ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \\ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \\mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
@@ -10,6 +11,7 @@ class DiscreteMemorylessChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
+
     def __init__(self, transition_matrix):
         """
         Constructor for the class. It expects the following parameter:
@@ -25,7 +27,7 @@ class DiscreteMemorylessChannel:
         array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
         """
         self.transition_matrix = transition_matrix
-        self._arimoto_blahut_kwargs = {'max_iters': 1000, 'error_tolerance': 1e-12}
+        self._arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
 
     @property
     def transition_matrix(self):
@@ -110,13 +112,15 @@ class DiscreteMemorylessChannel:
         return _mutual_information(optimal_input_pmf, self._transition_matrix, base=base)
 
     def __call__(self, input_sequence):
-        output_sequence = [np.random.choice(self._output_cardinality, p=self._transition_matrix[input_symbol])
-                           for input_symbol in input_sequence]
+        output_sequence = [
+            np.random.choice(self._output_cardinality, p=self._transition_matrix[input_symbol])
+            for input_symbol in input_sequence
+        ]
         return np.array(output_sequence)
 
     def __repr__(self):
-        args = 'transition_matrix={}'.format(self._transition_matrix.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "transition_matrix={}".format(self._transition_matrix.tolist())
+        return "{}({})".format(self.__class__.__name__, args)
 
     @staticmethod
     def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
@@ -131,7 +135,7 @@ class DiscreteMemorylessChannel:
             last_r = r
             q = r[np.newaxis].T * p
             q /= np.sum(q, axis=0)
-            r = np.product(q ** p, axis=1)
+            r = np.product(q**p, axis=1)
             r /= np.sum(r, axis=0)
             iters += 1
         return r

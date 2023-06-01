@@ -1,6 +1,7 @@
 import numpy as np
-from .Modulation import Modulation
+
 from .ComplexModulation import ComplexModulation
+from .Modulation import Modulation
 
 
 class PSKModulation(ComplexModulation):
@@ -16,7 +17,8 @@ class PSKModulation(ComplexModulation):
        :alt: 8-PSK constellation.
        :align: center
     """
-    def __init__(self, order, amplitude=1.0, phase_offset=0.0, labeling='reflected'):
+
+    def __init__(self, order, amplitude=1.0, phase_offset=0.0, labeling="reflected"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -42,11 +44,11 @@ class PSKModulation(ComplexModulation):
         >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
         array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
         """
-        constellation = amplitude * np.exp(2j*np.pi*np.arange(order) / order) * np.exp(1j * phase_offset)
+        constellation = amplitude * np.exp(2j * np.pi * np.arange(order) / order) * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
-            if labeling in ['natural', 'reflected']:
-                labeling = getattr(Modulation, '_labeling_' + labeling)(order)
+            if labeling in ["natural", "reflected"]:
+                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
             else:
                 raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
 
@@ -56,5 +58,5 @@ class PSKModulation(ComplexModulation):
         self._phase_offset = float(phase_offset)
 
     def __repr__(self):
-        args = '{}, amplitude={}, phase_offset={}'.format(self._order, self._amplitude, self._phase_offset)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, amplitude={}, phase_offset={}".format(self._order, self._amplitude, self._phase_offset)
+        return "{}({})".format(self.__class__.__name__, args)

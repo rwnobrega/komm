@@ -1,9 +1,15 @@
 import numpy as np
-
 from scipy import special
 
-__all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
-           'qfunc', 'qfuncinv',  'entropy']
+__all__ = [
+    "binlist2int",
+    "int2binlist",
+    "pack",
+    "unpack",
+    "qfunc",
+    "qfuncinv",
+    "entropy",
+]
 
 
 # Functions beginning with underscore:
@@ -25,6 +31,7 @@ __all__ = ['binlist2int', 'int2binlist', 'pack', 'unpack',
 def _binlist2int(list_):
     return sum(1 << i for (i, b) in enumerate(list_) if b != 0)
 
+
 def binlist2int(list_):
     """
     Converts a bit array to its integer representation.
@@ -37,6 +44,7 @@ def _int2binlist(int_, width=None):
         width = max(int_.bit_length(), 1)
     return [(int_ >> i) & 1 for i in range(width)]
 
+
 def int2binlist(int_, width=None):
     """
     Converts an integer to its bit array representation.
@@ -46,6 +54,7 @@ def int2binlist(int_, width=None):
 
 def _pack(list_, width):
     return np.apply_along_axis(_binlist2int, 1, np.reshape(list_, newshape=(-1, width)))
+
 
 def pack(list_, width):
     """
@@ -57,6 +66,7 @@ def pack(list_, width):
 def _unpack(list_, width):
     return np.ravel([_int2binlist(i, width=width) for i in list_])
 
+
 def unpack(list_, width):
     """
     Unpacks a given bit array.
@@ -66,6 +76,7 @@ def unpack(list_, width):
 
 def _qfunc(x):
     return 0.5 * special.erfc(x / np.sqrt(2))
+
 
 def qfunc(x):
     """
@@ -99,6 +110,7 @@ def qfunc(x):
 def _qfuncinv(y):
     return np.sqrt(2) * special.erfcinv(2 * y)
 
+
 def qfuncinv(x):
     """
     Computes the inverse Gaussian Q-function.
@@ -128,18 +140,21 @@ def _entropy_base_e(pmf):
     # - pmf is a valid pmf.
     return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
 
+
 def _entropy_base_2(pmf):
     # Assumptions: Same as _entropy_base_e.
     return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
 
+
 def _entropy(pmf, base=2.0):
     # Assumptions: Same as _entropy_base_e.
-    if base == 'e':
+    if base == "e":
         return _entropy_base_e(pmf)
     elif base == 2:
         return _entropy_base_2(pmf)
     else:
         return _entropy_base_e(pmf) / np.log(base)
+
 
 def entropy(pmf, base=2.0):
     """

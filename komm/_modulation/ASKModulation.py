@@ -1,6 +1,7 @@
 import numpy as np
-from .Modulation import Modulation
+
 from .ComplexModulation import ComplexModulation
+from .Modulation import Modulation
 
 
 class ASKModulation(ComplexModulation):
@@ -17,7 +18,8 @@ class ASKModulation(ComplexModulation):
        :alt: 4-ASK constellation.
        :align: center
     """
-    def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling='reflected'):
+
+    def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling="reflected"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -45,11 +47,11 @@ class ASKModulation(ComplexModulation):
         >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
         array([0, 0, 1, 0, 1, 1, 0, 1])
         """
-        constellation = base_amplitude * np.arange(order, dtype=int) * np.exp(1j*phase_offset)
+        constellation = base_amplitude * np.arange(order, dtype=int) * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
-            if labeling in ['natural', 'reflected']:
-                labeling = getattr(Modulation, '_labeling_' + labeling)(order)
+            if labeling in ["natural", "reflected"]:
+                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
             else:
                 raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
 
@@ -59,5 +61,5 @@ class ASKModulation(ComplexModulation):
         self._phase_offset = float(phase_offset)
 
     def __repr__(self):
-        args = '{}, base_amplitude={}, phase_offset={}'.format(self._order, self._base_amplitude, self._phase_offset)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, base_amplitude={}, phase_offset={}".format(self._order, self._base_amplitude, self._phase_offset)
+        return "{}({})".format(self.__class__.__name__, args)

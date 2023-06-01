@@ -2,7 +2,7 @@ import numpy as np
 
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import FiniteStateMachine
-from .._util import int2binlist, binlist2int
+from .._util import binlist2int, int2binlist
 
 
 class ConvolutionalCode:
@@ -156,12 +156,12 @@ class ConvolutionalCode:
 
         if feedback_polynomials is None:
             self._feedback_polynomials = np.array([BinaryPolynomial(0b1) for _ in range(k)], dtype=object)
-            self._constructed_from = 'no_feedback_polynomials'
+            self._constructed_from = "no_feedback_polynomials"
         else:
             self._feedback_polynomials = np.empty_like(feedback_polynomials, dtype=object)
             for i, q in np.ndenumerate(feedback_polynomials):
                 self._feedback_polynomials[i] = BinaryPolynomial(q)
-            self._constructed_from = 'feedback_polynomials'
+            self._constructed_from = "feedback_polynomials"
 
         nus = np.empty(k, dtype=int)
         for i, (ps, q) in enumerate(zip(self._feedforward_polynomials, self._feedback_polynomials)):
@@ -183,11 +183,11 @@ class ConvolutionalCode:
 
     def __repr__(self):
         feedforward_polynomials_str = str(np.vectorize(str)(self._feedforward_polynomials).tolist()).replace("'", "")
-        args = 'feedforward_polynomials={}'.format(feedforward_polynomials_str)
-        if self._constructed_from == 'feedback_polynomials':
+        args = "feedforward_polynomials={}".format(feedforward_polynomials_str)
+        if self._constructed_from == "feedback_polynomials":
             feedback_polynomials_str = str(np.vectorize(str)(self._feedback_polynomials).tolist()).replace("'", "")
-            args = '{}, feedback_polynomials={}'.format(args, feedback_polynomials_str)
-        return '{}({})'.format(self.__class__.__name__, args)
+            args = "{}, feedback_polynomials={}".format(args, feedback_polynomials_str)
+        return "{}({})".format(self.__class__.__name__, args)
 
     def _setup_finite_state_machine_direct_form(self):
         n, k, nu = self._num_output_bits, self._num_input_bits, self._overall_constraint_length
@@ -279,7 +279,7 @@ class ConvolutionalCode:
         """
         The memory order :math:`\\mu` of the code. This property is read-only.
         """
-        return  self._memory_order
+        return self._memory_order
 
     @property
     def feedforward_polynomials(self):

@@ -1,4 +1,5 @@
 import heapq
+
 import numpy as np
 
 from .VariableToFixedCode import VariableToFixedCode
@@ -20,6 +21,7 @@ class TunstallCode(VariableToFixedCode):
      (1,): (1, 0, 1),
      (2,): (1, 1, 0)}
     """
+
     def __init__(self, pmf, code_block_size):
         """
         Constructor for the class. It expects the following parameters:
@@ -50,6 +52,7 @@ class TunstallCode(VariableToFixedCode):
             def __init__(self, symbols, probability):
                 self.symbols = symbols
                 self.probability = probability
+
             def __lt__(self, other):
                 return -self.probability < -other.probability
 
@@ -58,7 +61,7 @@ class TunstallCode(VariableToFixedCode):
 
         while len(queue) + len(pmf) - 1 < 2**code_block_size:
             node = heapq.heappop(queue)
-            for (symbol, probability) in enumerate(pmf):
+            for symbol, probability in enumerate(pmf):
                 new_node = Node(node.symbols + (symbol,), node.probability * probability)
                 heapq.heappush(queue, new_node)
         sourcewords = sorted(node.symbols for node in queue)
@@ -66,5 +69,5 @@ class TunstallCode(VariableToFixedCode):
         return sourcewords
 
     def __repr__(self):
-        args = 'pmf={}, code_block_size={}'.format(self._pmf.tolist(), self._code_block_size)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "pmf={}, code_block_size={}".format(self._pmf.tolist(), self._code_block_size)
+        return "{}({})".format(self.__class__.__name__, args)

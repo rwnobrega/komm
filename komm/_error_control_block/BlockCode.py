@@ -3,13 +3,9 @@ import itertools
 
 import numpy as np
 
-from .._algebra.util import \
-    null_matrix, right_inverse \
-
-from .._util import \
-    int2binlist, binlist2int
-
+from .._algebra.util import null_matrix, right_inverse
 from .._aux import tag
+from .._util import binlist2int, int2binlist
 
 
 class BlockCode:
@@ -60,6 +56,7 @@ class BlockCode:
     >>> (code.packing_radius, code.covering_radius)
     (1, 2)
     """
+
     def __init__(self, **kwargs):
         """
         Constructor for the class. It expects one of the following formats:
@@ -88,11 +85,11 @@ class BlockCode:
         :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional
             Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
         """
-        if 'generator_matrix' in kwargs:
+        if "generator_matrix" in kwargs:
             self._init_from_generator_matrix(**kwargs)
-        elif 'parity_check_matrix' in kwargs:
+        elif "parity_check_matrix" in kwargs:
             self._init_from_parity_check_matrix(**kwargs)
-        elif 'parity_submatrix' in kwargs:
+        elif "parity_submatrix" in kwargs:
             self._init_from_parity_submatrix(**kwargs)
         else:
             raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix'")
@@ -102,26 +99,29 @@ class BlockCode:
         self._dimension, self._length = self._generator_matrix.shape
         self._redundancy = self._length - self._dimension
         self._is_systematic = False
-        self._constructed_from = 'generator_matrix'
+        self._constructed_from = "generator_matrix"
 
     def _init_from_parity_check_matrix(self, parity_check_matrix):
         self._parity_check_matrix = np.array(parity_check_matrix, dtype=int) % 2
         self._redundancy, self._length = self._parity_check_matrix.shape
         self._dimension = self._length - self._redundancy
         self._is_systematic = False
-        self._constructed_from = 'parity_check_matrix'
+        self._constructed_from = "parity_check_matrix"
 
-    def _init_from_parity_submatrix(self, parity_submatrix, information_set='left'):
+    def _init_from_parity_submatrix(self, parity_submatrix, information_set="left"):
         self._parity_submatrix = np.array(parity_submatrix, dtype=int) % 2
         self._dimension, self._redundancy = self._parity_submatrix.shape
         self._length = self._dimension + self._redundancy
-        if information_set == 'left':
+        if information_set == "left":
             information_set = np.arange(self._dimension)
-        elif information_set == 'right':
+        elif information_set == "right":
             information_set = np.arange(self._redundancy, self._length)
         self._information_set = np.array(information_set, dtype=int)
-        if self._information_set.size != self._dimension or \
-           self._information_set.min() < 0 or self._information_set.max() > self._length:
+        if (
+            self._information_set.size != self._dimension
+            or self._information_set.min() < 0
+            or self._information_set.max() > self._length
+        ):
             raise ValueError("Parameter 'information_set' must be a 'k'-subset of 'range(n)'")
         self._parity_set = np.setdiff1d(np.arange(self._length), self._information_set)
         self._generator_matrix = np.empty((self._dimension, self._length), dtype=int)
@@ -131,16 +131,18 @@ class BlockCode:
         self._parity_check_matrix[:, self._information_set] = self._parity_submatrix.T
         self._parity_check_matrix[:, self._parity_set] = np.eye(self._redundancy, dtype=int)
         self._is_systematic = True
-        self._constructed_from = 'parity_submatrix'
+        self._constructed_from = "parity_submatrix"
 
     def __repr__(self):
-        if self._constructed_from == 'generator_matrix':
-            args = 'generator_matrix={}'.format(self._generator_matrix.tolist())
-        elif self._constructed_from == 'parity_check_matrix':
-            args = 'parity_check_matrix={}'.format(self._parity_check_matrix.tolist())
-        elif self._constructed_from == 'parity_submatrix':
-            args = 'parity_submatrix={}, information_set={}'.format(self._parity_submatrix.tolist(), self._information_set.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        if self._constructed_from == "generator_matrix":
+            args = "generator_matrix={}".format(self._generator_matrix.tolist())
+        elif self._constructed_from == "parity_check_matrix":
+            args = "parity_check_matrix={}".format(self._parity_check_matrix.tolist())
+        elif self._constructed_from == "parity_submatrix":
+            args = "parity_submatrix={}, information_set={}".format(
+                self._parity_submatrix.tolist(), self._information_set.tolist()
+            )
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def length(self):
@@ -294,7 +296,7 @@ class BlockCode:
         if method is None:
             method = self._default_encoder()
 
-        encoder = getattr(self, '_encode_' + method)
+        encoder = getattr(self, "_encode_" + method)
         codeword = encoder(message)
 
         return codeword
@@ -311,9 +313,9 @@ class BlockCode:
 
     def _default_encoder(self):
         if self._is_systematic:
-            return 'systematic_generator_matrix'
+            return "systematic_generator_matrix"
         else:
-            return 'generator_matrix'
+            return "generator_matrix"
 
     def message_from_codeword(self, codeword):
         """
@@ -359,16 +361,16 @@ class BlockCode:
         if method is None:
             method = self._default_decoder(recvword.dtype)
 
-        decoder = getattr(self, '_decode_' + method)
+        decoder = getattr(self, "_decode_" + method)
 
-        if decoder.target == 'codeword':
+        if decoder.target == "codeword":
             message_hat = self.message_from_codeword(decoder(recvword, **kwargs))
-        elif decoder.target == 'message':
+        elif decoder.target == "message":
             message_hat = decoder(recvword, **kwargs)
 
         return message_hat
 
-    @tag(name='Exhaustive search (hard-decision)', input_type='hard', target='codeword')
+    @tag(name="Exhaustive search (hard-decision)", input_type="hard", target="codeword")
     def _decode_exhaustive_search_hard(self, recvword):
         """
         Exhaustive search minimum distance hard decoder. Hamming distance.
@@ -378,7 +380,7 @@ class BlockCode:
         codeword_hat = codewords[np.argmin(metrics)]
         return codeword_hat
 
-    @tag(name='Exhaustive search (soft-decision)', input_type='soft', target='codeword')
+    @tag(name="Exhaustive search (soft-decision)", input_type="soft", target="codeword")
     def _decode_exhaustive_search_soft(self, recvword):
         """
         Exhaustive search minimum distance soft decoder. Euclidean distance.
@@ -388,7 +390,7 @@ class BlockCode:
         codeword_hat = codewords[np.argmin(metrics)]
         return codeword_hat
 
-    @tag(name='Syndrome table', input_type='hard', target='codeword')
+    @tag(name="Syndrome table", input_type="hard", target="codeword")
     def _decode_syndrome_table(self, recvword):
         """
         Syndrome table decoder.
@@ -403,29 +405,29 @@ class BlockCode:
     def _default_decoder(self, dtype):
         if dtype == int:
             if self._dimension >= self._redundancy:
-                return 'syndrome_table'
+                return "syndrome_table"
             else:
-                return 'exhaustive_search_hard'
+                return "exhaustive_search_hard"
         elif dtype == float:
-            return 'exhaustive_search_soft'
+            return "exhaustive_search_soft"
 
     @classmethod
     def _available_decoding_methods(cls):
         table = []
         for name in dir(cls):
-            if name.startswith('_decode_'):
+            if name.startswith("_decode_"):
                 identifier = name[8:]
                 method = getattr(cls, name)
-                table.append([method.name, ':code:`{}`'.format(identifier), method.input_type])
+                table.append([method.name, ":code:`{}`".format(identifier), method.input_type])
         return table
 
     @classmethod
     def _process_docstring(cls):
         table = cls._available_decoding_methods()
-        indent = ' ' * 4
-        rst = '.. csv-table::\n'
-        rst += '{indent}   :header: Method, Identifier, Input type\n'.format(indent=indent)
-        rst += '{indent}   :widths: 5, 5, 2\n\n'.format(indent=indent)
+        indent = " " * 4
+        rst = ".. csv-table::\n"
+        rst += "{indent}   :header: Method, Identifier, Input type\n".format(indent=indent)
+        rst += "{indent}   :widths: 5, 5, 2\n\n".format(indent=indent)
         for row in table:
-            rst += '{indent}   {row}\n'.format(indent=indent, row=', '.join(row))
-        cls.__doc__ = cls.__doc__.replace('[[decoding_methods]]', rst)
+            rst += "{indent}   {row}\n".format(indent=indent, row=", ".join(row))
+        cls.__doc__ = cls.__doc__.replace("[[decoding_methods]]", rst)

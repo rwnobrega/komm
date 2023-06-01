@@ -1,6 +1,7 @@
 import numpy as np
 
-from . import DiscreteMemorylessChannel
+from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
+
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
     """
@@ -20,6 +21,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
+
     def __init__(self, erasure_probability=0.0):
         """
         Constructor for the class. It expects the following parameter:
@@ -46,7 +48,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     @erasure_probability.setter
     def erasure_probability(self, value):
         self._erasure_probability = e = float(value)
-        self.transition_matrix  = [[1 - e, 0, e], [0, 1 - e, e]]
+        self.transition_matrix = [[1 - e, 0, e], [0, 1 - e, e]]
 
     def capacity(self):
         """
@@ -61,11 +63,11 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         return 1.0 - self._erasure_probability
 
     def __call__(self, input_sequence):
-        erasure_pattern = (np.random.rand(np.size(input_sequence)) < self._erasure_probability)
+        erasure_pattern = np.random.rand(np.size(input_sequence)) < self._erasure_probability
         output_sequence = np.copy(input_sequence)
         output_sequence[erasure_pattern] = 2
         return output_sequence
 
     def __repr__(self):
-        args = 'erasure_probability={}'.format(self._erasure_probability)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "erasure_probability={}".format(self._erasure_probability)
+        return "{}({})".format(self.__class__.__name__, args)

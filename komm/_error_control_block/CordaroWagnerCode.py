@@ -1,6 +1,6 @@
-from .BlockCode import BlockCode
-
 import numpy as np
+
+from .BlockCode import BlockCode
 
 
 class CordaroWagnerCode(BlockCode):
@@ -26,6 +26,7 @@ class CordaroWagnerCode(BlockCode):
     >>> code.coset_leader_weight_distribution
     array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
     """
+
     def __init__(self, n):
         """
         Constructor for the class. It expects the following parameter:
@@ -34,7 +35,7 @@ class CordaroWagnerCode(BlockCode):
             The length :math:`n` of the code. Must satisfy :math:`n \\geq 2`.
         """
         r = (n + 1) // 3
-        s = n - 3*r
+        s = n - 3 * r
         if s == -1:
             (h, i, j) = (r - 1, r, r)
         elif s == 0:
@@ -49,11 +50,11 @@ class CordaroWagnerCode(BlockCode):
         self._minimum_distance = h + i
 
     def __repr__(self):
-        args = '{}'.format(self._length)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format(self._length)
+        return "{}({})".format(self.__class__.__name__, args)
 
     def _default_decoder(self, dtype):
         if dtype == int:
-            return 'exhaustive_search_hard'
+            return "exhaustive_search_hard"
         elif dtype == float:
-            return 'exhaustive_search_soft'
+            return "exhaustive_search_soft"

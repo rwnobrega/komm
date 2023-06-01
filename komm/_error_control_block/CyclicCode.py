@@ -3,9 +3,10 @@ import itertools
 
 import numpy as np
 
-from .BlockCode import BlockCode
-from .._aux import tag
 from .._algebra import BinaryPolynomial
+from .._aux import tag
+from .BlockCode import BlockCode
+
 
 class CyclicCode(BlockCode):
     """
@@ -28,6 +29,7 @@ class CyclicCode(BlockCode):
 
     [[decoding_methods]]
     """
+
     def __init__(self, length, systematic=True, **kwargs):
         """
         Constructor for the class. It expects one of the following formats:
@@ -67,18 +69,18 @@ class CyclicCode(BlockCode):
         self._length = length
         self._modulus = BinaryPolynomial.from_exponents([0, self._length])
         kwargs_set = set(kwargs.keys())
-        if kwargs_set == {'generator_polynomial'}:
-            self._generator_polynomial = BinaryPolynomial(kwargs['generator_polynomial'])
+        if kwargs_set == {"generator_polynomial"}:
+            self._generator_polynomial = BinaryPolynomial(kwargs["generator_polynomial"])
             self._parity_check_polynomial, remainder = divmod(self._modulus, self._generator_polynomial)
             if remainder != 0b0:
                 raise ValueError("The generator polynomial must be a factor of X^n + 1")
-            self._constructed_from = 'generator_polynomial'
-        elif kwargs_set == {'parity_check_polynomial'}:
-            self._parity_check_polynomial = BinaryPolynomial(kwargs['parity_check_polynomial'])
+            self._constructed_from = "generator_polynomial"
+        elif kwargs_set == {"parity_check_polynomial"}:
+            self._parity_check_polynomial = BinaryPolynomial(kwargs["parity_check_polynomial"])
             self._generator_polynomial, remainder = divmod(self._modulus, self._parity_check_polynomial)
             if remainder != 0b0:
                 raise ValueError("The parity-check polynomial must be a factor of X^n + 1")
-            self._constructed_from = 'parity_check_polynomial'
+            self._constructed_from = "parity_check_polynomial"
         else:
             raise ValueError("Either specify 'generator_polynomial' or 'parity_check_polynomial'")
         self._dimension = self._parity_check_polynomial.degree
@@ -88,11 +90,15 @@ class CyclicCode(BlockCode):
             self._information_set = np.arange(self._redundancy, self._length)
 
     def __repr__(self):
-        if self._constructed_from == 'generator_polynomial':
-            args = 'length={}, generator_polynomial={}, systematic={}'.format(self._length, self._generator_polynomial, self._is_systematic)
-        elif self._constructed_from == 'parity_check_polynomial':
-            args = 'length={}, parity_check_polynomial={}, systematic={}'.format(self._length, self._parity_check_polynomial, self._is_systematic)
-        return '{}({})'.format(self.__class__.__name__, args)
+        if self._constructed_from == "generator_polynomial":
+            args = "length={}, generator_polynomial={}, systematic={}".format(
+                self._length, self._generator_polynomial, self._is_systematic
+            )
+        elif self._constructed_from == "parity_check_polynomial":
+            args = "length={}, parity_check_polynomial={}, systematic={}".format(
+                self._length, self._parity_check_polynomial, self._is_systematic
+            )
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def generator_polynomial(self):
@@ -139,9 +145,9 @@ class CyclicCode(BlockCode):
 
     def _default_encoder(self):
         if self._is_systematic:
-            return 'cyclic_systematic'
+            return "cyclic_systematic"
         else:
-            return 'cyclic_direct'
+            return "cyclic_direct"
 
     @functools.cached_property
     def generator_matrix(self):
@@ -161,7 +167,7 @@ class CyclicCode(BlockCode):
             parity_check_matrix[n - k - i - 1] = np.roll(row, -i)
         return parity_check_matrix
 
-    @tag(name='Meggitt decoder', input_type='hard', target='codeword')
+    @tag(name="Meggitt decoder", input_type="hard", target="codeword")
     def _decode_meggitt(self, recvword):
         """
         Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
@@ -181,6 +187,6 @@ class CyclicCode(BlockCode):
 
     def _default_decoder(self, dtype):
         if dtype == int:
-            return 'meggitt'
+            return "meggitt"
         else:
             return super()._default_decoder(dtype)

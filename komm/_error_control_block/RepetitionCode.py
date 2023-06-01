@@ -2,7 +2,6 @@ import numpy as np
 from scipy import special
 
 from .._aux import tag
-
 from .BlockCode import BlockCode
 
 
@@ -39,6 +38,7 @@ class RepetitionCode(BlockCode):
     >>> code.decode([1, 0, 1, 0, 0])
     array([0])
     """
+
     def __init__(self, n):
         """
         Constructor for the class. It expects the following parameter:
@@ -48,17 +48,17 @@ class RepetitionCode(BlockCode):
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
         self._minimum_distance = n
-        self._coset_leader_weight_distribution = np.zeros(n+1, dtype=int)
-        for w in range((n + 1)//2):
+        self._coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
+        for w in range((n + 1) // 2):
             self._coset_leader_weight_distribution[w] = special.comb(n, w, exact=True)
         if n % 2 == 0:
-            self._coset_leader_weight_distribution[n//2] = special.comb(n, n//2, exact=True) // 2
+            self._coset_leader_weight_distribution[n // 2] = special.comb(n, n // 2, exact=True) // 2
 
     def __repr__(self):
-        args = '{}'.format(self._length)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format(self._length)
+        return "{}({})".format(self.__class__.__name__, args)
 
-    @tag(name='Majority-logic', input_type='hard', target='codeword')
+    @tag(name="Majority-logic", input_type="hard", target="codeword")
     def _decode_majority_logic(self, recvword):
         """
         Majority-logic decoder. A hard-decision decoder for Repetition codes only.
@@ -69,6 +69,6 @@ class RepetitionCode(BlockCode):
 
     def _default_decoder(self, dtype):
         if dtype == int:
-            return 'majority_logic'
+            return "majority_logic"
         else:
             return super()._default_decoder(dtype)

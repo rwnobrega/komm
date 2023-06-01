@@ -1,5 +1,5 @@
 from .BlockCode import BlockCode
-from .util import _hamming_parity_submatrix, _extended_parity_submatrix
+from .util import _extended_parity_submatrix, _hamming_parity_submatrix
 
 
 class HammingCode(BlockCode):
@@ -62,6 +62,7 @@ class HammingCode(BlockCode):
     >>> code.decode([0, 1, 0, 0, 0, 1, 1, 0])
     array([1, 1, 0, 0])
     """
+
     def __init__(self, m, extended=False):
         """
         Constructor for the class. It expects the following parameters:
@@ -81,7 +82,7 @@ class HammingCode(BlockCode):
         self._extended = extended
 
     def __repr__(self):
-        args = '{}'.format(self._m)
+        args = "{}".format(self._m)
         if self._extended:
-            args += ', extended=True'
-        return '{}({})'.format(self.__class__.__name__, args)
+            args += ", extended=True"
+        return "{}({})".format(self.__class__.__name__, args)

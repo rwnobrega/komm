@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class AWGNChannel:
     """
     Additive white Gaussian noise (AWGN) channel. It is defined by
@@ -20,6 +21,7 @@ class AWGNChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
+
     def __init__(self, snr=np.inf, signal_power=1.0):
         """Constructor for the class. It expects the following parameters:
 
@@ -78,8 +80,8 @@ class AWGNChannel:
         input_signal = np.array(input_signal)
         size = input_signal.size
 
-        if self._signal_power == 'measured':
-            signal_power = np.linalg.norm(input_signal)**2 / size
+        if self._signal_power == "measured":
+            signal_power = np.linalg.norm(input_signal) ** 2 / size
         else:
             signal_power = self._signal_power
 
@@ -93,5 +95,5 @@ class AWGNChannel:
         return input_signal + noise
 
     def __repr__(self):
-        args = 'snr={}, signal_power={}'.format(self._snr, self._signal_power)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "snr={}, signal_power={}".format(self._snr, self._signal_power)
+        return "{}({})".format(self.__class__.__name__, args)

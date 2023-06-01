@@ -1,4 +1,5 @@
 import numpy as np
+
 from .Pulse import Pulse
 
 
@@ -16,6 +17,7 @@ class SincPulse(Pulse):
        :alt: Sinc pulse
        :align: center
     """
+
     def __init__(self, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
@@ -32,7 +34,7 @@ class SincPulse(Pulse):
         def impulse_response(t):
             return np.sinc(t)
 
-        super().__init__(impulse_response, interval=(-L/2, L/2))
+        super().__init__(impulse_response, interval=(-L / 2, L / 2))
 
     @property
     def length_in_symbols(self):
@@ -42,5 +44,5 @@ class SincPulse(Pulse):
         return self._length_in_symbols
 
     def __repr__(self):
-        args = 'length_in_symbols={}'.format(self._length_in_symbols)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "length_in_symbols={}".format(self._length_in_symbols)
+        return "{}({})".format(self.__class__.__name__, args)

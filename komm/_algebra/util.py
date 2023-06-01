@@ -117,8 +117,8 @@ def xrref(M):
     augmented_M = np.concatenate((np.copy(M), np.copy(eye)), axis=1)
     augmented_M_rref = rref(augmented_M)
 
-    M_rref = augmented_M_rref[:, :M.shape[1]]
-    P = augmented_M_rref[:, M.shape[1]:]
+    M_rref = augmented_M_rref[:, : M.shape[1]]
+    P = augmented_M_rref[:, M.shape[1] :]
 
     pivots = []
     j = 0

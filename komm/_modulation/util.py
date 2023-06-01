@@ -26,7 +26,7 @@ def bpsk_soft_bit_demodulator(received, snr):
 
 def qpsk_soft_bit_demodulator_reflected(received, snr):
     received_rotated = received * np.exp(2j * np.pi / 8)
-    soft_bits = np.empty(2*received.size, dtype=float)
+    soft_bits = np.empty(2 * received.size, dtype=float)
     soft_bits[0::2] = np.sqrt(8) * snr * received_rotated.real
     soft_bits[1::2] = np.sqrt(8) * snr * received_rotated.imag
     return soft_bits

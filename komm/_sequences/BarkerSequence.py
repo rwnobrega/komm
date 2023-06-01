@@ -19,6 +19,7 @@ class BarkerSequence(BinarySequence):
 
     [1] https://en.wikipedia.org/wiki/Barker_code
     """
+
     def __init__(self, length):
         """
         Constructor for the class. It expects the following parameter:
@@ -37,8 +38,8 @@ class BarkerSequence(BinarySequence):
         super().__init__(bit_sequence=self._barker_sequence(length))
 
     def __repr__(self):
-        args = 'length={}'.format(self.length)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "length={}".format(self.length)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @staticmethod
     def _barker_sequence(length):

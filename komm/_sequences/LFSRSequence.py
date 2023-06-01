@@ -1,4 +1,5 @@
 import numpy as np
+
 from .._algebra import BinaryPolynomial
 from .BinarySequence import BinarySequence
 
@@ -37,6 +38,7 @@ class LFSRSequence(BinarySequence):
     >>> lfsr.cyclic_autocorrelation()  #doctest: +NORMALIZE_WHITESPACE
     array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
     """
+
     def __init__(self, feedback_polynomial, start_state_polynomial=0b1):
         """
         Constructor for the class. It expects the following parameters:
@@ -90,14 +92,15 @@ class LFSRSequence(BinarySequence):
             13: 0b10000000011011,
             14: 0b100010001000011,
             15: 0b1000000000000011,
-            16: 0b10001000000001011}
+            16: 0b10001000000001011,
+        }
         return cls(PRIMITIVE_POLYNOMIALS[degree])
 
     def __repr__(self):
-        args = 'feedback_polynomial={}'.format(self._feedback_polynomial)
+        args = "feedback_polynomial={}".format(self._feedback_polynomial)
         if self._start_state_polynomial != BinaryPolynomial(0b1):
-            args += ', start_state_polynomial={}'.format(self._start_state_polynomial)
-        return '{}({})'.format(self.__class__.__name__, args)
+            args += ", start_state_polynomial={}".format(self._start_state_polynomial)
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def feedback_polynomial(self):

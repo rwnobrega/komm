@@ -1,4 +1,5 @@
 import itertools
+
 import numpy as np
 
 from .._util import int2binlist
@@ -15,16 +16,18 @@ class Modulation:
         self._labeling = np.array(labeling, dtype=int)
         if not np.array_equal(np.sort(self._labeling), np.arange(self._order)):
             raise ValueError("The labeling must be a permutation of [0 : order)")
-        self._mapping = {symbol: tuple(int2binlist(label, width=self._bits_per_symbol)) \
-                         for (symbol, label) in enumerate(self._labeling)}
+        self._mapping = {
+            symbol: tuple(int2binlist(label, width=self._bits_per_symbol))
+            for (symbol, label) in enumerate(self._labeling)
+        }
         self._inverse_mapping = dict((value, key) for key, value in self._mapping.items())
 
         self._channel_snr = 1.0
         self._channel_N0 = self.energy_per_symbol / self._channel_snr
 
     def __repr__(self):
-        args = 'constellation={}, labeling={}'.format(self._constellation.tolist(), self._labeling.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "constellation={}, labeling={}".format(self._constellation.tolist(), self._labeling.tolist())
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def constellation(self):
@@ -133,7 +136,7 @@ class Modulation:
         n_bits = len(symbols) * m
         bits = np.empty(n_bits, dtype=int)
         for i, symbol in enumerate(symbols):
-            bits[i*m : (i + 1)*m] = self._mapping[symbol]
+            bits[i * m : (i + 1) * m] = self._mapping[symbol]
         return bits
 
     def modulate(self, bits):
@@ -157,13 +160,13 @@ class Modulation:
             bits[bit_index] = bit_value
             rest_index = np.setdiff1d(np.arange(m), [bit_index])
             f = 0.0
-            for b_rest in itertools.product([0, 1], repeat=m-1):
+            for b_rest in itertools.product([0, 1], repeat=m - 1):
                 bits[rest_index] = b_rest
                 point = self._constellation[self._inverse_mapping[tuple(bits)]]
-                f += np.exp(-np.abs(received - point)**2 / self._channel_N0)
+                f += np.exp(-np.abs(received - point) ** 2 / self._channel_N0)
             return f
 
-        soft_bits = np.empty(len(received)*m, dtype=float)
+        soft_bits = np.empty(len(received) * m, dtype=float)
         for bit_index in range(m):
             p0 = pdf_received_given_bit(bit_index, 0)
             p1 = pdf_received_given_bit(bit_index, 1)
@@ -171,14 +174,14 @@ class Modulation:
 
         return soft_bits
 
-    def demodulate(self, received, decision_method='hard'):
+    def demodulate(self, received, decision_method="hard"):
         """
         Demodulates a sequence of received points to a sequence of bits.
         """
-        if decision_method == 'hard':
+        if decision_method == "hard":
             symbols_hat = self._hard_symbol_demodulator(received)
             return self.symbols_to_bits(symbols_hat)
-        elif decision_method == 'soft':
+        elif decision_method == "soft":
             return self._soft_bit_demodulator(received)
         else:
             raise ValueError("Parameter 'decision_method' should be either 'hard' or 'soft'")
@@ -191,7 +194,7 @@ class Modulation:
     @staticmethod
     def _labeling_reflected(order):
         labeling = np.arange(order)
-        labeling ^= (labeling >> 1)
+        labeling ^= labeling >> 1
         return labeling
 
     @staticmethod

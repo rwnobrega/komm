@@ -1,12 +1,11 @@
 import functools
 import operator
+
 import numpy as np
 
-from .._util import \
-    _int2binlist, _binlist2int
+from .._util import _binlist2int, _int2binlist
+from .util import binary_horner, gcd, power, xgcd
 
-from .util import \
-    gcd, power, xgcd, binary_horner
 
 class BinaryPolynomial:
     """
@@ -29,6 +28,7 @@ class BinaryPolynomial:
     >>> poly1**2  # X^8 + X^4
     BinaryPolynomial(0b100010000)
     """
+
     def __init__(self, integer):
         self._integer = int(integer)
 
@@ -147,8 +147,8 @@ class BinaryPolynomial:
         div, mod, den = 0, self._integer, den._integer
         d = mod.bit_length() - den.bit_length()
         while d >= 0:
-            div ^= (1 << d)
-            mod ^= (den << d)
+            div ^= 1 << d
+            mod ^= den << d
             d = mod.bit_length() - den.bit_length()
         return self.__class__(div), self.__class__(mod)
 
@@ -185,8 +185,8 @@ class BinaryPolynomial:
         return binary_horner(self, point)
 
     def __repr__(self):
-        args = '{}'.format(bin(self._integer))
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format(bin(self._integer))
+        return "{}({})".format(self.__class__.__name__, args)
 
     def __str__(self):
         return bin(self._integer)

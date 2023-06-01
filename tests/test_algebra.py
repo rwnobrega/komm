@@ -1,6 +1,6 @@
+import numpy as np
 import pytest
 
-import numpy as np
 import komm
 
 
@@ -14,7 +14,7 @@ def test_binary_polynomial():
     assert poly == komm.BinaryPolynomial(0b10100110111)
     assert poly >> 2 == komm.BinaryPolynomial(0b101001101)
     assert poly << 2 == komm.BinaryPolynomial(0b1010011011100)
-    assert poly ** 2 == komm.BinaryPolynomial(0b100010000010100010101)
+    assert poly**2 == komm.BinaryPolynomial(0b100010000010100010101)
     assert poly.evaluate(2) == 0b10100110111
     assert poly.evaluate(10) == 10100110111
     assert poly.evaluate(16) == 0x10100110111
@@ -53,7 +53,9 @@ def test_finite_bifield():
     assert alpha**4 == one + alpha == field(0b0011)
     assert alpha**5 == alpha + alpha**2 == field(0b0110)
     assert alpha**6 == alpha**2 + alpha**3 == field(0b1100)
-    assert alpha**7 == one + alpha + alpha**3 == alpha**4 / alpha**12 == alpha**12 / alpha**5 == field(0b1011)
+    assert (
+        alpha**7 == one + alpha + alpha**3 == alpha**4 / alpha**12 == alpha**12 / alpha**5 == field(0b1011)
+    )
     assert alpha**13 == alpha**5 + alpha**7 == field(0b1101)
     assert one + alpha**5 + alpha**10 == field(0)
 
@@ -86,7 +88,7 @@ def test_minimal_polynomial():
     assert field(alpha**7).minimal_polynomial() == komm.BinaryPolynomial(0b11001)
 
 
-@pytest.mark.parametrize('m', list(range(2, 8)))
+@pytest.mark.parametrize("m", list(range(2, 8)))
 def test_inverse(m):
     field = komm.FiniteBifield(m)
     for i in range(1, field.order):
@@ -94,7 +96,7 @@ def test_inverse(m):
         assert a * a.inverse() == field(1)
 
 
-@pytest.mark.parametrize('m', list(range(2, 8)))
+@pytest.mark.parametrize("m", list(range(2, 8)))
 def test_logarithm(m):
     field = komm.FiniteBifield(m)
     alpha = field.primitive_element
@@ -134,8 +136,8 @@ def test_rational_polynomial_divmod():
 
     poly_dividend = komm.RationalPolynomial([0, 0, 0, 0, 0, 1])
     poly_divisor = komm.RationalPolynomial([1, 0, 2])
-    poly_quotient = komm.RationalPolynomial([0, '-1/4', 0, '1/2'])
-    poly_remainder = komm.RationalPolynomial([0, '1/4'])
+    poly_quotient = komm.RationalPolynomial([0, "-1/4", 0, "1/2"])
+    poly_remainder = komm.RationalPolynomial([0, "1/4"])
     assert divmod(poly_dividend, poly_divisor) == (poly_quotient, poly_remainder)
 
     poly_dividend = komm.RationalPolynomial([12, -26, 21, -9, 2])
@@ -163,6 +165,6 @@ def test_rational_polynomial_fractions():
     assert fraction.numerator == komm.RationalPolynomial([1, 2])
     assert fraction.denominator == komm.RationalPolynomial([0, 0, 1])
 
-    fraction = komm.RationalPolynomialFraction([0, '5/14'], [0, 0, 0, '55/21'])
+    fraction = komm.RationalPolynomialFraction([0, "5/14"], [0, 0, 0, "55/21"])
     assert fraction.numerator == komm.RationalPolynomial([3])
     assert fraction.denominator == komm.RationalPolynomial([0, 0, 22])

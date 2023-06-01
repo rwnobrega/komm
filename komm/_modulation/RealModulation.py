@@ -1,10 +1,13 @@
 import numpy as np
+
 from .Modulation import Modulation
+
 
 class RealModulation(Modulation):
     """
     General real modulation scheme. A *real modulation scheme* of order :math:`M` is defined by a *constellation* :math:`\\mathcal{S}`, which is an ordered subset (a list) of real numbers, with :math:`|\\mathcal{S}| = M`, and a *binary labeling* :math:`\\mathcal{Q}`, which is a permutation of :math:`[0: M)`. The order :math:`M` of the modulation must be a power of :math:`2`.
     """
+
     def __init__(self, constellation, labeling):
         """
         Constructor for the class. It expects the following parameters:

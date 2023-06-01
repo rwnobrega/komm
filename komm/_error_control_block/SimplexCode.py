@@ -42,6 +42,7 @@ class SimplexCode(BlockCode):
     >>> code.decode([1, 0, 1, 1, 1, 1, 0])
     array([1, 0, 1])
     """
+
     def __init__(self, k):
         """
         Constructor for the class. It expects the following parameter:
@@ -51,9 +52,9 @@ class SimplexCode(BlockCode):
         """
         P = _hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)
-        self._minimum_distance = 2**(k - 1)
+        self._minimum_distance = 2 ** (k - 1)
         self._k = k
 
     def __repr__(self):
-        args = '{}'.format(self._k)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format(self._k)
+        return "{}({})".format(self.__class__.__name__, args)

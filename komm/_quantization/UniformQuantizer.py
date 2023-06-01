@@ -1,4 +1,5 @@
 import numpy as np
+
 from .ScalarQuantizer import ScalarQuantizer
 
 
@@ -6,7 +7,8 @@ class UniformQuantizer(ScalarQuantizer):
     """
     Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\\Delta`, and the thresholds are the mid-point between adjacent levels.
     """
-    def __init__(self, num_levels, input_peak=1.0, choice='mid-riser'):
+
+    def __init__(self, num_levels, input_peak=1.0, choice="mid-riser"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -50,22 +52,22 @@ class UniformQuantizer(ScalarQuantizer):
         >>> quantizer.thresholds
         array([-0.75, -0.25,  0.25])
         """
-        delta = input_peak / num_levels if choice == 'unsigned' else 2.0 * input_peak / num_levels
+        delta = input_peak / num_levels if choice == "unsigned" else 2.0 * input_peak / num_levels
 
-        if choice == 'unsigned':
+        if choice == "unsigned":
             min_level = 0.0
             max_level = input_peak
             levels = np.linspace(min_level, max_level, num=num_levels, endpoint=False)
-        elif choice == 'mid-riser':
+        elif choice == "mid-riser":
             min_level = -input_peak + (delta / 2) * (num_levels % 2 == 0)
             levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 0))
-        elif choice == 'mid-tread':
+        elif choice == "mid-tread":
             min_level = -input_peak + (delta / 2) * (num_levels % 2 == 1)
             levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 1))
         else:
             raise ValueError("Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}")
 
-        thresholds = (levels + delta/2)[:-1]
+        thresholds = (levels + delta / 2)[:-1]
         super().__init__(levels, thresholds)
 
         self._quantization_step = delta
@@ -96,13 +98,13 @@ class UniformQuantizer(ScalarQuantizer):
     def __call__(self, input_signal):
         input_signal = np.array(input_signal, dtype=float, ndmin=1)
         delta = self._quantization_step
-        if self._choice in ['unsigned', 'mid-tread']:
+        if self._choice in ["unsigned", "mid-tread"]:
             quantized = delta * np.floor(input_signal / delta + 0.5)
-        elif self._choice == 'mid-riser':
+        elif self._choice == "mid-riser":
             quantized = delta * (np.floor(input_signal / delta) + 0.5)
         output_signal = np.clip(quantized, a_min=self._levels[0], a_max=self._levels[-1])
         return output_signal
 
     def __repr__(self):
         args = "num_levels={}, input_peak={}, choice='{}'".format(self._num_levels, self._input_peak, self._choice)
-        return '{}({})'.format(self.__class__.__name__, args)
+        return "{}({})".format(self.__class__.__name__, args)

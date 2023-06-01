@@ -1,4 +1,5 @@
 import itertools
+
 import numpy as np
 
 from .util import _parse_prefix_free
@@ -10,6 +11,7 @@ class VariableToFixedCode:
 
     Also, we only consider *prefix-free* codes, in which no sourceword is a prefix of any other sourceword.
     """
+
     def __init__(self, sourcewords):
         """
         Constructor for the class. It expects the following parameters:
@@ -147,5 +149,5 @@ class VariableToFixedCode:
         return np.concatenate([self._dec_mapping[tuple(bits)] for bits in bits_reshaped])
 
     def __repr__(self):
-        args = 'sourcewords={}'.format(self._sourcewords)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "sourcewords={}".format(self._sourcewords)
+        return "{}({})".format(self.__class__.__name__, args)

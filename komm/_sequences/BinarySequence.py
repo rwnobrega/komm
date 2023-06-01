@@ -1,10 +1,13 @@
 import functools
+
 import numpy as np
+
 
 class BinarySequence:
     """
     General binary sequence. It may be represented either in *bit format*, denoted by :math:`b[n]`, with elements in the set :math:`\\{ 0, 1 \\}`, or in *polar format*, denoted by :math:`a[n]`, with elements in the set :math:`\\{ \\pm 1 \\}`. The correspondences :math:`0 \\mapsto +1` and :math:`1 \\mapsto -1` from bit format to polar format is assumed.
     """
+
     def __init__(self, **kwargs):
         """
         Constructor for the class. It expects *exactly one* the following parameters:
@@ -16,22 +19,22 @@ class BinarySequence:
             The binary sequence in polar format. Must be an 1D-array with elements in :math:`\\{ \\pm 1 \\}`.
         """
         kwargs_set = set(kwargs.keys())
-        if kwargs_set == {'bit_sequence'}:
-            self._bit_sequence = np.array(kwargs['bit_sequence'], dtype=int)
-            self._polar_sequence = (-1)**self._bit_sequence
-            self._constructed_from = 'bit_sequence'
-        elif kwargs_set == {'polar_sequence'}:
-            self._polar_sequence = np.array(kwargs['polar_sequence'], dtype=int)
+        if kwargs_set == {"bit_sequence"}:
+            self._bit_sequence = np.array(kwargs["bit_sequence"], dtype=int)
+            self._polar_sequence = (-1) ** self._bit_sequence
+            self._constructed_from = "bit_sequence"
+        elif kwargs_set == {"polar_sequence"}:
+            self._polar_sequence = np.array(kwargs["polar_sequence"], dtype=int)
             self._bit_sequence = 1 * (self._polar_sequence < 0)
-            self._constructed_from = 'polar_sequence'
+            self._constructed_from = "polar_sequence"
         else:
             raise ValueError("Either specify 'bit_sequence' or 'polar_sequence'")
 
         self._length = self._bit_sequence.size
 
     def __repr__(self):
-        args = 'bit_sequence={}'.format(self._bit_sequence.tolist())
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "bit_sequence={}".format(self._bit_sequence.tolist())
+        return "{}({})".format(self.__class__.__name__, args)
 
     @property
     def bit_sequence(self):
@@ -58,7 +61,7 @@ class BinarySequence:
     def _autocorrelation(self):
         seq = self._polar_sequence
         L = self._length
-        return np.correlate(seq, seq, mode='full')[L - 1:]
+        return np.correlate(seq, seq, mode="full")[L - 1 :]
 
     @functools.cached_property
     def _cyclic_autocorrelation(self):

@@ -1,12 +1,11 @@
 import functools
 import operator
-
 from fractions import Fraction
 
 import numpy as np
 
-from .util import \
-    gcd, power, horner
+from .util import gcd, horner, power
+
 
 class RationalPolynomial:
     """
@@ -19,13 +18,14 @@ class RationalPolynomial:
     >>> poly
     RationalPolynomial(['1/2', '0', '3'])
     """
+
     def __init__(self, coefficients):
         if isinstance(coefficients, (int, Fraction)):
             coefficients = [Fraction(coefficients)]
         elif isinstance(coefficients, self.__class__):
             coefficients = coefficients._coefficients
 
-        self._coefficients = np.array(np.trim_zeros([Fraction(x) for x in coefficients], trim='b'))
+        self._coefficients = np.array(np.trim_zeros([Fraction(x) for x in coefficients], trim="b"))
 
     @classmethod
     def monomial(cls, degree, coefficient=1):
@@ -71,9 +71,9 @@ class RationalPolynomial:
         if width is None:
             coefficients = self._coefficients
         else:
-            coefficients = np.empty((width, ), dtype=object)
-            coefficients[:self._coefficients.size] = self._coefficients
-            coefficients[self._coefficients.size:] = Fraction(0)
+            coefficients = np.empty((width,), dtype=object)
+            coefficients[: self._coefficients.size] = self._coefficients
+            coefficients[self._coefficients.size :] = Fraction(0)
         return coefficients
 
     @property
@@ -94,15 +94,23 @@ class RationalPolynomial:
 
     def __add__(self, other):
         if self.degree > other.degree:
-            return self.__class__(self._coefficients + np.pad(other._coefficients, (0, self.degree - other.degree), mode='constant'))
+            return self.__class__(
+                self._coefficients + np.pad(other._coefficients, (0, self.degree - other.degree), mode="constant")
+            )
         else:
-            return self.__class__(np.pad(self._coefficients, (0, other.degree - self.degree), mode='constant') + other._coefficients)
+            return self.__class__(
+                np.pad(self._coefficients, (0, other.degree - self.degree), mode="constant") + other._coefficients
+            )
 
     def __sub__(self, other):
         if self.degree > other.degree:
-            return self.__class__(self._coefficients - np.pad(other._coefficients, (0, self.degree - other.degree), mode='constant'))
+            return self.__class__(
+                self._coefficients - np.pad(other._coefficients, (0, self.degree - other.degree), mode="constant")
+            )
         else:
-            return self.__class__(np.pad(self._coefficients, (0, other.degree - self.degree), mode='constant') - other._coefficients)
+            return self.__class__(
+                np.pad(self._coefficients, (0, other.degree - self.degree), mode="constant") - other._coefficients
+            )
 
     def __neg__(self):
         return self.__class__(-self._coefficients)
@@ -160,8 +168,8 @@ class RationalPolynomial:
         return horner(self, point)
 
     def __repr__(self):
-        args = '{}'.format([str(f) for f in self._coefficients])
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}".format([str(f) for f in self._coefficients])
+        return "{}({})".format(self.__class__.__name__, args)
 
     @classmethod
     def gcd(cls, *poly_list):

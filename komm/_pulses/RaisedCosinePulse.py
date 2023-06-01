@@ -1,4 +1,5 @@
 import numpy as np
+
 from .Pulse import Pulse
 
 
@@ -27,6 +28,7 @@ class RaisedCosinePulse(Pulse):
 
     For  :math:`\\alpha = 0`, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
     """
+
     def __init__(self, rolloff, length_in_symbols):
         """
         Constructor for the class. It expects the following parameters:
@@ -48,7 +50,7 @@ class RaisedCosinePulse(Pulse):
 
         def impulse_response(t):
             t += 1e-8
-            return np.sinc(t) * np.cos(np.pi*a*t) / (1 - (2*a*t)**2)
+            return np.sinc(t) * np.cos(np.pi * a * t) / (1 - (2 * a * t) ** 2)
 
         def frequency_response(f):
             f1 = (1 - a) / 2
@@ -58,7 +60,7 @@ class RaisedCosinePulse(Pulse):
                 H += (f1 < abs(f) < f2) * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1)))
             return H
 
-        super().__init__(impulse_response, frequency_response, interval=(-L/2, L/2))
+        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
 
     @property
     def rolloff(self):
@@ -75,5 +77,5 @@ class RaisedCosinePulse(Pulse):
         return self._length_in_symbols
 
     def __repr__(self):
-        args = 'rolloff={}, length_in_symbols={}'.format(self._rolloff, self._length_in_symbols)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "rolloff={}, length_in_symbols={}".format(self._rolloff, self._length_in_symbols)
+        return "{}({})".format(self.__class__.__name__, args)

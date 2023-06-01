@@ -1,6 +1,7 @@
 import numpy as np
-from .Modulation import Modulation
+
 from .ComplexModulation import ComplexModulation
+from .Modulation import Modulation
 
 
 class QAModulation(ComplexModulation):
@@ -25,7 +26,8 @@ class QAModulation(ComplexModulation):
     .. |quad| unicode:: 0x2001
        :trim:
     """
-    def __init__(self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling='reflected_2d'):
+
+    def __init__(self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling="reflected_2d"):
         """
         Constructor for the class. It expects the following parameters:
 
@@ -79,15 +81,17 @@ class QAModulation(ComplexModulation):
 
         constellation_I = base_amplitude_I * np.arange(-order_I + 1, order_I, step=2, dtype=int)
         constellation_Q = base_amplitude_Q * np.arange(-order_Q + 1, order_Q, step=2, dtype=int)
-        constellation = (constellation_I + 1j*constellation_Q[np.newaxis].T).flatten() * np.exp(1j * phase_offset)
+        constellation = (constellation_I + 1j * constellation_Q[np.newaxis].T).flatten() * np.exp(1j * phase_offset)
 
         if isinstance(labeling, str):
-            if labeling == 'natural':
+            if labeling == "natural":
                 labeling = Modulation._labeling_natural(order_I * order_Q)
-            elif labeling == 'reflected_2d':
+            elif labeling == "reflected_2d":
                 labeling = Modulation._labeling_reflected_2d(order_I, order_Q)
             else:
-                raise ValueError("Only 'natural' or 'reflected_2d' are supported for {}".format(self.__class__.__name__))
+                raise ValueError(
+                    "Only 'natural' or 'reflected_2d' are supported for {}".format(self.__class__.__name__)
+                )
 
         super().__init__(constellation, labeling)
 
@@ -96,5 +100,5 @@ class QAModulation(ComplexModulation):
         self._phase_offset = float(phase_offset)
 
     def __repr__(self):
-        args = '{}, base_amplitudes={}, phase_offset={}'.format(self._orders, self._base_amplitudes, self._phase_offset)
-        return '{}({})'.format(self.__class__.__name__, args)
+        args = "{}, base_amplitudes={}, phase_offset={}".format(self._orders, self._base_amplitudes, self._phase_offset)
+        return "{}({})".format(self.__class__.__name__, args)
