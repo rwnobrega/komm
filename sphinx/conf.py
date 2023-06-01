@@ -136,7 +136,8 @@ bibtex_bibfiles = ["refs.bib"]
 
 
 def builder_inited_handler(app):
-    os.system("rm -rf ../docs/")
+    print("Removing old _build...")
+    os.system("rm -rf _build/")
     print("Converting PDF to PNG...")
     for filename in os.listdir("figures"):
         if filename.endswith(".pdf"):
@@ -151,11 +152,16 @@ def build_finished(app, exception):
     print("Removing komm.*.rst...")
     os.system("rm -rf komm.*.rst")
     print("Fixing annoying anchor links...")
-    os.system(r'perl -p -i -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" `find ../docs/ -name *.html`')
+    os.system(r'perl -p -i -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" `find _build/ -name *.html`')
     print("Removing doctrees...")
-    os.system("rm -rf ../docs/doctrees/")
+    os.system("rm -rf _build/doctrees/")
+    print("Cleaning up docs...")
+    os.system("rm -rf ../docs/docs/")
+    os.system("mkdir -p ../docs/docs")
     print("Moving dirhtml to docs...")
-    os.system("mv ../docs/dirhtml ../docs/docs")
+    os.system("mv _build/dirhtml/* ../docs/docs/")
+    print("Removing _build...")
+    os.system("rm -rf _build/")
 
 
 def setup(app):
