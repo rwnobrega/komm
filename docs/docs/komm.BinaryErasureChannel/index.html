@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.BinaryErasureChannel &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.BlockCode" href="../komm.BlockCode/" />
+    <link rel="prev" title="komm.BinarySymmetricChannel" href="../komm.BinarySymmetricChannel/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.BlockCode/" title="komm.BlockCode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.BinarySymmetricChannel/" title="komm.BinarySymmetricChannel"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.BinaryErasureChannel</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-binaryerasurechannel">
+<h1>komm.BinaryErasureChannel<a class="headerlink" href="#komm-binaryerasurechannel" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BinaryErasureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">erasure_probability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/BinaryErasureChannel/#BinaryErasureChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryErasureChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary erasure channel (BEC). It is a discrete memoryless channel (<a class="reference internal" href="../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel" title="komm.DiscreteMemorylessChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteMemorylessChannel</span></code></a>) with input alphabet <span class="math notranslate nohighlight">\(\mathcal{X} = \{ 0, 1 \}\)</span>, output alphabet <span class="math notranslate nohighlight">\(\mathcal{Y} = \{ 0, 1, 2 \}\)</span>, and transition probability matrix given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_{Y \mid X} =
+\begin{bmatrix}
+    1 - \epsilon &amp; 0 &amp; \epsilon \\
+    0 &amp; 1 - \epsilon &amp; \epsilon
+\end{bmatrix},\end{split}\]</div>
+<p>where the parameter <span class="math notranslate nohighlight">\(\epsilon\)</span> is called the <em>erasure probability</em> of the channel.</p>
+<p>References: <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Sec. 7.1.5)</p>
+<p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.erasure_probability" title="komm.BinaryErasureChannel.erasure_probability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erasure_probability</span></code></a></p></td>
+<td><p>The erasure probability <span class="math notranslate nohighlight">\(\epsilon\)</span> of the channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.input_cardinality" title="komm.BinaryErasureChannel.input_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_cardinality</span></code></a></p></td>
+<td><p>The channel input cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.output_cardinality" title="komm.BinaryErasureChannel.output_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_cardinality</span></code></a></p></td>
+<td><p>The channel output cardinality <span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.transition_matrix" title="komm.BinaryErasureChannel.transition_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transition_matrix</span></code></a></p></td>
+<td><p>The channel transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.__init__" title="komm.BinaryErasureChannel.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([erasure_probability])</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.capacity" title="komm.BinaryErasureChannel.capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capacity</span></code></a>()</p></td>
+<td><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.BinaryErasureChannel.mutual_information" title="komm.BinaryErasureChannel.mutual_information"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mutual_information</span></code></a>(input_pmf[, base])</p></td>
+<td><p>Computes the mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span> of the channel.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">erasure_probability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/BinaryErasureChannel/#BinaryErasureChannel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryErasureChannel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameter:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">erasure_probability</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The channel erasure probability <span class="math notranslate nohighlight">\(\epsilon\)</span>. Must satisfy <span class="math notranslate nohighlight">\(0 \leq \epsilon \leq 1\)</span>. Default value is <code class="code docutils literal notranslate"><span class="pre">0.0</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">bec</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>  
+<span class="go">array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.capacity">
+<span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/BinaryErasureChannel/#BinaryErasureChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryErasureChannel.capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = 1 - \epsilon\)</span>.  See <span id="id2">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Sec. 7.1.5).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
+<span class="go">0.75</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.erasure_probability">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">erasure_probability</span></span><a class="headerlink" href="#komm.BinaryErasureChannel.erasure_probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>The erasure probability <span class="math notranslate nohighlight">\(\epsilon\)</span> of the channel. This is a read-and-write property.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.input_cardinality">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_cardinality</span></span><a class="headerlink" href="#komm.BinaryErasureChannel.input_cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel input cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.mutual_information">
+<span class="sig-name descname"><span class="pre">mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_pmf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.BinaryErasureChannel.mutual_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span> of the channel. It is given by</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span> is the the entropy of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(\mathrm{H}(X \mid Y)\)</span> is the conditional entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(Y\)</span>. By default, the base of the logarithm is <span class="math notranslate nohighlight">\(2\)</span>, in which case the mutual information is measured in bits.</p>
+<p>References: <span id="id3">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 2)</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_pmf</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> of the channel input <span class="math notranslate nohighlight">\(X\)</span>. It must be a valid <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>, that is, all of its values must be non-negative and sum up to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">base</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">mutual_information</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">0.12381109879798724</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.07811610605402552</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.output_cardinality">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_cardinality</span></span><a class="headerlink" href="#komm.BinaryErasureChannel.output_cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel output cardinality <span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.BinaryErasureChannel.transition_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transition_matrix</span></span><a class="headerlink" href="#komm.BinaryErasureChannel.transition_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>. This is a read-and-write property.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.BinarySymmetricChannel/"
+                          title="previous chapter">komm.BinarySymmetricChannel</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.BlockCode/"
+                          title="next chapter">komm.BlockCode</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.BinaryErasureChannel.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.BlockCode/" title="komm.BlockCode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.BinarySymmetricChannel/" title="komm.BinarySymmetricChannel"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.BinaryErasureChannel</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

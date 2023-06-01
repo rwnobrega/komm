@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.VariableToFixedCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.TunstallCode" href="../komm.TunstallCode/" />
+    <link rel="prev" title="komm.HuffmanCode" href="../komm.HuffmanCode/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.TunstallCode/" title="komm.TunstallCode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.HuffmanCode/" title="komm.HuffmanCode"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.VariableToFixedCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-variabletofixedcode">
+<h1>komm.VariableToFixedCode<a class="headerlink" href="#komm-variabletofixedcode" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VariableToFixedCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sourcewords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/VariableToFixedCode/#VariableToFixedCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.VariableToFixedCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary (prefix-free) variable-to-fixed length code. Let <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> be the alphabet of some discrete source. A <em>binary variable-to-fixed length code</em> of code block size <span class="math notranslate nohighlight">\(n\)</span> is defined by a (possibly partial) decoding mapping <span class="math notranslate nohighlight">\(\mathrm{Dec} : \{ 0, 1 \}^n \to \mathcal{X}^+\)</span>, where <span class="math notranslate nohighlight">\(\mathcal{X}^+\)</span> denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as <span class="math notranslate nohighlight">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>. The elements in the image of <span class="math notranslate nohighlight">\(\mathrm{Dec}\)</span> are called <em>sourcewords</em>.</p>
+<p>Also, we only consider <em>prefix-free</em> codes, in which no sourceword is a prefix of any other sourceword.</p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.code_block_size" title="komm.VariableToFixedCode.code_block_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_block_size</span></code></a></p></td>
+<td><p>The code block size <span class="math notranslate nohighlight">\(n\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.dec_mapping" title="komm.VariableToFixedCode.dec_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dec_mapping</span></code></a></p></td>
+<td><p>The decoding mapping <span class="math notranslate nohighlight">\(\mathrm{Dec}\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.enc_mapping" title="komm.VariableToFixedCode.enc_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enc_mapping</span></code></a></p></td>
+<td><p>The encoding mapping <span class="math notranslate nohighlight">\(\mathrm{Enc}\)</span> of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.source_cardinality" title="komm.VariableToFixedCode.source_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_cardinality</span></code></a></p></td>
+<td><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.__init__" title="komm.VariableToFixedCode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(sourcewords)</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.decode" title="komm.VariableToFixedCode.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(bit_sequence)</p></td>
+<td><p>Decodes a given sequence of bits to its corresponding sequence of symbols.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.encode" title="komm.VariableToFixedCode.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(symbol_sequence)</p></td>
+<td><p>Encodes a given sequence of symbols to its corresponding sequence of bits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.VariableToFixedCode.rate" title="komm.VariableToFixedCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a>(pmf)</p></td>
+<td><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sourcewords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/VariableToFixedCode/#VariableToFixedCode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.VariableToFixedCode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">sourcewords</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sourcewords of the code. Must be a list of length at most <span class="math notranslate nohighlight">\(2^n\)</span> containing tuples of integers in <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>. The tuple in position <span class="math notranslate nohighlight">\(i\)</span> of <code class="code docutils literal notranslate"><span class="pre">sourcewords</span></code> should be equal to <span class="math notranslate nohighlight">\(\mathrm{Dec}(v)\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th element in the lexicographic ordering of <span class="math notranslate nohighlight">\(\{ 0, 1 \}^n\)</span>.</p>
+</dd>
+</dl>
+<p><em>Note:</em> The code block size <span class="math notranslate nohighlight">\(n\)</span> is inferred from <code class="code docutils literal notranslate"><span class="pre">len(sourcewords)</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">(</span><span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span><span class="p">)</span>
+<span class="go">{(0, 0, 0): (1, 0, 0),</span>
+<span class="go"> (0, 0, 1): (1, 0, 1),</span>
+<span class="go"> (0, 0, 2): (1, 1, 0),</span>
+<span class="go"> (0, 1): (0, 1, 0),</span>
+<span class="go"> (0, 2): (0, 1, 1),</span>
+<span class="go"> (1,): (0, 0, 0),</span>
+<span class="go"> (2,): (0, 0, 1)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span><span class="p">)</span>
+<span class="go">{(0, 0, 0): (1,),</span>
+<span class="go"> (0, 0, 1): (2,),</span>
+<span class="go"> (0, 1, 0): (0, 1),</span>
+<span class="go"> (0, 1, 1): (0, 2),</span>
+<span class="go"> (1, 0, 0): (0, 0, 0),</span>
+<span class="go"> (1, 0, 1): (0, 0, 1),</span>
+<span class="go"> (1, 1, 0): (0, 0, 2)}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.code_block_size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">code_block_size</span></span><a class="headerlink" href="#komm.VariableToFixedCode.code_block_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The code block size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.dec_mapping">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dec_mapping</span></span><a class="headerlink" href="#komm.VariableToFixedCode.dec_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>The decoding mapping <span class="math notranslate nohighlight">\(\mathrm{Dec}\)</span> of the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bit_sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/VariableToFixedCode/#VariableToFixedCode.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.VariableToFixedCode.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a given sequence of bits to its corresponding sequence of symbols.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">bit_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of bits to be decoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.  Its length must be a multiple of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.enc_mapping">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enc_mapping</span></span><a class="headerlink" href="#komm.VariableToFixedCode.enc_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>The encoding mapping <span class="math notranslate nohighlight">\(\mathrm{Enc}\)</span> of the code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol_sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/VariableToFixedCode/#VariableToFixedCode.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.VariableToFixedCode.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a given sequence of symbols to its corresponding sequence of bits.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of symbols to be encoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">bit_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.rate">
+<span class="sig-name descname"><span class="pre">rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/VariableToFixedCode/#VariableToFixedCode.rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.VariableToFixedCode.rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. It is given in bits per source symbol.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">pmf</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The (first-order) probability mass function <span class="math notranslate nohighlight">\(p_X(x)\)</span> to be assumed.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">rate</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">([</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">0.9473684210526315</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.VariableToFixedCode.source_cardinality">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_cardinality</span></span><a class="headerlink" href="#komm.VariableToFixedCode.source_cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.HuffmanCode/"
+                          title="previous chapter">komm.HuffmanCode</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.TunstallCode/"
+                          title="next chapter">komm.TunstallCode</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.VariableToFixedCode.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.TunstallCode/" title="komm.TunstallCode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.HuffmanCode/" title="komm.HuffmanCode"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.VariableToFixedCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

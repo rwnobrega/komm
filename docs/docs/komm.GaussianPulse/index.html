@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.GaussianPulse &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.TransmitFilter" href="../komm.TransmitFilter/" />
+    <link rel="prev" title="komm.RootRaisedCosinePulse" href="../komm.RootRaisedCosinePulse/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.TransmitFilter/" title="komm.TransmitFilter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RootRaisedCosinePulse/" title="komm.RootRaisedCosinePulse"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.GaussianPulse</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-gaussianpulse">
+<h1>komm.GaussianPulse<a class="headerlink" href="#komm-gaussianpulse" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.GaussianPulse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GaussianPulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">half_power_bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_in_symbols</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_pulses/GaussianPulse/#GaussianPulse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.GaussianPulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gaussian pulse. It is a formatting pulse (<code class="xref py py-class docutils literal notranslate"><span class="pre">FormattingPulse</span></code>) with impulse response given by</p>
+<div class="math notranslate nohighlight">
+\[h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\bar{B} = B / \sqrt{\ln 2}\)</span>, and <span class="math notranslate nohighlight">\(B\)</span> is the half-power bandwidth of the filter.</p>
+<p>The Gaussian pulse is depicted below for <span class="math notranslate nohighlight">\(B = 0.5\)</span>, and for <span class="math notranslate nohighlight">\(B = 1\)</span>.</p>
+<p class="centered"><img alt="Gaussian pulse with half-power bandwidth of 0.5" src="../_images/pulse_gaussian_50.png" />    <img alt="Gaussian pulse with half-power bandwidth of 1" src="../_images/pulse_gaussian_100.png" /></p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.GaussianPulse.frequency_response" title="komm.GaussianPulse.frequency_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency_response</span></code></a></p></td>
+<td><p>The frequency response of the pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.GaussianPulse.half_power_bandwidth" title="komm.GaussianPulse.half_power_bandwidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">half_power_bandwidth</span></code></a></p></td>
+<td><p>The half-power bandwidth <span class="math notranslate nohighlight">\(B\)</span> of the pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.GaussianPulse.impulse_response" title="komm.GaussianPulse.impulse_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">impulse_response</span></code></a></p></td>
+<td><p>The impulse response of the pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.GaussianPulse.interval" title="komm.GaussianPulse.interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval</span></code></a></p></td>
+<td><p>The interval the pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.GaussianPulse.length_in_symbols" title="komm.GaussianPulse.length_in_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_in_symbols</span></code></a></p></td>
+<td><p>The length (span) of the truncated impulse response.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.GaussianPulse.__init__" title="komm.GaussianPulse.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(half_power_bandwidth, length_in_symbols)</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.GaussianPulse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">half_power_bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_in_symbols</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_pulses/GaussianPulse/#GaussianPulse.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.GaussianPulse.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">half_power_bandwidth</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The half-power bandwidth <span class="math notranslate nohighlight">\(B\)</span> of the pulse.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">length_in_symbols</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The length (span) of the truncated impulse response, in symbols.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">GaussianPulse</span><span class="p">(</span><span class="n">half_power_bandwidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">length_in_symbols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">GaussianPulse</span><span class="p">(</span><span class="n">half_power_bandwidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">length_in_symbols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.GaussianPulse.frequency_response">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency_response</span></span><a class="headerlink" href="#komm.GaussianPulse.frequency_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>The frequency response of the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.GaussianPulse.half_power_bandwidth">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">half_power_bandwidth</span></span><a class="headerlink" href="#komm.GaussianPulse.half_power_bandwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>The half-power bandwidth <span class="math notranslate nohighlight">\(B\)</span> of the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.GaussianPulse.impulse_response">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">impulse_response</span></span><a class="headerlink" href="#komm.GaussianPulse.impulse_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>The impulse response of the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.GaussianPulse.interval">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval</span></span><a class="headerlink" href="#komm.GaussianPulse.interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>The interval the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.GaussianPulse.length_in_symbols">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length_in_symbols</span></span><a class="headerlink" href="#komm.GaussianPulse.length_in_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length (span) of the truncated impulse response. This property is read-only.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.RootRaisedCosinePulse/"
+                          title="previous chapter">komm.RootRaisedCosinePulse</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.TransmitFilter/"
+                          title="next chapter">komm.TransmitFilter</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.GaussianPulse.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.TransmitFilter/" title="komm.TransmitFilter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RootRaisedCosinePulse/" title="komm.RootRaisedCosinePulse"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.GaussianPulse</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

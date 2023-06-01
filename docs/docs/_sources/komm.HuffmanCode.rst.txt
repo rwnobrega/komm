@@ -1,0 +1,37 @@
+﻿komm.HuffmanCode
+================
+
+.. currentmodule:: komm
+
+.. autoclass:: HuffmanCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~HuffmanCode.dec_mapping
+      ~HuffmanCode.enc_mapping
+      ~HuffmanCode.pmf
+      ~HuffmanCode.source_block_size
+      ~HuffmanCode.source_cardinality
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~HuffmanCode.__init__
+      ~HuffmanCode.decode
+      ~HuffmanCode.encode
+      ~HuffmanCode.rate
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: dec_mapping
+   .. automethod:: decode
+   .. autoproperty:: enc_mapping
+   .. automethod:: encode
+   .. autoproperty:: pmf
+   .. automethod:: rate
+   .. autoproperty:: source_block_size
+   .. autoproperty:: source_cardinality

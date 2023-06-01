@@ -1,0 +1,31 @@
+﻿komm.KasamiSequence
+===================
+
+.. currentmodule:: komm
+
+.. autoclass:: KasamiSequence
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~KasamiSequence.bit_sequence
+      ~KasamiSequence.length
+      ~KasamiSequence.polar_sequence
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~KasamiSequence.__init__
+      ~KasamiSequence.autocorrelation
+      ~KasamiSequence.cyclic_autocorrelation
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: autocorrelation
+   .. autoproperty:: bit_sequence
+   .. automethod:: cyclic_autocorrelation
+   .. autoproperty:: length
+   .. autoproperty:: polar_sequence

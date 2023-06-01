@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._error_control_block.HammingCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.HammingCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._error_control_block.HammingCode</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.BlockCode</span> <span class="kn">import</span> <span class="n">BlockCode</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">_extended_parity_submatrix</span><span class="p">,</span> <span class="n">_hamming_parity_submatrix</span>
+
+
+<div class="viewcode-block" id="HammingCode"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode">[docs]</a><span class="k">class</span> <span class="nc">HammingCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:</span>
+
+<span class="sd">    - Length: :math:`n = 2^m - 1`</span>
+<span class="sd">    - Redundancy: :math:`m`</span>
+<span class="sd">    - Dimension: :math:`k = 2^m - m - 1`</span>
+<span class="sd">    - Minimum distance: :math:`d = 3`</span>
+
+<span class="sd">    This class constructs the code in systematic form, with the information set on the left.</span>
+
+<span class="sd">    References: :cite:`Lin.Costello.04` (Sec 4.1)</span>
+
+<span class="sd">    .. rubric:: Decoding methods</span>
+
+<span class="sd">    [[decoding_methods]]</span>
+
+<span class="sd">    .. rubric:: Notes</span>
+
+<span class="sd">    - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.</span>
+<span class="sd">    - Its dual is the simplex code (:class:`SimplexCode`).</span>
+<span class="sd">    - Hamming codes are perfect codes.</span>
+
+<span class="sd">    .. rubric:: Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; code = komm.HammingCode(3)</span>
+<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">    (7, 4, 3)</span>
+<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">    array([[1, 0, 0, 0, 1, 1, 0],</span>
+<span class="sd">           [0, 1, 0, 0, 1, 0, 1],</span>
+<span class="sd">           [0, 0, 1, 0, 0, 1, 1],</span>
+<span class="sd">           [0, 0, 0, 1, 1, 1, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">    array([[1, 1, 0, 1, 1, 0, 0],</span>
+<span class="sd">           [1, 0, 1, 1, 0, 1, 0],</span>
+<span class="sd">           [0, 1, 1, 1, 0, 0, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
+<span class="sd">    array([1, 0, 1, 1, 0, 1, 0])</span>
+<span class="sd">    &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1])</span>
+<span class="sd">    array([1, 1, 0, 0])</span>
+
+<span class="sd">    &gt;&gt;&gt; code = komm.HammingCode(3, extended=True)</span>
+<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">    (8, 4, 4)</span>
+<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">    array([[1, 0, 0, 0, 1, 1, 0, 1],</span>
+<span class="sd">           [0, 1, 0, 0, 1, 0, 1, 1],</span>
+<span class="sd">           [0, 0, 1, 0, 0, 1, 1, 1],</span>
+<span class="sd">           [0, 0, 0, 1, 1, 1, 1, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">    array([[1, 1, 0, 1, 1, 0, 0, 0],</span>
+<span class="sd">           [1, 0, 1, 1, 0, 1, 0, 0],</span>
+<span class="sd">           [0, 1, 1, 1, 0, 0, 1, 0],</span>
+<span class="sd">           [1, 1, 1, 0, 0, 0, 0, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
+<span class="sd">    array([1, 0, 1, 1, 0, 1, 0, 0])</span>
+<span class="sd">    &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1, 0])</span>
+<span class="sd">    array([1, 1, 0, 0])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HammingCode.__init__"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">extended</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`m` : :obj:`int`</span>
+<span class="sd">            The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.</span>
+
+<span class="sd">        :code:`extended` : :obj:`bool`, optional</span>
+<span class="sd">            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">_hamming_parity_submatrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extended</span><span class="p">:</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">_extended_parity_submatrix</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_distance</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">extended</span> <span class="k">else</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extended</span> <span class="o">=</span> <span class="n">extended</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extended</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="s2">&quot;, extended=True&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.HammingCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.ManchesterPulse &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.SincPulse" href="../komm.SincPulse/" />
+    <link rel="prev" title="komm.RectangularPulse" href="../komm.RectangularPulse/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.SincPulse/" title="komm.SincPulse"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RectangularPulse/" title="komm.RectangularPulse"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ManchesterPulse</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-manchesterpulse">
+<h1>komm.ManchesterPulse<a class="headerlink" href="#komm-manchesterpulse" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.ManchesterPulse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ManchesterPulse</span></span><a class="reference internal" href="../_modules/komm/_pulses/ManchesterPulse/#ManchesterPulse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ManchesterPulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manchester pulse. It is a formatting pulse (<code class="xref py py-class docutils literal notranslate"><span class="pre">FormattingPulse</span></code>) with impulse response given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h(t) =
+\begin{cases}
+    -1, &amp; 0 \leq t &lt;  1/2, \\
+    1, &amp; 1/2 \leq t &lt; 1, \\
+    0, &amp; \text{otherwise},
+\end{cases}\end{split}\]</div>
+<p>The Manchester pulse is depicted below.</p>
+<img alt="Manchester pulse" class="align-center" src="../_images/pulse_manchester.png" />
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ManchesterPulse.frequency_response" title="komm.ManchesterPulse.frequency_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency_response</span></code></a></p></td>
+<td><p>The frequency response of the pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ManchesterPulse.impulse_response" title="komm.ManchesterPulse.impulse_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">impulse_response</span></code></a></p></td>
+<td><p>The impulse response of the pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ManchesterPulse.interval" title="komm.ManchesterPulse.interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval</span></code></a></p></td>
+<td><p>The interval the pulse.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ManchesterPulse.__init__" title="komm.ManchesterPulse.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ManchesterPulse.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_pulses/ManchesterPulse/#ManchesterPulse.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ManchesterPulse.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects no parameters.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ManchesterPulse</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ManchesterPulse.frequency_response">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency_response</span></span><a class="headerlink" href="#komm.ManchesterPulse.frequency_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>The frequency response of the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ManchesterPulse.impulse_response">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">impulse_response</span></span><a class="headerlink" href="#komm.ManchesterPulse.impulse_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>The impulse response of the pulse. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ManchesterPulse.interval">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval</span></span><a class="headerlink" href="#komm.ManchesterPulse.interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>The interval the pulse. This property is read-only.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.RectangularPulse/"
+                          title="previous chapter">komm.RectangularPulse</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.SincPulse/"
+                          title="next chapter">komm.SincPulse</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.ManchesterPulse.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.SincPulse/" title="komm.SincPulse"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RectangularPulse/" title="komm.RectangularPulse"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ManchesterPulse</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

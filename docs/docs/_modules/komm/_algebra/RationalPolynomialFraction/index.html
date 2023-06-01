@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._algebra.RationalPolynomialFraction &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._algebra.RationalPolynomialFraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._algebra.RationalPolynomialFraction</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">RationalPolynomial</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">power</span>
+
+
+<div class="viewcode-block" id="RationalPolynomialFraction"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction">[docs]</a><span class="k">class</span> <span class="nc">RationalPolynomialFraction</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RationalPolynomialFraction.__init__"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">=</span> <span class="n">RationalPolynomial</span><span class="p">(</span><span class="n">numerator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">=</span> <span class="n">RationalPolynomial</span><span class="p">(</span><span class="n">denominator</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="o">.</span><span class="n">degree</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;Denominator cannot be zero&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_to_lowest_terms</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_to_integer_coefficients</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RationalPolynomialFraction.monomial"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction.monomial">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">monomial</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">coefficient</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">RationalPolynomial</span><span class="o">.</span><span class="n">monomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">coefficient</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_reduce_to_lowest_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gcd</span> <span class="o">=</span> <span class="n">RationalPolynomial</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">//=</span> <span class="n">gcd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">//=</span> <span class="n">gcd</span>
+
+    <span class="k">def</span> <span class="nf">_reduce_to_integer_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_denominators</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">denominator</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="o">.</span><span class="n">_coefficients</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">denominator</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="o">.</span><span class="n">_coefficients</span>
+        <span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lcm</span><span class="o">.</span><span class="n">reduce</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">all_denominators</span> <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*=</span> <span class="n">RationalPolynomial</span><span class="p">([</span><span class="n">Fraction</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*=</span> <span class="n">RationalPolynomial</span><span class="p">([</span><span class="n">Fraction</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+
+        <span class="n">all_numerators</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">numerator</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="o">.</span><span class="n">_coefficients</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">numerator</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="o">.</span><span class="n">_coefficients</span>
+        <span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gcd</span><span class="o">.</span><span class="n">reduce</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">all_numerators</span> <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*=</span> <span class="n">RationalPolynomial</span><span class="p">([</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*=</span> <span class="n">RationalPolynomial</span><span class="p">([</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The numerator of the fraction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The denominator of the fraction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exponent</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
+
+<div class="viewcode-block" id="RationalPolynomialFraction.inverse"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the multiplicative inverse the fraction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._algebra.RationalPolynomialFraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.AWGNChannel &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.DiscreteMemorylessChannel" href="../komm.DiscreteMemorylessChannel/" />
+    <link rel="prev" title="komm.RationalPolynomialFraction" href="../komm.RationalPolynomialFraction/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.DiscreteMemorylessChannel/" title="komm.DiscreteMemorylessChannel"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomialFraction/" title="komm.RationalPolynomialFraction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.AWGNChannel</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-awgnchannel">
+<h1>komm.AWGNChannel<a class="headerlink" href="#komm-awgnchannel" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.AWGNChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AWGNChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Additive white Gaussian noise (AWGN) channel. It is defined by</p>
+<div class="math notranslate nohighlight">
+\[Y_n = X_n + Z_n,\]</div>
+<p>where <span class="math notranslate nohighlight">\(X_n\)</span> is the channel <em>input signal</em>, <span class="math notranslate nohighlight">\(Y_n\)</span> is the channel <em>output signal</em>, and <span class="math notranslate nohighlight">\(Z_n\)</span> is the <em>noise</em>, which is <a class="reference internal" href="../glossary/#term-i.i.d."><span class="xref std std-term">i.i.d.</span></a> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{SNR} = \frac{P}{N},\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = \mathrm{E}[X^2_n]\)</span> is the average power of the input signal, and <span class="math notranslate nohighlight">\(N = \mathrm{E}[Z^2_n]\)</span> is the average power (and variance) of the noise.</p>
+<p>References: <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 9)</p>
+<p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.AWGNChannel.signal_power" title="komm.AWGNChannel.signal_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_power</span></code></a></p></td>
+<td><p>The input signal power <span class="math notranslate nohighlight">\(P\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.AWGNChannel.snr" title="komm.AWGNChannel.snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snr</span></code></a></p></td>
+<td><p>The signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> (linear, not decibel) of the channel.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.AWGNChannel.__init__" title="komm.AWGNChannel.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([snr, signal_power])</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.AWGNChannel.capacity" title="komm.AWGNChannel.capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capacity</span></code></a>()</p></td>
+<td><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.AWGNChannel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">snr</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The channel signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> (linear, not decibel). The default value is <code class="code docutils literal notranslate"><span class="pre">np.inf</span></code>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">signal_power</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The input signal power <span class="math notranslate nohighlight">\(P\)</span>.  If equal to the string <code class="code docutils literal notranslate"><span class="pre">'measured'</span></code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is <code class="code docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">awgn</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>  
+<span class="go">array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,</span>
+<span class="go">        1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.AWGNChannel.capacity">
+<span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel.capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = \frac{1}{2}\log_2(1 + \mathrm{SNR})\)</span>, in bits per dimension.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
+<span class="go">3.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.AWGNChannel.signal_power">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signal_power</span></span><a class="headerlink" href="#komm.AWGNChannel.signal_power" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input signal power <span class="math notranslate nohighlight">\(P\)</span>. This is a read-and-write property.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.AWGNChannel.snr">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">snr</span></span><a class="headerlink" href="#komm.AWGNChannel.snr" title="Permalink to this definition">¶</a></dt>
+<dd><p>The signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> (linear, not decibel) of the channel. This is a read-and-write property.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.RationalPolynomialFraction/"
+                          title="previous chapter">komm.RationalPolynomialFraction</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.DiscreteMemorylessChannel/"
+                          title="next chapter">komm.DiscreteMemorylessChannel</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.AWGNChannel.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.DiscreteMemorylessChannel/" title="komm.DiscreteMemorylessChannel"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomialFraction/" title="komm.RationalPolynomialFraction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.AWGNChannel</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

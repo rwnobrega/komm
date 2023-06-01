@@ -1,0 +1,59 @@
+﻿komm.CyclicCode
+===============
+
+.. currentmodule:: komm
+
+.. autoclass:: CyclicCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~CyclicCode.codeword_table
+      ~CyclicCode.codeword_weight_distribution
+      ~CyclicCode.coset_leader_table
+      ~CyclicCode.coset_leader_weight_distribution
+      ~CyclicCode.covering_radius
+      ~CyclicCode.dimension
+      ~CyclicCode.generator_matrix
+      ~CyclicCode.generator_polynomial
+      ~CyclicCode.length
+      ~CyclicCode.meggitt_table
+      ~CyclicCode.minimum_distance
+      ~CyclicCode.packing_radius
+      ~CyclicCode.parity_check_matrix
+      ~CyclicCode.parity_check_polynomial
+      ~CyclicCode.rate
+      ~CyclicCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~CyclicCode.__init__
+      ~CyclicCode.decode
+      ~CyclicCode.encode
+      ~CyclicCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: generator_polynomial
+   .. autoproperty:: length
+   .. autoproperty:: meggitt_table
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: parity_check_polynomial
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy

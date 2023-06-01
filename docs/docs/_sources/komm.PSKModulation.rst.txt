@@ -1,0 +1,45 @@
+﻿komm.PSKModulation
+==================
+
+.. currentmodule:: komm
+
+.. autoclass:: PSKModulation
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~PSKModulation.bits_per_symbol
+      ~PSKModulation.channel_snr
+      ~PSKModulation.constellation
+      ~PSKModulation.energy_per_bit
+      ~PSKModulation.energy_per_symbol
+      ~PSKModulation.labeling
+      ~PSKModulation.minimum_distance
+      ~PSKModulation.order
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~PSKModulation.__init__
+      ~PSKModulation.bits_to_symbols
+      ~PSKModulation.demodulate
+      ~PSKModulation.modulate
+      ~PSKModulation.symbols_to_bits
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: bits_per_symbol
+   .. automethod:: bits_to_symbols
+   .. autoproperty:: channel_snr
+   .. autoproperty:: constellation
+   .. automethod:: demodulate
+   .. autoproperty:: energy_per_bit
+   .. autoproperty:: energy_per_symbol
+   .. autoproperty:: labeling
+   .. autoproperty:: minimum_distance
+   .. automethod:: modulate
+   .. autoproperty:: order
+   .. automethod:: symbols_to_bits

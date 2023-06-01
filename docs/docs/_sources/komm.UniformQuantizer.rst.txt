@@ -1,0 +1,33 @@
+﻿komm.UniformQuantizer
+=====================
+
+.. currentmodule:: komm
+
+.. autoclass:: UniformQuantizer
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~UniformQuantizer.choice
+      ~UniformQuantizer.input_peak
+      ~UniformQuantizer.levels
+      ~UniformQuantizer.num_levels
+      ~UniformQuantizer.quantization_step
+      ~UniformQuantizer.thresholds
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~UniformQuantizer.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: choice
+   .. autoproperty:: input_peak
+   .. autoproperty:: levels
+   .. autoproperty:: num_levels
+   .. autoproperty:: quantization_step
+   .. autoproperty:: thresholds

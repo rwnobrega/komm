@@ -1,0 +1,18 @@
+﻿komm.ReceiveFilter
+==================
+
+.. currentmodule:: komm
+
+.. autoclass:: ReceiveFilter
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~ReceiveFilter.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__

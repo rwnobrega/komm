@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._error_control_block.BlockCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.BlockCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._error_control_block.BlockCode</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.._algebra.util</span> <span class="kn">import</span> <span class="n">null_matrix</span><span class="p">,</span> <span class="n">right_inverse</span>
+<span class="kn">from</span> <span class="nn">.._aux</span> <span class="kn">import</span> <span class="n">tag</span>
+<span class="kn">from</span> <span class="nn">.._util</span> <span class="kn">import</span> <span class="n">binlist2int</span><span class="p">,</span> <span class="n">int2binlist</span>
+
+
+<div class="viewcode-block" id="BlockCode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode">[docs]</a><span class="k">class</span> <span class="nc">BlockCode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \\times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \\times n` matrix. Those matrix are related by :math:`G H^\\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.</span>
+
+<span class="sd">    References: :cite:`Lin.Costello.04` (Ch. 3)</span>
+
+<span class="sd">    .. rubric:: Decoding methods</span>
+
+<span class="sd">    [[decoding_methods]]</span>
+
+<span class="sd">    .. rubric:: Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">    (6, 3, 3)</span>
+<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">    array([[1, 0, 0, 0, 1, 1],</span>
+<span class="sd">           [0, 1, 0, 1, 0, 1],</span>
+<span class="sd">           [0, 0, 1, 1, 1, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">    array([[0, 1, 1, 1, 0, 0],</span>
+<span class="sd">           [1, 0, 1, 0, 1, 0],</span>
+<span class="sd">           [1, 1, 0, 0, 0, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; code.codeword_table</span>
+<span class="sd">    array([[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">           [1, 0, 0, 0, 1, 1],</span>
+<span class="sd">           [0, 1, 0, 1, 0, 1],</span>
+<span class="sd">           [1, 1, 0, 1, 1, 0],</span>
+<span class="sd">           [0, 0, 1, 1, 1, 0],</span>
+<span class="sd">           [1, 0, 1, 1, 0, 1],</span>
+<span class="sd">           [0, 1, 1, 0, 1, 1],</span>
+<span class="sd">           [1, 1, 1, 0, 0, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; code.codeword_weight_distribution</span>
+<span class="sd">    array([1, 0, 0, 4, 3, 0, 0])</span>
+<span class="sd">    &gt;&gt;&gt; code.coset_leader_table</span>
+<span class="sd">    array([[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 1, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 1, 0],</span>
+<span class="sd">           [0, 0, 1, 0, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 0, 1],</span>
+<span class="sd">           [0, 1, 0, 0, 0, 0],</span>
+<span class="sd">           [1, 0, 0, 0, 0, 0],</span>
+<span class="sd">           [1, 0, 0, 1, 0, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; code.coset_leader_weight_distribution</span>
+<span class="sd">    array([1, 6, 1, 0, 0, 0, 0])</span>
+<span class="sd">    &gt;&gt;&gt; (code.packing_radius, code.covering_radius)</span>
+<span class="sd">    (1, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BlockCode.__init__"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects one of the following formats:</span>
+
+<span class="sd">        **Via generator matrix**</span>
+
+<span class="sd">        `komm.BlockCode(generator_matrix=generator_matrix)`</span>
+
+<span class="sd">        :code:`generator_matrix` : 2D-array of :obj:`int`</span>
+<span class="sd">            Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.</span>
+
+<span class="sd">        **Via parity-check matrix**</span>
+
+<span class="sd">        `komm.BlockCode(parity_check_matrix=parity_check_matrix)`</span>
+
+<span class="sd">        :code:`parity_check_matrix` : 2D-array of :obj:`int`</span>
+<span class="sd">            Parity-check matrix :math:`H` for the code, which is an :math:`m \\times n` binary matrix.</span>
+
+<span class="sd">        **Via parity submatrix and information set**</span>
+
+<span class="sd">        `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`</span>
+
+<span class="sd">        :code:`parity_submatrix` : 2D-array of :obj:`int`</span>
+<span class="sd">            Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.</span>
+
+<span class="sd">        :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
+<span class="sd">            Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`&#39;left&#39;` or :code:`&#39;right&#39;`. The default value is :code:`&#39;left&#39;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;generator_matrix&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_from_generator_matrix</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;parity_check_matrix&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_from_parity_check_matrix</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;parity_submatrix&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_from_parity_submatrix</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either specify &#39;generator_matrix&#39; or &#39;parity_check_matrix&#39; or &#39;parity_submatrix&#39;&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_init_from_generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generator_matrix</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">generator_matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">=</span> <span class="s2">&quot;generator_matrix&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_init_from_parity_check_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parity_check_matrix</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parity_check_matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">=</span> <span class="s2">&quot;parity_check_matrix&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_init_from_parity_submatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parity_submatrix</span><span class="p">,</span> <span class="n">information_set</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span>
+        <span class="k">if</span> <span class="n">information_set</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
+            <span class="n">information_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">information_set</span> <span class="o">==</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span>
+            <span class="n">information_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">information_set</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter &#39;information_set&#39; must be a &#39;k&#39;-subset of &#39;range(n)&#39;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_set</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span><span class="o">.</span><span class="n">T</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">=</span> <span class="s2">&quot;parity_submatrix&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">==</span> <span class="s2">&quot;generator_matrix&quot;</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;generator_matrix=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">==</span> <span class="s2">&quot;parity_check_matrix&quot;</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;parity_check_matrix=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">==</span> <span class="s2">&quot;parity_submatrix&quot;</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;parity_submatrix=</span><span class="si">{}</span><span class="s2">, information_set=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The length :math:`n` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The dimension :math:`k` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">redundancy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The redundancy :math:`m` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The rate :math:`R = k/n` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">minimum_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_distance</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codeword_weight_distribution</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">packing_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum_distance</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">covering_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">null_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span><span class="p">)</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">parity_check_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">null_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="p">)</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">codeword_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">codeword_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">)</span>
+            <span class="n">codeword_table</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">codeword_table</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">codeword_weight_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n]`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_codeword_weight_distribution</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codeword_table</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">minlength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">coset_leader_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The coset leader table of the code. This is a :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coset_leader_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">taken</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">),</span> <span class="n">w</span><span class="p">):</span>
+                <span class="n">errorword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">errorword</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">idx</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">syndrome</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">errorword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parity_check_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+                <span class="n">syndrome_int</span> <span class="o">=</span> <span class="n">binlist2int</span><span class="p">(</span><span class="n">syndrome</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">syndrome_int</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">taken</span><span class="p">:</span>
+                    <span class="n">coset_leader_table</span><span class="p">[</span><span class="n">syndrome_int</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errorword</span><span class="p">)</span>
+                    <span class="n">taken</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">syndrome_int</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">taken</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">redundancy</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="k">return</span> <span class="n">coset_leader_table</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">coset_leader_weight_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n]`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coset_leader_weight_distribution</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coset_leader_table</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">minlength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">_generator_matrix_right_inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">right_inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generator_matrix</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BlockCode.encode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encodes a given message to its corresponding codeword.</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`message` : 1D-array of :obj:`int`</span>
+<span class="sd">            The message to be encoded. Its length must be :math:`k`.</span>
+
+<span class="sd">        :code:`method` : :obj:`str`, optional</span>
+<span class="sd">            The encoding method to be used.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`codeword` : 1D-array of :obj:`int`</span>
+<span class="sd">            The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of &#39;message&#39; must be equal to the code dimension&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_encoder</span><span class="p">()</span>
+
+        <span class="n">encoder</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_encode_&quot;</span> <span class="o">+</span> <span class="n">method</span><span class="p">)</span>
+        <span class="n">codeword</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">codeword</span></div>
+
+    <span class="k">def</span> <span class="nf">_encode_generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">codeword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_matrix</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">codeword</span>
+
+    <span class="k">def</span> <span class="nf">_encode_systematic_generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">codeword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">codeword</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="n">codeword</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parity_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_submatrix</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">codeword</span>
+
+    <span class="k">def</span> <span class="nf">_default_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;systematic_generator_matrix&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;generator_matrix&quot;</span>
+
+<div class="viewcode-block" id="BlockCode.message_from_codeword"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.message_from_codeword">[docs]</a>    <span class="k">def</span> <span class="nf">message_from_codeword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">codeword</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`codeword` : 1D-array of :obj:`int`</span>
+<span class="sd">            A codeword from the code. Its length must be :math:`n`.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`message` : 1D-array of :obj:`int`</span>
+<span class="sd">            The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">codeword</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">codeword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix_right_inverse</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span></div>
+
+<div class="viewcode-block" id="BlockCode.decode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decodes a received word to a message.</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)</span>
+<span class="sd">            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\\{ 0, 1 \\}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.</span>
+
+<span class="sd">        :code:`method` : :obj:`str`, optional</span>
+<span class="sd">            The decoding method to be used.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`message_hat` : 1D-array of :obj:`int`</span>
+<span class="sd">            The message decoded from :code:`recvword`. Its length is equal to :math:`k`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">recvword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">recvword</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">recvword</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of &#39;recvword&#39; must be equal to the code length&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_decoder</span><span class="p">(</span><span class="n">recvword</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">decoder</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_decode_&quot;</span> <span class="o">+</span> <span class="n">method</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">decoder</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;codeword&quot;</span><span class="p">:</span>
+            <span class="n">message_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message_from_codeword</span><span class="p">(</span><span class="n">decoder</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">decoder</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span>
+            <span class="n">message_hat</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">message_hat</span></div>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Exhaustive search (hard-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_exhaustive_search_hard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exhaustive search minimum distance hard decoder. Hamming distance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeword_table</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">recvword</span> <span class="o">!=</span> <span class="n">codewords</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">codeword_hat</span> <span class="o">=</span> <span class="n">codewords</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">metrics</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">codeword_hat</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Exhaustive search (soft-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_exhaustive_search_soft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exhaustive search minimum distance soft decoder. Euclidean distance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeword_table</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">codewords</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">codeword_hat</span> <span class="o">=</span> <span class="n">codewords</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">metrics</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">codeword_hat</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Syndrome table&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_syndrome_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Syndrome table decoder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coset_leader_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coset_leader_table</span>
+        <span class="n">syndrome</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parity_check_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="n">syndrome_int</span> <span class="o">=</span> <span class="n">binlist2int</span><span class="p">(</span><span class="n">syndrome</span><span class="p">)</span>
+        <span class="n">errorword_hat</span> <span class="o">=</span> <span class="n">coset_leader_table</span><span class="p">[</span><span class="n">syndrome_int</span><span class="p">]</span>
+        <span class="n">codeword_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_xor</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">errorword_hat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">codeword_hat</span>
+
+    <span class="k">def</span> <span class="nf">_default_decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;syndrome_table&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;exhaustive_search_hard&quot;</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;exhaustive_search_soft&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_available_decoding_methods</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_decode_&quot;</span><span class="p">):</span>
+                <span class="n">identifier</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">method</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;:code:`</span><span class="si">{}</span><span class="s2">`&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">identifier</span><span class="p">),</span> <span class="n">method</span><span class="o">.</span><span class="n">input_type</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_process_docstring</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_available_decoding_methods</span><span class="p">()</span>
+        <span class="n">indent</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">4</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="s2">&quot;.. csv-table::</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">rst</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{indent}</span><span class="s2">   :header: Method, Identifier, Input type</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{indent}</span><span class="s2">   :widths: 5, 5, 2</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{indent}</span><span class="s2">   </span><span class="si">{row}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[[decoding_methods]]&quot;</span><span class="p">,</span> <span class="n">rst</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.BlockCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

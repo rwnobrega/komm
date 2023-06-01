@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Komm &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="#" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex/" />
+    <link rel="search" title="Search" href="search/" />
+    <link rel="next" title="komm.BinaryPolynomial" href="komm.BinaryPolynomial/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="komm.BinaryPolynomial/" title="komm.BinaryPolynomial"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Komm</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm">
+<h1>Komm<a class="headerlink" href="#komm" title="Permalink to this heading">¶</a></h1>
+<p>Welcome to <strong>Komm</strong>’s documentation page!</p>
+<p><strong>Komm</strong> is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems. This project is inspired by—but is not meant to be compatible with—the MATLAB® <a class="reference external" href="https://www.mathworks.com/help/comm/">Communications System Toolbox™</a>. Other sources of inspiration include <a class="reference external" href="https://gnuradio.org/">GNU Radio</a>, <a class="reference external" href="http://veeresht.info/CommPy/">CommPy</a>, and <a class="reference external" href="https://www.sagemath.org/">SageMath</a>. <strong>Komm</strong> is licensed under the <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>.</p>
+<p>For installation instructions and source code, please check the project’s <a class="reference external" href="https://github.com/rwnobrega/komm">development page at GitHub</a>.</p>
+<p>This software is still under development. Contributions are very welcome!</p>
+<section id="algebra">
+<h2>Algebra<a class="headerlink" href="#algebra" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.BinaryPolynomial/" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a></p></td>
+<td><p>Binary polynomial.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.BinaryPolynomialFraction/" title="komm.BinaryPolynomialFraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomialFraction</span></code></a></p></td>
+<td><p>Binary polynomial fraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.FiniteBifield/" title="komm.FiniteBifield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FiniteBifield</span></code></a></p></td>
+<td><p>Finite field with binary characteristic.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.RationalPolynomial/" title="komm.RationalPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RationalPolynomial</span></code></a></p></td>
+<td><p>Rational polynomial.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.RationalPolynomialFraction/" title="komm.RationalPolynomialFraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RationalPolynomialFraction</span></code></a></p></td>
+<td><p>Rational polynomial fraction.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="channels">
+<h2>Channels<a class="headerlink" href="#channels" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.AWGNChannel/" title="komm.AWGNChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AWGNChannel</span></code></a></p></td>
+<td><p>Additive white Gaussian noise (AWGN) channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.DiscreteMemorylessChannel/" title="komm.DiscreteMemorylessChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteMemorylessChannel</span></code></a></p></td>
+<td><p>Discrete memoryless channel (DMC).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.BinarySymmetricChannel/" title="komm.BinarySymmetricChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinarySymmetricChannel</span></code></a></p></td>
+<td><p>Binary symmetric channel (BSC).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.BinaryErasureChannel/" title="komm.BinaryErasureChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryErasureChannel</span></code></a></p></td>
+<td><p>Binary erasure channel (BEC).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="error-control">
+<h2>Error control<a class="headerlink" href="#error-control" title="Permalink to this heading">¶</a></h2>
+<section id="block-coding">
+<h3>Block coding<a class="headerlink" href="#block-coding" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.BlockCode/" title="komm.BlockCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockCode</span></code></a></p></td>
+<td><p>General binary linear block code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.HammingCode/" title="komm.HammingCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HammingCode</span></code></a></p></td>
+<td><p>Hamming code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.SimplexCode/" title="komm.SimplexCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimplexCode</span></code></a></p></td>
+<td><p>Simplex (maximum-length) code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.GolayCode/" title="komm.GolayCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GolayCode</span></code></a></p></td>
+<td><p>Binary Golay code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.RepetitionCode/" title="komm.RepetitionCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RepetitionCode</span></code></a></p></td>
+<td><p>Repetition code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.SingleParityCheckCode/" title="komm.SingleParityCheckCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleParityCheckCode</span></code></a></p></td>
+<td><p>Single parity check code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.CordaroWagnerCode/" title="komm.CordaroWagnerCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CordaroWagnerCode</span></code></a></p></td>
+<td><p>Cordaro--Wagner code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.ReedMullerCode/" title="komm.ReedMullerCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReedMullerCode</span></code></a></p></td>
+<td><p>Reed--Muller code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.CyclicCode/" title="komm.CyclicCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CyclicCode</span></code></a></p></td>
+<td><p>General binary cyclic code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.BCHCode/" title="komm.BCHCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BCHCode</span></code></a></p></td>
+<td><p>Bose--Chaudhuri--Hocquenghem (BCH) code.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="convolutional-coding">
+<h3>Convolutional coding<a class="headerlink" href="#convolutional-coding" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.ConvolutionalCode/" title="komm.ConvolutionalCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConvolutionalCode</span></code></a></p></td>
+<td><p>Binary convolutional code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.ConvolutionalStreamEncoder/" title="komm.ConvolutionalStreamEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConvolutionalStreamEncoder</span></code></a></p></td>
+<td><p>Convolutional stream encoder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.ConvolutionalStreamDecoder/" title="komm.ConvolutionalStreamDecoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConvolutionalStreamDecoder</span></code></a></p></td>
+<td><p>Convolutional stream decoder using Viterbi algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.TerminatedConvolutionalCode/" title="komm.TerminatedConvolutionalCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TerminatedConvolutionalCode</span></code></a></p></td>
+<td><p>Terminated convolutional code.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="finite-state-machine">
+<h2>Finite-state machine<a class="headerlink" href="#finite-state-machine" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.FiniteStateMachine/" title="komm.FiniteStateMachine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FiniteStateMachine</span></code></a></p></td>
+<td><p>Finite-state machine (Mealy machine).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modulation">
+<h2>Modulation<a class="headerlink" href="#modulation" title="Permalink to this heading">¶</a></h2>
+<section id="real-modulation-schemes">
+<h3>Real modulation schemes<a class="headerlink" href="#real-modulation-schemes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.RealModulation/" title="komm.RealModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RealModulation</span></code></a></p></td>
+<td><p>General real modulation scheme.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.PAModulation/" title="komm.PAModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAModulation</span></code></a></p></td>
+<td><p>Pulse-amplitude modulation (PAM).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="complex-modulation-schemes">
+<h3>Complex modulation schemes<a class="headerlink" href="#complex-modulation-schemes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.ComplexModulation/" title="komm.ComplexModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComplexModulation</span></code></a></p></td>
+<td><p>General complex modulation scheme.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.ASKModulation/" title="komm.ASKModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ASKModulation</span></code></a></p></td>
+<td><p>Amplitude-shift keying (ASK) modulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.PSKModulation/" title="komm.PSKModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PSKModulation</span></code></a></p></td>
+<td><p>Phase-shift keying (PSK) modulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.APSKModulation/" title="komm.APSKModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">APSKModulation</span></code></a></p></td>
+<td><p>Amplitude- and phase-shift keying (APSK) modulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.QAModulation/" title="komm.QAModulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QAModulation</span></code></a></p></td>
+<td><p>Quadrature-amplitude modulation (QAM).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pulse-formatting">
+<h2>Pulse formatting<a class="headerlink" href="#pulse-formatting" title="Permalink to this heading">¶</a></h2>
+<section id="pulses">
+<h3>Pulses<a class="headerlink" href="#pulses" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.RectangularPulse/" title="komm.RectangularPulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RectangularPulse</span></code></a></p></td>
+<td><p>Rectangular pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.ManchesterPulse/" title="komm.ManchesterPulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManchesterPulse</span></code></a></p></td>
+<td><p>Manchester pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.SincPulse/" title="komm.SincPulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SincPulse</span></code></a></p></td>
+<td><p>Sinc pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.RaisedCosinePulse/" title="komm.RaisedCosinePulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RaisedCosinePulse</span></code></a></p></td>
+<td><p>Raised cosine pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.RootRaisedCosinePulse/" title="komm.RootRaisedCosinePulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RootRaisedCosinePulse</span></code></a></p></td>
+<td><p>Root raised cosine pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.GaussianPulse/" title="komm.GaussianPulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianPulse</span></code></a></p></td>
+<td><p>Gaussian pulse.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.TransmitFilter/" title="komm.TransmitFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TransmitFilter</span></code></a></p></td>
+<td><p>Transmit filter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.ReceiveFilter/" title="komm.ReceiveFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReceiveFilter</span></code></a></p></td>
+<td><p>Receive filter [Not implemented yet].</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="quantization">
+<h2>Quantization<a class="headerlink" href="#quantization" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.ScalarQuantizer/" title="komm.ScalarQuantizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScalarQuantizer</span></code></a></p></td>
+<td><p>General scalar quantizer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.LloydMaxQuantizer/" title="komm.LloydMaxQuantizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LloydMaxQuantizer</span></code></a></p></td>
+<td><p>Lloyd--Max scalar quantizer [Not implemented yet].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.UniformQuantizer/" title="komm.UniformQuantizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UniformQuantizer</span></code></a></p></td>
+<td><p>Uniform scalar quantizer.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sequences">
+<h2>Sequences<a class="headerlink" href="#sequences" title="Permalink to this heading">¶</a></h2>
+<section id="binary-sequences">
+<h3>Binary sequences<a class="headerlink" href="#binary-sequences" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.BinarySequence/" title="komm.BinarySequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinarySequence</span></code></a></p></td>
+<td><p>General binary sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.BarkerSequence/" title="komm.BarkerSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BarkerSequence</span></code></a></p></td>
+<td><p>Barker sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.WalshHadamardSequence/" title="komm.WalshHadamardSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WalshHadamardSequence</span></code></a></p></td>
+<td><p>Walsh--Hadamard sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.LFSRSequence/" title="komm.LFSRSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LFSRSequence</span></code></a></p></td>
+<td><p>Linear-feedback shift register (LFSR) sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.GoldSequence/" title="komm.GoldSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GoldSequence</span></code></a></p></td>
+<td><p>Gold sequence [Not implemented yet].</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.KasamiSequence/" title="komm.KasamiSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KasamiSequence</span></code></a></p></td>
+<td><p>Kasami sequence [Not implemented yet].</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="other-sequences">
+<h3>Other sequences<a class="headerlink" href="#other-sequences" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.ZadoffChuSequence/" title="komm.ZadoffChuSequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZadoffChuSequence</span></code></a></p></td>
+<td><p>Zadoff–Chu sequence [Not implemented yet].</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="source-coding">
+<h2>Source coding<a class="headerlink" href="#source-coding" title="Permalink to this heading">¶</a></h2>
+<section id="sources">
+<h3>Sources<a class="headerlink" href="#sources" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.DiscreteMemorylessSource/" title="komm.DiscreteMemorylessSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteMemorylessSource</span></code></a></p></td>
+<td><p>Discrete memoryless source (DMS).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lossless-coding">
+<h3>Lossless coding<a class="headerlink" href="#lossless-coding" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.FixedToVariableCode/" title="komm.FixedToVariableCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedToVariableCode</span></code></a></p></td>
+<td><p>Binary (prefix-free) fixed-to-variable length code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.HuffmanCode/" title="komm.HuffmanCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HuffmanCode</span></code></a></p></td>
+<td><p>Huffman code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.VariableToFixedCode/" title="komm.VariableToFixedCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VariableToFixedCode</span></code></a></p></td>
+<td><p>Binary (prefix-free) variable-to-fixed length code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.TunstallCode/" title="komm.TunstallCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TunstallCode</span></code></a></p></td>
+<td><p>Tunstall code.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.binlist2int/" title="komm.binlist2int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binlist2int</span></code></a></p></td>
+<td><p>Converts a bit array to its integer representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.int2binlist/" title="komm.int2binlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int2binlist</span></code></a></p></td>
+<td><p>Converts an integer to its bit array representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.pack/" title="komm.pack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack</span></code></a></p></td>
+<td><p>Packs a given integer array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.unpack/" title="komm.unpack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unpack</span></code></a></p></td>
+<td><p>Unpacks a given bit array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.qfunc/" title="komm.qfunc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qfunc</span></code></a></p></td>
+<td><p>Computes the Gaussian Q-function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="komm.qfuncinv/" title="komm.qfuncinv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qfuncinv</span></code></a></p></td>
+<td><p>Computes the inverse Gaussian Q-function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="komm.entropy/" title="komm.entropy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">entropy</span></code></a></p></td>
+<td><p>Computes the entropy of a random variable with a given <a class="reference internal" href="glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="#channels">Channels</a></li>
+    <li><a class="reference internal" href="#error-control">Error control</a></li>
+    <li><a class="reference internal" href="#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="references/">References</a></li>
+    <li><a class="reference internal" href="genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="komm.BinaryPolynomial/"
+                          title="next chapter">komm.BinaryPolynomial</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="komm.BinaryPolynomial/" title="komm.BinaryPolynomial"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Komm</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

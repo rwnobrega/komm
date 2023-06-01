@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.ConvolutionalCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.ConvolutionalStreamEncoder" href="../komm.ConvolutionalStreamEncoder/" />
+    <link rel="prev" title="komm.BCHCode" href="../komm.BCHCode/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.ConvolutionalStreamEncoder/" title="komm.ConvolutionalStreamEncoder"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.BCHCode/" title="komm.BCHCode"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ConvolutionalCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-convolutionalcode">
+<h1>komm.ConvolutionalCode<a class="headerlink" href="#komm-convolutionalcode" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConvolutionalCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedforward_polynomials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_polynomials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_convolutional/ConvolutionalCode/#ConvolutionalCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ConvolutionalCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> <span class="math notranslate nohighlight">\(P(D)\)</span>, of shape <span class="math notranslate nohighlight">\(k \times n\)</span>, and (optionally) by a <em>vector of feedback polynomials</em> <span class="math notranslate nohighlight">\(q(D)\)</span>, of length <span class="math notranslate nohighlight">\(k\)</span>. The element in row <span class="math notranslate nohighlight">\(i\)</span> and column <span class="math notranslate nohighlight">\(j\)</span> of <span class="math notranslate nohighlight">\(P(D)\)</span> is denoted by <span class="math notranslate nohighlight">\(p_{i,j}(D)\)</span>, and the element in position <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(q(D)\)</span> is denoted by <span class="math notranslate nohighlight">\(q_i(D)\)</span>; they are binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) in <span class="math notranslate nohighlight">\(D\)</span>. The parameters <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are the number of input and output bits per block, respectively.</p>
+<p>The <em>transfer function matrix</em> (also known as <em>transform-domain generator matrix</em>) <span class="math notranslate nohighlight">\(G(D)\)</span> of the convolutional code, of shape <span class="math notranslate nohighlight">\(k \times n\)</span>, is such that the element in row <span class="math notranslate nohighlight">\(i\)</span> and column <span class="math notranslate nohighlight">\(j\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},\]</div>
+<p>for <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span> and <span class="math notranslate nohighlight">\(j \in [0 : n)\)</span>.</p>
+<p class="rubric">Constraint lengths and related parameters</p>
+<p>The <em>constraint lengths</em> of the code are defined by</p>
+<div class="math notranslate nohighlight">
+\[\nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},\]</div>
+<p>for <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>.</p>
+<p>The <em>overall constraint length</em> of the code is defined by</p>
+<div class="math notranslate nohighlight">
+\[\nu = \sum_{0 \leq i &lt; k} \nu_i.\]</div>
+<p>The <em>memory order</em> of the code is defined by</p>
+<div class="math notranslate nohighlight">
+\[\mu = \max_{0 \leq i &lt; k} \nu_i.\]</div>
+<p class="rubric">Space-state representation</p>
+<p>A convolutional code may also be described via the <em>space-state representation</em>. Let <span class="math notranslate nohighlight">\(\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})\)</span> be the input block, <span class="math notranslate nohighlight">\(\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})\)</span> be the output block, and <span class="math notranslate nohighlight">\(\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})\)</span> be the state, all defined at time instant <span class="math notranslate nohighlight">\(t\)</span>. Then,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{s}_{t+1} &amp; = \mathbf{s}_t A + \mathbf{u}_t B, \\
+\mathbf{v}_{t} &amp; = \mathbf{s}_t C + \mathbf{u}_t D,\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is the <span class="math notranslate nohighlight">\(\nu \times \nu\)</span> <em>state matrix</em>, <span class="math notranslate nohighlight">\(B\)</span> is the <span class="math notranslate nohighlight">\(k \times \nu\)</span> <em>control matrix</em>, <span class="math notranslate nohighlight">\(C\)</span> is the <span class="math notranslate nohighlight">\(\nu \times n\)</span> <em>observation matrix</em>, and <span class="math notranslate nohighlight">\(D\)</span> is the <span class="math notranslate nohighlight">\(k \times n\)</span> <em>transition matrix</em>.</p>
+<p class="rubric">Table of convolutional code</p>
+<p>The table below lists optimal convolutional codes with parameters <span class="math notranslate nohighlight">\((n,k) = (2,1)\)</span> and <span class="math notranslate nohighlight">\((n,k) = (3,1)\)</span>, for small values of the overall constraint length <span class="math notranslate nohighlight">\(\nu\)</span>. For more details, see <span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (Sec. 12.3).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameters <span class="math notranslate nohighlight">\((n, k, \nu)\)</span></p></th>
+<th class="head"><p>Transfer function matrix <span class="math notranslate nohighlight">\(G(D)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((2, 1, 1)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o1,</span> <span class="pre">0o3]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((2, 1, 2)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o5,</span> <span class="pre">0o7]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((2, 1, 3)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o13,</span> <span class="pre">0o17]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((2, 1, 4)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o27,</span> <span class="pre">0o31]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((2, 1, 5)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o53,</span> <span class="pre">0o75]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((2, 1, 6)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o117,</span> <span class="pre">0o155]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((2, 1, 7)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o247,</span> <span class="pre">0o371]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((2, 1, 8)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o561,</span> <span class="pre">0o753]]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameters <span class="math notranslate nohighlight">\((n, k, \nu)\)</span></p></th>
+<th class="head"><p>Transfer function matrix <span class="math notranslate nohighlight">\(G(D)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((3, 1, 1)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o1,</span> <span class="pre">0o3,</span> <span class="pre">0o3]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((3, 1, 2)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o5,</span> <span class="pre">0o7,</span> <span class="pre">0o7]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((3, 1, 3)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o13,</span> <span class="pre">0o15,</span> <span class="pre">0o17]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((3, 1, 4)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o25,</span> <span class="pre">0o33,</span> <span class="pre">0o37]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((3, 1, 5)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o47,</span> <span class="pre">0o53,</span> <span class="pre">0o75]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((3, 1, 6)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o117,</span> <span class="pre">0o127,</span> <span class="pre">0o155]]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\((3, 1, 7)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o255,</span> <span class="pre">0o331,</span> <span class="pre">0o367]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\((3, 1, 8)\)</span></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">[[0o575,</span> <span class="pre">0o623,</span> <span class="pre">0o727]]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>References: <span id="id2">[<a class="reference internal" href="../references/#id10" title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</a>]</span>, <span id="id3">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span>, <span id="id4">[<a class="reference internal" href="../references/#id12" title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</a>]</span></p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.constraint_lengths" title="komm.ConvolutionalCode.constraint_lengths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constraint_lengths</span></code></a></p></td>
+<td><p>The constraint lengths <span class="math notranslate nohighlight">\(\nu_i\)</span> of the code, for <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.control_matrix" title="komm.ConvolutionalCode.control_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">control_matrix</span></code></a></p></td>
+<td><p>The control matrix <span class="math notranslate nohighlight">\(B\)</span> of the state-space representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.feedback_polynomials" title="komm.ConvolutionalCode.feedback_polynomials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feedback_polynomials</span></code></a></p></td>
+<td><p>The vector of feedback polynomials <span class="math notranslate nohighlight">\(q(D)\)</span> of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.feedforward_polynomials" title="komm.ConvolutionalCode.feedforward_polynomials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feedforward_polynomials</span></code></a></p></td>
+<td><p>The matrix of feedforward polynomials <span class="math notranslate nohighlight">\(P(D)\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.finite_state_machine" title="komm.ConvolutionalCode.finite_state_machine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_state_machine</span></code></a></p></td>
+<td><p>The finite-state machine of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.memory_order" title="komm.ConvolutionalCode.memory_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memory_order</span></code></a></p></td>
+<td><p>The memory order <span class="math notranslate nohighlight">\(\mu\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.num_input_bits" title="komm.ConvolutionalCode.num_input_bits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_input_bits</span></code></a></p></td>
+<td><p>The number of input bits per block, <span class="math notranslate nohighlight">\(k\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.num_output_bits" title="komm.ConvolutionalCode.num_output_bits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_output_bits</span></code></a></p></td>
+<td><p>The number of output bits per block, <span class="math notranslate nohighlight">\(n\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.observation_matrix" title="komm.ConvolutionalCode.observation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_matrix</span></code></a></p></td>
+<td><p>The observation matrix <span class="math notranslate nohighlight">\(C\)</span> of the state-space representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.overall_constraint_length" title="komm.ConvolutionalCode.overall_constraint_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overall_constraint_length</span></code></a></p></td>
+<td><p>The overall constraint length <span class="math notranslate nohighlight">\(\nu\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.state_matrix" title="komm.ConvolutionalCode.state_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_matrix</span></code></a></p></td>
+<td><p>The state matrix <span class="math notranslate nohighlight">\(A\)</span> of the state-space representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.transfer_function_matrix" title="komm.ConvolutionalCode.transfer_function_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfer_function_matrix</span></code></a></p></td>
+<td><p>The transfer function matrix <span class="math notranslate nohighlight">\(G(D)\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.transition_matrix" title="komm.ConvolutionalCode.transition_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transition_matrix</span></code></a></p></td>
+<td><p>The transition matrix <span class="math notranslate nohighlight">\(D\)</span> of the state-space representation.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalCode.__init__" title="komm.ConvolutionalCode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(feedforward_polynomials[, ...])</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedforward_polynomials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_polynomials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_convolutional/ConvolutionalCode/#ConvolutionalCode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ConvolutionalCode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span></code><span class="classifier">2D-array of (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>)</span></dt><dd><p>The matrix of feedforward polynomials <span class="math notranslate nohighlight">\(P(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k \times n\)</span> matrix whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">feedback_polynomials</span></code><span class="classifier">1D-array of  (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>), optional</span></dt><dd><p>The vector of feedback polynomials <span class="math notranslate nohighlight">\(q(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k\)</span>-vector whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former. The default value corresponds to no feedback, that is, <span class="math notranslate nohighlight">\(q_i(D) = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>The convolutional code with encoder depicted in the figure below has parameters <span class="math notranslate nohighlight">\((n, k, \nu) = (2, 1, 6)\)</span>; its transfer function matrix is given by</p>
+<div class="math notranslate nohighlight">
+\[G(D) =
+\begin{bmatrix}
+   D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1
+\end{bmatrix},\]</div>
+<p>yielding <code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span> <span class="pre">=</span> <span class="pre">[[0b1001111,</span> <span class="pre">0b1101101]]</span> <span class="pre">=</span> <span class="pre">[[0o117,</span> <span class="pre">0o155]]</span> <span class="pre">=</span> <span class="pre">[[79,</span> <span class="pre">109]]</span></code>.</p>
+<img alt="Convolutional encoder example." class="align-center" src="../_images/cc_2_1_6.png" />
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(2, 1, 6)</span>
+</pre></div>
+</div>
+<p>The convolutional code with encoder depicted in the figure below has parameters <span class="math notranslate nohighlight">\((n, k, \nu) = (3, 2, 7)\)</span>; its transfer function matrix is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(D) =
+\begin{bmatrix}
+    D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\
+    0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1 \\
+\end{bmatrix},\end{split}\]</div>
+<p>yielding <code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span> <span class="pre">=</span> <span class="pre">[[0b11001,</span> <span class="pre">0b10111,</span> <span class="pre">0b00000],</span> <span class="pre">[0b0000,</span> <span class="pre">0b1010,</span> <span class="pre">0b1101]]</span> <span class="pre">=</span> <span class="pre">[[0o31,</span> <span class="pre">0o27,</span> <span class="pre">0o00],</span> <span class="pre">[0o00,</span> <span class="pre">0o12,</span> <span class="pre">0o15]]</span> <span class="pre">=</span> <span class="pre">[[25,</span> <span class="pre">23,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">10,</span> <span class="pre">13]]</span></code>.</p>
+<img alt="Convolutional encoder example." class="align-center" src="../_images/cc_3_2_7.png" />
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(3, 2, 7)</span>
+</pre></div>
+</div>
+<p>The convolutional code with feedback encoder depicted in the figure below has parameters <span class="math notranslate nohighlight">\((n, k, \nu) = (2, 1, 4)\)</span>; its transfer function matrix is given by</p>
+<div class="math notranslate nohighlight">
+\[G(D) =
+\begin{bmatrix}
+    1  &amp;  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+\end{bmatrix},\]</div>
+<p>yielding <code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span> <span class="pre">=</span> <span class="pre">[[0b10111,</span> <span class="pre">0b11001]]</span> <span class="pre">=</span> <span class="pre">[[0o27,</span> <span class="pre">0o31]]</span> <span class="pre">=</span> <span class="pre">[[23,</span> <span class="pre">25]]</span></code> and <code class="code docutils literal notranslate"><span class="pre">feedback_polynomials</span> <span class="pre">=</span> <span class="pre">[0o27]</span></code>.</p>
+<img alt="Convolutional feedback encoder example." class="align-center" src="../_images/cc_2_1_4_fb.png" />
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o31</span><span class="p">]],</span> <span class="n">feedback_polynomials</span><span class="o">=</span><span class="p">[</span><span class="mo">0o27</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(2, 1, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.constraint_lengths">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constraint_lengths</span></span><a class="headerlink" href="#komm.ConvolutionalCode.constraint_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>The constraint lengths <span class="math notranslate nohighlight">\(\nu_i\)</span> of the code, for <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>. This is a 1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.control_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_matrix</span></span><a class="headerlink" href="#komm.ConvolutionalCode.control_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The control matrix <span class="math notranslate nohighlight">\(B\)</span> of the state-space representation. This is a <span class="math notranslate nohighlight">\(k \times \nu\)</span> array of integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.feedback_polynomials">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feedback_polynomials</span></span><a class="headerlink" href="#komm.ConvolutionalCode.feedback_polynomials" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vector of feedback polynomials <span class="math notranslate nohighlight">\(q(D)\)</span> of the code. This is a <span class="math notranslate nohighlight">\(k\)</span>-array of <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.feedforward_polynomials">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feedforward_polynomials</span></span><a class="headerlink" href="#komm.ConvolutionalCode.feedforward_polynomials" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of feedforward polynomials <span class="math notranslate nohighlight">\(P(D)\)</span> of the code. This is a <span class="math notranslate nohighlight">\(k \times n\)</span> array of <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.finite_state_machine">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">finite_state_machine</span></span><a class="headerlink" href="#komm.ConvolutionalCode.finite_state_machine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The finite-state machine of the code.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.memory_order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">memory_order</span></span><a class="headerlink" href="#komm.ConvolutionalCode.memory_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>The memory order <span class="math notranslate nohighlight">\(\mu\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.num_input_bits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_input_bits</span></span><a class="headerlink" href="#komm.ConvolutionalCode.num_input_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of input bits per block, <span class="math notranslate nohighlight">\(k\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.num_output_bits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_output_bits</span></span><a class="headerlink" href="#komm.ConvolutionalCode.num_output_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of output bits per block, <span class="math notranslate nohighlight">\(n\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.observation_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observation_matrix</span></span><a class="headerlink" href="#komm.ConvolutionalCode.observation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The observation matrix <span class="math notranslate nohighlight">\(C\)</span> of the state-space representation. This is a <span class="math notranslate nohighlight">\(\nu \times n\)</span> array of integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.overall_constraint_length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">overall_constraint_length</span></span><a class="headerlink" href="#komm.ConvolutionalCode.overall_constraint_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The overall constraint length <span class="math notranslate nohighlight">\(\nu\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.state_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state_matrix</span></span><a class="headerlink" href="#komm.ConvolutionalCode.state_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The state matrix <span class="math notranslate nohighlight">\(A\)</span> of the state-space representation. This is a <span class="math notranslate nohighlight">\(\nu \times \nu\)</span> array of integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.transfer_function_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transfer_function_matrix</span></span><a class="headerlink" href="#komm.ConvolutionalCode.transfer_function_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transfer function matrix <span class="math notranslate nohighlight">\(G(D)\)</span> of the code. This is a <span class="math notranslate nohighlight">\(k \times n\)</span> array of <a class="reference internal" href="../komm.BinaryPolynomialFraction/#komm.BinaryPolynomialFraction" title="komm.BinaryPolynomialFraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomialFraction</span></code></a>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ConvolutionalCode.transition_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transition_matrix</span></span><a class="headerlink" href="#komm.ConvolutionalCode.transition_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transition matrix <span class="math notranslate nohighlight">\(D\)</span> of the state-space representation. This is a <span class="math notranslate nohighlight">\(k \times n\)</span> array of integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.BCHCode/"
+                          title="previous chapter">komm.BCHCode</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.ConvolutionalStreamEncoder/"
+                          title="next chapter">komm.ConvolutionalStreamEncoder</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.ConvolutionalCode.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.ConvolutionalStreamEncoder/" title="komm.ConvolutionalStreamEncoder"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.BCHCode/" title="komm.BCHCode"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ConvolutionalCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

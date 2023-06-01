@@ -1,0 +1,33 @@
+﻿komm.RationalPolynomial
+=======================
+
+.. currentmodule:: komm
+
+.. autoclass:: RationalPolynomial
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~RationalPolynomial.degree
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~RationalPolynomial.__init__
+      ~RationalPolynomial.coefficients
+      ~RationalPolynomial.evaluate
+      ~RationalPolynomial.gcd
+      ~RationalPolynomial.lcm
+      ~RationalPolynomial.monomial
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: coefficients
+   .. autoproperty:: degree
+   .. automethod:: evaluate
+   .. automethod:: gcd
+   .. automethod:: lcm
+   .. automethod:: monomial

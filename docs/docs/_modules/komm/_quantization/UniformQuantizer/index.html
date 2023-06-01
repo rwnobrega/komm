@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._quantization.UniformQuantizer &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._quantization.UniformQuantizer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._quantization.UniformQuantizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.ScalarQuantizer</span> <span class="kn">import</span> <span class="n">ScalarQuantizer</span>
+
+
+<div class="viewcode-block" id="UniformQuantizer"><a class="viewcode-back" href="../../../../komm.UniformQuantizer/#komm.UniformQuantizer">[docs]</a><span class="k">class</span> <span class="nc">UniformQuantizer</span><span class="p">(</span><span class="n">ScalarQuantizer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\\Delta`, and the thresholds are the mid-point between adjacent levels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UniformQuantizer.__init__"><a class="viewcode-back" href="../../../../komm.UniformQuantizer/#komm.UniformQuantizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_levels</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s2">&quot;mid-riser&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`num_levels` : :obj:`int`</span>
+<span class="sd">            The number of quantization levels, :math:`L`.</span>
+
+<span class="sd">        :code:`input_peak` : :obj:`float`, optional</span>
+<span class="sd">            The peak of the input signal, :math:`x_\\mathrm{p}`. The default value is :code:`1.0`.</span>
+
+<span class="sd">        :code:`choice` : :obj:`str`, optional</span>
+<span class="sd">            The choice for the uniform quantizer. Must be one of :code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`. The default value is :code:`&#39;mid-riser&#39;`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=8)</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">        array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">        array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])</span>
+<span class="sd">        &gt;&gt;&gt; x = np.linspace(-0.5, 0.5, num=11)</span>
+<span class="sd">        &gt;&gt;&gt; y = quantizer(x)</span>
+<span class="sd">        &gt;&gt;&gt; np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">        array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],</span>
+<span class="sd">               [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])</span>
+
+<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;unsigned&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">        array([0.  , 0.25, 0.5 , 0.75])</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">        array([0.125, 0.375, 0.625])</span>
+
+<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-riser&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">        array([-0.75, -0.25,  0.25,  0.75])</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">        array([-0.5,  0. ,  0.5])</span>
+
+<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-tread&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">        array([-1. , -0.5,  0. ,  0.5])</span>
+<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">        array([-0.75, -0.25,  0.25])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">input_peak</span> <span class="o">/</span> <span class="n">num_levels</span> <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;unsigned&quot;</span> <span class="k">else</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">input_peak</span> <span class="o">/</span> <span class="n">num_levels</span>
+
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;unsigned&quot;</span><span class="p">:</span>
+            <span class="n">min_level</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">max_level</span> <span class="o">=</span> <span class="n">input_peak</span>
+            <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_level</span><span class="p">,</span> <span class="n">max_level</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;mid-riser&quot;</span><span class="p">:</span>
+            <span class="n">min_level</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_peak</span> <span class="o">+</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_levels</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_level</span><span class="p">,</span> <span class="o">-</span><span class="n">min_level</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="p">(</span><span class="n">num_levels</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;mid-tread&quot;</span><span class="p">:</span>
+            <span class="n">min_level</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_peak</span> <span class="o">+</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_levels</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_level</span><span class="p">,</span> <span class="o">-</span><span class="n">min_level</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="p">(</span><span class="n">num_levels</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter &#39;choice&#39; must be in {&#39;unsigned&#39;, &#39;mid-riser&#39;, &#39;mid-tread&#39;}&quot;</span><span class="p">)</span>
+
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="p">(</span><span class="n">levels</span> <span class="o">+</span> <span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quantization_step</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_peak</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_peak</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span> <span class="o">=</span> <span class="n">choice</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">quantization_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The quantization step, :math:`\\Delta`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantization_step</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_peak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The peak of the input signal, :math:`x_\\mathrm{p}`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_peak</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The choice for the uniform quantizer (:code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_signal</span><span class="p">):</span>
+        <span class="n">input_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_signal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantization_step</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;unsigned&quot;</span><span class="p">,</span> <span class="s2">&quot;mid-tread&quot;</span><span class="p">]:</span>
+            <span class="n">quantized</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">input_signal</span> <span class="o">/</span> <span class="n">delta</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span> <span class="o">==</span> <span class="s2">&quot;mid-riser&quot;</span><span class="p">:</span>
+            <span class="n">quantized</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">input_signal</span> <span class="o">/</span> <span class="n">delta</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">output_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">quantized</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_levels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_levels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">output_signal</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;num_levels=</span><span class="si">{}</span><span class="s2">, input_peak=</span><span class="si">{}</span><span class="s2">, choice=&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_peak</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._quantization.UniformQuantizer</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

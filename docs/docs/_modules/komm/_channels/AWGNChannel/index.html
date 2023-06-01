@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._channels.AWGNChannel &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._channels.AWGNChannel</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._channels.AWGNChannel</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="AWGNChannel"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel">[docs]</a><span class="k">class</span> <span class="nc">AWGNChannel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Additive white Gaussian noise (AWGN) channel. It is defined by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        Y_n = X_n + Z_n,</span>
+
+<span class="sd">    where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\mathrm{SNR} = \\frac{P}{N},</span>
+
+<span class="sd">    where :math:`P = \\mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \\mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.</span>
+
+<span class="sd">    References: :cite:`Cover.Thomas.06` (Ch. 9)</span>
+
+<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example below).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AWGNChannel.__init__"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`snr` : :obj:`float`, optional</span>
+<span class="sd">            The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.</span>
+
+<span class="sd">        :code:`signal_power` : :obj:`float` or :obj:`str`, optional</span>
+<span class="sd">            The input signal power :math:`P`.  If equal to the string :code:`&#39;measured&#39;`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)</span>
+<span class="sd">        &gt;&gt;&gt; x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]</span>
+<span class="sd">        &gt;&gt;&gt; y = awgn(x); y  #doctest:+SKIP</span>
+<span class="sd">        array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,</span>
+<span class="sd">                1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snr</span> <span class="o">=</span> <span class="n">snr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal_power</span> <span class="o">=</span> <span class="n">signal_power</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">snr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span>
+
+    <span class="nd">@snr</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">snr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">signal_power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The input signal power :math:`P`. This is a read-and-write property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span>
+
+    <span class="nd">@signal_power</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">signal_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AWGNChannel.capacity"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.capacity">[docs]</a>    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=63.0)</span>
+<span class="sd">        &gt;&gt;&gt; awgn.capacity()</span>
+<span class="sd">        3.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_signal</span><span class="p">):</span>
+        <span class="n">input_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_signal</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">input_signal</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">==</span> <span class="s2">&quot;measured&quot;</span><span class="p">:</span>
+            <span class="n">signal_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">input_signal</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">signal_power</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span>
+
+        <span class="n">noise_power</span> <span class="o">=</span> <span class="n">signal_power</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span>
+
+        <span class="k">if</span> <span class="n">input_signal</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">complex</span><span class="p">:</span>
+            <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">noise_power</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">noise_power</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">input_signal</span> <span class="o">+</span> <span class="n">noise</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;snr=</span><span class="si">{}</span><span class="s2">, signal_power=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._channels.AWGNChannel</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

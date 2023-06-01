@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.FiniteStateMachine &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.RealModulation" href="../komm.RealModulation/" />
+    <link rel="prev" title="komm.TerminatedConvolutionalCode" href="../komm.TerminatedConvolutionalCode/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.RealModulation/" title="komm.RealModulation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.TerminatedConvolutionalCode/" title="komm.TerminatedConvolutionalCode"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.FiniteStateMachine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-finitestatemachine">
+<h1>komm.FiniteStateMachine<a class="headerlink" href="#komm-finitestatemachine" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FiniteStateMachine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finite-state machine (Mealy machine). It is defined by a <em>set of states</em> <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>, an <em>input alphabet</em> <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>, an <em>output alphabet</em> <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>, and a <em>transition function</em> <span class="math notranslate nohighlight">\(T : \mathcal{S} \times \mathcal{X} \to \mathcal{S} \times \mathcal{Y}\)</span>. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as <span class="math notranslate nohighlight">\(\mathcal{S} = \{ 0, 1, \ldots, |\mathcal{S}| - 1 \}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}\)</span>, and <span class="math notranslate nohighlight">\(\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}\)</span>, respectively.</p>
+<p>For example, consider the finite-state machine whose state diagram depicted in the figure below.</p>
+<img alt="Finite-state machine (Mealy machine) example." class="align-center" src="../_images/mealy.png" />
+<p>It has set of states <span class="math notranslate nohighlight">\(\mathcal{S} = \{ 0, 1, 2, 3 \}\)</span>, input alphabet <span class="math notranslate nohighlight">\(\mathcal{X} = \{ 0, 1 \}\)</span>, output alphabet <span class="math notranslate nohighlight">\(\mathcal{Y} = \{ 0, 1, 2, 3 \}\)</span>, and transition function <span class="math notranslate nohighlight">\(T\)</span> given by the table below.</p>
+<table class="docutils align-center" id="id4">
+<caption><span class="caption-text">Transition function</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>State</p></th>
+<th class="head"><p>Input</p></th>
+<th class="head"><p>Next state</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.input_edges" title="komm.FiniteStateMachine.input_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_edges</span></code></a></p></td>
+<td><p>The matrix of input edges of the machine.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.next_states" title="komm.FiniteStateMachine.next_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next_states</span></code></a></p></td>
+<td><p>The matrix of next states of the machine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.num_input_symbols" title="komm.FiniteStateMachine.num_input_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_input_symbols</span></code></a></p></td>
+<td><p>The size (cardinality) of the input alphabet <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.num_output_symbols" title="komm.FiniteStateMachine.num_output_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_output_symbols</span></code></a></p></td>
+<td><p>The size (cardinality) of the output alphabet <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.num_states" title="komm.FiniteStateMachine.num_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_states</span></code></a></p></td>
+<td><p>The number of states of the machine.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.output_edges" title="komm.FiniteStateMachine.output_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_edges</span></code></a></p></td>
+<td><p>The matrix of output edges of the machine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.outputs" title="komm.FiniteStateMachine.outputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs</span></code></a></p></td>
+<td><p>The matrix of outputs of the machine.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.__init__" title="komm.FiniteStateMachine.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(next_states, outputs)</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.forward_backward" title="komm.FiniteStateMachine.forward_backward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_backward</span></code></a>(observed_sequence, ...[, ...])</p></td>
+<td><p>Applies the forward-backward algorithm on a given observed sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.process" title="komm.FiniteStateMachine.process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code></a>(input_sequence, initial_state)</p></td>
+<td><p>Returns the output sequence corresponding to a given input sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.viterbi" title="komm.FiniteStateMachine.viterbi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viterbi</span></code></a>(observed_sequence, metric_function)</p></td>
+<td><p>Applies the Viterbi algorithm on a given observed sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.FiniteStateMachine.viterbi_streaming" title="komm.FiniteStateMachine.viterbi_streaming"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viterbi_streaming</span></code></a>(observed_sequence, ...)</p></td>
+<td><p>Applies the streaming version of the Viterbi algorithm on a given observed sequence.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">next_states</span></code><span class="classifier">2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The matrix of next states of the machine, of shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(s\)</span> and column <span class="math notranslate nohighlight">\(x\)</span> should be the next state of the machine (an element in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>), given that the current state is <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span> and the input is <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">outputs</span></code><span class="classifier">2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The matrix of outputs of the machine, of shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(s\)</span> and column <span class="math notranslate nohighlight">\(x\)</span> should be the output of the machine (an element in <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>), given that the current state is <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span> and the input is <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.forward_backward">
+<span class="sig-name descname"><span class="pre">forward_backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state_distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_state_distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine.forward_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine.forward_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of each input <span class="math notranslate nohighlight">\(x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}\)</span> given an observed sequence <span class="math notranslate nohighlight">\(\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L\)</span>. The prior <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of each input may also be provided.</p>
+<p>References: <span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (Sec. 12.6).</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">observed_sequence</span></code><span class="classifier">1D-array</span></dt><dd><p>The observed sequence <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathcal{Z}^L\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">metric_function</span></code><span class="classifier">function</span></dt><dd><p>The metric function <span class="math notranslate nohighlight">\(\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_priors</span></code><span class="classifier">2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The prior <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of each input, of shape <span class="math notranslate nohighlight">\(L \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(t \in [0 : L)\)</span> and column <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span> should be <span class="math notranslate nohighlight">\(p(x_t = x)\)</span>. The default value considers uniform priors.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">initial_state_distribution</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of the initial state of the machine. It must be a 1D-array of length <span class="math notranslate nohighlight">\(|\mathcal{S}|\)</span>. The default value is uniform over all states.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">final_state_distribution</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of the final state of the machine. It must be a 1D-array of length <span class="math notranslate nohighlight">\(|\mathcal{S}|\)</span>. The default value is uniform over all states.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_posteriors</span></code><span class="classifier">2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The posterior <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> of each input, given the observed sequence, of shape <span class="math notranslate nohighlight">\(L \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(t \in [0 : L)\)</span> and column <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span> is <span class="math notranslate nohighlight">\(p(x_t = x \mid \mathbf{z})\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.input_edges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_edges</span></span><a class="headerlink" href="#komm.FiniteStateMachine.input_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of input edges of the machine. It has shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{S}|\)</span>. If there is an edge from <span class="math notranslate nohighlight">\(s_0 \in \mathcal{S}\)</span> to <span class="math notranslate nohighlight">\(s_1 \in \mathcal{S}\)</span>, then the element in row <span class="math notranslate nohighlight">\(s_0\)</span> and column <span class="math notranslate nohighlight">\(s_1\)</span> is the input associated with that edge (an element of <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>); if there is no such edge, then the element is <span class="math notranslate nohighlight">\(-1\)</span>. This property is read-only.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span><span class="o">.</span><span class="n">input_edges</span>
+<span class="go">array([[ 0,  1, -1, -1],</span>
+<span class="go">       [-1, -1,  0,  1],</span>
+<span class="go">       [ 0,  1, -1, -1],</span>
+<span class="go">       [-1, -1,  0,  1]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.next_states">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next_states</span></span><a class="headerlink" href="#komm.FiniteStateMachine.next_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of next states of the machine. It has shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(s\)</span> and column <span class="math notranslate nohighlight">\(x\)</span> is the next state of the machine (an element in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>), given that the current state is <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span> and the input is <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.num_input_symbols">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_input_symbols</span></span><a class="headerlink" href="#komm.FiniteStateMachine.num_input_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size (cardinality) of the input alphabet <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.num_output_symbols">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_output_symbols</span></span><a class="headerlink" href="#komm.FiniteStateMachine.num_output_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size (cardinality) of the output alphabet <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.num_states">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_states</span></span><a class="headerlink" href="#komm.FiniteStateMachine.num_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of states of the machine. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.output_edges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_edges</span></span><a class="headerlink" href="#komm.FiniteStateMachine.output_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of output edges of the machine. It has shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{S}|\)</span>. If there is an edge from <span class="math notranslate nohighlight">\(s_0 \in \mathcal{S}\)</span> to <span class="math notranslate nohighlight">\(s_1 \in \mathcal{S}\)</span>, then the element in row <span class="math notranslate nohighlight">\(s_0\)</span> and column <span class="math notranslate nohighlight">\(s_1\)</span> is the output associated with that edge (an element of <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>); if there is no such edge, then the element is <span class="math notranslate nohighlight">\(-1\)</span>. This property is read-only.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span><span class="o">.</span><span class="n">output_edges</span>
+<span class="go">array([[ 0,  3, -1, -1],</span>
+<span class="go">       [-1, -1,  1,  2],</span>
+<span class="go">       [ 3,  0, -1, -1],</span>
+<span class="go">       [-1, -1,  2,  1]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.outputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs</span></span><a class="headerlink" href="#komm.FiniteStateMachine.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of outputs of the machine. It has shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times |\mathcal{X}|\)</span>. The element in row <span class="math notranslate nohighlight">\(s\)</span> and column <span class="math notranslate nohighlight">\(x\)</span> is the output of the machine (an element in <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>), given that the current state is <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span> and the input is <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state <span class="math notranslate nohighlight">\(s_\mathrm{i}\)</span>. The input sequence and the output sequence are denoted by <span class="math notranslate nohighlight">\(\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L\)</span>, respectively.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The input sequence <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathcal{X}^L\)</span>. It should be a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">initial_state</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The initial state <span class="math notranslate nohighlight">\(s_\mathrm{i}\)</span> of the machine. Should be an integer in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">output_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The output sequence <span class="math notranslate nohighlight">\(\mathbf{y} \in \mathcal{Y}^L\)</span> corresponding to <code class="code docutils literal notranslate"><span class="pre">input_sequence</span></code>, assuming the machine starts at the state given by <code class="code docutils literal notranslate"><span class="pre">initial_state</span></code>. It is a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">final_state</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The final state <span class="math notranslate nohighlight">\(s_\mathrm{f}\)</span> of the machine. It is an integer in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_sequence</span><span class="p">,</span> <span class="n">final_state</span> <span class="o">=</span> <span class="n">fsm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_sequence</span>
+<span class="go">array([3, 2, 2, 0, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">final_state</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.viterbi">
+<span class="sig-name descname"><span class="pre">viterbi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine.viterbi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine.viterbi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}(s) \in \mathcal{X}^L\)</span> ending in state <span class="math notranslate nohighlight">\(s\)</span>, for all <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span>, given an observed sequence <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathcal{Z}^L\)</span>. It is assumed uniform input priors.</p>
+<p>References: <span id="id2">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (Sec. 12.1).</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">observed_sequence</span></code><span class="classifier">1D-array</span></dt><dd><p>The observed sequence <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathcal{Z}^L\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">metric_function</span></code><span class="classifier">function</span></dt><dd><p>The metric function <span class="math notranslate nohighlight">\(\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">initial_metrics</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The initial metrics for each state. It must be a 1D-array of length <span class="math notranslate nohighlight">\(|\mathcal{S}|\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">0.0</span></code> for all states.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_sequences_hat</span></code><span class="classifier">2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The most probable input sequence <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}(s) \in \mathcal{X}^L\)</span> ending in state <span class="math notranslate nohighlight">\(s\)</span>, for all <span class="math notranslate nohighlight">\(s \in \mathcal{S}\)</span>. It is a 2D-array of shape <span class="math notranslate nohighlight">\(L \times |\mathcal{S}|\)</span>, in which column <span class="math notranslate nohighlight">\(s\)</span> is equal to <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}(s)\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">final_metrics</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The final metrics for each state. It is a 1D-array of length <span class="math notranslate nohighlight">\(|\mathcal{S}|\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.FiniteStateMachine.viterbi_streaming">
+<span class="sig-name descname"><span class="pre">viterbi_streaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed_sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_finite_state_machine/FiniteStateMachine/#FiniteStateMachine.viterbi_streaming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteStateMachine.viterbi_streaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by <span class="math notranslate nohighlight">\(\tau\)</span>. It chooses the survivor with best metric and selects the information block on this path.</p>
+<p>References: <span id="id3">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (Sec. 12.3).</p>
+<p class="rubric">Input</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">observed_sequence</span></code><span class="classifier">1D-array</span></dt><dd><p>The observed sequence <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathcal{Z}^L\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">metric_function</span></code><span class="classifier">function</span></dt><dd><p>The metric function <span class="math notranslate nohighlight">\(\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">input_sequence_hat</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The most probable input sequence <span class="math notranslate nohighlight">\(\hat{\mathbf{x}} \in \mathcal{X}^L\)</span></p>
+</dd>
+</dl>
+<p class="rubric">Input and Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">memory</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>The metrics for each state. It must be a dictionary containing two keys: <code class="code docutils literal notranslate"><span class="pre">'paths'</span></code>, a 2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> of shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times (\tau + 1)\)</span>; and <code class="code docutils literal notranslate"><span class="pre">'metrics'</span></code>, a 2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> of shape <span class="math notranslate nohighlight">\(|\mathcal{S}| \times (\tau + 1)\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.TerminatedConvolutionalCode/"
+                          title="previous chapter">komm.TerminatedConvolutionalCode</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.RealModulation/"
+                          title="next chapter">komm.RealModulation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.FiniteStateMachine.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.RealModulation/" title="komm.RealModulation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.TerminatedConvolutionalCode/" title="komm.TerminatedConvolutionalCode"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.FiniteStateMachine</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

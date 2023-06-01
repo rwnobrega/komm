@@ -1,0 +1,6 @@
+﻿komm.unpack
+===========
+
+.. currentmodule:: komm
+
+.. autofunction:: unpack

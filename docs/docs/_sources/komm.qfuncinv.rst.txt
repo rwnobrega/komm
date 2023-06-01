@@ -1,0 +1,6 @@
+﻿komm.qfuncinv
+=============
+
+.. currentmodule:: komm
+
+.. autofunction:: qfuncinv

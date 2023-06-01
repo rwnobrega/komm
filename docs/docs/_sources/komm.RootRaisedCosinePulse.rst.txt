@@ -1,0 +1,31 @@
+﻿komm.RootRaisedCosinePulse
+==========================
+
+.. currentmodule:: komm
+
+.. autoclass:: RootRaisedCosinePulse
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~RootRaisedCosinePulse.frequency_response
+      ~RootRaisedCosinePulse.impulse_response
+      ~RootRaisedCosinePulse.interval
+      ~RootRaisedCosinePulse.length_in_symbols
+      ~RootRaisedCosinePulse.rolloff
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~RootRaisedCosinePulse.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: frequency_response
+   .. autoproperty:: impulse_response
+   .. autoproperty:: interval
+   .. autoproperty:: length_in_symbols
+   .. autoproperty:: rolloff

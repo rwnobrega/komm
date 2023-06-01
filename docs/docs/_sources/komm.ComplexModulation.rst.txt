@@ -1,0 +1,45 @@
+﻿komm.ComplexModulation
+======================
+
+.. currentmodule:: komm
+
+.. autoclass:: ComplexModulation
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~ComplexModulation.bits_per_symbol
+      ~ComplexModulation.channel_snr
+      ~ComplexModulation.constellation
+      ~ComplexModulation.energy_per_bit
+      ~ComplexModulation.energy_per_symbol
+      ~ComplexModulation.labeling
+      ~ComplexModulation.minimum_distance
+      ~ComplexModulation.order
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~ComplexModulation.__init__
+      ~ComplexModulation.bits_to_symbols
+      ~ComplexModulation.demodulate
+      ~ComplexModulation.modulate
+      ~ComplexModulation.symbols_to_bits
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: bits_per_symbol
+   .. automethod:: bits_to_symbols
+   .. autoproperty:: channel_snr
+   .. autoproperty:: constellation
+   .. automethod:: demodulate
+   .. autoproperty:: energy_per_bit
+   .. autoproperty:: energy_per_symbol
+   .. autoproperty:: labeling
+   .. autoproperty:: minimum_distance
+   .. automethod:: modulate
+   .. autoproperty:: order
+   .. automethod:: symbols_to_bits

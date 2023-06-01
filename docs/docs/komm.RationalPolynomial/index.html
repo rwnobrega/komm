@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.RationalPolynomial &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.RationalPolynomialFraction" href="../komm.RationalPolynomialFraction/" />
+    <link rel="prev" title="komm.FiniteBifield" href="../komm.FiniteBifield/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomialFraction/" title="komm.RationalPolynomialFraction"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.FiniteBifield/" title="komm.FiniteBifield"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.RationalPolynomial</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-rationalpolynomial">
+<h1>komm.RationalPolynomial<a class="headerlink" href="#komm-rationalpolynomial" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.RationalPolynomial">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RationalPolynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rational polynomial. A <em>rational polynomial</em> is a polynomial whose coefficients are all rational numbers.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="s1">&#39;1/2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>  <span class="c1"># 1/2 + 3 X^2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span>
+<span class="go">RationalPolynomial([&#39;1/2&#39;, &#39;0&#39;, &#39;3&#39;])</span>
+</pre></div>
+</div>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomial.degree" title="komm.RationalPolynomial.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a></p></td>
+<td><p>The degree of the polynomial.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomial.__init__" title="komm.RationalPolynomial.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(coefficients)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.RationalPolynomial.coefficients" title="komm.RationalPolynomial.coefficients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coefficients</span></code></a>([width])</p></td>
+<td><p>Returns the coefficients of the polynomial.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomial.evaluate" title="komm.RationalPolynomial.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>(point)</p></td>
+<td><p>Evaluates the polynomial at a given point.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.RationalPolynomial.gcd" title="komm.RationalPolynomial.gcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gcd</span></code></a>(*poly_list)</p></td>
+<td><p>Computes the greatest common divisor (gcd) of the arguments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomial.lcm" title="komm.RationalPolynomial.lcm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lcm</span></code></a>(*poly_list)</p></td>
+<td><p>Computes the least common multiple (lcm) of the arguments.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.RationalPolynomial.monomial" title="komm.RationalPolynomial.monomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">monomial</span></code></a>(degree[, coefficient])</p></td>
+<td><p>Constructs a monomial.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.coefficients">
+<span class="sig-name descname"><span class="pre">coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the coefficients of the polynomial.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">width</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">coefficients</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Coefficients of the polynomial. The <span class="math notranslate nohighlight">\(i\)</span>-th element of the array stands for the coefficient of <span class="math notranslate nohighlight">\(X^i\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1/3&#39;</span><span class="p">,</span> <span class="s1">&#39;2/3&#39;</span><span class="p">])</span>  <span class="c1"># (1/3) X + (2/3) X^2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">coefficients</span><span class="p">()</span>
+<span class="go">array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">coefficients</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1),</span>
+<span class="go">       Fraction(0, 1)], dtype=object)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.degree">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#komm.RationalPolynomial.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>The degree of the polynomial. This property is read-only.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># 1 + 3X^2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">degree</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the polynomial at a given point. Uses Horner’s method.</p>
+<p class="rubric">Input</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">point</span></code><span class="classifier">ring-like type</span></dt><dd><p>Any Python object supporting the operations of addition, subtraction, and multiplication.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">result</span></code><span class="classifier">ring-like type</span></dt><dd><p>The result of evaluating the binary polynomial at <code class="code docutils literal notranslate"><span class="pre">point</span></code>. It has the same type as <code class="code docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># X - X^3 + 2 X^4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>  <span class="c1"># same as 7 - 7**3 + 2 * 7**4</span>
+<span class="go">Fraction(4466, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>  <span class="c1"># same as point - point**3 + 2 * point**4</span>
+<span class="go">array([[Fraction(2, 1), Fraction(26, 1)],</span>
+<span class="go">       [Fraction(138, 1), Fraction(452, 1)]], dtype=object)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.gcd">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">poly_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.gcd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.gcd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the greatest common divisor (gcd) of the arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.lcm">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lcm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">poly_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.lcm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.lcm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the least common multiple (lcm) of the arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomial.monomial">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.monomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.monomial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a monomial. This is an polynomial of the form <span class="math notranslate nohighlight">\(cX^d\)</span>. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">degree</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The degree <span class="math notranslate nohighlight">\(d\)</span> of the monomial.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">coefficient</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>The coefficient <span class="math notranslate nohighlight">\(c\)</span> of the monomial. The default value is <span class="math notranslate nohighlight">\(1\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="o">.</span><span class="n">monomial</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 2 X^4</span>
+<span class="go">RationalPolynomial([&#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;2&#39;])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.FiniteBifield/"
+                          title="previous chapter">komm.FiniteBifield</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.RationalPolynomialFraction/"
+                          title="next chapter">komm.RationalPolynomialFraction</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.RationalPolynomial.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomialFraction/" title="komm.RationalPolynomialFraction"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.FiniteBifield/" title="komm.FiniteBifield"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.RationalPolynomial</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

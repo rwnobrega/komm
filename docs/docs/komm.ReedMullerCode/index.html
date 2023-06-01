@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.ReedMullerCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.CyclicCode" href="../komm.CyclicCode/" />
+    <link rel="prev" title="komm.CordaroWagnerCode" href="../komm.CordaroWagnerCode/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.CyclicCode/" title="komm.CyclicCode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.CordaroWagnerCode/" title="komm.CordaroWagnerCode"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ReedMullerCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-reedmullercode">
+<h1>komm.ReedMullerCode<a class="headerlink" href="#komm-reedmullercode" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.ReedMullerCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReedMullerCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_block/ReedMullerCode/#ReedMullerCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ReedMullerCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reed–Muller code. It is a linear block code (<a class="reference internal" href="../komm.BlockCode/#komm.BlockCode" title="komm.BlockCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockCode</span></code></a>) defined by two integers <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span>, which must satisfy <span class="math notranslate nohighlight">\(0 \leq \rho &lt; \mu\)</span>. See references for more details. The resulting code is denoted by <span class="math notranslate nohighlight">\(\mathrm{RM}(\rho, \mu)\)</span>, and has the following parameters:</p>
+<ul class="simple">
+<li><p>Length: <span class="math notranslate nohighlight">\(n = 2^{\mu}\)</span></p></li>
+<li><p>Dimension: <span class="math notranslate nohighlight">\(k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}\)</span></p></li>
+<li><p>Redundancy: <span class="math notranslate nohighlight">\(m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}\)</span></p></li>
+<li><p>Minimum distance: <span class="math notranslate nohighlight">\(d = 2^{\mu - \rho}\)</span></p></li>
+</ul>
+<p>References: <span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (p. 105–114)</p>
+<p class="rubric">Decoding methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 42%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Identifier</p></th>
+<th class="head"><p>Input type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Exhaustive search (hard-decision)</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">exhaustive_search_hard</span></code></p></td>
+<td><p>hard</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exhaustive search (soft-decision)</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">exhaustive_search_soft</span></code></p></td>
+<td><p>soft</p></td>
+</tr>
+<tr class="row-even"><td><p>Reed</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">reed</span></code></p></td>
+<td><p>hard</p></td>
+</tr>
+<tr class="row-odd"><td><p>Syndrome table</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">syndrome_table</span></code></p></td>
+<td><p>hard</p></td>
+</tr>
+<tr class="row-even"><td><p>Weighted Reed</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">weighted_reed</span></code></p></td>
+<td><p>soft</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(\rho = 0\)</span> it reduces to a repetition code (<a class="reference internal" href="../komm.RepetitionCode/#komm.RepetitionCode" title="komm.RepetitionCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">RepetitionCode</span></code></a>).</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(\rho = 1\)</span> it reduces to a lengthened simplex code (<a class="reference internal" href="../komm.SimplexCode/#komm.SimplexCode" title="komm.SimplexCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplexCode</span></code></a>).</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(\rho = \mu - 2\)</span> it reduces to an extended Hamming code (<a class="reference internal" href="../komm.HammingCode/#komm.HammingCode" title="komm.HammingCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingCode</span></code></a>).</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(\rho = \mu - 1\)</span> it reduces to a single parity check code (<a class="reference internal" href="../komm.SingleParityCheckCode/#komm.SingleParityCheckCode" title="komm.SingleParityCheckCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleParityCheckCode</span></code></a>).</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ReedMullerCode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
+<span class="go">(32, 6, 16)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>  
+<span class="go">array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],</span>
+<span class="go">       [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],</span>
+<span class="go">       [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],</span>
+<span class="go">       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  
+<span class="go">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recvword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">);</span> <span class="n">recvword</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">29</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">recvword</span><span class="p">)</span>
+<span class="go">array([0, 0, 0, 0, 0, 1])</span>
+</pre></div>
+</div>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.codeword_table" title="komm.ReedMullerCode.codeword_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codeword_table</span></code></a></p></td>
+<td><p>The codeword table of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.codeword_weight_distribution" title="komm.ReedMullerCode.codeword_weight_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codeword_weight_distribution</span></code></a></p></td>
+<td><p>The codeword weight distribution of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.coset_leader_table" title="komm.ReedMullerCode.coset_leader_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coset_leader_table</span></code></a></p></td>
+<td><p>The coset leader table of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.coset_leader_weight_distribution" title="komm.ReedMullerCode.coset_leader_weight_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coset_leader_weight_distribution</span></code></a></p></td>
+<td><p>The coset leader weight distribution of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.covering_radius" title="komm.ReedMullerCode.covering_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">covering_radius</span></code></a></p></td>
+<td><p>The covering radius of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.dimension" title="komm.ReedMullerCode.dimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimension</span></code></a></p></td>
+<td><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.generator_matrix" title="komm.ReedMullerCode.generator_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generator_matrix</span></code></a></p></td>
+<td><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.length" title="komm.ReedMullerCode.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<td><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.minimum_distance" title="komm.ReedMullerCode.minimum_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum_distance</span></code></a></p></td>
+<td><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.mu" title="komm.ReedMullerCode.mu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu</span></code></a></p></td>
+<td><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.packing_radius" title="komm.ReedMullerCode.packing_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">packing_radius</span></code></a></p></td>
+<td><p>The packing radius of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.parity_check_matrix" title="komm.ReedMullerCode.parity_check_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parity_check_matrix</span></code></a></p></td>
+<td><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.rate" title="komm.ReedMullerCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></p></td>
+<td><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.redundancy" title="komm.ReedMullerCode.redundancy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redundancy</span></code></a></p></td>
+<td><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.reed_partitions" title="komm.ReedMullerCode.reed_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reed_partitions</span></code></a></p></td>
+<td><p>The Reed partitions of the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.rho" title="komm.ReedMullerCode.rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rho</span></code></a></p></td>
+<td><p>The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.__init__" title="komm.ReedMullerCode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(rho, mu)</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.decode" title="komm.ReedMullerCode.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(recvword[, method])</p></td>
+<td><p>Decodes a received word to a message.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.encode" title="komm.ReedMullerCode.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(message[, method])</p></td>
+<td><p>Encodes a given message to its corresponding codeword.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.message_from_codeword" title="komm.ReedMullerCode.message_from_codeword"><code class="xref py py-obj docutils literal notranslate"><span class="pre">message_from_codeword</span></code></a>(codeword)</p></td>
+<td><p>Returns the message corresponding to a given codeword.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_block/ReedMullerCode/#ReedMullerCode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ReedMullerCode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">rho</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">mu</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code.</p>
+</dd>
+</dl>
+<p>The parameters must satisfy <span class="math notranslate nohighlight">\(0 \leq \rho &lt; \mu\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.codeword_table">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_table</span></span><a class="headerlink" href="#komm.ReedMullerCode.codeword_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>The codeword table of the code. This is a <span class="math notranslate nohighlight">\(2^k \times n\)</span> matrix whose rows are all the codewords. The codeword in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the message whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.codeword_weight_distribution">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_weight_distribution</span></span><a class="headerlink" href="#komm.ReedMullerCode.codeword_weight_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>The codeword weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of codewords of Hamming weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.coset_leader_table">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_table</span></span><a class="headerlink" href="#komm.ReedMullerCode.coset_leader_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>The coset leader table of the code. This is a <span class="math notranslate nohighlight">\(2^m \times n\)</span> matrix whose rows are all the coset leaders. The coset leader in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the syndrome whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>. This may be used as a <a class="reference internal" href="../glossary/#term-LUT"><span class="xref std std-term">LUT</span></a> for syndrome-based decoding.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.coset_leader_weight_distribution">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_weight_distribution</span></span><a class="headerlink" href="#komm.ReedMullerCode.coset_leader_weight_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>The coset leader weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of coset leaders of weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.covering_radius">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">covering_radius</span></span><a class="headerlink" href="#komm.ReedMullerCode.covering_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recvword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.ReedMullerCode.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a received word to a message.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">recvword</span></code><span class="classifier">1D-array of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>)</span></dt><dd><p>The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit <span class="math notranslate nohighlight">\(0\)</span> and negative values represent bit <span class="math notranslate nohighlight">\(1\)</span>). Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">method</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The decoding method to be used.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">message_hat</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The message decoded from <code class="code docutils literal notranslate"><span class="pre">recvword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.dimension">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dimension</span></span><a class="headerlink" href="#komm.ReedMullerCode.dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.ReedMullerCode.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a given message to its corresponding codeword.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">message</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The message to be encoded. Its length must be <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">method</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The encoding method to be used.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">codeword</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The codeword corresponding to <code class="code docutils literal notranslate"><span class="pre">message</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.generator_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generator_matrix</span></span><a class="headerlink" href="#komm.ReedMullerCode.generator_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code. It as a <span class="math notranslate nohighlight">\(k \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(k\)</span> is the code dimension, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#komm.ReedMullerCode.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.message_from_codeword">
+<span class="sig-name descname"><span class="pre">message_from_codeword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codeword</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.ReedMullerCode.message_from_codeword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">codeword</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>A codeword from the code. Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">message</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The message corresponding to <code class="code docutils literal notranslate"><span class="pre">codeword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.minimum_distance">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimum_distance</span></span><a class="headerlink" href="#komm.ReedMullerCode.minimum_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.mu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#komm.ReedMullerCode.mu" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.packing_radius">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">packing_radius</span></span><a class="headerlink" href="#komm.ReedMullerCode.packing_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to <span class="math notranslate nohighlight">\(\lfloor (d - 1) / 2 \rfloor\)</span>. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.parity_check_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parity_check_matrix</span></span><a class="headerlink" href="#komm.ReedMullerCode.parity_check_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code. It as an <span class="math notranslate nohighlight">\(m \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(m\)</span> is the code redundancy, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rate</span></span><a class="headerlink" href="#komm.ReedMullerCode.rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.redundancy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">redundancy</span></span><a class="headerlink" href="#komm.ReedMullerCode.redundancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.reed_partitions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reed_partitions</span></span><a class="headerlink" href="#komm.ReedMullerCode.reed_partitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Reed partitions of the code. See <span id="id2">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (p. 105–114) for details. This property is read-only.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ReedMullerCode</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">array([[ 0,  1,  4,  5],</span>
+<span class="go">       [ 2,  3,  6,  7],</span>
+<span class="go">       [ 8,  9, 12, 13],</span>
+<span class="go">       [10, 11, 14, 15]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+<span class="go">array([[ 0,  4],</span>
+<span class="go">       [ 1,  5],</span>
+<span class="go">       [ 2,  6],</span>
+<span class="go">       [ 3,  7],</span>
+<span class="go">       [ 8, 12],</span>
+<span class="go">       [ 9, 13],</span>
+<span class="go">       [10, 14],</span>
+<span class="go">       [11, 15]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.ReedMullerCode.rho">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rho</span></span><a class="headerlink" href="#komm.ReedMullerCode.rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code. This property is read-only.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.CordaroWagnerCode/"
+                          title="previous chapter">komm.CordaroWagnerCode</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.CyclicCode/"
+                          title="next chapter">komm.CyclicCode</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.ReedMullerCode.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.CyclicCode/" title="komm.CyclicCode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.CordaroWagnerCode/" title="komm.CordaroWagnerCode"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ReedMullerCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

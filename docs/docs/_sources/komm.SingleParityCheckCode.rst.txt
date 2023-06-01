@@ -1,0 +1,53 @@
+﻿komm.SingleParityCheckCode
+==========================
+
+.. currentmodule:: komm
+
+.. autoclass:: SingleParityCheckCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~SingleParityCheckCode.codeword_table
+      ~SingleParityCheckCode.codeword_weight_distribution
+      ~SingleParityCheckCode.coset_leader_table
+      ~SingleParityCheckCode.coset_leader_weight_distribution
+      ~SingleParityCheckCode.covering_radius
+      ~SingleParityCheckCode.dimension
+      ~SingleParityCheckCode.generator_matrix
+      ~SingleParityCheckCode.length
+      ~SingleParityCheckCode.minimum_distance
+      ~SingleParityCheckCode.packing_radius
+      ~SingleParityCheckCode.parity_check_matrix
+      ~SingleParityCheckCode.rate
+      ~SingleParityCheckCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~SingleParityCheckCode.__init__
+      ~SingleParityCheckCode.decode
+      ~SingleParityCheckCode.encode
+      ~SingleParityCheckCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy

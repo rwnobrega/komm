@@ -1,0 +1,45 @@
+﻿komm.ASKModulation
+==================
+
+.. currentmodule:: komm
+
+.. autoclass:: ASKModulation
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~ASKModulation.bits_per_symbol
+      ~ASKModulation.channel_snr
+      ~ASKModulation.constellation
+      ~ASKModulation.energy_per_bit
+      ~ASKModulation.energy_per_symbol
+      ~ASKModulation.labeling
+      ~ASKModulation.minimum_distance
+      ~ASKModulation.order
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~ASKModulation.__init__
+      ~ASKModulation.bits_to_symbols
+      ~ASKModulation.demodulate
+      ~ASKModulation.modulate
+      ~ASKModulation.symbols_to_bits
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: bits_per_symbol
+   .. automethod:: bits_to_symbols
+   .. autoproperty:: channel_snr
+   .. autoproperty:: constellation
+   .. automethod:: demodulate
+   .. autoproperty:: energy_per_bit
+   .. autoproperty:: energy_per_symbol
+   .. autoproperty:: labeling
+   .. autoproperty:: minimum_distance
+   .. automethod:: modulate
+   .. autoproperty:: order
+   .. automethod:: symbols_to_bits

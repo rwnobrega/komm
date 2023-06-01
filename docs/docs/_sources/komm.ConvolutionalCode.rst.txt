@@ -1,0 +1,47 @@
+﻿komm.ConvolutionalCode
+======================
+
+.. currentmodule:: komm
+
+.. autoclass:: ConvolutionalCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~ConvolutionalCode.constraint_lengths
+      ~ConvolutionalCode.control_matrix
+      ~ConvolutionalCode.feedback_polynomials
+      ~ConvolutionalCode.feedforward_polynomials
+      ~ConvolutionalCode.finite_state_machine
+      ~ConvolutionalCode.memory_order
+      ~ConvolutionalCode.num_input_bits
+      ~ConvolutionalCode.num_output_bits
+      ~ConvolutionalCode.observation_matrix
+      ~ConvolutionalCode.overall_constraint_length
+      ~ConvolutionalCode.state_matrix
+      ~ConvolutionalCode.transfer_function_matrix
+      ~ConvolutionalCode.transition_matrix
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~ConvolutionalCode.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: constraint_lengths
+   .. autoproperty:: control_matrix
+   .. autoproperty:: feedback_polynomials
+   .. autoproperty:: feedforward_polynomials
+   .. autoproperty:: finite_state_machine
+   .. autoproperty:: memory_order
+   .. autoproperty:: num_input_bits
+   .. autoproperty:: num_output_bits
+   .. autoproperty:: observation_matrix
+   .. autoproperty:: overall_constraint_length
+   .. autoproperty:: state_matrix
+   .. autoproperty:: transfer_function_matrix
+   .. autoproperty:: transition_matrix

@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._error_control_convolutional.ConvolutionalCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_convolutional.ConvolutionalCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._error_control_convolutional.ConvolutionalCode</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.._algebra</span> <span class="kn">import</span> <span class="n">BinaryPolynomial</span><span class="p">,</span> <span class="n">BinaryPolynomialFraction</span>
+<span class="kn">from</span> <span class="nn">.._finite_state_machine</span> <span class="kn">import</span> <span class="n">FiniteStateMachine</span>
+<span class="kn">from</span> <span class="nn">.._util</span> <span class="kn">import</span> <span class="n">binlist2int</span><span class="p">,</span> <span class="n">int2binlist</span>
+
+
+<div class="viewcode-block" id="ConvolutionalCode"><a class="viewcode-back" href="../../../../komm.ConvolutionalCode/#komm.ConvolutionalCode">[docs]</a><span class="k">class</span> <span class="nc">ConvolutionalCode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.</span>
+
+<span class="sd">    The *transfer function matrix* (also known as *transform-domain generator matrix*) :math:`G(D)` of the convolutional code, of shape :math:`k \\times n`, is such that the element in row :math:`i` and column :math:`j` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},</span>
+
+<span class="sd">    for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.</span>
+
+<span class="sd">    .. rubric:: Constraint lengths and related parameters</span>
+
+<span class="sd">    The *constraint lengths* of the code are defined by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},</span>
+
+<span class="sd">    for :math:`i \\in [0 : k)`.</span>
+
+<span class="sd">    The *overall constraint length* of the code is defined by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\nu = \\sum_{0 \\leq i &lt; k} \\nu_i.</span>
+
+<span class="sd">    The *memory order* of the code is defined by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\mu = \\max_{0 \\leq i &lt; k} \\nu_i.</span>
+
+<span class="sd">    .. rubric:: Space-state representation</span>
+
+<span class="sd">    A convolutional code may also be described via the *space-state representation*. Let :math:`\\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \\ldots, u_t^{(k-1)})` be the input block, :math:`\\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \\ldots, v_t^{(n-1)})` be the output block, and :math:`\\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \\ldots, s_t^{(\\nu-1)})` be the state, all defined at time instant :math:`t`. Then,</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\mathbf{s}_{t+1} &amp; = \\mathbf{s}_t A + \\mathbf{u}_t B, \\\\</span>
+<span class="sd">       \\mathbf{v}_{t} &amp; = \\mathbf{s}_t C + \\mathbf{u}_t D,</span>
+
+<span class="sd">    where :math:`A` is the :math:`\\nu \\times \\nu` *state matrix*, :math:`B` is the :math:`k \\times \\nu` *control matrix*, :math:`C` is the :math:`\\nu \\times n` *observation matrix*, and :math:`D` is the :math:`k \\times n` *transition matrix*.</span>
+
+<span class="sd">    .. rubric:: Table of convolutional code</span>
+
+<span class="sd">    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).</span>
+
+<span class="sd">    =================================  ======================================</span>
+<span class="sd">     Parameters :math:`(n, k, \\nu)`    Transfer function matrix :math:`G(D)`</span>
+<span class="sd">    =================================  ======================================</span>
+<span class="sd">     :math:`(2, 1, 1)`                  :code:`[[0o1, 0o3]]`</span>
+<span class="sd">     :math:`(2, 1, 2)`                  :code:`[[0o5, 0o7]]`</span>
+<span class="sd">     :math:`(2, 1, 3)`                  :code:`[[0o13, 0o17]]`</span>
+<span class="sd">     :math:`(2, 1, 4)`                  :code:`[[0o27, 0o31]]`</span>
+<span class="sd">     :math:`(2, 1, 5)`                  :code:`[[0o53, 0o75]]`</span>
+<span class="sd">     :math:`(2, 1, 6)`                  :code:`[[0o117, 0o155]]`</span>
+<span class="sd">     :math:`(2, 1, 7)`                  :code:`[[0o247, 0o371]]`</span>
+<span class="sd">     :math:`(2, 1, 8)`                  :code:`[[0o561, 0o753]]`</span>
+<span class="sd">    =================================  ======================================</span>
+
+<span class="sd">    =================================  ======================================</span>
+<span class="sd">     Parameters :math:`(n, k, \\nu)`    Transfer function matrix :math:`G(D)`</span>
+<span class="sd">    =================================  ======================================</span>
+<span class="sd">     :math:`(3, 1, 1)`                  :code:`[[0o1, 0o3, 0o3]]`</span>
+<span class="sd">     :math:`(3, 1, 2)`                  :code:`[[0o5, 0o7, 0o7]]`</span>
+<span class="sd">     :math:`(3, 1, 3)`                  :code:`[[0o13, 0o15, 0o17]]`</span>
+<span class="sd">     :math:`(3, 1, 4)`                  :code:`[[0o25, 0o33, 0o37]]`</span>
+<span class="sd">     :math:`(3, 1, 5)`                  :code:`[[0o47, 0o53, 0o75]]`</span>
+<span class="sd">     :math:`(3, 1, 6)`                  :code:`[[0o117, 0o127, 0o155]]`</span>
+<span class="sd">     :math:`(3, 1, 7)`                  :code:`[[0o255, 0o331, 0o367]]`</span>
+<span class="sd">     :math:`(3, 1, 8)`                  :code:`[[0o575, 0o623, 0o727]]`</span>
+<span class="sd">    =================================  ======================================</span>
+
+<span class="sd">    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`, :cite:`Weiss.01`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConvolutionalCode.__init__"><a class="viewcode-back" href="../../../../komm.ConvolutionalCode/#komm.ConvolutionalCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedforward_polynomials</span><span class="p">,</span> <span class="n">feedback_polynomials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)</span>
+<span class="sd">            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \\times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.</span>
+
+<span class="sd">        :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional</span>
+<span class="sd">            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \\in [0 : k)`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 6)`; its transfer function matrix is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           G(D) =</span>
+<span class="sd">           \\begin{bmatrix}</span>
+<span class="sd">              D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1</span>
+<span class="sd">           \\end{bmatrix},</span>
+
+<span class="sd">        yielding :code:`feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.</span>
+
+<span class="sd">        .. image:: figures/cc_2_1_6.png</span>
+<span class="sd">           :alt: Convolutional encoder example.</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])</span>
+<span class="sd">        &gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)</span>
+<span class="sd">        (2, 1, 6)</span>
+
+<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (3, 2, 7)`; its transfer function matrix is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           G(D) =</span>
+<span class="sd">           \\begin{bmatrix}</span>
+<span class="sd">               D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\\\</span>
+<span class="sd">               0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1 \\\\</span>
+<span class="sd">           \\end{bmatrix},</span>
+
+<span class="sd">        yielding :code:`feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.</span>
+
+<span class="sd">        .. image:: figures/cc_3_2_7.png</span>
+<span class="sd">           :alt: Convolutional encoder example.</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])</span>
+<span class="sd">        &gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)</span>
+<span class="sd">        (3, 2, 7)</span>
+
+<span class="sd">        The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 4)`; its transfer function matrix is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           G(D) =</span>
+<span class="sd">           \\begin{bmatrix}</span>
+<span class="sd">               1  &amp;  \\dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}</span>
+<span class="sd">           \\end{bmatrix},</span>
+
+<span class="sd">        yielding :code:`feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and :code:`feedback_polynomials = [0o27]`.</span>
+
+<span class="sd">        .. image:: figures/cc_2_1_4_fb.png</span>
+<span class="sd">           :alt: Convolutional feedback encoder example.</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])</span>
+<span class="sd">        &gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)</span>
+<span class="sd">        (2, 1, 4)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">BinaryPolynomial</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="n">feedback_polynomials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">=</span> <span class="s2">&quot;no_feedback_polynomials&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">feedback_polynomials</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">feedback_polynomials</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">=</span> <span class="s2">&quot;feedback_polynomials&quot;</span>
+
+        <span class="n">nus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span><span class="p">)):</span>
+            <span class="n">nus</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">degree</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">]),</span> <span class="n">q</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_bits</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_bits</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraint_lengths</span> <span class="o">=</span> <span class="n">nus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_overall_constraint_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">nus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memory_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">nus</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transfer_function_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="p">):</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transfer_function_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">BinaryPolynomialFraction</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">BinaryPolynomialFraction</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_finite_state_machine_direct_form</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_space_state_representation</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">feedforward_polynomials_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="nb">str</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;feedforward_polynomials=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feedforward_polynomials_str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">==</span> <span class="s2">&quot;feedback_polynomials&quot;</span><span class="p">:</span>
+            <span class="n">feedback_polynomials_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="nb">str</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, feedback_polynomials=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">feedback_polynomials_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup_finite_state_machine_direct_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overall_constraint_length</span>
+
+        <span class="n">x_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constraint_lengths</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">s_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">nu</span><span class="p">),</span> <span class="n">x_indices</span><span class="p">)</span>
+
+        <span class="n">feedforward_taps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">taps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">exponents</span><span class="p">()</span> <span class="o">+</span> <span class="n">x_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)])</span>
+            <span class="n">feedforward_taps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">taps</span><span class="p">)</span>
+
+        <span class="n">feedback_taps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">taps</span> <span class="o">=</span> <span class="p">(</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">exponents</span><span class="p">()</span> <span class="o">+</span> <span class="n">x_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">feedback_taps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">taps</span><span class="p">)</span>
+
+        <span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">nu</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">next_states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="o">**</span><span class="n">nu</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="o">**</span><span class="n">nu</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">nu</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">bits</span><span class="p">[</span><span class="n">s_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">nu</span><span class="p">)</span>
+            <span class="n">bits</span><span class="p">[</span><span class="n">x_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">bits</span><span class="p">[</span><span class="n">x_indices</span><span class="p">]</span> <span class="o">^=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">bits</span><span class="p">[</span><span class="n">feedback_taps</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+
+            <span class="n">next_state_bits</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">s_indices</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">output_bits</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">bits</span><span class="p">[</span><span class="n">feedforward_taps</span><span class="p">[</span><span class="n">j</span><span class="p">]])</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+            <span class="n">next_states</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">binlist2int</span><span class="p">(</span><span class="n">next_state_bits</span><span class="p">)</span>
+            <span class="n">outputs</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">binlist2int</span><span class="p">(</span><span class="n">output_bits</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span> <span class="o">=</span> <span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="n">next_states</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup_finite_state_machine_transposed_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_setup_space_state_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overall_constraint_length</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nu</span><span class="p">,</span> <span class="n">nu</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nu</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nu</span><span class="p">):</span>
+            <span class="n">s0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
+            <span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span><span class="o">.</span><span class="n">next_states</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">nu</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_observation_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">nu</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
+            <span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span><span class="o">.</span><span class="n">next_states</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">nu</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">int2binlist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_input_bits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of input bits per block, :math:`k`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_bits</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_output_bits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of output bits per block, :math:`n`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_bits</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constraint_lengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint_lengths</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">overall_constraint_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The overall constraint length :math:`\\nu` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overall_constraint_length</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">memory_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The memory order :math:`\\mu` of the code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memory_order</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">feedforward_polynomials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of feedforward polynomials :math:`P(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomial`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">feedback_polynomials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The vector of feedback polynomials :math:`q(D)` of the code. This is a :math:`k`-array of :obj:`BinaryPolynomial`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transfer_function_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The transfer function matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transfer_function_matrix</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">finite_state_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The finite-state machine of the code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The state matrix :math:`A` of the state-space representation. This is a :math:`\\nu \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_matrix</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The control matrix :math:`B` of the state-space representation. This is a :math:`k \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_matrix</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">observation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The observation matrix :math:`C` of the state-space representation. This is a :math:`\\nu \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observation_matrix</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transition_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The transition matrix :math:`D` of the state-space representation. This is a :math:`k \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_convolutional.ConvolutionalCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+﻿komm.RealModulation
+===================
+
+.. currentmodule:: komm
+
+.. autoclass:: RealModulation
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~RealModulation.bits_per_symbol
+      ~RealModulation.channel_snr
+      ~RealModulation.constellation
+      ~RealModulation.energy_per_bit
+      ~RealModulation.energy_per_symbol
+      ~RealModulation.labeling
+      ~RealModulation.minimum_distance
+      ~RealModulation.order
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~RealModulation.__init__
+      ~RealModulation.bits_to_symbols
+      ~RealModulation.demodulate
+      ~RealModulation.modulate
+      ~RealModulation.symbols_to_bits
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: bits_per_symbol
+   .. automethod:: bits_to_symbols
+   .. autoproperty:: channel_snr
+   .. autoproperty:: constellation
+   .. automethod:: demodulate
+   .. autoproperty:: energy_per_bit
+   .. autoproperty:: energy_per_symbol
+   .. autoproperty:: labeling
+   .. autoproperty:: minimum_distance
+   .. automethod:: modulate
+   .. autoproperty:: order
+   .. automethod:: symbols_to_bits

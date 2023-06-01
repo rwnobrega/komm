@@ -1,0 +1,31 @@
+﻿komm.DiscreteMemorylessChannel
+==============================
+
+.. currentmodule:: komm
+
+.. autoclass:: DiscreteMemorylessChannel
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~DiscreteMemorylessChannel.input_cardinality
+      ~DiscreteMemorylessChannel.output_cardinality
+      ~DiscreteMemorylessChannel.transition_matrix
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~DiscreteMemorylessChannel.__init__
+      ~DiscreteMemorylessChannel.capacity
+      ~DiscreteMemorylessChannel.mutual_information
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: capacity
+   .. autoproperty:: input_cardinality
+   .. automethod:: mutual_information
+   .. autoproperty:: output_cardinality
+   .. autoproperty:: transition_matrix

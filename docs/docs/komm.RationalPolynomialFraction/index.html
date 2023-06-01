@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.RationalPolynomialFraction &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.AWGNChannel" href="../komm.AWGNChannel/" />
+    <link rel="prev" title="komm.RationalPolynomial" href="../komm.RationalPolynomial/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.AWGNChannel/" title="komm.AWGNChannel"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomial/" title="komm.RationalPolynomial"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.RationalPolynomialFraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-rationalpolynomialfraction">
+<h1>komm.RationalPolynomialFraction<a class="headerlink" href="#komm-rationalpolynomialfraction" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RationalPolynomialFraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numerator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denominator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomialFraction/#RationalPolynomialFraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomialFraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rational polynomial fraction. A <em>rational polynomial fraction</em> is a ratio of two rational polynomials (<a class="reference internal" href="../komm.RationalPolynomial/#komm.RationalPolynomial" title="komm.RationalPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">RationalPolynomial</span></code></a>).</p>
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomialFraction.denominator" title="komm.RationalPolynomialFraction.denominator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">denominator</span></code></a></p></td>
+<td><p>The denominator of the fraction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.RationalPolynomialFraction.numerator" title="komm.RationalPolynomialFraction.numerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numerator</span></code></a></p></td>
+<td><p>The numerator of the fraction.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomialFraction.__init__" title="komm.RationalPolynomialFraction.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(numerator[, denominator])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.RationalPolynomialFraction.inverse" title="komm.RationalPolynomialFraction.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<td><p>Returns the multiplicative inverse the fraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.RationalPolynomialFraction.monomial" title="komm.RationalPolynomialFraction.monomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">monomial</span></code></a>(degree[, coefficient])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numerator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denominator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomialFraction/#RationalPolynomialFraction.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomialFraction.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction.denominator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#komm.RationalPolynomialFraction.denominator" title="Permalink to this definition">¶</a></dt>
+<dd><p>The denominator of the fraction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction.inverse">
+<span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomialFraction/#RationalPolynomialFraction.inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomialFraction.inverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the multiplicative inverse the fraction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction.monomial">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomialFraction/#RationalPolynomialFraction.monomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomialFraction.monomial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.RationalPolynomialFraction.numerator">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#komm.RationalPolynomialFraction.numerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>The numerator of the fraction.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.RationalPolynomial/"
+                          title="previous chapter">komm.RationalPolynomial</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.AWGNChannel/"
+                          title="next chapter">komm.AWGNChannel</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.RationalPolynomialFraction.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.AWGNChannel/" title="komm.AWGNChannel"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.RationalPolynomial/" title="komm.RationalPolynomial"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.RationalPolynomialFraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

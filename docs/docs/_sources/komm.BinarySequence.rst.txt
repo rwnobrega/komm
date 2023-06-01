@@ -1,0 +1,31 @@
+﻿komm.BinarySequence
+===================
+
+.. currentmodule:: komm
+
+.. autoclass:: BinarySequence
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~BinarySequence.bit_sequence
+      ~BinarySequence.length
+      ~BinarySequence.polar_sequence
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~BinarySequence.__init__
+      ~BinarySequence.autocorrelation
+      ~BinarySequence.cyclic_autocorrelation
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: autocorrelation
+   .. autoproperty:: bit_sequence
+   .. automethod:: cyclic_autocorrelation
+   .. autoproperty:: length
+   .. autoproperty:: polar_sequence

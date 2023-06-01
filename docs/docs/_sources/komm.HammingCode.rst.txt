@@ -1,0 +1,53 @@
+﻿komm.HammingCode
+================
+
+.. currentmodule:: komm
+
+.. autoclass:: HammingCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~HammingCode.codeword_table
+      ~HammingCode.codeword_weight_distribution
+      ~HammingCode.coset_leader_table
+      ~HammingCode.coset_leader_weight_distribution
+      ~HammingCode.covering_radius
+      ~HammingCode.dimension
+      ~HammingCode.generator_matrix
+      ~HammingCode.length
+      ~HammingCode.minimum_distance
+      ~HammingCode.packing_radius
+      ~HammingCode.parity_check_matrix
+      ~HammingCode.rate
+      ~HammingCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~HammingCode.__init__
+      ~HammingCode.decode
+      ~HammingCode.encode
+      ~HammingCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy

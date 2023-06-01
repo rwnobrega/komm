@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._error_control_convolutional.TerminatedConvolutionalCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_convolutional.TerminatedConvolutionalCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._error_control_convolutional.TerminatedConvolutionalCode</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.._algebra.util</span> <span class="kn">import</span> <span class="n">right_inverse</span>
+<span class="kn">from</span> <span class="nn">.._aux</span> <span class="kn">import</span> <span class="n">tag</span>
+<span class="kn">from</span> <span class="nn">.._error_control_block.BlockCode</span> <span class="kn">import</span> <span class="n">BlockCode</span>
+<span class="kn">from</span> <span class="nn">.._util</span> <span class="kn">import</span> <span class="n">binlist2int</span><span class="p">,</span> <span class="n">int2binlist</span><span class="p">,</span> <span class="n">pack</span><span class="p">,</span> <span class="n">unpack</span>
+
+
+<div class="viewcode-block" id="TerminatedConvolutionalCode"><a class="viewcode-back" href="../../../../komm.TerminatedConvolutionalCode/#komm.TerminatedConvolutionalCode">[docs]</a><span class="k">class</span> <span class="nc">TerminatedConvolutionalCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a :math:`(n_0, k_0)` convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k_0` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = h k_0`; its length depends on the termination mode employed. There are three possible termination modes:</span>
+
+<span class="sd">    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = h n_0`.</span>
+
+<span class="sd">    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu) n_0`.</span>
+
+<span class="sd">    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.</span>
+
+<span class="sd">    .. rubric:: Decoding methods</span>
+
+<span class="sd">    [[decoding_methods]]</span>
+
+<span class="sd">    References: :cite:`Lin.Costello.04`, :cite:`Weiss.01`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TerminatedConvolutionalCode.__init__"><a class="viewcode-back" href="../../../../komm.TerminatedConvolutionalCode/#komm.TerminatedConvolutionalCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="p">,</span> <span class="n">num_blocks</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;zero-termination&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`convolutional_code` : :obj:`ConvolutionalCode`</span>
+<span class="sd">            The convolutional code to be terminated.</span>
+
+<span class="sd">        :code:`num_blocks` : :obj:`int`</span>
+<span class="sd">            The number :math:`h` of information blocks.</span>
+
+<span class="sd">        :code:`mode` : :obj:`str`, optional</span>
+<span class="sd">            The termination mode. It must be one of :code:`&#39;direct-truncation&#39;` | :code:`&#39;zero-termination&#39;` | :code:`&#39;tail-biting&#39;`. The default value is :code:`&#39;zero-termination&#39;`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=&#39;zero-termination&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (8, 3, 3)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 1, 0, 1, 0, 0, 0, 0],</span>
+<span class="sd">               [0, 0, 1, 1, 0, 1, 0, 0],</span>
+<span class="sd">               [0, 0, 0, 0, 1, 1, 0, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=&#39;direct-truncation&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (6, 3, 2)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 1, 0, 1, 0, 0],</span>
+<span class="sd">               [0, 0, 1, 1, 0, 1],</span>
+<span class="sd">               [0, 0, 0, 0, 1, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=&#39;tail-biting&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (6, 3, 3)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 1, 0, 1, 0, 0],</span>
+<span class="sd">               [0, 0, 1, 1, 0, 1],</span>
+<span class="sd">               [0, 1, 0, 0, 1, 1]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span> <span class="o">=</span> <span class="n">convolutional_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_blocks</span> <span class="o">=</span> <span class="n">h</span> <span class="o">=</span> <span class="n">num_blocks</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;direct-truncation&quot;</span><span class="p">,</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">,</span> <span class="s2">&quot;tail-biting&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter &#39;mode&#39; must be in {&#39;direct-truncation&#39;, &#39;zero-termination&#39;, &#39;tail-biting&#39;}&quot;</span><span class="p">)</span>
+
+        <span class="n">k0</span><span class="p">,</span> <span class="n">n0</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_output_bits</span>
+        <span class="n">nu</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">memory_order</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">k0</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;direct-truncation&quot;</span><span class="p">,</span> <span class="s2">&quot;tail-biting&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">n0</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">mu</span><span class="p">)</span> <span class="o">*</span> <span class="n">n0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
+
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">state_matrix</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">control_matrix</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="n">AnB_message</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mu</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)</span>
+            <span class="n">AnB_tail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tail_projector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">AnB_message</span><span class="p">,</span> <span class="n">right_inverse</span><span class="p">(</span><span class="n">AnB_tail</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;tail-biting&quot;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nu</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_M_inv</span> <span class="o">=</span> <span class="n">right_inverse</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This convolutional code does not support tail-biting for this number of blocks&quot;</span><span class="p">)</span>
+
+        <span class="n">cache_bit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">int2binlist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">n0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n0</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_viterbi_hard</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">cache_bit</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">z</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_viterbi_soft</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cache_bit</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">cache_polar</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="n">cache_bit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_bcjr</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">SNR</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">SNR</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cache_polar</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;convolutional_code=</span><span class="si">{}</span><span class="s2">, num_blocks=</span><span class="si">{}</span><span class="s2">, mode=&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_blocks</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The termination mode of the terminated convolutional code. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">k0</span><span class="p">,</span> <span class="n">n0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span><span class="o">.</span><span class="n">num_output_bits</span>
+        <span class="n">generator_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">top_rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encode_finite_state_machine</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_blocks</span><span class="p">):</span>
+            <span class="n">generator_matrix</span><span class="p">[</span><span class="n">k0</span> <span class="o">*</span> <span class="n">t</span> <span class="p">:</span> <span class="n">k0</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">top_rows</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="n">n0</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;direct-truncation&quot;</span><span class="p">:</span>
+                <span class="n">generator_matrix</span><span class="p">[</span><span class="n">k0</span> <span class="o">*</span> <span class="n">t</span> <span class="p">:</span> <span class="n">k0</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:</span> <span class="n">n0</span> <span class="o">*</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">generator_matrix</span>
+
+    <span class="k">def</span> <span class="nf">_encode_finite_state_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">convolutional_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span>
+        <span class="n">k0</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;direct-truncation&quot;</span><span class="p">:</span>
+            <span class="n">input_sequence</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+            <span class="n">initial_state</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tail_projector</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+            <span class="n">input_sequence</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">message</span><span class="p">,</span> <span class="n">tail</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+            <span class="n">initial_state</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;tail-biting&quot;</span><span class="p">:</span>
+            <span class="c1"># See Weiss.01.</span>
+            <span class="n">input_sequence</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">zero_state_solution</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">initial_state</span> <span class="o">=</span> <span class="n">binlist2int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">int2binlist</span><span class="p">(</span><span class="n">zero_state_solution</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">nu</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_M_inv</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">output_sequence</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+        <span class="n">codeword</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="n">output_sequence</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">n0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">codeword</span>
+
+    <span class="k">def</span> <span class="nf">_default_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;finite_state_machine&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_helper_decode_viterbi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">):</span>
+        <span class="n">convolutional_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span>
+        <span class="n">k0</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">memory_order</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">num_states</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">num_states</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;direct-truncation&quot;</span><span class="p">,</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">]:</span>
+            <span class="n">initial_metrics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_states</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">initial_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;tail-biting&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Viterbi algorithm not implemented for &#39;tail-biting&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">input_sequences_hat</span><span class="p">,</span> <span class="n">final_metrics</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">viterbi</span><span class="p">(</span>
+            <span class="n">observed_sequence</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">newshape</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n0</span><span class="p">)),</span>
+            <span class="n">metric_function</span><span class="o">=</span><span class="n">metric_function</span><span class="p">,</span>
+            <span class="n">initial_metrics</span><span class="o">=</span><span class="n">initial_metrics</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;direct-truncation&quot;</span><span class="p">:</span>
+            <span class="n">final_state_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">final_metrics</span><span class="p">)</span>
+            <span class="n">input_sequence_hat</span> <span class="o">=</span> <span class="n">input_sequences_hat</span><span class="p">[:,</span> <span class="n">final_state_hat</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="n">input_sequence_hat</span> <span class="o">=</span> <span class="n">input_sequences_hat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="n">mu</span><span class="p">]</span>
+
+        <span class="n">message_hat</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="n">input_sequence_hat</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">message_hat</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Viterbi (hard-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_viterbi_hard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_helper_decode_viterbi</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_viterbi_hard</span><span class="p">)</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Viterbi (soft-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_viterbi_soft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_helper_decode_viterbi</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_viterbi_soft</span><span class="p">)</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;BCJR&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_bcjr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">SNR</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">convolutional_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span>
+        <span class="n">k0</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span>
+            <span class="n">convolutional_code</span><span class="o">.</span><span class="n">memory_order</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">num_states</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">num_states</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;direct-truncation&quot;</span><span class="p">:</span>
+            <span class="n">initial_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">final_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_states</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_states</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="n">initial_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">final_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;BCJR algorithm not implemented for &#39;tail-biting&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">input_posteriors</span> <span class="o">=</span> <span class="n">convolutional_code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="o">.</span><span class="n">forward_backward</span><span class="p">(</span>
+            <span class="n">observed_sequence</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">newshape</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n0</span><span class="p">)),</span>
+            <span class="n">metric_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_function_bcjr</span><span class="p">(</span><span class="n">SNR</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span>
+            <span class="n">initial_state_distribution</span><span class="o">=</span><span class="n">initial_state_distribution</span><span class="p">,</span>
+            <span class="n">final_state_distribution</span><span class="o">=</span><span class="n">final_state_distribution</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;zero-termination&quot;</span><span class="p">:</span>
+            <span class="n">input_posteriors</span> <span class="o">=</span> <span class="n">input_posteriors</span><span class="p">[:</span><span class="o">-</span><span class="n">mu</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;soft&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">input_posteriors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">input_posteriors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;hard&quot;</span><span class="p">:</span>
+            <span class="n">input_sequence_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">input_posteriors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">unpack</span><span class="p">(</span><span class="n">input_sequence_hat</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_default_decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;viterbi_hard&quot;</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;viterbi_soft&quot;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_convolutional.TerminatedConvolutionalCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

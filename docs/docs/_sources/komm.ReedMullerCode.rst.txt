@@ -1,0 +1,59 @@
+﻿komm.ReedMullerCode
+===================
+
+.. currentmodule:: komm
+
+.. autoclass:: ReedMullerCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~ReedMullerCode.codeword_table
+      ~ReedMullerCode.codeword_weight_distribution
+      ~ReedMullerCode.coset_leader_table
+      ~ReedMullerCode.coset_leader_weight_distribution
+      ~ReedMullerCode.covering_radius
+      ~ReedMullerCode.dimension
+      ~ReedMullerCode.generator_matrix
+      ~ReedMullerCode.length
+      ~ReedMullerCode.minimum_distance
+      ~ReedMullerCode.mu
+      ~ReedMullerCode.packing_radius
+      ~ReedMullerCode.parity_check_matrix
+      ~ReedMullerCode.rate
+      ~ReedMullerCode.redundancy
+      ~ReedMullerCode.reed_partitions
+      ~ReedMullerCode.rho
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~ReedMullerCode.__init__
+      ~ReedMullerCode.decode
+      ~ReedMullerCode.encode
+      ~ReedMullerCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: mu
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy
+   .. autoproperty:: reed_partitions
+   .. autoproperty:: rho

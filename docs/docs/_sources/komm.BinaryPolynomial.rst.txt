@@ -1,0 +1,39 @@
+﻿komm.BinaryPolynomial
+=====================
+
+.. currentmodule:: komm
+
+.. autoclass:: BinaryPolynomial
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~BinaryPolynomial.degree
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~BinaryPolynomial.__init__
+      ~BinaryPolynomial.coefficients
+      ~BinaryPolynomial.evaluate
+      ~BinaryPolynomial.exponents
+      ~BinaryPolynomial.from_coefficients
+      ~BinaryPolynomial.from_exponents
+      ~BinaryPolynomial.gcd
+      ~BinaryPolynomial.lcm
+      ~BinaryPolynomial.xgcd
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: coefficients
+   .. autoproperty:: degree
+   .. automethod:: evaluate
+   .. automethod:: exponents
+   .. automethod:: from_coefficients
+   .. automethod:: from_exponents
+   .. automethod:: gcd
+   .. automethod:: lcm
+   .. automethod:: xgcd

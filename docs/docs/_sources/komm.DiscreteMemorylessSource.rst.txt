@@ -1,0 +1,27 @@
+﻿komm.DiscreteMemorylessSource
+=============================
+
+.. currentmodule:: komm
+
+.. autoclass:: DiscreteMemorylessSource
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~DiscreteMemorylessSource.cardinality
+      ~DiscreteMemorylessSource.pmf
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~DiscreteMemorylessSource.__init__
+      ~DiscreteMemorylessSource.entropy
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: cardinality
+   .. automethod:: entropy
+   .. autoproperty:: pmf

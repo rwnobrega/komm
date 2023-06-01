@@ -1,0 +1,53 @@
+﻿komm.CordaroWagnerCode
+======================
+
+.. currentmodule:: komm
+
+.. autoclass:: CordaroWagnerCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~CordaroWagnerCode.codeword_table
+      ~CordaroWagnerCode.codeword_weight_distribution
+      ~CordaroWagnerCode.coset_leader_table
+      ~CordaroWagnerCode.coset_leader_weight_distribution
+      ~CordaroWagnerCode.covering_radius
+      ~CordaroWagnerCode.dimension
+      ~CordaroWagnerCode.generator_matrix
+      ~CordaroWagnerCode.length
+      ~CordaroWagnerCode.minimum_distance
+      ~CordaroWagnerCode.packing_radius
+      ~CordaroWagnerCode.parity_check_matrix
+      ~CordaroWagnerCode.rate
+      ~CordaroWagnerCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~CordaroWagnerCode.__init__
+      ~CordaroWagnerCode.decode
+      ~CordaroWagnerCode.encode
+      ~CordaroWagnerCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy

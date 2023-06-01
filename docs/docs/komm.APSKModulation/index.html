@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.APSKModulation &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.QAModulation" href="../komm.QAModulation/" />
+    <link rel="prev" title="komm.PSKModulation" href="../komm.PSKModulation/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.QAModulation/" title="komm.QAModulation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.PSKModulation/" title="komm.PSKModulation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.APSKModulation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-apskmodulation">
+<h1>komm.APSKModulation<a class="headerlink" href="#komm-apskmodulation" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.APSKModulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">APSKModulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitudes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'natural'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_modulation/APSKModulation/#APSKModulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.APSKModulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (<a class="reference internal" href="../komm.ComplexModulation/#komm.ComplexModulation" title="komm.ComplexModulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComplexModulation</span></code></a>) in which the constellation is the union of component PSK constellations (<a class="reference internal" href="../komm.PSKModulation/#komm.PSKModulation" title="komm.PSKModulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">PSKModulation</span></code></a>), called <em>rings</em>. More precisely,</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{S} = \bigcup_{k \in [0 : K)} \mathcal{S}_k,\]</div>
+<p>where <span class="math notranslate nohighlight">\(K\)</span> is the number of rings and</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{S}_k = \left \{ A_k \exp \left( \mathrm{j} \frac{2 \pi i}{M_k} \right) \exp(\mathrm{j} \phi_k) : i \in [0 : M_k) \right \},\]</div>
+<p>where <span class="math notranslate nohighlight">\(M_k\)</span> is the <em>order</em>, <span class="math notranslate nohighlight">\(A_k\)</span> is the <em>amplitude</em>, and <span class="math notranslate nohighlight">\(\phi_k\)</span> is the <em>phase offset</em> of the <span class="math notranslate nohighlight">\(k\)</span>-th ring, for <span class="math notranslate nohighlight">\(k \in [0 : K)\)</span>. The size of the resulting complex-valued constellation is <span class="math notranslate nohighlight">\(M = M_0 + M_1 + \cdots + M_{K-1}\)</span>. The order <span class="math notranslate nohighlight">\(M_k\)</span> of each ring need not be a power of <span class="math notranslate nohighlight">\(2\)</span>; however, the order <span class="math notranslate nohighlight">\(M\)</span> of the constructed APSK modulation must be. The APSK constellation is depicted below for <span class="math notranslate nohighlight">\((M_0, M_1) = (8, 8)\)</span> with <span class="math notranslate nohighlight">\((A_0, A_1) = (A, 2A)\)</span> and <span class="math notranslate nohighlight">\((\phi_0, \phi_1) = (0, \pi/8)\)</span>.</p>
+<img alt="16-APSK constellation." class="align-center" src="../_images/apsk_16.png" />
+<p class="rubric">Properties</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.bits_per_symbol" title="komm.APSKModulation.bits_per_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bits_per_symbol</span></code></a></p></td>
+<td><p>The number <span class="math notranslate nohighlight">\(m\)</span> of bits per symbol of the modulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.channel_snr" title="komm.APSKModulation.channel_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channel_snr</span></code></a></p></td>
+<td><p>The signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> of the channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.constellation" title="komm.APSKModulation.constellation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constellation</span></code></a></p></td>
+<td><p>The constellation <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> of the modulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.energy_per_bit" title="komm.APSKModulation.energy_per_bit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_per_bit</span></code></a></p></td>
+<td><p>The average bit energy <span class="math notranslate nohighlight">\(E_\mathrm{b}\)</span> of the constellation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.energy_per_symbol" title="komm.APSKModulation.energy_per_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_per_symbol</span></code></a></p></td>
+<td><p>The average symbol energy <span class="math notranslate nohighlight">\(E_\mathrm{s}\)</span> of the constellation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.labeling" title="komm.APSKModulation.labeling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labeling</span></code></a></p></td>
+<td><p>The binary labeling <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> of the modulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.minimum_distance" title="komm.APSKModulation.minimum_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum_distance</span></code></a></p></td>
+<td><p>The minimum euclidean distance of the constellation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.order" title="komm.APSKModulation.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></p></td>
+<td><p>The order <span class="math notranslate nohighlight">\(M\)</span> of the modulation.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.__init__" title="komm.APSKModulation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(orders, amplitudes[, ...])</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.bits_to_symbols" title="komm.APSKModulation.bits_to_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bits_to_symbols</span></code></a>(bits)</p></td>
+<td><p>Converts bits to symbols using the modulation binary labeling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.demodulate" title="komm.APSKModulation.demodulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demodulate</span></code></a>(received[, decision_method])</p></td>
+<td><p>Demodulates a sequence of received points to a sequence of bits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.APSKModulation.modulate" title="komm.APSKModulation.modulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modulate</span></code></a>(bits)</p></td>
+<td><p>Modulates a sequence of bits to its corresponding constellation points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.APSKModulation.symbols_to_bits" title="komm.APSKModulation.symbols_to_bits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symbols_to_bits</span></code></a>(symbols)</p></td>
+<td><p>Converts symbols to bits using the modulation binary labeling.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.APSKModulation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitudes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'natural'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_modulation/APSKModulation/#APSKModulation.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.APSKModulation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">orders</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>A <span class="math notranslate nohighlight">\(K\)</span>-tuple with the orders <span class="math notranslate nohighlight">\(M_k\)</span> of each ring, for <span class="math notranslate nohighlight">\(k \in [0 : K)\)</span>. The sum <span class="math notranslate nohighlight">\(M_0 + M_1 + \cdots + M_{K-1}\)</span> must be a power of <span class="math notranslate nohighlight">\(2\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">amplitudes</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>A <span class="math notranslate nohighlight">\(K\)</span>-tuple with the amplitudes <span class="math notranslate nohighlight">\(A_k\)</span> of each ring, for <span class="math notranslate nohighlight">\(k \in [0 : K)\)</span>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">phase_offsets</span></code><span class="classifier">(<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>A <span class="math notranslate nohighlight">\(K\)</span>-tuple with the phase offsets <span class="math notranslate nohighlight">\(\phi_k\)</span> of each ring, for <span class="math notranslate nohighlight">\(k \in [0 : K)\)</span>. If specified as a single float <span class="math notranslate nohighlight">\(\phi\)</span>, then it is assumed that <span class="math notranslate nohighlight">\(\phi_k = \phi\)</span> for all <span class="math notranslate nohighlight">\(k \in [0 : K)\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">0.0</span></code>.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">labeling</span></code><span class="classifier">(1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The binary labeling <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of <span class="math notranslate nohighlight">\([0 : M)\)</span>, or as a string, in which case must be equal to <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">APSKModulation</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">amplitudes</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">phase_offsets</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">8</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">apsk</span><span class="o">.</span><span class="n">constellation</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  
+<span class="go">array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,</span>
+<span class="go">       -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,</span>
+<span class="go">        1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,</span>
+<span class="go">       -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.bits_per_symbol">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bits_per_symbol</span></span><a class="headerlink" href="#komm.APSKModulation.bits_per_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number <span class="math notranslate nohighlight">\(m\)</span> of bits per symbol of the modulation. It is given by <span class="math notranslate nohighlight">\(m = \log_2 M\)</span>, where <span class="math notranslate nohighlight">\(M\)</span> is the order of the modulation. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.APSKModulation.bits_to_symbols">
+<span class="sig-name descname"><span class="pre">bits_to_symbols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.APSKModulation.bits_to_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts bits to symbols using the modulation binary labeling.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">bits</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The bits to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length must be a multiple of <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">symbols</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">bits</span></code> divided by <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.channel_snr">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">channel_snr</span></span><a class="headerlink" href="#komm.APSKModulation.channel_snr" title="Permalink to this definition">¶</a></dt>
+<dd><p>The signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> of the channel. This is used in soft-decision methods. This is a read-and-write property.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.constellation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constellation</span></span><a class="headerlink" href="#komm.APSKModulation.constellation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The constellation <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> of the modulation. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.APSKModulation.demodulate">
+<span class="sig-name descname"><span class="pre">demodulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">received</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decision_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hard'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.APSKModulation.demodulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Demodulates a sequence of received points to a sequence of bits.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.energy_per_bit">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">energy_per_bit</span></span><a class="headerlink" href="#komm.APSKModulation.energy_per_bit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The average bit energy <span class="math notranslate nohighlight">\(E_\mathrm{b}\)</span> of the constellation. It assumes equiprobable symbols. It is given by <span class="math notranslate nohighlight">\(E_\mathrm{b} = E_\mathrm{s} / m\)</span>, where <span class="math notranslate nohighlight">\(E_\mathrm{s}\)</span> is the average symbol energy, and <span class="math notranslate nohighlight">\(m\)</span> is the number of bits per symbol of the modulation.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.energy_per_symbol">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">energy_per_symbol</span></span><a class="headerlink" href="#komm.APSKModulation.energy_per_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The average symbol energy <span class="math notranslate nohighlight">\(E_\mathrm{s}\)</span> of the constellation. It assumes equiprobable symbols. It is given by</p>
+<div class="math notranslate nohighlight">
+\[E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,\]</div>
+<p>where <span class="math notranslate nohighlight">\(|s_i|^2\)</span> is the energy of symbol <span class="math notranslate nohighlight">\(s_i \in \mathcal{S}\)</span> and <span class="math notranslate nohighlight">\(M\)</span> is the order of the modulation. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.labeling">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">labeling</span></span><a class="headerlink" href="#komm.APSKModulation.labeling" title="Permalink to this definition">¶</a></dt>
+<dd><p>The binary labeling <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> of the modulation. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.minimum_distance">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimum_distance</span></span><a class="headerlink" href="#komm.APSKModulation.minimum_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum euclidean distance of the constellation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.APSKModulation.modulate">
+<span class="sig-name descname"><span class="pre">modulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.APSKModulation.modulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modulates a sequence of bits to its corresponding constellation points.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="komm.APSKModulation.order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">order</span></span><a class="headerlink" href="#komm.APSKModulation.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>The order <span class="math notranslate nohighlight">\(M\)</span> of the modulation. This property is read-only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.APSKModulation.symbols_to_bits">
+<span class="sig-name descname"><span class="pre">symbols_to_bits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.APSKModulation.symbols_to_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts symbols to bits using the modulation binary labeling.</p>
+<p class="rubric">Input</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">symbols</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The symbols to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. It may be of any length.</p>
+</dd>
+</dl>
+<p class="rubric">Output</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">bits</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbols</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">symbols</span></code> multiplied by <span class="math notranslate nohighlight">\(m\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.PSKModulation/"
+                          title="previous chapter">komm.PSKModulation</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.QAModulation/"
+                          title="next chapter">komm.QAModulation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.APSKModulation.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.QAModulation/" title="komm.QAModulation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.PSKModulation/" title="komm.PSKModulation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.APSKModulation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

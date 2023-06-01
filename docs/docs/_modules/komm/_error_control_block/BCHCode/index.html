@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._error_control_block.BCHCode &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.BCHCode</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._error_control_block.BCHCode</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.._algebra</span> <span class="kn">import</span> <span class="n">BinaryPolynomial</span><span class="p">,</span> <span class="n">FiniteBifield</span>
+<span class="kn">from</span> <span class="nn">.._aux</span> <span class="kn">import</span> <span class="n">tag</span>
+<span class="kn">from</span> <span class="nn">.CyclicCode</span> <span class="kn">import</span> <span class="n">CyclicCode</span>
+
+
+<div class="viewcode-block" id="BCHCode"><a class="viewcode-back" href="../../../../komm.BCHCode/#komm.BCHCode">[docs]</a><span class="k">class</span> <span class="nc">BCHCode</span><span class="p">(</span><span class="n">CyclicCode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau &lt; 2^{\\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:</span>
+
+<span class="sd">    - Length: :math:`n = 2^{\\mu} - 1`</span>
+<span class="sd">    - Dimension: :math:`k \\geq n - \\mu \\tau`</span>
+<span class="sd">    - Redundancy: :math:`m \\leq \\mu \\tau`</span>
+<span class="sd">    - Minimum distance: :math:`d \\geq 2\\tau + 1`</span>
+
+<span class="sd">    .. rubric:: Decoding methods</span>
+
+<span class="sd">    [[decoding_methods]]</span>
+
+<span class="sd">    References: :cite:`Lin.Costello.04` (Ch. 6)</span>
+
+<span class="sd">    .. rubric:: Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; code = komm.BCHCode(5, 3)</span>
+<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">    (31, 16, 7)</span>
+<span class="sd">    &gt;&gt;&gt; code.generator_polynomial</span>
+<span class="sd">    BinaryPolynomial(0b1000111110101111)</span>
+
+<span class="sd">    &gt;&gt;&gt; # The true error-correcting capability is equal to the designed one:</span>
+<span class="sd">    &gt;&gt;&gt; code = komm.BCHCode(7, 15); code</span>
+<span class="sd">    BCHCode(7, 15)</span>
+<span class="sd">    &gt;&gt;&gt; # The true error-correcting capability is greater than the designed one:</span>
+<span class="sd">    &gt;&gt;&gt; code = komm.BCHCode(7, 16); code</span>
+<span class="sd">    BCHCode(7, 21)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BCHCode.__init__"><a class="viewcode-back" href="../../../../komm.BCHCode/#komm.BCHCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`mu` : :obj:`int`</span>
+<span class="sd">            The parameter :math:`\\mu` of the code.</span>
+
+<span class="sd">        :code:`tau` : :obj:`int`</span>
+<span class="sd">            The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">tau</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must satisfy 1 &lt;= tau &lt; 2**(mu - 1)&quot;</span><span class="p">)</span>
+
+        <span class="n">field</span> <span class="o">=</span> <span class="n">FiniteBifield</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+        <span class="n">generator_polynomial</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bch_code_generator_polynomial</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="n">generator_polynomial</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mu</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_packing_radius</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_distance</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">primitive_element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">=</span> <span class="p">[</span><span class="n">alpha</span> <span class="o">**</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta_minimal_polynomial</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">minimal_polynomial</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing_radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_bch_code_generator_polynomial</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assumes 1 &lt;= tau &lt; 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">primitive_element</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">tau</span>
+        <span class="n">lcm_set</span> <span class="o">=</span> <span class="p">{(</span><span class="n">alpha</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">minimal_polynomial</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">)}</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">minimal_polynomial</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcm_set</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">generator_polynomial</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span> <span class="n">lcm_set</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">generator_polynomial</span><span class="p">,</span> <span class="n">t</span>
+
+    <span class="k">def</span> <span class="nf">_bch_general_decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">syndrome_computer</span><span class="p">,</span> <span class="n">key_equation_solver</span><span class="p">,</span> <span class="n">root_finder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        General BCH decoder. See :cite:`Lin.Costello.04` (p. 205--209).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">recvword_polynomial</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="n">recvword</span><span class="p">)</span>
+        <span class="n">syndrome_polynomial</span> <span class="o">=</span> <span class="n">syndrome_computer</span><span class="p">(</span><span class="n">recvword_polynomial</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">syndrome_polynomial</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">recvword</span>
+        <span class="n">error_location_polynomial</span> <span class="o">=</span> <span class="n">key_equation_solver</span><span class="p">(</span><span class="n">syndrome_polynomial</span><span class="p">)</span>
+        <span class="n">error_locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span><span class="o">.</span><span class="n">logarithm</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">root_finder</span><span class="p">(</span><span class="n">error_location_polynomial</span><span class="p">)]</span>
+        <span class="n">errorword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">error_locations</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">recvword</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_xor</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">errorword</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_bch_syndrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword_polynomial</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">syndrome_polynomial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_min_polynomial</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_minimal_polynomial</span><span class="p">)):</span>
+            <span class="n">syndrome_polynomial</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">recvword_polynomial</span> <span class="o">%</span> <span class="n">b_min_polynomial</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">syndrome_polynomial</span>
+
+    <span class="k">def</span> <span class="nf">_find_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polynomial</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exhaustive search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zero</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="o">.</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">evaluated</span> <span class="o">=</span> <span class="n">zero</span>
+            <span class="k">for</span> <span class="n">coefficient</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">polynomial</span><span class="p">):</span>  <span class="c1"># Horner&#39;s method</span>
+                <span class="n">evaluated</span> <span class="o">=</span> <span class="n">evaluated</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">coefficient</span>
+            <span class="k">if</span> <span class="n">evaluated</span> <span class="o">==</span> <span class="n">zero</span><span class="p">:</span>
+                <span class="n">roots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polynomial</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="k">return</span> <span class="n">roots</span>
+
+    <span class="k">def</span> <span class="nf">_berlekamp_algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">syndrome_polynomial</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Berlekamp&#39;s iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing_radius</span>
+
+        <span class="n">sigma</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)}</span>
+        <span class="n">discrepancy</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span> <span class="n">syndrome_polynomial</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="c1"># TODO: This mu is not the same as the mu in __init__...</span>
+        <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">discrepancy</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">==</span> <span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span>
+                <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rho</span><span class="p">,</span> <span class="n">max_so_far</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">discrepancy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">-</span> <span class="n">degree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_so_far</span><span class="p">:</span>
+                        <span class="n">rho</span><span class="p">,</span> <span class="n">max_so_far</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">degree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">degree</span><span class="p">[</span><span class="n">mu</span><span class="p">],</span> <span class="n">degree</span><span class="p">[</span><span class="n">rho</span><span class="p">]</span> <span class="o">+</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span>
+                <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+                <span class="n">first_guy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+                <span class="n">first_guy</span><span class="p">[:</span> <span class="n">degree</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span>
+                <span class="n">second_guy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+                <span class="n">second_guy</span><span class="p">[</span><span class="n">mu</span> <span class="o">-</span> <span class="n">rho</span> <span class="p">:</span> <span class="n">degree</span><span class="p">[</span><span class="n">rho</span><span class="p">]</span> <span class="o">+</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="n">rho</span><span class="p">]</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">discrepancy</span><span class="p">[</span><span class="n">mu</span><span class="p">]</span> <span class="o">/</span> <span class="n">discrepancy</span><span class="p">[</span><span class="n">rho</span><span class="p">]</span>
+                <span class="n">second_guy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span> <span class="o">*</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">second_guy</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+                <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_guy</span> <span class="o">+</span> <span class="n">second_guy</span>
+            <span class="k">if</span> <span class="n">mu</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">discrepancy</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">syndrome_polynomial</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">degree</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">discrepancy</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sigma</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">syndrome_polynomial</span><span class="p">[</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">idx</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">]</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Berlekamp decoder&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_decode_berlekamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bch_general_decoder</span><span class="p">(</span>
+            <span class="n">recvword</span><span class="p">,</span>
+            <span class="n">syndrome_computer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bch_syndrome</span><span class="p">,</span>
+            <span class="n">key_equation_solver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_berlekamp_algorithm</span><span class="p">,</span>
+            <span class="n">root_finder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_roots</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_default_decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;berlekamp&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_default_decoder</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._error_control_block.BCHCode</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

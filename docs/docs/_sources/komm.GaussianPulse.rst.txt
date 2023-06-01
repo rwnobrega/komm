@@ -1,0 +1,31 @@
+﻿komm.GaussianPulse
+==================
+
+.. currentmodule:: komm
+
+.. autoclass:: GaussianPulse
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~GaussianPulse.frequency_response
+      ~GaussianPulse.half_power_bandwidth
+      ~GaussianPulse.impulse_response
+      ~GaussianPulse.interval
+      ~GaussianPulse.length_in_symbols
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~GaussianPulse.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: frequency_response
+   .. autoproperty:: half_power_bandwidth
+   .. autoproperty:: impulse_response
+   .. autoproperty:: interval
+   .. autoproperty:: length_in_symbols

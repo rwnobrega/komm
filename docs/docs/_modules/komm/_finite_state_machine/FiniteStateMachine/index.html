@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komm._finite_state_machine.FiniteStateMachine &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._finite_state_machine.FiniteStateMachine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for komm._finite_state_machine.FiniteStateMachine</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span>
+
+
+<div class="viewcode-block" id="FiniteStateMachine"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine">[docs]</a><span class="k">class</span> <span class="nc">FiniteStateMachine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finite-state machine (Mealy machine). It is defined by a *set of states* :math:`\\mathcal{S}`, an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition function* :math:`T : \\mathcal{S} \\times \\mathcal{X} \\to \\mathcal{S} \\times \\mathcal{Y}`. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as :math:`\\mathcal{S} = \\{ 0, 1, \\ldots, |\\mathcal{S}| - 1 \\}`, :math:`\\mathcal{X} = \\{ 0, 1, \\ldots, |\\mathcal{X}| - 1 \\}`, and :math:`\\mathcal{Y} = \\{ 0, 1, \\ldots, |\\mathcal{Y}| - 1 \\}`, respectively.</span>
+
+<span class="sd">    For example, consider the finite-state machine whose state diagram depicted in the figure below.</span>
+
+<span class="sd">    .. image:: figures/mealy.png</span>
+<span class="sd">       :alt: Finite-state machine (Mealy machine) example.</span>
+<span class="sd">       :align: center</span>
+
+<span class="sd">    It has set of states :math:`\\mathcal{S} = \\{ 0, 1, 2, 3 \\}`, input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2, 3 \\}`, and transition function :math:`T` given by the table below.</span>
+
+<span class="sd">    .. csv-table:: Transition function</span>
+<span class="sd">       :align: center</span>
+<span class="sd">       :header: State, Input, Next state, Output</span>
+
+<span class="sd">       0, 0, 0, 0</span>
+<span class="sd">       0, 1, 1, 3</span>
+<span class="sd">       1, 0, 2, 1</span>
+<span class="sd">       1, 1, 3, 2</span>
+<span class="sd">       2, 0, 0, 3</span>
+<span class="sd">       2, 1, 1, 0</span>
+<span class="sd">       3, 0, 2, 2</span>
+<span class="sd">       3, 1, 3, 1</span>
+
+<span class="sd">    |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FiniteStateMachine.__init__"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+
+<span class="sd">        :code:`next_states` : 2D-array of :obj:`int`</span>
+<span class="sd">            The matrix of next states of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the next state of the machine (an element in :math:`\\mathcal{S}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.</span>
+
+<span class="sd">        :code:`outputs` : 2D-array of :obj:`int`</span>
+<span class="sd">            The matrix of outputs of the machine, of shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">next_states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_symbols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_symbols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">state_from</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">state_to</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">state_from</span><span class="p">,</span> <span class="p">:]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_input_edges</span><span class="p">[</span><span class="n">state_from</span><span class="p">,</span> <span class="n">state_to</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_output_edges</span><span class="p">[</span><span class="n">state_from</span><span class="p">,</span> <span class="n">state_to</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">[</span><span class="n">state_from</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;next_states=</span><span class="si">{}</span><span class="s2">, outputs=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of states of the machine. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_input_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The size (cardinality) of the input alphabet :math:`\\mathcal{X}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_symbols</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_output_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The size (cardinality) of the output alphabet :math:`\\mathcal{Y}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_symbols</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">next_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of next states of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` is the next state of the machine (an element in :math:`\\mathcal{S}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of outputs of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{X}|`. The element in row :math:`s` and column :math:`x` is the output of the machine (an element in :math:`\\mathcal{Y}`), given that the current state is :math:`s \\in \\mathcal{S}` and the input is :math:`x \\in \\mathcal{X}`. This property is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of input edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the input associated with that edge (an element of :math:`\\mathcal{X}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])</span>
+<span class="sd">        &gt;&gt;&gt; fsm.input_edges</span>
+<span class="sd">        array([[ 0,  1, -1, -1],</span>
+<span class="sd">               [-1, -1,  0,  1],</span>
+<span class="sd">               [ 0,  1, -1, -1],</span>
+<span class="sd">               [-1, -1,  0,  1]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_edges</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of output edges of the machine. It has shape :math:`|\\mathcal{S}| \\times |\\mathcal{S}|`. If there is an edge from :math:`s_0 \\in \\mathcal{S}` to :math:`s_1 \\in \\mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the output associated with that edge (an element of :math:`\\mathcal{Y}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])</span>
+<span class="sd">        &gt;&gt;&gt; fsm.output_edges</span>
+<span class="sd">        array([[ 0,  3, -1, -1],</span>
+<span class="sd">               [-1, -1,  1,  2],</span>
+<span class="sd">               [ 3,  0, -1, -1],</span>
+<span class="sd">               [-1, -1,  2,  1]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_edges</span>
+
+<div class="viewcode-block" id="FiniteStateMachine.process"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state :math:`s_\\mathrm{i}`. The input sequence and the output sequence are denoted by :math:`\\mathbf{x} = (x_0, x_1, \\ldots, x_{L-1}) \\in \\mathcal{X}^L` and :math:`\\mathbf{y} = (y_0, y_1, \\ldots, y_{L-1}) \\in \\mathcal{Y}^L`, respectively.</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`input_sequence` : 1D-array of :obj:`int`</span>
+<span class="sd">            The input sequence :math:`\\mathbf{x} \\in \\mathcal{X}^L`. It should be a 1D-array with elements in :math:`\\mathcal{X}`.</span>
+
+<span class="sd">        :code:`initial_state` : :obj:`int`</span>
+<span class="sd">            The initial state :math:`s_\\mathrm{i}` of the machine. Should be an integer in :math:`\\mathcal{S}`.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`output_sequence` : 1D-array of :obj:`int`</span>
+<span class="sd">            The output sequence :math:`\\mathbf{y} \\in \\mathcal{Y}^L` corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in :math:`\\mathcal{Y}`.</span>
+
+<span class="sd">        :code:`final_state` : :obj:`int`</span>
+<span class="sd">            The final state :math:`s_\\mathrm{f}` of the machine. It is an integer in :math:`\\mathcal{S}`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])</span>
+<span class="sd">        &gt;&gt;&gt; input_sequence, initial_state = [1, 1, 0, 1, 0], 0</span>
+<span class="sd">        &gt;&gt;&gt; output_sequence, final_state = fsm.process(input_sequence, initial_state)</span>
+<span class="sd">        &gt;&gt;&gt; output_sequence</span>
+<span class="sd">        array([3, 2, 2, 0, 1])</span>
+<span class="sd">        &gt;&gt;&gt; final_state</span>
+<span class="sd">        2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">initial_state</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">output_sequence</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">final_state</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="n">output_sequence</span><span class="p">,</span> <span class="n">final_state</span></div>
+
+<div class="viewcode-block" id="FiniteStateMachine.viterbi"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine.viterbi">[docs]</a>    <span class="k">def</span> <span class="nf">viterbi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observed_sequence</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">,</span> <span class="n">initial_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\\hat{\\mathbf{x}}(s) \\in \\mathcal{X}^L` ending in state :math:`s`, for all :math:`s \\in \\mathcal{S}`, given an observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`. It is assumed uniform input priors.</span>
+
+<span class="sd">        References: :cite:`Lin.Costello.04` (Sec. 12.1).</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`observed_sequence` : 1D-array</span>
+<span class="sd">            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.</span>
+
+<span class="sd">        :code:`metric_function` : function</span>
+<span class="sd">            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.</span>
+
+<span class="sd">        :code:`initial_metrics` : 1D-array of :obj:`float`, optional</span>
+<span class="sd">            The initial metrics for each state. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is :code:`0.0` for all states.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`input_sequences_hat` : 2D-array of :obj:`int`</span>
+<span class="sd">            The most probable input sequence :math:`\\hat{\\mathbf{x}}(s) \\in \\mathcal{X}^L` ending in state :math:`s`, for all :math:`s \\in \\mathcal{S}`. It is a 2D-array of shape :math:`L \\times |\\mathcal{S}|`, in which column :math:`s` is equal to :math:`\\hat{\\mathbf{x}}(s)`.</span>
+
+<span class="sd">        :code:`final_metrics` : 1D-array of :obj:`float`</span>
+<span class="sd">            The final metrics for each state. It is a 1D-array of length :math:`|\\mathcal{S}|`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">L</span><span class="p">,</span> <span class="n">num_states</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">initial_metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">initial_metrics</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">s0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">s0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">[</span><span class="n">s0</span><span class="p">]):</span>
+                    <span class="n">candidate_metrics</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">]</span> <span class="o">+</span> <span class="n">metric_function</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">candidate_metrics</span> <span class="o">&lt;</span> <span class="n">metrics</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s1</span><span class="p">]:</span>
+                        <span class="n">metrics</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">candidate_metrics</span>
+                        <span class="n">choices</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s0</span>
+
+        <span class="c1"># Backtrack</span>
+        <span class="n">input_sequences_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">final_state</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+            <span class="n">s1</span> <span class="o">=</span> <span class="n">final_state</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">)):</span>
+                <span class="n">s0</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span>
+                <span class="n">input_sequences_hat</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">final_state</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_edges</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span>
+                <span class="n">s1</span> <span class="o">=</span> <span class="n">s0</span>
+
+        <span class="k">return</span> <span class="n">input_sequences_hat</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="n">L</span><span class="p">,</span> <span class="p">:]</span></div>
+
+<div class="viewcode-block" id="FiniteStateMachine.viterbi_streaming"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine.viterbi_streaming">[docs]</a>    <span class="k">def</span> <span class="nf">viterbi_streaming</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observed_sequence</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by :math:`\\tau`. It chooses the survivor with best metric and selects the information block on this path.</span>
+
+<span class="sd">        References: :cite:`Lin.Costello.04` (Sec. 12.3).</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`observed_sequence` : 1D-array</span>
+<span class="sd">            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.</span>
+
+<span class="sd">        :code:`metric_function` : function</span>
+<span class="sd">            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`input_sequence_hat` : 1D-array of :obj:`int`</span>
+<span class="sd">            The most probable input sequence :math:`\\hat{\\mathbf{x}} \\in \\mathcal{X}^L`</span>
+
+<span class="sd">        .. rubric:: Input and Output</span>
+
+<span class="sd">        :code:`memory` : :obj:`dict`</span>
+<span class="sd">            The metrics for each state. It must be a dictionary containing two keys: :code:`&#39;paths&#39;`, a 2D-array of :obj:`int` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`; and :code:`&#39;metrics&#39;`, a 2D-array of :obj:`float` of shape :math:`|\\mathcal{S}| \\times (\\tau + 1)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span>
+        <span class="n">input_sequences_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">):</span>
+            <span class="n">new_metrics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_states</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">s0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">s0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">[</span><span class="n">s0</span><span class="p">]):</span>
+                    <span class="n">candidate_metric</span> <span class="o">=</span> <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="n">s0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">metric_function</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">candidate_metric</span> <span class="o">&lt;</span> <span class="n">new_metrics</span><span class="p">[</span><span class="n">s1</span><span class="p">]:</span>
+                        <span class="n">new_metrics</span><span class="p">[</span><span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">candidate_metric</span>
+                        <span class="n">choices</span><span class="p">[</span><span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s0</span>
+
+            <span class="n">s_star</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">new_metrics</span><span class="p">)</span>
+            <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">][</span><span class="n">s_star</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">input_sequences_hat</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_edges</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span>
+
+            <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">memory</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">],</span> <span class="n">shift</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_metrics</span>
+            <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">],</span> <span class="n">shift</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">paths_copy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">choices</span><span class="p">):</span>
+                <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">][</span><span class="n">s1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">paths_copy</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">memory</span><span class="p">[</span><span class="s2">&quot;paths&quot;</span><span class="p">][</span><span class="n">s1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s1</span>
+
+        <span class="k">return</span> <span class="n">input_sequences_hat</span></div>
+
+<div class="viewcode-block" id="FiniteStateMachine.forward_backward"><a class="viewcode-back" href="../../../../komm.FiniteStateMachine/#komm.FiniteStateMachine.forward_backward">[docs]</a>    <span class="k">def</span> <span class="nf">forward_backward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">observed_sequence</span><span class="p">,</span>
+        <span class="n">metric_function</span><span class="p">,</span>
+        <span class="n">input_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">initial_state_distribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">final_state_distribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \\ldots, x_{L-1} \\in \\mathcal{X}` given an observed sequence :math:`\\mathbf{z} = (z_0, z_1, \\ldots, z_{L-1}) \\in \\mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.</span>
+
+<span class="sd">        References: :cite:`Lin.Costello.04` (Sec. 12.6).</span>
+
+<span class="sd">        .. rubric:: Input</span>
+
+<span class="sd">        :code:`observed_sequence` : 1D-array</span>
+<span class="sd">            The observed sequence :math:`\\mathbf{z} \\in \\mathcal{Z}^L`.</span>
+
+<span class="sd">        :code:`metric_function` : function</span>
+<span class="sd">            The metric function :math:`\\mathcal{Y} \\times \\mathcal{Z} \\to \\mathbb{R}`.</span>
+
+<span class="sd">        :code:`input_priors` : 2D-array of :obj:`float`, optional</span>
+<span class="sd">            The prior :term:`pmf` of each input, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` should be :math:`p(x_t = x)`. The default value considers uniform priors.</span>
+
+<span class="sd">        :code:`initial_state_distribution` : 1D-array of :obj:`float`, optional</span>
+<span class="sd">            The :term:`pmf` of the initial state of the machine. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is uniform over all states.</span>
+
+<span class="sd">        :code:`final_state_distribution` : 1D-array of :obj:`float`, optional</span>
+<span class="sd">            The :term:`pmf` of the final state of the machine. It must be a 1D-array of length :math:`|\\mathcal{S}|`. The default value is uniform over all states.</span>
+
+<span class="sd">        .. rubric:: Output</span>
+
+<span class="sd">        :code:`input_posteriors` : 2D-array of :obj:`float`</span>
+<span class="sd">            The posterior :term:`pmf` of each input, given the observed sequence, of shape :math:`L \\times |\\mathcal{X}|`. The element in row :math:`t \\in [0 : L)` and column :math:`x \\in \\mathcal{X}` is :math:`p(x_t = x \\mid \\mathbf{z})`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">L</span><span class="p">,</span> <span class="n">num_states</span><span class="p">,</span> <span class="n">num_input_symbols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_symbols</span>
+
+        <span class="k">if</span> <span class="n">input_priors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">input_priors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">num_input_symbols</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_input_symbols</span>
+        <span class="k">if</span> <span class="n">initial_state_distribution</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">initial_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_states</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_states</span>
+        <span class="k">if</span> <span class="n">initial_state_distribution</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">final_state_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_states</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_states</span>
+
+        <span class="n">log_gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">num_states</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">log_alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">log_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_states</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+            <span class="n">log_input_priors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">input_priors</span><span class="p">)</span>
+            <span class="n">log_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">initial_state_distribution</span><span class="p">)</span>
+            <span class="n">log_beta</span><span class="p">[</span><span class="n">L</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">final_state_distribution</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">s0</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">num_input_symbols</span><span class="p">,</span> <span class="n">num_states</span><span class="p">):</span>
+                <span class="n">y</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputs</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+                <span class="n">log_gamma</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_input_priors</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="n">metric_function</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">s1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+                <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">=</span> <span class="n">special</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">log_gamma</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="p">:,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="p">:])</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">s0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+                <span class="n">log_beta</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">]</span> <span class="o">=</span> <span class="n">special</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">log_gamma</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">log_beta</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+
+        <span class="n">log_input_posteriors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">num_input_symbols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">edge_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_input_symbols</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">s0</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
+                    <span class="n">s1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_states</span><span class="p">[</span><span class="n">s0</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+                    <span class="n">edge_labels</span><span class="p">[</span><span class="n">s0</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_gamma</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_beta</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s1</span><span class="p">]</span>
+                <span class="n">log_input_posteriors</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">special</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">edge_labels</span><span class="p">)</span>
+
+        <span class="n">input_posteriors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_input_posteriors</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">log_input_posteriors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">input_posteriors</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">input_posteriors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">input_posteriors</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../../../../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../../../../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../../../../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../../../../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../../../../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../../../../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../../../../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../../../../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../../../../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../../../../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../../../../references/">References</a></li>
+    <li><a class="reference internal" href="../../../../genindex/">Index</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex/" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../">Komm 0.7.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm._finite_state_machine.FiniteStateMachine</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

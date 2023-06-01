@@ -1,0 +1,41 @@
+﻿komm.FiniteBifield
+==================
+
+.. currentmodule:: komm
+
+.. autoclass:: FiniteBifield
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~FiniteBifield.characteristic
+      ~FiniteBifield.degree
+      ~FiniteBifield.modulus
+      ~FiniteBifield.order
+      ~FiniteBifield.primitive_element
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~FiniteBifield.__init__
+      ~FiniteBifield.conjugates
+      ~FiniteBifield.inverse
+      ~FiniteBifield.logarithm
+      ~FiniteBifield.minimal_polynomial
+      ~FiniteBifield.power
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: characteristic
+   .. automethod:: conjugates
+   .. autoproperty:: degree
+   .. automethod:: inverse
+   .. automethod:: logarithm
+   .. automethod:: minimal_polynomial
+   .. autoproperty:: modulus
+   .. autoproperty:: order
+   .. automethod:: power
+   .. autoproperty:: primitive_element

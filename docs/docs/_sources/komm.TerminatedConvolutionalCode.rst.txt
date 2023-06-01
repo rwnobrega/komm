@@ -1,0 +1,57 @@
+﻿komm.TerminatedConvolutionalCode
+================================
+
+.. currentmodule:: komm
+
+.. autoclass:: TerminatedConvolutionalCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~TerminatedConvolutionalCode.codeword_table
+      ~TerminatedConvolutionalCode.codeword_weight_distribution
+      ~TerminatedConvolutionalCode.coset_leader_table
+      ~TerminatedConvolutionalCode.coset_leader_weight_distribution
+      ~TerminatedConvolutionalCode.covering_radius
+      ~TerminatedConvolutionalCode.dimension
+      ~TerminatedConvolutionalCode.generator_matrix
+      ~TerminatedConvolutionalCode.length
+      ~TerminatedConvolutionalCode.minimum_distance
+      ~TerminatedConvolutionalCode.mode
+      ~TerminatedConvolutionalCode.num_blocks
+      ~TerminatedConvolutionalCode.packing_radius
+      ~TerminatedConvolutionalCode.parity_check_matrix
+      ~TerminatedConvolutionalCode.rate
+      ~TerminatedConvolutionalCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~TerminatedConvolutionalCode.__init__
+      ~TerminatedConvolutionalCode.decode
+      ~TerminatedConvolutionalCode.encode
+      ~TerminatedConvolutionalCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: mode
+   .. autoproperty:: num_blocks
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy

@@ -1,0 +1,31 @@
+﻿komm.GoldSequence
+=================
+
+.. currentmodule:: komm
+
+.. autoclass:: GoldSequence
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~GoldSequence.bit_sequence
+      ~GoldSequence.length
+      ~GoldSequence.polar_sequence
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~GoldSequence.__init__
+      ~GoldSequence.autocorrelation
+      ~GoldSequence.cyclic_autocorrelation
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. automethod:: autocorrelation
+   .. autoproperty:: bit_sequence
+   .. automethod:: cyclic_autocorrelation
+   .. autoproperty:: length
+   .. autoproperty:: polar_sequence

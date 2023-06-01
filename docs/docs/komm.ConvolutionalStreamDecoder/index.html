@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>komm.ConvolutionalStreamDecoder &#8212; Komm 0.7.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="komm.TerminatedConvolutionalCode" href="../komm.TerminatedConvolutionalCode/" />
+    <link rel="prev" title="komm.ConvolutionalStreamEncoder" href="../komm.ConvolutionalStreamEncoder/" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../komm.TerminatedConvolutionalCode/" title="komm.TerminatedConvolutionalCode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../komm.ConvolutionalStreamEncoder/" title="komm.ConvolutionalStreamEncoder"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ConvolutionalStreamDecoder</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="komm-convolutionalstreamdecoder">
+<h1>komm.ConvolutionalStreamDecoder<a class="headerlink" href="#komm-convolutionalstreamdecoder" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="komm.ConvolutionalStreamDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConvolutionalStreamDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">convolutional_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_convolutional/ConvolutionalStreamDecoder/#ConvolutionalStreamDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ConvolutionalStreamDecoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (<a class="reference internal" href="../komm.ConvolutionalCode/#komm.ConvolutionalCode" title="komm.ConvolutionalCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvolutionalCode</span></code></a>), assuming a traceback length (path memory) of <span class="math notranslate nohighlight">\(\tau\)</span>. At time <span class="math notranslate nohighlight">\(t\)</span>, the decoder chooses the path survivor with best metric at time <span class="math notranslate nohighlight">\(t - \tau\)</span> and outputs the corresponding information bits. The output stream has a delay equal to <span class="math notranslate nohighlight">\(k \tau\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as <span class="math notranslate nohighlight">\(\tau = 5\mu\)</span>, where <span class="math notranslate nohighlight">\(\mu\)</span> is the memory order of the convolutional code.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mo">0o7</span><span class="p">,</span> <span class="mo">0o5</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalStreamDecoder</span><span class="p">(</span><span class="n">convolutional_code</span><span class="p">,</span> <span class="n">traceback_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#komm.ConvolutionalStreamDecoder.__init__" title="komm.ConvolutionalStreamDecoder.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(convolutional_code, traceback_length)</p></td>
+<td><p>Constructor for the class.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="komm.ConvolutionalStreamDecoder.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">convolutional_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_convolutional/ConvolutionalStreamDecoder/#ConvolutionalStreamDecoder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ConvolutionalStreamDecoder.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor for the class. It expects the following parameters:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">convolutional_code</span></code><span class="classifier"><a class="reference internal" href="../komm.ConvolutionalCode/#komm.ConvolutionalCode" title="komm.ConvolutionalCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvolutionalCode</span></code></a></span></dt><dd><p>The convolutional code.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">traceback_length</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The traceback length (path memory) <span class="math notranslate nohighlight">\(\tau\)</span> of the decoder.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">initial_state</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>Initial state of the encoder. The default value is <code class="code docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Library reference</h3>
+<ul>
+    <li><a class="reference internal" href="../#algebra">Algebra</a></li>
+    <li><a class="reference internal" href="../#channels">Channels</a></li>
+    <li><a class="reference internal" href="../#error-control">Error control</a></li>
+    <li><a class="reference internal" href="../#finite-state-machine">Finite-state machine</a></li>
+    <li><a class="reference internal" href="../#modulation">Modulation</a></li>
+    <li><a class="reference internal" href="../#pulse-formatting">Pulse formatting</a></li>
+    <li><a class="reference internal" href="../#quantization">Quantization</a></li>
+    <li><a class="reference internal" href="../#sequences">Sequences</a></li>
+    <li><a class="reference internal" href="../#source-coding">Source coding</a></li>
+    <li><a class="reference internal" href="../#utilities">Utilities</a></li>
+</ul><h3>Indices</h3>
+<ul>
+    <li><a class="reference internal" href="../glossary/">Glossary</a></li>
+    <li><a class="reference internal" href="../references/">References</a></li>
+    <li><a class="reference internal" href="../genindex/">Index</a></li>
+</ul>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../komm.ConvolutionalStreamEncoder/"
+                          title="previous chapter">komm.ConvolutionalStreamEncoder</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../komm.TerminatedConvolutionalCode/"
+                          title="next chapter">komm.TerminatedConvolutionalCode</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/komm.ConvolutionalStreamDecoder.rst.txt" rel="nofollow">Show source</a></li>
+    </ul>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex/" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../komm.TerminatedConvolutionalCode/" title="komm.TerminatedConvolutionalCode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../komm.ConvolutionalStreamEncoder/" title="komm.ConvolutionalStreamEncoder"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../">Komm 0.7.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">komm.ConvolutionalStreamDecoder</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018–2023, Roberto W. Nobrega.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    </div>
+  </body>
+</html>

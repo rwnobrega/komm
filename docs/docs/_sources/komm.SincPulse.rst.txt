@@ -1,0 +1,29 @@
+﻿komm.SincPulse
+==============
+
+.. currentmodule:: komm
+
+.. autoclass:: SincPulse
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~SincPulse.frequency_response
+      ~SincPulse.impulse_response
+      ~SincPulse.interval
+      ~SincPulse.length_in_symbols
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~SincPulse.__init__
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: frequency_response
+   .. autoproperty:: impulse_response
+   .. autoproperty:: interval
+   .. autoproperty:: length_in_symbols

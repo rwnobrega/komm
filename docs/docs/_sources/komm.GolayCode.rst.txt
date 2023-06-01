@@ -1,0 +1,53 @@
+﻿komm.GolayCode
+==============
+
+.. currentmodule:: komm
+
+.. autoclass:: GolayCode
+
+   
+   .. rubric:: Properties
+
+   .. autosummary::
+      ~GolayCode.codeword_table
+      ~GolayCode.codeword_weight_distribution
+      ~GolayCode.coset_leader_table
+      ~GolayCode.coset_leader_weight_distribution
+      ~GolayCode.covering_radius
+      ~GolayCode.dimension
+      ~GolayCode.generator_matrix
+      ~GolayCode.length
+      ~GolayCode.minimum_distance
+      ~GolayCode.packing_radius
+      ~GolayCode.parity_check_matrix
+      ~GolayCode.rate
+      ~GolayCode.redundancy
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      ~GolayCode.__init__
+      ~GolayCode.decode
+      ~GolayCode.encode
+      ~GolayCode.message_from_codeword
+
+   .. rubric:: Documentation
+   
+   .. automethod:: __init__
+   .. autoproperty:: codeword_table
+   .. autoproperty:: codeword_weight_distribution
+   .. autoproperty:: coset_leader_table
+   .. autoproperty:: coset_leader_weight_distribution
+   .. autoproperty:: covering_radius
+   .. automethod:: decode
+   .. autoproperty:: dimension
+   .. automethod:: encode
+   .. autoproperty:: generator_matrix
+   .. autoproperty:: length
+   .. automethod:: message_from_codeword
+   .. autoproperty:: minimum_distance
+   .. autoproperty:: packing_radius
+   .. autoproperty:: parity_check_matrix
+   .. autoproperty:: rate
+   .. autoproperty:: redundancy
