@@ -148,22 +148,5 @@ def builder_inited_handler(app):
                 os.system("pdftoppm -cropbox -singlefile -png -r 75 {} {}".format(pdf_path, noext_path))
 
 
-def build_finished(app, exception):
-    print("Removing komm.*.rst...")
-    os.system("rm -rf komm.*.rst")
-    print("Fixing annoying anchor links...")
-    os.system(r'perl -p -i -e "s/href=\"(komm\..+)#(.+?)\"/href=\"\1\"/" `find _build/ -name *.html`')
-    print("Removing doctrees...")
-    os.system("rm -rf _build/doctrees/")
-    print("Cleaning up docs...")
-    os.system("rm -rf ../docs/docs/")
-    os.system("mkdir -p ../docs/docs")
-    print("Moving dirhtml to docs...")
-    os.system("mv _build/dirhtml/* ../docs/docs/")
-    print("Removing _build...")
-    os.system("rm -rf _build/")
-
-
 def setup(app):
     app.connect("builder-inited", builder_inited_handler)
-    app.connect("build-finished", build_finished)
