@@ -9,15 +9,9 @@ from .util import binary_horner, gcd, power, xgcd
 
 class BinaryPolynomial:
     r"""
-    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
-
-    This class supports addition, multiplication, and division of binary polynomials.
+    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. This class supports addition, multiplication, division, and exponentiation.
 
     .. rubric:: Examples
-
-    >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-    >>> poly
-    BinaryPolynomial(0b11010)
 
     >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
     >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
@@ -30,6 +24,19 @@ class BinaryPolynomial:
     """
 
     def __init__(self, integer):
+        r"""
+        Default constructor for the class. It expects the following parameter:
+
+        :code:`integer` : :obj:`int`
+            An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.
+
+        .. rubric:: Examples
+
+        >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+        BinaryPolynomial(0b11010)
+
+        There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
+        """
         self._integer = int(integer)
 
     @classmethod
