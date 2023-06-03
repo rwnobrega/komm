@@ -7,7 +7,7 @@ from .util import power
 
 
 class RationalPolynomialFraction:
-    """
+    r"""
     Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).
     """
 
@@ -49,14 +49,14 @@ class RationalPolynomialFraction:
 
     @property
     def numerator(self):
-        """
+        r"""
         The numerator of the fraction.
         """
         return self._numerator
 
     @property
     def denominator(self):
-        """
+        r"""
         The denominator of the fraction.
         """
         return self._denominator
@@ -91,7 +91,7 @@ class RationalPolynomialFraction:
         return self._numerator * other._denominator == self._denominator * other._numerator
 
     def inverse(self):
-        """
+        r"""
         Returns the multiplicative inverse the fraction.
         """
         return self.__class__(self._denominator, self._numerator)

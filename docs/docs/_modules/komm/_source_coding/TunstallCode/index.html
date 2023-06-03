@@ -41,7 +41,7 @@
 
 
 <div class="viewcode-block" id="TunstallCode"><a class="viewcode-back" href="../../../../komm.TunstallCode/#komm.TunstallCode">[docs]</a><span class="k">class</span> <span class="nc">TunstallCode</span><span class="p">(</span><span class="n">VariableToFixedCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tunstall code. It is an optimal (minimal expected rate) variable-to-fixed length code (:class:`VariableToFixedCode`) for a given probability mass function.</span>
 
 <span class="sd">    .. rubric:: Examples</span>
@@ -58,14 +58,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TunstallCode.__init__"><a class="viewcode-back" href="../../../../komm.TunstallCode/#komm.TunstallCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="n">code_block_size</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`pmf` : 1D-array of :obj:`float`</span>
 <span class="sd">            The probability mass function used to construct the code.</span>
 
 <span class="sd">        :code:`code_block_size` : :obj:`int`, optional</span>
-<span class="sd">            The code block size :math:`n`. Must satisfy :math:`2^n \\geq |\\mathcal{X}|`, where :math:`|\\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.</span>
+<span class="sd">            The code block size :math:`n`. Must satisfy :math:`2^n \geq |\mathcal{X}|`, where :math:`|\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
 
@@ -76,7 +76,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The probability mass function used to construct the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pmf</span>

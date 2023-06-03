@@ -4,14 +4,14 @@ from .Pulse import Pulse
 
 
 class GaussianPulse(Pulse):
-    """
+    r"""
     Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
 
-        h(t) = \\mathrm{e}^{-\\frac{1}{2} (2 \\pi \\bar{B} t)^2}
+        h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
 
-    where the :math:`\\bar{B} = B / \\sqrt{\\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
+    where the :math:`\bar{B} = B / \sqrt{\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
 
     The Gaussian pulse is depicted below for :math:`B = 0.5`, and for :math:`B = 1`.
 
@@ -30,7 +30,7 @@ class GaussianPulse(Pulse):
     """
 
     def __init__(self, half_power_bandwidth, length_in_symbols):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`half_power_bandwidth` : :obj:`float`
@@ -65,14 +65,14 @@ class GaussianPulse(Pulse):
 
     @property
     def half_power_bandwidth(self):
-        """
+        r"""
         The half-power bandwidth :math:`B` of the pulse. This property is read-only.
         """
         return self._half_power_bandwidth
 
     @property
     def length_in_symbols(self):
-        """
+        r"""
         The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols

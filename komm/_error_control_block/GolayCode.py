@@ -5,7 +5,7 @@ from .util import _extended_parity_submatrix
 
 
 class GolayCode(BlockCode):
-    """
+    r"""
     Binary Golay code. It has the following parameters:
 
     - Length: :math:`23`
@@ -40,7 +40,7 @@ class GolayCode(BlockCode):
     """
 
     def __init__(self, extended=False):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`extended` : :obj:`bool`, optional

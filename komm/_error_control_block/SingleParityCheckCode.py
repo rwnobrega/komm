@@ -6,7 +6,7 @@ from .BlockCode import BlockCode
 
 
 class SingleParityCheckCode(BlockCode):
-    """
+    r"""
     Single parity check code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending :math:`n - 1` information bits with a single parity-check bit. The repetition code has the following parameters:
 
     - Length: :math:`n`.
@@ -38,7 +38,7 @@ class SingleParityCheckCode(BlockCode):
     """
 
     def __init__(self, n):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`n` : :obj:`int`
@@ -56,7 +56,7 @@ class SingleParityCheckCode(BlockCode):
 
     @tag(name="Wagner", input_type="soft", target="codeword")
     def _decode_wagner(self, recvword):
-        """
+        r"""
         Wagner decoder. A soft-decision decoder for SingleParityCheck codes only. See Costello, Forney: Channel Coding: The Road to Channel Capacity.
         """
         codeword_hat = recvword < 0

@@ -4,14 +4,14 @@ from .Pulse import Pulse
 
 
 class RaisedCosinePulse(Pulse):
-    """
+    r"""
     Raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
 
-        h(t) = \\operatorname{sinc}(t) \\frac{\\cos(\\pi \\alpha t)}{1 - (2 \\alpha t)^2},
+        h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
 
-    where :math:`\\alpha` is the *roll-off factor*. The raised cosine pulse is depicted below for :math:`\\alpha = 0.25`, and for :math:`\\alpha = 0.75`.
+    where :math:`\alpha` is the *roll-off factor*. The raised cosine pulse is depicted below for :math:`\alpha = 0.25`, and for :math:`\alpha = 0.75`.
 
     .. rst-class:: centered
 
@@ -26,15 +26,15 @@ class RaisedCosinePulse(Pulse):
     .. |quad| unicode:: 0x2001
        :trim:
 
-    For  :math:`\\alpha = 0`, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
+    For  :math:`\alpha = 0`, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
     """
 
     def __init__(self, rolloff, length_in_symbols):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`rolloff` : :obj:`float`
-            The roll-off factor :math:`\\alpha` of the pulse. Must satisfy :math:`0 \\leq \\alpha \\leq 1`.
+            The roll-off factor :math:`\alpha` of the pulse. Must satisfy :math:`0 \leq \alpha \leq 1`.
 
         :code:`length_in_symbols` : :obj:`int`
             The length (span) of the truncated impulse response, in symbols.
@@ -64,14 +64,14 @@ class RaisedCosinePulse(Pulse):
 
     @property
     def rolloff(self):
-        """
-        The roll-off factor :math:`\\alpha` of the pulse. This property is read-only.
+        r"""
+        The roll-off factor :math:`\alpha` of the pulse. This property is read-only.
         """
         return self._rolloff
 
     @property
     def length_in_symbols(self):
-        """
+        r"""
         The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols

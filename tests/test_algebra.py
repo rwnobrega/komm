@@ -44,7 +44,7 @@ def test_binary_polynomial():
 
 
 def test_finite_bifield():
-    """
+    r"""
     Lin--Costello, Example 2.7,  p. 46.
     """
     field = komm.FiniteBifield(4, 0b10011)
@@ -61,7 +61,7 @@ def test_finite_bifield():
 
 
 def test_conjugates():
-    """
+    r"""
     Lin--Costello, Table 2.9,  p. 52.
     """
     field = komm.FiniteBifield(4, 0b10011)
@@ -75,7 +75,7 @@ def test_conjugates():
 
 
 def test_minimal_polynomial():
-    """
+    r"""
     Lin--Costello, Table 2.9,  p. 52.
     """
     field = komm.FiniteBifield(4, 0b10011)

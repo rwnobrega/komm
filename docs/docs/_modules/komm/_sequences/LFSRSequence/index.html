@@ -40,8 +40,8 @@
 
 
 <div class="viewcode-block" id="LFSRSequence"><a class="viewcode-back" href="../../../../komm.LFSRSequence/#komm.LFSRSequence">[docs]</a><span class="k">class</span> <span class="nc">LFSRSequence</span><span class="p">(</span><span class="n">BinarySequence</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \\in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.</span>
 
 <span class="sd">    .. image:: figures/lfsr_5_2.png</span>
 <span class="sd">       :alt: Linear-feedback shift register example.</span>
@@ -55,11 +55,11 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        R[\\ell] =</span>
-<span class="sd">        \\begin{cases}</span>
-<span class="sd">            L, &amp; \\ell = 0, \\pm L, \\pm 2L, \\ldots, \\\\</span>
-<span class="sd">            -1, &amp; \\text{otherwise},</span>
-<span class="sd">        \\end{cases}</span>
+<span class="sd">        R[\ell] =</span>
+<span class="sd">        \begin{cases}</span>
+<span class="sd">            L, &amp; \ell = 0, \pm L, \pm 2L, \ldots, \\</span>
+<span class="sd">            -1, &amp; \text{otherwise},</span>
+<span class="sd">        \end{cases}</span>
 
 <span class="sd">    where :math:`L` is the length of the sequence. The constructor :func:`maximum_length_sequence` can be use to construct an MLS.</span>
 
@@ -75,7 +75,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LFSRSequence.__init__"><a class="viewcode-back" href="../../../../komm.LFSRSequence/#komm.LFSRSequence.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback_polynomial</span><span class="p">,</span> <span class="n">start_state_polynomial</span><span class="o">=</span><span class="mb">0b1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`feedback_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`</span>
@@ -90,7 +90,7 @@
 
 <div class="viewcode-block" id="LFSRSequence.maximum_length_sequence"><a class="viewcode-back" href="../../../../komm.LFSRSequence/#komm.LFSRSequence.maximum_length_sequence">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">maximum_length_sequence</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs a maximum-length sequences (MLS) of a given degree. It expects the following parameter:</span>
 
 <span class="sd">        :code:`degree` : :obj:`int`</span>
@@ -139,14 +139,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">feedback_polynomial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The feedback polynomial :math:`p(X)` of the LFSR.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomial</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">start_state_polynomial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The start state polynomial of the LFSR.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_state_polynomial</span>

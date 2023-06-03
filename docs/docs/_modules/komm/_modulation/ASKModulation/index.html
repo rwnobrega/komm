@@ -40,14 +40,14 @@
 
 
 <div class="viewcode-block" id="ASKModulation"><a class="viewcode-back" href="../../../../komm.ASKModulation/#komm.ASKModulation">[docs]</a><span class="k">class</span> <span class="nc">ASKModulation</span><span class="p">(</span><span class="n">ComplexModulation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Amplitude-shift keying (ASK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\\mathcal{S}` are *uniformly arranged* in a ray. More precisely,</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Amplitude-shift keying (ASK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\mathcal{S}` are *uniformly arranged* in a ray. More precisely,</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \\mathcal{S} = \\{ iA \\exp(\\mathrm{j}\\phi): i \\in [0 : M) \\},</span>
+<span class="sd">        \mathcal{S} = \{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \},</span>
 
-<span class="sd">    where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *base amplitude*, and :math:`\\phi` is the *phase offset* of the modulation.  The ASK constellation is depicted below for :math:`M = 4`.</span>
+<span class="sd">    where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *base amplitude*, and :math:`\phi` is the *phase offset* of the modulation.  The ASK constellation is depicted below for :math:`M = 4`.</span>
 
 <span class="sd">    .. image:: figures/ask_4.png</span>
 <span class="sd">       :alt: 4-ASK constellation.</span>
@@ -55,7 +55,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ASKModulation.__init__"><a class="viewcode-back" href="../../../../komm.ASKModulation/#komm.ASKModulation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">base_amplitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">phase_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s2">&quot;reflected&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`order` : :obj:`int`</span>
@@ -65,10 +65,10 @@
 <span class="sd">            The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.</span>
 
 <span class="sd">        :code:`phase_offset` : :obj:`float`, optional</span>
-<span class="sd">            The phase offset :math:`\\phi` of the constellation. The default value is :code:`0.0`.</span>
+<span class="sd">            The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.</span>
 
 <span class="sd">        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
-<span class="sd">            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected&#39;`. The default value is :code:`&#39;reflected&#39;` (Gray code).</span>
+<span class="sd">            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected&#39;`. The default value is :code:`&#39;reflected&#39;` (Gray code).</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 

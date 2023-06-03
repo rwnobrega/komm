@@ -4,19 +4,19 @@ import numpy as np
 
 
 class BinarySequence:
-    """
-    General binary sequence. It may be represented either in *bit format*, denoted by :math:`b[n]`, with elements in the set :math:`\\{ 0, 1 \\}`, or in *polar format*, denoted by :math:`a[n]`, with elements in the set :math:`\\{ \\pm 1 \\}`. The correspondences :math:`0 \\mapsto +1` and :math:`1 \\mapsto -1` from bit format to polar format is assumed.
+    r"""
+    General binary sequence. It may be represented either in *bit format*, denoted by :math:`b[n]`, with elements in the set :math:`\{ 0, 1 \}`, or in *polar format*, denoted by :math:`a[n]`, with elements in the set :math:`\{ \pm 1 \}`. The correspondences :math:`0 \mapsto +1` and :math:`1 \mapsto -1` from bit format to polar format is assumed.
     """
 
     def __init__(self, **kwargs):
-        """
+        r"""
         Constructor for the class. It expects *exactly one* the following parameters:
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
-            The binary sequence in bit format. Must be an 1D-array with elements in :math:`\\{ 0, 1 \\}`.
+            The binary sequence in bit format. Must be an 1D-array with elements in :math:`\{ 0, 1 \}`.
 
         :code:`polar_sequence` : 1D-array of :obj:`int`
-            The binary sequence in polar format. Must be an 1D-array with elements in :math:`\\{ \\pm 1 \\}`.
+            The binary sequence in polar format. Must be an 1D-array with elements in :math:`\{ \pm 1 \}`.
         """
         kwargs_set = set(kwargs.keys())
         if kwargs_set == {"bit_sequence"}:
@@ -38,21 +38,21 @@ class BinarySequence:
 
     @property
     def bit_sequence(self):
-        """
-        The binary sequence in bit format, :math:`b[n] \\in \\{ 0, 1 \\}`.
+        r"""
+        The binary sequence in bit format, :math:`b[n] \in \{ 0, 1 \}`.
         """
         return self._bit_sequence
 
     @property
     def polar_sequence(self):
-        """
-        The binary sequence in polar format, :math:`a[n] \\in \\{ \\pm 1 \\}`.
+        r"""
+        The binary sequence in polar format, :math:`a[n] \in \{ \pm 1 \}`.
         """
         return self._polar_sequence
 
     @property
     def length(self):
-        """
+        r"""
         The length (or period) :math:`L` of the binary sequence.
         """
         return self._length
@@ -70,19 +70,19 @@ class BinarySequence:
         return np.array([np.dot(seq, np.roll(seq, ell)) for ell in range(L)])
 
     def autocorrelation(self, shifts=None, normalized=False):
-        """
-        Returns the autocorrelation :math:`R[\\ell]` of the binary sequence. This is defined as
+        r"""
+        Returns the autocorrelation :math:`R[\ell]` of the binary sequence. This is defined as
 
         .. math::
 
-            R[\\ell] = \\sum_{n \\in \\mathbb{Z}} a[n] a_{\\ell}[n],
+            R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],
 
-        where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\\ell}[n] = a[n - \\ell]` is the sequence :math:`a[n]` shifted by :math:`\\ell` positions. The autocorrelation :math:`R[\\ell]` is even and satisfies :math:`R[\\ell] = 0` for :math:`|\\ell| \\geq L`, where :math:`L` is the length of the binary sequence.
+        where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\ell}[n] = a[n - \ell]` is the sequence :math:`a[n]` shifted by :math:`\ell` positions. The autocorrelation :math:`R[\ell]` is even and satisfies :math:`R[\ell] = 0` for :math:`|\ell| \geq L`, where :math:`L` is the length of the binary sequence.
 
         .. rubric:: Parameters
 
         :code:`shifts` : 1D-array of :obj:`int`, optional.
-            An 1D array containing the values of :math:`\\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
+            An 1D array containing the values of :math:`\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
 
         :code:`normalized` : :obj:`boolean`, optional
             If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.
@@ -96,22 +96,22 @@ class BinarySequence:
             return autocorrelation
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
-        """
-        Returns the cyclic autocorrelation :math:`\\tilde{R}[\\ell]` of the binary sequence. This is defined as
+        r"""
+        Returns the cyclic autocorrelation :math:`\tilde{R}[\ell]` of the binary sequence. This is defined as
 
         .. math::
 
-            \\tilde{R}[\\ell] = \\sum_{n \\in [0:L)} a[n] \\tilde{a}_{\\ell}[n],
+            \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],
 
-        where :math:`a[n]` is the binary sequence in polar format, and :math:`\\tilde{a}_{\\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\\ell` positions. The cyclic autocorrelation :math:`\\tilde{R}[\\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.
+        where :math:`a[n]` is the binary sequence in polar format, and :math:`\tilde{a}_{\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\ell` positions. The cyclic autocorrelation :math:`\tilde{R}[\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.
 
         .. rubric:: Parameters
 
         :code:`shifts` : 1D-array of :obj:`int`, optional.
-            An 1D array containing the values of :math:`\\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
+            An 1D array containing the values of :math:`\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
 
         :code:`normalized` : :obj:`boolean`, optional
-            If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\\tilde{R}[0] = 1`. The default value is :code:`False`.
+            If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\tilde{R}[0] = 1`. The default value is :code:`False`.
         """
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)

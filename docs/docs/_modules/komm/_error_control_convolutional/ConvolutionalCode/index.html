@@ -41,51 +41,51 @@
 
 
 <div class="viewcode-block" id="ConvolutionalCode"><a class="viewcode-back" href="../../../../komm.ConvolutionalCode/#komm.ConvolutionalCode">[docs]</a><span class="k">class</span> <span class="nc">ConvolutionalCode</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \\times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.</span>
 
-<span class="sd">    The *transfer function matrix* (also known as *transform-domain generator matrix*) :math:`G(D)` of the convolutional code, of shape :math:`k \\times n`, is such that the element in row :math:`i` and column :math:`j` is given by</span>
+<span class="sd">    The *transfer function matrix* (also known as *transform-domain generator matrix*) :math:`G(D)` of the convolutional code, of shape :math:`k \times n`, is such that the element in row :math:`i` and column :math:`j` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">       g_{i,j}(D) = \\frac{p_{i,j}(D)}{q_{i}(D)},</span>
+<span class="sd">       g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},</span>
 
-<span class="sd">    for :math:`i \\in [0 : k)` and :math:`j \\in [0 : n)`.</span>
+<span class="sd">    for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`.</span>
 
 <span class="sd">    .. rubric:: Constraint lengths and related parameters</span>
 
 <span class="sd">    The *constraint lengths* of the code are defined by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">       \\nu_i = \\max \\{ \\deg p_{i,0}(D), \\deg p_{i,1}(D), \\ldots, \\deg p_{i,n-1}(D), \\deg q_i(D) \\},</span>
+<span class="sd">       \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},</span>
 
-<span class="sd">    for :math:`i \\in [0 : k)`.</span>
+<span class="sd">    for :math:`i \in [0 : k)`.</span>
 
 <span class="sd">    The *overall constraint length* of the code is defined by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">       \\nu = \\sum_{0 \\leq i &lt; k} \\nu_i.</span>
+<span class="sd">       \nu = \sum_{0 \leq i &lt; k} \nu_i.</span>
 
 <span class="sd">    The *memory order* of the code is defined by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \\mu = \\max_{0 \\leq i &lt; k} \\nu_i.</span>
+<span class="sd">        \mu = \max_{0 \leq i &lt; k} \nu_i.</span>
 
 <span class="sd">    .. rubric:: Space-state representation</span>
 
-<span class="sd">    A convolutional code may also be described via the *space-state representation*. Let :math:`\\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \\ldots, u_t^{(k-1)})` be the input block, :math:`\\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \\ldots, v_t^{(n-1)})` be the output block, and :math:`\\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \\ldots, s_t^{(\\nu-1)})` be the state, all defined at time instant :math:`t`. Then,</span>
+<span class="sd">    A convolutional code may also be described via the *space-state representation*. Let :math:`\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})` be the input block, :math:`\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})` be the output block, and :math:`\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})` be the state, all defined at time instant :math:`t`. Then,</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">       \\mathbf{s}_{t+1} &amp; = \\mathbf{s}_t A + \\mathbf{u}_t B, \\\\</span>
-<span class="sd">       \\mathbf{v}_{t} &amp; = \\mathbf{s}_t C + \\mathbf{u}_t D,</span>
+<span class="sd">       \mathbf{s}_{t+1} &amp; = \mathbf{s}_t A + \mathbf{u}_t B, \\</span>
+<span class="sd">       \mathbf{v}_{t} &amp; = \mathbf{s}_t C + \mathbf{u}_t D,</span>
 
-<span class="sd">    where :math:`A` is the :math:`\\nu \\times \\nu` *state matrix*, :math:`B` is the :math:`k \\times \\nu` *control matrix*, :math:`C` is the :math:`\\nu \\times n` *observation matrix*, and :math:`D` is the :math:`k \\times n` *transition matrix*.</span>
+<span class="sd">    where :math:`A` is the :math:`\nu \times \nu` *state matrix*, :math:`B` is the :math:`k \times \nu` *control matrix*, :math:`C` is the :math:`\nu \times n` *observation matrix*, and :math:`D` is the :math:`k \times n` *transition matrix*.</span>
 
 <span class="sd">    .. rubric:: Table of convolutional code</span>
 
-<span class="sd">    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).</span>
+<span class="sd">    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).</span>
 
 <span class="sd">    =================================  ======================================</span>
-<span class="sd">     Parameters :math:`(n, k, \\nu)`    Transfer function matrix :math:`G(D)`</span>
+<span class="sd">     Parameters :math:`(n, k, \nu)`    Transfer function matrix :math:`G(D)`</span>
 <span class="sd">    =================================  ======================================</span>
 <span class="sd">     :math:`(2, 1, 1)`                  :code:`[[0o1, 0o3]]`</span>
 <span class="sd">     :math:`(2, 1, 2)`                  :code:`[[0o5, 0o7]]`</span>
@@ -98,7 +98,7 @@
 <span class="sd">    =================================  ======================================</span>
 
 <span class="sd">    =================================  ======================================</span>
-<span class="sd">     Parameters :math:`(n, k, \\nu)`    Transfer function matrix :math:`G(D)`</span>
+<span class="sd">     Parameters :math:`(n, k, \nu)`    Transfer function matrix :math:`G(D)`</span>
 <span class="sd">    =================================  ======================================</span>
 <span class="sd">     :math:`(3, 1, 1)`                  :code:`[[0o1, 0o3, 0o3]]`</span>
 <span class="sd">     :math:`(3, 1, 2)`                  :code:`[[0o5, 0o7, 0o7]]`</span>
@@ -114,25 +114,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ConvolutionalCode.__init__"><a class="viewcode-back" href="../../../../komm.ConvolutionalCode/#komm.ConvolutionalCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedforward_polynomials</span><span class="p">,</span> <span class="n">feedback_polynomials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)</span>
-<span class="sd">            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \\times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.</span>
+<span class="sd">            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.</span>
 
 <span class="sd">        :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional</span>
-<span class="sd">            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \\in [0 : k)`.</span>
+<span class="sd">            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \in [0 : k)`.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 
-<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 6)`; its transfer function matrix is given by</span>
+<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 6)`; its transfer function matrix is given by</span>
 
 <span class="sd">        .. math::</span>
 
 <span class="sd">           G(D) =</span>
-<span class="sd">           \\begin{bmatrix}</span>
+<span class="sd">           \begin{bmatrix}</span>
 <span class="sd">              D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1</span>
-<span class="sd">           \\end{bmatrix},</span>
+<span class="sd">           \end{bmatrix},</span>
 
 <span class="sd">        yielding :code:`feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.</span>
 
@@ -144,15 +144,15 @@
 <span class="sd">        &gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)</span>
 <span class="sd">        (2, 1, 6)</span>
 
-<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (3, 2, 7)`; its transfer function matrix is given by</span>
+<span class="sd">        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (3, 2, 7)`; its transfer function matrix is given by</span>
 
 <span class="sd">        .. math::</span>
 
 <span class="sd">           G(D) =</span>
-<span class="sd">           \\begin{bmatrix}</span>
-<span class="sd">               D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\\\</span>
-<span class="sd">               0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1 \\\\</span>
-<span class="sd">           \\end{bmatrix},</span>
+<span class="sd">           \begin{bmatrix}</span>
+<span class="sd">               D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\</span>
+<span class="sd">               0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1 \\</span>
+<span class="sd">           \end{bmatrix},</span>
 
 <span class="sd">        yielding :code:`feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.</span>
 
@@ -164,14 +164,14 @@
 <span class="sd">        &gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)</span>
 <span class="sd">        (3, 2, 7)</span>
 
-<span class="sd">        The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \\nu) = (2, 1, 4)`; its transfer function matrix is given by</span>
+<span class="sd">        The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 4)`; its transfer function matrix is given by</span>
 
 <span class="sd">        .. math::</span>
 
 <span class="sd">           G(D) =</span>
-<span class="sd">           \\begin{bmatrix}</span>
-<span class="sd">               1  &amp;  \\dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}</span>
-<span class="sd">           \\end{bmatrix},</span>
+<span class="sd">           \begin{bmatrix}</span>
+<span class="sd">               1  &amp;  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}</span>
+<span class="sd">           \end{bmatrix},</span>
 
 <span class="sd">        yielding :code:`feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and :code:`feedback_polynomials = [0o27]`.</span>
 
@@ -283,92 +283,92 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_input_bits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of input bits per block, :math:`k`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_input_bits</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_output_bits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of output bits per block, :math:`n`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_output_bits</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">constraint_lengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The constraint lengths :math:`\\nu_i` of the code, for :math:`i \\in [0 : k)`. This is a 1D-array of :obj:`int`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The constraint lengths :math:`\nu_i` of the code, for :math:`i \in [0 : k)`. This is a 1D-array of :obj:`int`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraint_lengths</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">overall_constraint_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The overall constraint length :math:`\\nu` of the code. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The overall constraint length :math:`\nu` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overall_constraint_length</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">memory_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The memory order :math:`\\mu` of the code. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The memory order :math:`\mu` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memory_order</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">feedforward_polynomials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The matrix of feedforward polynomials :math:`P(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomial`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of feedforward polynomials :math:`P(D)` of the code. This is a :math:`k \times n` array of :obj:`BinaryPolynomial`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedforward_polynomials</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">feedback_polynomials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The vector of feedback polynomials :math:`q(D)` of the code. This is a :math:`k`-array of :obj:`BinaryPolynomial`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback_polynomials</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">transfer_function_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The transfer function matrix :math:`G(D)` of the code. This is a :math:`k \\times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The transfer function matrix :math:`G(D)` of the code. This is a :math:`k \times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transfer_function_matrix</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">finite_state_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The finite-state machine of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_state_machine</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">state_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The state matrix :math:`A` of the state-space representation. This is a :math:`\\nu \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The state matrix :math:`A` of the state-space representation. This is a :math:`\nu \times \nu` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_matrix</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">control_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The control matrix :math:`B` of the state-space representation. This is a :math:`k \\times \\nu` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The control matrix :math:`B` of the state-space representation. This is a :math:`k \times \nu` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_matrix</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">observation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The observation matrix :math:`C` of the state-space representation. This is a :math:`\\nu \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The observation matrix :math:`C` of the state-space representation. This is a :math:`\nu \times n` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observation_matrix</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">transition_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The transition matrix :math:`D` of the state-space representation. This is a :math:`k \\times n` array of integers in :math:`\\{ 0, 1 \\}`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The transition matrix :math:`D` of the state-space representation. This is a :math:`k \times n` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span></div>
 </pre></div>

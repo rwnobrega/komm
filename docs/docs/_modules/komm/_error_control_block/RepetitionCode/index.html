@@ -41,8 +41,8 @@
 
 
 <div class="viewcode-block" id="RepetitionCode"><a class="viewcode-back" href="../../../../komm.RepetitionCode/#komm.RepetitionCode">[docs]</a><span class="k">class</span> <span class="nc">RepetitionCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \\cdots 0` and :math:`11 \\cdots 1`. The repetition code has the following parameters:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \cdots 0` and :math:`11 \cdots 1`. The repetition code has the following parameters:</span>
 
 <span class="sd">    - Length: :math:`n`</span>
 <span class="sd">    - Dimension: :math:`k = 1`</span>
@@ -75,7 +75,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="RepetitionCode.__init__"><a class="viewcode-back" href="../../../../komm.RepetitionCode/#komm.RepetitionCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`n` : :obj:`int`</span>
@@ -95,7 +95,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Majority-logic&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_majority_logic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Majority-logic decoder. A hard-decision decoder for Repetition codes only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">majority</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">recvword</span><span class="p">))</span>

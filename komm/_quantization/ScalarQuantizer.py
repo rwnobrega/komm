@@ -2,27 +2,27 @@ import numpy as np
 
 
 class ScalarQuantizer:
-    """
-    General scalar quantizer. It is defined by a list of *levels*, :math:`v_0, v_1, \\ldots, v_{L-1}`, and a list of *thresholds*, :math:`t_0, t_1, \\ldots, t_L`, satisfying
+    r"""
+    General scalar quantizer. It is defined by a list of *levels*, :math:`v_0, v_1, \ldots, v_{L-1}`, and a list of *thresholds*, :math:`t_0, t_1, \ldots, t_L`, satisfying
 
     .. math::
 
-       -\\infty = t_0 < v_0 < t_1 < v_1 < \\cdots < t_{L - 1} < v_{L - 1} < t_L = +\\infty.
+       -\infty = t_0 < v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1} < t_L = +\infty.
 
-    Given an input :math:`x \\in \\mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \\leq x < t_{i+1}`, where :math:`i \\in [0:L)`.
+    Given an input :math:`x \in \mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \leq x < t_{i+1}`, where :math:`i \in [0:L)`.
     """
 
     def __init__(self, levels, thresholds):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`levels` : 1D array of :obj:`float`
-            The quantizer levels :math:`v_0, v_1, \\ldots, v_{L-1}`. It should be a list floats of length :math:`L`.
+            The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`. It should be a list floats of length :math:`L`.
 
         :code:`thresholds` : 1D array of :obj:`float`
-            The finite quantizer thresholds :math:`t_1, t_2, \\ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`.
+            The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`.
 
-        Moreover, they must satisfy :math:`v_0 < t_1 < v_1 < \\cdots < t_{L - 1} < v_{L - 1}`.
+        Moreover, they must satisfy :math:`v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}`.
 
         .. rubric:: Examples
 
@@ -34,7 +34,7 @@ class ScalarQuantizer:
         and thresholds
 
         .. math::
-           t_0 = -\\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \\infty.
+           t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.
 
         .. image:: figures/scalar_quantizer_5.png
            :alt: Scalar quantizer example.
@@ -63,21 +63,21 @@ class ScalarQuantizer:
 
     @property
     def levels(self):
-        """
-        The quantizer levels, :math:`v_0, v_1, \\ldots, v_{L-1}`.
+        r"""
+        The quantizer levels, :math:`v_0, v_1, \ldots, v_{L-1}`.
         """
         return self._levels
 
     @property
     def thresholds(self):
-        """
-        The finite quantizer thresholds, :math:`t_1, t_2, \\ldots, t_{L-1}`.
+        r"""
+        The finite quantizer thresholds, :math:`t_1, t_2, \ldots, t_{L-1}`.
         """
         return self._thresholds
 
     @property
     def num_levels(self):
-        """
+        r"""
         The number of quantization levels, :math:`L`.
         """
         return self._num_levels

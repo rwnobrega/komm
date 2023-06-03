@@ -4,18 +4,18 @@ from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
 
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
-    """
-    Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet :math:`\\mathcal{X} = \\{ 0, 1 \\}`, output alphabet :math:`\\mathcal{Y} = \\{ 0, 1, 2 \\}`, and transition probability matrix given by
+    r"""
+    Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet :math:`\mathcal{X} = \{ 0, 1 \}`, output alphabet :math:`\mathcal{Y} = \{ 0, 1, 2 \}`, and transition probability matrix given by
 
     .. math::
 
-        p_{Y \\mid X} =
-        \\begin{bmatrix}
-            1 - \\epsilon & 0 & \\epsilon \\\\
-            0 & 1 - \\epsilon & \\epsilon
-        \\end{bmatrix},
+        p_{Y \mid X} =
+        \begin{bmatrix}
+            1 - \epsilon & 0 & \epsilon \\
+            0 & 1 - \epsilon & \epsilon
+        \end{bmatrix},
 
-    where the parameter :math:`\\epsilon` is called the *erasure probability* of the channel.
+    where the parameter :math:`\epsilon` is called the *erasure probability* of the channel.
 
     References: :cite:`Cover.Thomas.06` (Sec. 7.1.5)
 
@@ -23,11 +23,11 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     """
 
     def __init__(self, erasure_probability=0.0):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`erasure_probability` : :obj:`float`, optional
-            The channel erasure probability :math:`\\epsilon`. Must satisfy :math:`0 \\leq \\epsilon \\leq 1`. Default value is :code:`0.0`.
+            The channel erasure probability :math:`\epsilon`. Must satisfy :math:`0 \leq \epsilon \leq 1`. Default value is :code:`0.0`.
 
         .. rubric:: Examples
 
@@ -40,8 +40,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     @property
     def erasure_probability(self):
-        """
-        The erasure probability :math:`\\epsilon` of the channel. This is a read-and-write property.
+        r"""
+        The erasure probability :math:`\epsilon` of the channel. This is a read-and-write property.
         """
         return self._erasure_probability
 
@@ -51,8 +51,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         self.transition_matrix = [[1 - e, 0, e], [0, 1 - e, e]]
 
     def capacity(self):
-        """
-        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
+        r"""
+        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
 
         .. rubric:: Examples
 

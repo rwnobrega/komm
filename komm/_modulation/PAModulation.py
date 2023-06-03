@@ -5,11 +5,11 @@ from .RealModulation import RealModulation
 
 
 class PAModulation(RealModulation):
-    """
-    Pulse-amplitude modulation (PAM). It is a real modulation scheme (:class:`RealModulation`) in which the points of the constellation :math:`\\mathcal{S}` are *uniformly arranged* in the real line. More precisely,
+    r"""
+    Pulse-amplitude modulation (PAM). It is a real modulation scheme (:class:`RealModulation`) in which the points of the constellation :math:`\mathcal{S}` are *uniformly arranged* in the real line. More precisely,
 
     .. math::
-        \\mathcal{S} = \\{ \\pm (2i + 1)A : i \\in [0 : M) \\},
+        \mathcal{S} = \{ \pm (2i + 1)A : i \in [0 : M) \},
 
     where :math:`M` is the *order* (a power of :math:`2`), and :math:`A` is the *base amplitude*. The PAM constellation is depicted below for :math:`M = 8`.
 
@@ -21,7 +21,7 @@ class PAModulation(RealModulation):
     """
 
     def __init__(self, order, base_amplitude=1.0, labeling="reflected"):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`order` : :obj:`int`
@@ -31,7 +31,7 @@ class PAModulation(RealModulation):
             The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
 
         :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
 
         .. rubric:: Examples
 

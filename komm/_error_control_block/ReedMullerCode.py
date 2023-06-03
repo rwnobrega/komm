@@ -8,13 +8,13 @@ from .BlockCode import BlockCode
 
 
 class ReedMullerCode(BlockCode):
-    """
-    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\\rho` and :math:`\\mu`, which must satisfy :math:`0 \\leq \\rho < \\mu`. See references for more details. The resulting code is denoted by :math:`\\mathrm{RM}(\\rho, \\mu)`, and has the following parameters:
+    r"""
+    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\rho` and :math:`\mu`, which must satisfy :math:`0 \leq \rho < \mu`. See references for more details. The resulting code is denoted by :math:`\mathrm{RM}(\rho, \mu)`, and has the following parameters:
 
-    - Length: :math:`n = 2^{\\mu}`
-    - Dimension: :math:`k = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\rho}`
-    - Redundancy: :math:`m = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\mu - \\rho - 1}`
-    - Minimum distance: :math:`d = 2^{\\mu - \\rho}`
+    - Length: :math:`n = 2^{\mu}`
+    - Dimension: :math:`k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}`
+    - Redundancy: :math:`m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}`
+    - Minimum distance: :math:`d = 2^{\mu - \rho}`
 
     References: :cite:`Lin.Costello.04` (p. 105--114)
 
@@ -24,10 +24,10 @@ class ReedMullerCode(BlockCode):
 
     .. rubric:: Notes
 
-    - For :math:`\\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
-    - For :math:`\\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).
-    - For :math:`\\rho = \\mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
-    - For :math:`\\rho = \\mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
+    - For :math:`\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
+    - For :math:`\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).
+    - For :math:`\rho = \mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
+    - For :math:`\rho = \mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
     .. rubric:: Examples
 
@@ -49,16 +49,16 @@ class ReedMullerCode(BlockCode):
     """
 
     def __init__(self, rho, mu):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`rho` : :obj:`int`
-            The parameter :math:`\\rho` of the code.
+            The parameter :math:`\rho` of the code.
 
         :code:`mu` : :obj:`int`
-            The parameter :math:`\\mu` of the code.
+            The parameter :math:`\mu` of the code.
 
-        The parameters must satisfy :math:`0 \\leq \\rho < \\mu`.
+        The parameters must satisfy :math:`0 \leq \rho < \mu`.
         """
         if not 0 <= rho < mu:
             raise ValueError("Parameters must satisfy 0 <= rho < mu")
@@ -74,21 +74,21 @@ class ReedMullerCode(BlockCode):
 
     @property
     def rho(self):
-        """
-        The parameter :math:`\\rho` of the code. This property is read-only.
+        r"""
+        The parameter :math:`\rho` of the code. This property is read-only.
         """
         return self._rho
 
     @property
     def mu(self):
-        """
-        The parameter :math:`\\mu` of the code. This property is read-only.
+        r"""
+        The parameter :math:`\mu` of the code. This property is read-only.
         """
         return self._mu
 
     @functools.cached_property
     def reed_partitions(self):
-        """
+        r"""
         The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
 
         .. rubric:: Examples
@@ -123,7 +123,7 @@ class ReedMullerCode(BlockCode):
 
     @staticmethod
     def _reed_muller_generator_matrix(rho, mu):
-        """
+        r"""
         [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= rho < mu.
         """
         v = np.empty((mu, 2**mu), dtype=int)
@@ -142,7 +142,7 @@ class ReedMullerCode(BlockCode):
 
     @tag(name="Reed", input_type="hard", target="message")
     def _decode_reed(self, recvword):
-        """
+        r"""
         Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
@@ -155,7 +155,7 @@ class ReedMullerCode(BlockCode):
 
     @tag(name="Weighted Reed", input_type="soft", target="message")
     def _decode_weighted_reed(self, recvword):
-        """
+        r"""
         Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)

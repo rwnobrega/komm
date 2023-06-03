@@ -3,7 +3,7 @@ from .util import _hamming_parity_submatrix
 
 
 class SimplexCode(BlockCode):
-    """
+    r"""
     Simplex (maximum-length) code. For a given dimension :math:`k`, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the :math:`2^k - 1` nonzero binary :math:`k`-tuples. The simplex code (also known as maximum-length code) has the following parameters:
 
     - Length: :math:`n = 2^k - 1`
@@ -44,11 +44,11 @@ class SimplexCode(BlockCode):
     """
 
     def __init__(self, k):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`k` : :obj:`int`
-            The dimension :math:`k` of the code. Must satisfy :math:`k \\geq 2`.
+            The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.
         """
         P = _hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)

@@ -40,13 +40,13 @@
 
 
 <div class="viewcode-block" id="QAModulation"><a class="viewcode-back" href="../../../../komm.QAModulation/#komm.QAModulation">[docs]</a><span class="k">class</span> <span class="nc">QAModulation</span><span class="p">(</span><span class="n">ComplexModulation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Quadrature-amplitude modulation (QAM). It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation :math:`\\mathcal{S}` is given as a Cartesian product of two PAM (:class:`PAModulation`) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely,</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Quadrature-amplitude modulation (QAM). It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation :math:`\mathcal{S}` is given as a Cartesian product of two PAM (:class:`PAModulation`) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely,</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \\mathcal{S} = \\{ [\\pm(2i_\\mathrm{I} + 1)A_\\mathrm{I} \\pm \\mathrm{j}(2i_\\mathrm{Q} + 1)A_\\mathrm{Q}] \\exp(\\mathrm{j}\\phi) : i_\\mathrm{I} \\in [0 : M_\\mathrm{I}), i_\\mathrm{Q} \\in [0 : M_\\mathrm{Q}) \\},</span>
+<span class="sd">        \mathcal{S} = \{ [\pm(2i_\mathrm{I} + 1)A_\mathrm{I} \pm \mathrm{j}(2i_\mathrm{Q} + 1)A_\mathrm{Q}] \exp(\mathrm{j}\phi) : i_\mathrm{I} \in [0 : M_\mathrm{I}), i_\mathrm{Q} \in [0 : M_\mathrm{Q}) \},</span>
 
-<span class="sd">    where :math:`M_\\mathrm{I}` and :math:`M_\\mathrm{Q}` are the *orders* (powers of :math:`2`), and :math:`A_\\mathrm{I}` and :math:`A_\\mathrm{Q}` are the *base amplitudes* of the in-phase and quadrature constellations, respectively. Also, :math:`\\phi` is the *phase offset*. The size of the resulting complex-valued constellation is :math:`M = M_\\mathrm{I} M_\\mathrm{Q}`, a power of :math:`2`. The QAM constellation is depicted below for :math:`(M_\\mathrm{I}, M_\\mathrm{Q}) = (4, 4)` with :math:`A_\\mathrm{I} = A_\\mathrm{Q} = A`, and for :math:`(M_\\mathrm{I}, M_\\mathrm{Q}) = (4, 2)` with :math:`A_\\mathrm{I} = A` and :math:`A_\\mathrm{Q} = 2A`.</span>
+<span class="sd">    where :math:`M_\mathrm{I}` and :math:`M_\mathrm{Q}` are the *orders* (powers of :math:`2`), and :math:`A_\mathrm{I}` and :math:`A_\mathrm{Q}` are the *base amplitudes* of the in-phase and quadrature constellations, respectively. Also, :math:`\phi` is the *phase offset*. The size of the resulting complex-valued constellation is :math:`M = M_\mathrm{I} M_\mathrm{Q}`, a power of :math:`2`. The QAM constellation is depicted below for :math:`(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)` with :math:`A_\mathrm{I} = A_\mathrm{Q} = A`, and for :math:`(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)` with :math:`A_\mathrm{I} = A` and :math:`A_\mathrm{Q} = 2A`.</span>
 
 <span class="sd">    .. rst-class:: centered</span>
 
@@ -63,20 +63,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="QAModulation.__init__"><a class="viewcode-back" href="../../../../komm.QAModulation/#komm.QAModulation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">,</span> <span class="n">base_amplitudes</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">phase_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s2">&quot;reflected_2d&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`orders` : :obj:`(int, int)` or :obj:`int`</span>
-<span class="sd">            A tuple :math:`(M_\\mathrm{I}, M_\\mathrm{Q})` with the orders of the in-phase and quadrature constellations, respectively; both :math:`M_\\mathrm{I}` and :math:`M_\\mathrm{Q}` must be powers of :math:`2`. If specified as a single integer :math:`M`, then it is assumed that :math:`M_\\mathrm{I} = M_\\mathrm{Q} = \\sqrt{M}`; in this case, :math:`M` must be an square power of :math:`2`.</span>
+<span class="sd">            A tuple :math:`(M_\mathrm{I}, M_\mathrm{Q})` with the orders of the in-phase and quadrature constellations, respectively; both :math:`M_\mathrm{I}` and :math:`M_\mathrm{Q}` must be powers of :math:`2`. If specified as a single integer :math:`M`, then it is assumed that :math:`M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}`; in this case, :math:`M` must be an square power of :math:`2`.</span>
 
 <span class="sd">        :code:`base_amplitudes` : :obj:`(float, float)` or :obj:`float`, optional</span>
-<span class="sd">            A tuple :math:`(A_\\mathrm{I}, A_\\mathrm{Q})` with the base amplitudes of the in-phase and quadrature constellations, respectively.  If specified as a single float :math:`A`, then it is assumed that :math:`A_\\mathrm{I} = A_\\mathrm{Q} = A`. The default value is :math:`1.0`.</span>
+<span class="sd">            A tuple :math:`(A_\mathrm{I}, A_\mathrm{Q})` with the base amplitudes of the in-phase and quadrature constellations, respectively.  If specified as a single float :math:`A`, then it is assumed that :math:`A_\mathrm{I} = A_\mathrm{Q} = A`. The default value is :math:`1.0`.</span>
 
 <span class="sd">        :code:`phase_offset` : :obj:`float`, optional</span>
-<span class="sd">            The phase offset :math:`\\phi` of the constellation. The default value is :code:`0.0`.</span>
+<span class="sd">            The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.</span>
 
 <span class="sd">        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
-<span class="sd">            The binary labeling :math:`\\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected_2d&#39;`. The default value is :code:`&#39;reflected_2d&#39;` (Gray code).</span>
+<span class="sd">            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected_2d&#39;`. The default value is :code:`&#39;reflected_2d&#39;` (Gray code).</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 

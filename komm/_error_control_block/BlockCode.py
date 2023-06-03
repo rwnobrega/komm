@@ -9,8 +9,8 @@ from .._util import binlist2int, int2binlist
 
 
 class BlockCode:
-    """
-    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \\times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \\times n` matrix. Those matrix are related by :math:`G H^\\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.
+    r"""
+    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \times n` matrix. Those matrix are related by :math:`G H^\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.
 
     References: :cite:`Lin.Costello.04` (Ch. 3)
 
@@ -58,7 +58,7 @@ class BlockCode:
     """
 
     def __init__(self, **kwargs):
-        """
+        r"""
         Constructor for the class. It expects one of the following formats:
 
         **Via generator matrix**
@@ -66,21 +66,21 @@ class BlockCode:
         `komm.BlockCode(generator_matrix=generator_matrix)`
 
         :code:`generator_matrix` : 2D-array of :obj:`int`
-            Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.
+            Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.
 
         **Via parity-check matrix**
 
         `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
 
         :code:`parity_check_matrix` : 2D-array of :obj:`int`
-            Parity-check matrix :math:`H` for the code, which is an :math:`m \\times n` binary matrix.
+            Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.
 
         **Via parity submatrix and information set**
 
         `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
 
         :code:`parity_submatrix` : 2D-array of :obj:`int`
-            Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.
+            Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.
 
         :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional
             Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
@@ -146,35 +146,35 @@ class BlockCode:
 
     @property
     def length(self):
-        """
+        r"""
         The length :math:`n` of the code. This property is read-only.
         """
         return self._length
 
     @property
     def dimension(self):
-        """
+        r"""
         The dimension :math:`k` of the code. This property is read-only.
         """
         return self._dimension
 
     @property
     def redundancy(self):
-        """
+        r"""
         The redundancy :math:`m` of the code. This property is read-only.
         """
         return self._redundancy
 
     @property
     def rate(self):
-        """
+        r"""
         The rate :math:`R = k/n` of the code. This property is read-only.
         """
         return self._dimension / self._length
 
     @functools.cached_property
     def minimum_distance(self):
-        """
+        r"""
         The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
         """
         try:
@@ -184,22 +184,22 @@ class BlockCode:
 
     @functools.cached_property
     def packing_radius(self):
-        """
-        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.
+        r"""
+        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\lfloor (d - 1) / 2 \rfloor`. This property is read-only.
         """
         return (self.minimum_distance - 1) // 2
 
     @functools.cached_property
     def covering_radius(self):
-        """
+        r"""
         The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.
         """
         return np.flatnonzero(self.coset_leader_weight_distribution)[-1]
 
     @functools.cached_property
     def generator_matrix(self):
-        """
-        The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
+        r"""
+        The generator matrix :math:`G` of the code. It as a :math:`k \times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.
         """
         try:
             return self._generator_matrix
@@ -208,8 +208,8 @@ class BlockCode:
 
     @functools.cached_property
     def parity_check_matrix(self):
-        """
-        The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
+        r"""
+        The parity-check matrix :math:`H` of the code. It as an :math:`m \times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.
         """
         try:
             return self._parity_check_matrix
@@ -218,8 +218,8 @@ class BlockCode:
 
     @functools.cached_property
     def codeword_table(self):
-        """
-        The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
+        r"""
+        The codeword table of the code. This is a :math:`2^k \times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.
         """
         codeword_table = np.empty([2**self._dimension, self._length], dtype=int)
         for i in range(2**self._dimension):
@@ -229,8 +229,8 @@ class BlockCode:
 
     @functools.cached_property
     def codeword_weight_distribution(self):
-        """
-        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n]`.
+        r"""
+        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n]`.
         """
         try:
             return self._codeword_weight_distribution
@@ -239,8 +239,8 @@ class BlockCode:
 
     @functools.cached_property
     def coset_leader_table(self):
-        """
-        The coset leader table of the code. This is a :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.
+        r"""
+        The coset leader table of the code. This is a :math:`2^m \times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.
         """
         coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=int)
         taken = []
@@ -259,8 +259,8 @@ class BlockCode:
 
     @functools.cached_property
     def coset_leader_weight_distribution(self):
-        """
-        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n]`.
+        r"""
+        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n]`.
         """
         try:
             return self._coset_leader_weight_distribution
@@ -272,7 +272,7 @@ class BlockCode:
         return right_inverse(self.generator_matrix)
 
     def encode(self, message, method=None):
-        """
+        r"""
         Encodes a given message to its corresponding codeword.
 
         .. rubric:: Input
@@ -318,7 +318,7 @@ class BlockCode:
             return "generator_matrix"
 
     def message_from_codeword(self, codeword):
-        """
+        r"""
         Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.
 
         .. rubric:: Input
@@ -337,13 +337,13 @@ class BlockCode:
             return np.dot(codeword, self._generator_matrix_right_inverse) % 2
 
     def decode(self, recvword, method=None, **kwargs):
-        """
+        r"""
         Decodes a received word to a message.
 
         .. rubric:: Input
 
         :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
-            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\\{ 0, 1 \\}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
+            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
         :code:`method` : :obj:`str`, optional
             The decoding method to be used.
@@ -372,7 +372,7 @@ class BlockCode:
 
     @tag(name="Exhaustive search (hard-decision)", input_type="hard", target="codeword")
     def _decode_exhaustive_search_hard(self, recvword):
-        """
+        r"""
         Exhaustive search minimum distance hard decoder. Hamming distance.
         """
         codewords = self.codeword_table
@@ -382,7 +382,7 @@ class BlockCode:
 
     @tag(name="Exhaustive search (soft-decision)", input_type="soft", target="codeword")
     def _decode_exhaustive_search_soft(self, recvword):
-        """
+        r"""
         Exhaustive search minimum distance soft decoder. Euclidean distance.
         """
         codewords = self.codeword_table
@@ -392,7 +392,7 @@ class BlockCode:
 
     @tag(name="Syndrome table", input_type="hard", target="codeword")
     def _decode_syndrome_table(self, recvword):
-        """
+        r"""
         Syndrome table decoder.
         """
         coset_leader_table = self.coset_leader_table

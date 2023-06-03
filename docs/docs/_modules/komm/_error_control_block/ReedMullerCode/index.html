@@ -43,13 +43,13 @@
 
 
 <div class="viewcode-block" id="ReedMullerCode"><a class="viewcode-back" href="../../../../komm.ReedMullerCode/#komm.ReedMullerCode">[docs]</a><span class="k">class</span> <span class="nc">ReedMullerCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\\rho` and :math:`\\mu`, which must satisfy :math:`0 \\leq \\rho &lt; \\mu`. See references for more details. The resulting code is denoted by :math:`\\mathrm{RM}(\\rho, \\mu)`, and has the following parameters:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\rho` and :math:`\mu`, which must satisfy :math:`0 \leq \rho &lt; \mu`. See references for more details. The resulting code is denoted by :math:`\mathrm{RM}(\rho, \mu)`, and has the following parameters:</span>
 
-<span class="sd">    - Length: :math:`n = 2^{\\mu}`</span>
-<span class="sd">    - Dimension: :math:`k = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\rho}`</span>
-<span class="sd">    - Redundancy: :math:`m = 1 + {\\mu \\choose 1} + \\cdots + {\\mu \\choose \\mu - \\rho - 1}`</span>
-<span class="sd">    - Minimum distance: :math:`d = 2^{\\mu - \\rho}`</span>
+<span class="sd">    - Length: :math:`n = 2^{\mu}`</span>
+<span class="sd">    - Dimension: :math:`k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}`</span>
+<span class="sd">    - Redundancy: :math:`m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}`</span>
+<span class="sd">    - Minimum distance: :math:`d = 2^{\mu - \rho}`</span>
 
 <span class="sd">    References: :cite:`Lin.Costello.04` (p. 105--114)</span>
 
@@ -59,10 +59,10 @@
 
 <span class="sd">    .. rubric:: Notes</span>
 
-<span class="sd">    - For :math:`\\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).</span>
-<span class="sd">    - For :math:`\\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).</span>
-<span class="sd">    - For :math:`\\rho = \\mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).</span>
-<span class="sd">    - For :math:`\\rho = \\mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).</span>
+<span class="sd">    - For :math:`\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).</span>
+<span class="sd">    - For :math:`\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).</span>
+<span class="sd">    - For :math:`\rho = \mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).</span>
+<span class="sd">    - For :math:`\rho = \mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).</span>
 
 <span class="sd">    .. rubric:: Examples</span>
 
@@ -84,16 +84,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ReedMullerCode.__init__"><a class="viewcode-back" href="../../../../komm.ReedMullerCode/#komm.ReedMullerCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`rho` : :obj:`int`</span>
-<span class="sd">            The parameter :math:`\\rho` of the code.</span>
+<span class="sd">            The parameter :math:`\rho` of the code.</span>
 
 <span class="sd">        :code:`mu` : :obj:`int`</span>
-<span class="sd">            The parameter :math:`\\mu` of the code.</span>
+<span class="sd">            The parameter :math:`\mu` of the code.</span>
 
-<span class="sd">        The parameters must satisfy :math:`0 \\leq \\rho &lt; \\mu`.</span>
+<span class="sd">        The parameters must satisfy :math:`0 \leq \rho &lt; \mu`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">rho</span> <span class="o">&lt;</span> <span class="n">mu</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must satisfy 0 &lt;= rho &lt; mu&quot;</span><span class="p">)</span>
@@ -109,21 +109,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rho</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The parameter :math:`\\rho` of the code. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The parameter :math:`\rho` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rho</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The parameter :math:`\\mu` of the code. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The parameter :math:`\mu` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mu</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">reed_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
@@ -158,7 +158,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_reed_muller_generator_matrix</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 &lt;= rho &lt; mu.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">mu</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">mu</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -177,7 +177,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Reed&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_reed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reed decoding algorithm for Reed--Muller codes. It&#39;s a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">message_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -190,7 +190,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Weighted Reed&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_weighted_reed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">message_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>

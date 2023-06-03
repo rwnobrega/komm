@@ -33,7 +33,7 @@ def _binlist2int(list_):
 
 
 def binlist2int(list_):
-    """
+    r"""
     Converts a bit array to its integer representation.
     """
     return _binlist2int(list_)
@@ -46,7 +46,7 @@ def _int2binlist(int_, width=None):
 
 
 def int2binlist(int_, width=None):
-    """
+    r"""
     Converts an integer to its bit array representation.
     """
     return np.array(_int2binlist(int_, width))
@@ -57,7 +57,7 @@ def _pack(list_, width):
 
 
 def pack(list_, width):
-    """
+    r"""
     Packs a given integer array.
     """
     return _pack(list_, width)
@@ -68,7 +68,7 @@ def _unpack(list_, width):
 
 
 def unpack(list_, width):
-    """
+    r"""
     Unpacks a given bit array.
     """
     return _unpack(list_, width)
@@ -79,12 +79,12 @@ def _qfunc(x):
 
 
 def qfunc(x):
-    """
+    r"""
     Computes the Gaussian Q-function. It is given by
 
     .. math::
 
-       \\mathrm{Q}(x) = \\frac{1}{\\sqrt{2\\pi}} \\int_x^\\infty \\mathrm{e}^{-u^2/2} \\, \\mathrm{d}u.
+       \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
 
     .. rubric:: Input
 
@@ -94,7 +94,7 @@ def qfunc(x):
     .. rubric:: Output
 
     :code:`y` : same as input
-        The value :math:`y = \\mathrm{Q}(x)`.
+        The value :math:`y = \mathrm{Q}(x)`.
 
     .. rubric:: Examples
 
@@ -112,7 +112,7 @@ def _qfuncinv(y):
 
 
 def qfuncinv(x):
-    """
+    r"""
     Computes the inverse Gaussian Q-function.
 
     .. rubric:: Input
@@ -123,7 +123,7 @@ def qfuncinv(x):
     .. rubric:: Output
 
     :code:`x` : same as input
-        The value :math:`x = \\mathrm{Q^{-1}}(y)`.
+        The value :math:`x = \mathrm{Q^{-1}}(y)`.
 
     >>> komm.qfuncinv(0.5)  #doctest:+SKIP
     0.0
@@ -157,12 +157,12 @@ def _entropy(pmf, base=2.0):
 
 
 def entropy(pmf, base=2.0):
-    """
-    Computes the entropy of a random variable with a given :term:`pmf`. Let :math:`X` be a random variable with :term:`pmf` :math:`p_X` and alphabet :math:`\\mathcal{X}`. Its entropy is given by
+    r"""
+    Computes the entropy of a random variable with a given :term:`pmf`. Let :math:`X` be a random variable with :term:`pmf` :math:`p_X` and alphabet :math:`\mathcal{X}`. Its entropy is given by
 
     .. math::
 
-       \\mathrm{H}(X) = \\sum_{x \\in \\mathcal{X}} p_X(x) \\log \\frac{1}{p_X(x)},
+       \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
 
     By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits.
 
@@ -179,7 +179,7 @@ def entropy(pmf, base=2.0):
     .. rubric:: Output
 
     :code:`entropy` : :obj:`float`
-        The entropy :math:`\\mathrm{H}(X)` of the random variable.
+        The entropy :math:`\mathrm{H}(X)` of the random variable.
 
     .. rubric:: Examples
 

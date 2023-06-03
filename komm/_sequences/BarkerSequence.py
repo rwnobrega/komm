@@ -2,8 +2,8 @@ from .BinarySequence import BinarySequence
 
 
 class BarkerSequence(BinarySequence):
-    """
-    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation :math:`R[\\ell]` satisfying :math:`|R[\\ell]| \\leq 1`, for :math:`\\ell \\neq 0`. The only known Barker sequences (up to negation and reversion) are shown in the table below.
+    r"""
+    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation :math:`R[\ell]` satisfying :math:`|R[\ell]| \leq 1`, for :math:`\ell \neq 0`. The only known Barker sequences (up to negation and reversion) are shown in the table below.
 
     ================  =============================
     Length :math:`L`  Barker sequence :math:`b[n]`
@@ -21,11 +21,11 @@ class BarkerSequence(BinarySequence):
     """
 
     def __init__(self, length):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`length` : :obj:`int`
-            Length of the Barker sequence. Must be in the set :math:`\\{ 2, 3, 4, 5, 7, 11, 13 \\}`.
+            Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.
 
         .. rubric:: Examples
 

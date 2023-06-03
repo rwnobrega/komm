@@ -4,8 +4,8 @@ from .._util import _mutual_information
 
 
 class DiscreteMemorylessChannel:
-    """
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \\mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \\ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \\ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \\mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
+    r"""
+    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\mathcal{X}`, an *output alphabet* :math:`\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}` and :math:`\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\mathcal{X}|`-by-:math:`|\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.
 
     References: :cite:`Cover.Thomas.06` (Ch. 7)
 
@@ -13,11 +13,11 @@ class DiscreteMemorylessChannel:
     """
 
     def __init__(self, transition_matrix):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`transition_matrix` : 2D-array of :obj:`float`
-            The channel transition probability matrix :math:`p_{Y \\mid X}`. The element in row :math:`x \\in \\mathcal{X}` and column :math:`y \\in \\mathcal{Y}` must be equal to :math:`p_{Y \\mid X}(y \\mid x)`.
+            The channel transition probability matrix :math:`p_{Y \mid X}`. The element in row :math:`x \in \mathcal{X}` and column :math:`y \in \mathcal{Y}` must be equal to :math:`p_{Y \mid X}(y \mid x)`.
 
         .. rubric:: Examples
 
@@ -31,8 +31,8 @@ class DiscreteMemorylessChannel:
 
     @property
     def transition_matrix(self):
-        """
-        The channel transition probability matrix :math:`p_{Y \\mid X}`. This is a read-and-write property.
+        r"""
+        The channel transition probability matrix :math:`p_{Y \mid X}`. This is a read-and-write property.
         """
         return self._transition_matrix
 
@@ -43,27 +43,27 @@ class DiscreteMemorylessChannel:
 
     @property
     def input_cardinality(self):
-        """
-        The channel input cardinality :math:`|\\mathcal{X}|`. This property is read-only.
+        r"""
+        The channel input cardinality :math:`|\mathcal{X}|`. This property is read-only.
         """
         return self._input_cardinality
 
     @property
     def output_cardinality(self):
-        """
-        The channel output cardinality :math:`|\\mathcal{Y}|`. This property is read-only.
+        r"""
+        The channel output cardinality :math:`|\mathcal{Y}|`. This property is read-only.
         """
         return self._output_cardinality
 
     def mutual_information(self, input_pmf, base=2.0):
-        """
-        Computes the mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by
+        r"""
+        Computes the mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by
 
         .. math::
 
-           \\mathrm{I}(X ; Y) = \\mathrm{H}(X) - \\mathrm{H}(X \\mid Y),
+           \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
 
-        where :math:`\\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\\mathrm{H}(X \\mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.
+        where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.
 
         References: :cite:`Cover.Thomas.06` (Ch. 2)
 
@@ -78,7 +78,7 @@ class DiscreteMemorylessChannel:
         .. rubric:: Output
 
         :code:`mutual_information` : :obj:`float`
-            The mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.
+            The mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.
 
         .. rubric:: Examples
 
@@ -91,8 +91,8 @@ class DiscreteMemorylessChannel:
         return _mutual_information(input_pmf, self._transition_matrix, base)
 
     def capacity(self, base=2.0):
-        """
-        Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+        r"""
+        Returns the channel capacity :math:`C`. It is given by :math:`C = \max_{p_X} \mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
 
         .. rubric:: Input
 
@@ -124,7 +124,7 @@ class DiscreteMemorylessChannel:
 
     @staticmethod
     def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
-        """
+        r"""
         Arimoto--Blahut algorithm for channel capacity. See :cite:`Cover.Thomas.06` (Sec. 10.8).
         """
         p = transition_matrix

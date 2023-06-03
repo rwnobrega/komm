@@ -39,14 +39,14 @@
 
 
 <div class="viewcode-block" id="GaussianPulse"><a class="viewcode-back" href="../../../../komm.GaussianPulse/#komm.GaussianPulse">[docs]</a><span class="k">class</span> <span class="nc">GaussianPulse</span><span class="p">(</span><span class="n">Pulse</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        h(t) = \\mathrm{e}^{-\\frac{1}{2} (2 \\pi \\bar{B} t)^2}</span>
+<span class="sd">        h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}</span>
 
-<span class="sd">    where the :math:`\\bar{B} = B / \\sqrt{\\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.</span>
+<span class="sd">    where the :math:`\bar{B} = B / \sqrt{\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.</span>
 
 <span class="sd">    The Gaussian pulse is depicted below for :math:`B = 0.5`, and for :math:`B = 1`.</span>
 
@@ -65,7 +65,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GaussianPulse.__init__"><a class="viewcode-back" href="../../../../komm.GaussianPulse/#komm.GaussianPulse.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">half_power_bandwidth</span><span class="p">,</span> <span class="n">length_in_symbols</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`half_power_bandwidth` : :obj:`float`</span>
@@ -100,14 +100,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">half_power_bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The half-power bandwidth :math:`B` of the pulse. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_half_power_bandwidth</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length_in_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The length (span) of the truncated impulse response. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length_in_symbols</span></div>

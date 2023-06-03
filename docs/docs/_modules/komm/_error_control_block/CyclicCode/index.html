@@ -44,7 +44,7 @@
 
 
 <div class="viewcode-block" id="CyclicCode"><a class="viewcode-back" href="../../../../komm.CyclicCode/#komm.CyclicCode">[docs]</a><span class="k">class</span> <span class="nc">CyclicCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    General binary cyclic code. A cyclic code is a linear block code (:class:`BlockCode`) such that, if :math:`c` is a codeword, then every cyclic shift of :math:`c` is also a codeword. It is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code), and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.</span>
 
 <span class="sd">    Examples of generator polynomials can be found in the table below.</span>
@@ -66,7 +66,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CyclicCode.__init__"><a class="viewcode-back" href="../../../../komm.CyclicCode/#komm.CyclicCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects one of the following formats:</span>
 
 <span class="sd">        **Via generator polynomial**</span>
@@ -137,21 +137,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">generator_polynomial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_polynomial</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parity_check_polynomial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The parity-check polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_polynomial</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">meggitt_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">meggitt_table</span> <span class="o">=</span> <span class="p">{}</span>
@@ -163,14 +163,14 @@
         <span class="k">return</span> <span class="n">meggitt_table</span>
 
     <span class="k">def</span> <span class="nf">_encode_cyclic_direct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encoder for cyclic codes. Direct, non-systematic method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">message_polynomial</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">message_polynomial</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_polynomial</span><span class="p">)</span><span class="o">.</span><span class="n">coefficients</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_encode_cyclic_systematic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encoder for cyclic codes. Systematic method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">message_polynomial</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -204,7 +204,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Meggitt decoder&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_meggitt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">meggitt_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meggitt_table</span>

@@ -31,63 +31,63 @@ class Modulation:
 
     @property
     def constellation(self):
-        """
-        The constellation :math:`\\mathcal{S}` of the modulation. This property is read-only.
+        r"""
+        The constellation :math:`\mathcal{S}` of the modulation. This property is read-only.
         """
         return self._constellation
 
     @property
     def labeling(self):
-        """
-        The binary labeling :math:`\\mathcal{Q}` of the modulation. This property is read-only.
+        r"""
+        The binary labeling :math:`\mathcal{Q}` of the modulation. This property is read-only.
         """
         return self._labeling
 
     @property
     def order(self):
-        """
+        r"""
         The order :math:`M` of the modulation. This property is read-only.
         """
         return self._order
 
     @property
     def bits_per_symbol(self):
-        """
-        The number :math:`m` of bits per symbol of the modulation. It is given by :math:`m = \\log_2 M`, where :math:`M` is the order of the modulation. This property is read-only.
+        r"""
+        The number :math:`m` of bits per symbol of the modulation. It is given by :math:`m = \log_2 M`, where :math:`M` is the order of the modulation. This property is read-only.
         """
         return self._bits_per_symbol
 
     @property
     def energy_per_symbol(self):
-        """
-        The average symbol energy :math:`E_\\mathrm{s}` of the constellation. It assumes equiprobable symbols. It is given by
+        r"""
+        The average symbol energy :math:`E_\mathrm{s}` of the constellation. It assumes equiprobable symbols. It is given by
 
         .. math::
 
-            E_\\mathrm{s} = \\frac{1}{M} \\sum_{s_i \\in \\mathcal{S}} |s_i|^2,
+            E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
 
-        where :math:`|s_i|^2` is the energy of symbol :math:`s_i \\in \\mathcal{S}` and :math:`M` is the order of the modulation. This property is read-only.
+        where :math:`|s_i|^2` is the energy of symbol :math:`s_i \in \mathcal{S}` and :math:`M` is the order of the modulation. This property is read-only.
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
     @property
     def energy_per_bit(self):
-        """
-        The average bit energy :math:`E_\\mathrm{b}` of the constellation. It assumes equiprobable symbols. It is given by :math:`E_\\mathrm{b} = E_\\mathrm{s} / m`, where :math:`E_\\mathrm{s}` is the average symbol energy, and :math:`m` is the number of bits per symbol of the modulation.
+        r"""
+        The average bit energy :math:`E_\mathrm{b}` of the constellation. It assumes equiprobable symbols. It is given by :math:`E_\mathrm{b} = E_\mathrm{s} / m`, where :math:`E_\mathrm{s}` is the average symbol energy, and :math:`m` is the number of bits per symbol of the modulation.
         """
         return self.energy_per_symbol / np.log2(self._order)
 
     @property
     def minimum_distance(self):
-        """
+        r"""
         The minimum euclidean distance of the constellation.
         """
         pass
 
     @property
     def channel_snr(self):
-        """
-        The signal-to-noise ratio :math:`\\mathrm{SNR}` of the channel. This is used in soft-decision methods. This is a read-and-write property.
+        r"""
+        The signal-to-noise ratio :math:`\mathrm{SNR}` of the channel. This is used in soft-decision methods. This is a read-and-write property.
         """
         return self._channel_snr
 
@@ -97,13 +97,13 @@ class Modulation:
         self._channel_N0 = self.energy_per_symbol / self._channel_snr
 
     def bits_to_symbols(self, bits):
-        """
+        r"""
         Converts bits to symbols using the modulation binary labeling.
 
         .. rubric:: Input
 
         :code:`bits` : 1D-array of :obj:`int`
-            The bits to be converted. It should be a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length must be a multiple of :math:`m`.
+            The bits to be converted. It should be a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length must be a multiple of :math:`m`.
 
         .. rubric:: Output
 
@@ -119,7 +119,7 @@ class Modulation:
         return symbols
 
     def symbols_to_bits(self, symbols):
-        """
+        r"""
         Converts symbols to bits using the modulation binary labeling.
 
         .. rubric:: Input
@@ -130,7 +130,7 @@ class Modulation:
         .. rubric:: Output
 
         :code:`bits` : 1D-array of :obj:`int`
-            The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\\{ 0, 1 \\}`. Its length is equal to the length of :code:`symbols` multiplied by :math:`m`.
+            The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length is equal to the length of :code:`symbols` multiplied by :math:`m`.
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m
@@ -140,19 +140,23 @@ class Modulation:
         return bits
 
     def modulate(self, bits):
-        """
+        r"""
         Modulates a sequence of bits to its corresponding constellation points.
         """
         symbols = self.bits_to_symbols(bits)
         return self._constellation[symbols]
 
     def _hard_symbol_demodulator(self, received):
-        """General minimum distance hard demodulator."""
+        r"""
+        General minimum distance hard demodulator.
+        """
         mpoints, mconst = np.meshgrid(received, self._constellation)
         return np.argmin(np.absolute(mpoints - mconst), axis=0)
 
     def _soft_bit_demodulator(self, received):
-        """Computes L-values of received points"""
+        r"""
+        Computes L-values of received points.
+        """
         m = self._bits_per_symbol
 
         def pdf_received_given_bit(bit_index, bit_value):
@@ -175,7 +179,7 @@ class Modulation:
         return soft_bits
 
     def demodulate(self, received, decision_method="hard"):
-        """
+        r"""
         Demodulates a sequence of received points to a sequence of bits.
         """
         if decision_method == "hard":

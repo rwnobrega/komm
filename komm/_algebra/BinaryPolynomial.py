@@ -8,8 +8,8 @@ from .util import binary_horner, gcd, power, xgcd
 
 
 class BinaryPolynomial:
-    """
-    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\\mathbb{F}_2 = \\{ 0, 1 \\}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
+    r"""
+    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
 
     This class supports addition, multiplication, and division of binary polynomials.
 
@@ -34,7 +34,7 @@ class BinaryPolynomial:
 
     @classmethod
     def from_coefficients(cls, coefficients):
-        """
+        r"""
         Constructs a :obj:`BinaryPolynomial` from its coefficients. It expects the following parameter:
 
         :code:`coefficients` : 1D-array of :obj:`int`
@@ -49,7 +49,7 @@ class BinaryPolynomial:
 
     @classmethod
     def from_exponents(cls, exponents):
-        """
+        r"""
         Constructs a :obj:`BinaryPolynomial` from its exponents. It expects the following parameter:
 
         :code:`coefficients` : 1D-array of :obj:`int`
@@ -64,7 +64,7 @@ class BinaryPolynomial:
 
     @property
     def degree(self):
-        """
+        r"""
         The degree of the polynomial. This property is read-only.
 
         .. rubric:: Examples
@@ -76,7 +76,7 @@ class BinaryPolynomial:
         return self._integer.bit_length() - 1
 
     def coefficients(self, width=None):
-        """
+        r"""
         Returns the coefficients of the binary polynomial.
 
         .. rubric:: Input
@@ -100,7 +100,7 @@ class BinaryPolynomial:
         return np.array(_int2binlist(self._integer, width=width), dtype=int)
 
     def exponents(self):
-        """
+        r"""
         Returns the exponents of the binary polynomial.
 
         .. rubric:: Output
@@ -159,7 +159,7 @@ class BinaryPolynomial:
         return self.__divmod__(other)[1]
 
     def evaluate(self, point):
-        """
+        r"""
         Evaluates the polynomial at a given point. Uses Horner's method.
 
         .. rubric:: Input
@@ -193,21 +193,21 @@ class BinaryPolynomial:
 
     @classmethod
     def xgcd(cls, poly1, poly2):
-        """
+        r"""
         Performs the extended Euclidean algorithm on two given binary polynomials.
         """
         return xgcd(poly1, poly2, cls)
 
     @classmethod
     def gcd(cls, *poly_list):
-        """
+        r"""
         Computes the greatest common divisor (gcd) of the arguments.
         """
         return functools.reduce(functools.partial(gcd, ring=cls), poly_list)
 
     @classmethod
     def lcm(cls, *poly_list):
-        """
+        r"""
         Computes the least common multiple (lcm) of the arguments.
         """
         return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)

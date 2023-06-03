@@ -4,12 +4,12 @@ from .Pulse import Pulse
 
 
 class SincPulse(Pulse):
-    """
+    r"""
     Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
 
-        h(t) = \\operatorname{sinc}(t) = \\frac{\\sin(\\pi t)}{\\pi t}.
+        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
 
     The sinc pulse is depicted below.
 
@@ -19,7 +19,7 @@ class SincPulse(Pulse):
     """
 
     def __init__(self, length_in_symbols):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`length_in_symbols` : :obj:`int`
@@ -38,7 +38,7 @@ class SincPulse(Pulse):
 
     @property
     def length_in_symbols(self):
-        """
+        r"""
         The length (span) of the truncated impulse response. This property is read-only.
         """
         return self._length_in_symbols

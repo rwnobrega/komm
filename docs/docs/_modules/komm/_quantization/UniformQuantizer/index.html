@@ -39,19 +39,19 @@
 
 
 <div class="viewcode-block" id="UniformQuantizer"><a class="viewcode-back" href="../../../../komm.UniformQuantizer/#komm.UniformQuantizer">[docs]</a><span class="k">class</span> <span class="nc">UniformQuantizer</span><span class="p">(</span><span class="n">ScalarQuantizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\\Delta`, and the thresholds are the mid-point between adjacent levels.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\Delta`, and the thresholds are the mid-point between adjacent levels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="UniformQuantizer.__init__"><a class="viewcode-back" href="../../../../komm.UniformQuantizer/#komm.UniformQuantizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_levels</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s2">&quot;mid-riser&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`num_levels` : :obj:`int`</span>
 <span class="sd">            The number of quantization levels, :math:`L`.</span>
 
 <span class="sd">        :code:`input_peak` : :obj:`float`, optional</span>
-<span class="sd">            The peak of the input signal, :math:`x_\\mathrm{p}`. The default value is :code:`1.0`.</span>
+<span class="sd">            The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.</span>
 
 <span class="sd">        :code:`choice` : :obj:`str`, optional</span>
 <span class="sd">            The choice for the uniform quantizer. Must be one of :code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`. The default value is :code:`&#39;mid-riser&#39;`.</span>
@@ -111,21 +111,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">quantization_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The quantization step, :math:`\\Delta`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The quantization step, :math:`\Delta`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantization_step</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_peak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The peak of the input signal, :math:`x_\\mathrm{p}`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The peak of the input signal, :math:`x_\mathrm{p}`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_peak</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">choice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The choice for the uniform quantizer (:code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choice</span>

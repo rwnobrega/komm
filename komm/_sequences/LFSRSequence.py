@@ -5,8 +5,8 @@ from .BinarySequence import BinarySequence
 
 
 class LFSRSequence(BinarySequence):
-    """
-    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \\in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.
+    r"""
+    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.
 
     .. image:: figures/lfsr_5_2.png
        :alt: Linear-feedback shift register example.
@@ -20,11 +20,11 @@ class LFSRSequence(BinarySequence):
 
     .. math::
 
-        R[\\ell] =
-        \\begin{cases}
-            L, & \\ell = 0, \\pm L, \\pm 2L, \\ldots, \\\\
-            -1, & \\text{otherwise},
-        \\end{cases}
+        R[\ell] =
+        \begin{cases}
+            L, & \ell = 0, \pm L, \pm 2L, \ldots, \\
+            -1, & \text{otherwise},
+        \end{cases}
 
     where :math:`L` is the length of the sequence. The constructor :func:`maximum_length_sequence` can be use to construct an MLS.
 
@@ -40,7 +40,7 @@ class LFSRSequence(BinarySequence):
     """
 
     def __init__(self, feedback_polynomial, start_state_polynomial=0b1):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`feedback_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
@@ -55,7 +55,7 @@ class LFSRSequence(BinarySequence):
 
     @classmethod
     def maximum_length_sequence(cls, degree):
-        """
+        r"""
         Constructs a maximum-length sequences (MLS) of a given degree. It expects the following parameter:
 
         :code:`degree` : :obj:`int`
@@ -104,14 +104,14 @@ class LFSRSequence(BinarySequence):
 
     @property
     def feedback_polynomial(self):
-        """
+        r"""
         The feedback polynomial :math:`p(X)` of the LFSR.
         """
         return self._feedback_polynomial
 
     @property
     def start_state_polynomial(self):
-        """
+        r"""
         The start state polynomial of the LFSR.
         """
         return self._start_state_polynomial

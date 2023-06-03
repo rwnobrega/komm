@@ -2,12 +2,12 @@ import numpy as np
 
 
 class Pulse:
-    """
+    r"""
     General pulse.
     """
 
     def __init__(self, impulse_response=None, frequency_response=None, interval=None):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`impulse_response` : :obj:`function`
@@ -28,21 +28,21 @@ class Pulse:
 
     @property
     def impulse_response(self):
-        """
+        r"""
         The impulse response of the pulse. This property is read-only.
         """
         return self._impulse_response
 
     @property
     def frequency_response(self):
-        """
+        r"""
         The frequency response of the pulse. This property is read-only.
         """
         return self._frequency_response
 
     @property
     def interval(self):
-        """
+        r"""
         The interval the pulse. This property is read-only.
         """
         return self._interval

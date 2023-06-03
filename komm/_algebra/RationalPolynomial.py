@@ -8,7 +8,7 @@ from .util import gcd, horner, power
 
 
 class RationalPolynomial:
-    """
+    r"""
     Rational polynomial. A *rational polynomial* is a polynomial whose coefficients are all rational numbers.
 
     .. rubric:: Examples
@@ -29,7 +29,7 @@ class RationalPolynomial:
 
     @classmethod
     def monomial(cls, degree, coefficient=1):
-        """
+        r"""
         Constructs a monomial. This is an polynomial of the form :math:`cX^d`. It expects the following parameters:
 
         :code:`degree` : :obj:`int`
@@ -46,7 +46,7 @@ class RationalPolynomial:
         return cls([0] * degree + [coefficient])
 
     def coefficients(self, width=None):
-        """
+        r"""
         Returns the coefficients of the polynomial.
 
         .. rubric:: Input
@@ -78,7 +78,7 @@ class RationalPolynomial:
 
     @property
     def degree(self):
-        """
+        r"""
         The degree of the polynomial. This property is read-only.
 
         .. rubric:: Examples
@@ -142,7 +142,7 @@ class RationalPolynomial:
         return divmod(self, other)[1]
 
     def evaluate(self, point):
-        """
+        r"""
         Evaluates the polynomial at a given point. Uses Horner's method.
 
         .. rubric:: Input
@@ -173,7 +173,7 @@ class RationalPolynomial:
 
     @classmethod
     def gcd(cls, *poly_list):
-        """
+        r"""
         Computes the greatest common divisor (gcd) of the arguments.
         """
         ans = functools.reduce(functools.partial(gcd, ring=cls), poly_list)
@@ -185,7 +185,7 @@ class RationalPolynomial:
 
     @classmethod
     def lcm(cls, *poly_list):
-        """
+        r"""
         Computes the least common multiple (lcm) of the arguments.
         """
         return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)

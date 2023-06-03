@@ -3,7 +3,7 @@ from .util import power
 
 
 class BinaryPolynomialFraction:
-    """
+    r"""
     Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two binary polynomials (:class:`BinaryPolynomial`).
     """
 
@@ -31,14 +31,14 @@ class BinaryPolynomialFraction:
 
     @property
     def numerator(self):
-        """
+        r"""
         The numerator of the polynomial fraction.
         """
         return self._numerator
 
     @property
     def denominator(self):
-        """
+        r"""
         The denominator of the polynomial fraction.
         """
         return self._denominator
@@ -70,7 +70,7 @@ class BinaryPolynomialFraction:
         return self._numerator * other._denominator == self._denominator * other._numerator
 
     def inverse(self):
-        """
+        r"""
         Returns the multiplicative inverse the polynomial fraction.
         """
         return self.__class__(self._denominator, self._numerator)

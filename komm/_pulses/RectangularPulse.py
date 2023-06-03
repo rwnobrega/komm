@@ -2,18 +2,18 @@ from .Pulse import Pulse
 
 
 class RectangularPulse(Pulse):
-    """
+    r"""
     Rectangular pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
 
         h(t) =
-        \\begin{cases}
-            1, & 0 \\leq t < w, \\\\
-            0, & \\text{otherwise}.
-        \\end{cases},
+        \begin{cases}
+            1, & 0 \leq t < w, \\
+            0, & \text{otherwise}.
+        \end{cases},
 
-    where :math:`w` is the *width* of the pulse, which must satisfy :math:`0 \\leq w \\leq 1`. The rectangular pulse is depicted below for :math:`w = 1` (called the :term:`NRZ` pulse), and for :math:`w = 0.5` (called the halfway :term:`RZ` pulse).
+    where :math:`w` is the *width* of the pulse, which must satisfy :math:`0 \leq w \leq 1`. The rectangular pulse is depicted below for :math:`w = 1` (called the :term:`NRZ` pulse), and for :math:`w = 0.5` (called the halfway :term:`RZ` pulse).
 
     .. rst-class:: centered
 
@@ -30,11 +30,11 @@ class RectangularPulse(Pulse):
     """
 
     def __init__(self, width=1.0):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`width` : :obj:`float`
-            The width :math:`w` of the pulse. Must satisfy :math:`0 \\leq w \\leq 1`. The default value is :code:`1.0`.
+            The width :math:`w` of the pulse. Must satisfy :math:`0 \leq w \leq 1`. The default value is :code:`1.0`.
 
         .. rubric:: Examples
 
@@ -55,7 +55,7 @@ class RectangularPulse(Pulse):
 
     @property
     def width(self):
-        """
+        r"""
         The width :math:`w` of the pulse. This property is read-only.
         """
         return self._width

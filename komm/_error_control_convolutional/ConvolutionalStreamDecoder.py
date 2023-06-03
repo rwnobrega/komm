@@ -4,8 +4,8 @@ from .._util import int2binlist, unpack
 
 
 class ConvolutionalStreamDecoder:
-    """
-    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \\tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \\tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as :math:`\\tau = 5\\mu`, where :math:`\\mu` is the memory order of the convolutional code.
+    r"""
+    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as :math:`\tau = 5\mu`, where :math:`\mu` is the memory order of the convolutional code.
 
     .. rubric:: Examples
 
@@ -18,14 +18,14 @@ class ConvolutionalStreamDecoder:
     """
 
     def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type="hard"):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`convolutional_code` : :class:`ConvolutionalCode`
             The convolutional code.
 
         :code:`traceback_length` : :obj:`int`
-            The traceback length (path memory) :math:`\\tau` of the decoder.
+            The traceback length (path memory) :math:`\tau` of the decoder.
 
         :code:`initial_state` : :obj:`int`, optional
             Initial state of the encoder. The default value is :code:`0`.

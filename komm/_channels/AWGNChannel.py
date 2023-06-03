@@ -2,7 +2,7 @@ import numpy as np
 
 
 class AWGNChannel:
-    """
+    r"""
     Additive white Gaussian noise (AWGN) channel. It is defined by
 
     .. math::
@@ -13,9 +13,9 @@ class AWGNChannel:
 
     .. math::
 
-        \\mathrm{SNR} = \\frac{P}{N},
+        \mathrm{SNR} = \frac{P}{N},
 
-    where :math:`P = \\mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \\mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.
+    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.
 
     References: :cite:`Cover.Thomas.06` (Ch. 9)
 
@@ -23,10 +23,10 @@ class AWGNChannel:
     """
 
     def __init__(self, snr=np.inf, signal_power=1.0):
-        """Constructor for the class. It expects the following parameters:
+        r"""Constructor for the class. It expects the following parameters:
 
         :code:`snr` : :obj:`float`, optional
-            The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.
+            The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.
 
         :code:`signal_power` : :obj:`float` or :obj:`str`, optional
             The input signal power :math:`P`.  If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
@@ -44,8 +44,8 @@ class AWGNChannel:
 
     @property
     def snr(self):
-        """
-        The signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.
+        r"""
+        The signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.
         """
         return self._snr
 
@@ -55,7 +55,7 @@ class AWGNChannel:
 
     @property
     def signal_power(self):
-        """
+        r"""
         The input signal power :math:`P`. This is a read-and-write property.
         """
         return self._signal_power
@@ -65,8 +65,8 @@ class AWGNChannel:
         self._signal_power = float(value)
 
     def capacity(self):
-        """
-        Returns the channel capacity :math:`C`. It is given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.
+        r"""
+        Returns the channel capacity :math:`C`. It is given by :math:`C = \frac{1}{2}\log_2(1 + \mathrm{SNR})`, in bits per dimension.
 
         .. rubric:: Examples
 

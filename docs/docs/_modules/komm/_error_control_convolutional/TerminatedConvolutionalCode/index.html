@@ -44,12 +44,12 @@
 
 
 <div class="viewcode-block" id="TerminatedConvolutionalCode"><a class="viewcode-back" href="../../../../komm.TerminatedConvolutionalCode/#komm.TerminatedConvolutionalCode">[docs]</a><span class="k">class</span> <span class="nc">TerminatedConvolutionalCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a :math:`(n_0, k_0)` convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k_0` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = h k_0`; its length depends on the termination mode employed. There are three possible termination modes:</span>
 
 <span class="sd">    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = h n_0`.</span>
 
-<span class="sd">    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu) n_0`.</span>
+<span class="sd">    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \mu` tail bits is appended to the information bits, where :math:`\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \mu) n_0`.</span>
 
 <span class="sd">    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.</span>
 
@@ -61,7 +61,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TerminatedConvolutionalCode.__init__"><a class="viewcode-back" href="../../../../komm.TerminatedConvolutionalCode/#komm.TerminatedConvolutionalCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="p">,</span> <span class="n">num_blocks</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;zero-termination&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`convolutional_code` : :obj:`ConvolutionalCode`</span>
@@ -146,14 +146,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_blocks</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The termination mode of the terminated convolutional code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>

@@ -4,19 +4,19 @@ from .ScalarQuantizer import ScalarQuantizer
 
 
 class UniformQuantizer(ScalarQuantizer):
-    """
-    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\\Delta`, and the thresholds are the mid-point between adjacent levels.
+    r"""
+    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\Delta`, and the thresholds are the mid-point between adjacent levels.
     """
 
     def __init__(self, num_levels, input_peak=1.0, choice="mid-riser"):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`num_levels` : :obj:`int`
             The number of quantization levels, :math:`L`.
 
         :code:`input_peak` : :obj:`float`, optional
-            The peak of the input signal, :math:`x_\\mathrm{p}`. The default value is :code:`1.0`.
+            The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
 
         :code:`choice` : :obj:`str`, optional
             The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
@@ -76,21 +76,21 @@ class UniformQuantizer(ScalarQuantizer):
 
     @property
     def quantization_step(self):
-        """
-        The quantization step, :math:`\\Delta`.
+        r"""
+        The quantization step, :math:`\Delta`.
         """
         return self._quantization_step
 
     @property
     def input_peak(self):
-        """
-        The peak of the input signal, :math:`x_\\mathrm{p}`.
+        r"""
+        The peak of the input signal, :math:`x_\mathrm{p}`.
         """
         return self._input_peak
 
     @property
     def choice(self):
-        """
+        r"""
         The choice for the uniform quantizer (:code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`).
         """
         return self._choice

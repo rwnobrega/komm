@@ -37,8 +37,8 @@
 
 
 <div class="viewcode-block" id="BarkerSequence"><a class="viewcode-back" href="../../../../komm.BarkerSequence/#komm.BarkerSequence">[docs]</a><span class="k">class</span> <span class="nc">BarkerSequence</span><span class="p">(</span><span class="n">BinarySequence</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation :math:`R[\\ell]` satisfying :math:`|R[\\ell]| \\leq 1`, for :math:`\\ell \\neq 0`. The only known Barker sequences (up to negation and reversion) are shown in the table below.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation :math:`R[\ell]` satisfying :math:`|R[\ell]| \leq 1`, for :math:`\ell \neq 0`. The only known Barker sequences (up to negation and reversion) are shown in the table below.</span>
 
 <span class="sd">    ================  =============================</span>
 <span class="sd">    Length :math:`L`  Barker sequence :math:`b[n]`</span>
@@ -56,11 +56,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BarkerSequence.__init__"><a class="viewcode-back" href="../../../../komm.BarkerSequence/#komm.BarkerSequence.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`length` : :obj:`int`</span>
-<span class="sd">            Length of the Barker sequence. Must be in the set :math:`\\{ 2, 3, 4, 5, 7, 11, 13 \\}`.</span>
+<span class="sd">            Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 

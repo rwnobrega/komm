@@ -39,8 +39,8 @@
 
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel">[docs]</a><span class="k">class</span> <span class="nc">DiscreteMemorylessChannel</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\\mathcal{X}`, an *output alphabet* :math:`\\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \\mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\\mathcal{X} = \\{ 0, 1, \\ldots, |\\mathcal{X}| - 1 \\}` and :math:`\\mathcal{Y} = \\{ 0, 1, \\ldots, |\\mathcal{Y}| - 1 \\}`, respectively. The transition probability matrix :math:`p_{Y \\mid X}`, of size :math:`|\\mathcal{X}|`-by-:math:`|\\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\mathcal{X}`, an *output alphabet* :math:`\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}` and :math:`\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\mathcal{X}|`-by-:math:`|\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.</span>
 
 <span class="sd">    References: :cite:`Cover.Thomas.06` (Ch. 7)</span>
 
@@ -48,11 +48,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel.__init__"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transition_matrix</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`transition_matrix` : 2D-array of :obj:`float`</span>
-<span class="sd">            The channel transition probability matrix :math:`p_{Y \\mid X}`. The element in row :math:`x \\in \\mathcal{X}` and column :math:`y \\in \\mathcal{Y}` must be equal to :math:`p_{Y \\mid X}(y \\mid x)`.</span>
+<span class="sd">            The channel transition probability matrix :math:`p_{Y \mid X}`. The element in row :math:`x \in \mathcal{X}` and column :math:`y \in \mathcal{Y}` must be equal to :math:`p_{Y \mid X}(y \mid x)`.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 
@@ -66,8 +66,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">transition_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The channel transition probability matrix :math:`p_{Y \\mid X}`. This is a read-and-write property.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The channel transition probability matrix :math:`p_{Y \mid X}`. This is a read-and-write property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span>
 
@@ -78,27 +78,27 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_cardinality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The channel input cardinality :math:`|\\mathcal{X}|`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The channel input cardinality :math:`|\mathcal{X}|`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_cardinality</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_cardinality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The channel output cardinality :math:`|\\mathcal{Y}|`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The channel output cardinality :math:`|\mathcal{Y}|`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_cardinality</span>
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel.mutual_information"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel.mutual_information">[docs]</a>    <span class="k">def</span> <span class="nf">mutual_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_pmf</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by</span>
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">           \\mathrm{I}(X ; Y) = \\mathrm{H}(X) - \\mathrm{H}(X \\mid Y),</span>
+<span class="sd">           \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),</span>
 
-<span class="sd">        where :math:`\\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\\mathrm{H}(X \\mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.</span>
+<span class="sd">        where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.</span>
 
 <span class="sd">        References: :cite:`Cover.Thomas.06` (Ch. 2)</span>
 
@@ -113,7 +113,7 @@
 <span class="sd">        .. rubric:: Output</span>
 
 <span class="sd">        :code:`mutual_information` : :obj:`float`</span>
-<span class="sd">            The mutual information :math:`\\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.</span>
+<span class="sd">            The mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 
@@ -126,8 +126,8 @@
         <span class="k">return</span> <span class="n">_mutual_information</span><span class="p">(</span><span class="n">input_pmf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel.capacity"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel.capacity">[docs]</a>    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \\max_{p_X} \\mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \max_{p_X} \mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).</span>
 
 <span class="sd">        .. rubric:: Input</span>
 
@@ -159,7 +159,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_arimoto_blahut</span><span class="p">(</span><span class="n">transition_matrix</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">,</span> <span class="n">max_iters</span><span class="p">,</span> <span class="n">error_tolerance</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Arimoto--Blahut algorithm for channel capacity. See :cite:`Cover.Thomas.06` (Sec. 10.8).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">transition_matrix</span>

@@ -5,19 +5,19 @@ from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
 
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
-    """
-    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\\mathcal{X} = \\mathcal{Y} = \\{ 0, 1 \\}`, and transition probability matrix given by
+    r"""
+    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}`, and transition probability matrix given by
 
     .. math::
 
-        p_{Y \\mid X} = \\begin{bmatrix} 1-p & p \\\\ p & 1-p \\end{bmatrix},
+        p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix},
 
     where the parameter :math:`p` is called the *crossover probability* of the channel. Equivalently, a BSC with crossover probability :math:`p` may be defined by
 
     .. math::
         Y_n = X_n + Z_n,
 
-    where :math:`Z_n` are :term:`i.i.d.` Bernouli random variables with :math:`\\Pr[Z_n = 1] = p`.
+    where :math:`Z_n` are :term:`i.i.d.` Bernouli random variables with :math:`\Pr[Z_n = 1] = p`.
 
     References: :cite:`Cover.Thomas.06` (Sec. 7.1.4)
 
@@ -25,11 +25,11 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     """
 
     def __init__(self, crossover_probability=0.0):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`crossover_probability` : :obj:`float`, optional
-            The channel crossover probability :math:`p`. Must satisfy :math:`0 \\leq p \\leq 1`. The default value is :code:`0.0`.
+            The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`.
 
         .. rubric:: Examples
 
@@ -42,7 +42,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     @property
     def crossover_probability(self):
-        """
+        r"""
         The crossover probability :math:`p` of the channel. This is a read-and-write property.
         """
         return self._crossover_probability
@@ -53,8 +53,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         self.transition_matrix = np.array([[1 - p, p], [p, 1 - p]])
 
     def capacity(self):
-        """
-        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \\mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
+        r"""
+        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
         .. rubric:: Examples
 

@@ -41,18 +41,18 @@
 
 
 <div class="viewcode-block" id="VariableToFixedCode"><a class="viewcode-back" href="../../../../komm.VariableToFixedCode/#komm.VariableToFixedCode">[docs]</a><span class="k">class</span> <span class="nc">VariableToFixedCode</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Binary (prefix-free) variable-to-fixed length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of code block size :math:`n` is defined by a (possibly partial) decoding mapping :math:`\\mathrm{Dec} : \\{ 0, 1 \\}^n \\to \\mathcal{X}^+`, where :math:`\\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. The elements in the image of :math:`\\mathrm{Dec}` are called *sourcewords*.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary (prefix-free) variable-to-fixed length code. Let :math:`\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of code block size :math:`n` is defined by a (possibly partial) decoding mapping :math:`\mathrm{Dec} : \{ 0, 1 \}^n \to \mathcal{X}^+`, where :math:`\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. The elements in the image of :math:`\mathrm{Dec}` are called *sourcewords*.</span>
 
 <span class="sd">    Also, we only consider *prefix-free* codes, in which no sourceword is a prefix of any other sourceword.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="VariableToFixedCode.__init__"><a class="viewcode-back" href="../../../../komm.VariableToFixedCode/#komm.VariableToFixedCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcewords</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`sourcewords` : :obj:`list` of :obj:`tuple` of :obj:`int`</span>
-<span class="sd">            The sourcewords of the code. Must be a list of length at most :math:`2^n` containing tuples of integers in :math:`\\mathcal{X}`. The tuple in position :math:`i` of :code:`sourcewords` should be equal to :math:`\\mathrm{Dec}(v)`, where :math:`v` is the :math:`i`-th element in the lexicographic ordering of :math:`\\{ 0, 1 \\}^n`.</span>
+<span class="sd">            The sourcewords of the code. Must be a list of length at most :math:`2^n` containing tuples of integers in :math:`\mathcal{X}`. The tuple in position :math:`i` of :code:`sourcewords` should be equal to :math:`\mathrm{Dec}(v)`, where :math:`v` is the :math:`i`-th element in the lexicographic ordering of :math:`\{ 0, 1 \}^n`.</span>
 
 <span class="sd">        *Note:* The code block size :math:`n` is inferred from :code:`len(sourcewords)`.</span>
 
@@ -88,34 +88,34 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source_cardinality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The cardinality :math:`|\\mathcal{X}|` of the source alphabet.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The cardinality :math:`|\mathcal{X}|` of the source alphabet.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_cardinality</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">code_block_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The code block size :math:`n`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_block_size</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">enc_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The encoding mapping :math:`\\mathrm{Enc}` of the code.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The encoding mapping :math:`\mathrm{Enc}` of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enc_mapping</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dec_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The decoding mapping :math:`\\mathrm{Dec}` of the code.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The decoding mapping :math:`\mathrm{Dec}` of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec_mapping</span>
 
 <div class="viewcode-block" id="VariableToFixedCode.rate"><a class="viewcode-back" href="../../../../komm.VariableToFixedCode/#komm.VariableToFixedCode.rate">[docs]</a>    <span class="k">def</span> <span class="nf">rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.</span>
 
 <span class="sd">        .. rubric:: Input</span>
@@ -139,13 +139,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_block_size</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lengths</span><span class="p">,</span> <span class="n">probabilities</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VariableToFixedCode.encode"><a class="viewcode-back" href="../../../../komm.VariableToFixedCode/#komm.VariableToFixedCode.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_sequence</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encodes a given sequence of symbols to its corresponding sequence of bits.</span>
 
 <span class="sd">        .. rubric:: Input</span>
 
 <span class="sd">        :code:`symbol_sequence` : 1D-array of :obj:`int`</span>
-<span class="sd">            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.</span>
+<span class="sd">            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`.</span>
 
 <span class="sd">        .. rubric:: Output</span>
 
@@ -161,13 +161,13 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_parse_prefix_free</span><span class="p">(</span><span class="n">symbol_sequence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enc_mapping</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="VariableToFixedCode.decode"><a class="viewcode-back" href="../../../../komm.VariableToFixedCode/#komm.VariableToFixedCode.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bit_sequence</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Decodes a given sequence of bits to its corresponding sequence of symbols.</span>
 
 <span class="sd">        .. rubric:: Input</span>
 
 <span class="sd">        :code:`bit_sequence` : 1D-array of :obj:`int`</span>
-<span class="sd">            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\\{ 0, 1 \\}`.  Its length must be a multiple of :math:`n`.</span>
+<span class="sd">            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.  Its length must be a multiple of :math:`n`.</span>
 
 <span class="sd">        .. rubric:: Output</span>
 

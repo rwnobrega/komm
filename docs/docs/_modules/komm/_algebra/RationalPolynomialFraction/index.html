@@ -42,7 +42,7 @@
 
 
 <div class="viewcode-block" id="RationalPolynomialFraction"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction">[docs]</a><span class="k">class</span> <span class="nc">RationalPolynomialFraction</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -84,14 +84,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">numerator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The numerator of the fraction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">denominator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The denominator of the fraction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span>
@@ -126,7 +126,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">_numerator</span>
 
 <div class="viewcode-block" id="RationalPolynomialFraction.inverse"><a class="viewcode-back" href="../../../../komm.RationalPolynomialFraction/#komm.RationalPolynomialFraction.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the multiplicative inverse the fraction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_denominator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_numerator</span><span class="p">)</span></div></div>

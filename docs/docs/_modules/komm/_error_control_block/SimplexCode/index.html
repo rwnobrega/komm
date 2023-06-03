@@ -38,7 +38,7 @@
 
 
 <div class="viewcode-block" id="SimplexCode"><a class="viewcode-back" href="../../../../komm.SimplexCode/#komm.SimplexCode">[docs]</a><span class="k">class</span> <span class="nc">SimplexCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simplex (maximum-length) code. For a given dimension :math:`k`, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the :math:`2^k - 1` nonzero binary :math:`k`-tuples. The simplex code (also known as maximum-length code) has the following parameters:</span>
 
 <span class="sd">    - Length: :math:`n = 2^k - 1`</span>
@@ -79,11 +79,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SimplexCode.__init__"><a class="viewcode-back" href="../../../../komm.SimplexCode/#komm.SimplexCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`k` : :obj:`int`</span>
-<span class="sd">            The dimension :math:`k` of the code. Must satisfy :math:`k \\geq 2`.</span>
+<span class="sd">            The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">_hamming_parity_submatrix</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>

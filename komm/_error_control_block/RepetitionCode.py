@@ -6,8 +6,8 @@ from .BlockCode import BlockCode
 
 
 class RepetitionCode(BlockCode):
-    """
-    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \\cdots 0` and :math:`11 \\cdots 1`. The repetition code has the following parameters:
+    r"""
+    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \cdots 0` and :math:`11 \cdots 1`. The repetition code has the following parameters:
 
     - Length: :math:`n`
     - Dimension: :math:`k = 1`
@@ -40,7 +40,7 @@ class RepetitionCode(BlockCode):
     """
 
     def __init__(self, n):
-        """
+        r"""
         Constructor for the class. It expects the following parameter:
 
         :code:`n` : :obj:`int`
@@ -60,7 +60,7 @@ class RepetitionCode(BlockCode):
 
     @tag(name="Majority-logic", input_type="hard", target="codeword")
     def _decode_majority_logic(self, recvword):
-        """
+        r"""
         Majority-logic decoder. A hard-decision decoder for Repetition codes only.
         """
         majority = np.argmax(np.bincount(recvword))

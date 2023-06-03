@@ -7,8 +7,8 @@ from .util import power
 
 
 class FiniteBifield:
-    """
-    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
+    r"""
+    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
 
     ===========  =====================  ============  ============================
      :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`
@@ -56,7 +56,7 @@ class FiniteBifield:
     """
 
     def __init__(self, degree, modulus=None):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`degree` : :obj:`int`
@@ -93,36 +93,36 @@ class FiniteBifield:
 
     @property
     def characteristic(self):
-        """
+        r"""
         The characteristic :math:`2` of the finite field. This property is read-only.
         """
         return self._characteristic
 
     @property
     def degree(self):
-        """
+        r"""
         The degree :math:`k` of the finite field. This property is read-only.
         """
         return self._degree
 
     @property
     def modulus(self):
-        """
+        r"""
         The modulus (primitive polynomial) :math:`p(X)` of the finite field. This property is read-only.
         """
         return self._modulus
 
     @property
     def order(self):
-        """
+        r"""
         The order (number of elements) of the finite field. It is given by :math:`2^k`. This property is read-only.
         """
         return 2**self._degree
 
     @property
     def primitive_element(self):
-        """
-        A primitive element :math:`\\alpha` of the finite field. It satisfies :math:`p(\\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.
+        r"""
+        A primitive element :math:`\alpha` of the finite field. It satisfies :math:`p(\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.
         """
         return self(2)
 
@@ -132,7 +132,7 @@ class FiniteBifield:
 
     # ~@functools.lru_cache(maxsize=None)
     def inverse(self, x):
-        """
+        r"""
         Returns the multiplicative inverse of a given element.
         """
         d, s, _ = BinaryPolynomial.xgcd(BinaryPolynomial(x), self._modulus)
@@ -143,7 +143,7 @@ class FiniteBifield:
 
     # ~@functools.lru_cache(maxsize=None)
     def logarithm(self, x, base=None):
-        """
+        r"""
         Returns the logarithm of a given element, with respect to a given base.
         """
         if base is None:
@@ -154,7 +154,7 @@ class FiniteBifield:
         return -1
 
     def power(self, x, exponent):
-        """
+        r"""
         Returns a given power of a given element.
         """
         if exponent < 0:
@@ -164,7 +164,7 @@ class FiniteBifield:
 
     @staticmethod
     def conjugates(x):
-        """
+        r"""
         Returns the conjugates of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) for more details.
         """
         conjugate_list = []
@@ -180,7 +180,7 @@ class FiniteBifield:
 
     @staticmethod
     def minimal_polynomial(x):
-        """
+        r"""
         Returns the minimal polynomial of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) fore more details.
         """
         one = x.field(1)
@@ -193,7 +193,7 @@ class FiniteBifield:
         return "{}({})".format(self.__class__.__name__, args)
 
     def __call__(self, value):
-        """
+        r"""
         Constructs elements of the finite field.
         """
         element = self._Element(value)
@@ -201,10 +201,10 @@ class FiniteBifield:
         return element
 
     class _Element(int):
-        """
+        r"""
         Elements of a FiniteBifield.
 
-        Objects of this class represents *elements* of the finite field :math:`\\mathrm{GF}(2^k)`.
+        Objects of this class represents *elements* of the finite field :math:`\mathrm{GF}(2^k)`.
         """
 
         def __eq__(self, other):

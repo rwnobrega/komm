@@ -9,12 +9,12 @@ from .._util import binlist2int, int2binlist, pack, unpack
 
 
 class TerminatedConvolutionalCode(BlockCode):
-    """
+    r"""
     Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a :math:`(n_0, k_0)` convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k_0` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = h k_0`; its length depends on the termination mode employed. There are three possible termination modes:
 
     - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = h n_0`.
 
-    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \\mu` tail bits is appended to the information bits, where :math:`\\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \\mu) n_0`.
+    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \mu` tail bits is appended to the information bits, where :math:`\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \mu) n_0`.
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.
 
@@ -26,7 +26,7 @@ class TerminatedConvolutionalCode(BlockCode):
     """
 
     def __init__(self, convolutional_code, num_blocks, mode="zero-termination"):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`convolutional_code` : :obj:`ConvolutionalCode`
@@ -111,14 +111,14 @@ class TerminatedConvolutionalCode(BlockCode):
 
     @property
     def num_blocks(self):
-        """
+        r"""
         The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.
         """
         return self._num_blocks
 
     @property
     def mode(self):
-        """
+        r"""
         The termination mode of the terminated convolutional code. This property is read-only.
         """
         return self._mode

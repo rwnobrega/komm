@@ -3,7 +3,7 @@ from .util import _extended_parity_submatrix, _hamming_parity_submatrix
 
 
 class HammingCode(BlockCode):
-    """
+    r"""
     Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:
 
     - Length: :math:`n = 2^m - 1`
@@ -64,11 +64,11 @@ class HammingCode(BlockCode):
     """
 
     def __init__(self, m, extended=False):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`m` : :obj:`int`
-            The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.
+            The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
 
         :code:`extended` : :obj:`bool`, optional
             If :code:`True`, constructs the code in extended version. The default value is :code:`False`.

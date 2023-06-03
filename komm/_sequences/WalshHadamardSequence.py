@@ -5,61 +5,61 @@ from .BinarySequence import BinarySequence
 
 
 class WalshHadamardSequence(BinarySequence):
-    """
+    r"""
     Walsh--Hadamard sequence. Consider the following recursive matrix construction:
 
     .. math::
 
         H_{1} =
-        \\begin{bmatrix}
+        \begin{bmatrix}
             +1
-        \\end{bmatrix}, \\qquad
+        \end{bmatrix}, \qquad
         H_{2^n} =
-        \\begin{bmatrix}
-            H_{2^{n-1}} & H_{2^{n-1}} \\\\
+        \begin{bmatrix}
+            H_{2^{n-1}} & H_{2^{n-1}} \\
             H_{2^{n-1}} & -H_{2^{n-1}}
-        \\end{bmatrix},
+        \end{bmatrix},
 
-    for :math:`n = 1, 2, \\ldots`. For example, for :math:`n = 3`,
+    for :math:`n = 1, 2, \ldots`. For example, for :math:`n = 3`,
 
     .. math::
 
         H_{8} =
-        \\begin{bmatrix}
-            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\\\
-            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
-            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\\\
-            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\\\
-            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\\\
-            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\\\
-            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\\\
-            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
-        \\end{bmatrix}
+        \begin{bmatrix}
+            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
+            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
+            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
+            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
+            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
+            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
+            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
+            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
+        \end{bmatrix}
 
     The above matrix is said to be in *natural ordering*. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained:
 
     .. math::
-        H_{8}^{\\mathrm{s}} =
-        \\begin{bmatrix}
-            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\\\
-            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\\\
-            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\\\
-            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\\\
-            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\\\
-            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
-            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\\\
-            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
-        \\end{bmatrix}
+        H_{8}^{\mathrm{s}} =
+        \begin{bmatrix}
+            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
+            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
+            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
+            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
+            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
+            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
+            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
+            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
+        \end{bmatrix}
 
     The above matrix is said to be in *sequency ordering*. It has the property that row :math:`i` has exactly :math:`i` signal changes.
 
-    The Walsh--Hadamard sequence of *length* :math:`L` and *index* :math:`i \\in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_L`, if assuming natural ordering, or :math:`H_L^{\\mathrm{s}}`, if assuming sequency ordering.
+    The Walsh--Hadamard sequence of *length* :math:`L` and *index* :math:`i \in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_L`, if assuming natural ordering, or :math:`H_L^{\mathrm{s}}`, if assuming sequency ordering.
 
     [1] https://en.wikipedia.org/wiki/Hadamard_matrix; [2] https://en.wikipedia.org/wiki/Walsh_matrix
     """
 
     def __init__(self, length, ordering="natural", index=0):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`length` : :obj:`int`
@@ -108,14 +108,14 @@ class WalshHadamardSequence(BinarySequence):
 
     @property
     def index(self):
-        """
+        r"""
         The index of the Walsh--Hadamard sequence, with respect to the ordering assumed.
         """
         return self._index
 
     @property
     def ordering(self):
-        """
+        r"""
         The ordering assumed.
         """
         return self._ordering

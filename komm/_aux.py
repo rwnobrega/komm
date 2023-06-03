@@ -1,5 +1,5 @@
 def tag(**tags):
-    """
+    r"""
     See PEP 232
     """
 

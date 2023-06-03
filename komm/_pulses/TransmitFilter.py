@@ -2,12 +2,12 @@ import numpy as np
 
 
 class TransmitFilter:
-    """
+    r"""
     Transmit filter.
     """
 
     def __init__(self, pulse, samples_per_symbol):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`pulse` : :class:`komm.Pulse`
@@ -21,20 +21,20 @@ class TransmitFilter:
 
     @property
     def pulse(self):
-        """
+        r"""
         The pulse filter. This property is read-only.
         """
         return self.Pulse
 
     @property
     def samples_per_symbol(self):
-        """
+        r"""
         The number of samples per symbol. This property is read-only.
         """
         return self._samples_per_symbol
 
     def __call__(self, inp):
-        """
+        r"""
         Formats a sequence of symbols.
 
         .. rubric:: Input

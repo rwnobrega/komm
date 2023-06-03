@@ -7,7 +7,7 @@ from .FixedToVariableCode import FixedToVariableCode
 
 
 class HuffmanCode(FixedToVariableCode):
-    """
+    r"""
     Huffman code. It is an optimal (minimal expected rate) fixed-to-variable length code (:class:`FixedToVariableCode`) for a given probability mass function.
 
     .. rubric:: Examples
@@ -30,7 +30,7 @@ class HuffmanCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf, source_block_size=1, policy="high"):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`pmf` : 1D-array of :obj:`float`
@@ -54,7 +54,7 @@ class HuffmanCode(FixedToVariableCode):
 
     @property
     def pmf(self):
-        """
+        r"""
         The probability mass function used to construct the code. This property is read-only.
         """
         return self._pmf

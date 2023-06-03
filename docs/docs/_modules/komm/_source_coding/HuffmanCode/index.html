@@ -42,7 +42,7 @@
 
 
 <div class="viewcode-block" id="HuffmanCode"><a class="viewcode-back" href="../../../../komm.HuffmanCode/#komm.HuffmanCode">[docs]</a><span class="k">class</span> <span class="nc">HuffmanCode</span><span class="p">(</span><span class="n">FixedToVariableCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Huffman code. It is an optimal (minimal expected rate) fixed-to-variable length code (:class:`FixedToVariableCode`) for a given probability mass function.</span>
 
 <span class="sd">    .. rubric:: Examples</span>
@@ -65,7 +65,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="HuffmanCode.__init__"><a class="viewcode-back" href="../../../../komm.HuffmanCode/#komm.HuffmanCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="n">source_block_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="s2">&quot;high&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`pmf` : 1D-array of :obj:`float`</span>
@@ -89,7 +89,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The probability mass function used to construct the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pmf</span>

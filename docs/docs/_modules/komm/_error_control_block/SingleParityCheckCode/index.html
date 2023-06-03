@@ -41,7 +41,7 @@
 
 
 <div class="viewcode-block" id="SingleParityCheckCode"><a class="viewcode-back" href="../../../../komm.SingleParityCheckCode/#komm.SingleParityCheckCode">[docs]</a><span class="k">class</span> <span class="nc">SingleParityCheckCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Single parity check code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending :math:`n - 1` information bits with a single parity-check bit. The repetition code has the following parameters:</span>
 
 <span class="sd">    - Length: :math:`n`.</span>
@@ -73,7 +73,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SingleParityCheckCode.__init__"><a class="viewcode-back" href="../../../../komm.SingleParityCheckCode/#komm.SingleParityCheckCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`n` : :obj:`int`</span>
@@ -91,7 +91,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Wagner&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_wagner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wagner decoder. A soft-decision decoder for SingleParityCheck codes only. See Costello, Forney: Channel Coding: The Road to Channel Capacity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">codeword_hat</span> <span class="o">=</span> <span class="n">recvword</span> <span class="o">&lt;</span> <span class="mi">0</span>

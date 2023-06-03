@@ -6,7 +6,7 @@ from .VariableToFixedCode import VariableToFixedCode
 
 
 class TunstallCode(VariableToFixedCode):
-    """
+    r"""
     Tunstall code. It is an optimal (minimal expected rate) variable-to-fixed length code (:class:`VariableToFixedCode`) for a given probability mass function.
 
     .. rubric:: Examples
@@ -23,14 +23,14 @@ class TunstallCode(VariableToFixedCode):
     """
 
     def __init__(self, pmf, code_block_size):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`pmf` : 1D-array of :obj:`float`
             The probability mass function used to construct the code.
 
         :code:`code_block_size` : :obj:`int`, optional
-            The code block size :math:`n`. Must satisfy :math:`2^n \\geq |\\mathcal{X}|`, where :math:`|\\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.
+            The code block size :math:`n`. Must satisfy :math:`2^n \geq |\mathcal{X}|`, where :math:`|\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.
         """
         self._pmf = np.array(pmf)
 
@@ -41,7 +41,7 @@ class TunstallCode(VariableToFixedCode):
 
     @property
     def pmf(self):
-        """
+        r"""
         The probability mass function used to construct the code. This property is read-only.
         """
         return self._pmf

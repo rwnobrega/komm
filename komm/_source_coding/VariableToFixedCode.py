@@ -6,18 +6,18 @@ from .util import _parse_prefix_free
 
 
 class VariableToFixedCode:
-    """
-    Binary (prefix-free) variable-to-fixed length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of code block size :math:`n` is defined by a (possibly partial) decoding mapping :math:`\\mathrm{Dec} : \\{ 0, 1 \\}^n \\to \\mathcal{X}^+`, where :math:`\\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. The elements in the image of :math:`\\mathrm{Dec}` are called *sourcewords*.
+    r"""
+    Binary (prefix-free) variable-to-fixed length code. Let :math:`\mathcal{X}` be the alphabet of some discrete source. A *binary variable-to-fixed length code* of code block size :math:`n` is defined by a (possibly partial) decoding mapping :math:`\mathrm{Dec} : \{ 0, 1 \}^n \to \mathcal{X}^+`, where :math:`\mathcal{X}^+` denotes the set of all finite-length, non-empty strings from the source alphabet. Here, for simplicity, the source alphabet is always taken as :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. The elements in the image of :math:`\mathrm{Dec}` are called *sourcewords*.
 
     Also, we only consider *prefix-free* codes, in which no sourceword is a prefix of any other sourceword.
     """
 
     def __init__(self, sourcewords):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`sourcewords` : :obj:`list` of :obj:`tuple` of :obj:`int`
-            The sourcewords of the code. Must be a list of length at most :math:`2^n` containing tuples of integers in :math:`\\mathcal{X}`. The tuple in position :math:`i` of :code:`sourcewords` should be equal to :math:`\\mathrm{Dec}(v)`, where :math:`v` is the :math:`i`-th element in the lexicographic ordering of :math:`\\{ 0, 1 \\}^n`.
+            The sourcewords of the code. Must be a list of length at most :math:`2^n` containing tuples of integers in :math:`\mathcal{X}`. The tuple in position :math:`i` of :code:`sourcewords` should be equal to :math:`\mathrm{Dec}(v)`, where :math:`v` is the :math:`i`-th element in the lexicographic ordering of :math:`\{ 0, 1 \}^n`.
 
         *Note:* The code block size :math:`n` is inferred from :code:`len(sourcewords)`.
 
@@ -53,34 +53,34 @@ class VariableToFixedCode:
 
     @property
     def source_cardinality(self):
-        """
-        The cardinality :math:`|\\mathcal{X}|` of the source alphabet.
+        r"""
+        The cardinality :math:`|\mathcal{X}|` of the source alphabet.
         """
         return self._source_cardinality
 
     @property
     def code_block_size(self):
-        """
+        r"""
         The code block size :math:`n`.
         """
         return self._code_block_size
 
     @property
     def enc_mapping(self):
-        """
-        The encoding mapping :math:`\\mathrm{Enc}` of the code.
+        r"""
+        The encoding mapping :math:`\mathrm{Enc}` of the code.
         """
         return self._enc_mapping
 
     @property
     def dec_mapping(self):
-        """
-        The decoding mapping :math:`\\mathrm{Dec}` of the code.
+        r"""
+        The decoding mapping :math:`\mathrm{Dec}` of the code.
         """
         return self._dec_mapping
 
     def rate(self, pmf):
-        """
+        r"""
         Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.
 
         .. rubric:: Input
@@ -104,13 +104,13 @@ class VariableToFixedCode:
         return self._code_block_size / np.dot(lengths, probabilities)
 
     def encode(self, symbol_sequence):
-        """
+        r"""
         Encodes a given sequence of symbols to its corresponding sequence of bits.
 
         .. rubric:: Input
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
-            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`.
+            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`.
 
         .. rubric:: Output
 
@@ -126,13 +126,13 @@ class VariableToFixedCode:
         return np.array(_parse_prefix_free(symbol_sequence, self._enc_mapping))
 
     def decode(self, bit_sequence):
-        """
+        r"""
         Decodes a given sequence of bits to its corresponding sequence of symbols.
 
         .. rubric:: Input
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
-            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\\{ 0, 1 \\}`.  Its length must be a multiple of :math:`n`.
+            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.  Its length must be a multiple of :math:`n`.
 
         .. rubric:: Output
 

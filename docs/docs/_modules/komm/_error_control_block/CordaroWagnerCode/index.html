@@ -39,7 +39,7 @@
 
 
 <div class="viewcode-block" id="CordaroWagnerCode"><a class="viewcode-back" href="../../../../komm.CordaroWagnerCode/#komm.CordaroWagnerCode">[docs]</a><span class="k">class</span> <span class="nc">CordaroWagnerCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cordaro--Wagner code. It is the :math:`(n, 2)` linear block code (:obj:`BlockCode`) which is optimum for the :term:`BSC` with sufficiently small crossover probability.</span>
 
 <span class="sd">    References: :cite:`Cordaro.Wagner.67`</span>
@@ -63,11 +63,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CordaroWagnerCode.__init__"><a class="viewcode-back" href="../../../../komm.CordaroWagnerCode/#komm.CordaroWagnerCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameter:</span>
 
 <span class="sd">        :code:`n` : :obj:`int`</span>
-<span class="sd">            The length :math:`n` of the code. Must satisfy :math:`n \\geq 2`.</span>
+<span class="sd">            The length :math:`n` of the code. Must satisfy :math:`n \geq 2`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">r</span>

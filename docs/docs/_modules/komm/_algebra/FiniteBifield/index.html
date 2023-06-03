@@ -42,8 +42,8 @@
 
 
 <div class="viewcode-block" id="FiniteBifield"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield">[docs]</a><span class="k">class</span> <span class="nc">FiniteBifield</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):</span>
 
 <span class="sd">    ===========  =====================  ============  ============================</span>
 <span class="sd">     :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`</span>
@@ -91,7 +91,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FiniteBifield.__init__"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`degree` : :obj:`int`</span>
@@ -128,36 +128,36 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">characteristic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The characteristic :math:`2` of the finite field. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The degree :math:`k` of the finite field. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_degree</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">modulus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The modulus (primitive polynomial) :math:`p(X)` of the finite field. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The order (number of elements) of the finite field. It is given by :math:`2^k`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">primitive_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A primitive element :math:`\\alpha` of the finite field. It satisfies :math:`p(\\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A primitive element :math:`\alpha` of the finite field. It satisfies :math:`p(\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
@@ -167,7 +167,7 @@
 
     <span class="c1"># ~@functools.lru_cache(maxsize=None)</span>
 <div class="viewcode-block" id="FiniteBifield.inverse"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the multiplicative inverse of a given element.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">xgcd</span><span class="p">(</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span><span class="p">)</span>
@@ -178,7 +178,7 @@
 
     <span class="c1"># ~@functools.lru_cache(maxsize=None)</span>
 <div class="viewcode-block" id="FiniteBifield.logarithm"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.logarithm">[docs]</a>    <span class="k">def</span> <span class="nf">logarithm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the logarithm of a given element, with respect to a given base.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -189,7 +189,7 @@
         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
 
 <div class="viewcode-block" id="FiniteBifield.power"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">exponent</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a given power of a given element.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">exponent</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -199,7 +199,7 @@
 
 <div class="viewcode-block" id="FiniteBifield.conjugates"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.conjugates">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">conjugates</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the conjugates of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) for more details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conjugate_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -215,7 +215,7 @@
 
 <div class="viewcode-block" id="FiniteBifield.minimal_polynomial"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.minimal_polynomial">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">minimal_polynomial</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the minimal polynomial of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) fore more details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">one</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -228,7 +228,7 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs elements of the finite field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Element</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -236,10 +236,10 @@
         <span class="k">return</span> <span class="n">element</span>
 
     <span class="k">class</span> <span class="nc">_Element</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Elements of a FiniteBifield.</span>
 
-<span class="sd">        Objects of this class represents *elements* of the finite field :math:`\\mathrm{GF}(2^k)`.</span>
+<span class="sd">        Objects of this class represents *elements* of the finite field :math:`\mathrm{GF}(2^k)`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>

@@ -38,7 +38,7 @@
 
 
 <div class="viewcode-block" id="HammingCode"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode">[docs]</a><span class="k">class</span> <span class="nc">HammingCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:</span>
 
 <span class="sd">    - Length: :math:`n = 2^m - 1`</span>
@@ -99,11 +99,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="HammingCode.__init__"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">extended</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`m` : :obj:`int`</span>
-<span class="sd">            The redundancy :math:`m` of the code. Must satisfy :math:`m \\geq 2`.</span>
+<span class="sd">            The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.</span>
 
 <span class="sd">        :code:`extended` : :obj:`bool`, optional</span>
 <span class="sd">            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.</span>

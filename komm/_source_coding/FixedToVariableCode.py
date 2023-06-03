@@ -6,21 +6,21 @@ from .util import _parse_prefix_free
 
 
 class FixedToVariableCode:
-    """
-    Binary (prefix-free) fixed-to-variable length code. Let :math:`\\mathcal{X}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of source block size :math:`k` is defined by an encoding mapping :math:`\\mathrm{Enc} : \\mathcal{X}^k \\to \\{ 0, 1 \\}^+`, where :math:`\\{ 0, 1 \\}^+` denotes the set of all finite-length, non-empty binary strings. Here, for simplicity, the source alphabet is always taken as :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. The elements in the image of :math:`\\mathrm{Enc}` are called *codewords*.
+    r"""
+    Binary (prefix-free) fixed-to-variable length code. Let :math:`\mathcal{X}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of source block size :math:`k` is defined by an encoding mapping :math:`\mathrm{Enc} : \mathcal{X}^k \to \{ 0, 1 \}^+`, where :math:`\{ 0, 1 \}^+` denotes the set of all finite-length, non-empty binary strings. Here, for simplicity, the source alphabet is always taken as :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. The elements in the image of :math:`\mathrm{Enc}` are called *codewords*.
 
     Also, we only consider *prefix-free* codes, in which no codeword is a prefix of any other codeword.
     """
 
     def __init__(self, codewords, source_cardinality=None):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`codewords` : :obj:`list` of :obj:`tuple` of :obj:`int`
-            The codewords of the code. Must be a list of length :math:`|\\mathcal{X}|^k` containing tuples of integers in :math:`\\{ 0, 1 \\}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\\mathcal{X}^k`.
+            The codewords of the code. Must be a list of length :math:`|\mathcal{X}|^k` containing tuples of integers in :math:`\{ 0, 1 \}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\mathcal{X}^k`.
 
         :code:`source_cardinality` : :obj:`int`, optional
-            The cardinality :math:`|\\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
+            The cardinality :math:`|\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
 
         *Note:* The source block size :math:`k` is inferred from :code:`len(codewords)` and :code:`source_cardinality`.
 
@@ -58,34 +58,34 @@ class FixedToVariableCode:
 
     @property
     def source_cardinality(self):
-        """
-        The cardinality :math:`|\\mathcal{X}|` of the source alphabet.
+        r"""
+        The cardinality :math:`|\mathcal{X}|` of the source alphabet.
         """
         return self._source_cardinality
 
     @property
     def source_block_size(self):
-        """
+        r"""
         The source block size :math:`k`.
         """
         return self._source_block_size
 
     @property
     def enc_mapping(self):
-        """
-        The encoding mapping :math:`\\mathrm{Enc}` of the code.
+        r"""
+        The encoding mapping :math:`\mathrm{Enc}` of the code.
         """
         return self._enc_mapping
 
     @property
     def dec_mapping(self):
-        """
-        The decoding mapping :math:`\\mathrm{Dec}` of the code.
+        r"""
+        The decoding mapping :math:`\mathrm{Dec}` of the code.
         """
         return self._dec_mapping
 
     def rate(self, pmf):
-        """
+        r"""
         Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.
 
         .. rubric:: Input
@@ -109,13 +109,13 @@ class FixedToVariableCode:
         return np.dot(lengths, probabilities) / self._source_block_size
 
     def encode(self, symbol_sequence):
-        """
+        r"""
         Encodes a given sequence of symbols to its corresponding sequence of bits.
 
         .. rubric:: Input
 
         :code:`symbol_sequence` : 1D-array of :obj:`int`
-            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\\mathcal{X} = \\{0, 1, \\ldots, |\\mathcal{X} - 1| \\}`. Its length must be a multiple of :math:`k`.
+            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. Its length must be a multiple of :math:`k`.
 
         .. rubric:: Output
 
@@ -132,13 +132,13 @@ class FixedToVariableCode:
         return np.concatenate([self._enc_mapping[tuple(symbols)] for symbols in symbols_reshaped])
 
     def decode(self, bit_sequence):
-        """
+        r"""
         Decodes a given sequence of bits to its corresponding sequence of symbols.
 
         .. rubric:: Input
 
         :code:`bit_sequence` : 1D-array of :obj:`int`
-            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\\{ 0, 1 \\}`.
+            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.
 
         .. rubric:: Output
 

@@ -39,12 +39,12 @@
 
 
 <div class="viewcode-block" id="SincPulse"><a class="viewcode-back" href="../../../../komm.SincPulse/#komm.SincPulse">[docs]</a><span class="k">class</span> <span class="nc">SincPulse</span><span class="p">(</span><span class="n">Pulse</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        h(t) = \\operatorname{sinc}(t) = \\frac{\\sin(\\pi t)}{\\pi t}.</span>
+<span class="sd">        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.</span>
 
 <span class="sd">    The sinc pulse is depicted below.</span>
 
@@ -54,7 +54,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SincPulse.__init__"><a class="viewcode-back" href="../../../../komm.SincPulse/#komm.SincPulse.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_in_symbols</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`length_in_symbols` : :obj:`int`</span>
@@ -73,7 +73,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length_in_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The length (span) of the truncated impulse response. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length_in_symbols</span>

@@ -9,7 +9,7 @@ from .BlockCode import BlockCode
 
 
 class CyclicCode(BlockCode):
-    """
+    r"""
     General binary cyclic code. A cyclic code is a linear block code (:class:`BlockCode`) such that, if :math:`c` is a codeword, then every cyclic shift of :math:`c` is also a codeword. It is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code), and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.
 
     Examples of generator polynomials can be found in the table below.
@@ -31,7 +31,7 @@ class CyclicCode(BlockCode):
     """
 
     def __init__(self, length, systematic=True, **kwargs):
-        """
+        r"""
         Constructor for the class. It expects one of the following formats:
 
         **Via generator polynomial**
@@ -102,21 +102,21 @@ class CyclicCode(BlockCode):
 
     @property
     def generator_polynomial(self):
-        """
+        r"""
         The generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code.
         """
         return self._generator_polynomial
 
     @property
     def parity_check_polynomial(self):
-        """
+        r"""
         The parity-check polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code.
         """
         return self._parity_check_polynomial
 
     @functools.cached_property
     def meggitt_table(self):
-        """
+        r"""
         The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
         meggitt_table = {}
@@ -128,14 +128,14 @@ class CyclicCode(BlockCode):
         return meggitt_table
 
     def _encode_cyclic_direct(self, message):
-        """
+        r"""
         Encoder for cyclic codes. Direct, non-systematic method.
         """
         message_polynomial = BinaryPolynomial.from_coefficients(message)
         return (message_polynomial * self._generator_polynomial).coefficients(width=self._length)
 
     def _encode_cyclic_systematic(self, message):
-        """
+        r"""
         Encoder for cyclic codes. Systematic method.
         """
         message_polynomial = BinaryPolynomial.from_coefficients(message)
@@ -169,7 +169,7 @@ class CyclicCode(BlockCode):
 
     @tag(name="Meggitt decoder", input_type="hard", target="codeword")
     def _decode_meggitt(self, recvword):
-        """
+        r"""
         Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
         meggitt_table = self.meggitt_table

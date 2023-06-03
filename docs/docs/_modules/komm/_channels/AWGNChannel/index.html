@@ -37,7 +37,7 @@
 
 
 <div class="viewcode-block" id="AWGNChannel"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel">[docs]</a><span class="k">class</span> <span class="nc">AWGNChannel</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Additive white Gaussian noise (AWGN) channel. It is defined by</span>
 
 <span class="sd">    .. math::</span>
@@ -48,9 +48,9 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \\mathrm{SNR} = \\frac{P}{N},</span>
+<span class="sd">        \mathrm{SNR} = \frac{P}{N},</span>
 
-<span class="sd">    where :math:`P = \\mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \\mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.</span>
+<span class="sd">    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.</span>
 
 <span class="sd">    References: :cite:`Cover.Thomas.06` (Ch. 9)</span>
 
@@ -58,10 +58,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="AWGNChannel.__init__"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor for the class. It expects the following parameters:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`snr` : :obj:`float`, optional</span>
-<span class="sd">            The channel signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.</span>
+<span class="sd">            The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.</span>
 
 <span class="sd">        :code:`signal_power` : :obj:`float` or :obj:`str`, optional</span>
 <span class="sd">            The input signal power :math:`P`.  If equal to the string :code:`&#39;measured&#39;`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.</span>
@@ -79,8 +79,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">snr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The signal-to-noise ratio :math:`\\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snr</span>
 
@@ -90,7 +90,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">signal_power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The input signal power :math:`P`. This is a read-and-write property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span>
@@ -100,8 +100,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AWGNChannel.capacity"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.capacity">[docs]</a>    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \\frac{1}{2}\\log_2(1 + \\mathrm{SNR})`, in bits per dimension.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \frac{1}{2}\log_2(1 + \mathrm{SNR})`, in bits per dimension.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
 

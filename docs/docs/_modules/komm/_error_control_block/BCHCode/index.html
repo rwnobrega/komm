@@ -44,13 +44,13 @@
 
 
 <div class="viewcode-block" id="BCHCode"><a class="viewcode-back" href="../../../../komm.BCHCode/#komm.BCHCode">[docs]</a><span class="k">class</span> <span class="nc">BCHCode</span><span class="p">(</span><span class="n">CyclicCode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau &lt; 2^{\\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\mu` and :math:`\tau` which must satisfy :math:`1 \leq \tau &lt; 2^{\mu - 1}`.  The parameter :math:`\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\mathrm{BCH}(\mu, \tau)`, and has the following parameters:</span>
 
-<span class="sd">    - Length: :math:`n = 2^{\\mu} - 1`</span>
-<span class="sd">    - Dimension: :math:`k \\geq n - \\mu \\tau`</span>
-<span class="sd">    - Redundancy: :math:`m \\leq \\mu \\tau`</span>
-<span class="sd">    - Minimum distance: :math:`d \\geq 2\\tau + 1`</span>
+<span class="sd">    - Length: :math:`n = 2^{\mu} - 1`</span>
+<span class="sd">    - Dimension: :math:`k \geq n - \mu \tau`</span>
+<span class="sd">    - Redundancy: :math:`m \leq \mu \tau`</span>
+<span class="sd">    - Minimum distance: :math:`d \geq 2\tau + 1`</span>
 
 <span class="sd">    .. rubric:: Decoding methods</span>
 
@@ -75,14 +75,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BCHCode.__init__"><a class="viewcode-back" href="../../../../komm.BCHCode/#komm.BCHCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects the following parameters:</span>
 
 <span class="sd">        :code:`mu` : :obj:`int`</span>
-<span class="sd">            The parameter :math:`\\mu` of the code.</span>
+<span class="sd">            The parameter :math:`\mu` of the code.</span>
 
 <span class="sd">        :code:`tau` : :obj:`int`</span>
-<span class="sd">            The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.</span>
+<span class="sd">            The designed error-correcting capability :math:`\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">tau</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must satisfy 1 &lt;= tau &lt; 2**(mu - 1)&quot;</span><span class="p">)</span>
@@ -106,7 +106,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_bch_code_generator_polynomial</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Assumes 1 &lt;= tau &lt; 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">primitive_element</span>
@@ -122,7 +122,7 @@
         <span class="k">return</span> <span class="n">generator_polynomial</span><span class="p">,</span> <span class="n">t</span>
 
     <span class="k">def</span> <span class="nf">_bch_general_decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">syndrome_computer</span><span class="p">,</span> <span class="n">key_equation_solver</span><span class="p">,</span> <span class="n">root_finder</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        General BCH decoder. See :cite:`Lin.Costello.04` (p. 205--209).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">recvword_polynomial</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="n">recvword</span><span class="p">)</span>
@@ -135,7 +135,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_xor</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">errorword</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_bch_syndrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword_polynomial</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">syndrome_polynomial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
@@ -144,7 +144,7 @@
         <span class="k">return</span> <span class="n">syndrome_polynomial</span>
 
     <span class="k">def</span> <span class="nf">_find_roots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polynomial</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exhaustive search.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">zero</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -161,7 +161,7 @@
         <span class="k">return</span> <span class="n">roots</span>
 
     <span class="k">def</span> <span class="nf">_berlekamp_algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">syndrome_polynomial</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Berlekamp&#39;s iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span>

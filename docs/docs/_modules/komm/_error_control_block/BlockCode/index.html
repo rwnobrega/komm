@@ -44,8 +44,8 @@
 
 
 <div class="viewcode-block" id="BlockCode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode">[docs]</a><span class="k">class</span> <span class="nc">BlockCode</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \\times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \\times n` matrix. Those matrix are related by :math:`G H^\\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \times n` matrix. Those matrix are related by :math:`G H^\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.</span>
 
 <span class="sd">    References: :cite:`Lin.Costello.04` (Ch. 3)</span>
 
@@ -93,7 +93,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BlockCode.__init__"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects one of the following formats:</span>
 
 <span class="sd">        **Via generator matrix**</span>
@@ -101,21 +101,21 @@
 <span class="sd">        `komm.BlockCode(generator_matrix=generator_matrix)`</span>
 
 <span class="sd">        :code:`generator_matrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Generator matrix :math:`G` for the code, which is a :math:`k \\times n` binary matrix.</span>
+<span class="sd">            Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.</span>
 
 <span class="sd">        **Via parity-check matrix**</span>
 
 <span class="sd">        `komm.BlockCode(parity_check_matrix=parity_check_matrix)`</span>
 
 <span class="sd">        :code:`parity_check_matrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Parity-check matrix :math:`H` for the code, which is an :math:`m \\times n` binary matrix.</span>
+<span class="sd">            Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.</span>
 
 <span class="sd">        **Via parity submatrix and information set**</span>
 
 <span class="sd">        `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`</span>
 
 <span class="sd">        :code:`parity_submatrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Parity submatrix :math:`P` for the code, which is a :math:`k \\times m` binary matrix.</span>
+<span class="sd">            Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.</span>
 
 <span class="sd">        :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
 <span class="sd">            Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`&#39;left&#39;` or :code:`&#39;right&#39;`. The default value is :code:`&#39;left&#39;`.</span>
@@ -181,35 +181,35 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The length :math:`n` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The dimension :math:`k` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">redundancy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The redundancy :math:`m` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate :math:`R = k/n` of the code. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">minimum_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The minimum distance :math:`d` of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -219,22 +219,22 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">packing_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\\lfloor (d - 1) / 2 \\rfloor`. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to :math:`\lfloor (d - 1) / 2 \rfloor`. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum_distance</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">covering_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">generator_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The generator matrix :math:`G` of the code. It as a :math:`k \\times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The generator matrix :math:`G` of the code. It as a :math:`k \times n` binary matrix, where :math:`k` is the code dimension, and :math:`n` is the code length. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix</span>
@@ -243,8 +243,8 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">parity_check_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The parity-check matrix :math:`H` of the code. It as an :math:`m \\times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The parity-check matrix :math:`H` of the code. It as an :math:`m \times n` binary matrix, where :math:`m` is the code redundancy, and :math:`n` is the code length. This property is read-only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_matrix</span>
@@ -253,8 +253,8 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">codeword_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The codeword table of the code. This is a :math:`2^k \\times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The codeword table of the code. This is a :math:`2^k \times n` matrix whose rows are all the codewords. The codeword in row :math:`i` corresponds to the message whose binary representation (:term:`MSB` in the right) is :math:`i`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">codeword_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span><span class="p">):</span>
@@ -264,8 +264,8 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">codeword_weight_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \\in [0 : n]`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The codeword weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of codewords of Hamming weight :math:`w`, for :math:`w \in [0 : n]`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_codeword_weight_distribution</span>
@@ -274,8 +274,8 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">coset_leader_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The coset leader table of the code. This is a :math:`2^m \\times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The coset leader table of the code. This is a :math:`2^m \times n` matrix whose rows are all the coset leaders. The coset leader in row :math:`i` corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is :math:`i`. This may be used as a :term:`LUT` for syndrome-based decoding.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">coset_leader_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_redundancy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
         <span class="n">taken</span> <span class="o">=</span> <span class="p">[]</span>
@@ -294,8 +294,8 @@
 
     <span class="nd">@functools</span><span class="o">.</span><span class="n">cached_property</span>
     <span class="k">def</span> <span class="nf">coset_leader_weight_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \\in [0 : n]`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The coset leader weight distribution of the code. This is an array of shape :math:`(n + 1)` in which element in position :math:`w` is equal to the number of coset leaders of weight :math:`w`, for :math:`w \in [0 : n]`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coset_leader_weight_distribution</span>
@@ -307,7 +307,7 @@
         <span class="k">return</span> <span class="n">right_inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generator_matrix</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BlockCode.encode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encodes a given message to its corresponding codeword.</span>
 
 <span class="sd">        .. rubric:: Input</span>
@@ -353,7 +353,7 @@
             <span class="k">return</span> <span class="s2">&quot;generator_matrix&quot;</span>
 
 <div class="viewcode-block" id="BlockCode.message_from_codeword"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.message_from_codeword">[docs]</a>    <span class="k">def</span> <span class="nf">message_from_codeword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">codeword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</span>
 
 <span class="sd">        .. rubric:: Input</span>
@@ -372,13 +372,13 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">codeword</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_matrix_right_inverse</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span></div>
 
 <div class="viewcode-block" id="BlockCode.decode"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Decodes a received word to a message.</span>
 
 <span class="sd">        .. rubric:: Input</span>
 
 <span class="sd">        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)</span>
-<span class="sd">            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\\{ 0, 1 \\}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.</span>
+<span class="sd">            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.</span>
 
 <span class="sd">        :code:`method` : :obj:`str`, optional</span>
 <span class="sd">            The decoding method to be used.</span>
@@ -407,7 +407,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Exhaustive search (hard-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_exhaustive_search_hard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exhaustive search minimum distance hard decoder. Hamming distance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeword_table</span>
@@ -417,7 +417,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Exhaustive search (soft-decision)&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_exhaustive_search_soft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exhaustive search minimum distance soft decoder. Euclidean distance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">codewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeword_table</span>
@@ -427,7 +427,7 @@
 
     <span class="nd">@tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Syndrome table&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;codeword&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_decode_syndrome_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recvword</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Syndrome table decoder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">coset_leader_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coset_leader_table</span>

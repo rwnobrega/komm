@@ -9,13 +9,13 @@ from .CyclicCode import CyclicCode
 
 
 class BCHCode(CyclicCode):
-    """
-    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\\mu` and :math:`\\tau` which must satisfy :math:`1 \\leq \\tau < 2^{\\mu - 1}`.  The parameter :math:`\\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\\mathrm{BCH}(\\mu, \\tau)`, and has the following parameters:
+    r"""
+    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\mu` and :math:`\tau` which must satisfy :math:`1 \leq \tau < 2^{\mu - 1}`.  The parameter :math:`\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\mathrm{BCH}(\mu, \tau)`, and has the following parameters:
 
-    - Length: :math:`n = 2^{\\mu} - 1`
-    - Dimension: :math:`k \\geq n - \\mu \\tau`
-    - Redundancy: :math:`m \\leq \\mu \\tau`
-    - Minimum distance: :math:`d \\geq 2\\tau + 1`
+    - Length: :math:`n = 2^{\mu} - 1`
+    - Dimension: :math:`k \geq n - \mu \tau`
+    - Redundancy: :math:`m \leq \mu \tau`
+    - Minimum distance: :math:`d \geq 2\tau + 1`
 
     .. rubric:: Decoding methods
 
@@ -40,14 +40,14 @@ class BCHCode(CyclicCode):
     """
 
     def __init__(self, mu, tau):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`mu` : :obj:`int`
-            The parameter :math:`\\mu` of the code.
+            The parameter :math:`\mu` of the code.
 
         :code:`tau` : :obj:`int`
-            The designed error-correcting capability :math:`\\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
+            The designed error-correcting capability :math:`\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
         """
         if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
@@ -71,7 +71,7 @@ class BCHCode(CyclicCode):
 
     @staticmethod
     def _bch_code_generator_polynomial(field, tau):
-        """
+        r"""
         Assumes 1 <= tau < 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195)
         """
         alpha = field.primitive_element
@@ -87,7 +87,7 @@ class BCHCode(CyclicCode):
         return generator_polynomial, t
 
     def _bch_general_decoder(self, recvword, syndrome_computer, key_equation_solver, root_finder):
-        """
+        r"""
         General BCH decoder. See :cite:`Lin.Costello.04` (p. 205--209).
         """
         recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
@@ -100,7 +100,7 @@ class BCHCode(CyclicCode):
         return np.bitwise_xor(recvword, errorword)
 
     def _bch_syndrome(self, recvword_polynomial):
-        """
+        r"""
         BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205--209).
         """
         syndrome_polynomial = np.empty(len(self._beta), dtype=object)
@@ -109,7 +109,7 @@ class BCHCode(CyclicCode):
         return syndrome_polynomial
 
     def _find_roots(self, polynomial):
-        """
+        r"""
         Exhaustive search.
         """
         zero = self._field(0)
@@ -126,7 +126,7 @@ class BCHCode(CyclicCode):
         return roots
 
     def _berlekamp_algorithm(self, syndrome_polynomial):
-        """
+        r"""
         Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).
         """
         field = self._field

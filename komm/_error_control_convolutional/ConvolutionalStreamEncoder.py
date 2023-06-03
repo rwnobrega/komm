@@ -2,7 +2,7 @@ from .._util import pack, unpack
 
 
 class ConvolutionalStreamEncoder:
-    """
+    r"""
     Convolutional stream encoder. Encode a bit stream using a given convolutional code (:class:`ConvolutionalCode`). The internal state of the encoder is maintained across each call.
 
     .. rubric:: Examples
@@ -16,7 +16,7 @@ class ConvolutionalStreamEncoder:
     """
 
     def __init__(self, convolutional_code, initial_state=0):
-        """
+        r"""
         Constructor for the class. It expects the following parameters:
 
         :code:`convolutional_code` : :class:`ConvolutionalCode`

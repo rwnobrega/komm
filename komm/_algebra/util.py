@@ -2,7 +2,7 @@ import numpy as np
 
 
 def gcd(x, y, ring):
-    """
+    r"""
     Performs the `Euclidean algorithm<https://en.wikipedia.org/wiki/Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
     """
     if y == ring(0):
@@ -12,7 +12,7 @@ def gcd(x, y, ring):
 
 
 def xgcd(x, y, ring):
-    """
+    r"""
     Performs the `extended Euclidean algorithm<https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with :code:`x` and :code:`y`.
     """
     if x == ring(0):
@@ -23,7 +23,7 @@ def xgcd(x, y, ring):
 
 
 def power(x, n, ring):
-    """
+    r"""
     Returns :code:`x**n` using the `exponentiation by squaring<https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_ algorithm.
     """
     if n == 0:
@@ -37,7 +37,7 @@ def power(x, n, ring):
 
 
 def binary_horner(poly, x):
-    """
+    r"""
     Returns the binary polynomial :code:`poly` evaluated at point :code:`x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
     """
     result = x - x  # zero
@@ -49,7 +49,7 @@ def binary_horner(poly, x):
 
 
 def horner(poly, x):
-    """
+    r"""
     Returns the polynomial :code:`poly` evaluated at point :code:`x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
     """
     result = x - x  # zero
@@ -59,7 +59,7 @@ def horner(poly, x):
 
 
 def rref(M):
-    """
+    r"""
     Computes the row-reduced echelon form of the matrix M modulo 2.
 
     Loosely based on
@@ -99,7 +99,7 @@ def rref(M):
 # TODO: this should be the main function!
 #       rref should call this instead
 def xrref(M):
-    """
+    r"""
     Computes the row-reduced echelon form of the matrix M modulo 2.
 
     Returns
