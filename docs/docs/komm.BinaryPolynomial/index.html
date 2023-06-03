@@ -46,14 +46,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="komm.BinaryPolynomial">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BinaryPolynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/BinaryPolynomial/#BinaryPolynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryPolynomial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Binary polynomial. A <em>binary polynomial</em> is a polynomial whose coefficients are elements in the finite field <span class="math notranslate nohighlight">\(\mathbb{F}_2 = \{ 0, 1 \}\)</span>. The default constructor takes an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> as input, whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial <span class="math notranslate nohighlight">\(X^4 + X^3 + X\)</span> is represented by the integer <code class="code docutils literal notranslate"><span class="pre">0b11010</span></code> = <code class="code docutils literal notranslate"><span class="pre">0o32</span></code> = <code class="code docutils literal notranslate"><span class="pre">26</span></code>. There are two alternative constructors for this class, the class methods <a class="reference internal" href="#komm.BinaryPolynomial.from_coefficients" title="komm.BinaryPolynomial.from_coefficients"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_coefficients()</span></code></a> and <a class="reference internal" href="#komm.BinaryPolynomial.from_exponents" title="komm.BinaryPolynomial.from_exponents"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_exponents()</span></code></a>.  See their documentation for details.</p>
-<p>This class supports addition, multiplication, and division of binary polynomials.</p>
+<dd><p>Binary polynomial. A <em>binary polynomial</em> is a polynomial whose coefficients are elements in the finite field <span class="math notranslate nohighlight">\(\mathbb{F}_2 = \{ 0, 1 \}\)</span>. This class supports addition, multiplication, division, and exponentiation.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span>
-<span class="go">BinaryPolynomial(0b11010)</span>
-</pre></div>
-</div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly1</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10100</span><span class="p">)</span>  <span class="c1"># X^4 + X^2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly2</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly1</span> <span class="o">+</span> <span class="n">poly2</span>  <span class="c1"># X^3 + X^2 + X</span>
@@ -76,7 +70,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.BinaryPolynomial.__init__" title="komm.BinaryPolynomial.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(integer)</p></td>
-<td><p></p></td>
+<td><p>Default constructor for the class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.BinaryPolynomial.coefficients" title="komm.BinaryPolynomial.coefficients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coefficients</span></code></a>([width])</p></td>
 <td><p>Returns the coefficients of the binary polynomial.</p></td>
@@ -108,7 +102,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.BinaryPolynomial.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/BinaryPolynomial/#BinaryPolynomial.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryPolynomial.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Default constructor for the class. It expects the following parameter:</p>
+<dl>
+<dt><code class="code docutils literal notranslate"><span class="pre">integer</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial <span class="math notranslate nohighlight">\(X^4 + X^3 + X\)</span> is represented by the integer <code class="code docutils literal notranslate"><span class="pre">0b11010</span></code> = <code class="code docutils literal notranslate"><span class="pre">0o32</span></code> = <code class="code docutils literal notranslate"><span class="pre">26</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
+<span class="go">BinaryPolynomial(0b11010)</span>
+</pre></div>
+</div>
+<p>There are two alternative constructors for this class, the class methods <a class="reference internal" href="#komm.BinaryPolynomial.from_coefficients" title="komm.BinaryPolynomial.from_coefficients"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_coefficients()</span></code></a> and <a class="reference internal" href="#komm.BinaryPolynomial.from_exponents" title="komm.BinaryPolynomial.from_exponents"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_exponents()</span></code></a>.  See their documentation for details.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.BinaryPolynomial.coefficients">
@@ -209,7 +214,7 @@
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exponents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/BinaryPolynomial/#BinaryPolynomial.from_exponents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryPolynomial.from_exponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs a <a class="reference internal" href="#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> from its exponents. It expects the following parameter:</p>
 <dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">coefficients</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The exponents of the nonzero terms of the binary polynomial. For example, <code class="code docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">4]</span></code> represents the binary polynomial <span class="math notranslate nohighlight">\(X^4 + X^3 + X\)</span>.</p>
+<dt><code class="code docutils literal notranslate"><span class="pre">exponents</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The exponents of the nonzero terms of the binary polynomial. For example, <code class="code docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">4]</span></code> represents the binary polynomial <span class="math notranslate nohighlight">\(X^4 + X^3 + X\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

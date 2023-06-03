@@ -44,15 +44,9 @@
 
 <div class="viewcode-block" id="BinaryPolynomial"><a class="viewcode-back" href="../../../../komm.BinaryPolynomial/#komm.BinaryPolynomial">[docs]</a><span class="k">class</span> <span class="nc">BinaryPolynomial</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. The default constructor takes an :obj:`int` as input, whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`. There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.</span>
-
-<span class="sd">    This class supports addition, multiplication, and division of binary polynomials.</span>
+<span class="sd">    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. This class supports addition, multiplication, division, and exponentiation.</span>
 
 <span class="sd">    .. rubric:: Examples</span>
-
-<span class="sd">    &gt;&gt;&gt; poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X</span>
-<span class="sd">    &gt;&gt;&gt; poly</span>
-<span class="sd">    BinaryPolynomial(0b11010)</span>
 
 <span class="sd">    &gt;&gt;&gt; poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2</span>
 <span class="sd">    &gt;&gt;&gt; poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X</span>
@@ -65,6 +59,19 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BinaryPolynomial.__init__"><a class="viewcode-back" href="../../../../komm.BinaryPolynomial/#komm.BinaryPolynomial.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">integer</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Default constructor for the class. It expects the following parameter:</span>
+
+<span class="sd">        :code:`integer` : :obj:`int`</span>
+<span class="sd">            An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.</span>
+
+<span class="sd">        .. rubric:: Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X</span>
+<span class="sd">        BinaryPolynomial(0b11010)</span>
+
+<span class="sd">        There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_integer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">integer</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BinaryPolynomial.from_coefficients"><a class="viewcode-back" href="../../../../komm.BinaryPolynomial/#komm.BinaryPolynomial.from_coefficients">[docs]</a>    <span class="nd">@classmethod</span>
@@ -87,7 +94,7 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs a :obj:`BinaryPolynomial` from its exponents. It expects the following parameter:</span>
 
-<span class="sd">        :code:`coefficients` : 1D-array of :obj:`int`</span>
+<span class="sd">        :code:`exponents` : 1D-array of :obj:`int`</span>
 <span class="sd">            The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.</span>
 
 <span class="sd">        .. rubric:: Examples</span>
