@@ -52,7 +52,7 @@ class BinaryPolynomial:
         r"""
         Constructs a :obj:`BinaryPolynomial` from its exponents. It expects the following parameter:
 
-        :code:`coefficients` : 1D-array of :obj:`int`
+        :code:`exponents` : 1D-array of :obj:`int`
             The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
         .. rubric:: Examples
