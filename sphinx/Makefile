@@ -2,9 +2,7 @@ SPHINXOPTS    = -b "dirhtml" -E -a
 SOURCEDIR     = .
 BUILDDIR      = _build
 
-.PHONY: docs
-
-docs:
+all:
 	@sphinx-build "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo "Removing komm.*.rst..."
 	@rm -rf komm.*.rst
