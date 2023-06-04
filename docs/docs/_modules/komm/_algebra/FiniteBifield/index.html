@@ -43,84 +43,94 @@
 
 <div class="viewcode-block" id="FiniteBifield"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield">[docs]</a><span class="k">class</span> <span class="nc">FiniteBifield</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):</span>
-
-<span class="sd">    ===========  =====================  ============  ============================</span>
-<span class="sd">     :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`</span>
-<span class="sd">    ===========  =====================  ============  ============================</span>
-<span class="sd">     :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`</span>
-<span class="sd">     :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`</span>
-<span class="sd">     :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`</span>
-<span class="sd">     :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`</span>
-<span class="sd">     :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`</span>
-<span class="sd">     :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`</span>
-<span class="sd">     :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`</span>
-<span class="sd">     :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`</span>
-<span class="sd">    ===========  =====================  ============  ============================</span>
+<span class="sd">    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.</span>
 
 <span class="sd">    To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; field = komm.FiniteBifield(4)</span>
-<span class="sd">    &gt;&gt;&gt; field</span>
-<span class="sd">    FiniteBifield(4)</span>
-<span class="sd">    &gt;&gt;&gt; (field.characteristic, field.degree)</span>
-<span class="sd">    (2, 4)</span>
-<span class="sd">    &gt;&gt;&gt; field.modulus</span>
-<span class="sd">    BinaryPolynomial(0b10011)</span>
-
-<span class="sd">    &gt;&gt;&gt; field1 = komm.FiniteBifield(3, modulus=0b1011)</span>
-<span class="sd">    &gt;&gt;&gt; alpha1 = field1.primitive_element</span>
-<span class="sd">    &gt;&gt;&gt; [alpha1**i for i in range(7)]</span>
-<span class="sd">    [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]</span>
-<span class="sd">    &gt;&gt;&gt; field2 = komm.FiniteBifield(3, modulus=0b1101)</span>
-<span class="sd">    &gt;&gt;&gt; alpha2 = field2.primitive_element</span>
-<span class="sd">    &gt;&gt;&gt; [alpha2**i for i in range(7)]</span>
-<span class="sd">    [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]</span>
-
-<span class="sd">    &gt;&gt;&gt; field = komm.FiniteBifield(4)</span>
-<span class="sd">    &gt;&gt;&gt; x = field(0b1011)</span>
-<span class="sd">    &gt;&gt;&gt; y = field(0b1100)</span>
-<span class="sd">    &gt;&gt;&gt; x + y</span>
-<span class="sd">    0b111</span>
-<span class="sd">    &gt;&gt;&gt; x * y</span>
-<span class="sd">    0b1101</span>
-<span class="sd">    &gt;&gt;&gt; x / y</span>
-<span class="sd">    0b10</span>
+<span class="sd">        &gt;&gt;&gt; field = komm.FiniteBifield(4)</span>
+<span class="sd">        &gt;&gt;&gt; x = field(0b1011)</span>
+<span class="sd">        &gt;&gt;&gt; y = field(0b1100)</span>
+<span class="sd">        &gt;&gt;&gt; x + y</span>
+<span class="sd">        0b111</span>
+<span class="sd">        &gt;&gt;&gt; x * y</span>
+<span class="sd">        0b1101</span>
+<span class="sd">        &gt;&gt;&gt; x / y</span>
+<span class="sd">        0b10</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_default_moduli</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11</span><span class="p">),</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b111</span><span class="p">),</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">),</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10011</span><span class="p">),</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100101</span><span class="p">),</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000011</span><span class="p">),</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10001001</span><span class="p">),</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100011101</span><span class="p">),</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000010001</span><span class="p">),</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000001001</span><span class="p">),</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100000000101</span><span class="p">),</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000001010011</span><span class="p">),</span>
+            <span class="mi">13</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000011011</span><span class="p">),</span>
+            <span class="mi">14</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100010001000011</span><span class="p">),</span>
+            <span class="mi">15</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000000000000011</span><span class="p">),</span>
+            <span class="mi">16</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000010000011</span><span class="p">),</span>
+        <span class="p">}[</span><span class="n">degree</span><span class="p">]</span>
 
 <div class="viewcode-block" id="FiniteBifield.__init__"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`degree` : :obj:`int`</span>
-<span class="sd">            Degree :math:`k` of the finite field. Must be a positive integer.</span>
-<span class="sd">        :code:`modulus` : :obj:`BinaryPolynomial` or :obj:`int`, optional</span>
-<span class="sd">            Modulus (primitive polynomial) of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial.</span>
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            degree (:obj:`int`): Degree :math:`k` of the finite field. Must be a positive integer.</span>
+
+<span class="sd">            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) :math:`p(X)` of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below.</span>
+
+<span class="sd">        .. admonition:: Default values for the primitive polynomials</span>
+
+<span class="sd">            From :cite:`Lin.Costello.04` (p. 42).</span>
+
+<span class="sd">            ===========  =====================  ============  ============================</span>
+<span class="sd">            :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`</span>
+<span class="sd">            ===========  =====================  ============  ============================</span>
+<span class="sd">            :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`</span>
+<span class="sd">            :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`</span>
+<span class="sd">            :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`</span>
+<span class="sd">            :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`</span>
+<span class="sd">            :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`</span>
+<span class="sd">            :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`</span>
+<span class="sd">            :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`</span>
+<span class="sd">            :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`</span>
+<span class="sd">            ===========  =====================  ============  ============================</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; field = komm.FiniteBifield(4)</span>
+<span class="sd">            &gt;&gt;&gt; field</span>
+<span class="sd">            FiniteBifield(4)</span>
+<span class="sd">            &gt;&gt;&gt; (field.characteristic, field.degree, field.order)</span>
+<span class="sd">            (2, 4, 16)</span>
+<span class="sd">            &gt;&gt;&gt; field.modulus</span>
+<span class="sd">            BinaryPolynomial(0b10011)</span>
+
+<span class="sd">            &gt;&gt;&gt; field = komm.FiniteBifield(4, modulus=0b11001)</span>
+<span class="sd">            &gt;&gt;&gt; field</span>
+<span class="sd">            FiniteBifield(4, modulus=0b11001)</span>
+<span class="sd">            &gt;&gt;&gt; (field.characteristic, field.degree, field.order)</span>
+<span class="sd">            (2, 4, 16)</span>
+<span class="sd">            &gt;&gt;&gt; field.modulus</span>
+<span class="sd">            BinaryPolynomial(0b11001)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_degree</span> <span class="o">=</span> <span class="n">degree</span>
         <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">PRIMITIVE_POLYNOMIALS</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="mi">1</span><span class="p">:</span> <span class="mb">0b11</span><span class="p">,</span>
-                <span class="mi">2</span><span class="p">:</span> <span class="mb">0b111</span><span class="p">,</span>
-                <span class="mi">3</span><span class="p">:</span> <span class="mb">0b1011</span><span class="p">,</span>
-                <span class="mi">4</span><span class="p">:</span> <span class="mb">0b10011</span><span class="p">,</span>
-                <span class="mi">5</span><span class="p">:</span> <span class="mb">0b100101</span><span class="p">,</span>
-                <span class="mi">6</span><span class="p">:</span> <span class="mb">0b1000011</span><span class="p">,</span>
-                <span class="mi">7</span><span class="p">:</span> <span class="mb">0b10001001</span><span class="p">,</span>
-                <span class="mi">8</span><span class="p">:</span> <span class="mb">0b100011101</span><span class="p">,</span>
-                <span class="mi">9</span><span class="p">:</span> <span class="mb">0b1000010001</span><span class="p">,</span>
-                <span class="mi">10</span><span class="p">:</span> <span class="mb">0b10000001001</span><span class="p">,</span>
-                <span class="mi">11</span><span class="p">:</span> <span class="mb">0b100000000101</span><span class="p">,</span>
-                <span class="mi">12</span><span class="p">:</span> <span class="mb">0b1000001010011</span><span class="p">,</span>
-                <span class="mi">13</span><span class="p">:</span> <span class="mb">0b10000000011011</span><span class="p">,</span>
-                <span class="mi">14</span><span class="p">:</span> <span class="mb">0b100010001000011</span><span class="p">,</span>
-                <span class="mi">15</span><span class="p">:</span> <span class="mb">0b1000000000000011</span><span class="p">,</span>
-                <span class="mi">16</span><span class="p">:</span> <span class="mb">0b10001000000001011</span><span class="p">,</span>
-            <span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">PRIMITIVE_POLYNOMIALS</span><span class="p">[</span><span class="n">degree</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_moduli</span><span class="p">(</span><span class="n">degree</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">modulus</span><span class="p">)</span>
 
@@ -158,6 +168,17 @@
     <span class="k">def</span> <span class="nf">primitive_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A primitive element :math:`\alpha` of the finite field. It satisfies :math:`p(\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; field1 = komm.FiniteBifield(3, modulus=0b1011)</span>
+<span class="sd">            &gt;&gt;&gt; alpha1 = field1.primitive_element</span>
+<span class="sd">            &gt;&gt;&gt; [alpha1**i for i in range(7)]</span>
+<span class="sd">            [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]</span>
+<span class="sd">            &gt;&gt;&gt; field2 = komm.FiniteBifield(3, modulus=0b1101)</span>
+<span class="sd">            &gt;&gt;&gt; alpha2 = field2.primitive_element</span>
+<span class="sd">            &gt;&gt;&gt; [alpha2**i for i in range(7)]</span>
+<span class="sd">            [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
@@ -179,7 +200,7 @@
     <span class="c1"># ~@functools.lru_cache(maxsize=None)</span>
 <div class="viewcode-block" id="FiniteBifield.logarithm"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.logarithm">[docs]</a>    <span class="k">def</span> <span class="nf">logarithm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the logarithm of a given element, with respect to a given base.</span>
+<span class="sd">        Returns the logarithm of a given element, with respect to a given base. If no base is given, the primitive element is used as the base.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive_element</span>
@@ -224,8 +245,12 @@
         <span class="k">return</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coefficients</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span><span class="o">.</span><span class="n">_integer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_moduli</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">## modulus must be in binary form</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="si">}</span><span class="s2">, modulus=0b</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span><span class="o">.</span><span class="n">_integer</span><span class="si">:</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
