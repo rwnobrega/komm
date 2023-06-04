@@ -51,13 +51,13 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.LloydMaxQuantizer.levels" title="komm.LloydMaxQuantizer.levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">levels</span></code></a></p></td>
-<td><p>The quantizer levels, <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>.</p></td>
+<td><p>The quantizer levels <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.LloydMaxQuantizer.num_levels" title="komm.LloydMaxQuantizer.num_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_levels</span></code></a></p></td>
-<td><p>The number of quantization levels, <span class="math notranslate nohighlight">\(L\)</span>.</p></td>
+<td><p>The number of quantization levels <span class="math notranslate nohighlight">\(L\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.LloydMaxQuantizer.thresholds" title="komm.LloydMaxQuantizer.thresholds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thresholds</span></code></a></p></td>
-<td><p>The finite quantizer thresholds, <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>.</p></td>
+<td><p>The finite quantizer thresholds <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -73,22 +73,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.LloydMaxQuantizer.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.LloydMaxQuantizer.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">levels</span></code><span class="classifier">1D array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The quantizer levels <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>. It should be a list floats of length <span class="math notranslate nohighlight">\(L\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">thresholds</span></code><span class="classifier">1D array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The finite quantizer thresholds <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>. It should be a list of floats of length <span class="math notranslate nohighlight">\(L - 1\)</span>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>levels</strong> (1D array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The quantizer levels <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>. It should be a list floats of length <span class="math notranslate nohighlight">\(L\)</span>.</p></li>
+<li><p><strong>thresholds</strong> (1D array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The finite quantizer thresholds <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>. It should be a list of floats of length <span class="math notranslate nohighlight">\(L - 1\)</span>. Moreover, they must satisfy <span class="math notranslate nohighlight">\(v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1}\)</span>.</p></li>
+</ul>
 </dd>
 </dl>
-<p>Moreover, they must satisfy <span class="math notranslate nohighlight">\(v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1}\)</span>.</p>
 <p class="rubric">Examples</p>
-<p>The <span class="math notranslate nohighlight">\(5\)</span>-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels</p>
+<p>The following example considers the <span class="math notranslate nohighlight">\(5\)</span>-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.</p>
+<img alt="Scalar quantizer example." class="align-center" src="../_images/scalar_quantizer_5.png" />
+<p>The levels are</p>
 <div class="math notranslate nohighlight">
 \[v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,\]</div>
-<p>and thresholds</p>
+<p>and the thresholds are</p>
 <div class="math notranslate nohighlight">
 \[t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.\]</div>
-<img alt="Scalar quantizer example." class="align-center" src="../_images/scalar_quantizer_5.png" />
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">quantizer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -102,19 +104,19 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.LloydMaxQuantizer.levels">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">levels</span></span><a class="headerlink" href="#komm.LloydMaxQuantizer.levels" title="Permalink to this definition">¶</a></dt>
-<dd><p>The quantizer levels, <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>.</p>
+<dd><p>The quantizer levels <span class="math notranslate nohighlight">\(v_0, v_1, \ldots, v_{L-1}\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.LloydMaxQuantizer.num_levels">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_levels</span></span><a class="headerlink" href="#komm.LloydMaxQuantizer.num_levels" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of quantization levels, <span class="math notranslate nohighlight">\(L\)</span>.</p>
+<dd><p>The number of quantization levels <span class="math notranslate nohighlight">\(L\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.LloydMaxQuantizer.thresholds">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thresholds</span></span><a class="headerlink" href="#komm.LloydMaxQuantizer.thresholds" title="Permalink to this definition">¶</a></dt>
-<dd><p>The finite quantizer thresholds, <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>.</p>
+<dd><p>The finite quantizer thresholds <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{L-1}\)</span>.</p>
 </dd></dl>
 
 </dd></dl>

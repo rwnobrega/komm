@@ -45,47 +45,46 @@
 
 <div class="viewcode-block" id="UniformQuantizer.__init__"><a class="viewcode-back" href="../../../../komm.UniformQuantizer/#komm.UniformQuantizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_levels</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s2">&quot;mid-riser&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`num_levels` : :obj:`int`</span>
-<span class="sd">            The number of quantization levels, :math:`L`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`input_peak` : :obj:`float`, optional</span>
-<span class="sd">            The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.</span>
+<span class="sd">            num_levels (:obj:`int`): The number of quantization levels :math:`L`.</span>
 
-<span class="sd">        :code:`choice` : :obj:`str`, optional</span>
-<span class="sd">            The choice for the uniform quantizer. Must be one of :code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`. The default value is :code:`&#39;mid-riser&#39;`.</span>
+<span class="sd">            input_peak (:obj:`float`, optional): The peak of the input signal :math:`x_\mathrm{p}`. The default value is :code:`1.0`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of :code:`&#39;unsigned&#39;` | :code:`&#39;mid-riser&#39;` | :code:`&#39;mid-tread&#39;`. The default value is :code:`&#39;mid-riser&#39;`.</span>
 
-<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=8)</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
-<span class="sd">        array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
-<span class="sd">        array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])</span>
-<span class="sd">        &gt;&gt;&gt; x = np.linspace(-0.5, 0.5, num=11)</span>
-<span class="sd">        &gt;&gt;&gt; y = quantizer(x)</span>
-<span class="sd">        &gt;&gt;&gt; np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE</span>
-<span class="sd">        array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],</span>
-<span class="sd">               [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;unsigned&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
-<span class="sd">        array([0.  , 0.25, 0.5 , 0.75])</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
-<span class="sd">        array([0.125, 0.375, 0.625])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=8)</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">            array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">            array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])</span>
+<span class="sd">            &gt;&gt;&gt; x = np.linspace(-0.5, 0.5, num=11)</span>
+<span class="sd">            &gt;&gt;&gt; y = quantizer(x)</span>
+<span class="sd">            &gt;&gt;&gt; np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">            array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],</span>
+<span class="sd">                   [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])</span>
 
-<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-riser&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
-<span class="sd">        array([-0.75, -0.25,  0.25,  0.75])</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
-<span class="sd">        array([-0.5,  0. ,  0.5])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;unsigned&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">            array([0.  , 0.25, 0.5 , 0.75])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">            array([0.125, 0.375, 0.625])</span>
 
-<span class="sd">        &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-tread&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.levels</span>
-<span class="sd">        array([-1. , -0.5,  0. ,  0.5])</span>
-<span class="sd">        &gt;&gt;&gt; quantizer.thresholds</span>
-<span class="sd">        array([-0.75, -0.25,  0.25])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-riser&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">            array([-0.75, -0.25,  0.25,  0.75])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">            array([-0.5,  0. ,  0.5])</span>
+
+<span class="sd">            &gt;&gt;&gt; quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice=&#39;mid-tread&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.levels</span>
+<span class="sd">            array([-1. , -0.5,  0. ,  0.5])</span>
+<span class="sd">            &gt;&gt;&gt; quantizer.thresholds</span>
+<span class="sd">            array([-0.75, -0.25,  0.25])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="n">input_peak</span> <span class="o">/</span> <span class="n">num_levels</span> <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;unsigned&quot;</span> <span class="k">else</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">input_peak</span> <span class="o">/</span> <span class="n">num_levels</span>
 
@@ -112,14 +111,14 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">quantization_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The quantization step, :math:`\Delta`.</span>
+<span class="sd">        The quantization step :math:`\Delta`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantization_step</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_peak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The peak of the input signal, :math:`x_\mathrm{p}`.</span>
+<span class="sd">        The peak of the input signal :math:`x_\mathrm{p}`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_peak</span>
 

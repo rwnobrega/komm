@@ -89,8 +89,7 @@
 </ul>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">awgn</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>  
@@ -98,20 +97,17 @@
 <span class="go">        0.80128101,  3.34942297,  1.24031682, -0.84460601,  2.96762221])</span>
 </pre></div>
 </div>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.AWGNChannel.capacity">
 <span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel.capacity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = \frac{1}{2}\log_2(1 + \mathrm{SNR})\)</span>, in bits per dimension.</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
 <span class="go">3.0</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 

@@ -96,14 +96,12 @@
 <dd class="field-odd"><p><strong>erasure_probability</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) – The channel erasure probability <span class="math notranslate nohighlight">\(\epsilon\)</span>. Must satisfy <span class="math notranslate nohighlight">\(0 \leq \epsilon \leq 1\)</span>. Default value is <code class="code docutils literal notranslate"><span class="pre">0.0</span></code>, which corresponds to a noiseless channel.</p>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">bec</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>  
 <span class="go">array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -111,13 +109,11 @@
 <dt class="sig sig-object py" id="komm.BinaryErasureChannel.capacity">
 <span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/BinaryErasureChannel/#BinaryErasureChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BinaryErasureChannel.capacity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = 1 - \epsilon\)</span>. See <span id="id2">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Sec. 7.1.5).</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
 <span class="go">0.75</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -151,15 +147,13 @@
 <dd class="field-even"><p>mutual_information (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
 <span class="go">0.12381109879798724</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">0.07811610605402552</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 

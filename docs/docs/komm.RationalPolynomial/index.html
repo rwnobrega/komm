@@ -47,8 +47,7 @@
 <dt class="sig sig-object py" id="komm.RationalPolynomial">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RationalPolynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rational polynomial. A <em>rational polynomial</em> is a polynomial whose coefficients are all rational numbers. This class supports addition, subtraction, multiplication, division, and exponentiation.</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly1</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="s1">&#39;1/2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>  <span class="c1"># 1/2 + 3 X^2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly1</span>
 <span class="go">RationalPolynomial([&#39;1/2&#39;, &#39;0&#39;, &#39;3&#39;])</span>
@@ -60,7 +59,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly1</span> <span class="o">*</span> <span class="n">poly2</span>  <span class="c1"># 1/6 + (1/3) X + X^2 + 2 X^3</span>
 <span class="go">RationalPolynomial([&#39;1/6&#39;, &#39;1/3&#39;, &#39;1&#39;, &#39;2&#39;])</span>
 </pre></div>
-</div>
 </div>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
@@ -103,12 +101,10 @@
 <dd class="field-odd"><p><strong>coefficients</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Fraction</span></code>) – The coefficients of the rational polynomial—the <span class="math notranslate nohighlight">\(i\)</span>-th element of the array standing for the coefficient of <span class="math notranslate nohighlight">\(X^i\)</span>. For example, <code class="code docutils literal notranslate"><span class="pre">[1/2,</span> <span class="pre">0,</span> <span class="pre">3]</span></code> represents the rational polynomial <span class="math notranslate nohighlight">\(1/2 + 3 X^2\)</span>.</p>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="s1">&#39;1/2&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span>  <span class="c1"># 1/2 + 3 X^2</span>
 <span class="go">RationalPolynomial([&#39;1/2&#39;, &#39;0&#39;, &#39;3&#39;])</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -124,8 +120,7 @@
 <dd class="field-even"><p>coefficients (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Coefficients of the polynomial. The <span class="math notranslate nohighlight">\(i\)</span>-th element of the array stands for the coefficient of <span class="math notranslate nohighlight">\(X^i\)</span>.</p>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1/3&#39;</span><span class="p">,</span> <span class="s1">&#39;2/3&#39;</span><span class="p">])</span>  <span class="c1"># (1/3) X + (2/3) X^2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">coefficients</span><span class="p">()</span>
 <span class="go">array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)</span>
@@ -133,20 +128,17 @@
 <span class="go">array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1), Fraction(0, 1)], dtype=object)</span>
 </pre></div>
 </div>
-</div>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.RationalPolynomial.degree">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#komm.RationalPolynomial.degree" title="Permalink to this definition">¶</a></dt>
 <dd><p>The degree of the polynomial. This property is read-only.</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># 1 + 3 X^2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">degree</span>
 <span class="go">2</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -162,8 +154,7 @@
 <dd class="field-even"><p><em>result (ring-like type)</em> – The result of evaluating the binary polynomial at <code class="code docutils literal notranslate"><span class="pre">point</span></code>. It has the same type as <code class="code docutils literal notranslate"><span class="pre">point</span></code>.</p>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># X - X^3 + 2 X^4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>  <span class="c1"># same as 7 - 7**3 + 2 * 7**4</span>
 <span class="go">Fraction(4466, 1)</span>
@@ -172,7 +163,6 @@
 <span class="go">array([[Fraction(2, 1), Fraction(26, 1)],</span>
 <span class="go">       [Fraction(138, 1), Fraction(452, 1)]], dtype=object)</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -200,12 +190,10 @@
 </ul>
 </dd>
 </dl>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">RationalPolynomial</span><span class="o">.</span><span class="n">monomial</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 2 X^4</span>
 <span class="go">RationalPolynomial([&#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;2&#39;])</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 

@@ -45,42 +45,44 @@
 <span class="sd">       -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty.</span>
 
 <span class="sd">    Given an input :math:`x \in \mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \leq x &lt; t_{i+1}`, where :math:`i \in [0:L)`.</span>
+
+<span class="sd">    To invoke the quantizer, call the object giving the input signal as parameter (see example in the constructor below).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ScalarQuantizer.__init__"><a class="viewcode-back" href="../../../../komm.ScalarQuantizer/#komm.ScalarQuantizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`levels` : 1D array of :obj:`float`</span>
-<span class="sd">            The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`. It should be a list floats of length :math:`L`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`thresholds` : 1D array of :obj:`float`</span>
-<span class="sd">            The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`.</span>
+<span class="sd">            levels (1D array of :obj:`float`): The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`. It should be a list floats of length :math:`L`.</span>
 
-<span class="sd">        Moreover, they must satisfy :math:`v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1}`.</span>
+<span class="sd">            thresholds (1D array of :obj:`float`): The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`. Moreover, they must satisfy :math:`v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1}`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        The :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels</span>
+<span class="sd">            The following example considers the :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">           v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,</span>
+<span class="sd">            .. image:: figures/scalar_quantizer_5.png</span>
+<span class="sd">               :alt: Scalar quantizer example.</span>
+<span class="sd">               :align: center</span>
 
-<span class="sd">        and thresholds</span>
+<span class="sd">            The levels are</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">           t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.</span>
+<span class="sd">            .. math::</span>
+<span class="sd">               v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,</span>
 
-<span class="sd">        .. image:: figures/scalar_quantizer_5.png</span>
-<span class="sd">           :alt: Scalar quantizer example.</span>
-<span class="sd">           :align: center</span>
+<span class="sd">            and the thresholds are</span>
 
-<span class="sd">        &gt;&gt;&gt; quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])</span>
-<span class="sd">        &gt;&gt;&gt; x = np.linspace(-2.5, 2.5, num=11)</span>
-<span class="sd">        &gt;&gt;&gt; y = quantizer(x)</span>
-<span class="sd">        &gt;&gt;&gt; np.vstack([x, y])</span>
-<span class="sd">        array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],</span>
-<span class="sd">               [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])</span>
+<span class="sd">            .. math::</span>
+<span class="sd">               t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.</span>
+
+<span class="sd">            &gt;&gt;&gt; quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])</span>
+<span class="sd">            &gt;&gt;&gt; x = np.linspace(-2.5, 2.5, num=11)</span>
+<span class="sd">            &gt;&gt;&gt; y = quantizer(x)</span>
+<span class="sd">            &gt;&gt;&gt; np.vstack([x, y])</span>
+<span class="sd">            array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],</span>
+<span class="sd">                   [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -99,21 +101,21 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The quantizer levels, :math:`v_0, v_1, \ldots, v_{L-1}`.</span>
+<span class="sd">        The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The finite quantizer thresholds, :math:`t_1, t_2, \ldots, t_{L-1}`.</span>
+<span class="sd">        The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The number of quantization levels, :math:`L`.</span>
+<span class="sd">        The number of quantization levels :math:`L`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_levels</span>
 

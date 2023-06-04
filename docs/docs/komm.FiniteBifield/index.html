@@ -48,8 +48,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FiniteBifield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/FiniteBifield/#FiniteBifield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.FiniteBifield" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finite field with binary characteristic. Objects of this class represent a <em>finite field</em> <span class="math notranslate nohighlight">\(\mathrm{GF}(2^k)\)</span> (also known as <em>Galois field</em>), with <em>characteristic</em> <span class="math notranslate nohighlight">\(2\)</span> and <em>degree</em> <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>To construct <em>elements</em> of the finite field, call the finite field object. For example, <code class="code docutils literal notranslate"><span class="pre">field(0b1101)</span></code> will construct the element whose polynomial representation is <span class="math notranslate nohighlight">\(X^3 + X^2 + 1\)</span>.</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1100</span><span class="p">)</span>
@@ -60,7 +59,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
 <span class="go">0b10</span>
 </pre></div>
-</div>
 </div>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
@@ -173,8 +171,7 @@
 </tbody>
 </table>
 </div>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span>
 <span class="go">FiniteBifield(4)</span>
@@ -192,7 +189,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">modulus</span>
 <span class="go">BinaryPolynomial(0b11001)</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -254,8 +250,7 @@
 <dt class="sig sig-object py" id="komm.FiniteBifield.primitive_element">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">primitive_element</span></span><a class="headerlink" href="#komm.FiniteBifield.primitive_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>A primitive element <span class="math notranslate nohighlight">\(\alpha\)</span> of the finite field. It satisfies <span class="math notranslate nohighlight">\(p(\alpha) = 0\)</span>, where <span class="math notranslate nohighlight">\(p(X)\)</span> is the modulus (primitive polynomial) of the finite field. This property is read-only.</p>
-<div class="admonition-examples admonition">
-<p class="admonition-title">Examples</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field1</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alpha1</span> <span class="o">=</span> <span class="n">field1</span><span class="o">.</span><span class="n">primitive_element</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">alpha1</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)]</span>
@@ -265,7 +260,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">alpha2</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)]</span>
 <span class="go">[0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]</span>
 </pre></div>
-</div>
 </div>
 </dd></dl>
 
