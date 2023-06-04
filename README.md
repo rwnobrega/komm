@@ -16,7 +16,7 @@ This software is still under development. Contributions are very welcome!
 
 Before you start, make sure you have [Python](https://www.python.org/) (version 3.8 or later), [NumPy](https://www.numpy.org/), and [SciPy](https://www.scipy.org/) installed.
 
-### Using pip
+### From PyPI
 
 ``` bash
 pip install komm
