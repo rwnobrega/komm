@@ -39,13 +39,22 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
     "sphinxcontrib.bibtex",
 ]
 
+add_module_names = False
+
+# Autodoc settings
 autodoc_member_order = "bysource"
 autodoc_default_flags = ["members", "show-inheritance"]
-add_module_names = False
+
+# Autosummary settings
 autosummary_generate = True
+
+# Napoleon settings
+napoleon_use_admonition_for_examples = True
+napoleon_use_rtype = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]

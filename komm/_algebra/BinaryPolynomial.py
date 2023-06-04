@@ -11,29 +11,30 @@ class BinaryPolynomial:
     r"""
     Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. This class supports addition, multiplication, division, and exponentiation.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
-    >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-    >>> poly1 + poly2  # X^3 + X^2 + X
-    BinaryPolynomial(0b1110)
-    >>> poly1 * poly2  # X^8 + X^7 + X^6 + X^3
-    BinaryPolynomial(0b111001000)
-    >>> poly1**2  # X^8 + X^4
-    BinaryPolynomial(0b100010000)
+        >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
+        >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+        >>> poly1 + poly2  # X^3 + X^2 + X
+        BinaryPolynomial(0b1110)
+        >>> poly1 * poly2  # X^8 + X^7 + X^6 + X^3
+        BinaryPolynomial(0b111001000)
+        >>> poly1**2  # X^8 + X^4
+        BinaryPolynomial(0b100010000)
     """
 
     def __init__(self, integer):
         r"""
-        Default constructor for the class. It expects the following parameter:
+        Default constructor for the class.
 
-        :code:`integer` : :obj:`int`
-            An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.
+        Parameters:
 
-        .. rubric:: Examples
+            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.
 
-        >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        BinaryPolynomial(0b11010)
+        Examples:
+
+            >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            BinaryPolynomial(0b11010)
 
         There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
         """
@@ -42,30 +43,32 @@ class BinaryPolynomial:
     @classmethod
     def from_coefficients(cls, coefficients):
         r"""
-        Constructs a :obj:`BinaryPolynomial` from its coefficients. It expects the following parameter:
+        Constructs a :obj:`BinaryPolynomial` from its coefficients.
 
-        :code:`coefficients` : 1D-array of :obj:`int`
-            The coefficients of the binary polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial :math:`X^4 + X^3 + X`.
+        Parameters:
 
-        .. rubric:: Examples
+            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
-        >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
-        BinaryPolynomial(0b11010)
+        Examples:
+
+            >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
+            BinaryPolynomial(0b11010)
         """
         return cls(_binlist2int(coefficients))
 
     @classmethod
     def from_exponents(cls, exponents):
         r"""
-        Constructs a :obj:`BinaryPolynomial` from its exponents. It expects the following parameter:
+        Constructs a :obj:`BinaryPolynomial` from its exponents.
 
-        :code:`exponents` : 1D-array of :obj:`int`
-            The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
+        Parameters:
 
-        .. rubric:: Examples
+            exponents (1D-array of :obj:`int`): The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
 
-        >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
-        BinaryPolynomial(0b11010)
+        Examples:
+
+            >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
+            BinaryPolynomial(0b11010)
         """
         return cls(_binlist2int(np.bincount(exponents)))
 
@@ -74,11 +77,11 @@ class BinaryPolynomial:
         r"""
         The degree of the polynomial. This property is read-only.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly.degree
-        4
+            >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            >>> poly.degree
+            4
         """
         return self._integer.bit_length() - 1
 
@@ -86,23 +89,21 @@ class BinaryPolynomial:
         r"""
         Returns the coefficients of the binary polynomial.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`width` : :obj:`int`, optional
-            If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`coefficients` : 1D-array of :obj:`int`
-            Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+            coefficients (1D-array of :obj:`int`): Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly.coefficients()
-        array([0, 1, 0, 1, 1])
-        >>> poly.coefficients(width=8)
-        array([0, 1, 0, 1, 1, 0, 0, 0])
+            >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            >>> poly.coefficients()
+            array([0, 1, 0, 1, 1])
+            >>> poly.coefficients(width=8)
+            array([0, 1, 0, 1, 1, 0, 0, 0])
         """
         return np.array(_int2binlist(self._integer, width=width), dtype=int)
 
@@ -110,16 +111,15 @@ class BinaryPolynomial:
         r"""
         Returns the exponents of the binary polynomial.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`exponents` : 1D-array of :obj:`int`
-            Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
+            :strong:`exponents` (1D-array of :obj:`int`): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly.exponents()
-        array([1, 3, 4])
+            >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            >>> poly.exponents()
+            array([1, 3, 4])
         """
         return np.flatnonzero(self.coefficients())
 
@@ -169,25 +169,23 @@ class BinaryPolynomial:
         r"""
         Evaluates the polynomial at a given point. Uses Horner's method.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`point` : ring-like type
-            Any Python object supporting the operations of addition, subtraction, and multiplication.
+            point (ring-like type): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`result` : ring-like type
-            The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
+            result (ring-like type): The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
-        2751
-        >>> point = np.array([[1, 2], [3, 4]])
-        >>> poly.evaluate(point)  # same as point**4 + point**3 + point
-        array([[  3,  26],
-               [111, 324]])
+            >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
+            2751
+            >>> point = np.array([[1, 2], [3, 4]])
+            >>> poly.evaluate(point)  # same as point**4 + point**3 + point
+            array([[  3,  26],
+                   [111, 324]])
         """
         return binary_horner(self, point)
 

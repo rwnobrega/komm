@@ -8,84 +8,94 @@ from .util import power
 
 class FiniteBifield:
     r"""
-    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.  The constructor takes :math:`k` as a parameter.  Optionally, the *modulus*, or *primitive polynomial*, :math:`p(X)` may be specified; if not, the following default values will be chosen :cite:`Lin.Costello.04` (p. 42):
-
-    ===========  =====================  ============  ============================
-     :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`
-    ===========  =====================  ============  ============================
-     :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`
-     :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`
-     :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`
-     :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`
-     :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`
-     :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`
-     :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`
-     :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`
-    ===========  =====================  ============  ============================
+    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.
 
     To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> field = komm.FiniteBifield(4)
-    >>> field
-    FiniteBifield(4)
-    >>> (field.characteristic, field.degree)
-    (2, 4)
-    >>> field.modulus
-    BinaryPolynomial(0b10011)
-
-    >>> field1 = komm.FiniteBifield(3, modulus=0b1011)
-    >>> alpha1 = field1.primitive_element
-    >>> [alpha1**i for i in range(7)]
-    [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]
-    >>> field2 = komm.FiniteBifield(3, modulus=0b1101)
-    >>> alpha2 = field2.primitive_element
-    >>> [alpha2**i for i in range(7)]
-    [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]
-
-    >>> field = komm.FiniteBifield(4)
-    >>> x = field(0b1011)
-    >>> y = field(0b1100)
-    >>> x + y
-    0b111
-    >>> x * y
-    0b1101
-    >>> x / y
-    0b10
+        >>> field = komm.FiniteBifield(4)
+        >>> x = field(0b1011)
+        >>> y = field(0b1100)
+        >>> x + y
+        0b111
+        >>> x * y
+        0b1101
+        >>> x / y
+        0b10
     """
+
+    @classmethod
+    def _default_moduli(cls, degree):
+        return {
+            1: BinaryPolynomial(0b11),
+            2: BinaryPolynomial(0b111),
+            3: BinaryPolynomial(0b1011),
+            4: BinaryPolynomial(0b10011),
+            5: BinaryPolynomial(0b100101),
+            6: BinaryPolynomial(0b1000011),
+            7: BinaryPolynomial(0b10001001),
+            8: BinaryPolynomial(0b100011101),
+            9: BinaryPolynomial(0b1000010001),
+            10: BinaryPolynomial(0b10000001001),
+            11: BinaryPolynomial(0b100000000101),
+            12: BinaryPolynomial(0b1000001010011),
+            13: BinaryPolynomial(0b10000000011011),
+            14: BinaryPolynomial(0b100010001000011),
+            15: BinaryPolynomial(0b1000000000000011),
+            16: BinaryPolynomial(0b10000000010000011),
+        }[degree]
 
     def __init__(self, degree, modulus=None):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`degree` : :obj:`int`
-            Degree :math:`k` of the finite field. Must be a positive integer.
-        :code:`modulus` : :obj:`BinaryPolynomial` or :obj:`int`, optional
-            Modulus (primitive polynomial) of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial.
+        Parameters:
+
+            degree (:obj:`int`): Degree :math:`k` of the finite field. Must be a positive integer.
+
+            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) :math:`p(X)` of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below.
+
+        .. admonition:: Default values for the primitive polynomials
+
+            From :cite:`Lin.Costello.04` (p. 42).
+
+            ===========  =====================  ============  ============================
+            :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`
+            ===========  =====================  ============  ============================
+            :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`
+            :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`
+            :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`
+            :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`
+            :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`
+            :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`
+            :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`
+            :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`
+            ===========  =====================  ============  ============================
+
+        Examples:
+
+            >>> field = komm.FiniteBifield(4)
+            >>> field
+            FiniteBifield(4)
+            >>> (field.characteristic, field.degree, field.order)
+            (2, 4, 16)
+            >>> field.modulus
+            BinaryPolynomial(0b10011)
+
+            >>> field = komm.FiniteBifield(4, modulus=0b11001)
+            >>> field
+            FiniteBifield(4, modulus=0b11001)
+            >>> (field.characteristic, field.degree, field.order)
+            (2, 4, 16)
+            >>> field.modulus
+            BinaryPolynomial(0b11001)
+
         """
         self._characteristic = 2
         self._degree = degree
         if modulus is None:
-            PRIMITIVE_POLYNOMIALS = {
-                1: 0b11,
-                2: 0b111,
-                3: 0b1011,
-                4: 0b10011,
-                5: 0b100101,
-                6: 0b1000011,
-                7: 0b10001001,
-                8: 0b100011101,
-                9: 0b1000010001,
-                10: 0b10000001001,
-                11: 0b100000000101,
-                12: 0b1000001010011,
-                13: 0b10000000011011,
-                14: 0b100010001000011,
-                15: 0b1000000000000011,
-                16: 0b10001000000001011,
-            }
-            self._modulus = BinaryPolynomial(PRIMITIVE_POLYNOMIALS[degree])
+            self._modulus = BinaryPolynomial(self._default_moduli(degree))
         else:
             self._modulus = BinaryPolynomial(modulus)
 
@@ -123,6 +133,17 @@ class FiniteBifield:
     def primitive_element(self):
         r"""
         A primitive element :math:`\alpha` of the finite field. It satisfies :math:`p(\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.
+
+        Examples:
+
+            >>> field1 = komm.FiniteBifield(3, modulus=0b1011)
+            >>> alpha1 = field1.primitive_element
+            >>> [alpha1**i for i in range(7)]
+            [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]
+            >>> field2 = komm.FiniteBifield(3, modulus=0b1101)
+            >>> alpha2 = field2.primitive_element
+            >>> [alpha2**i for i in range(7)]
+            [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]
         """
         return self(2)
 
@@ -144,7 +165,7 @@ class FiniteBifield:
     # ~@functools.lru_cache(maxsize=None)
     def logarithm(self, x, base=None):
         r"""
-        Returns the logarithm of a given element, with respect to a given base.
+        Returns the logarithm of a given element, with respect to a given base. If no base is given, the primitive element is used as the base.
         """
         if base is None:
             base = self.primitive_element
@@ -189,8 +210,12 @@ class FiniteBifield:
         return BinaryPolynomial.from_coefficients(int(c) for c in coefficients)
 
     def __repr__(self):
-        args = "{}".format(self._degree)
-        return "{}({})".format(self.__class__.__name__, args)
+        if self._modulus._integer == self._default_moduli(self._degree):
+            args = f"{self._degree}"
+        else:
+            ## modulus must be in binary form
+            args = f"{self._degree}, modulus=0b{self._modulus._integer:b}"
+        return f"{self.__class__.__name__}({args})"
 
     def __call__(self, value):
         r"""

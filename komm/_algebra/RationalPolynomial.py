@@ -9,17 +9,36 @@ from .util import gcd, horner, power
 
 class RationalPolynomial:
     r"""
-    Rational polynomial. A *rational polynomial* is a polynomial whose coefficients are all rational numbers.
+    Rational polynomial. A *rational polynomial* is a polynomial whose coefficients are all rational numbers. This class supports addition, subtraction, multiplication, division, and exponentiation.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> from fractions import Fraction
-    >>> poly = komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
-    >>> poly
-    RationalPolynomial(['1/2', '0', '3'])
+        >>> poly1 = komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
+        >>> poly1
+        RationalPolynomial(['1/2', '0', '3'])
+        >>> poly2 = komm.RationalPolynomial(['1/3', '2/3'])  # 1/3 + (2/3) X
+        >>> poly2
+        RationalPolynomial(['1/3', '2/3'])
+        >>> poly1 + poly2  # 5/6 + (2/3) X + 3 X^2
+        RationalPolynomial(['5/6', '2/3', '3'])
+        >>> poly1 * poly2  # 1/6 + (1/3) X + X^2 + 2 X^3
+        RationalPolynomial(['1/6', '1/3', '1', '2'])
     """
 
     def __init__(self, coefficients):
+        r"""
+        Constructor for the class.
+
+        Parameters:
+
+            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[1/2, 0, 3]` represents the rational polynomial :math:`1/2 + 3 X^2`.
+
+        Examples:
+
+            >>> komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
+            RationalPolynomial(['1/2', '0', '3'])
+        """
+
         if isinstance(coefficients, (int, Fraction)):
             coefficients = [Fraction(coefficients)]
         elif isinstance(coefficients, self.__class__):
@@ -30,18 +49,18 @@ class RationalPolynomial:
     @classmethod
     def monomial(cls, degree, coefficient=1):
         r"""
-        Constructs a monomial. This is an polynomial of the form :math:`cX^d`. It expects the following parameters:
+        Constructs a monomial. This is an polynomial of the form :math:`cX^d`.
 
-        :code:`degree` : :obj:`int`
-            The degree :math:`d` of the monomial.
+        Parameters:
 
-        :code:`coefficient` : :obj:`int`, optional
-            The coefficient :math:`c` of the monomial. The default value is :math:`1`.
+            degree (:obj:`int`): The degree :math:`d` of the monomial.
 
-        .. rubric:: Examples
+            coefficient (:obj:`int`, optional): The coefficient :math:`c` of the monomial. The default value is :math:`1`.
 
-        >>> komm.RationalPolynomial.monomial(4, 2)  # 2 X^4
-        RationalPolynomial(['0', '0', '0', '0', '2'])
+        Examples:
+
+            >>> komm.RationalPolynomial.monomial(4, 2)  # 2 X^4
+            RationalPolynomial(['0', '0', '0', '0', '2'])
         """
         return cls([0] * degree + [coefficient])
 
@@ -49,24 +68,21 @@ class RationalPolynomial:
         r"""
         Returns the coefficients of the polynomial.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`width` : :obj:`int`, optional
-            If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`coefficients` : 1D-array of :obj:`int`
-            Coefficients of the polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+            coefficients (1D-array of :obj:`int`): Coefficients of the polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.RationalPolynomial(['0', '1/3', '2/3'])  # (1/3) X + (2/3) X^2
-        >>> poly.coefficients()
-        array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)
-        >>> poly.coefficients(width=5)
-        array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1),
-               Fraction(0, 1)], dtype=object)
+            >>> poly = komm.RationalPolynomial(['0', '1/3', '2/3'])  # (1/3) X + (2/3) X^2
+            >>> poly.coefficients()
+            array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)
+            >>> poly.coefficients(width=5)  #doctest: +NORMALIZE_WHITESPACE
+            array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1), Fraction(0, 1)], dtype=object)
         """
         if width is None:
             coefficients = self._coefficients
@@ -81,11 +97,11 @@ class RationalPolynomial:
         r"""
         The degree of the polynomial. This property is read-only.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.RationalPolynomial([1, 0, 3])  # 1 + 3X^2
-        >>> poly.degree
-        2
+            >>> poly = komm.RationalPolynomial([1, 0, 3])  # 1 + 3 X^2
+            >>> poly.degree
+            2
         """
         return self._coefficients.size - 1
 
@@ -145,25 +161,23 @@ class RationalPolynomial:
         r"""
         Evaluates the polynomial at a given point. Uses Horner's method.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`point` : ring-like type
-            Any Python object supporting the operations of addition, subtraction, and multiplication.
+            point (ring-like type): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`result` : ring-like type
-            The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
+            result (ring-like type): The result of evaluating the binary polynomial at :code:`point`. It has the same type as :code:`point`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> poly = komm.RationalPolynomial([0, 1, 0, -1, 2])  # X - X^3 + 2 X^4
-        >>> poly.evaluate(7)  # same as 7 - 7**3 + 2 * 7**4
-        Fraction(4466, 1)
-        >>> point = np.array([[1, 2], [3, 4]])
-        >>> poly.evaluate(point)  # same as point - point**3 + 2 * point**4
-        array([[Fraction(2, 1), Fraction(26, 1)],
-               [Fraction(138, 1), Fraction(452, 1)]], dtype=object)
+            >>> poly = komm.RationalPolynomial([0, 1, 0, -1, 2])  # X - X^3 + 2 X^4
+            >>> poly.evaluate(7)  # same as 7 - 7**3 + 2 * 7**4
+            Fraction(4466, 1)
+            >>> point = np.array([[1, 2], [3, 4]])
+            >>> poly.evaluate(point)  # same as point - point**3 + 2 * point**4
+            array([[Fraction(2, 1), Fraction(26, 1)],
+                   [Fraction(138, 1), Fraction(452, 1)]], dtype=object)
         """
         return horner(self, point)
 
