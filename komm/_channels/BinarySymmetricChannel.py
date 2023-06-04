@@ -17,26 +17,25 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     .. math::
         Y_n = X_n + Z_n,
 
-    where :math:`Z_n` are :term:`i.i.d.` Bernouli random variables with :math:`\Pr[Z_n = 1] = p`.
-
-    References: :cite:`Cover.Thomas.06` (Sec. 7.1.4)
+    where :math:`Z_n` are :term:`i.i.d.` Bernoulli random variables with :math:`\Pr[Z_n = 1] = p`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
 
     def __init__(self, crossover_probability=0.0):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`crossover_probability` : :obj:`float`, optional
-            The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`.
+        Parameters:
 
-        .. rubric:: Examples
+            crossover_probability (:obj:`float`, optional): The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`, which corresponds to a noiseless channel.
 
-        >>> bsc = komm.BinarySymmetricChannel(0.1)
-        >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
-        >>> y = bsc(x); y  #doctest:+SKIP
-        array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
+        Examples:
+
+            >>> bsc = komm.BinarySymmetricChannel(0.1)
+            >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
+            >>> y = bsc(x); y  #doctest:+SKIP
+            array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
         """
         self.crossover_probability = crossover_probability
 
@@ -56,11 +55,11 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         r"""
         Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> bsc = komm.BinarySymmetricChannel(0.25)
-        >>> bsc.capacity()
-        0.18872187554086717
+            >>> bsc = komm.BinarySymmetricChannel(0.25)
+            >>> bsc.capacity()
+            0.18872187554086717
         """
         return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]))
 

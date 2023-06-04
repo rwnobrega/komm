@@ -15,29 +15,27 @@ class AWGNChannel:
 
         \mathrm{SNR} = \frac{P}{N},
 
-    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.
+    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
 
-    References: :cite:`Cover.Thomas.06` (Ch. 9)
-
-    To invoke the channel, call the object giving the input signal as parameter (see example below).
+    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
 
     def __init__(self, snr=np.inf, signal_power=1.0):
-        r"""Constructor for the class. It expects the following parameters:
+        r"""Constructor for the class.
 
-        :code:`snr` : :obj:`float`, optional
-            The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.
+        Parameters:
 
-        :code:`signal_power` : :obj:`float` or :obj:`str`, optional
-            The input signal power :math:`P`.  If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
+            snr (:obj:`float`, optional): The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`, which corresponds to a noiseless channel.
 
-        .. rubric:: Examples
+            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power :math:`P`. If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
 
-        >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)
-        >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-        >>> y = awgn(x); y  #doctest:+SKIP
-        array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,
-                1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])
+        Examples:
+
+            >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=5.0)
+            >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
+            >>> y = awgn(x); y  #doctest:+SKIP
+            array([ 0.91623839,  2.66229342, -2.96852259, -1.07689368, -0.89296933,
+                    0.80128101,  3.34942297,  1.24031682, -0.84460601,  2.96762221])
         """
         self.snr = snr
         self.signal_power = signal_power
@@ -62,17 +60,20 @@ class AWGNChannel:
 
     @signal_power.setter
     def signal_power(self, value):
-        self._signal_power = float(value)
+        if value == "measured":
+            self._signal_power = value
+        else:
+            self._signal_power = float(value)
 
     def capacity(self):
         r"""
         Returns the channel capacity :math:`C`. It is given by :math:`C = \frac{1}{2}\log_2(1 + \mathrm{SNR})`, in bits per dimension.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> awgn = komm.AWGNChannel(snr=63.0)
-        >>> awgn.capacity()
-        3.0
+            >>> awgn = komm.AWGNChannel(snr=63.0)
+            >>> awgn.capacity()
+            3.0
         """
         return 0.5 * np.log1p(self._snr) / np.log(2.0)
 
