@@ -66,21 +66,21 @@ class ScalarQuantizer:
     @property
     def levels(self):
         r"""
-        The quantizer levels, :math:`v_0, v_1, \ldots, v_{L-1}`.
+        The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`.
         """
         return self._levels
 
     @property
     def thresholds(self):
         r"""
-        The finite quantizer thresholds, :math:`t_1, t_2, \ldots, t_{L-1}`.
+        The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`.
         """
         return self._thresholds
 
     @property
     def num_levels(self):
         r"""
-        The number of quantization levels, :math:`L`.
+        The number of quantization levels :math:`L`.
         """
         return self._num_levels
 

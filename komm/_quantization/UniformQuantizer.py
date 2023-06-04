@@ -14,9 +14,9 @@ class UniformQuantizer(ScalarQuantizer):
 
         Parameters:
 
-            num_levels (:obj:`int`): The number of quantization levels, :math:`L`.
+            num_levels (:obj:`int`): The number of quantization levels :math:`L`.
 
-            input_peak (:obj:`float`, optional): The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
+            input_peak (:obj:`float`, optional): The peak of the input signal :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
 
             choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
 
@@ -76,14 +76,14 @@ class UniformQuantizer(ScalarQuantizer):
     @property
     def quantization_step(self):
         r"""
-        The quantization step, :math:`\Delta`.
+        The quantization step :math:`\Delta`.
         """
         return self._quantization_step
 
     @property
     def input_peak(self):
         r"""
-        The peak of the input signal, :math:`x_\mathrm{p}`.
+        The peak of the input signal :math:`x_\mathrm{p}`.
         """
         return self._input_peak
 
