@@ -186,7 +186,7 @@ class FiniteBifield:
     @staticmethod
     def conjugates(x):
         r"""
-        Returns the conjugates of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5) for more details.
+        Returns the conjugates of a given element. See :cite:`Lin.Costello.04` (Sec. 2.5).
         """
         conjugate_list = []
         exponent = 0
