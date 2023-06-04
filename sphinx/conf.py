@@ -49,7 +49,7 @@ add_module_names = False
 autosummary_generate = True
 
 # Napoleon settings
-napoleon_use_admonition_for_examples = True
+napoleon_use_admonition_for_examples = False
 napoleon_use_rtype = False
 
 # Add any paths that contain templates here, relative to this directory.
