@@ -125,10 +125,10 @@ def qfuncinv(x):
     :code:`x` : same as input
         The value :math:`x = \mathrm{Q^{-1}}(y)`.
 
-    >>> komm.qfuncinv(0.5)  #doctest:+SKIP
+    >>> komm.qfuncinv(0.5)  #doctest: +SKIP
     0.0
 
-    >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest:+SKIP
+    >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest: +SKIP
     array([-1., 0.,  1.])
     """
     return _qfuncinv(np.array(x))
@@ -186,7 +186,7 @@ def entropy(pmf, base=2.0):
     >>> komm.entropy([1/4, 1/4, 1/4, 1/4])
     2.0
 
-    >>> komm.entropy([1/3, 1/3, 1/3], base=3.0)  #doctest:+SKIP
+    >>> komm.entropy([1/3, 1/3, 1/3], base=3.0)  #doctest: +SKIP
     1.0
 
     >>> komm.entropy([1.0, 1.0])

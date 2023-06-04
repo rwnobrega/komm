@@ -34,7 +34,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
             >>> bsc = komm.BinarySymmetricChannel(0.1)
             >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
-            >>> y = bsc(x); y  #doctest:+SKIP
+            >>> y = bsc(x); y  #doctest: +SKIP
             array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
         """
         self.crossover_probability = crossover_probability

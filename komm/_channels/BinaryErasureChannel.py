@@ -32,7 +32,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
             >>> bec = komm.BinaryErasureChannel(0.1)
             >>> x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]
-            >>> y = bec(x); y  #doctest:+SKIP
+            >>> y = bec(x); y  #doctest: +SKIP
             array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])
         """
         self.erasure_probability = erasure_probability

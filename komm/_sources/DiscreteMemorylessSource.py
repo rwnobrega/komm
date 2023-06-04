@@ -21,7 +21,7 @@ class DiscreteMemorylessSource:
         Examples:
 
             >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
-            >>> dms(10)  #doctest:+SKIP
+            >>> dms(10)  #doctest: +SKIP
             array([1, 2, 1, 0, 0, 1, 1, 0, 1, 1])
         """
         self.pmf = pmf

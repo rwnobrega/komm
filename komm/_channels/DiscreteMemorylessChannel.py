@@ -22,7 +22,7 @@ class DiscreteMemorylessChannel:
 
             >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
             >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
-            >>> y = dmc(x); y  #doctest:+SKIP
+            >>> y = dmc(x); y  #doctest: +SKIP
             array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
         """
         self.transition_matrix = transition_matrix
