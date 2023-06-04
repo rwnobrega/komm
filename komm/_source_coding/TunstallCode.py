@@ -9,28 +9,28 @@ class TunstallCode(VariableToFixedCode):
     r"""
     Tunstall code. It is an optimal (minimal expected rate) variable-to-fixed length code (:class:`VariableToFixedCode`) for a given probability mass function.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
-    >>> pprint(code.enc_mapping)
-    {(0, 0, 0): (0, 0, 0),
-     (0, 0, 1): (0, 0, 1),
-     (0, 0, 2): (0, 1, 0),
-     (0, 1): (0, 1, 1),
-     (0, 2): (1, 0, 0),
-     (1,): (1, 0, 1),
-     (2,): (1, 1, 0)}
+        >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
+        >>> pprint(code.enc_mapping)
+        {(0, 0, 0): (0, 0, 0),
+         (0, 0, 1): (0, 0, 1),
+         (0, 0, 2): (0, 1, 0),
+         (0, 1): (0, 1, 1),
+         (0, 2): (1, 0, 0),
+         (1,): (1, 0, 1),
+         (2,): (1, 1, 0)}
     """
 
     def __init__(self, pmf, code_block_size):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`pmf` : 1D-array of :obj:`float`
-            The probability mass function used to construct the code.
+        Parameters:
 
-        :code:`code_block_size` : :obj:`int`, optional
-            The code block size :math:`n`. Must satisfy :math:`2^n \geq |\mathcal{X}|`, where :math:`|\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.
+            pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.
+
+            code_block_size (:obj:`int`, optional): The code block size :math:`n`. Must satisfy :math:`2^n \geq |\mathcal{X}|`, where :math:`|\mathcal{X}|` is the cardinality of the source alphabet, given by :code:`len(pmf)`.
         """
         self._pmf = np.array(pmf)
 
