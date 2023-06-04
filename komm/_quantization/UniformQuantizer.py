@@ -10,47 +10,46 @@ class UniformQuantizer(ScalarQuantizer):
 
     def __init__(self, num_levels, input_peak=1.0, choice="mid-riser"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`num_levels` : :obj:`int`
-            The number of quantization levels, :math:`L`.
+        Parameters:
 
-        :code:`input_peak` : :obj:`float`, optional
-            The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
+            num_levels (:obj:`int`): The number of quantization levels, :math:`L`.
 
-        :code:`choice` : :obj:`str`, optional
-            The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
+            input_peak (:obj:`float`, optional): The peak of the input signal, :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
 
-        .. rubric:: Examples
+            choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=8)
-        >>> quantizer.levels
-        array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])
-        >>> quantizer.thresholds
-        array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])
-        >>> x = np.linspace(-0.5, 0.5, num=11)
-        >>> y = quantizer(x)
-        >>> np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE
-        array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],
-               [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])
+        Examples:
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='unsigned')
-        >>> quantizer.levels
-        array([0.  , 0.25, 0.5 , 0.75])
-        >>> quantizer.thresholds
-        array([0.125, 0.375, 0.625])
+            >>> quantizer = komm.UniformQuantizer(num_levels=8)
+            >>> quantizer.levels
+            array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])
+            >>> quantizer.thresholds
+            array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])
+            >>> x = np.linspace(-0.5, 0.5, num=11)
+            >>> y = quantizer(x)
+            >>> np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE
+            array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],
+                   [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-riser')
-        >>> quantizer.levels
-        array([-0.75, -0.25,  0.25,  0.75])
-        >>> quantizer.thresholds
-        array([-0.5,  0. ,  0.5])
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='unsigned')
+            >>> quantizer.levels
+            array([0.  , 0.25, 0.5 , 0.75])
+            >>> quantizer.thresholds
+            array([0.125, 0.375, 0.625])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-tread')
-        >>> quantizer.levels
-        array([-1. , -0.5,  0. ,  0.5])
-        >>> quantizer.thresholds
-        array([-0.75, -0.25,  0.25])
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-riser')
+            >>> quantizer.levels
+            array([-0.75, -0.25,  0.25,  0.75])
+            >>> quantizer.thresholds
+            array([-0.5,  0. ,  0.5])
+
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_peak=1.0, choice='mid-tread')
+            >>> quantizer.levels
+            array([-1. , -0.5,  0. ,  0.5])
+            >>> quantizer.thresholds
+            array([-0.75, -0.25,  0.25])
         """
         delta = input_peak / num_levels if choice == "unsigned" else 2.0 * input_peak / num_levels
 

@@ -10,42 +10,44 @@ class ScalarQuantizer:
        -\infty = t_0 < v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1} < t_L = +\infty.
 
     Given an input :math:`x \in \mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \leq x < t_{i+1}`, where :math:`i \in [0:L)`.
+
+    To invoke the quantizer, call the object giving the input signal as parameter (see example in the constructor below).
     """
 
     def __init__(self, levels, thresholds):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`levels` : 1D array of :obj:`float`
-            The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`. It should be a list floats of length :math:`L`.
+        Parameters:
 
-        :code:`thresholds` : 1D array of :obj:`float`
-            The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`.
+            levels (1D array of :obj:`float`): The quantizer levels :math:`v_0, v_1, \ldots, v_{L-1}`. It should be a list floats of length :math:`L`.
 
-        Moreover, they must satisfy :math:`v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}`.
+            thresholds (1D array of :obj:`float`): The finite quantizer thresholds :math:`t_1, t_2, \ldots, t_{L-1}`. It should be a list of floats of length :math:`L - 1`. Moreover, they must satisfy :math:`v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}`.
 
-        .. rubric:: Examples
+        Examples:
 
-        The :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels
+            The following example considers the :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.
 
-        .. math::
-           v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,
+            .. image:: figures/scalar_quantizer_5.png
+               :alt: Scalar quantizer example.
+               :align: center
 
-        and thresholds
+            The levels are
 
-        .. math::
-           t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.
+            .. math::
+               v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,
 
-        .. image:: figures/scalar_quantizer_5.png
-           :alt: Scalar quantizer example.
-           :align: center
+            and the thresholds are
 
-        >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
-        >>> x = np.linspace(-2.5, 2.5, num=11)
-        >>> y = quantizer(x)
-        >>> np.vstack([x, y])
-        array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
-               [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
+            .. math::
+               t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.
+
+            >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
+            >>> x = np.linspace(-2.5, 2.5, num=11)
+            >>> y = quantizer(x)
+            >>> np.vstack([x, y])
+            array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
+                   [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
         """
         self._levels = np.array(levels, dtype=float)
         self._thresholds = np.array(thresholds, dtype=float)
