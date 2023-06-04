@@ -50,26 +50,25 @@
 <span class="sd">            0 &amp; 1 - \epsilon &amp; \epsilon</span>
 <span class="sd">        \end{bmatrix},</span>
 
-<span class="sd">    where the parameter :math:`\epsilon` is called the *erasure probability* of the channel.</span>
+<span class="sd">    where the parameter :math:`\epsilon` is called the *erasure probability* of the channel. See :cite:`Cover.Thomas.06` (Sec. 7.1.5).</span>
 
-<span class="sd">    References: :cite:`Cover.Thomas.06` (Sec. 7.1.5)</span>
-
-<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example below).</span>
+<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BinaryErasureChannel.__init__"><a class="viewcode-back" href="../../../../komm.BinaryErasureChannel/#komm.BinaryErasureChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">erasure_probability</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameter:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`erasure_probability` : :obj:`float`, optional</span>
-<span class="sd">            The channel erasure probability :math:`\epsilon`. Must satisfy :math:`0 \leq \epsilon \leq 1`. Default value is :code:`0.0`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            erasure_probability (:obj:`float`, optional): The channel erasure probability :math:`\epsilon`. Must satisfy :math:`0 \leq \epsilon \leq 1`. Default value is :code:`0.0`, which corresponds to a noiseless channel.</span>
 
-<span class="sd">        &gt;&gt;&gt; bec = komm.BinaryErasureChannel(0.1)</span>
-<span class="sd">        &gt;&gt;&gt; x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]</span>
-<span class="sd">        &gt;&gt;&gt; y = bec(x); y  #doctest:+SKIP</span>
-<span class="sd">        array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; bec = komm.BinaryErasureChannel(0.1)</span>
+<span class="sd">            &gt;&gt;&gt; x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]</span>
+<span class="sd">            &gt;&gt;&gt; y = bec(x); y  #doctest:+SKIP</span>
+<span class="sd">            array([1, 1, 1, 2, 0, 0, 1, 0, 1, 0])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">erasure_probability</span> <span class="o">=</span> <span class="n">erasure_probability</span></div>
 
@@ -87,13 +86,13 @@
 
 <div class="viewcode-block" id="BinaryErasureChannel.capacity"><a class="viewcode-back" href="../../../../komm.BinaryErasureChannel/#komm.BinaryErasureChannel.capacity">[docs]</a>    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \epsilon`.  See :cite:`Cover.Thomas.06` (Sec. 7.1.5).</span>
+<span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \epsilon`. See :cite:`Cover.Thomas.06` (Sec. 7.1.5).</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; bec = komm.BinaryErasureChannel(0.25)</span>
-<span class="sd">        &gt;&gt;&gt; bec.capacity()</span>
-<span class="sd">        0.75</span>
+<span class="sd">            &gt;&gt;&gt; bec = komm.BinaryErasureChannel(0.25)</span>
+<span class="sd">            &gt;&gt;&gt; bec.capacity()</span>
+<span class="sd">            0.75</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_erasure_probability</span></div>
 

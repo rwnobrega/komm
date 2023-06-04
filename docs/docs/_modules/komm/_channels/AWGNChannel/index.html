@@ -50,29 +50,27 @@
 
 <span class="sd">        \mathrm{SNR} = \frac{P}{N},</span>
 
-<span class="sd">    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise.</span>
+<span class="sd">    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).</span>
 
-<span class="sd">    References: :cite:`Cover.Thomas.06` (Ch. 9)</span>
-
-<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example below).</span>
+<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="AWGNChannel.__init__"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Constructor for the class. It expects the following parameters:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Constructor for the class.</span>
 
-<span class="sd">        :code:`snr` : :obj:`float`, optional</span>
-<span class="sd">            The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`signal_power` : :obj:`float` or :obj:`str`, optional</span>
-<span class="sd">            The input signal power :math:`P`.  If equal to the string :code:`&#39;measured&#39;`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.</span>
+<span class="sd">            snr (:obj:`float`, optional): The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`, which corresponds to a noiseless channel.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power :math:`P`. If equal to the string :code:`&#39;measured&#39;`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.</span>
 
-<span class="sd">        &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=100.0, signal_power=1.0)</span>
-<span class="sd">        &gt;&gt;&gt; x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]</span>
-<span class="sd">        &gt;&gt;&gt; y = awgn(x); y  #doctest:+SKIP</span>
-<span class="sd">        array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,</span>
-<span class="sd">                1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=100.0, signal_power=5.0)</span>
+<span class="sd">            &gt;&gt;&gt; x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]</span>
+<span class="sd">            &gt;&gt;&gt; y = awgn(x); y  #doctest:+SKIP</span>
+<span class="sd">            array([ 0.91623839,  2.66229342, -2.96852259, -1.07689368, -0.89296933,</span>
+<span class="sd">                    0.80128101,  3.34942297,  1.24031682, -0.84460601,  2.96762221])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snr</span> <span class="o">=</span> <span class="n">snr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signal_power</span> <span class="o">=</span> <span class="n">signal_power</span></div>
@@ -97,17 +95,20 @@
 
     <span class="nd">@signal_power</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">signal_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;measured&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_signal_power</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AWGNChannel.capacity"><a class="viewcode-back" href="../../../../komm.AWGNChannel/#komm.AWGNChannel.capacity">[docs]</a>    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \frac{1}{2}\log_2(1 + \mathrm{SNR})`, in bits per dimension.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=63.0)</span>
-<span class="sd">        &gt;&gt;&gt; awgn.capacity()</span>
-<span class="sd">        3.0</span>
+<span class="sd">            &gt;&gt;&gt; awgn = komm.AWGNChannel(snr=63.0)</span>
+<span class="sd">            &gt;&gt;&gt; awgn.capacity()</span>
+<span class="sd">            3.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span></div>
 

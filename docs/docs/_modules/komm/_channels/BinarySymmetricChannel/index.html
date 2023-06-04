@@ -52,26 +52,25 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        Y_n = X_n + Z_n,</span>
 
-<span class="sd">    where :math:`Z_n` are :term:`i.i.d.` Bernouli random variables with :math:`\Pr[Z_n = 1] = p`.</span>
-
-<span class="sd">    References: :cite:`Cover.Thomas.06` (Sec. 7.1.4)</span>
+<span class="sd">    where :math:`Z_n` are :term:`i.i.d.` Bernoulli random variables with :math:`\Pr[Z_n = 1] = p`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).</span>
 
 <span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example below).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BinarySymmetricChannel.__init__"><a class="viewcode-back" href="../../../../komm.BinarySymmetricChannel/#komm.BinarySymmetricChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">crossover_probability</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameter:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`crossover_probability` : :obj:`float`, optional</span>
-<span class="sd">            The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            crossover_probability (:obj:`float`, optional): The channel crossover probability :math:`p`. Must satisfy :math:`0 \leq p \leq 1`. The default value is :code:`0.0`, which corresponds to a noiseless channel.</span>
 
-<span class="sd">        &gt;&gt;&gt; bsc = komm.BinarySymmetricChannel(0.1)</span>
-<span class="sd">        &gt;&gt;&gt; x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]</span>
-<span class="sd">        &gt;&gt;&gt; y = bsc(x); y  #doctest:+SKIP</span>
-<span class="sd">        array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; bsc = komm.BinarySymmetricChannel(0.1)</span>
+<span class="sd">            &gt;&gt;&gt; x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]</span>
+<span class="sd">            &gt;&gt;&gt; y = bsc(x); y  #doctest:+SKIP</span>
+<span class="sd">            array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">crossover_probability</span> <span class="o">=</span> <span class="n">crossover_probability</span></div>
 
@@ -91,11 +90,11 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = 1 - \mathcal{H}(p)`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; bsc = komm.BinarySymmetricChannel(0.25)</span>
-<span class="sd">        &gt;&gt;&gt; bsc.capacity()</span>
-<span class="sd">        0.18872187554086717</span>
+<span class="sd">            &gt;&gt;&gt; bsc = komm.BinarySymmetricChannel(0.25)</span>
+<span class="sd">            &gt;&gt;&gt; bsc.capacity()</span>
+<span class="sd">            0.18872187554086717</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">_entropy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_crossover_probability</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_crossover_probability</span><span class="p">]))</span></div>
 

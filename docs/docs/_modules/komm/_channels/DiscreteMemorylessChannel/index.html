@@ -40,26 +40,25 @@
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel">[docs]</a><span class="k">class</span> <span class="nc">DiscreteMemorylessChannel</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\mathcal{X}`, an *output alphabet* :math:`\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}` and :math:`\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\mathcal{X}|`-by-:math:`|\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted.</span>
+<span class="sd">    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\mathcal{X}`, an *output alphabet* :math:`\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}` and :math:`\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\mathcal{X}|`-by-:math:`|\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted. See :cite:`Cover.Thomas.06` (Ch. 7).</span>
 
-<span class="sd">    References: :cite:`Cover.Thomas.06` (Ch. 7)</span>
-
-<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example below).</span>
+<span class="sd">    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DiscreteMemorylessChannel.__init__"><a class="viewcode-back" href="../../../../komm.DiscreteMemorylessChannel/#komm.DiscreteMemorylessChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transition_matrix</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameter:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`transition_matrix` : 2D-array of :obj:`float`</span>
-<span class="sd">            The channel transition probability matrix :math:`p_{Y \mid X}`. The element in row :math:`x \in \mathcal{X}` and column :math:`y \in \mathcal{Y}` must be equal to :math:`p_{Y \mid X}(y \mid x)`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            transition_matrix (2D-array of :obj:`float`): The channel transition probability matrix :math:`p_{Y \mid X}`. The element in row :math:`x \in \mathcal{X}` and column :math:`y \in \mathcal{Y}` must be equal to :math:`p_{Y \mid X}(y \mid x)`.</span>
 
-<span class="sd">        &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])</span>
-<span class="sd">        &gt;&gt;&gt; x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]</span>
-<span class="sd">        &gt;&gt;&gt; y = dmc(x); y  #doctest:+SKIP</span>
-<span class="sd">        array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])</span>
+<span class="sd">            &gt;&gt;&gt; x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]</span>
+<span class="sd">            &gt;&gt;&gt; y = dmc(x); y  #doctest:+SKIP</span>
+<span class="sd">            array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transition_matrix</span> <span class="o">=</span> <span class="n">transition_matrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arimoto_blahut_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max_iters&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;error_tolerance&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">}</span></div>
@@ -98,30 +97,25 @@
 
 <span class="sd">           \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),</span>
 
-<span class="sd">        where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits.</span>
+<span class="sd">        where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).</span>
 
-<span class="sd">        References: :cite:`Cover.Thomas.06` (Ch. 2)</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        .. rubric:: Input</span>
+<span class="sd">            input_pmf (1D-array of :obj:`float`): The probability mass function :math:`p_X` of the channel input :math:`X`. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.</span>
 
-<span class="sd">        :code:`input_pmf` : 1D-array of :obj:`float`</span>
-<span class="sd">            The probability mass function :math:`p_X` of the channel input :math:`X`. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.</span>
+<span class="sd">            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`&#39;e&#39;`. The default value is :code:`2.0`.</span>
 
-<span class="sd">        :code:`base` : :obj:`float` or :obj:`str`, optional</span>
-<span class="sd">            The base of the logarithm to be used. It must be a positive float or the string :code:`&#39;e&#39;`. The default value is :code:`2.0`.</span>
+<span class="sd">        Returns:</span>
 
-<span class="sd">        .. rubric:: Output</span>
+<span class="sd">            mutual_information (:obj:`float`): The mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.</span>
 
-<span class="sd">        :code:`mutual_information` : :obj:`float`</span>
-<span class="sd">            The mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        .. rubric:: Examples</span>
-
-<span class="sd">        &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])</span>
-<span class="sd">        &gt;&gt;&gt; dmc.mutual_information([1/3, 1/3, 1/3])</span>
-<span class="sd">        0.12381109879798724</span>
-<span class="sd">        &gt;&gt;&gt; dmc.mutual_information([1/3, 1/3, 1/3], base=3)</span>
-<span class="sd">        0.07811610605402552</span>
+<span class="sd">            &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])</span>
+<span class="sd">            &gt;&gt;&gt; dmc.mutual_information([1/3, 1/3, 1/3])</span>
+<span class="sd">            0.12381109879798724</span>
+<span class="sd">            &gt;&gt;&gt; dmc.mutual_information([1/3, 1/3, 1/3], base=3)</span>
+<span class="sd">            0.07811610605402552</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_mutual_information</span><span class="p">(</span><span class="n">input_pmf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
@@ -129,18 +123,21 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the channel capacity :math:`C`. It is given by :math:`C = \max_{p_X} \mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).</span>
 
-<span class="sd">        .. rubric:: Input</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`base` : :obj:`float` or :obj:`str`, optional</span>
-<span class="sd">            The base of the logarithm to be used. It must be a positive float or the string :code:`&#39;e&#39;`. The default value is :code:`2.0`.</span>
+<span class="sd">            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`&#39;e&#39;`. The default value is :code:`2.0`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">        Returns:</span>
 
-<span class="sd">        &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])</span>
-<span class="sd">        &gt;&gt;&gt; dmc.capacity()</span>
-<span class="sd">        0.1616318609548566</span>
-<span class="sd">        &gt;&gt;&gt; dmc.capacity(base=3)</span>
-<span class="sd">        0.10197835020154389</span>
+<span class="sd">            capacity (:obj:`float`): The channel capacity :math:`C`.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])</span>
+<span class="sd">            &gt;&gt;&gt; dmc.capacity()</span>
+<span class="sd">            0.1616318609548566</span>
+<span class="sd">            &gt;&gt;&gt; dmc.capacity(base=3)</span>
+<span class="sd">            0.10197835020154389</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">initial_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_cardinality</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_cardinality</span>
         <span class="n">optimal_input_pmf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arimoto_blahut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transition_matrix</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_arimoto_blahut_kwargs</span><span class="p">)</span>

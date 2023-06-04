@@ -52,9 +52,8 @@
 <p>where <span class="math notranslate nohighlight">\(X_n\)</span> is the channel <em>input signal</em>, <span class="math notranslate nohighlight">\(Y_n\)</span> is the channel <em>output signal</em>, and <span class="math notranslate nohighlight">\(Z_n\)</span> is the <em>noise</em>, which is <a class="reference internal" href="../glossary/#term-i.i.d."><span class="xref std std-term">i.i.d.</span></a> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SNR} = \frac{P}{N},\]</div>
-<p>where <span class="math notranslate nohighlight">\(P = \mathrm{E}[X^2_n]\)</span> is the average power of the input signal, and <span class="math notranslate nohighlight">\(N = \mathrm{E}[Z^2_n]\)</span> is the average power (and variance) of the noise.</p>
-<p>References: <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 9)</p>
-<p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
+<p>where <span class="math notranslate nohighlight">\(P = \mathrm{E}[X^2_n]\)</span> is the average power of the input signal, and <span class="math notranslate nohighlight">\(N = \mathrm{E}[Z^2_n]\)</span> is the average power (and variance) of the noise. See <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 9).</p>
+<p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -81,20 +80,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.AWGNChannel.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">snr</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>The channel signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> (linear, not decibel). The default value is <code class="code docutils literal notranslate"><span class="pre">np.inf</span></code>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">signal_power</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The input signal power <span class="math notranslate nohighlight">\(P\)</span>.  If equal to the string <code class="code docutils literal notranslate"><span class="pre">'measured'</span></code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is <code class="code docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snr</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) – The channel signal-to-noise ratio <span class="math notranslate nohighlight">\(\mathrm{SNR}\)</span> (linear, not decibel). The default value is <code class="code docutils literal notranslate"><span class="pre">np.inf</span></code>, which corresponds to a noiseless channel.</p></li>
+<li><p><strong>signal_power</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The input signal power <span class="math notranslate nohighlight">\(P\)</span>. If equal to the string <code class="code docutils literal notranslate"><span class="pre">'measured'</span></code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is <code class="code docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">awgn</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>  
-<span class="go">array([ 1.10051445,  3.01308154, -2.97997111, -1.1229903 , -0.90890299,</span>
-<span class="go">        1.12650432,  2.88952462,  0.99352172, -1.2072787 ,  3.27131731])</span>
+<span class="go">array([ 0.91623839,  2.66229342, -2.96852259, -1.07689368, -0.89296933,</span>
+<span class="go">        0.80128101,  3.34942297,  1.24031682, -0.84460601,  2.96762221])</span>
 </pre></div>
+</div>
 </div>
 </dd></dl>
 
@@ -102,11 +105,13 @@
 <dt class="sig sig-object py" id="komm.AWGNChannel.capacity">
 <span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/AWGNChannel/#AWGNChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.AWGNChannel.capacity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = \frac{1}{2}\log_2(1 + \mathrm{SNR})\)</span>, in bits per dimension.</p>
-<p class="rubric">Examples</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
 <span class="go">3.0</span>
 </pre></div>
+</div>
 </div>
 </dd></dl>
 
