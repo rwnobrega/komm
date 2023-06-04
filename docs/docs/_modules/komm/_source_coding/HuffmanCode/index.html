@@ -45,37 +45,36 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Huffman code. It is an optimal (minimal expected rate) fixed-to-variable length code (:class:`FixedToVariableCode`) for a given probability mass function.</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.HuffmanCode([0.7, 0.15, 0.15])</span>
-<span class="sd">    &gt;&gt;&gt; pprint(code.enc_mapping)</span>
-<span class="sd">    {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.HuffmanCode([0.7, 0.15, 0.15])</span>
+<span class="sd">        &gt;&gt;&gt; pprint(code.enc_mapping)</span>
+<span class="sd">        {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)</span>
-<span class="sd">    &gt;&gt;&gt; pprint(code.enc_mapping)</span>
-<span class="sd">    {(0, 0): (1,),</span>
-<span class="sd">     (0, 1): (0, 0, 0, 0),</span>
-<span class="sd">     (0, 2): (0, 1, 1),</span>
-<span class="sd">     (1, 0): (0, 1, 0),</span>
-<span class="sd">     (1, 1): (0, 0, 0, 1, 1, 1),</span>
-<span class="sd">     (1, 2): (0, 0, 0, 1, 1, 0),</span>
-<span class="sd">     (2, 0): (0, 0, 1),</span>
-<span class="sd">     (2, 1): (0, 0, 0, 1, 0, 1),</span>
-<span class="sd">     (2, 2): (0, 0, 0, 1, 0, 0)}</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)</span>
+<span class="sd">        &gt;&gt;&gt; pprint(code.enc_mapping)</span>
+<span class="sd">        {(0, 0): (1,),</span>
+<span class="sd">         (0, 1): (0, 0, 0, 0),</span>
+<span class="sd">         (0, 2): (0, 1, 1),</span>
+<span class="sd">         (1, 0): (0, 1, 0),</span>
+<span class="sd">         (1, 1): (0, 0, 0, 1, 1, 1),</span>
+<span class="sd">         (1, 2): (0, 0, 0, 1, 1, 0),</span>
+<span class="sd">         (2, 0): (0, 0, 1),</span>
+<span class="sd">         (2, 1): (0, 0, 0, 1, 0, 1),</span>
+<span class="sd">         (2, 2): (0, 0, 0, 1, 0, 0)}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="HuffmanCode.__init__"><a class="viewcode-back" href="../../../../komm.HuffmanCode/#komm.HuffmanCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmf</span><span class="p">,</span> <span class="n">source_block_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="s2">&quot;high&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`pmf` : 1D-array of :obj:`float`</span>
-<span class="sd">            The probability mass function used to construct the code.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`source_block_size` : :obj:`int`, optional</span>
-<span class="sd">            The source block size :math:`k`. The default value is :math:`k = 1`.</span>
+<span class="sd">            pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.</span>
 
-<span class="sd">        :code:`policy` : :obj:`str`, optional</span>
-<span class="sd">            The policy to be used when constructing the code. It must be either :code:`&#39;high&#39;` (move combined symbols as high as possible) or :code:`&#39;low&#39;` (move combined symbols as low as possible). The default value is :code:`&#39;high&#39;`.</span>
+<span class="sd">            source_block_size (:obj:`int`, optional): The source block size :math:`k`. The default value is :math:`k = 1`.</span>
+
+<span class="sd">            policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either :code:`&#39;high&#39;` (move combined symbols as high as possible) or :code:`&#39;low&#39;` (move combined symbols as low as possible). The default value is :code:`&#39;high&#39;`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_policy</span> <span class="o">=</span> <span class="n">policy</span>

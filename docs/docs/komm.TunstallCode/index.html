@@ -86,10 +86,10 @@
 <td><p>Constructor for the class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.TunstallCode.decode" title="komm.TunstallCode.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(bit_sequence)</p></td>
-<td><p>Decodes a given sequence of bits to its corresponding sequence of symbols.</p></td>
+<td><p>Decodes a sequence of bits to its corresponding sequence of symbols.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.TunstallCode.encode" title="komm.TunstallCode.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(symbol_sequence)</p></td>
-<td><p>Encodes a given sequence of symbols to its corresponding sequence of bits.</p></td>
+<td><p>Encodes a sequence of symbols to its corresponding sequence of bits.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.TunstallCode.rate" title="komm.TunstallCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a>(pmf)</p></td>
 <td><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>.</p></td>
@@ -124,22 +124,22 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.TunstallCode.decode">
 <span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bit_sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.TunstallCode.decode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes a given sequence of bits to its corresponding sequence of symbols.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">bit_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of bits to be decoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.  Its length must be a multiple of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd><p>Decodes a sequence of bits to its corresponding sequence of symbols.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bit_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of bits to be decoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.  Its length must be a multiple of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>symbol_sequence (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>.</p>
 </dd>
 </dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])</span>
 </pre></div>
+</div>
 </div>
 </dd></dl>
 
@@ -152,22 +152,22 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.TunstallCode.encode">
 <span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol_sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.TunstallCode.encode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encodes a given sequence of symbols to its corresponding sequence of bits.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of symbols to be encoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>.</p>
+<dd><p>Encodes a sequence of symbols to its corresponding sequence of bits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of symbols to be encoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bit_sequence (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code>.</p>
 </dd>
 </dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">bit_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The sequence of bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code>.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])</span>
 </pre></div>
+</div>
 </div>
 </dd></dl>
 
@@ -180,22 +180,25 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.TunstallCode.rate">
 <span class="sig-name descname"><span class="pre">rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.TunstallCode.rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. It is given in bits per source symbol.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">pmf</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The (first-order) probability mass function <span class="math notranslate nohighlight">\(p_X(x)\)</span> to be assumed.</p>
+<dd><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. This quantity is given by</p>
+<div class="math notranslate nohighlight">
+\[R = \frac{n}{\bar{k}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the code block size, and <span class="math notranslate nohighlight">\(\bar{k}\)</span> is the expected sourceword length, assuming <a class="reference internal" href="../glossary/#term-i.i.d."><span class="xref std std-term">i.i.d.</span></a> source symbols drawn from <span class="math notranslate nohighlight">\(p_X\)</span>. It is measured in bits per source symbol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The (first-order) probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> to be assumed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>rate (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code.</p>
 </dd>
 </dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">rate</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">([</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
 <span class="go">0.9473684210526315</span>
 </pre></div>
+</div>
 </div>
 </dd></dl>
 
