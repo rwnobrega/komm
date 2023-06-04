@@ -7,21 +7,22 @@ class DiscreteMemorylessSource:
     r"""
     Discrete memoryless source (DMS). It is defined by an *alphabet* :math:`\mathcal{X}` and a *probability mass function* (:term:`pmf`) :math:`p_X`. Here, for simplicity, the alphabet is always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}`. The :term:`pmf` :math:`p_X` gives the probability of the source emitting the symbol :math:`X = x`.
 
-    To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example below).
+    To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
     """
 
     def __init__(self, pmf):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`pmf` : 1D-array of :obj:`float`
-            The source probability mass function :math:`p_X`. The element in position :math:`x \in \mathcal{X}` must be equal to :math:`p_X(x)`.
+        Parameters:
 
-        .. rubric:: Examples
+            pmf (1D-array of :obj:`float`): The source probability mass function :math:`p_X`. The element in position :math:`x \in \mathcal{X}` must be equal to :math:`p_X(x)`.
 
-        >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
-        >>> dms(10)  #doctest:+SKIP
-        array([1, 2, 1, 0, 0, 1, 1, 0, 1, 1])
+        Examples:
+
+            >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
+            >>> dms(10)  #doctest:+SKIP
+            array([1, 2, 1, 0, 0, 1, 1, 0, 1, 1])
         """
         self.pmf = pmf
 
@@ -48,18 +49,17 @@ class DiscreteMemorylessSource:
         r"""
         Returns the source entropy :math:`\mathrm{H}(X)`.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`base` : :obj:`float` or :obj:`str`, optional
-            The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
-        >>> dms.entropy()
-        1.75
-        >>> dms.entropy(base=4)
-        0.875
+            >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
+            >>> dms.entropy()
+            1.75
+            >>> dms.entropy(base=4)
+            0.875
         """
         return _entropy(self._pmf, base=base)
 

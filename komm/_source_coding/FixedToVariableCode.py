@@ -1,4 +1,4 @@
-import itertools
+import itertools as it
 
 import numpy as np
 
@@ -7,36 +7,44 @@ from .util import _parse_prefix_free
 
 class FixedToVariableCode:
     r"""
-    Binary (prefix-free) fixed-to-variable length code. Let :math:`\mathcal{X}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of source block size :math:`k` is defined by an encoding mapping :math:`\mathrm{Enc} : \mathcal{X}^k \to \{ 0, 1 \}^+`, where :math:`\{ 0, 1 \}^+` denotes the set of all finite-length, non-empty binary strings. Here, for simplicity, the source alphabet is always taken as :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. The elements in the image of :math:`\mathrm{Enc}` are called *codewords*.
+    Binary, prefix-free, fixed-to-variable length code. Let :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of *source block size* :math:`k` is defined by an *encoding mapping* :math:`\mathrm{Enc} : \mathcal{X}^k \to \{ 0, 1 \}^+`, where :math:`\{ 0, 1 \}^+` denotes the set of all finite-length, non-empty binary strings. The elements in the image of :math:`\mathrm{Enc}` are called *codewords*.
 
-    Also, we only consider *prefix-free* codes, in which no codeword is a prefix of any other codeword.
+    Warning:
+
+        Only *prefix-free* codes are considered, in which no codeword is a prefix of any other codeword.
     """
 
     def __init__(self, codewords, source_cardinality=None):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`codewords` : :obj:`list` of :obj:`tuple` of :obj:`int`
-            The codewords of the code. Must be a list of length :math:`|\mathcal{X}|^k` containing tuples of integers in :math:`\{ 0, 1 \}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\mathcal{X}^k`.
+        Parameters:
 
-        :code:`source_cardinality` : :obj:`int`, optional
-            The cardinality :math:`|\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
+            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length :math:`|\mathcal{X}|^k` containing tuples of integers in :math:`\{ 0, 1 \}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\mathcal{X}^k`.
 
-        *Note:* The source block size :math:`k` is inferred from :code:`len(codewords)` and :code:`source_cardinality`.
+            source_cardinality (:obj:`int`, optional): The cardinality :math:`|\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
 
-        .. rubric:: Examples
+        Note:
 
-        >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0), (1,1)])
-        >>> pprint(code.enc_mapping)
-        {(0,): (0,), (1,): (1, 0), (2,): (1, 1)}
-        >>> pprint(code.dec_mapping)
-        {(0,): (0,), (1, 0): (1,), (1, 1): (2,)}
+            The source block size :math:`k` is inferred from :code:`codewords` and :code:`source_cardinality`.
 
-        >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0,0), (1,1), (1,0,1)], source_cardinality=2)
-        >>> pprint(code.enc_mapping)
-        {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
-        >>> pprint(code.dec_mapping)
-        {(0,): (0, 0), (1, 0, 0): (0, 1), (1, 0, 1): (1, 1), (1, 1): (1, 0)}
+        Examples:
+
+            >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0), (1,1)])
+            >>> (code.source_cardinality, code.source_block_size)
+            (3, 1)
+            >>> pprint(code.enc_mapping)
+            {(0,): (0,), (1,): (1, 0), (2,): (1, 1)}
+            >>> pprint(code.dec_mapping)
+            {(0,): (0,), (1, 0): (1,), (1, 1): (2,)}
+
+            >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0,0), (1,1), (1,0,1)], source_cardinality=2)
+            >>> (code.source_cardinality, code.source_block_size)
+            (2, 2)
+            >>> pprint(code.enc_mapping)
+            {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+            >>> pprint(code.dec_mapping)
+            {(0,): (0, 0), (1, 0, 0): (0, 1), (1, 0, 1): (1, 1), (1, 1): (1, 0)}
         """
         # TODO: Assert prefix-free
         self._codewords = codewords
@@ -51,7 +59,7 @@ class FixedToVariableCode:
         self._enc_mapping = {}
         self._dec_mapping = {}
         for symbols, bits in zip(
-            itertools.product(range(self._source_cardinality), repeat=self._source_block_size), codewords
+            it.product(range(self._source_cardinality), repeat=self._source_block_size), codewords
         ):
             self._enc_mapping[symbols] = tuple(bits)
             self._dec_mapping[tuple(bits)] = symbols
@@ -86,70 +94,70 @@ class FixedToVariableCode:
 
     def rate(self, pmf):
         r"""
-        Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. It is given in bits per source symbol.
+        Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. This quantity is given by
 
-        .. rubric:: Input
+        .. math::
 
-        :code:`pmf` : 1D-array of :obj:`float`
-            The (first-order) probability mass function :math:`p_X(x)` to be assumed.
+           R = \frac{\bar{n}}{k},
 
-        .. rubric:: Output
+        where :math:`\bar{n}` is the expected codeword length, assuming :term:`i.i.d.` source symbols drawn from :math:`p_X`, and :math:`k` is the source block size. It is measured in bits per source symbol.
 
-        :code:`rate` : :obj:`float`
-            The expected rate :math:`R` of the code.
+        Parameters:
 
-        .. rubric:: Examples
+            pmf (1D-array of :obj:`float`): The (first-order) probability mass function :math:`p_X` to be assumed.
 
-        >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
-        >>> code.rate([0.5, 0.25, 0.25])
-        1.5
+        Returns:
+
+            rate (:obj:`float`): The expected rate :math:`R` of the code.
+
+        Examples:
+
+            >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
+            >>> code.rate([0.5, 0.25, 0.25])
+            1.5
         """
-        probabilities = np.array([np.prod(ps) for ps in itertools.product(pmf, repeat=self._source_block_size)])
+        probabilities = np.array([np.prod(ps) for ps in it.product(pmf, repeat=self._source_block_size)])
         lengths = [len(bits) for bits in self._codewords]
         return np.dot(lengths, probabilities) / self._source_block_size
 
     def encode(self, symbol_sequence):
         r"""
-        Encodes a given sequence of symbols to its corresponding sequence of bits.
+        Encodes a sequence of symbols to its corresponding sequence of bits.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`symbol_sequence` : 1D-array of :obj:`int`
-            The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. Its length must be a multiple of :math:`k`.
+            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. Its length must be a multiple of :math:`k`.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`bit_sequence` : 1D-array of :obj:`int`
-            The sequence of bits corresponding to :code:`symbol_sequence`.
+            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to :code:`symbol_sequence`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
-        >>> code.encode([1, 0, 1, 0, 2, 0])
-        array([1, 0, 0, 1, 0, 0, 1, 1, 0])
+            >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
+            >>> code.encode([1, 0, 1, 0, 2, 0])
+            array([1, 0, 0, 1, 0, 0, 1, 1, 0])
         """
         symbols_reshaped = np.reshape(symbol_sequence, newshape=(-1, self._source_block_size))
         return np.concatenate([self._enc_mapping[tuple(symbols)] for symbols in symbols_reshaped])
 
     def decode(self, bit_sequence):
         r"""
-        Decodes a given sequence of bits to its corresponding sequence of symbols.
+        Decodes a sequence of bits to its corresponding sequence of symbols.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`bit_sequence` : 1D-array of :obj:`int`
-            The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.
+            bit_sequence (1D-array of :obj:`int`): The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`symbol_sequence` : 1D-array of :obj:`int`
-            The sequence of symbols corresponding to :code:`bits`.
+            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to :code:`bits`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
-        >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
-        array([1, 0, 1, 0, 2, 0])
+            >>> code = komm.FixedToVariableCode([(0,), (1,0), (1,1)])
+            >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
+            array([1, 0, 1, 0, 2, 0])
         """
         return np.array(_parse_prefix_free(bit_sequence, self._dec_mapping))
 

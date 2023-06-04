@@ -10,37 +10,36 @@ class HuffmanCode(FixedToVariableCode):
     r"""
     Huffman code. It is an optimal (minimal expected rate) fixed-to-variable length code (:class:`FixedToVariableCode`) for a given probability mass function.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
-    >>> pprint(code.enc_mapping)
-    {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}
+        >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
+        >>> pprint(code.enc_mapping)
+        {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}
 
-    >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
-    >>> pprint(code.enc_mapping)
-    {(0, 0): (1,),
-     (0, 1): (0, 0, 0, 0),
-     (0, 2): (0, 1, 1),
-     (1, 0): (0, 1, 0),
-     (1, 1): (0, 0, 0, 1, 1, 1),
-     (1, 2): (0, 0, 0, 1, 1, 0),
-     (2, 0): (0, 0, 1),
-     (2, 1): (0, 0, 0, 1, 0, 1),
-     (2, 2): (0, 0, 0, 1, 0, 0)}
+        >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
+        >>> pprint(code.enc_mapping)
+        {(0, 0): (1,),
+         (0, 1): (0, 0, 0, 0),
+         (0, 2): (0, 1, 1),
+         (1, 0): (0, 1, 0),
+         (1, 1): (0, 0, 0, 1, 1, 1),
+         (1, 2): (0, 0, 0, 1, 1, 0),
+         (2, 0): (0, 0, 1),
+         (2, 1): (0, 0, 0, 1, 0, 1),
+         (2, 2): (0, 0, 0, 1, 0, 0)}
     """
 
     def __init__(self, pmf, source_block_size=1, policy="high"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`pmf` : 1D-array of :obj:`float`
-            The probability mass function used to construct the code.
+        Parameters:
 
-        :code:`source_block_size` : :obj:`int`, optional
-            The source block size :math:`k`. The default value is :math:`k = 1`.
+            pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.
 
-        :code:`policy` : :obj:`str`, optional
-            The policy to be used when constructing the code. It must be either :code:`'high'` (move combined symbols as high as possible) or :code:`'low'` (move combined symbols as low as possible). The default value is :code:`'high'`.
+            source_block_size (:obj:`int`, optional): The source block size :math:`k`. The default value is :math:`k = 1`.
+
+            policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either :code:`'high'` (move combined symbols as high as possible) or :code:`'low'` (move combined symbols as low as possible). The default value is :code:`'high'`.
         """
         self._pmf = np.array(pmf)
         self._policy = policy
