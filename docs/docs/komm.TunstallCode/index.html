@@ -100,11 +100,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.TunstallCode.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_block_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_source_coding/TunstallCode/#TunstallCode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.TunstallCode.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">pmf</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The probability mass function used to construct the code.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">code_block_size</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>The code block size <span class="math notranslate nohighlight">\(n\)</span>. Must satisfy <span class="math notranslate nohighlight">\(2^n \geq |\mathcal{X}|\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> is the cardinality of the source alphabet, given by <code class="code docutils literal notranslate"><span class="pre">len(pmf)</span></code>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The probability mass function used to construct the code.</p></li>
+<li><p><strong>code_block_size</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The code block size <span class="math notranslate nohighlight">\(n\)</span>. Must satisfy <span class="math notranslate nohighlight">\(2^n \geq |\mathcal{X}|\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> is the cardinality of the source alphabet, given by <code class="code docutils literal notranslate"><span class="pre">len(pmf)</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
