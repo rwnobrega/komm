@@ -45,10 +45,6 @@ extensions = [
 
 add_module_names = False
 
-# Autodoc settings
-autodoc_member_order = "bysource"
-autodoc_default_flags = ["members", "show-inheritance"]
-
 # Autosummary settings
 autosummary_generate = True
 
