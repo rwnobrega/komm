@@ -59,7 +59,7 @@ class BinarySequence:
         return self._length
 
     @functools.cached_property
-    def _autocorrelation(self):
+    def _autocorrelation(self) -> npt.NDArray[np.int_]:
         seq = self._polar_sequence
         L = self._length
         return np.correlate(seq, seq, mode="full")[L - 1 :]
