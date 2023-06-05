@@ -12,11 +12,11 @@ class BinarySequence:
         r"""
         Constructor for the class. It expects *exactly one* the following parameters:
 
-        :code:`bit_sequence` : 1D-array of :obj:`int`
-            The binary sequence in bit format. Must be an 1D-array with elements in :math:`\{ 0, 1 \}`.
+        Parameters:
 
-        :code:`polar_sequence` : 1D-array of :obj:`int`
-            The binary sequence in polar format. Must be an 1D-array with elements in :math:`\{ \pm 1 \}`.
+            bit_sequence (1D-array of :obj:`int`): The binary sequence in bit format. Must be an 1D-array with elements in :math:`\{ 0, 1 \}`.
+
+            polar_sequence (1D-array of :obj:`int`): The binary sequence in polar format. Must be an 1D-array with elements in :math:`\{ \pm 1 \}`.
         """
         kwargs_set = set(kwargs.keys())
         if kwargs_set == {"bit_sequence"}:
@@ -79,13 +79,11 @@ class BinarySequence:
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\ell}[n] = a[n - \ell]` is the sequence :math:`a[n]` shifted by :math:`\ell` positions. The autocorrelation :math:`R[\ell]` is even and satisfies :math:`R[\ell] = 0` for :math:`|\ell| \geq L`, where :math:`L` is the length of the binary sequence.
 
-        .. rubric:: Parameters
+        Parameters:
 
-        :code:`shifts` : 1D-array of :obj:`int`, optional.
-            An 1D array containing the values of :math:`\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
+            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of :math:`\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
 
-        :code:`normalized` : :obj:`boolean`, optional
-            If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.
+            normalized: (:obj:`boolean`, optional): If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.
         """
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
@@ -105,13 +103,11 @@ class BinarySequence:
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`\tilde{a}_{\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\ell` positions. The cyclic autocorrelation :math:`\tilde{R}[\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.
 
-        .. rubric:: Parameters
+        Parameters:
 
-        :code:`shifts` : 1D-array of :obj:`int`, optional.
-            An 1D array containing the values of :math:`\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
+            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of :math:`\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.
 
-        :code:`normalized` : :obj:`boolean`, optional
-            If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\tilde{R}[0] = 1`. The default value is :code:`False`.
+            normalized (:obj:`boolean`, optional): If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\tilde{R}[0] = 1`. The default value is :code:`False`.
         """
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)

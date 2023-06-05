@@ -26,75 +26,77 @@ class LFSRSequence(BinarySequence):
             -1, & \text{otherwise},
         \end{cases}
 
-    where :math:`L` is the length of the sequence. The constructor :func:`maximum_length_sequence` can be use to construct an MLS.
+    where :math:`L` is the length of the sequence.
 
-    [1] https://en.wikipedia.org/wiki/Linear-feedback_shift_register; [2] https://en.wikipedia.org/wiki/Maximum_length_sequence
+    References:
 
-    .. rubric:: Examples
+        1. https://en.wikipedia.org/wiki/Linear-feedback_shift_register
+        2. https://en.wikipedia.org/wiki/Maximum_length_sequence
 
-    >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
-    >>> lfsr.bit_sequence  #doctest: +NORMALIZE_WHITESPACE
-    array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
-    >>> lfsr.cyclic_autocorrelation()  #doctest: +NORMALIZE_WHITESPACE
-    array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
+    Examples:
+
+        >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
+        >>> lfsr.bit_sequence  #doctest: +NORMALIZE_WHITESPACE
+        array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
+        >>> lfsr.cyclic_autocorrelation()  #doctest: +NORMALIZE_WHITESPACE
+        array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
     """
 
     def __init__(self, feedback_polynomial, start_state_polynomial=0b1):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Default constructor for the class.
 
-        :code:`feedback_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
-            The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+        Parameters:
 
-        :code:`start_state_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`, optional.
-            The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is :code:`0b1`.
+            feedback_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+
+            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is :code:`0b1`.
+
+        Examples:
+
+            >>> komm.LFSRSequence(feedback_polynomial=0b10011)
+            LFSRSequence(feedback_polynomial=0b10011)
+
+        See also the class method :func:`maximum_length_sequence` for a more convenient way to construct a maximum-length sequence.
         """
         self._feedback_polynomial = BinaryPolynomial(feedback_polynomial)
         self._start_state_polynomial = BinaryPolynomial(start_state_polynomial)
         super().__init__(bit_sequence=self._lfsr_sequence(self._feedback_polynomial, self._start_state_polynomial))
 
     @classmethod
-    def maximum_length_sequence(cls, degree):
+    def maximum_length_sequence(cls, degree, start_state_polynomial=0b1):
         r"""
-        Constructs a maximum-length sequences (MLS) of a given degree. It expects the following parameter:
+        Constructs a maximum-length sequences (MLS) of a given degree.
 
-        :code:`degree` : :obj:`int`
-            The degree :math:`n` of the MLS. Only degrees in the range :math:`[1 : 16]` are implemented.
+        Parameters:
+
+            degree (:obj:`int`): The degree :math:`n` of the MLS. Only degrees in the range :math:`[1 : 16]` are implemented.
+
+            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): See the corresponding parameter of the default constructor.
 
         The feedback polynomial :math:`p(X)` is chosen according to the following table of primitive polynomials.
 
-        ================  ================================  ================  ================================
-        Degree :math:`n`  Feedback polynomial :math:`p(X)`  Degree :math:`n`  Feedback polynomial :math:`p(X)`
-        ================  ================================  ================  ================================
-        :math:`1`         :code:`0b11`                      :math:`9`         :code:`0b1000010001`
-        :math:`2`         :code:`0b111`                     :math:`10`        :code:`0b10000001001`
-        :math:`3`         :code:`0b1011`                    :math:`11`        :code:`0b100000000101`
-        :math:`4`         :code:`0b10011`                   :math:`12`        :code:`0b1000001010011`
-        :math:`5`         :code:`0b100101`                  :math:`13`        :code:`0b10000000011011`
-        :math:`6`         :code:`0b1000011`                 :math:`14`        :code:`0b100010001000011`
-        :math:`7`         :code:`0b10001001`                :math:`15`        :code:`0b1000000000000011`
-        :math:`8`         :code:`0b100011101`               :math:`16`        :code:`0b10001000000001011`
-        ================  ================================  ================  ================================
+            ================  ================================  ================  ================================
+            Degree :math:`n`  Feedback polynomial :math:`p(X)`  Degree :math:`n`  Feedback polynomial :math:`p(X)`
+            ================  ================================  ================  ================================
+            :math:`1`         :code:`0b11`                      :math:`9`         :code:`0b1000010001`
+            :math:`2`         :code:`0b111`                     :math:`10`        :code:`0b10000001001`
+            :math:`3`         :code:`0b1011`                    :math:`11`        :code:`0b100000000101`
+            :math:`4`         :code:`0b10011`                   :math:`12`        :code:`0b1000001010011`
+            :math:`5`         :code:`0b100101`                  :math:`13`        :code:`0b10000000011011`
+            :math:`6`         :code:`0b1000011`                 :math:`14`        :code:`0b100010001000011`
+            :math:`7`         :code:`0b10001001`                :math:`15`        :code:`0b1000000000000011`
+            :math:`8`         :code:`0b100011101`               :math:`16`        :code:`0b10001000000001011`
+            ================  ================================  ================  ================================
+
+        Examples:
+
+            >>> komm.LFSRSequence.maximum_length_sequence(degree=4)
+            LFSRSequence(feedback_polynomial=0b10011)
         """
-        PRIMITIVE_POLYNOMIALS = {
-            1: 0b11,
-            2: 0b111,
-            3: 0b1011,
-            4: 0b10011,
-            5: 0b100101,
-            6: 0b1000011,
-            7: 0b10001001,
-            8: 0b100011101,
-            9: 0b1000010001,
-            10: 0b10000001001,
-            11: 0b100000000101,
-            12: 0b1000001010011,
-            13: 0b10000000011011,
-            14: 0b100010001000011,
-            15: 0b1000000000000011,
-            16: 0b10001000000001011,
-        }
-        return cls(PRIMITIVE_POLYNOMIALS[degree])
+        return cls(
+            feedback_polynomial=cls._default_primitive_polynomial(degree), start_state_polynomial=start_state_polynomial
+        )
 
     def __repr__(self):
         args = "feedback_polynomial={}".format(self._feedback_polynomial)
@@ -129,3 +131,26 @@ class LFSRSequence(BinarySequence):
             state[-1] = np.count_nonzero(state[taps - 1]) % 2
             state = np.roll(state, 1)
         return code
+
+    @staticmethod
+    def _default_primitive_polynomial(degree):
+        if degree < 1 or degree > 16:
+            raise ValueError("Only degrees in the range [1 : 16] are implemented.")
+        return {
+            1: 0b11,
+            2: 0b111,
+            3: 0b1011,
+            4: 0b10011,
+            5: 0b100101,
+            6: 0b1000011,
+            7: 0b10001001,
+            8: 0b100011101,
+            9: 0b1000010001,
+            10: 0b10000001001,
+            11: 0b100000000101,
+            12: 0b1000001010011,
+            13: 0b10000000011011,
+            14: 0b100010001000011,
+            15: 0b1000000000000011,
+            16: 0b10001000000001011,
+        }[degree]

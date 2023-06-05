@@ -55,31 +55,33 @@ class WalshHadamardSequence(BinarySequence):
 
     The Walsh--Hadamard sequence of *length* :math:`L` and *index* :math:`i \in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_L`, if assuming natural ordering, or :math:`H_L^{\mathrm{s}}`, if assuming sequency ordering.
 
-    [1] https://en.wikipedia.org/wiki/Hadamard_matrix; [2] https://en.wikipedia.org/wiki/Walsh_matrix
+    References:
+
+        1. https://en.wikipedia.org/wiki/Hadamard_matrix
+        2. https://en.wikipedia.org/wiki/Walsh_matrix
     """
 
     def __init__(self, length, ordering="natural", index=0):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`length` : :obj:`int`
-            Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.
+        Parameters:
 
-        :code:`ordering` : :obj:`str`, optional
-            Ordering to be assumed. Should be one of :code:`'natural'`, :code:`'sequency'`, or :code:`'dyadic'`. The default value is :code:`'natural'`.
+            length (:obj:`int`): Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.
 
-        :code:`index` : :obj:`int`, optional
-            Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.
+            ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of :code:`'natural'`, :code:`'sequency'`, or :code:`'dyadic'`. The default value is :code:`'natural'`.
 
-        .. rubric:: Examples
+            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.
 
-        >>> walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering='sequency', index=60)
-        >>> walsh_hadamard.polar_sequence[:16]
-        array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])
+        Examples:
 
-        >>> walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering='natural', index=60)
-        >>> walsh_hadamard.polar_sequence[:16]
-        array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])
+            >>> walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering='sequency', index=60)
+            >>> walsh_hadamard.polar_sequence[:16]
+            array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])
+
+            >>> walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering='natural', index=60)
+            >>> walsh_hadamard.polar_sequence[:16]
+            array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])
         """
         if length & (length - 1):
             raise ValueError("The length of sequence must be a power of two")

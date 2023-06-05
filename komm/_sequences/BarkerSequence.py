@@ -17,23 +17,26 @@ class BarkerSequence(BinarySequence):
     :math:`13`        :math:`0000011001010`
     ================  =============================
 
-    [1] https://en.wikipedia.org/wiki/Barker_code
+    References:
+
+        1. https://en.wikipedia.org/wiki/Barker_code
     """
 
     def __init__(self, length):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`length` : :obj:`int`
-            Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.
+        Parameters:
 
-        .. rubric:: Examples
+            length (:obj:`int`): Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.
 
-        >>> barker = komm.BarkerSequence(length=13)
-        >>> barker.polar_sequence
-        array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])
-        >>> barker.autocorrelation()
-        array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])
+        Examples:
+
+            >>> barker = komm.BarkerSequence(length=13)
+            >>> barker.polar_sequence
+            array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])
+            >>> barker.autocorrelation()
+            array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])
         """
         super().__init__(bit_sequence=self._barker_sequence(length))
 
