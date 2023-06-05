@@ -155,7 +155,7 @@ class TerminatedConvolutionalCode(BlockCode):
             tail = np.dot(message, self._tail_projector) % 2
             input_sequence = pack(np.concatenate([message, tail]), width=k0)
             initial_state = 0
-        elif self._mode == "tail-biting":
+        else:  # self._mode == "tail-biting"
             # See Weiss.01.
             input_sequence = pack(message, width=k0)
             _, zero_state_solution = convolutional_code.finite_state_machine.process(input_sequence, initial_state=0)
@@ -180,7 +180,7 @@ class TerminatedConvolutionalCode(BlockCode):
         if self._mode in ["direct-truncation", "zero-termination"]:
             initial_metrics = np.full(num_states, fill_value=np.inf)
             initial_metrics[0] = 0.0
-        elif self._mode == "tail-biting":
+        else:  # self._mode == "tail-biting"
             raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
         input_sequences_hat, final_metrics = convolutional_code.finite_state_machine.viterbi(
@@ -194,6 +194,8 @@ class TerminatedConvolutionalCode(BlockCode):
             input_sequence_hat = input_sequences_hat[:, final_state_hat]
         elif self._mode == "zero-termination":
             input_sequence_hat = input_sequences_hat[:, 0][:-mu]
+        else:  # self._mode == "tail-biting"
+            raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
         message_hat = unpack(input_sequence_hat, width=k0)
         return message_hat
