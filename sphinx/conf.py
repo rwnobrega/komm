@@ -154,6 +154,7 @@ def builder_inited_handler(app):
             png_path = noext_path + ".png"
             if not os.path.isfile(png_path):
                 os.system("pdftoppm -cropbox -singlefile -png -r 75 {} {}".format(pdf_path, noext_path))
+            print(f"  {filename} -> {png_path}")
 
 
 def setup(app):
