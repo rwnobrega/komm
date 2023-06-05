@@ -22,46 +22,52 @@ class TerminatedConvolutionalCode(BlockCode):
 
     [[decoding_methods]]
 
-    References: :cite:`Lin.Costello.04`, :cite:`Weiss.01`
+    References:
+
+        1. :cite:`Lin.Costello.04`
+        2. :cite:`Weiss.01`
     """
 
     def __init__(self, convolutional_code, num_blocks, mode="zero-termination"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`convolutional_code` : :obj:`ConvolutionalCode`
-            The convolutional code to be terminated.
+        Parameters:
 
-        :code:`num_blocks` : :obj:`int`
-            The number :math:`h` of information blocks.
+            convolutional_code (:obj:`ConvolutionalCode`): The convolutional code to be terminated.
 
-        :code:`mode` : :obj:`str`, optional
-            The termination mode. It must be one of :code:`'direct-truncation'` | :code:`'zero-termination'` | :code:`'tail-biting'`. The default value is :code:`'zero-termination'`.
+            num_blocks (:obj:`int`): The number :math:`h` of information blocks.
 
-        .. rubric:: Examples
+            mode (:obj:`str`, optional): The termination mode. It must be one of :code:`'direct-truncation'` | :code:`'zero-termination'` | :code:`'tail-biting'`. The default value is :code:`'zero-termination'`.
 
-        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (8, 3, 3)
-        >>> code.generator_matrix
-        array([[1, 1, 0, 1, 0, 0, 0, 0],
-               [0, 0, 1, 1, 0, 1, 0, 0],
-               [0, 0, 0, 0, 1, 1, 0, 1]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='direct-truncation')
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (6, 3, 2)
-        >>> code.generator_matrix
-        array([[1, 1, 0, 1, 0, 0],
-               [0, 0, 1, 1, 0, 1],
-               [0, 0, 0, 0, 1, 1]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail-biting')
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (6, 3, 3)
-        >>> code.generator_matrix
-        array([[1, 1, 0, 1, 0, 0],
-               [0, 0, 1, 1, 0, 1],
-               [0, 1, 0, 0, 1, 1]])
+        Examples:
+
+            >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (8, 3, 3)
+            >>> code.generator_matrix
+            array([[1, 1, 0, 1, 0, 0, 0, 0],
+                   [0, 0, 1, 1, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 1, 1, 0, 1]])
+
+            >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='direct-truncation')
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (6, 3, 2)
+            >>> code.generator_matrix
+            array([[1, 1, 0, 1, 0, 0],
+                   [0, 0, 1, 1, 0, 1],
+                   [0, 0, 0, 0, 1, 1]])
+
+            >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail-biting')
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (6, 3, 3)
+            >>> code.generator_matrix
+            array([[1, 1, 0, 1, 0, 0],
+                   [0, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 0, 1, 1]])
         """
         self._convolutional_code = convolutional_code
         self._mode = mode

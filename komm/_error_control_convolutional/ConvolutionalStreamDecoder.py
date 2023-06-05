@@ -5,30 +5,29 @@ from .._util import int2binlist, unpack
 
 class ConvolutionalStreamDecoder:
     r"""
-    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is choosen as :math:`\tau = 5\mu`, where :math:`\mu` is the memory order of the convolutional code.
+    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of :math:`\tau`. At time :math:`t`, the decoder chooses the path survivor with best metric at time :math:`t - \tau` and outputs the corresponding information bits. The output stream has a delay equal to :math:`k \tau`, where :math:`k` is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as :math:`\tau = 5\mu`, where :math:`\mu` is the memory order of the convolutional code.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-    >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
-    >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
-    array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    >>> convolutional_decoder(np.zeros(2*10, dtype=int))
-    array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+        >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+        >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
+        >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
+        array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        >>> convolutional_decoder(np.zeros(2*10, dtype=int))
+        array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
     """
 
     def __init__(self, convolutional_code, traceback_length, initial_state=0, input_type="hard"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`convolutional_code` : :class:`ConvolutionalCode`
-            The convolutional code.
+        Parameters:
 
-        :code:`traceback_length` : :obj:`int`
-            The traceback length (path memory) :math:`\tau` of the decoder.
+            convolutional_code (:class:`ConvolutionalCode`): The convolutional code.
 
-        :code:`initial_state` : :obj:`int`, optional
-            Initial state of the encoder. The default value is :code:`0`.
+            traceback_length (:obj:`int`): The traceback length (path memory) :math:`\tau` of the decoder.
+
+            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is :code:`0`.
         """
         self._convolutional_code = convolutional_code
         self._traceback_length = int(traceback_length)

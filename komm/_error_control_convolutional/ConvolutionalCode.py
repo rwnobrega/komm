@@ -75,78 +75,79 @@ class ConvolutionalCode:
      :math:`(3, 1, 8)`                  :code:`[[0o575, 0o623, 0o727]]`
     =================================  ======================================
 
-    References: :cite:`Johannesson.Zigangirov.15`, :cite:`Lin.Costello.04`, :cite:`Weiss.01`
+    References:
+
+        1. :cite:`Johannesson.Zigangirov.15`
+        2. :cite:`Lin.Costello.04`
+        3. :cite:`Weiss.01`
     """
 
     def __init__(self, feedforward_polynomials, feedback_polynomials=None):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`feedforward_polynomials` : 2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)
-            The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+        Parameters:
 
-        :code:`feedback_polynomials` : 1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional
-            The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \in [0 : k)`.
+            feedforward_polynomials (2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)): The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
 
-        .. rubric:: Examples
+            feedback_polynomials (1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional): The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \in [0 : k)`.
 
-        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 6)`; its transfer function matrix is given by
+        Examples:
 
-        .. math::
+            The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 6)`; its transfer function matrix is given by
 
-           G(D) =
-           \begin{bmatrix}
-              D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
-           \end{bmatrix},
+            .. math::
+               G(D) =
+               \begin{bmatrix}
+                   D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
+               \end{bmatrix},
 
-        yielding :code:`feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
+            yielding :code:`feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
 
-        .. image:: figures/cc_2_1_6.svg
-           :alt: Convolutional encoder example.
-           :align: center
+            .. image:: figures/cc_2_1_6.svg
+               :alt: Convolutional encoder example.
+               :align: center
 
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (2, 1, 6)
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
+            >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+            (2, 1, 6)
 
-        The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (3, 2, 7)`; its transfer function matrix is given by
+            The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (3, 2, 7)`; its transfer function matrix is given by
 
-        .. math::
+            .. math::
+               G(D) =
+               \begin{bmatrix}
+                   D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\
+                   0  &  D^3 + D  &  D^3 + D^2 + 1 \\
+               \end{bmatrix},
 
-           G(D) =
-           \begin{bmatrix}
-               D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\
-               0  &  D^3 + D  &  D^3 + D^2 + 1 \\
-           \end{bmatrix},
+            yielding :code:`feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
 
-        yielding :code:`feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
+            .. image:: figures/cc_3_2_7.svg
+               :alt: Convolutional encoder example.
+               :align: center
 
-        .. image:: figures/cc_3_2_7.svg
-           :alt: Convolutional encoder example.
-           :align: center
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
+            >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+            (3, 2, 7)
 
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (3, 2, 7)
+            The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 4)`; its transfer function matrix is given by
 
-        The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 4)`; its transfer function matrix is given by
+            .. math::
+               G(D) =
+               \begin{bmatrix}
+                   1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+               \end{bmatrix},
 
-        .. math::
+            yielding :code:`feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and :code:`feedback_polynomials = [0o27]`.
 
-           G(D) =
-           \begin{bmatrix}
-               1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
-           \end{bmatrix},
+            .. image:: figures/cc_2_1_4_fb.svg
+               :alt: Convolutional feedback encoder example.
+               :align: center
 
-        yielding :code:`feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and :code:`feedback_polynomials = [0o27]`.
-
-        .. image:: figures/cc_2_1_4_fb.svg
-           :alt: Convolutional feedback encoder example.
-           :align: center
-
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (2, 1, 4)
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])
+            >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+            (2, 1, 4)
         """
         self._feedforward_polynomials = np.empty_like(feedforward_polynomials, dtype=BinaryPolynomial)
         for (i, j), p in np.ndenumerate(feedforward_polynomials):

@@ -5,25 +5,25 @@ class ConvolutionalStreamEncoder:
     r"""
     Convolutional stream encoder. Encode a bit stream using a given convolutional code (:class:`ConvolutionalCode`). The internal state of the encoder is maintained across each call.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-    >>> convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
-    >>> convolutional_encoder([1, 1, 1, 1])
-    array([1, 1, 0, 1, 1, 0, 1, 0])
-    >>> convolutional_encoder([1, 1, 1, 1])
-    array([1, 0, 1, 0, 1, 0, 1, 0])
+        >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+        >>> convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
+        >>> convolutional_encoder([1, 1, 1, 1])
+        array([1, 1, 0, 1, 1, 0, 1, 0])
+        >>> convolutional_encoder([1, 1, 1, 1])
+        array([1, 0, 1, 0, 1, 0, 1, 0])
     """
 
     def __init__(self, convolutional_code, initial_state=0):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`convolutional_code` : :class:`ConvolutionalCode`
-            The convolutional code.
+        Parameters:
 
-        :code:`initial_state` : :obj:`int`, optional
-            Initial state of the encoder. The default value is :code:`0`.
+            convolutional_code (:class:`ConvolutionalCode`): The convolutional code.
+
+            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is :code:`0`.
         """
         self._convolutional_code = convolutional_code
         self._state = int(initial_state)
