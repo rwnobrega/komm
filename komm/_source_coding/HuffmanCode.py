@@ -62,10 +62,10 @@ class HuffmanCode(FixedToVariableCode):
     def _huffman_algorithm(pmf, source_block_size, policy):
         class Node:
             def __init__(self, index, probability):
-                self.index = index
-                self.probability = probability
-                self.parent = None
-                self.bit = None
+                self.index: int = index
+                self.probability: float = probability
+                self.parent: int | None = None
+                self.bit: int | None = None
 
             def __lt__(self, other):
                 if policy == "high":
