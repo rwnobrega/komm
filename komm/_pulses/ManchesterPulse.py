@@ -1,7 +1,7 @@
-from .Pulse import Pulse
+from .FormattingPulse import FormattingPulse
 
 
-class ManchesterPulse(Pulse):
+class ManchesterPulse(FormattingPulse):
     r"""
     Manchester pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
@@ -25,9 +25,9 @@ class ManchesterPulse(Pulse):
         r"""
         Constructor for the class. It expects no parameters.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> pulse = komm.ManchesterPulse()
+            >>> pulse = komm.ManchesterPulse()
         """
 
         def impulse_response(t):

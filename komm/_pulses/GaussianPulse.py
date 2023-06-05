@@ -1,9 +1,9 @@
 import numpy as np
 
-from .Pulse import Pulse
+from .FormattingPulse import FormattingPulse
 
 
-class GaussianPulse(Pulse):
+class GaussianPulse(FormattingPulse):
     r"""
     Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
@@ -31,19 +31,19 @@ class GaussianPulse(Pulse):
 
     def __init__(self, half_power_bandwidth, length_in_symbols):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`half_power_bandwidth` : :obj:`float`
-            The half-power bandwidth :math:`B` of the pulse.
+        Parameters:
 
-        :code:`length_in_symbols` : :obj:`int`
-            The length (span) of the truncated impulse response, in symbols.
+            half_power_bandwidth (:obj:`float`): The half-power bandwidth :math:`B` of the pulse.
 
-        .. rubric:: Examples
+            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
 
-        >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
+        Examples:
 
-        >>> pulse = komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
+
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)
         """
         B = self._half_power_bandwidth = float(half_power_bandwidth)
         L = self._length_in_symbols = int(length_in_symbols)

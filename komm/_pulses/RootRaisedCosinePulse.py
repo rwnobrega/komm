@@ -1,9 +1,9 @@
 import numpy as np
 
-from .Pulse import Pulse
+from .FormattingPulse import FormattingPulse
 
 
-class RootRaisedCosinePulse(Pulse):
+class RootRaisedCosinePulse(FormattingPulse):
     r"""
     Root raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
@@ -29,19 +29,19 @@ class RootRaisedCosinePulse(Pulse):
 
     def __init__(self, rolloff, length_in_symbols):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`rolloff` : :obj:`float`
-            The roll-off factor :math:`\alpha` of the pulse. Must satisfy :math:`0 \leq \alpha \leq 1`.
+        Parameters:
 
-        :code:`length_in_symbols` : :obj:`int`
-            The length (span) of the truncated impulse response, in symbols.
+            rolloff (:obj:`float`): The roll-off factor :math:`\alpha` of the pulse. Must satisfy :math:`0 \leq \alpha \leq 1`.
 
-        .. rubric:: Examples
+            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
 
-        >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
+        Examples:
 
-        >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
+
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
         """
         a = self._rolloff = float(rolloff)
         L = self._length_in_symbols = int(length_in_symbols)

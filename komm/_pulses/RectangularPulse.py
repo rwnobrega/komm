@@ -1,7 +1,7 @@
-from .Pulse import Pulse
+from .FormattingPulse import FormattingPulse
 
 
-class RectangularPulse(Pulse):
+class RectangularPulse(FormattingPulse):
     r"""
     Rectangular pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
@@ -31,16 +31,17 @@ class RectangularPulse(Pulse):
 
     def __init__(self, width=1.0):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`width` : :obj:`float`
-            The width :math:`w` of the pulse. Must satisfy :math:`0 \leq w \leq 1`. The default value is :code:`1.0`.
+        Parameters:
 
-        .. rubric:: Examples
+            width (:obj:`float`): The width :math:`w` of the pulse. Must satisfy :math:`0 \leq w \leq 1`. The default value is :code:`1.0`.
 
-        >>> pulse = komm.RectangularPulse(width=1.0)
+        Examples:
 
-        >>> pulse = komm.RectangularPulse(width=0.5)
+            >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
+
+            >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
         """
         w = self._width = float(width)
 

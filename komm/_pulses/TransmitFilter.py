@@ -8,13 +8,13 @@ class TransmitFilter:
 
     def __init__(self, pulse, samples_per_symbol):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`pulse` : :class:`komm.Pulse`
-            The pulse filter.
+        Parameters:
 
-        :code:`samples_per_symbol` : :obj:`int`
-            The number of samples (of the output) per symbol (of the input).
+            pulse (:class:`komm.Pulse`): The pulse filter.
+
+            samples_per_symbol (:obj:`int`): The number of samples (of the output) per symbol (of the input).
         """
         self.Pulse = pulse
         self._samples_per_symbol = int(samples_per_symbol)
@@ -37,15 +37,13 @@ class TransmitFilter:
         r"""
         Formats a sequence of symbols.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`inp` : 1D-array of :obj:`float`
-            The input signal, containing symbols of a modulation.
+            inp (1D-array of :obj:`float`): The input signal, containing symbols of a modulation.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`outp` : 1D-array of :obj:`float`
-            The output signal, formatted.
+            outp (1D-array of :obj:`float`): The output signal, formatted.
         """
         sps = self._samples_per_symbol
         t0, t1 = self.Pulse.interval

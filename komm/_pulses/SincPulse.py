@@ -1,9 +1,9 @@
 import numpy as np
 
-from .Pulse import Pulse
+from .FormattingPulse import FormattingPulse
 
 
-class SincPulse(Pulse):
+class SincPulse(FormattingPulse):
     r"""
     Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
@@ -20,14 +20,15 @@ class SincPulse(Pulse):
 
     def __init__(self, length_in_symbols):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`length_in_symbols` : :obj:`int`
-            The length (span) of the truncated impulse response, in symbols.
+        Parameters:
 
-        .. rubric:: Examples
+            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
 
-        >>> pulse = komm.SincPulse(length_in_symbols=64)
+        Examples:
+
+            >>> pulse = komm.SincPulse(length_in_symbols=64)
         """
         L = self._length_in_symbols = int(length_in_symbols)
 

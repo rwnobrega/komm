@@ -1,20 +1,20 @@
 import numpy as np
 
 
-class Pulse:
+class FormattingPulse:
     r"""
-    General pulse.
+    General formatting pulse.
     """
 
     def __init__(self, impulse_response=None, frequency_response=None, interval=None):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`impulse_response` : :obj:`function`
-            The impulse response of the pulse.
+        Parameters:
 
-        :code:`frequency_response` : :obj:`function`
-            The frequency response of the pulse.
+            impulse_response (:obj:`function`): The impulse response of the pulse.
+
+            frequency_response (:obj:`function`): The frequency response of the pulse.
         """
         if impulse_response:
             self._impulse_response = np.vectorize(impulse_response)
