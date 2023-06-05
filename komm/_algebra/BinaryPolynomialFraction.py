@@ -7,7 +7,7 @@ class BinaryPolynomialFraction:
     Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two binary polynomials (:class:`BinaryPolynomial`).
     """
 
-    def __init__(self, numerator, denominator=0b1):
+    def __init__(self, numerator: int | BinaryPolynomial, denominator: int | BinaryPolynomial = 0b1):
         self._numerator = BinaryPolynomial(numerator)
         self._denominator = BinaryPolynomial(denominator)
         if denominator == 0:

@@ -45,6 +45,9 @@ extensions = [
 
 add_module_names = False
 
+# Autodoc options
+autodoc_typehints = "none"
+
 # Autosummary settings
 autosummary_generate = True
 
