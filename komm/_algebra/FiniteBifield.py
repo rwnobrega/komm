@@ -231,6 +231,7 @@ class FiniteBifield:
 
         Objects of this class represents *elements* of the finite field :math:`\mathrm{GF}(2^k)`.
         """
+        field: "FiniteBifield"
 
         def __eq__(self, other):
             return int(self) == int(other) and self.field._modulus == other.field._modulus
