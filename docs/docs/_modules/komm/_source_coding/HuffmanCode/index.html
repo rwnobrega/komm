@@ -97,10 +97,10 @@
     <span class="k">def</span> <span class="nf">_huffman_algorithm</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">source_block_size</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
         <span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
             <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">probability</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="n">probability</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">bit</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">index</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">probability</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">policy</span> <span class="o">==</span> <span class="s2">&quot;high&quot;</span><span class="p">:</span>

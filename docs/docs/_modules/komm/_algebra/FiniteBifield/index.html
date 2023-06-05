@@ -266,6 +266,7 @@
 
 <span class="sd">        Objects of this class represents *elements* of the finite field :math:`\mathrm{GF}(2^k)`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field</span><span class="p">:</span> <span class="s2">&quot;FiniteBifield&quot;</span>
 
         <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">_modulus</span>
