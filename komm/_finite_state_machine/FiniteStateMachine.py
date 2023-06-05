@@ -32,17 +32,17 @@ class FiniteStateMachine:
 
     def __init__(self, next_states, outputs):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`next_states` : 2D-array of :obj:`int`
-            The matrix of next states of the machine, of shape :math:`|\mathcal{S}| \times |\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the next state of the machine (an element in :math:`\mathcal{S}`), given that the current state is :math:`s \in \mathcal{S}` and the input is :math:`x \in \mathcal{X}`.
+        Parameters:
 
-        :code:`outputs` : 2D-array of :obj:`int`
-            The matrix of outputs of the machine, of shape :math:`|\mathcal{S}| \times |\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\mathcal{Y}`), given that the current state is :math:`s \in \mathcal{S}` and the input is :math:`x \in \mathcal{X}`.
+            next_states (2D-array of :obj:`int`): The matrix of next states of the machine, of shape :math:`|\mathcal{S}| \times |\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the next state of the machine (an element in :math:`\mathcal{S}`), given that the current state is :math:`s \in \mathcal{S}` and the input is :math:`x \in \mathcal{X}`.
 
-        .. rubric:: Examples
+            outputs (2D-array of :obj:`int`): The matrix of outputs of the machine, of shape :math:`|\mathcal{S}| \times |\mathcal{X}|`. The element in row :math:`s` and column :math:`x` should be the output of the machine (an element in :math:`\mathcal{Y}`), given that the current state is :math:`s \in \mathcal{S}` and the input is :math:`x \in \mathcal{X}`.
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+        Examples:
+
+            >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
         """
         self._next_states = np.array(next_states, dtype=int)
         self._outputs = np.array(outputs, dtype=int)
@@ -100,14 +100,14 @@ class FiniteStateMachine:
         r"""
         The matrix of input edges of the machine. It has shape :math:`|\mathcal{S}| \times |\mathcal{S}|`. If there is an edge from :math:`s_0 \in \mathcal{S}` to :math:`s_1 \in \mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the input associated with that edge (an element of :math:`\mathcal{X}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
-        >>> fsm.input_edges
-        array([[ 0,  1, -1, -1],
-               [-1, -1,  0,  1],
-               [ 0,  1, -1, -1],
-               [-1, -1,  0,  1]])
+            >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+            >>> fsm.input_edges
+            array([[ 0,  1, -1, -1],
+                   [-1, -1,  0,  1],
+                   [ 0,  1, -1, -1],
+                   [-1, -1,  0,  1]])
         """
         return self._input_edges
 
@@ -116,14 +116,14 @@ class FiniteStateMachine:
         r"""
         The matrix of output edges of the machine. It has shape :math:`|\mathcal{S}| \times |\mathcal{S}|`. If there is an edge from :math:`s_0 \in \mathcal{S}` to :math:`s_1 \in \mathcal{S}`, then the element in row :math:`s_0` and column :math:`s_1` is the output associated with that edge (an element of :math:`\mathcal{Y}`); if there is no such edge, then the element is :math:`-1`. This property is read-only.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
-        >>> fsm.output_edges
-        array([[ 0,  3, -1, -1],
-               [-1, -1,  1,  2],
-               [ 3,  0, -1, -1],
-               [-1, -1,  2,  1]])
+            >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+            >>> fsm.output_edges
+            array([[ 0,  3, -1, -1],
+                   [-1, -1,  1,  2],
+                   [ 3,  0, -1, -1],
+                   [-1, -1,  2,  1]])
         """
         return self._output_edges
 
@@ -131,31 +131,27 @@ class FiniteStateMachine:
         r"""
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state :math:`s_\mathrm{i}`. The input sequence and the output sequence are denoted by :math:`\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L` and :math:`\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L`, respectively.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`input_sequence` : 1D-array of :obj:`int`
-            The input sequence :math:`\mathbf{x} \in \mathcal{X}^L`. It should be a 1D-array with elements in :math:`\mathcal{X}`.
+            input_sequence (1D-array of :obj:`int`): The input sequence :math:`\mathbf{x} \in \mathcal{X}^L`. It should be a 1D-array with elements in :math:`\mathcal{X}`.
 
-        :code:`initial_state` : :obj:`int`
-            The initial state :math:`s_\mathrm{i}` of the machine. Should be an integer in :math:`\mathcal{S}`.
+            initial_state (:obj:`int`): The initial state :math:`s_\mathrm{i}` of the machine. Should be an integer in :math:`\mathcal{S}`.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`output_sequence` : 1D-array of :obj:`int`
-            The output sequence :math:`\mathbf{y} \in \mathcal{Y}^L` corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in :math:`\mathcal{Y}`.
+            output_sequence (1D-array of :obj:`int`): The output sequence :math:`\mathbf{y} \in \mathcal{Y}^L` corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in :math:`\mathcal{Y}`.
 
-        :code:`final_state` : :obj:`int`
-            The final state :math:`s_\mathrm{f}` of the machine. It is an integer in :math:`\mathcal{S}`.
+            final_state (:obj:`int`): The final state :math:`s_\mathrm{f}` of the machine. It is an integer in :math:`\mathcal{S}`.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
-        >>> input_sequence, initial_state = [1, 1, 0, 1, 0], 0
-        >>> output_sequence, final_state = fsm.process(input_sequence, initial_state)
-        >>> output_sequence
-        array([3, 2, 2, 0, 1])
-        >>> final_state
-        2
+            >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
+            >>> input_sequence, initial_state = [1, 1, 0, 1, 0], 0
+            >>> output_sequence, final_state = fsm.process(input_sequence, initial_state)
+            >>> output_sequence
+            array([3, 2, 2, 0, 1])
+            >>> final_state
+            2
         """
         output_sequence = np.empty_like(input_sequence, dtype=int)
         s = initial_state
@@ -168,28 +164,21 @@ class FiniteStateMachine:
 
     def viterbi(self, observed_sequence, metric_function, initial_metrics=None):
         r"""
-        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\hat{\mathbf{x}}(s) \in \mathcal{X}^L` ending in state :math:`s`, for all :math:`s \in \mathcal{S}`, given an observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`. It is assumed uniform input priors.
+        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence :math:`\hat{\mathbf{x}}(s) \in \mathcal{X}^L` ending in state :math:`s`, for all :math:`s \in \mathcal{S}`, given an observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`. It is assumed uniform input priors. See :cite:`Lin.Costello.04` (Sec. 12.1).
 
-        References: :cite:`Lin.Costello.04` (Sec. 12.1).
+        Parameters:
 
-        .. rubric:: Input
+            observed_sequence (1D-array): The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
 
-        :code:`observed_sequence` : 1D-array
-            The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
+            metric_function (function): The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
 
-        :code:`metric_function` : function
-            The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
+            initial_metrics (1D-array of :obj:`float`, optional): The initial metrics for each state. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is :code:`0.0` for all states.
 
-        :code:`initial_metrics` : 1D-array of :obj:`float`, optional
-            The initial metrics for each state. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is :code:`0.0` for all states.
+        Returns:
 
-        .. rubric:: Output
+            input_sequences_hat (2D-array of :obj:`int`): The most probable input sequence :math:`\hat{\mathbf{x}}(s) \in \mathcal{X}^L` ending in state :math:`s`, for all :math:`s \in \mathcal{S}`. It is a 2D-array of shape :math:`L \times |\mathcal{S}|`, in which column :math:`s` is equal to :math:`\hat{\mathbf{x}}(s)`.
 
-        :code:`input_sequences_hat` : 2D-array of :obj:`int`
-            The most probable input sequence :math:`\hat{\mathbf{x}}(s) \in \mathcal{X}^L` ending in state :math:`s`, for all :math:`s \in \mathcal{S}`. It is a 2D-array of shape :math:`L \times |\mathcal{S}|`, in which column :math:`s` is equal to :math:`\hat{\mathbf{x}}(s)`.
-
-        :code:`final_metrics` : 1D-array of :obj:`float`
-            The final metrics for each state. It is a 1D-array of length :math:`|\mathcal{S}|`.
+            final_metrics (1D-array of :obj:`float`): The final metrics for each state. It is a 1D-array of length :math:`|\mathcal{S}|`.
         """
         L, num_states = len(observed_sequence), self._num_states
         choices = np.empty((L, num_states), dtype=int)
@@ -219,27 +208,19 @@ class FiniteStateMachine:
 
     def viterbi_streaming(self, observed_sequence, metric_function, memory):
         r"""
-        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by :math:`\tau`. It chooses the survivor with best metric and selects the information block on this path.
+        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by :math:`\tau`. It chooses the survivor with best metric and selects the information block on this path. See :cite:`Lin.Costello.04` (Sec. 12.3).
 
-        References: :cite:`Lin.Costello.04` (Sec. 12.3).
+        Parameters:
 
-        .. rubric:: Input
+            observed_sequence (1D-array): The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
 
-        :code:`observed_sequence` : 1D-array
-            The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
+            metric_function (function): The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
 
-        :code:`metric_function` : function
-            The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
+            memory (:obj:`dict`): The metrics for each state. It must be a dictionary containing two keys: :code:`'paths'`, a 2D-array of :obj:`int` of shape :math:`|\mathcal{S}| \times (\tau + 1)`; and :code:`'metrics'`, a 2D-array of :obj:`float` of shape :math:`|\mathcal{S}| \times (\tau + 1)`. This dictionary is updated in-place by this method.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`input_sequence_hat` : 1D-array of :obj:`int`
-            The most probable input sequence :math:`\hat{\mathbf{x}} \in \mathcal{X}^L`
-
-        .. rubric:: Input and Output
-
-        :code:`memory` : :obj:`dict`
-            The metrics for each state. It must be a dictionary containing two keys: :code:`'paths'`, a 2D-array of :obj:`int` of shape :math:`|\mathcal{S}| \times (\tau + 1)`; and :code:`'metrics'`, a 2D-array of :obj:`float` of shape :math:`|\mathcal{S}| \times (\tau + 1)`.
+            input_sequence_hat (1D-array of :obj:`int`): The most probable input sequence :math:`\hat{\mathbf{x}} \in \mathcal{X}^L`
         """
         num_states = self._num_states
         input_sequences_hat = np.empty(len(observed_sequence), dtype=int)
@@ -277,31 +258,23 @@ class FiniteStateMachine:
         final_state_distribution=None,
     ):
         r"""
-        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}` given an observed sequence :math:`\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided.
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input :math:`x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}` given an observed sequence :math:`\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L`. The prior :term:`pmf` of each input may also be provided. See :cite:`Lin.Costello.04` (Sec. 12.6).
 
-        References: :cite:`Lin.Costello.04` (Sec. 12.6).
+        Parameters:
 
-        .. rubric:: Input
+            observed_sequence (1D-array): The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
 
-        :code:`observed_sequence` : 1D-array
-            The observed sequence :math:`\mathbf{z} \in \mathcal{Z}^L`.
+            metric_function (function): The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
 
-        :code:`metric_function` : function
-            The metric function :math:`\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}`.
+            input_priors (2D-array of :obj:`float`, optional): The prior :term:`pmf` of each input, of shape :math:`L \times |\mathcal{X}|`. The element in row :math:`t \in [0 : L)` and column :math:`x \in \mathcal{X}` should be :math:`p(x_t = x)`. The default value considers uniform priors.
 
-        :code:`input_priors` : 2D-array of :obj:`float`, optional
-            The prior :term:`pmf` of each input, of shape :math:`L \times |\mathcal{X}|`. The element in row :math:`t \in [0 : L)` and column :math:`x \in \mathcal{X}` should be :math:`p(x_t = x)`. The default value considers uniform priors.
+            initial_state_distribution (1D-array of :obj:`float`, optional): The :term:`pmf` of the initial state of the machine. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is uniform over all states.
 
-        :code:`initial_state_distribution` : 1D-array of :obj:`float`, optional
-            The :term:`pmf` of the initial state of the machine. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is uniform over all states.
+            final_state_distribution (1D-array of :obj:`float`, optional): The :term:`pmf` of the final state of the machine. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is uniform over all states.
 
-        :code:`final_state_distribution` : 1D-array of :obj:`float`, optional
-            The :term:`pmf` of the final state of the machine. It must be a 1D-array of length :math:`|\mathcal{S}|`. The default value is uniform over all states.
+        Returns:
 
-        .. rubric:: Output
-
-        :code:`input_posteriors` : 2D-array of :obj:`float`
-            The posterior :term:`pmf` of each input, given the observed sequence, of shape :math:`L \times |\mathcal{X}|`. The element in row :math:`t \in [0 : L)` and column :math:`x \in \mathcal{X}` is :math:`p(x_t = x \mid \mathbf{z})`.
+            input_posteriors (2D-array of :obj:`float`): The posterior :term:`pmf` of each input, given the observed sequence, of shape :math:`L \times |\mathcal{X}|`. The element in row :math:`t \in [0 : L)` and column :math:`x \in \mathcal{X}` is :math:`p(x_t = x \mid \mathbf{z})`.
         """
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 
