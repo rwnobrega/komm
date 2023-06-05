@@ -25,27 +25,6 @@ class FiniteBifield:
         0b10
     """
 
-    @classmethod
-    def _default_moduli(cls, degree):
-        return {
-            1: BinaryPolynomial(0b11),
-            2: BinaryPolynomial(0b111),
-            3: BinaryPolynomial(0b1011),
-            4: BinaryPolynomial(0b10011),
-            5: BinaryPolynomial(0b100101),
-            6: BinaryPolynomial(0b1000011),
-            7: BinaryPolynomial(0b10001001),
-            8: BinaryPolynomial(0b100011101),
-            9: BinaryPolynomial(0b1000010001),
-            10: BinaryPolynomial(0b10000001001),
-            11: BinaryPolynomial(0b100000000101),
-            12: BinaryPolynomial(0b1000001010011),
-            13: BinaryPolynomial(0b10000000011011),
-            14: BinaryPolynomial(0b100010001000011),
-            15: BinaryPolynomial(0b1000000000000011),
-            16: BinaryPolynomial(0b10000000010000011),
-        }[degree]
-
     def __init__(self, degree, modulus=None):
         r"""
         Constructor for the class.
@@ -95,7 +74,7 @@ class FiniteBifield:
         self._characteristic = 2
         self._degree = degree
         if modulus is None:
-            self._modulus = BinaryPolynomial(self._default_moduli(degree))
+            self._modulus = BinaryPolynomial(self._default_modulus(degree))
         else:
             self._modulus = BinaryPolynomial(modulus)
 
@@ -210,7 +189,7 @@ class FiniteBifield:
         return BinaryPolynomial.from_coefficients(int(c) for c in coefficients)
 
     def __repr__(self):
-        if self._modulus._integer == self._default_moduli(self._degree):
+        if self._modulus._integer == self._default_modulus(self._degree):
             args = f"{self._degree}"
         else:
             ## modulus must be in binary form
@@ -224,6 +203,27 @@ class FiniteBifield:
         element = self._Element(value)
         element.field = self
         return element
+
+    @staticmethod
+    def _default_modulus(degree):
+        return {
+            1: BinaryPolynomial(0b11),
+            2: BinaryPolynomial(0b111),
+            3: BinaryPolynomial(0b1011),
+            4: BinaryPolynomial(0b10011),
+            5: BinaryPolynomial(0b100101),
+            6: BinaryPolynomial(0b1000011),
+            7: BinaryPolynomial(0b10001001),
+            8: BinaryPolynomial(0b100011101),
+            9: BinaryPolynomial(0b1000010001),
+            10: BinaryPolynomial(0b10000001001),
+            11: BinaryPolynomial(0b100000000101),
+            12: BinaryPolynomial(0b1000001010011),
+            13: BinaryPolynomial(0b10000000011011),
+            14: BinaryPolynomial(0b100010001000011),
+            15: BinaryPolynomial(0b1000000000000011),
+            16: BinaryPolynomial(0b10000000010000011),
+        }[degree]
 
     class _Element(int):
         r"""
