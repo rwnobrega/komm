@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.typing as npt
 from scipy import special
 
 
@@ -282,7 +283,7 @@ class FiniteStateMachine:
             input_priors = np.ones((L, num_input_symbols)) / num_input_symbols
         if initial_state_distribution is None:
             initial_state_distribution = np.ones(num_states) / num_states
-        if initial_state_distribution is None:
+        if final_state_distribution is None:
             final_state_distribution = np.ones(num_states) / num_states
 
         log_gamma = np.full((L, num_states, num_states), fill_value=-np.inf)
