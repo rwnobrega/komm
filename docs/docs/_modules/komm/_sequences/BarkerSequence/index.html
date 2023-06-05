@@ -52,23 +52,26 @@
 <span class="sd">    :math:`13`        :math:`0000011001010`</span>
 <span class="sd">    ================  =============================</span>
 
-<span class="sd">    [1] https://en.wikipedia.org/wiki/Barker_code</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. https://en.wikipedia.org/wiki/Barker_code</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BarkerSequence.__init__"><a class="viewcode-back" href="../../../../komm.BarkerSequence/#komm.BarkerSequence.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameter:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`length` : :obj:`int`</span>
-<span class="sd">            Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            length (:obj:`int`): Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.</span>
 
-<span class="sd">        &gt;&gt;&gt; barker = komm.BarkerSequence(length=13)</span>
-<span class="sd">        &gt;&gt;&gt; barker.polar_sequence</span>
-<span class="sd">        array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])</span>
-<span class="sd">        &gt;&gt;&gt; barker.autocorrelation()</span>
-<span class="sd">        array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; barker = komm.BarkerSequence(length=13)</span>
+<span class="sd">            &gt;&gt;&gt; barker.polar_sequence</span>
+<span class="sd">            array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])</span>
+<span class="sd">            &gt;&gt;&gt; barker.autocorrelation()</span>
+<span class="sd">            array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">bit_sequence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_barker_sequence</span><span class="p">(</span><span class="n">length</span><span class="p">))</span></div>
 

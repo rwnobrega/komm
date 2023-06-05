@@ -85,7 +85,11 @@ H_{2^n} =
 \end{bmatrix}\end{split}\]</div>
 <p>The above matrix is said to be in <em>sequency ordering</em>. It has the property that row <span class="math notranslate nohighlight">\(i\)</span> has exactly <span class="math notranslate nohighlight">\(i\)</span> signal changes.</p>
 <p>The Walsh–Hadamard sequence of <em>length</em> <span class="math notranslate nohighlight">\(L\)</span> and <em>index</em> <span class="math notranslate nohighlight">\(i \in [0 : L)\)</span> is the binary sequence (<a class="reference internal" href="../komm.BinarySequence/#komm.BinarySequence" title="komm.BinarySequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinarySequence</span></code></a>) whose polar format is the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(H_L\)</span>, if assuming natural ordering, or <span class="math notranslate nohighlight">\(H_L^{\mathrm{s}}\)</span>, if assuming sequency ordering.</p>
-<p>[1] <a class="reference external" href="https://en.wikipedia.org/wiki/Hadamard_matrix">https://en.wikipedia.org/wiki/Hadamard_matrix</a>; [2] <a class="reference external" href="https://en.wikipedia.org/wiki/Walsh_matrix">https://en.wikipedia.org/wiki/Walsh_matrix</a></p>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Hadamard_matrix">https://en.wikipedia.org/wiki/Hadamard_matrix</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Walsh_matrix">https://en.wikipedia.org/wiki/Walsh_matrix</a></p></li>
+</ol>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -124,13 +128,14 @@ H_{2^n} =
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.WalshHadamardSequence.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'natural'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sequences/WalshHadamardSequence/#WalshHadamardSequence.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.WalshHadamardSequence.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">length</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Length <span class="math notranslate nohighlight">\(L\)</span> of the Walsh–Hadamard sequence. Must be a power of two.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">ordering</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>Ordering to be assumed. Should be one of <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>, <code class="code docutils literal notranslate"><span class="pre">'sequency'</span></code>, or <code class="code docutils literal notranslate"><span class="pre">'dyadic'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">index</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set <span class="math notranslate nohighlight">\([0 : L)\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Length <span class="math notranslate nohighlight">\(L\)</span> of the Walsh–Hadamard sequence. Must be a power of two.</p></li>
+<li><p><strong>ordering</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – Ordering to be assumed. Should be one of <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>, <code class="code docutils literal notranslate"><span class="pre">'sequency'</span></code>, or <code class="code docutils literal notranslate"><span class="pre">'dyadic'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">'natural'</span></code>.</p></li>
+<li><p><strong>index</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set <span class="math notranslate nohighlight">\([0 : L)\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -153,11 +158,12 @@ H_{2^n} =
 <div class="math notranslate nohighlight">
 \[R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(a_{\ell}[n] = a[n - \ell]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The autocorrelation <span class="math notranslate nohighlight">\(R[\ell]\)</span> is even and satisfies <span class="math notranslate nohighlight">\(R[\ell] = 0\)</span> for <span class="math notranslate nohighlight">\(|\ell| \geq L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> – (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional): If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -175,11 +181,12 @@ H_{2^n} =
 <div class="math notranslate nohighlight">
 \[\tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(\tilde{a}_{\ell}[n]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> cyclic-shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The cyclic autocorrelation <span class="math notranslate nohighlight">\(\tilde{R}[\ell]\)</span> is even and periodic with period <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the period of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional) – If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

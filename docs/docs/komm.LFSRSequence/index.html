@@ -57,8 +57,12 @@
     L, &amp; \ell = 0, \pm L, \pm 2L, \ldots, \\
     -1, &amp; \text{otherwise},
 \end{cases}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(L\)</span> is the length of the sequence. The constructor <a class="reference internal" href="#komm.LFSRSequence.maximum_length_sequence" title="komm.LFSRSequence.maximum_length_sequence"><code class="xref py py-func docutils literal notranslate"><span class="pre">maximum_length_sequence()</span></code></a> can be use to construct an MLS.</p>
-<p>[1] <a class="reference external" href="https://en.wikipedia.org/wiki/Linear-feedback_shift_register">https://en.wikipedia.org/wiki/Linear-feedback_shift_register</a>; [2] <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_length_sequence">https://en.wikipedia.org/wiki/Maximum_length_sequence</a></p>
+<p>where <span class="math notranslate nohighlight">\(L\)</span> is the length of the sequence.</p>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Linear-feedback_shift_register">https://en.wikipedia.org/wiki/Linear-feedback_shift_register</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_length_sequence">https://en.wikipedia.org/wiki/Maximum_length_sequence</a></p></li>
+</ol>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="p">(</span><span class="n">feedback_polynomial</span><span class="o">=</span><span class="mb">0b100101</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span><span class="o">.</span><span class="n">bit_sequence</span>  
@@ -91,7 +95,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.LFSRSequence.__init__" title="komm.LFSRSequence.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(feedback_polynomial[, ...])</p></td>
-<td><p>Constructor for the class.</p></td>
+<td><p>Default constructor for the class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.LFSRSequence.autocorrelation" title="komm.LFSRSequence.autocorrelation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autocorrelation</span></code></a>([shifts, normalized])</p></td>
 <td><p>Returns the autocorrelation <span class="math notranslate nohighlight">\(R[\ell]\)</span> of the binary sequence.</p></td>
@@ -99,7 +103,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.LFSRSequence.cyclic_autocorrelation" title="komm.LFSRSequence.cyclic_autocorrelation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cyclic_autocorrelation</span></code></a>([shifts, normalized])</p></td>
 <td><p>Returns the cyclic autocorrelation <span class="math notranslate nohighlight">\(\tilde{R}[\ell]\)</span> of the binary sequence.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#komm.LFSRSequence.maximum_length_sequence" title="komm.LFSRSequence.maximum_length_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_length_sequence</span></code></a>(degree)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#komm.LFSRSequence.maximum_length_sequence" title="komm.LFSRSequence.maximum_length_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_length_sequence</span></code></a>(degree[, ...])</p></td>
 <td><p>Constructs a maximum-length sequences (MLS) of a given degree.</p></td>
 </tr>
 </tbody>
@@ -108,13 +112,21 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.LFSRSequence.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_state_polynomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sequences/LFSRSequence/#LFSRSequence.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.LFSRSequence.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">feedback_polynomial</span></code><span class="classifier"><a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The feedback polynomial of the LFSR, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">start_state_polynomial</span></code><span class="classifier"><a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>The start state polynomial of the LFSR, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former. The default value is <code class="code docutils literal notranslate"><span class="pre">0b1</span></code>.</p>
+<dd><p>Default constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feedback_polynomial</strong> (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The feedback polynomial of the LFSR, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former.</p></li>
+<li><p><strong>start_state_polynomial</strong> (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The start state polynomial of the LFSR, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former. The default value is <code class="code docutils literal notranslate"><span class="pre">0b1</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="p">(</span><span class="n">feedback_polynomial</span><span class="o">=</span><span class="mb">0b10011</span><span class="p">)</span>
+<span class="go">LFSRSequence(feedback_polynomial=0b10011)</span>
+</pre></div>
+</div>
+<p>See also the class method <a class="reference internal" href="#komm.LFSRSequence.maximum_length_sequence" title="komm.LFSRSequence.maximum_length_sequence"><code class="xref py py-func docutils literal notranslate"><span class="pre">maximum_length_sequence()</span></code></a> for a more convenient way to construct a maximum-length sequence.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -124,11 +136,12 @@
 <div class="math notranslate nohighlight">
 \[R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(a_{\ell}[n] = a[n - \ell]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The autocorrelation <span class="math notranslate nohighlight">\(R[\ell]\)</span> is even and satisfies <span class="math notranslate nohighlight">\(R[\ell] = 0\)</span> for <span class="math notranslate nohighlight">\(|\ell| \geq L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> – (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional): If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -146,11 +159,12 @@
 <div class="math notranslate nohighlight">
 \[\tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(\tilde{a}_{\ell}[n]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> cyclic-shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The cyclic autocorrelation <span class="math notranslate nohighlight">\(\tilde{R}[\ell]\)</span> is even and periodic with period <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the period of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional) – If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -169,14 +183,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.LFSRSequence.maximum_length_sequence">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maximum_length_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sequences/LFSRSequence/#LFSRSequence.maximum_length_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.LFSRSequence.maximum_length_sequence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs a maximum-length sequences (MLS) of a given degree. It expects the following parameter:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">degree</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The degree <span class="math notranslate nohighlight">\(n\)</span> of the MLS. Only degrees in the range <span class="math notranslate nohighlight">\([1 : 16]\)</span> are implemented.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">maximum_length_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_state_polynomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sequences/LFSRSequence/#LFSRSequence.maximum_length_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.LFSRSequence.maximum_length_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a maximum-length sequences (MLS) of a given degree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The degree <span class="math notranslate nohighlight">\(n\)</span> of the MLS. Only degrees in the range <span class="math notranslate nohighlight">\([1 : 16]\)</span> are implemented.</p></li>
+<li><p><strong>start_state_polynomial</strong> (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – See the corresponding parameter of the default constructor.</p></li>
+</ul>
 </dd>
 </dl>
 <p>The feedback polynomial <span class="math notranslate nohighlight">\(p(X)\)</span> is chosen according to the following table of primitive polynomials.</p>
-<table class="docutils align-default">
+<blockquote>
+<div><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Degree <span class="math notranslate nohighlight">\(n\)</span></p></th>
 <th class="head"><p>Feedback polynomial <span class="math notranslate nohighlight">\(p(X)\)</span></p></th>
@@ -227,6 +246,12 @@
 </tr>
 </tbody>
 </table>
+</div></blockquote>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="o">.</span><span class="n">maximum_length_sequence</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">LFSRSequence(feedback_polynomial=0b10011)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py property">

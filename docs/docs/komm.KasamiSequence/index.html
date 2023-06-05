@@ -80,10 +80,12 @@
 <dt class="sig sig-object py" id="komm.KasamiSequence.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.KasamiSequence.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructor for the class. It expects <em>exactly one</em> the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">bit_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The binary sequence in bit format. Must be an 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">polar_sequence</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The binary sequence in polar format. Must be an 1D-array with elements in <span class="math notranslate nohighlight">\(\{ \pm 1 \}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bit_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The binary sequence in bit format. Must be an 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.</p></li>
+<li><p><strong>polar_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The binary sequence in polar format. Must be an 1D-array with elements in <span class="math notranslate nohighlight">\(\{ \pm 1 \}\)</span>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -95,11 +97,12 @@
 <div class="math notranslate nohighlight">
 \[R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(a_{\ell}[n] = a[n - \ell]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The autocorrelation <span class="math notranslate nohighlight">\(R[\ell]\)</span> is even and satisfies <span class="math notranslate nohighlight">\(R[\ell] = 0\)</span> for <span class="math notranslate nohighlight">\(|\ell| \geq L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> – (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional): If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(R[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -117,11 +120,12 @@
 <div class="math notranslate nohighlight">
 \[\tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],\]</div>
 <p>where <span class="math notranslate nohighlight">\(a[n]\)</span> is the binary sequence in polar format, and <span class="math notranslate nohighlight">\(\tilde{a}_{\ell}[n]\)</span> is the sequence <span class="math notranslate nohighlight">\(a[n]\)</span> cyclic-shifted by <span class="math notranslate nohighlight">\(\ell\)</span> positions. The cyclic autocorrelation <span class="math notranslate nohighlight">\(\tilde{R}[\ell]\)</span> is even and periodic with period <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the period of the binary sequence.</p>
-<p class="rubric">Parameters</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">shifts</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional.</span></dt><dd><p>An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">normalized</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional</span></dt><dd><p>If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shifts</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – An 1D array containing the values of <span class="math notranslate nohighlight">\(\ell\)</span> for which the cyclic autocorrelation will be computed. The default value is <code class="code docutils literal notranslate"><span class="pre">range(L)</span></code>, that is, <span class="math notranslate nohighlight">\([0 : L)\)</span>.</p></li>
+<li><p><strong>normalized</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean</span></code>, optional) – If <code class="code docutils literal notranslate"><span class="pre">True</span></code>, returns the cyclic autocorrelation divided by <span class="math notranslate nohighlight">\(L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the length of the binary sequence, so that <span class="math notranslate nohighlight">\(\tilde{R}[0] = 1\)</span>. The default value is <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

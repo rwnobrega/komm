@@ -60,27 +60,6 @@
 <span class="sd">        0b10</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_default_moduli</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="mi">1</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11</span><span class="p">),</span>
-            <span class="mi">2</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b111</span><span class="p">),</span>
-            <span class="mi">3</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">),</span>
-            <span class="mi">4</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10011</span><span class="p">),</span>
-            <span class="mi">5</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100101</span><span class="p">),</span>
-            <span class="mi">6</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000011</span><span class="p">),</span>
-            <span class="mi">7</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10001001</span><span class="p">),</span>
-            <span class="mi">8</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100011101</span><span class="p">),</span>
-            <span class="mi">9</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000010001</span><span class="p">),</span>
-            <span class="mi">10</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000001001</span><span class="p">),</span>
-            <span class="mi">11</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100000000101</span><span class="p">),</span>
-            <span class="mi">12</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000001010011</span><span class="p">),</span>
-            <span class="mi">13</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000011011</span><span class="p">),</span>
-            <span class="mi">14</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100010001000011</span><span class="p">),</span>
-            <span class="mi">15</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000000000000011</span><span class="p">),</span>
-            <span class="mi">16</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000010000011</span><span class="p">),</span>
-        <span class="p">}[</span><span class="n">degree</span><span class="p">]</span>
-
 <div class="viewcode-block" id="FiniteBifield.__init__"><a class="viewcode-back" href="../../../../komm.FiniteBifield/#komm.FiniteBifield.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class.</span>
@@ -130,7 +109,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_characteristic</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_degree</span> <span class="o">=</span> <span class="n">degree</span>
         <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_moduli</span><span class="p">(</span><span class="n">degree</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_modulus</span><span class="p">(</span><span class="n">degree</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="n">modulus</span><span class="p">)</span>
 
@@ -245,7 +224,7 @@
         <span class="k">return</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_coefficients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coefficients</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span><span class="o">.</span><span class="n">_integer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_moduli</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span><span class="o">.</span><span class="n">_integer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_modulus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="p">):</span>
             <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1">## modulus must be in binary form</span>
@@ -259,6 +238,27 @@
         <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Element</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">element</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">element</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_default_modulus</span><span class="p">(</span><span class="n">degree</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11</span><span class="p">),</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b111</span><span class="p">),</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">),</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10011</span><span class="p">),</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100101</span><span class="p">),</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000011</span><span class="p">),</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10001001</span><span class="p">),</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100011101</span><span class="p">),</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000010001</span><span class="p">),</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000001001</span><span class="p">),</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100000000101</span><span class="p">),</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000001010011</span><span class="p">),</span>
+            <span class="mi">13</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000011011</span><span class="p">),</span>
+            <span class="mi">14</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b100010001000011</span><span class="p">),</span>
+            <span class="mi">15</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b1000000000000011</span><span class="p">),</span>
+            <span class="mi">16</span><span class="p">:</span> <span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10000000010000011</span><span class="p">),</span>
+        <span class="p">}[</span><span class="n">degree</span><span class="p">]</span>
 
     <span class="k">class</span> <span class="nc">_Element</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>

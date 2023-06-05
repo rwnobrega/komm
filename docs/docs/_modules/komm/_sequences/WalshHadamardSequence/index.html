@@ -90,31 +90,33 @@
 
 <span class="sd">    The Walsh--Hadamard sequence of *length* :math:`L` and *index* :math:`i \in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_L`, if assuming natural ordering, or :math:`H_L^{\mathrm{s}}`, if assuming sequency ordering.</span>
 
-<span class="sd">    [1] https://en.wikipedia.org/wiki/Hadamard_matrix; [2] https://en.wikipedia.org/wiki/Walsh_matrix</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. https://en.wikipedia.org/wiki/Hadamard_matrix</span>
+<span class="sd">        2. https://en.wikipedia.org/wiki/Walsh_matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WalshHadamardSequence.__init__"><a class="viewcode-back" href="../../../../komm.WalshHadamardSequence/#komm.WalshHadamardSequence.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s2">&quot;natural&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`length` : :obj:`int`</span>
-<span class="sd">            Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`ordering` : :obj:`str`, optional</span>
-<span class="sd">            Ordering to be assumed. Should be one of :code:`&#39;natural&#39;`, :code:`&#39;sequency&#39;`, or :code:`&#39;dyadic&#39;`. The default value is :code:`&#39;natural&#39;`.</span>
+<span class="sd">            length (:obj:`int`): Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.</span>
 
-<span class="sd">        :code:`index` : :obj:`int`, optional</span>
-<span class="sd">            Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.</span>
+<span class="sd">            ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of :code:`&#39;natural&#39;`, :code:`&#39;sequency&#39;`, or :code:`&#39;dyadic&#39;`. The default value is :code:`&#39;natural&#39;`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.</span>
 
-<span class="sd">        &gt;&gt;&gt; walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering=&#39;sequency&#39;, index=60)</span>
-<span class="sd">        &gt;&gt;&gt; walsh_hadamard.polar_sequence[:16]</span>
-<span class="sd">        array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering=&#39;natural&#39;, index=60)</span>
-<span class="sd">        &gt;&gt;&gt; walsh_hadamard.polar_sequence[:16]</span>
-<span class="sd">        array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])</span>
+<span class="sd">            &gt;&gt;&gt; walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering=&#39;sequency&#39;, index=60)</span>
+<span class="sd">            &gt;&gt;&gt; walsh_hadamard.polar_sequence[:16]</span>
+<span class="sd">            array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])</span>
+
+<span class="sd">            &gt;&gt;&gt; walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering=&#39;natural&#39;, index=60)</span>
+<span class="sd">            &gt;&gt;&gt; walsh_hadamard.polar_sequence[:16]</span>
+<span class="sd">            array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">length</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of sequence must be a power of two&quot;</span><span class="p">)</span>

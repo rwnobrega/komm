@@ -47,11 +47,11 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the class. It expects *exactly one* the following parameters:</span>
 
-<span class="sd">        :code:`bit_sequence` : 1D-array of :obj:`int`</span>
-<span class="sd">            The binary sequence in bit format. Must be an 1D-array with elements in :math:`\{ 0, 1 \}`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`polar_sequence` : 1D-array of :obj:`int`</span>
-<span class="sd">            The binary sequence in polar format. Must be an 1D-array with elements in :math:`\{ \pm 1 \}`.</span>
+<span class="sd">            bit_sequence (1D-array of :obj:`int`): The binary sequence in bit format. Must be an 1D-array with elements in :math:`\{ 0, 1 \}`.</span>
+
+<span class="sd">            polar_sequence (1D-array of :obj:`int`): The binary sequence in polar format. Must be an 1D-array with elements in :math:`\{ \pm 1 \}`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kwargs_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">kwargs_set</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;bit_sequence&quot;</span><span class="p">}:</span>
@@ -114,13 +114,11 @@
 
 <span class="sd">        where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\ell}[n] = a[n - \ell]` is the sequence :math:`a[n]` shifted by :math:`\ell` positions. The autocorrelation :math:`R[\ell]` is even and satisfies :math:`R[\ell] = 0` for :math:`|\ell| \geq L`, where :math:`L` is the length of the binary sequence.</span>
 
-<span class="sd">        .. rubric:: Parameters</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`shifts` : 1D-array of :obj:`int`, optional.</span>
-<span class="sd">            An 1D array containing the values of :math:`\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.</span>
+<span class="sd">            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of :math:`\ell` for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.</span>
 
-<span class="sd">        :code:`normalized` : :obj:`boolean`, optional</span>
-<span class="sd">            If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.</span>
+<span class="sd">            normalized: (:obj:`boolean`, optional): If :code:`True`, returns the autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`R[0] = 1`. The default value is :code:`False`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
         <span class="n">shifts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">if</span> <span class="n">shifts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shifts</span><span class="p">)</span>
@@ -140,13 +138,11 @@
 
 <span class="sd">        where :math:`a[n]` is the binary sequence in polar format, and :math:`\tilde{a}_{\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\ell` positions. The cyclic autocorrelation :math:`\tilde{R}[\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.</span>
 
-<span class="sd">        .. rubric:: Parameters</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`shifts` : 1D-array of :obj:`int`, optional.</span>
-<span class="sd">            An 1D array containing the values of :math:`\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.</span>
+<span class="sd">            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of :math:`\ell` for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, :math:`[0 : L)`.</span>
 
-<span class="sd">        :code:`normalized` : :obj:`boolean`, optional</span>
-<span class="sd">            If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\tilde{R}[0] = 1`. The default value is :code:`False`.</span>
+<span class="sd">            normalized (:obj:`boolean`, optional): If :code:`True`, returns the cyclic autocorrelation divided by :math:`L`, where :math:`L` is the length of the binary sequence, so that :math:`\tilde{R}[0] = 1`. The default value is :code:`False`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
         <span class="n">shifts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">if</span> <span class="n">shifts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shifts</span><span class="p">)</span>
