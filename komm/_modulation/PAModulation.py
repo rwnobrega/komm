@@ -22,27 +22,25 @@ class PAModulation(RealModulation):
 
     def __init__(self, order, base_amplitude=1.0, labeling="reflected"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`order` : :obj:`int`
-            The order :math:`M` of the modulation. It must be a power of :math:`2`.
+        Parameters:
 
-        :code:`base_amplitude` : :obj:`float`, optional
-            The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+            order (:obj:`int`): The order :math:`M` of the modulation. It must be a power of :math:`2`.
 
-        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            base_amplitude (:obj:`float`, optional): The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
 
-        .. rubric:: Examples
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
 
-        >>> pam = komm.PAModulation(4, base_amplitude=2.0)
-        >>> pam.constellation
-        array([-6., -2.,  2.,  6.])
-        >>> pam.labeling
-        array([0, 1, 3, 2])
-        >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        array([-6.,  2., -6., -2., -2.])
+        Examples:
 
+            >>> pam = komm.PAModulation(4, base_amplitude=2.0)
+            >>> pam.constellation
+            array([-6., -2.,  2.,  6.])
+            >>> pam.labeling
+            array([0, 1, 3, 2])
+            >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([-6.,  2., -6., -2., -2.])
         """
         constellation = base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
 

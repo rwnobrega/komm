@@ -21,31 +21,29 @@ class ASKModulation(ComplexModulation):
 
     def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling="reflected"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`order` : :obj:`int`
-            The order :math:`M` of the modulation. It must be a power of :math:`2`.
+        Parameters:
 
-        :code:`base_amplitude` : :obj:`float`, optional
-            The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+            order (:obj:`int`): The order :math:`M` of the modulation. It must be a power of :math:`2`.
 
-        :code:`phase_offset` : :obj:`float`, optional
-            The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.
+            base_amplitude (:obj:`float`, optional): The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
 
-        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            phase_offset (:obj:`float`, optional): The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.
 
-        .. rubric:: Examples
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
 
-        >>> ask = komm.ASKModulation(4, base_amplitude=2.0)
-        >>> ask.constellation
-        array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
-        >>> ask.labeling
-        array([0, 1, 3, 2])
-        >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
-        >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
-        array([0, 0, 1, 0, 1, 1, 0, 1])
+        Examples:
+
+            >>> ask = komm.ASKModulation(4, base_amplitude=2.0)
+            >>> ask.constellation
+            array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])
+            >>> ask.labeling
+            array([0, 1, 3, 2])
+            >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])
+            >>> ask.demodulate([(0.99+0.3j), (1.01-0.5j), (4.99+0.7j), (5.01-0.9j)])
+            array([0, 0, 1, 0, 1, 1, 0, 1])
         """
         constellation = base_amplitude * np.arange(order, dtype=int) * np.exp(1j * phase_offset)
 

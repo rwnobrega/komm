@@ -10,20 +10,20 @@ class RealModulation(Modulation):
 
     def __init__(self, constellation, labeling):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`constellation` : 1D-array of :obj:`complex`
-            The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` real numbers.
+        Parameters:
 
-        :code:`labeling` : 1D-array of :obj:`int`
-            The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.
+            constellation (1D-array of :obj:`complex`): The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` real numbers.
 
-        .. rubric:: Examples
+            labeling (1D-array of :obj:`int`): The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.
 
-        >>> mod = komm.RealModulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
-        >>> mod.constellation
-        array([-0.5,  0. ,  0.5,  2. ])
-        >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        array([-0.5,  0.5, -0.5,  0. ,  0. ])
+        Examples:
+
+            >>> mod = komm.RealModulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod.constellation
+            array([-0.5,  0. ,  0.5,  2. ])
+            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([-0.5,  0.5, -0.5,  0. ,  0. ])
         """
         super().__init__(np.array(constellation, dtype=float), labeling)

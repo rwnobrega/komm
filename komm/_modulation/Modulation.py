@@ -100,15 +100,13 @@ class Modulation:
         r"""
         Converts bits to symbols using the modulation binary labeling.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`bits` : 1D-array of :obj:`int`
-            The bits to be converted. It should be a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length must be a multiple of :math:`m`.
+            bits (1D-array of :obj:`int`): The bits to be converted. It should be a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length must be a multiple of :math:`m`.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`symbols` : 1D-array of :obj:`int`
-            The symbols corresponding to :code:`bits`. It is a 1D-array of integers in the set :math:`[0 : M)`. Its length is equal to the length of :code:`bits` divided by :math:`m`.
+            symbols (1D-array of :obj:`int`): The symbols corresponding to :code:`bits`. It is a 1D-array of integers in the set :math:`[0 : M)`. Its length is equal to the length of :code:`bits` divided by :math:`m`.
         """
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
@@ -122,15 +120,13 @@ class Modulation:
         r"""
         Converts symbols to bits using the modulation binary labeling.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`symbols` : 1D-array of :obj:`int`
-            The symbols to be converted. It should be a 1D-array of integers in the set :math:`[0 : M)`. It may be of any length.
+            symbols (1D-array of :obj:`int`): The symbols to be converted. It should be a 1D-array of integers in the set :math:`[0 : M)`. It may be of any length.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`bits` : 1D-array of :obj:`int`
-            The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length is equal to the length of :code:`symbols` multiplied by :math:`m`.
+            bits (1D-array of :obj:`int`): The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set :math:`\{ 0, 1 \}`. Its length is equal to the length of :code:`symbols` multiplied by :math:`m = \log_2 M`.
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m

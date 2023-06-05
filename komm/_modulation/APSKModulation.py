@@ -26,28 +26,26 @@ class APSKModulation(ComplexModulation):
 
     def __init__(self, orders, amplitudes, phase_offsets=0.0, labeling="natural"):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`orders` : :obj:`tuple` of :obj:`int`
-            A :math:`K`-tuple with the orders :math:`M_k` of each ring, for :math:`k \in [0 : K)`. The sum :math:`M_0 + M_1 + \cdots + M_{K-1}` must be a power of :math:`2`.
+        Parameters:
 
-        :code:`amplitudes` : :obj:`tuple` of :obj:`float`
-            A :math:`K`-tuple with the amplitudes :math:`A_k` of each ring, for :math:`k \in [0 : K)`.
+            orders (:obj:`tuple` of :obj:`int`): A :math:`K`-tuple with the orders :math:`M_k` of each ring, for :math:`k \in [0 : K)`. The sum :math:`M_0 + M_1 + \cdots + M_{K-1}` must be a power of :math:`2`.
 
-        :code:`phase_offsets` : (:obj:`tuple` of :obj:`float`) or :obj:`float`, optional
-            A :math:`K`-tuple with the phase offsets :math:`\phi_k` of each ring, for :math:`k \in [0 : K)`. If specified as a single float :math:`\phi`, then it is assumed that :math:`\phi_k = \phi` for all :math:`k \in [0 : K)`. The default value is :code:`0.0`.
+            amplitudes (:obj:`tuple` of :obj:`float`): A :math:`K`-tuple with the amplitudes :math:`A_k` of each ring, for :math:`k \in [0 : K)`.
 
-        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
+            phase_offsets ((:obj:`tuple` of :obj:`float`) or :obj:`float`, optional): A :math:`K`-tuple with the phase offsets :math:`\phi_k` of each ring, for :math:`k \in [0 : K)`. If specified as a single float :math:`\phi`, then it is assumed that :math:`\phi_k = \phi` for all :math:`k \in [0 : K)`. The default value is :code:`0.0`.
 
-        .. rubric:: Examples
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
 
-        >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-        >>> np.round(apsk.constellation, 4)  #doctest: +SKIP
-        array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
-               -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
-                1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
-               -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])
+        Examples:
+
+            >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
+            >>> np.round(apsk.constellation, 4)  #doctest: +SKIP
+            array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
+                   -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
+                    1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
+                   -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])
         """
         if isinstance(phase_offsets, (tuple, list)):
             phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)

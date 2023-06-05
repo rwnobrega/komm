@@ -10,20 +10,20 @@ class ComplexModulation(Modulation):
 
     def __init__(self, constellation, labeling):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`constellation` : 1D-array of :obj:`complex`
-            The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` complex numbers.
+        Parameters:
 
-        :code:`labeling` : 1D-array of :obj:`int`
-            The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.
+            constellation (1D-array of :obj:`complex`): The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` complex numbers.
 
-        .. rubric:: Examples
+            labeling (1D-array of :obj:`int`): The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.
 
-        >>> mod = komm.ComplexModulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])
-        >>> mod.constellation
-        array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])
-        >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])
+        Examples:
+
+            >>> mod = komm.ComplexModulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])
+            >>> mod.constellation
+            array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])
+            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])
         """
         super().__init__(np.array(constellation, dtype=complex), labeling)
