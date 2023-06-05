@@ -151,6 +151,9 @@ def builder_inited_handler(app):
         if filename.endswith(".pdf"):
             pdf_path = os.path.join("figures", filename)
             svg_path = pdf_path[:-4] + ".svg"
+            # check if svg is newer than pdf
+            if os.path.isfile(svg_path) and os.path.getmtime(svg_path) > os.path.getmtime(pdf_path):
+                continue
             print(f"  {filename} -> {svg_path}")
             os.system(f"iperender -svg {pdf_path} {svg_path}")
 
