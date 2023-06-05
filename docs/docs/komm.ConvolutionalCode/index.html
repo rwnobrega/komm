@@ -135,7 +135,12 @@
 </tr>
 </tbody>
 </table>
-<p>References: <span id="id2">[<a class="reference internal" href="../references/#id10" title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</a>]</span>, <span id="id3">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span>, <span id="id4">[<a class="reference internal" href="../references/#id12" title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</a>]</span></p>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><p><span id="id2">[<a class="reference internal" href="../references/#id10" title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</a>]</span></p></li>
+<li><p><span id="id3">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span></p></li>
+<li><p><span id="id4">[<a class="reference internal" href="../references/#id12" title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</a>]</span></p></li>
+</ol>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -192,11 +197,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.ConvolutionalCode.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedforward_polynomials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback_polynomials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_convolutional/ConvolutionalCode/#ConvolutionalCode.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ConvolutionalCode.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span></code><span class="classifier">2D-array of (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>)</span></dt><dd><p>The matrix of feedforward polynomials <span class="math notranslate nohighlight">\(P(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k \times n\)</span> matrix whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">feedback_polynomials</span></code><span class="classifier">1D-array of  (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>), optional</span></dt><dd><p>The vector of feedback polynomials <span class="math notranslate nohighlight">\(q(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k\)</span>-vector whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former. The default value corresponds to no feedback, that is, <span class="math notranslate nohighlight">\(q_i(D) = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feedforward_polynomials</strong> (2D-array of (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>)) – The matrix of feedforward polynomials <span class="math notranslate nohighlight">\(P(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k \times n\)</span> matrix whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former.</p></li>
+<li><p><strong>feedback_polynomials</strong> (1D-array of  (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>), optional) – The vector of feedback polynomials <span class="math notranslate nohighlight">\(q(D)\)</span>, which is a <span class="math notranslate nohighlight">\(k\)</span>-vector whose entries are either binary polynomials (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a>) or integers to be converted to the former. The default value corresponds to no feedback, that is, <span class="math notranslate nohighlight">\(q_i(D) = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [0 : k)\)</span>.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -204,7 +211,7 @@
 <div class="math notranslate nohighlight">
 \[G(D) =
 \begin{bmatrix}
-   D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1
+    D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1
 \end{bmatrix},\]</div>
 <p>yielding <code class="code docutils literal notranslate"><span class="pre">feedforward_polynomials</span> <span class="pre">=</span> <span class="pre">[[0b1001111,</span> <span class="pre">0b1101101]]</span> <span class="pre">=</span> <span class="pre">[[0o117,</span> <span class="pre">0o155]]</span> <span class="pre">=</span> <span class="pre">[[79,</span> <span class="pre">109]]</span></code>.</p>
 <img alt="Convolutional encoder example." class="align-center" src="../_images/cc_2_1_6.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">]])</span>

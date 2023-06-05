@@ -39,25 +39,25 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convolutional stream encoder. Encode a bit stream using a given convolutional code (:class:`ConvolutionalCode`). The internal state of the encoder is maintained across each call.</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])</span>
-<span class="sd">    &gt;&gt;&gt; convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)</span>
-<span class="sd">    &gt;&gt;&gt; convolutional_encoder([1, 1, 1, 1])</span>
-<span class="sd">    array([1, 1, 0, 1, 1, 0, 1, 0])</span>
-<span class="sd">    &gt;&gt;&gt; convolutional_encoder([1, 1, 1, 1])</span>
-<span class="sd">    array([1, 0, 1, 0, 1, 0, 1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])</span>
+<span class="sd">        &gt;&gt;&gt; convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)</span>
+<span class="sd">        &gt;&gt;&gt; convolutional_encoder([1, 1, 1, 1])</span>
+<span class="sd">        array([1, 1, 0, 1, 1, 0, 1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; convolutional_encoder([1, 1, 1, 1])</span>
+<span class="sd">        array([1, 0, 1, 0, 1, 0, 1, 0])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ConvolutionalStreamEncoder.__init__"><a class="viewcode-back" href="../../../../komm.ConvolutionalStreamEncoder/#komm.ConvolutionalStreamEncoder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convolutional_code</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`convolutional_code` : :class:`ConvolutionalCode`</span>
-<span class="sd">            The convolutional code.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`initial_state` : :obj:`int`, optional</span>
-<span class="sd">            Initial state of the encoder. The default value is :code:`0`.</span>
+<span class="sd">            convolutional_code (:class:`ConvolutionalCode`): The convolutional code.</span>
+
+<span class="sd">            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is :code:`0`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_convolutional_code</span> <span class="o">=</span> <span class="n">convolutional_code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">initial_state</span><span class="p">)</span></div>
