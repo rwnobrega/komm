@@ -44,21 +44,21 @@
 
 <div class="viewcode-block" id="ComplexModulation.__init__"><a class="viewcode-back" href="../../../../komm.ComplexModulation/#komm.ComplexModulation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constellation</span><span class="p">,</span> <span class="n">labeling</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`constellation` : 1D-array of :obj:`complex`</span>
-<span class="sd">            The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` complex numbers.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`labeling` : 1D-array of :obj:`int`</span>
-<span class="sd">            The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.</span>
+<span class="sd">            constellation (1D-array of :obj:`complex`): The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` complex numbers.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            labeling (1D-array of :obj:`int`): The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.</span>
 
-<span class="sd">        &gt;&gt;&gt; mod = komm.ComplexModulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])</span>
-<span class="sd">        &gt;&gt;&gt; mod.constellation</span>
-<span class="sd">        array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])</span>
-<span class="sd">        &gt;&gt;&gt; mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])</span>
-<span class="sd">        array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; mod = komm.ComplexModulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])</span>
+<span class="sd">            &gt;&gt;&gt; mod.constellation</span>
+<span class="sd">            array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])</span>
+<span class="sd">            &gt;&gt;&gt; mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])</span>
+<span class="sd">            array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">constellation</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">),</span> <span class="n">labeling</span><span class="p">)</span></div></div>
 </pre></div>

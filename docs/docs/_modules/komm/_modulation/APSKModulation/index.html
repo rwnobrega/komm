@@ -60,28 +60,26 @@
 
 <div class="viewcode-block" id="APSKModulation.__init__"><a class="viewcode-back" href="../../../../komm.APSKModulation/#komm.APSKModulation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">,</span> <span class="n">amplitudes</span><span class="p">,</span> <span class="n">phase_offsets</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s2">&quot;natural&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`orders` : :obj:`tuple` of :obj:`int`</span>
-<span class="sd">            A :math:`K`-tuple with the orders :math:`M_k` of each ring, for :math:`k \in [0 : K)`. The sum :math:`M_0 + M_1 + \cdots + M_{K-1}` must be a power of :math:`2`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`amplitudes` : :obj:`tuple` of :obj:`float`</span>
-<span class="sd">            A :math:`K`-tuple with the amplitudes :math:`A_k` of each ring, for :math:`k \in [0 : K)`.</span>
+<span class="sd">            orders (:obj:`tuple` of :obj:`int`): A :math:`K`-tuple with the orders :math:`M_k` of each ring, for :math:`k \in [0 : K)`. The sum :math:`M_0 + M_1 + \cdots + M_{K-1}` must be a power of :math:`2`.</span>
 
-<span class="sd">        :code:`phase_offsets` : (:obj:`tuple` of :obj:`float`) or :obj:`float`, optional</span>
-<span class="sd">            A :math:`K`-tuple with the phase offsets :math:`\phi_k` of each ring, for :math:`k \in [0 : K)`. If specified as a single float :math:`\phi`, then it is assumed that :math:`\phi_k = \phi` for all :math:`k \in [0 : K)`. The default value is :code:`0.0`.</span>
+<span class="sd">            amplitudes (:obj:`tuple` of :obj:`float`): A :math:`K`-tuple with the amplitudes :math:`A_k` of each ring, for :math:`k \in [0 : K)`.</span>
 
-<span class="sd">        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
-<span class="sd">            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`&#39;natural&#39;`. The default value is :code:`&#39;natural&#39;`.</span>
+<span class="sd">            phase_offsets ((:obj:`tuple` of :obj:`float`) or :obj:`float`, optional): A :math:`K`-tuple with the phase offsets :math:`\phi_k` of each ring, for :math:`k \in [0 : K)`. If specified as a single float :math:`\phi`, then it is assumed that :math:`\phi_k = \phi` for all :math:`k \in [0 : K)`. The default value is :code:`0.0`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be equal to :code:`&#39;natural&#39;`. The default value is :code:`&#39;natural&#39;`.</span>
 
-<span class="sd">        &gt;&gt;&gt; apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))</span>
-<span class="sd">        &gt;&gt;&gt; np.round(apsk.constellation, 4)  #doctest: +SKIP</span>
-<span class="sd">        array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,</span>
-<span class="sd">               -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,</span>
-<span class="sd">                1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,</span>
-<span class="sd">               -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))</span>
+<span class="sd">            &gt;&gt;&gt; np.round(apsk.constellation, 4)  #doctest: +SKIP</span>
+<span class="sd">            array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,</span>
+<span class="sd">                   -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,</span>
+<span class="sd">                    1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,</span>
+<span class="sd">                   -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase_offsets</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
             <span class="n">phase_offsets</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">phi_k</span><span class="p">)</span> <span class="k">for</span> <span class="n">phi_k</span> <span class="ow">in</span> <span class="n">phase_offsets</span><span class="p">)</span>

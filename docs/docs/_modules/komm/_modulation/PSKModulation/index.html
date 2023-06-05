@@ -54,29 +54,27 @@
 
 <div class="viewcode-block" id="PSKModulation.__init__"><a class="viewcode-back" href="../../../../komm.PSKModulation/#komm.PSKModulation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">phase_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s2">&quot;reflected&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`order` : :obj:`int`</span>
-<span class="sd">            The order :math:`M` of the modulation. It must be a power of :math:`2`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`amplitude` : :obj:`float`, optional</span>
-<span class="sd">            The amplitude :math:`A` of the constellation. The default value is :code:`1.0`.</span>
+<span class="sd">            order (:obj:`int`): The order :math:`M` of the modulation. It must be a power of :math:`2`.</span>
 
-<span class="sd">        :code:`phase_offset` : :obj:`float`, optional</span>
-<span class="sd">            The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.</span>
+<span class="sd">            amplitude (:obj:`float`, optional): The amplitude :math:`A` of the constellation. The default value is :code:`1.0`.</span>
 
-<span class="sd">        :code:`labeling` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
-<span class="sd">            The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected&#39;`. The default value is :code:`&#39;reflected&#39;` (Gray code).</span>
+<span class="sd">            phase_offset (:obj:`float`, optional): The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`&#39;natural&#39;` or :code:`&#39;reflected&#39;`. The default value is :code:`&#39;reflected&#39;` (Gray code).</span>
 
-<span class="sd">        &gt;&gt;&gt; psk = komm.PSKModulation(4, phase_offset=np.pi/4)</span>
-<span class="sd">        &gt;&gt;&gt; psk.constellation  #doctest: +NORMALIZE_WHITESPACE</span>
-<span class="sd">        array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])</span>
-<span class="sd">        &gt;&gt;&gt; psk.labeling</span>
-<span class="sd">        array([0, 1, 3, 2])</span>
-<span class="sd">        &gt;&gt;&gt; psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE</span>
-<span class="sd">        array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])</span>
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; psk = komm.PSKModulation(4, phase_offset=np.pi/4)</span>
+<span class="sd">            &gt;&gt;&gt; psk.constellation  #doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">            array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])</span>
+<span class="sd">            &gt;&gt;&gt; psk.labeling</span>
+<span class="sd">            array([0, 1, 3, 2])</span>
+<span class="sd">            &gt;&gt;&gt; psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">            array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">constellation</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="o">/</span> <span class="n">order</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase_offset</span><span class="p">)</span>
 

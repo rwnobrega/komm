@@ -99,11 +99,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.ComplexModulation.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constellation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeling</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_modulation/ComplexModulation/#ComplexModulation.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ComplexModulation.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor for the class. It expects the following parameters:</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">constellation</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>The constellation <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> of the modulation. Must be a 1D-array containing <span class="math notranslate nohighlight">\(M\)</span> complex numbers.</p>
-</dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">labeling</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The binary labeling <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> of the modulation. Must be a 1D-array of integers corresponding to a permutation of <span class="math notranslate nohighlight">\([0 : M)\)</span>.</p>
+<dd><p>Constructor for the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>constellation</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">complex</span></code>) – The constellation <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> of the modulation. Must be a 1D-array containing <span class="math notranslate nohighlight">\(M\)</span> complex numbers.</p></li>
+<li><p><strong>labeling</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The binary labeling <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> of the modulation. Must be a 1D-array of integers corresponding to a permutation of <span class="math notranslate nohighlight">\([0 : M)\)</span>.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -126,14 +128,12 @@
 <dt class="sig sig-object py" id="komm.ComplexModulation.bits_to_symbols">
 <span class="sig-name descname"><span class="pre">bits_to_symbols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.ComplexModulation.bits_to_symbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts bits to symbols using the modulation binary labeling.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">bits</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The bits to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length must be a multiple of <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bits</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The bits to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length must be a multiple of <span class="math notranslate nohighlight">\(m\)</span>.</p>
 </dd>
-</dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">symbols</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">bits</span></code> divided by <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>symbols (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">bits</span></code> divided by <span class="math notranslate nohighlight">\(m\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -199,14 +199,12 @@
 <dt class="sig sig-object py" id="komm.ComplexModulation.symbols_to_bits">
 <span class="sig-name descname"><span class="pre">symbols_to_bits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.ComplexModulation.symbols_to_bits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts symbols to bits using the modulation binary labeling.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">symbols</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The symbols to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. It may be of any length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbols</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The symbols to be converted. It should be a 1D-array of integers in the set <span class="math notranslate nohighlight">\([0 : M)\)</span>. It may be of any length.</p>
 </dd>
-</dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">bits</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>The bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbols</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">symbols</span></code> multiplied by <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bits (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbols</span></code>. It is a 1D-array of integers in the set <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>. Its length is equal to the length of <code class="code docutils literal notranslate"><span class="pre">symbols</span></code> multiplied by <span class="math notranslate nohighlight">\(m = \log_2 M\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
