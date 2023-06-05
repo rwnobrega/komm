@@ -17,10 +17,10 @@ class QAModulation(ComplexModulation):
 
        |fig1| |quad| |quad| |quad| |quad| |fig2|
 
-    .. |fig1| image:: figures/qam_16.png
+    .. |fig1| image:: figures/qam_16.svg
        :alt: 16-QAM constellation
 
-    .. |fig2| image:: figures/qam_8.png
+    .. |fig2| image:: figures/qam_8.svg
        :alt: 8-QAM constellation
 
     .. |quad| unicode:: 0x2001

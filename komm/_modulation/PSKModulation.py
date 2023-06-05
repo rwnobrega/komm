@@ -13,7 +13,7 @@ class PSKModulation(ComplexModulation):
 
     where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *amplitude*, and :math:`\phi` is the *phase offset* of the modulation. The PSK constellation is depicted below for :math:`M = 8`.
 
-    .. image:: figures/psk_8.png
+    .. image:: figures/psk_8.svg
        :alt: 8-PSK constellation.
        :align: center
     """

@@ -19,10 +19,10 @@ class RectangularPulse(FormattingPulse):
 
        |fig1| |quad| |quad| |quad| |quad| |fig2|
 
-    .. |fig1| image:: figures/pulse_rectangular_nrz.png
+    .. |fig1| image:: figures/pulse_rectangular_nrz.svg
        :alt: Rectangular NRZ pulse
 
-    .. |fig2| image:: figures/pulse_rectangular_rz.png
+    .. |fig2| image:: figures/pulse_rectangular_rz.svg
        :alt: Rectangular RZ pulse
 
     .. |quad| unicode:: 0x2001

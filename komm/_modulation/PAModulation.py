@@ -15,7 +15,7 @@ class PAModulation(RealModulation):
 
     |
 
-    .. image:: figures/pam_8.png
+    .. image:: figures/pam_8.svg
        :alt: 8-PAM constellation.
        :align: center
     """

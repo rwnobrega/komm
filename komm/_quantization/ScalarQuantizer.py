@@ -28,7 +28,7 @@ class ScalarQuantizer:
 
             The following example considers the :math:`5`-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.
 
-            .. image:: figures/scalar_quantizer_5.png
+            .. image:: figures/scalar_quantizer_5.svg
                :alt: Scalar quantizer example.
                :align: center
 

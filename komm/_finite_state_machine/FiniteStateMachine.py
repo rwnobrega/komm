@@ -8,7 +8,7 @@ class FiniteStateMachine:
 
     For example, consider the finite-state machine whose state diagram depicted in the figure below.
 
-    .. image:: figures/mealy.png
+    .. image:: figures/mealy.svg
        :alt: Finite-state machine (Mealy machine) example.
        :align: center
 

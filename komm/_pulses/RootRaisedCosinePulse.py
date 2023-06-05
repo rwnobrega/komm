@@ -17,10 +17,10 @@ class RootRaisedCosinePulse(FormattingPulse):
 
        |fig1| |quad| |quad| |quad| |fig2|
 
-    .. |fig1| image:: figures/pulse_root_raised_cosine_25.png
+    .. |fig1| image:: figures/pulse_root_raised_cosine_25.svg
        :alt: Root raised cosine pulse with roll-off factor 0.25
 
-    .. |fig2| image:: figures/pulse_root_raised_cosine_75.png
+    .. |fig2| image:: figures/pulse_root_raised_cosine_75.svg
        :alt: Root raised cosine pulse with roll-off factor 0.75
 
     .. |quad| unicode:: 0x2001

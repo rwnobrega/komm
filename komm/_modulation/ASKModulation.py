@@ -14,7 +14,7 @@ class ASKModulation(ComplexModulation):
 
     where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *base amplitude*, and :math:`\phi` is the *phase offset* of the modulation.  The ASK constellation is depicted below for :math:`M = 4`.
 
-    .. image:: figures/ask_4.png
+    .. image:: figures/ask_4.svg
        :alt: 4-ASK constellation.
        :align: center
     """

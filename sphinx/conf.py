@@ -146,15 +146,13 @@ bibtex_bibfiles = ["refs.bib"]
 def builder_inited_handler(app):
     print("Removing old _build...")
     os.system("rm -rf _build/")
-    print("Converting PDF to PNG...")
+    print("Converting PDF to SVG...")
     for filename in os.listdir("figures"):
         if filename.endswith(".pdf"):
             pdf_path = os.path.join("figures", filename)
-            noext_path = pdf_path[:-4]
-            png_path = noext_path + ".png"
-            if not os.path.isfile(png_path):
-                os.system("pdftoppm -cropbox -singlefile -png -r 75 {} {}".format(pdf_path, noext_path))
-            print(f"  {filename} -> {png_path}")
+            svg_path = pdf_path[:-4] + ".svg"
+            print(f"  {filename} -> {svg_path}")
+            os.system(f"iperender -svg {pdf_path} {svg_path}")
 
 
 def setup(app):

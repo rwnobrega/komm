@@ -13,7 +13,7 @@ class SincPulse(FormattingPulse):
 
     The sinc pulse is depicted below.
 
-    .. image:: figures/pulse_sinc.png
+    .. image:: figures/pulse_sinc.svg
        :alt: Sinc pulse
        :align: center
     """

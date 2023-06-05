@@ -19,10 +19,10 @@ class GaussianPulse(FormattingPulse):
 
        |fig1| |quad| |quad| |quad| |quad| |fig2|
 
-    .. |fig1| image:: figures/pulse_gaussian_50.png
+    .. |fig1| image:: figures/pulse_gaussian_50.svg
        :alt: Gaussian pulse with half-power bandwidth of 0.5
 
-    .. |fig2| image:: figures/pulse_gaussian_100.png
+    .. |fig2| image:: figures/pulse_gaussian_100.svg
        :alt: Gaussian pulse with half-power bandwidth of 1
 
     .. |quad| unicode:: 0x2001
