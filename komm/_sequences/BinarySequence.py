@@ -1,6 +1,7 @@
 import functools
 
 import numpy as np
+import numpy.typing as npt
 
 
 class BinarySequence:
@@ -64,7 +65,7 @@ class BinarySequence:
         return np.correlate(seq, seq, mode="full")[L - 1 :]
 
     @functools.cached_property
-    def _cyclic_autocorrelation(self):
+    def _cyclic_autocorrelation(self) -> npt.NDArray[np.int_]:
         seq = self._polar_sequence
         L = self._length
         return np.array([np.dot(seq, np.roll(seq, ell)) for ell in range(L)])
