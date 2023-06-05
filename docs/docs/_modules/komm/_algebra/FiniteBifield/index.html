@@ -67,24 +67,20 @@
 
 <span class="sd">            degree (:obj:`int`): Degree :math:`k` of the finite field. Must be a positive integer.</span>
 
-<span class="sd">            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) :math:`p(X)` of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below.</span>
+<span class="sd">            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) :math:`p(X)` of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see :cite:`Lin.Costello.04` (p. 42).</span>
 
-<span class="sd">        .. admonition:: Default values for the primitive polynomials</span>
-
-<span class="sd">            From :cite:`Lin.Costello.04` (p. 42).</span>
-
-<span class="sd">            ===========  =====================  ============  ============================</span>
-<span class="sd">            :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`</span>
-<span class="sd">            ===========  =====================  ============  ============================</span>
-<span class="sd">            :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`</span>
-<span class="sd">            :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`</span>
-<span class="sd">            :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`</span>
-<span class="sd">            :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`</span>
-<span class="sd">            :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`</span>
-<span class="sd">            :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`</span>
-<span class="sd">            :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`</span>
-<span class="sd">            :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`</span>
-<span class="sd">            ===========  =====================  ============  ============================</span>
+<span class="sd">                ===========  =====================  ============  ============================</span>
+<span class="sd">                :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`</span>
+<span class="sd">                ===========  =====================  ============  ============================</span>
+<span class="sd">                :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`</span>
+<span class="sd">                :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`</span>
+<span class="sd">                :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`</span>
+<span class="sd">                :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`</span>
+<span class="sd">                :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`</span>
+<span class="sd">                :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`</span>
+<span class="sd">                :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`</span>
+<span class="sd">                :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`</span>
+<span class="sd">                ===========  =====================  ============  ============================</span>
 
 <span class="sd">        Examples:</span>
 

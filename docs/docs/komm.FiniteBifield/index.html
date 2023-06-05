@@ -111,13 +111,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>degree</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Degree <span class="math notranslate nohighlight">\(k\)</span> of the finite field. Must be a positive integer.</p></li>
-<li><p><strong>modulus</strong> (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – Modulus (primitive polynomial) <span class="math notranslate nohighlight">\(p(X)\)</span> of the field, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below.</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition-default-values-for-the-primitive-polynomials admonition">
-<p class="admonition-title">Default values for the primitive polynomials</p>
-<p>From <span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (p. 42).</p>
+<li><p><strong>modulus</strong> (<a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – <p>Modulus (primitive polynomial) <span class="math notranslate nohighlight">\(p(X)\)</span> of the field, specified either as a <a class="reference internal" href="../komm.BinaryPolynomial/#komm.BinaryPolynomial" title="komm.BinaryPolynomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryPolynomial</span></code></a> or as an <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see <span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (p. 42).</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(k\)</span></p></th>
@@ -169,7 +163,10 @@
 </tr>
 </tbody>
 </table>
-</div>
+</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span>
