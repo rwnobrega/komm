@@ -45,18 +45,17 @@
 <h1>komm.qfuncinv<a class="headerlink" href="#komm-qfuncinv" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="komm.qfuncinv">
-<span class="sig-name descname"><span class="pre">qfuncinv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_util/#qfuncinv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.qfuncinv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">qfuncinv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_util/#qfuncinv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.qfuncinv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the inverse Gaussian Q-function.</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">y</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The input to the function. Should be a float or array of floats in the real interval <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>y</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The input to the function. Should be a float or array of floats in the real interval <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>x (same as input)</em> – The value <span class="math notranslate nohighlight">\(x = \mathrm{Q^{-1}}(y)\)</span>.</p>
 </dd>
 </dl>
-<p class="rubric">Output</p>
-<dl class="simple">
-<dt><code class="code docutils literal notranslate"><span class="pre">x</span></code><span class="classifier">same as input</span></dt><dd><p>The value <span class="math notranslate nohighlight">\(x = \mathrm{Q^{-1}}(y)\)</span>.</p>
-</dd>
-</dl>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">qfuncinv</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  
 <span class="go">0.0</span>
 </pre></div>

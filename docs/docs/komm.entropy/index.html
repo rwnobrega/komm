@@ -45,18 +45,16 @@
 <dd><p>Computes the entropy of a random variable with a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable with <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> <span class="math notranslate nohighlight">\(p_X\)</span> and alphabet <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>. Its entropy is given by</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},\]</div>
-<p>By default, the base of the logarithm is <span class="math notranslate nohighlight">\(2\)</span>, in which case the entropy is measured in bits.</p>
-<p>References: <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 2)</p>
-<p class="rubric">Input</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">pmf</span></code><span class="classifier">1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> of the random variable. It must be a valid <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>, that is, all of its values must be non-negative and sum up to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>By default, the base of the logarithm is <span class="math notranslate nohighlight">\(2\)</span>, in which case the entropy is measured in bits. See <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 2).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> of the random variable. It must be a valid <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>, that is, all of its values must be non-negative and sum up to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p><strong>base</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p></li>
+</ul>
 </dd>
-<dt><code class="code docutils literal notranslate"><span class="pre">base</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p>
-</dd>
-</dl>
-<p class="rubric">Output</p>
-<dl>
-<dt><code class="code docutils literal notranslate"><span class="pre">entropy</span></code><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>The entropy <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span> of the random variable.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>entropy (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The entropy <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span> of the random variable.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -70,7 +68,7 @@
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">entropy</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <span class="gt">Traceback (most recent call last):</span>
-<span class="w"> </span><span class="c">...</span>
+<span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">Invalid pmf</span>
 </pre></div>
 </div>

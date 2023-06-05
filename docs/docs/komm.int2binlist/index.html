@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.pack" href="../komm.pack/" />
@@ -46,6 +47,26 @@
 <dt class="sig sig-object py" id="komm.int2binlist">
 <span class="sig-name descname"><span class="pre">int2binlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_util/#int2binlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.int2binlist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts an integer to its bit array representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>int</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The input integer. May be any nonnegative integer.</p></li>
+<li><p><strong>width</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – If this parameter is specified, the output will be filled with zeros on the left so that the its length will be the specified value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a href="#id1"><span class="problematic" id="id2">list_</span></a> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – An array of <span class="math notranslate nohighlight">\(0\)</span>’s and <span class="math notranslate nohighlight">\(1\)</span>’s whose <cite>i</cite>-th element stands for the coefficient of <span class="math notranslate nohighlight">\(2^i\)</span> in the binary representation of the input integer.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span>
+<span class="go">array([0, 1, 0, 1, 1])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="go">array([0, 1, 0, 1, 1, 0, 0, 0])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
