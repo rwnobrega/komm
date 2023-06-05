@@ -11,7 +11,7 @@ class RationalPolynomialFraction:
     Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).
     """
 
-    def __init__(self, numerator, denominator=1):
+    def __init__(self, numerator: int | RationalPolynomial, denominator: int | RationalPolynomial = 1):
         self._numerator = RationalPolynomial(numerator)
         self._denominator = RationalPolynomial(denominator)
         if self._denominator.degree == -1:
