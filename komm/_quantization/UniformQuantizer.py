@@ -99,7 +99,7 @@ class UniformQuantizer(ScalarQuantizer):
         delta = self._quantization_step
         if self._choice in ["unsigned", "mid-tread"]:
             quantized = delta * np.floor(input_signal / delta + 0.5)
-        elif self._choice == "mid-riser":
+        else:  # self._choice == "mid-riser"
             quantized = delta * (np.floor(input_signal / delta) + 0.5)
         output_signal = np.clip(quantized, a_min=self._levels[0], a_max=self._levels[-1])
         return output_signal
