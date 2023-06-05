@@ -69,7 +69,7 @@ def int2binlist(int_, width=None):
 
         int_ (:obj:`int`): The input integer. May be any nonnegative integer.
 
-        width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the left so that the its length will be the specified value.
+        width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
 
     Returns:
 
