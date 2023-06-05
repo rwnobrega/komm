@@ -35,6 +35,22 @@ def _binlist2int(list_):
 def binlist2int(list_):
     r"""
     Converts a bit array to its integer representation.
+
+    Parameters:
+
+        list_ (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.
+
+    Returns:
+
+        int_ (int): The integer representation of the input bit array.
+
+    Examples:
+
+        >>> komm.binlist2int([0, 1, 0, 1, 1])
+        26
+
+        >>> komm.binlist2int([0, 1, 0, 1, 1, 0, 0, 0])
+        26
     """
     return _binlist2int(list_)
 
@@ -48,6 +64,24 @@ def _int2binlist(int_, width=None):
 def int2binlist(int_, width=None):
     r"""
     Converts an integer to its bit array representation.
+
+    Parameters:
+
+        int_ (:obj:`int`): The input integer. May be any nonnegative integer.
+
+        width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the left so that the its length will be the specified value.
+
+    Returns:
+
+        list_ (1D-array of :obj:`int`): An array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.
+
+    Examples:
+
+        >>> komm.int2binlist(26)
+        array([0, 1, 0, 1, 1])
+
+        >>> komm.int2binlist(26, width=8)
+        array([0, 1, 0, 1, 1, 0, 0, 0])
     """
     return np.array(_int2binlist(int_, width))
 
@@ -86,23 +120,21 @@ def qfunc(x):
 
        \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
 
-    .. rubric:: Input
+    Parameters:
 
-    :code:`x` : :obj:`float` or array of :obj:`float`
-        The input to the function. May be any float or array of floats.
+        x (:obj:`float` or array of :obj:`float`): The input to the function. May be any float or array of floats.
 
-    .. rubric:: Output
+    Returns:
 
-    :code:`y` : same as input
-        The value :math:`y = \mathrm{Q}(x)`.
+        y (same as input): The value :math:`y = \mathrm{Q}(x)`.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> komm.qfunc(0.0)
-    0.5
+        >>> komm.qfunc(0.0)
+        0.5
 
-    >>> komm.qfunc([-1.0, 0.0, 1.0])
-    array([0.84134475, 0.5       , 0.15865525])
+        >>> komm.qfunc([-1.0, 0.0, 1.0])
+        array([0.84134475, 0.5       , 0.15865525])
     """
     return _qfunc(x)
 
@@ -111,27 +143,27 @@ def _qfuncinv(y):
     return np.sqrt(2) * special.erfcinv(2 * y)
 
 
-def qfuncinv(x):
+def qfuncinv(y):
     r"""
     Computes the inverse Gaussian Q-function.
 
-    .. rubric:: Input
+    Parameters:
 
-    :code:`y` : :obj:`float` or array of :obj:`float`
-        The input to the function. Should be a float or array of floats in the real interval :math:`[0, 1]`.
+        y (:obj:`float` or array of :obj:`float`): The input to the function. Should be a float or array of floats in the real interval :math:`[0, 1]`.
 
-    .. rubric:: Output
+    Returns:
 
-    :code:`x` : same as input
-        The value :math:`x = \mathrm{Q^{-1}}(y)`.
+        x (same as input): The value :math:`x = \mathrm{Q^{-1}}(y)`.
 
-    >>> komm.qfuncinv(0.5)  #doctest: +SKIP
-    0.0
+    Examples:
 
-    >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest: +SKIP
-    array([-1., 0.,  1.])
+        >>> komm.qfuncinv(0.5)  #doctest: +SKIP
+        0.0
+
+        >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest: +SKIP
+        array([-1., 0.,  1.])
     """
-    return _qfuncinv(np.array(x))
+    return _qfuncinv(np.array(y))
 
 
 def _entropy_base_e(pmf):
@@ -164,35 +196,30 @@ def entropy(pmf, base=2.0):
 
        \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
 
-    By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits.
+    By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
 
-    References: :cite:`Cover.Thomas.06` (Ch. 2)
+    Parameters:
 
-    .. rubric:: Input
+        pmf (1D-array of :obj:`float`): The probability mass function :math:`p_X` of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
 
-    :code:`pmf` : 1D-array of :obj:`float`
-        The probability mass function :math:`p_X` of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
+        base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
-    :code:`base` : :obj:`float` or :obj:`str`, optional
-        The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+    Returns:
 
-    .. rubric:: Output
+        entropy (:obj:`float`): The entropy :math:`\mathrm{H}(X)` of the random variable.
 
-    :code:`entropy` : :obj:`float`
-        The entropy :math:`\mathrm{H}(X)` of the random variable.
+    Examples:
 
-    .. rubric:: Examples
+        >>> komm.entropy([1/4, 1/4, 1/4, 1/4])
+        2.0
 
-    >>> komm.entropy([1/4, 1/4, 1/4, 1/4])
-    2.0
+        >>> komm.entropy([1/3, 1/3, 1/3], base=3.0)  #doctest: +SKIP
+        1.0
 
-    >>> komm.entropy([1/3, 1/3, 1/3], base=3.0)  #doctest: +SKIP
-    1.0
-
-    >>> komm.entropy([1.0, 1.0])
-    Traceback (most recent call last):
-     ...
-    ValueError: Invalid pmf
+        >>> komm.entropy([1.0, 1.0])
+        Traceback (most recent call last):
+        ...
+        ValueError: Invalid pmf
     """
     pmf = np.array(pmf, dtype=float)
     if not np.allclose(np.sum(pmf), 1.0) or not np.alltrue(pmf >= 0.0):
