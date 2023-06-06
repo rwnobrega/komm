@@ -23,7 +23,9 @@ class CyclicCode(BlockCode):
     Golay :math:`(23,12,7)`  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`
     =======================  ==============================================  ======================================
 
-    References: :cite:`Lin.Costello.04` (Chapter 5)
+    References:
+
+        1. :cite:`Lin.Costello.04` (Chapter 5)
 
     .. rubric:: Decoding methods
 
@@ -38,33 +40,33 @@ class CyclicCode(BlockCode):
 
         `komm.CyclicCode(length, generator_polynomial=generator_polynomial, systematic=True)`
 
-        :code:`generator_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
-            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+        Parameters:
+
+            generator_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         **Via parity-check polynomial**
 
         `komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)`
 
-        :code:`parity_check_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`
-            The parity-check polynomial :math:`h(X)` of the code, of degree :math:`k` (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            parity_check_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The parity-check polynomial :math:`h(X)` of the code, of degree :math:`k` (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
-        **Common parameters**
+        The following parameters are common to both formats:
 
-        :code:`length` : :obj:`int`
-            The length :math:`n` of the code.
+        Parameters:
 
-        :code:`systematic` : :obj:`bool`, optional
-            Whether the encoder is systematic. Default is :code:`True`.
+            length (:obj:`int`): The length :math:`n` of the code.
 
-        .. rubric:: Examples
+            systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is :code:`True`.
 
-        >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (23, 12, 7)
+        Examples:
 
-        >>> code = komm.CyclicCode(length=23, parity_check_polynomial=0b1010010011111)  # Golay (23, 12)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (23, 12, 7)
+            >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (23, 12, 7)
+
+            >>> code = komm.CyclicCode(length=23, parity_check_polynomial=0b1010010011111)  # Golay (23, 12)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (23, 12, 7)
         """
         self._length = length
         self._modulus = BinaryPolynomial.from_exponents([0, self._length])
@@ -94,7 +96,7 @@ class CyclicCode(BlockCode):
             args = "length={}, generator_polynomial={}, systematic={}".format(
                 self._length, self._generator_polynomial, self._is_systematic
             )
-        elif self._constructed_from == "parity_check_polynomial":
+        else:  # if self._constructed_from == "parity_check_polynomial":
             args = "length={}, parity_check_polynomial={}, systematic={}".format(
                 self._length, self._parity_check_polynomial, self._is_systematic
             )

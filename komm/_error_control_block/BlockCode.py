@@ -12,49 +12,51 @@ class BlockCode:
     r"""
     General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \times n` matrix. Those matrix are related by :math:`G H^\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.
 
-    References: :cite:`Lin.Costello.04` (Ch. 3)
+    References:
+
+        1. :cite:`Lin.Costello.04` (Ch. 3).
 
     .. rubric:: Decoding methods
 
     [[decoding_methods]]
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (6, 3, 3)
-    >>> code.generator_matrix
-    array([[1, 0, 0, 0, 1, 1],
-           [0, 1, 0, 1, 0, 1],
-           [0, 0, 1, 1, 1, 0]])
-    >>> code.parity_check_matrix
-    array([[0, 1, 1, 1, 0, 0],
-           [1, 0, 1, 0, 1, 0],
-           [1, 1, 0, 0, 0, 1]])
-    >>> code.codeword_table
-    array([[0, 0, 0, 0, 0, 0],
-           [1, 0, 0, 0, 1, 1],
-           [0, 1, 0, 1, 0, 1],
-           [1, 1, 0, 1, 1, 0],
-           [0, 0, 1, 1, 1, 0],
-           [1, 0, 1, 1, 0, 1],
-           [0, 1, 1, 0, 1, 1],
-           [1, 1, 1, 0, 0, 0]])
-    >>> code.codeword_weight_distribution
-    array([1, 0, 0, 4, 3, 0, 0])
-    >>> code.coset_leader_table
-    array([[0, 0, 0, 0, 0, 0],
-           [0, 0, 0, 1, 0, 0],
-           [0, 0, 0, 0, 1, 0],
-           [0, 0, 1, 0, 0, 0],
-           [0, 0, 0, 0, 0, 1],
-           [0, 1, 0, 0, 0, 0],
-           [1, 0, 0, 0, 0, 0],
-           [1, 0, 0, 1, 0, 0]])
-    >>> code.coset_leader_weight_distribution
-    array([1, 6, 1, 0, 0, 0, 0])
-    >>> (code.packing_radius, code.covering_radius)
-    (1, 2)
+        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (6, 3, 3)
+        >>> code.generator_matrix
+        array([[1, 0, 0, 0, 1, 1],
+               [0, 1, 0, 1, 0, 1],
+               [0, 0, 1, 1, 1, 0]])
+        >>> code.parity_check_matrix
+        array([[0, 1, 1, 1, 0, 0],
+               [1, 0, 1, 0, 1, 0],
+               [1, 1, 0, 0, 0, 1]])
+        >>> code.codeword_table
+        array([[0, 0, 0, 0, 0, 0],
+               [1, 0, 0, 0, 1, 1],
+               [0, 1, 0, 1, 0, 1],
+               [1, 1, 0, 1, 1, 0],
+               [0, 0, 1, 1, 1, 0],
+               [1, 0, 1, 1, 0, 1],
+               [0, 1, 1, 0, 1, 1],
+               [1, 1, 1, 0, 0, 0]])
+        >>> code.codeword_weight_distribution
+        array([1, 0, 0, 4, 3, 0, 0])
+        >>> code.coset_leader_table
+        array([[0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 1, 0, 0],
+               [0, 0, 0, 0, 1, 0],
+               [0, 0, 1, 0, 0, 0],
+               [0, 0, 0, 0, 0, 1],
+               [0, 1, 0, 0, 0, 0],
+               [1, 0, 0, 0, 0, 0],
+               [1, 0, 0, 1, 0, 0]])
+        >>> code.coset_leader_weight_distribution
+        array([1, 6, 1, 0, 0, 0, 0])
+        >>> (code.packing_radius, code.covering_radius)
+        (1, 2)
     """
 
     def __init__(self, **kwargs):
@@ -65,25 +67,27 @@ class BlockCode:
 
         `komm.BlockCode(generator_matrix=generator_matrix)`
 
-        :code:`generator_matrix` : 2D-array of :obj:`int`
-            Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.
+        Parameters:
+
+            generator_matrix (2D-array of :obj:`int`): Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.
 
         **Via parity-check matrix**
 
         `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
 
-        :code:`parity_check_matrix` : 2D-array of :obj:`int`
-            Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.
+        Parameters:
+
+            parity_check_matrix (2D-array of :obj:`int`): Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.
 
         **Via parity submatrix and information set**
 
         `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
 
-        :code:`parity_submatrix` : 2D-array of :obj:`int`
-            Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.
+        Parameters:
 
-        :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional
-            Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
+            parity_submatrix (2D-array of :obj:`int`): Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.
+
+            information_set ((1D-array of :obj:`int`) or :obj:`str`, optional): Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
         """
         if "generator_matrix" in kwargs:
             self._init_from_generator_matrix(**kwargs)
@@ -275,18 +279,15 @@ class BlockCode:
         r"""
         Encodes a given message to its corresponding codeword.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`message` : 1D-array of :obj:`int`
-            The message to be encoded. Its length must be :math:`k`.
+            message (1D-array of :obj:`int`): The message to be encoded. Its length must be :math:`k`.
 
-        :code:`method` : :obj:`str`, optional
-            The encoding method to be used.
+            method (:obj:`str`, optional): The encoding method to be used.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`codeword` : 1D-array of :obj:`int`
-            The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
+            codeword (1D-array of :obj:`int`): The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.
         """
         message = np.array(message)
 
@@ -321,15 +322,13 @@ class BlockCode:
         r"""
         Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`codeword` : 1D-array of :obj:`int`
-            A codeword from the code. Its length must be :math:`n`.
+            codeword (1D-array of :obj:`int`): A codeword from the code. Its length must be :math:`n`.
 
-        .. rubric:: Output
+        Returns:
 
-        :code:`message` : 1D-array of :obj:`int`
-            The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
+            message (1D-array of :obj:`int`): The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.
         """
         if self._is_systematic:
             return codeword[self._information_set]
@@ -340,18 +339,17 @@ class BlockCode:
         r"""
         Decodes a received word to a message.
 
-        .. rubric:: Input
+        Parameters:
 
-        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)
-            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
+            recvword (1D-array of (:obj:`int` or :obj:`float`)): The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.
 
-        :code:`method` : :obj:`str`, optional
-            The decoding method to be used.
+            method (:obj:`str`, optional): The decoding method to be used.
 
-        .. rubric:: Output
+            **kwargs: Keyword arguments to be passed to the decoding method.
 
-        :code:`message_hat` : 1D-array of :obj:`int`
-            The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
+        Returns:
+
+            message_hat (1D-array of :obj:`int`): The message decoded from :code:`recvword`. Its length is equal to :math:`k`.
         """
         recvword = np.array(recvword)
 
@@ -410,6 +408,12 @@ class BlockCode:
                 return "exhaustive_search_hard"
         elif dtype == float:
             return "exhaustive_search_soft"
+
+    @staticmethod
+    def _extended_parity_submatrix(parity_submatrix):
+        last_column = (1 + np.sum(parity_submatrix, axis=1)) % 2
+        extended_parity_submatrix = np.hstack([parity_submatrix, last_column[np.newaxis].T])
+        return extended_parity_submatrix
 
     @classmethod
     def _available_decoding_methods(cls):

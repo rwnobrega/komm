@@ -10,7 +10,7 @@ from .CyclicCode import CyclicCode
 
 class BCHCode(CyclicCode):
     r"""
-    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\mu` and :math:`\tau` which must satisfy :math:`1 \leq \tau < 2^{\mu - 1}`.  The parameter :math:`\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\mathrm{BCH}(\mu, \tau)`, and has the following parameters:
+    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\mu` and :math:`\tau` which must satisfy :math:`1 \leq \tau < 2^{\mu - 1}`. The parameter :math:`\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\mathrm{BCH}(\mu, \tau)`, and has the following parameters:
 
     - Length: :math:`n = 2^{\mu} - 1`
     - Dimension: :math:`k \geq n - \mu \tau`
@@ -21,33 +21,35 @@ class BCHCode(CyclicCode):
 
     [[decoding_methods]]
 
-    References: :cite:`Lin.Costello.04` (Ch. 6)
+    References:
 
-    .. rubric:: Examples
+        1. :cite:`Lin.Costello.04` (Ch. 6)
 
-    >>> code = komm.BCHCode(5, 3)
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (31, 16, 7)
-    >>> code.generator_polynomial
-    BinaryPolynomial(0b1000111110101111)
+    Examples:
 
-    >>> # The true error-correcting capability is equal to the designed one:
-    >>> code = komm.BCHCode(7, 15); code
-    BCHCode(7, 15)
-    >>> # The true error-correcting capability is greater than the designed one:
-    >>> code = komm.BCHCode(7, 16); code
-    BCHCode(7, 21)
+        >>> code = komm.BCHCode(5, 3)
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (31, 16, 7)
+        >>> code.generator_polynomial
+        BinaryPolynomial(0b1000111110101111)
+
+        >>> # The true error-correcting capability is equal to the designed one:
+        >>> code = komm.BCHCode(7, 15); code
+        BCHCode(7, 15)
+        >>> # The true error-correcting capability is greater than the designed one:
+        >>> code = komm.BCHCode(7, 16); code
+        BCHCode(7, 21)
     """
 
     def __init__(self, mu, tau):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`mu` : :obj:`int`
-            The parameter :math:`\mu` of the code.
+        Parameters:
 
-        :code:`tau` : :obj:`int`
-            The designed error-correcting capability :math:`\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
+            mu (:obj:`int`): The parameter :math:`\mu` of the code.
+
+            tau (:obj:`int`): The designed error-correcting capability :math:`\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
         """
         if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
@@ -72,7 +74,7 @@ class BCHCode(CyclicCode):
     @staticmethod
     def _bch_code_generator_polynomial(field, tau):
         r"""
-        Assumes 1 <= tau < 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195)
+        Assumes 1 <= tau < 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194--195).
         """
         alpha = field.primitive_element
 
@@ -127,7 +129,7 @@ class BCHCode(CyclicCode):
 
     def _berlekamp_algorithm(self, syndrome_polynomial):
         r"""
-        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See  :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114-121).
+        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See :cite:`Lin.Costello.04` (p. 209--212) and :cite:`Ryan.Lin.09` (p. 114--121).
         """
         field = self._field
         t = self._packing_radius

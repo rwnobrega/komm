@@ -16,47 +16,49 @@ class ReedMullerCode(BlockCode):
     - Redundancy: :math:`m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}`
     - Minimum distance: :math:`d = 2^{\mu - \rho}`
 
-    References: :cite:`Lin.Costello.04` (p. 105--114)
+    References:
+
+        1. :cite:`Lin.Costello.04` (p. 105--114)
 
     .. rubric:: Decoding methods
 
     [[decoding_methods]]
 
-    .. rubric:: Notes
+    Notes:
 
-    - For :math:`\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
-    - For :math:`\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).
-    - For :math:`\rho = \mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
-    - For :math:`\rho = \mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
+        - For :math:`\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
+        - For :math:`\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).
+        - For :math:`\rho = \mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
+        - For :math:`\rho = \mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.ReedMullerCode(1, 5)
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (32, 6, 16)
-    >>> code.generator_matrix  #doctest: +NORMALIZE_WHITESPACE
-    array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-           [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
-           [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-           [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
-    >>> code.encode([0, 0, 0, 0, 0, 1])  #doctest: +NORMALIZE_WHITESPACE
-    array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    >>> recvword = np.ones(32, dtype=int); recvword[[2, 10, 15, 16, 17, 19, 29]] = 0
-    >>> code.decode(recvword)
-    array([0, 0, 0, 0, 0, 1])
+        >>> code = komm.ReedMullerCode(1, 5)
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (32, 6, 16)
+        >>> code.generator_matrix  #doctest: +NORMALIZE_WHITESPACE
+        array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+               [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+               [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+        >>> code.encode([0, 0, 0, 0, 0, 1])  #doctest: +NORMALIZE_WHITESPACE
+        array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+        >>> recvword = np.ones(32, dtype=int); recvword[[2, 10, 15, 16, 17, 19, 29]] = 0
+        >>> code.decode(recvword)
+        array([0, 0, 0, 0, 0, 1])
     """
 
     def __init__(self, rho, mu):
         r"""
-        Constructor for the class. It expects the following parameters:
+        Constructor for the class.
 
-        :code:`rho` : :obj:`int`
-            The parameter :math:`\rho` of the code.
+        Parameters:
 
-        :code:`mu` : :obj:`int`
-            The parameter :math:`\mu` of the code.
+            rho (:obj:`int`): The parameter :math:`\rho` of the code.
+
+            mu (:obj:`int`): The parameter :math:`\mu` of the code.
 
         The parameters must satisfy :math:`0 \leq \rho < \mu`.
         """
@@ -91,23 +93,23 @@ class ReedMullerCode(BlockCode):
         r"""
         The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
 
-        .. rubric:: Examples
+        Examples:
 
-        >>> code = komm.ReedMullerCode(2, 4)
-        >>> code.reed_partitions[1]
-        array([[ 0,  1,  4,  5],
-               [ 2,  3,  6,  7],
-               [ 8,  9, 12, 13],
-               [10, 11, 14, 15]])
-        >>> code.reed_partitions[8]
-        array([[ 0,  4],
-               [ 1,  5],
-               [ 2,  6],
-               [ 3,  7],
-               [ 8, 12],
-               [ 9, 13],
-               [10, 14],
-               [11, 15]])
+            >>> code = komm.ReedMullerCode(2, 4)
+            >>> code.reed_partitions[1]
+            array([[ 0,  1,  4,  5],
+                   [ 2,  3,  6,  7],
+                   [ 8,  9, 12, 13],
+                   [10, 11, 14, 15]])
+            >>> code.reed_partitions[8]
+            array([[ 0,  4],
+                   [ 1,  5],
+                   [ 2,  6],
+                   [ 3,  7],
+                   [ 8, 12],
+                   [ 9, 13],
+                   [10, 14],
+                   [11, 15]])
         """
         reed_partitions = []
         for ell in range(self._rho, -1, -1):
@@ -156,7 +158,7 @@ class ReedMullerCode(BlockCode):
     @tag(name="Weighted Reed", input_type="soft", target="message")
     def _decode_weighted_reed(self, recvword):
         r"""
-        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440-442.
+        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440--442.
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
         bx = (recvword < 0) * 1

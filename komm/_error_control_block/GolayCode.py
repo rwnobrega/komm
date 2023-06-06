@@ -1,7 +1,6 @@
 import numpy as np
 
 from .BlockCode import BlockCode
-from .util import _extended_parity_submatrix
 
 
 class GolayCode(BlockCode):
@@ -18,37 +17,38 @@ class GolayCode(BlockCode):
 
     [[decoding_methods]]
 
-    .. rubric:: Notes
+    Notes:
 
-    - The binary Golay code is a perfect code.
+        - The binary Golay code is a perfect code.
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.GolayCode()
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (23, 12, 7)
-    >>> recvword = np.zeros(23, dtype=int); recvword[[2, 10, 19]] = 1
-    >>> code.decode(recvword)  # Golay code can correct up to 3 errors.
-    array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    >>> recvword = np.zeros(23, dtype=int); recvword[[2, 3, 10, 19]] = 1
-    >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
-    array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
+        >>> code = komm.GolayCode()
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (23, 12, 7)
+        >>> recvword = np.zeros(23, dtype=int); recvword[[2, 10, 19]] = 1
+        >>> code.decode(recvword)  # Golay code can correct up to 3 errors.
+        array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        >>> recvword = np.zeros(23, dtype=int); recvword[[2, 3, 10, 19]] = 1
+        >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
+        array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
 
-    >>> code = komm.GolayCode(extended=True)
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (24, 12, 8)
+        >>> code = komm.GolayCode(extended=True)
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (24, 12, 8)
     """
 
     def __init__(self, extended=False):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`extended` : :obj:`bool`, optional
-            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
+        Parameters:
+
+            extended (:obj:`bool`, optional): If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """
         P = GolayCode._golay_parity_submatrix()
         if extended:
-            P = _extended_parity_submatrix(P)
+            P = BlockCode._extended_parity_submatrix(P)
         super().__init__(parity_submatrix=P)
         self._minimum_distance = 8 if extended else 7
         self._extended = extended

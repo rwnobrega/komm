@@ -17,32 +17,33 @@ class SingleParityCheckCode(BlockCode):
 
     [[decoding_methods]]
 
-    .. rubric:: Notes
+    Notes:
 
-    - Its dual is the repetition code (:class:`RepetitionCode`).
+        - Its dual is the repetition code (:class:`RepetitionCode`).
 
-    .. rubric:: Examples
+    Examples:
 
-    >>> code = komm.SingleParityCheckCode(5)
-    >>> (code.length, code.dimension, code.minimum_distance)
-    (5, 4, 2)
-    >>> code.generator_matrix
-    array([[1, 0, 0, 0, 1],
-           [0, 1, 0, 0, 1],
-           [0, 0, 1, 0, 1],
-           [0, 0, 0, 1, 1]])
-    >>> code.parity_check_matrix
-    array([[1, 1, 1, 1, 1]])
-    >>> code.encode([1, 0, 1, 1])
-    array([1, 0, 1, 1, 1])
+        >>> code = komm.SingleParityCheckCode(5)
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (5, 4, 2)
+        >>> code.generator_matrix
+        array([[1, 0, 0, 0, 1],
+               [0, 1, 0, 0, 1],
+               [0, 0, 1, 0, 1],
+               [0, 0, 0, 1, 1]])
+        >>> code.parity_check_matrix
+        array([[1, 1, 1, 1, 1]])
+        >>> code.encode([1, 0, 1, 1])
+        array([1, 0, 1, 1, 1])
     """
 
     def __init__(self, n):
         r"""
-        Constructor for the class. It expects the following parameter:
+        Constructor for the class.
 
-        :code:`n` : :obj:`int`
-            The length :math:`n` of the code. Must be a positive integer.
+        Parameters:
+
+            n (:obj:`int`): The length :math:`n` of the code. Must be a positive integer.
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int).T)
         self._minimum_distance = 2
