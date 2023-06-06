@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -57,7 +58,9 @@
 <span class="sd">    Golay :math:`(23,12,7)`  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`</span>
 <span class="sd">    =======================  ==============================================  ======================================</span>
 
-<span class="sd">    References: :cite:`Lin.Costello.04` (Chapter 5)</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. :cite:`Lin.Costello.04` (Chapter 5)</span>
 
 <span class="sd">    .. rubric:: Decoding methods</span>
 
@@ -72,33 +75,33 @@
 
 <span class="sd">        `komm.CyclicCode(length, generator_polynomial=generator_polynomial, systematic=True)`</span>
 
-<span class="sd">        :code:`generator_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`</span>
-<span class="sd">            The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.</span>
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            generator_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.</span>
 
 <span class="sd">        **Via parity-check polynomial**</span>
 
 <span class="sd">        `komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)`</span>
 
-<span class="sd">        :code:`parity_check_polynomial` : :obj:`BinaryPolynomial` or :obj:`int`</span>
-<span class="sd">            The parity-check polynomial :math:`h(X)` of the code, of degree :math:`k` (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.</span>
+<span class="sd">            parity_check_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The parity-check polynomial :math:`h(X)` of the code, of degree :math:`k` (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.</span>
 
-<span class="sd">        **Common parameters**</span>
+<span class="sd">        The following parameters are common to both formats:</span>
 
-<span class="sd">        :code:`length` : :obj:`int`</span>
-<span class="sd">            The length :math:`n` of the code.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`systematic` : :obj:`bool`, optional</span>
-<span class="sd">            Whether the encoder is systematic. Default is :code:`True`.</span>
+<span class="sd">            length (:obj:`int`): The length :math:`n` of the code.</span>
 
-<span class="sd">        .. rubric:: Examples</span>
+<span class="sd">            systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is :code:`True`.</span>
 
-<span class="sd">        &gt;&gt;&gt; code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)</span>
-<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">        (23, 12, 7)</span>
+<span class="sd">        Examples:</span>
 
-<span class="sd">        &gt;&gt;&gt; code = komm.CyclicCode(length=23, parity_check_polynomial=0b1010010011111)  # Golay (23, 12)</span>
-<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">        (23, 12, 7)</span>
+<span class="sd">            &gt;&gt;&gt; code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)</span>
+<span class="sd">            &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">            (23, 12, 7)</span>
+
+<span class="sd">            &gt;&gt;&gt; code = komm.CyclicCode(length=23, parity_check_polynomial=0b1010010011111)  # Golay (23, 12)</span>
+<span class="sd">            &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">            (23, 12, 7)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_modulus</span> <span class="o">=</span> <span class="n">BinaryPolynomial</span><span class="o">.</span><span class="n">from_exponents</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">])</span>
@@ -128,7 +131,7 @@
             <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;length=</span><span class="si">{}</span><span class="s2">, generator_polynomial=</span><span class="si">{}</span><span class="s2">, systematic=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_polynomial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructed_from</span> <span class="o">==</span> <span class="s2">&quot;parity_check_polynomial&quot;</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># if self._constructed_from == &quot;parity_check_polynomial&quot;:</span>
             <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;length=</span><span class="si">{}</span><span class="s2">, parity_check_polynomial=</span><span class="si">{}</span><span class="s2">, systematic=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parity_check_polynomial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span>
             <span class="p">)</span>
@@ -276,7 +279,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018–2023, Roberto W. Nobrega.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

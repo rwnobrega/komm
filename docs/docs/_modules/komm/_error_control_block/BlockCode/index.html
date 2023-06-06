@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -46,49 +47,51 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    General binary linear block code. It is characterized by its *generator matrix* :math:`G`, a binary :math:`k \times n` matrix, and by its *parity-check matrix* :math:`H`, a binary :math:`m \times n` matrix. Those matrix are related by :math:`G H^\top = 0`. The parameters :math:`k`, :math:`m`, and :math:`n` are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by :math:`k + m = n`.</span>
 
-<span class="sd">    References: :cite:`Lin.Costello.04` (Ch. 3)</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. :cite:`Lin.Costello.04` (Ch. 3).</span>
 
 <span class="sd">    .. rubric:: Decoding methods</span>
 
 <span class="sd">    [[decoding_methods]]</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])</span>
-<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">    (6, 3, 3)</span>
-<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
-<span class="sd">    array([[1, 0, 0, 0, 1, 1],</span>
-<span class="sd">           [0, 1, 0, 1, 0, 1],</span>
-<span class="sd">           [0, 0, 1, 1, 1, 0]])</span>
-<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
-<span class="sd">    array([[0, 1, 1, 1, 0, 0],</span>
-<span class="sd">           [1, 0, 1, 0, 1, 0],</span>
-<span class="sd">           [1, 1, 0, 0, 0, 1]])</span>
-<span class="sd">    &gt;&gt;&gt; code.codeword_table</span>
-<span class="sd">    array([[0, 0, 0, 0, 0, 0],</span>
-<span class="sd">           [1, 0, 0, 0, 1, 1],</span>
-<span class="sd">           [0, 1, 0, 1, 0, 1],</span>
-<span class="sd">           [1, 1, 0, 1, 1, 0],</span>
-<span class="sd">           [0, 0, 1, 1, 1, 0],</span>
-<span class="sd">           [1, 0, 1, 1, 0, 1],</span>
-<span class="sd">           [0, 1, 1, 0, 1, 1],</span>
-<span class="sd">           [1, 1, 1, 0, 0, 0]])</span>
-<span class="sd">    &gt;&gt;&gt; code.codeword_weight_distribution</span>
-<span class="sd">    array([1, 0, 0, 4, 3, 0, 0])</span>
-<span class="sd">    &gt;&gt;&gt; code.coset_leader_table</span>
-<span class="sd">    array([[0, 0, 0, 0, 0, 0],</span>
-<span class="sd">           [0, 0, 0, 1, 0, 0],</span>
-<span class="sd">           [0, 0, 0, 0, 1, 0],</span>
-<span class="sd">           [0, 0, 1, 0, 0, 0],</span>
-<span class="sd">           [0, 0, 0, 0, 0, 1],</span>
-<span class="sd">           [0, 1, 0, 0, 0, 0],</span>
-<span class="sd">           [1, 0, 0, 0, 0, 0],</span>
-<span class="sd">           [1, 0, 0, 1, 0, 0]])</span>
-<span class="sd">    &gt;&gt;&gt; code.coset_leader_weight_distribution</span>
-<span class="sd">    array([1, 6, 1, 0, 0, 0, 0])</span>
-<span class="sd">    &gt;&gt;&gt; (code.packing_radius, code.covering_radius)</span>
-<span class="sd">    (1, 2)</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (6, 3, 3)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 0, 0, 0, 1, 1],</span>
+<span class="sd">               [0, 1, 0, 1, 0, 1],</span>
+<span class="sd">               [0, 0, 1, 1, 1, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">        array([[0, 1, 1, 1, 0, 0],</span>
+<span class="sd">               [1, 0, 1, 0, 1, 0],</span>
+<span class="sd">               [1, 1, 0, 0, 0, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code.codeword_table</span>
+<span class="sd">        array([[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">               [1, 0, 0, 0, 1, 1],</span>
+<span class="sd">               [0, 1, 0, 1, 0, 1],</span>
+<span class="sd">               [1, 1, 0, 1, 1, 0],</span>
+<span class="sd">               [0, 0, 1, 1, 1, 0],</span>
+<span class="sd">               [1, 0, 1, 1, 0, 1],</span>
+<span class="sd">               [0, 1, 1, 0, 1, 1],</span>
+<span class="sd">               [1, 1, 1, 0, 0, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; code.codeword_weight_distribution</span>
+<span class="sd">        array([1, 0, 0, 4, 3, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code.coset_leader_table</span>
+<span class="sd">        array([[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">               [0, 0, 0, 1, 0, 0],</span>
+<span class="sd">               [0, 0, 0, 0, 1, 0],</span>
+<span class="sd">               [0, 0, 1, 0, 0, 0],</span>
+<span class="sd">               [0, 0, 0, 0, 0, 1],</span>
+<span class="sd">               [0, 1, 0, 0, 0, 0],</span>
+<span class="sd">               [1, 0, 0, 0, 0, 0],</span>
+<span class="sd">               [1, 0, 0, 1, 0, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; code.coset_leader_weight_distribution</span>
+<span class="sd">        array([1, 6, 1, 0, 0, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; (code.packing_radius, code.covering_radius)</span>
+<span class="sd">        (1, 2)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BlockCode.__init__"><a class="viewcode-back" href="../../../../komm.BlockCode/#komm.BlockCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -99,25 +102,27 @@
 
 <span class="sd">        `komm.BlockCode(generator_matrix=generator_matrix)`</span>
 
-<span class="sd">        :code:`generator_matrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.</span>
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            generator_matrix (2D-array of :obj:`int`): Generator matrix :math:`G` for the code, which is a :math:`k \times n` binary matrix.</span>
 
 <span class="sd">        **Via parity-check matrix**</span>
 
 <span class="sd">        `komm.BlockCode(parity_check_matrix=parity_check_matrix)`</span>
 
-<span class="sd">        :code:`parity_check_matrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.</span>
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            parity_check_matrix (2D-array of :obj:`int`): Parity-check matrix :math:`H` for the code, which is an :math:`m \times n` binary matrix.</span>
 
 <span class="sd">        **Via parity submatrix and information set**</span>
 
 <span class="sd">        `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`</span>
 
-<span class="sd">        :code:`parity_submatrix` : 2D-array of :obj:`int`</span>
-<span class="sd">            Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`information_set` : (1D-array of :obj:`int`) or :obj:`str`, optional</span>
-<span class="sd">            Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`&#39;left&#39;` or :code:`&#39;right&#39;`. The default value is :code:`&#39;left&#39;`.</span>
+<span class="sd">            parity_submatrix (2D-array of :obj:`int`): Parity submatrix :math:`P` for the code, which is a :math:`k \times m` binary matrix.</span>
+
+<span class="sd">            information_set ((1D-array of :obj:`int`) or :obj:`str`, optional): Either an array containing the indices of the information positions, which must be a :math:`k`-sublist of :math:`[0 : n)`, or one of the strings :code:`&#39;left&#39;` or :code:`&#39;right&#39;`. The default value is :code:`&#39;left&#39;`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;generator_matrix&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_from_generator_matrix</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -309,18 +314,15 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encodes a given message to its corresponding codeword.</span>
 
-<span class="sd">        .. rubric:: Input</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`message` : 1D-array of :obj:`int`</span>
-<span class="sd">            The message to be encoded. Its length must be :math:`k`.</span>
+<span class="sd">            message (1D-array of :obj:`int`): The message to be encoded. Its length must be :math:`k`.</span>
 
-<span class="sd">        :code:`method` : :obj:`str`, optional</span>
-<span class="sd">            The encoding method to be used.</span>
+<span class="sd">            method (:obj:`str`, optional): The encoding method to be used.</span>
 
-<span class="sd">        .. rubric:: Output</span>
+<span class="sd">        Returns:</span>
 
-<span class="sd">        :code:`codeword` : 1D-array of :obj:`int`</span>
-<span class="sd">            The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.</span>
+<span class="sd">            codeword (1D-array of :obj:`int`): The codeword corresponding to :code:`message`. Its length is equal to :math:`n`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">message</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -355,15 +357,13 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</span>
 
-<span class="sd">        .. rubric:: Input</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`codeword` : 1D-array of :obj:`int`</span>
-<span class="sd">            A codeword from the code. Its length must be :math:`n`.</span>
+<span class="sd">            codeword (1D-array of :obj:`int`): A codeword from the code. Its length must be :math:`n`.</span>
 
-<span class="sd">        .. rubric:: Output</span>
+<span class="sd">        Returns:</span>
 
-<span class="sd">        :code:`message` : 1D-array of :obj:`int`</span>
-<span class="sd">            The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.</span>
+<span class="sd">            message (1D-array of :obj:`int`): The message corresponding to :code:`codeword`. Its length is equal to :math:`k`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_systematic</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">codeword</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_information_set</span><span class="p">]</span>
@@ -374,18 +374,17 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Decodes a received word to a message.</span>
 
-<span class="sd">        .. rubric:: Input</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`recvword` : 1D-array of (:obj:`int` or :obj:`float`)</span>
-<span class="sd">            The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.</span>
+<span class="sd">            recvword (1D-array of (:obj:`int` or :obj:`float`)): The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in :math:`\{ 0, 1 \}`). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit :math:`0` and negative values represent bit :math:`1`). Its length must be :math:`n`.</span>
 
-<span class="sd">        :code:`method` : :obj:`str`, optional</span>
-<span class="sd">            The decoding method to be used.</span>
+<span class="sd">            method (:obj:`str`, optional): The decoding method to be used.</span>
 
-<span class="sd">        .. rubric:: Output</span>
+<span class="sd">            **kwargs: Keyword arguments to be passed to the decoding method.</span>
 
-<span class="sd">        :code:`message_hat` : 1D-array of :obj:`int`</span>
-<span class="sd">            The message decoded from :code:`recvword`. Its length is equal to :math:`k`.</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">            message_hat (1D-array of :obj:`int`): The message decoded from :code:`recvword`. Its length is equal to :math:`k`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">recvword</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">recvword</span><span class="p">)</span>
 
@@ -444,6 +443,12 @@
                 <span class="k">return</span> <span class="s2">&quot;exhaustive_search_hard&quot;</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;exhaustive_search_soft&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_extended_parity_submatrix</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="p">):</span>
+        <span class="n">last_column</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="n">extended_parity_submatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">parity_submatrix</span><span class="p">,</span> <span class="n">last_column</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">extended_parity_submatrix</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_available_decoding_methods</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -517,7 +522,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018–2023, Roberto W. Nobrega.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

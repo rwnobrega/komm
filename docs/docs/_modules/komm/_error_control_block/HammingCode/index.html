@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -32,8 +33,11 @@
           <div class="body" role="main">
             
   <h1>Source code for komm._error_control_block.HammingCode</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.BlockCode</span> <span class="kn">import</span> <span class="n">BlockCode</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">_extended_parity_submatrix</span><span class="p">,</span> <span class="n">_hamming_parity_submatrix</span>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.BlockCode</span> <span class="kn">import</span> <span class="n">BlockCode</span>
 
 
 <div class="viewcode-block" id="HammingCode"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode">[docs]</a><span class="k">class</span> <span class="nc">HammingCode</span><span class="p">(</span><span class="n">BlockCode</span><span class="p">):</span>
@@ -47,69 +51,71 @@
 
 <span class="sd">    This class constructs the code in systematic form, with the information set on the left.</span>
 
-<span class="sd">    References: :cite:`Lin.Costello.04` (Sec 4.1)</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. :cite:`Lin.Costello.04` (Sec 4.1)</span>
 
 <span class="sd">    .. rubric:: Decoding methods</span>
 
 <span class="sd">    [[decoding_methods]]</span>
 
-<span class="sd">    .. rubric:: Notes</span>
+<span class="sd">    Notes:</span>
 
-<span class="sd">    - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.</span>
-<span class="sd">    - Its dual is the simplex code (:class:`SimplexCode`).</span>
-<span class="sd">    - Hamming codes are perfect codes.</span>
+<span class="sd">        - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.</span>
+<span class="sd">        - Its dual is the simplex code (:class:`SimplexCode`).</span>
+<span class="sd">        - Hamming codes are perfect codes.</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.HammingCode(3)</span>
-<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">    (7, 4, 3)</span>
-<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
-<span class="sd">    array([[1, 0, 0, 0, 1, 1, 0],</span>
-<span class="sd">           [0, 1, 0, 0, 1, 0, 1],</span>
-<span class="sd">           [0, 0, 1, 0, 0, 1, 1],</span>
-<span class="sd">           [0, 0, 0, 1, 1, 1, 1]])</span>
-<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
-<span class="sd">    array([[1, 1, 0, 1, 1, 0, 0],</span>
-<span class="sd">           [1, 0, 1, 1, 0, 1, 0],</span>
-<span class="sd">           [0, 1, 1, 1, 0, 0, 1]])</span>
-<span class="sd">    &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
-<span class="sd">    array([1, 0, 1, 1, 0, 1, 0])</span>
-<span class="sd">    &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1])</span>
-<span class="sd">    array([1, 1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.HammingCode(3)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (7, 4, 3)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 0, 0, 0, 1, 1, 0],</span>
+<span class="sd">               [0, 1, 0, 0, 1, 0, 1],</span>
+<span class="sd">               [0, 0, 1, 0, 0, 1, 1],</span>
+<span class="sd">               [0, 0, 0, 1, 1, 1, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">        array([[1, 1, 0, 1, 1, 0, 0],</span>
+<span class="sd">               [1, 0, 1, 1, 0, 1, 0],</span>
+<span class="sd">               [0, 1, 1, 1, 0, 0, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
+<span class="sd">        array([1, 0, 1, 1, 0, 1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1])</span>
+<span class="sd">        array([1, 1, 0, 0])</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.HammingCode(3, extended=True)</span>
-<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">    (8, 4, 4)</span>
-<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
-<span class="sd">    array([[1, 0, 0, 0, 1, 1, 0, 1],</span>
-<span class="sd">           [0, 1, 0, 0, 1, 0, 1, 1],</span>
-<span class="sd">           [0, 0, 1, 0, 0, 1, 1, 1],</span>
-<span class="sd">           [0, 0, 0, 1, 1, 1, 1, 0]])</span>
-<span class="sd">    &gt;&gt;&gt; code.parity_check_matrix</span>
-<span class="sd">    array([[1, 1, 0, 1, 1, 0, 0, 0],</span>
-<span class="sd">           [1, 0, 1, 1, 0, 1, 0, 0],</span>
-<span class="sd">           [0, 1, 1, 1, 0, 0, 1, 0],</span>
-<span class="sd">           [1, 1, 1, 0, 0, 0, 0, 1]])</span>
-<span class="sd">    &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
-<span class="sd">    array([1, 0, 1, 1, 0, 1, 0, 0])</span>
-<span class="sd">    &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1, 0])</span>
-<span class="sd">    array([1, 1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.HammingCode(3, extended=True)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (8, 4, 4)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 0, 0, 0, 1, 1, 0, 1],</span>
+<span class="sd">               [0, 1, 0, 0, 1, 0, 1, 1],</span>
+<span class="sd">               [0, 0, 1, 0, 0, 1, 1, 1],</span>
+<span class="sd">               [0, 0, 0, 1, 1, 1, 1, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; code.parity_check_matrix</span>
+<span class="sd">        array([[1, 1, 0, 1, 1, 0, 0, 0],</span>
+<span class="sd">               [1, 0, 1, 1, 0, 1, 0, 0],</span>
+<span class="sd">               [0, 1, 1, 1, 0, 0, 1, 0],</span>
+<span class="sd">               [1, 1, 1, 0, 0, 0, 0, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code.encode([1, 0, 1, 1])</span>
+<span class="sd">        array([1, 0, 1, 1, 0, 1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code.decode([0, 1, 0, 0, 0, 1, 1, 0])</span>
+<span class="sd">        array([1, 1, 0, 0])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="HammingCode.__init__"><a class="viewcode-back" href="../../../../komm.HammingCode/#komm.HammingCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">extended</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameters:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`m` : :obj:`int`</span>
-<span class="sd">            The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.</span>
+<span class="sd">        Parameters:</span>
 
-<span class="sd">        :code:`extended` : :obj:`bool`, optional</span>
-<span class="sd">            If :code:`True`, constructs the code in extended version. The default value is :code:`False`.</span>
+<span class="sd">            m (:obj:`int`): The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.</span>
+
+<span class="sd">            extended (:obj:`bool`, optional): If :code:`True`, constructs the code in extended version. The default value is :code:`False`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="n">_hamming_parity_submatrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hamming_parity_submatrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">extended</span><span class="p">:</span>
-            <span class="n">P</span> <span class="o">=</span> <span class="n">_extended_parity_submatrix</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">BlockCode</span><span class="o">.</span><span class="n">_extended_parity_submatrix</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_distance</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">extended</span> <span class="k">else</span> <span class="mi">3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_m</span> <span class="o">=</span> <span class="n">m</span>
@@ -119,7 +125,17 @@
         <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extended</span><span class="p">:</span>
             <span class="n">args</span> <span class="o">+=</span> <span class="s2">&quot;, extended=True&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_hamming_parity_submatrix</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">parity_submatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">**</span><span class="n">m</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">w</span><span class="p">):</span>
+                <span class="n">parity_submatrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">idx</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">parity_submatrix</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -172,7 +188,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018–2023, Roberto W. Nobrega.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

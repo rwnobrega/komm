@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -41,41 +42,44 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cordaro--Wagner code. It is the :math:`(n, 2)` linear block code (:obj:`BlockCode`) which is optimum for the :term:`BSC` with sufficiently small crossover probability.</span>
 
-<span class="sd">    References: :cite:`Cordaro.Wagner.67`</span>
+<span class="sd">    References:</span>
+
+<span class="sd">        1. :cite:`Cordaro.Wagner.67`</span>
 
 <span class="sd">    .. rubric:: Decoding methods</span>
 
 <span class="sd">    [[decoding_methods]]</span>
 
-<span class="sd">    .. rubric:: Examples</span>
+<span class="sd">    Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; code = komm.CordaroWagnerCode(11)</span>
-<span class="sd">    &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
-<span class="sd">    (11, 2, 7)</span>
-<span class="sd">    &gt;&gt;&gt; code.generator_matrix</span>
-<span class="sd">    array([[1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],</span>
-<span class="sd">           [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]])</span>
-<span class="sd">    &gt;&gt;&gt; code.codeword_weight_distribution</span>
-<span class="sd">    array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])</span>
-<span class="sd">    &gt;&gt;&gt; code.coset_leader_weight_distribution</span>
-<span class="sd">    array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])</span>
+<span class="sd">        &gt;&gt;&gt; code = komm.CordaroWagnerCode(11)</span>
+<span class="sd">        &gt;&gt;&gt; (code.length, code.dimension, code.minimum_distance)</span>
+<span class="sd">        (11, 2, 7)</span>
+<span class="sd">        &gt;&gt;&gt; code.generator_matrix</span>
+<span class="sd">        array([[1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],</span>
+<span class="sd">               [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; code.codeword_weight_distribution</span>
+<span class="sd">        array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; code.coset_leader_weight_distribution</span>
+<span class="sd">        array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CordaroWagnerCode.__init__"><a class="viewcode-back" href="../../../../komm.CordaroWagnerCode/#komm.CordaroWagnerCode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor for the class. It expects the following parameter:</span>
+<span class="sd">        Constructor for the class.</span>
 
-<span class="sd">        :code:`n` : :obj:`int`</span>
-<span class="sd">            The length :math:`n` of the code. Must satisfy :math:`n \geq 2`.</span>
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            n (:obj:`int`): The length :math:`n` of the code. Must satisfy :math:`n \geq 2`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">r</span>
-        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># s == 0</span>
+            <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">repeats</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">repeats</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">repeats</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -144,7 +148,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018–2023, Roberto W. Nobrega.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>
