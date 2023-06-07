@@ -119,7 +119,7 @@ class CyclicCode(BlockCode):
     @functools.cached_property
     def meggitt_table(self):
         r"""
-        The Meggit table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
+        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
         """
         meggitt_table = {}
         for w in range(self.packing_radius + 1):
