@@ -28,21 +28,21 @@ __all__ = [
 # TODO: Vectorize those functions (e.g., axis=1).
 
 
-def _binlist2int(list_):
-    return sum(1 << i for (i, b) in enumerate(list_) if b != 0)
+def _binlist2int(binlist):
+    return sum(1 << i for (i, b) in enumerate(binlist) if b != 0)
 
 
-def binlist2int(list_):
+def binlist2int(binlist):
     r"""
     Converts a bit array to its integer representation.
 
     Parameters:
 
-        list_ (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.
+        binlist (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.
 
     Returns:
 
-        int_ (int): The integer representation of the input bit array.
+        integer (:obj:`int`): The integer representation of the input bit array.
 
     Examples:
 
@@ -52,16 +52,16 @@ def binlist2int(list_):
         >>> komm.binlist2int([0, 1, 0, 1, 1, 0, 0, 0])
         26
     """
-    return _binlist2int(list_)
+    return _binlist2int(binlist)
 
 
-def _int2binlist(int_, width=None):
+def _int2binlist(integer, width=None):
     if width is None:
-        width = max(int_.bit_length(), 1)
-    return [(int_ >> i) & 1 for i in range(width)]
+        width = max(integer.bit_length(), 1)
+    return [(integer >> i) & 1 for i in range(width)]
 
 
-def int2binlist(int_, width=None):
+def int2binlist(integer, width=None):
     r"""
     Converts an integer to its bit array representation.
 
@@ -73,7 +73,7 @@ def int2binlist(int_, width=None):
 
     Returns:
 
-        list_ (1D-array of :obj:`int`): An array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.
+        binlist (1D-array of :obj:`int`): An array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.
 
     Examples:
 
@@ -83,7 +83,7 @@ def int2binlist(int_, width=None):
         >>> komm.int2binlist(26, width=8)
         array([0, 1, 0, 1, 1, 0, 0, 0])
     """
-    return np.array(_int2binlist(int_, width))
+    return np.array(_int2binlist(integer, width))
 
 
 def _pack(list_, width):
