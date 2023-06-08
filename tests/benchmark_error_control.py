@@ -63,7 +63,7 @@ def benchmark_reed_algorithm(benchmark, code, method, N_bits):
     ],
     ids=repr,
 )
-def benchmark_meggit_decoder(benchmark, code, method, N_bits):
+def benchmark_meggitt_decoder(benchmark, code, method, N_bits):
     _benchmark_block_decoder(benchmark, code, method, N_bits)
 
 
