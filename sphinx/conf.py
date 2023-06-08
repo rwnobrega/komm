@@ -36,11 +36,11 @@ needs_sphinx = "1.7"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinxcontrib.bibtex",
+    "sphinxcontrib.katex",
 ]
 
 add_module_names = False
