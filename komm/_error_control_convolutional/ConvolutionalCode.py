@@ -47,7 +47,7 @@ class ConvolutionalCode:
 
     where :math:`A` is the :math:`\nu \times \nu` *state matrix*, :math:`B` is the :math:`k \times \nu` *control matrix*, :math:`C` is the :math:`\nu \times n` *observation matrix*, and :math:`D` is the :math:`k \times n` *transition matrix*.
 
-    .. rubric:: Table of convolutional code
+    .. rubric:: Table of convolutional codes
 
     The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
