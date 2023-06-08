@@ -33,15 +33,17 @@ class ConvolutionalCode:
     The *memory order* of the code is defined by
 
     .. math::
-        \mu = \max_{0 \leq i < k} \nu_i.
+       \mu = \max_{0 \leq i < k} \nu_i.
 
     .. rubric:: Space-state representation
 
     A convolutional code may also be described via the *space-state representation*. Let :math:`\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})` be the input block, :math:`\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})` be the output block, and :math:`\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})` be the state, all defined at time instant :math:`t`. Then,
 
     .. math::
-       \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\
-       \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D,
+       \begin{aligned}
+          \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\
+          \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D,
+       \end{aligned}
 
     where :math:`A` is the :math:`\nu \times \nu` *state matrix*, :math:`B` is the :math:`k \times \nu` *control matrix*, :math:`C` is the :math:`\nu \times n` *observation matrix*, and :math:`D` is the :math:`k \times n` *transition matrix*.
 
