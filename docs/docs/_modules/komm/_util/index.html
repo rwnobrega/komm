@@ -8,10 +8,15 @@
     <title>komm._util &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/katex.min.js"></script>
+    <script src="../../../_static/auto-render.min.js"></script>
+    <script src="../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../genindex/" />
     <link rel="search" title="Search" href="../../../search/" /> 
   </head><body>
@@ -152,7 +157,6 @@
 <span class="sd">    Computes the Gaussian Q-function. It is given by</span>
 
 <span class="sd">    .. math::</span>
-
 <span class="sd">       \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.</span>
 
 <span class="sd">    Parameters:</span>
@@ -228,7 +232,6 @@
 <span class="sd">    Computes the entropy of a random variable with a given :term:`pmf`. Let :math:`X` be a random variable with :term:`pmf` :math:`p_X` and alphabet :math:`\mathcal{X}`. Its entropy is given by</span>
 
 <span class="sd">    .. math::</span>
-
 <span class="sd">       \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},</span>
 
 <span class="sd">    By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).</span>

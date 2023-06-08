@@ -9,11 +9,15 @@
     <title>komm.ReedMullerCode &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.CyclicCode" href="../komm.CyclicCode/" />
@@ -46,12 +50,12 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="komm.ReedMullerCode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReedMullerCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_block/ReedMullerCode/#ReedMullerCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ReedMullerCode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reed–Muller code. It is a linear block code (<a class="reference internal" href="../komm.BlockCode/#komm.BlockCode" title="komm.BlockCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockCode</span></code></a>) defined by two integers <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span>, which must satisfy <span class="math notranslate nohighlight">\(0 \leq \rho &lt; \mu\)</span>. See references for more details. The resulting code is denoted by <span class="math notranslate nohighlight">\(\mathrm{RM}(\rho, \mu)\)</span>, and has the following parameters:</p>
+<dd><p>Reed–Muller code. It is a linear block code (<a class="reference internal" href="../komm.BlockCode/#komm.BlockCode" title="komm.BlockCode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockCode</span></code></a>) defined by two integers <span class="math">\(\rho\)</span> and <span class="math">\(\mu\)</span>, which must satisfy <span class="math">\(0 \leq \rho &lt; \mu\)</span>. See references for more details. The resulting code is denoted by <span class="math">\(\mathrm{RM}(\rho, \mu)\)</span>, and has the following parameters:</p>
 <ul class="simple">
-<li><p>Length: <span class="math notranslate nohighlight">\(n = 2^{\mu}\)</span></p></li>
-<li><p>Dimension: <span class="math notranslate nohighlight">\(k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}\)</span></p></li>
-<li><p>Redundancy: <span class="math notranslate nohighlight">\(m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}\)</span></p></li>
-<li><p>Minimum distance: <span class="math notranslate nohighlight">\(d = 2^{\mu - \rho}\)</span></p></li>
+<li><p>Length: <span class="math">\(n = 2^{\mu}\)</span></p></li>
+<li><p>Dimension: <span class="math">\(k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}\)</span></p></li>
+<li><p>Redundancy: <span class="math">\(m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}\)</span></p></li>
+<li><p>Minimum distance: <span class="math">\(d = 2^{\mu - \rho}\)</span></p></li>
 </ul>
 <p class="rubric">References</p>
 <ol class="arabic simple">
@@ -95,10 +99,10 @@
 </table>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>For <span class="math notranslate nohighlight">\(\rho = 0\)</span> it reduces to a repetition code (<a class="reference internal" href="../komm.RepetitionCode/#komm.RepetitionCode" title="komm.RepetitionCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">RepetitionCode</span></code></a>).</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(\rho = 1\)</span> it reduces to a lengthened simplex code (<a class="reference internal" href="../komm.SimplexCode/#komm.SimplexCode" title="komm.SimplexCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplexCode</span></code></a>).</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(\rho = \mu - 2\)</span> it reduces to an extended Hamming code (<a class="reference internal" href="../komm.HammingCode/#komm.HammingCode" title="komm.HammingCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingCode</span></code></a>).</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(\rho = \mu - 1\)</span> it reduces to a single parity check code (<a class="reference internal" href="../komm.SingleParityCheckCode/#komm.SingleParityCheckCode" title="komm.SingleParityCheckCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleParityCheckCode</span></code></a>).</p></li>
+<li><p>For <span class="math">\(\rho = 0\)</span> it reduces to a repetition code (<a class="reference internal" href="../komm.RepetitionCode/#komm.RepetitionCode" title="komm.RepetitionCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">RepetitionCode</span></code></a>).</p></li>
+<li><p>For <span class="math">\(\rho = 1\)</span> it reduces to a lengthened simplex code (<a class="reference internal" href="../komm.SimplexCode/#komm.SimplexCode" title="komm.SimplexCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplexCode</span></code></a>).</p></li>
+<li><p>For <span class="math">\(\rho = \mu - 2\)</span> it reduces to an extended Hamming code (<a class="reference internal" href="../komm.HammingCode/#komm.HammingCode" title="komm.HammingCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingCode</span></code></a>).</p></li>
+<li><p>For <span class="math">\(\rho = \mu - 1\)</span> it reduces to a single parity check code (<a class="reference internal" href="../komm.SingleParityCheckCode/#komm.SingleParityCheckCode" title="komm.SingleParityCheckCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleParityCheckCode</span></code></a>).</p></li>
 </ul>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ReedMullerCode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -137,37 +141,37 @@
 <td><p>The covering radius of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.dimension" title="komm.ReedMullerCode.dimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimension</span></code></a></p></td>
-<td><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code.</p></td>
+<td><p>The dimension <span class="math">\(k\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.generator_matrix" title="komm.ReedMullerCode.generator_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generator_matrix</span></code></a></p></td>
-<td><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code.</p></td>
+<td><p>The generator matrix <span class="math">\(G\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.length" title="komm.ReedMullerCode.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
-<td><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code.</p></td>
+<td><p>The length <span class="math">\(n\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.minimum_distance" title="komm.ReedMullerCode.minimum_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum_distance</span></code></a></p></td>
-<td><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code.</p></td>
+<td><p>The minimum distance <span class="math">\(d\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.mu" title="komm.ReedMullerCode.mu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu</span></code></a></p></td>
-<td><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code.</p></td>
+<td><p>The parameter <span class="math">\(\mu\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.packing_radius" title="komm.ReedMullerCode.packing_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">packing_radius</span></code></a></p></td>
 <td><p>The packing radius of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.parity_check_matrix" title="komm.ReedMullerCode.parity_check_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parity_check_matrix</span></code></a></p></td>
-<td><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code.</p></td>
+<td><p>The parity-check matrix <span class="math">\(H\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.rate" title="komm.ReedMullerCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></p></td>
-<td><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code.</p></td>
+<td><p>The rate <span class="math">\(R = k/n\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.redundancy" title="komm.ReedMullerCode.redundancy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redundancy</span></code></a></p></td>
-<td><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code.</p></td>
+<td><p>The redundancy <span class="math">\(m\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.ReedMullerCode.reed_partitions" title="komm.ReedMullerCode.reed_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reed_partitions</span></code></a></p></td>
 <td><p>The Reed partitions of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.ReedMullerCode.rho" title="komm.ReedMullerCode.rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rho</span></code></a></p></td>
-<td><p>The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code.</p></td>
+<td><p>The parameter <span class="math">\(\rho\)</span> of the code.</p></td>
 </tr>
 </tbody>
 </table>
@@ -196,36 +200,36 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rho</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code.</p></li>
-<li><p><strong>mu</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code.</p></li>
+<li><p><strong>rho</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The parameter <span class="math">\(\rho\)</span> of the code.</p></li>
+<li><p><strong>mu</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The parameter <span class="math">\(\mu\)</span> of the code.</p></li>
 </ul>
 </dd>
 </dl>
-<p>The parameters must satisfy <span class="math notranslate nohighlight">\(0 \leq \rho &lt; \mu\)</span>.</p>
+<p>The parameters must satisfy <span class="math">\(0 \leq \rho &lt; \mu\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.codeword_table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_table</span></span><a class="headerlink" href="#komm.ReedMullerCode.codeword_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>The codeword table of the code. This is a <span class="math notranslate nohighlight">\(2^k \times n\)</span> matrix whose rows are all the codewords. The codeword in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the message whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<dd><p>The codeword table of the code. This is a <span class="math">\(2^k \times n\)</span> matrix whose rows are all the codewords. The codeword in row <span class="math">\(i\)</span> corresponds to the message whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math">\(i\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.codeword_weight_distribution">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_weight_distribution</span></span><a class="headerlink" href="#komm.ReedMullerCode.codeword_weight_distribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>The codeword weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of codewords of Hamming weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+<dd><p>The codeword weight distribution of the code. This is an array of shape <span class="math">\((n + 1)\)</span> in which element in position <span class="math">\(w\)</span> is equal to the number of codewords of Hamming weight <span class="math">\(w\)</span>, for <span class="math">\(w \in [0 : n]\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.coset_leader_table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_table</span></span><a class="headerlink" href="#komm.ReedMullerCode.coset_leader_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>The coset leader table of the code. This is a <span class="math notranslate nohighlight">\(2^m \times n\)</span> matrix whose rows are all the coset leaders. The coset leader in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the syndrome whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>. This may be used as a <a class="reference internal" href="../glossary/#term-LUT"><span class="xref std std-term">LUT</span></a> for syndrome-based decoding.</p>
+<dd><p>The coset leader table of the code. This is a <span class="math">\(2^m \times n\)</span> matrix whose rows are all the coset leaders. The coset leader in row <span class="math">\(i\)</span> corresponds to the syndrome whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math">\(i\)</span>. This may be used as a <a class="reference internal" href="../glossary/#term-LUT"><span class="xref std std-term">LUT</span></a> for syndrome-based decoding.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.coset_leader_weight_distribution">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_weight_distribution</span></span><a class="headerlink" href="#komm.ReedMullerCode.coset_leader_weight_distribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>The coset leader weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of coset leaders of weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+<dd><p>The coset leader weight distribution of the code. This is an array of shape <span class="math">\((n + 1)\)</span> in which element in position <span class="math">\(w\)</span> is equal to the number of coset leaders of weight <span class="math">\(w\)</span>, for <span class="math">\(w \in [0 : n]\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -241,13 +245,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>recvword</strong> (1D-array of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>)) – The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit <span class="math notranslate nohighlight">\(0\)</span> and negative values represent bit <span class="math notranslate nohighlight">\(1\)</span>). Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p><strong>recvword</strong> (1D-array of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>)) – The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in <span class="math">\(\{ 0, 1 \}\)</span>). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit <span class="math">\(0\)</span> and negative values represent bit <span class="math">\(1\)</span>). Its length must be <span class="math">\(n\)</span>.</p></li>
 <li><p><strong>method</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The decoding method to be used.</p></li>
 <li><p><strong>**kwargs</strong> – Keyword arguments to be passed to the decoding method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>message_hat (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message decoded from <code class="code docutils literal notranslate"><span class="pre">recvword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<dd class="field-even"><p>message_hat (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message decoded from <code class="code docutils literal notranslate"><span class="pre">recvword</span></code>. Its length is equal to <span class="math">\(k\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -255,7 +259,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.dimension">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dimension</span></span><a class="headerlink" href="#komm.ReedMullerCode.dimension" title="Permalink to this definition">¶</a></dt>
-<dd><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code. This property is read-only.</p>
+<dd><p>The dimension <span class="math">\(k\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -265,12 +269,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message to be encoded. Its length must be <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p><strong>message</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message to be encoded. Its length must be <span class="math">\(k\)</span>.</p></li>
 <li><p><strong>method</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The encoding method to be used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>codeword (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The codeword corresponding to <code class="code docutils literal notranslate"><span class="pre">message</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd class="field-even"><p>codeword (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The codeword corresponding to <code class="code docutils literal notranslate"><span class="pre">message</span></code>. Its length is equal to <span class="math">\(n\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -278,13 +282,13 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.generator_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generator_matrix</span></span><a class="headerlink" href="#komm.ReedMullerCode.generator_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code. It as a <span class="math notranslate nohighlight">\(k \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(k\)</span> is the code dimension, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+<dd><p>The generator matrix <span class="math">\(G\)</span> of the code. It as a <span class="math">\(k \times n\)</span> binary matrix, where <span class="math">\(k\)</span> is the code dimension, and <span class="math">\(n\)</span> is the code length. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.length">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#komm.ReedMullerCode.length" title="Permalink to this definition">¶</a></dt>
-<dd><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code. This property is read-only.</p>
+<dd><p>The length <span class="math">\(n\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -293,10 +297,10 @@
 <dd><p>Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>codeword</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – A codeword from the code. Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd class="field-odd"><p><strong>codeword</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – A codeword from the code. Its length must be <span class="math">\(n\)</span>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>message (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message corresponding to <code class="code docutils literal notranslate"><span class="pre">codeword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<dd class="field-even"><p>message (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message corresponding to <code class="code docutils literal notranslate"><span class="pre">codeword</span></code>. Its length is equal to <span class="math">\(k\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -304,37 +308,37 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.minimum_distance">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimum_distance</span></span><a class="headerlink" href="#komm.ReedMullerCode.minimum_distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</p>
+<dd><p>The minimum distance <span class="math">\(d\)</span> of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.mu">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#komm.ReedMullerCode.mu" title="Permalink to this definition">¶</a></dt>
-<dd><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> of the code. This property is read-only.</p>
+<dd><p>The parameter <span class="math">\(\mu\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.packing_radius">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">packing_radius</span></span><a class="headerlink" href="#komm.ReedMullerCode.packing_radius" title="Permalink to this definition">¶</a></dt>
-<dd><p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to <span class="math notranslate nohighlight">\(\lfloor (d - 1) / 2 \rfloor\)</span>. This property is read-only.</p>
+<dd><p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to <span class="math">\(\lfloor (d - 1) / 2 \rfloor\)</span>. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.parity_check_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parity_check_matrix</span></span><a class="headerlink" href="#komm.ReedMullerCode.parity_check_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code. It as an <span class="math notranslate nohighlight">\(m \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(m\)</span> is the code redundancy, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+<dd><p>The parity-check matrix <span class="math">\(H\)</span> of the code. It as an <span class="math">\(m \times n\)</span> binary matrix, where <span class="math">\(m\)</span> is the code redundancy, and <span class="math">\(n\)</span> is the code length. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.rate">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rate</span></span><a class="headerlink" href="#komm.ReedMullerCode.rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code. This property is read-only.</p>
+<dd><p>The rate <span class="math">\(R = k/n\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.redundancy">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">redundancy</span></span><a class="headerlink" href="#komm.ReedMullerCode.redundancy" title="Permalink to this definition">¶</a></dt>
-<dd><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code. This property is read-only.</p>
+<dd><p>The redundancy <span class="math">\(m\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -364,7 +368,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.ReedMullerCode.rho">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rho</span></span><a class="headerlink" href="#komm.ReedMullerCode.rho" title="Permalink to this definition">¶</a></dt>
-<dd><p>The parameter <span class="math notranslate nohighlight">\(\rho\)</span> of the code. This property is read-only.</p>
+<dd><p>The parameter <span class="math">\(\rho\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 </dd></dl>

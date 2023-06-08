@@ -9,11 +9,15 @@
     <title>komm.TunstallCode &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.binlist2int" href="../komm.binlist2int/" />
@@ -63,19 +67,19 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.TunstallCode.code_block_size" title="komm.TunstallCode.code_block_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_block_size</span></code></a></p></td>
-<td><p>The code block size <span class="math notranslate nohighlight">\(n\)</span>.</p></td>
+<td><p>The code block size <span class="math">\(n\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.TunstallCode.dec_mapping" title="komm.TunstallCode.dec_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dec_mapping</span></code></a></p></td>
-<td><p>The decoding mapping <span class="math notranslate nohighlight">\(\mathrm{Dec}\)</span> of the code.</p></td>
+<td><p>The decoding mapping <span class="math">\(\mathrm{Dec}\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.TunstallCode.enc_mapping" title="komm.TunstallCode.enc_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enc_mapping</span></code></a></p></td>
-<td><p>The encoding mapping <span class="math notranslate nohighlight">\(\mathrm{Enc}\)</span> of the code.</p></td>
+<td><p>The encoding mapping <span class="math">\(\mathrm{Enc}\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.TunstallCode.pmf" title="komm.TunstallCode.pmf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pmf</span></code></a></p></td>
 <td><p>The probability mass function used to construct the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.TunstallCode.source_cardinality" title="komm.TunstallCode.source_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_cardinality</span></code></a></p></td>
-<td><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet.</p></td>
+<td><p>The cardinality <span class="math">\(|\mathcal{X}|\)</span> of the source alphabet.</p></td>
 </tr>
 </tbody>
 </table>
@@ -92,7 +96,7 @@
 <td><p>Encodes a sequence of symbols to its corresponding sequence of bits.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.TunstallCode.rate" title="komm.TunstallCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a>(pmf)</p></td>
-<td><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>.</p></td>
+<td><p>Computes the expected rate <span class="math">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -105,7 +109,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The probability mass function used to construct the code.</p></li>
-<li><p><strong>code_block_size</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The code block size <span class="math notranslate nohighlight">\(n\)</span>. Must satisfy <span class="math notranslate nohighlight">\(2^n \geq |\mathcal{X}|\)</span>, where <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> is the cardinality of the source alphabet, given by <code class="code docutils literal notranslate"><span class="pre">len(pmf)</span></code>.</p></li>
+<li><p><strong>code_block_size</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The code block size <span class="math">\(n\)</span>. Must satisfy <span class="math">\(2^n \geq |\mathcal{X}|\)</span>, where <span class="math">\(|\mathcal{X}|\)</span> is the cardinality of the source alphabet, given by <code class="code docutils literal notranslate"><span class="pre">len(pmf)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -114,13 +118,13 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.TunstallCode.code_block_size">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">code_block_size</span></span><a class="headerlink" href="#komm.TunstallCode.code_block_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>The code block size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd><p>The code block size <span class="math">\(n\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.TunstallCode.dec_mapping">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dec_mapping</span></span><a class="headerlink" href="#komm.TunstallCode.dec_mapping" title="Permalink to this definition">¶</a></dt>
-<dd><p>The decoding mapping <span class="math notranslate nohighlight">\(\mathrm{Dec}\)</span> of the code.</p>
+<dd><p>The decoding mapping <span class="math">\(\mathrm{Dec}\)</span> of the code.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -129,7 +133,7 @@
 <dd><p>Decodes a sequence of bits to its corresponding sequence of symbols.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>bit_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of bits to be decoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.  Its length must be a multiple of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd class="field-odd"><p><strong>bit_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of bits to be decoded. Must be a 1D-array with elements in <span class="math">\(\{ 0, 1 \}\)</span>.  Its length must be a multiple of <span class="math">\(n\)</span>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>symbol_sequence (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of symbols corresponding to <code class="code docutils literal notranslate"><span class="pre">bits</span></code>.</p>
@@ -146,7 +150,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.TunstallCode.enc_mapping">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enc_mapping</span></span><a class="headerlink" href="#komm.TunstallCode.enc_mapping" title="Permalink to this definition">¶</a></dt>
-<dd><p>The encoding mapping <span class="math notranslate nohighlight">\(\mathrm{Enc}\)</span> of the code.</p>
+<dd><p>The encoding mapping <span class="math">\(\mathrm{Enc}\)</span> of the code.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -155,7 +159,7 @@
 <dd><p>Encodes a sequence of symbols to its corresponding sequence of bits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>symbol_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of symbols to be encoded. Must be a 1D-array with elements in <span class="math notranslate nohighlight">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>.</p>
+<dd class="field-odd"><p><strong>symbol_sequence</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of symbols to be encoded. Must be a 1D-array with elements in <span class="math">\(\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}\)</span>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bit_sequence (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The sequence of bits corresponding to <code class="code docutils literal notranslate"><span class="pre">symbol_sequence</span></code>.</p>
@@ -178,16 +182,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.TunstallCode.rate">
 <span class="sig-name descname"><span class="pre">rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#komm.TunstallCode.rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. This quantity is given by</p>
-<div class="math notranslate nohighlight">
-\[R = \frac{n}{\bar{k}},\]</div>
-<p>where <span class="math notranslate nohighlight">\(n\)</span> is the code block size, and <span class="math notranslate nohighlight">\(\bar{k}\)</span> is the expected sourceword length, assuming <a class="reference internal" href="../glossary/#term-i.i.d."><span class="xref std std-term">i.i.d.</span></a> source symbols drawn from <span class="math notranslate nohighlight">\(p_X\)</span>. It is measured in bits per source symbol.</p>
+<dd><p>Computes the expected rate <span class="math">\(R\)</span> of the code, assuming a given <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>. This quantity is given by</p>
+<div class="math">
+\[R = \frac{n}{\bar{k}},
+
+\]</div>
+<p>where <span class="math">\(n\)</span> is the code block size, and <span class="math">\(\bar{k}\)</span> is the expected sourceword length, assuming <a class="reference internal" href="../glossary/#term-i.i.d."><span class="xref std std-term">i.i.d.</span></a> source symbols drawn from <span class="math">\(p_X\)</span>. It is measured in bits per source symbol.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The (first-order) probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> to be assumed.</p>
+<dd class="field-odd"><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The (first-order) probability mass function <span class="math">\(p_X\)</span> to be assumed.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>rate (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The expected rate <span class="math notranslate nohighlight">\(R\)</span> of the code.</p>
+<dd class="field-even"><p>rate (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The expected rate <span class="math">\(R\)</span> of the code.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -201,7 +207,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.TunstallCode.source_cardinality">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_cardinality</span></span><a class="headerlink" href="#komm.TunstallCode.source_cardinality" title="Permalink to this definition">¶</a></dt>
-<dd><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet.</p>
+<dd><p>The cardinality <span class="math">\(|\mathcal{X}|\)</span> of the source alphabet.</p>
 </dd></dl>
 
 </dd></dl>

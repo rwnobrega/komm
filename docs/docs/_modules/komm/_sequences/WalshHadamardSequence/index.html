@@ -8,10 +8,15 @@
     <title>komm._sequences.WalshHadamardSequence &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/katex.min.js"></script>
+    <script src="../../../../_static/auto-render.min.js"></script>
+    <script src="../../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
   </head><body>
@@ -44,47 +49,45 @@
 <span class="sd">    Walsh--Hadamard sequence. Consider the following recursive matrix construction:</span>
 
 <span class="sd">    .. math::</span>
-
-<span class="sd">        H_{1} =</span>
-<span class="sd">        \begin{bmatrix}</span>
-<span class="sd">            +1</span>
-<span class="sd">        \end{bmatrix}, \qquad</span>
-<span class="sd">        H_{2^n} =</span>
-<span class="sd">        \begin{bmatrix}</span>
-<span class="sd">            H_{2^{n-1}} &amp; H_{2^{n-1}} \\</span>
-<span class="sd">            H_{2^{n-1}} &amp; -H_{2^{n-1}}</span>
-<span class="sd">        \end{bmatrix},</span>
+<span class="sd">       H_{1} =</span>
+<span class="sd">       \begin{bmatrix}</span>
+<span class="sd">          +1</span>
+<span class="sd">       \end{bmatrix}, \qquad</span>
+<span class="sd">       H_{2^n} =</span>
+<span class="sd">       \begin{bmatrix}</span>
+<span class="sd">          H_{2^{n-1}} &amp; H_{2^{n-1}} \\</span>
+<span class="sd">          H_{2^{n-1}} &amp; -H_{2^{n-1}}</span>
+<span class="sd">       \end{bmatrix},</span>
 
 <span class="sd">    for :math:`n = 1, 2, \ldots`. For example, for :math:`n = 3`,</span>
 
 <span class="sd">    .. math::</span>
-
-<span class="sd">        H_{8} =</span>
-<span class="sd">        \begin{bmatrix}</span>
-<span class="sd">            +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 \\</span>
-<span class="sd">        \end{bmatrix}</span>
+<span class="sd">       H_{8} =</span>
+<span class="sd">       \begin{bmatrix}</span>
+<span class="sd">          +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 \\</span>
+<span class="sd">       \end{bmatrix}</span>
 
 <span class="sd">    The above matrix is said to be in *natural ordering*. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        H_{8}^{\mathrm{s}} =</span>
-<span class="sd">        \begin{bmatrix}</span>
-<span class="sd">            +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 \\</span>
-<span class="sd">            +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 \\</span>
-<span class="sd">        \end{bmatrix}</span>
+<span class="sd">       H_{8}^{\mathrm{s}} =</span>
+<span class="sd">       \begin{bmatrix}</span>
+<span class="sd">          +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; -1 &amp; -1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; +1 &amp; -1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; +1 &amp; -1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 \\</span>
+<span class="sd">          +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 &amp; +1 &amp; -1 \\</span>
+<span class="sd">       \end{bmatrix}</span>
 
 <span class="sd">    The above matrix is said to be in *sequency ordering*. It has the property that row :math:`i` has exactly :math:`i` signal changes.</span>
 

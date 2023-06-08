@@ -8,10 +8,15 @@
     <title>komm._channels.AWGNChannel &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/katex.min.js"></script>
+    <script src="../../../../_static/auto-render.min.js"></script>
+    <script src="../../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
   </head><body>
@@ -41,14 +46,12 @@
 <span class="sd">    Additive white Gaussian noise (AWGN) channel. It is defined by</span>
 
 <span class="sd">    .. math::</span>
-
-<span class="sd">        Y_n = X_n + Z_n,</span>
+<span class="sd">       Y_n = X_n + Z_n,</span>
 
 <span class="sd">    where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by</span>
 
 <span class="sd">    .. math::</span>
-
-<span class="sd">        \mathrm{SNR} = \frac{P}{N},</span>
+<span class="sd">       \mathrm{SNR} = \frac{P}{N},</span>
 
 <span class="sd">    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).</span>
 

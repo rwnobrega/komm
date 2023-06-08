@@ -9,11 +9,15 @@
     <title>komm.ManchesterPulse &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.SincPulse" href="../komm.SincPulse/" />
@@ -47,13 +51,15 @@
 <dt class="sig sig-object py" id="komm.ManchesterPulse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ManchesterPulse</span></span><a class="reference internal" href="../_modules/komm/_pulses/ManchesterPulse/#ManchesterPulse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.ManchesterPulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manchester pulse. It is a formatting pulse (<code class="xref py py-class docutils literal notranslate"><span class="pre">FormattingPulse</span></code>) with impulse response given by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}h(t) =
+<div class="math">
+\[h(t) =
 \begin{cases}
-    -1, &amp; 0 \leq t &lt;  1/2, \\
-    1, &amp; 1/2 \leq t &lt; 1, \\
-    0, &amp; \text{otherwise},
-\end{cases}\end{split}\]</div>
+   -1, & 0 \leq t <  1/2, \\
+    1, & 1/2 \leq t < 1, \\
+    0, & \text{otherwise},
+\end{cases}
+
+\]</div>
 <p>The Manchester pulse is depicted below.</p>
 <img alt="Manchester pulse" class="align-center" src="../_images/pulse_manchester.svg" /><p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">

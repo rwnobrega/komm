@@ -8,10 +8,15 @@
     <title>komm._error_control_convolutional.ConvolutionalCode &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/katex.min.js"></script>
+    <script src="../../../../_static/auto-render.min.js"></script>
+    <script src="../../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
   </head><body>
@@ -68,15 +73,17 @@
 <span class="sd">    The *memory order* of the code is defined by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \mu = \max_{0 \leq i &lt; k} \nu_i.</span>
+<span class="sd">       \mu = \max_{0 \leq i &lt; k} \nu_i.</span>
 
 <span class="sd">    .. rubric:: Space-state representation</span>
 
 <span class="sd">    A convolutional code may also be described via the *space-state representation*. Let :math:`\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})` be the input block, :math:`\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})` be the output block, and :math:`\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})` be the state, all defined at time instant :math:`t`. Then,</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">       \mathbf{s}_{t+1} &amp; = \mathbf{s}_t A + \mathbf{u}_t B, \\</span>
-<span class="sd">       \mathbf{v}_{t} &amp; = \mathbf{s}_t C + \mathbf{u}_t D,</span>
+<span class="sd">       \begin{aligned}</span>
+<span class="sd">          \mathbf{s}_{t+1} &amp; = \mathbf{s}_t A + \mathbf{u}_t B, \\</span>
+<span class="sd">          \mathbf{v}_{t} &amp; = \mathbf{s}_t C + \mathbf{u}_t D,</span>
+<span class="sd">       \end{aligned}</span>
 
 <span class="sd">    where :math:`A` is the :math:`\nu \times \nu` *state matrix*, :math:`B` is the :math:`k \times \nu` *control matrix*, :math:`C` is the :math:`\nu \times n` *observation matrix*, and :math:`D` is the :math:`k \times n` *transition matrix*.</span>
 

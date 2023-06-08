@@ -8,10 +8,15 @@
     <title>komm._channels.BinarySymmetricChannel &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/katex.min.js"></script>
+    <script src="../../../../_static/auto-render.min.js"></script>
+    <script src="../../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
   </head><body>
@@ -44,13 +49,12 @@
 <span class="sd">    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}`, and transition probability matrix given by</span>
 
 <span class="sd">    .. math::</span>
-
-<span class="sd">        p_{Y \mid X} = \begin{bmatrix} 1-p &amp; p \\ p &amp; 1-p \end{bmatrix},</span>
+<span class="sd">       p_{Y \mid X} = \begin{bmatrix} 1-p &amp; p \\ p &amp; 1-p \end{bmatrix},</span>
 
 <span class="sd">    where the parameter :math:`p` is called the *crossover probability* of the channel. Equivalently, a BSC with crossover probability :math:`p` may be defined by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        Y_n = X_n + Z_n,</span>
+<span class="sd">       Y_n = X_n + Z_n,</span>
 
 <span class="sd">    where :math:`Z_n` are :term:`i.i.d.` Bernoulli random variables with :math:`\Pr[Z_n = 1] = p`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).</span>
 

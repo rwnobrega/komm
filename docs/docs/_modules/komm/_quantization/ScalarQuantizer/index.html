@@ -8,10 +8,15 @@
     <title>komm._quantization.ScalarQuantizer &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/katex.min.js"></script>
+    <script src="../../../../_static/auto-render.min.js"></script>
+    <script src="../../../../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../../../../genindex/" />
     <link rel="search" title="Search" href="../../../../search/" /> 
   </head><body>
@@ -41,7 +46,6 @@
 <span class="sd">    General scalar quantizer. It is defined by a list of *levels*, :math:`v_0, v_1, \ldots, v_{L-1}`, and a list of *thresholds*, :math:`t_0, t_1, \ldots, t_L`, satisfying</span>
 
 <span class="sd">    .. math::</span>
-
 <span class="sd">       -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty.</span>
 
 <span class="sd">    Given an input :math:`x \in \mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \leq x &lt; t_{i+1}`, where :math:`i \in [0:L)`.</span>

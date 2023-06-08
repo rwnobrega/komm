@@ -9,11 +9,15 @@
     <title>komm.DiscreteMemorylessSource &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.FixedToVariableCode" href="../komm.FixedToVariableCode/" />
@@ -46,16 +50,16 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessSource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiscreteMemorylessSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sources/DiscreteMemorylessSource/#DiscreteMemorylessSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.DiscreteMemorylessSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Discrete memoryless source (DMS). It is defined by an <em>alphabet</em> <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> and a <em>probability mass function</em> (<a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>) <span class="math notranslate nohighlight">\(p_X\)</span>. Here, for simplicity, the alphabet is always taken as <span class="math notranslate nohighlight">\(\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}\)</span>. The <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> <span class="math notranslate nohighlight">\(p_X\)</span> gives the probability of the source emitting the symbol <span class="math notranslate nohighlight">\(X = x\)</span>.</p>
+<dd><p>Discrete memoryless source (DMS). It is defined by an <em>alphabet</em> <span class="math">\(\mathcal{X}\)</span> and a <em>probability mass function</em> (<a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>) <span class="math">\(p_X\)</span>. Here, for simplicity, the alphabet is always taken as <span class="math">\(\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}\)</span>. The <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a> <span class="math">\(p_X\)</span> gives the probability of the source emitting the symbol <span class="math">\(X = x\)</span>.</p>
 <p>To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).</p>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessSource.cardinality" title="komm.DiscreteMemorylessSource.cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cardinality</span></code></a></p></td>
-<td><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet.</p></td>
+<td><p>The cardinality <span class="math">\(|\mathcal{X}|\)</span> of the source alphabet.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessSource.pmf" title="komm.DiscreteMemorylessSource.pmf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pmf</span></code></a></p></td>
-<td><p>The source probability mass function <span class="math notranslate nohighlight">\(p_X\)</span>.</p></td>
+<td><p>The source probability mass function <span class="math">\(p_X\)</span>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -66,7 +70,7 @@
 <td><p>Constructor for the class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessSource.entropy" title="komm.DiscreteMemorylessSource.entropy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">entropy</span></code></a>([base])</p></td>
-<td><p>Returns the source entropy <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span>.</p></td>
+<td><p>Returns the source entropy <span class="math">\(\mathrm{H}(X)\)</span>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -77,7 +81,7 @@
 <dd><p>Constructor for the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The source probability mass function <span class="math notranslate nohighlight">\(p_X\)</span>. The element in position <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span> must be equal to <span class="math notranslate nohighlight">\(p_X(x)\)</span>.</p>
+<dd class="field-odd"><p><strong>pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The source probability mass function <span class="math">\(p_X\)</span>. The element in position <span class="math">\(x \in \mathcal{X}\)</span> must be equal to <span class="math">\(p_X(x)\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -91,13 +95,13 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessSource.cardinality">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cardinality</span></span><a class="headerlink" href="#komm.DiscreteMemorylessSource.cardinality" title="Permalink to this definition">¶</a></dt>
-<dd><p>The cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span> of the source alphabet. This property is read-only.</p>
+<dd><p>The cardinality <span class="math">\(|\mathcal{X}|\)</span> of the source alphabet. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessSource.entropy">
 <span class="sig-name descname"><span class="pre">entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_sources/DiscreteMemorylessSource/#DiscreteMemorylessSource.entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.DiscreteMemorylessSource.entropy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the source entropy <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span>.</p>
+<dd><p>Returns the source entropy <span class="math">\(\mathrm{H}(X)\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>base</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p>
@@ -116,7 +120,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessSource.pmf">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pmf</span></span><a class="headerlink" href="#komm.DiscreteMemorylessSource.pmf" title="Permalink to this definition">¶</a></dt>
-<dd><p>The source probability mass function <span class="math notranslate nohighlight">\(p_X\)</span>. This is a read-and-write property.</p>
+<dd><p>The source probability mass function <span class="math">\(p_X\)</span>. This is a read-and-write property.</p>
 </dd></dl>
 
 </dd></dl>

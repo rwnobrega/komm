@@ -9,11 +9,15 @@
     <title>komm.RationalPolynomial &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.RationalPolynomialFraction" href="../komm.RationalPolynomialFraction/" />
@@ -98,7 +102,7 @@
 <dd><p>Constructor for the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>coefficients</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Fraction</span></code>) – The coefficients of the rational polynomial—the <span class="math notranslate nohighlight">\(i\)</span>-th element of the array standing for the coefficient of <span class="math notranslate nohighlight">\(X^i\)</span>. For example, <code class="code docutils literal notranslate"><span class="pre">[1/2,</span> <span class="pre">0,</span> <span class="pre">3]</span></code> represents the rational polynomial <span class="math notranslate nohighlight">\(1/2 + 3 X^2\)</span>.</p>
+<dd class="field-odd"><p><strong>coefficients</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Fraction</span></code>) – The coefficients of the rational polynomial—the <span class="math">\(i\)</span>-th element of the array standing for the coefficient of <span class="math">\(X^i\)</span>. For example, <code class="code docutils literal notranslate"><span class="pre">[1/2,</span> <span class="pre">0,</span> <span class="pre">3]</span></code> represents the rational polynomial <span class="math">\(1/2 + 3 X^2\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -117,7 +121,7 @@
 <dd class="field-odd"><p><strong>width</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>coefficients (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Coefficients of the polynomial. The <span class="math notranslate nohighlight">\(i\)</span>-th element of the array stands for the coefficient of <span class="math notranslate nohighlight">\(X^i\)</span>.</p>
+<dd class="field-even"><p>coefficients (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Coefficients of the polynomial. The <span class="math">\(i\)</span>-th element of the array stands for the coefficient of <span class="math">\(X^i\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -181,12 +185,12 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.RationalPolynomial.monomial">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_algebra/RationalPolynomial/#RationalPolynomial.monomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.RationalPolynomial.monomial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs a monomial. This is an polynomial of the form <span class="math notranslate nohighlight">\(cX^d\)</span>.</p>
+<dd><p>Constructs a monomial. This is an polynomial of the form <span class="math">\(cX^d\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>degree</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The degree <span class="math notranslate nohighlight">\(d\)</span> of the monomial.</p></li>
-<li><p><strong>coefficient</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The coefficient <span class="math notranslate nohighlight">\(c\)</span> of the monomial. The default value is <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p><strong>degree</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The degree <span class="math">\(d\)</span> of the monomial.</p></li>
+<li><p><strong>coefficient</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – The coefficient <span class="math">\(c\)</span> of the monomial. The default value is <span class="math">\(1\)</span>.</p></li>
 </ul>
 </dd>
 </dl>

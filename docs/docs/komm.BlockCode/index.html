@@ -9,11 +9,15 @@
     <title>komm.BlockCode &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.HammingCode" href="../komm.HammingCode/" />
@@ -46,7 +50,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="komm.BlockCode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BlockCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_error_control_block/BlockCode/#BlockCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.BlockCode" title="Permalink to this definition">¶</a></dt>
-<dd><p>General binary linear block code. It is characterized by its <em>generator matrix</em> <span class="math notranslate nohighlight">\(G\)</span>, a binary <span class="math notranslate nohighlight">\(k \times n\)</span> matrix, and by its <em>parity-check matrix</em> <span class="math notranslate nohighlight">\(H\)</span>, a binary <span class="math notranslate nohighlight">\(m \times n\)</span> matrix. Those matrix are related by <span class="math notranslate nohighlight">\(G H^\top = 0\)</span>. The parameters <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, and <span class="math notranslate nohighlight">\(n\)</span> are called the code <em>dimension</em>, <em>redundancy</em>, and <em>length</em>, respectively, and are related by <span class="math notranslate nohighlight">\(k + m = n\)</span>.</p>
+<dd><p>General binary linear block code. It is characterized by its <em>generator matrix</em> <span class="math">\(G\)</span>, a binary <span class="math">\(k \times n\)</span> matrix, and by its <em>parity-check matrix</em> <span class="math">\(H\)</span>, a binary <span class="math">\(m \times n\)</span> matrix. Those matrix are related by <span class="math">\(G H^\top = 0\)</span>. The parameters <span class="math">\(k\)</span>, <span class="math">\(m\)</span>, and <span class="math">\(n\)</span> are called the code <em>dimension</em>, <em>redundancy</em>, and <em>length</em>, respectively, and are related by <span class="math">\(k + m = n\)</span>.</p>
 <p class="rubric">References</p>
 <ol class="arabic simple">
 <li><p><span id="id1">[<a class="reference internal" href="../references/#id5" title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LCJr04</a>]</span> (Ch. 3).</p></li>
@@ -136,28 +140,28 @@
 <td><p>The covering radius of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.BlockCode.dimension" title="komm.BlockCode.dimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimension</span></code></a></p></td>
-<td><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code.</p></td>
+<td><p>The dimension <span class="math">\(k\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.BlockCode.generator_matrix" title="komm.BlockCode.generator_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generator_matrix</span></code></a></p></td>
-<td><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code.</p></td>
+<td><p>The generator matrix <span class="math">\(G\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.BlockCode.length" title="komm.BlockCode.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
-<td><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code.</p></td>
+<td><p>The length <span class="math">\(n\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.BlockCode.minimum_distance" title="komm.BlockCode.minimum_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum_distance</span></code></a></p></td>
-<td><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code.</p></td>
+<td><p>The minimum distance <span class="math">\(d\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.BlockCode.packing_radius" title="komm.BlockCode.packing_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">packing_radius</span></code></a></p></td>
 <td><p>The packing radius of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.BlockCode.parity_check_matrix" title="komm.BlockCode.parity_check_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parity_check_matrix</span></code></a></p></td>
-<td><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code.</p></td>
+<td><p>The parity-check matrix <span class="math">\(H\)</span> of the code.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.BlockCode.rate" title="komm.BlockCode.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></p></td>
-<td><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code.</p></td>
+<td><p>The rate <span class="math">\(R = k/n\)</span> of the code.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.BlockCode.redundancy" title="komm.BlockCode.redundancy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redundancy</span></code></a></p></td>
-<td><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code.</p></td>
+<td><p>The redundancy <span class="math">\(m\)</span> of the code.</p></td>
 </tr>
 </tbody>
 </table>
@@ -187,14 +191,14 @@
 <p><cite>komm.BlockCode(generator_matrix=generator_matrix)</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>generator_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Generator matrix <span class="math notranslate nohighlight">\(G\)</span> for the code, which is a <span class="math notranslate nohighlight">\(k \times n\)</span> binary matrix.</p>
+<dd class="field-odd"><p><strong>generator_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Generator matrix <span class="math">\(G\)</span> for the code, which is a <span class="math">\(k \times n\)</span> binary matrix.</p>
 </dd>
 </dl>
 <p><strong>Via parity-check matrix</strong></p>
 <p><cite>komm.BlockCode(parity_check_matrix=parity_check_matrix)</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>parity_check_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> for the code, which is an <span class="math notranslate nohighlight">\(m \times n\)</span> binary matrix.</p>
+<dd class="field-odd"><p><strong>parity_check_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Parity-check matrix <span class="math">\(H\)</span> for the code, which is an <span class="math">\(m \times n\)</span> binary matrix.</p>
 </dd>
 </dl>
 <p><strong>Via parity submatrix and information set</strong></p>
@@ -202,8 +206,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parity_submatrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Parity submatrix <span class="math notranslate nohighlight">\(P\)</span> for the code, which is a <span class="math notranslate nohighlight">\(k \times m\)</span> binary matrix.</p></li>
-<li><p><strong>information_set</strong> ((1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – Either an array containing the indices of the information positions, which must be a <span class="math notranslate nohighlight">\(k\)</span>-sublist of <span class="math notranslate nohighlight">\([0 : n)\)</span>, or one of the strings <code class="code docutils literal notranslate"><span class="pre">'left'</span></code> or <code class="code docutils literal notranslate"><span class="pre">'right'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">'left'</span></code>.</p></li>
+<li><p><strong>parity_submatrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – Parity submatrix <span class="math">\(P\)</span> for the code, which is a <span class="math">\(k \times m\)</span> binary matrix.</p></li>
+<li><p><strong>information_set</strong> ((1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – Either an array containing the indices of the information positions, which must be a <span class="math">\(k\)</span>-sublist of <span class="math">\([0 : n)\)</span>, or one of the strings <code class="code docutils literal notranslate"><span class="pre">'left'</span></code> or <code class="code docutils literal notranslate"><span class="pre">'right'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">'left'</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -212,25 +216,25 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.codeword_table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_table</span></span><a class="headerlink" href="#komm.BlockCode.codeword_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>The codeword table of the code. This is a <span class="math notranslate nohighlight">\(2^k \times n\)</span> matrix whose rows are all the codewords. The codeword in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the message whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<dd><p>The codeword table of the code. This is a <span class="math">\(2^k \times n\)</span> matrix whose rows are all the codewords. The codeword in row <span class="math">\(i\)</span> corresponds to the message whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math">\(i\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.codeword_weight_distribution">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">codeword_weight_distribution</span></span><a class="headerlink" href="#komm.BlockCode.codeword_weight_distribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>The codeword weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of codewords of Hamming weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+<dd><p>The codeword weight distribution of the code. This is an array of shape <span class="math">\((n + 1)\)</span> in which element in position <span class="math">\(w\)</span> is equal to the number of codewords of Hamming weight <span class="math">\(w\)</span>, for <span class="math">\(w \in [0 : n]\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.coset_leader_table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_table</span></span><a class="headerlink" href="#komm.BlockCode.coset_leader_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>The coset leader table of the code. This is a <span class="math notranslate nohighlight">\(2^m \times n\)</span> matrix whose rows are all the coset leaders. The coset leader in row <span class="math notranslate nohighlight">\(i\)</span> corresponds to the syndrome whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math notranslate nohighlight">\(i\)</span>. This may be used as a <a class="reference internal" href="../glossary/#term-LUT"><span class="xref std std-term">LUT</span></a> for syndrome-based decoding.</p>
+<dd><p>The coset leader table of the code. This is a <span class="math">\(2^m \times n\)</span> matrix whose rows are all the coset leaders. The coset leader in row <span class="math">\(i\)</span> corresponds to the syndrome whose binary representation (<a class="reference internal" href="../glossary/#term-MSB"><span class="xref std std-term">MSB</span></a> in the right) is <span class="math">\(i\)</span>. This may be used as a <a class="reference internal" href="../glossary/#term-LUT"><span class="xref std std-term">LUT</span></a> for syndrome-based decoding.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.coset_leader_weight_distribution">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coset_leader_weight_distribution</span></span><a class="headerlink" href="#komm.BlockCode.coset_leader_weight_distribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>The coset leader weight distribution of the code. This is an array of shape <span class="math notranslate nohighlight">\((n + 1)\)</span> in which element in position <span class="math notranslate nohighlight">\(w\)</span> is equal to the number of coset leaders of weight <span class="math notranslate nohighlight">\(w\)</span>, for <span class="math notranslate nohighlight">\(w \in [0 : n]\)</span>.</p>
+<dd><p>The coset leader weight distribution of the code. This is an array of shape <span class="math">\((n + 1)\)</span> in which element in position <span class="math">\(w\)</span> is equal to the number of coset leaders of weight <span class="math">\(w\)</span>, for <span class="math">\(w \in [0 : n]\)</span>.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -246,13 +250,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>recvword</strong> (1D-array of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>)) – The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit <span class="math notranslate nohighlight">\(0\)</span> and negative values represent bit <span class="math notranslate nohighlight">\(1\)</span>). Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p><strong>recvword</strong> (1D-array of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>)) – The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in <span class="math">\(\{ 0, 1 \}\)</span>). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit <span class="math">\(0\)</span> and negative values represent bit <span class="math">\(1\)</span>). Its length must be <span class="math">\(n\)</span>.</p></li>
 <li><p><strong>method</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The decoding method to be used.</p></li>
 <li><p><strong>**kwargs</strong> – Keyword arguments to be passed to the decoding method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>message_hat (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message decoded from <code class="code docutils literal notranslate"><span class="pre">recvword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<dd class="field-even"><p>message_hat (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message decoded from <code class="code docutils literal notranslate"><span class="pre">recvword</span></code>. Its length is equal to <span class="math">\(k\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -260,7 +264,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.dimension">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dimension</span></span><a class="headerlink" href="#komm.BlockCode.dimension" title="Permalink to this definition">¶</a></dt>
-<dd><p>The dimension <span class="math notranslate nohighlight">\(k\)</span> of the code. This property is read-only.</p>
+<dd><p>The dimension <span class="math">\(k\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -270,12 +274,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message to be encoded. Its length must be <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p><strong>message</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message to be encoded. Its length must be <span class="math">\(k\)</span>.</p></li>
 <li><p><strong>method</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The encoding method to be used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>codeword (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The codeword corresponding to <code class="code docutils literal notranslate"><span class="pre">message</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd class="field-even"><p>codeword (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The codeword corresponding to <code class="code docutils literal notranslate"><span class="pre">message</span></code>. Its length is equal to <span class="math">\(n\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -283,13 +287,13 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.generator_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generator_matrix</span></span><a class="headerlink" href="#komm.BlockCode.generator_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>The generator matrix <span class="math notranslate nohighlight">\(G\)</span> of the code. It as a <span class="math notranslate nohighlight">\(k \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(k\)</span> is the code dimension, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+<dd><p>The generator matrix <span class="math">\(G\)</span> of the code. It as a <span class="math">\(k \times n\)</span> binary matrix, where <span class="math">\(k\)</span> is the code dimension, and <span class="math">\(n\)</span> is the code length. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.length">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#komm.BlockCode.length" title="Permalink to this definition">¶</a></dt>
-<dd><p>The length <span class="math notranslate nohighlight">\(n\)</span> of the code. This property is read-only.</p>
+<dd><p>The length <span class="math">\(n\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -298,10 +302,10 @@
 <dd><p>Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>codeword</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – A codeword from the code. Its length must be <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dd class="field-odd"><p><strong>codeword</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – A codeword from the code. Its length must be <span class="math">\(n\)</span>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>message (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message corresponding to <code class="code docutils literal notranslate"><span class="pre">codeword</span></code>. Its length is equal to <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<dd class="field-even"><p>message (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) – The message corresponding to <code class="code docutils literal notranslate"><span class="pre">codeword</span></code>. Its length is equal to <span class="math">\(k\)</span>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -309,31 +313,31 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.minimum_distance">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimum_distance</span></span><a class="headerlink" href="#komm.BlockCode.minimum_distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum distance <span class="math notranslate nohighlight">\(d\)</span> of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</p>
+<dd><p>The minimum distance <span class="math">\(d\)</span> of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.packing_radius">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">packing_radius</span></span><a class="headerlink" href="#komm.BlockCode.packing_radius" title="Permalink to this definition">¶</a></dt>
-<dd><p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to <span class="math notranslate nohighlight">\(\lfloor (d - 1) / 2 \rfloor\)</span>. This property is read-only.</p>
+<dd><p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to <span class="math">\(\lfloor (d - 1) / 2 \rfloor\)</span>. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.parity_check_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parity_check_matrix</span></span><a class="headerlink" href="#komm.BlockCode.parity_check_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>The parity-check matrix <span class="math notranslate nohighlight">\(H\)</span> of the code. It as an <span class="math notranslate nohighlight">\(m \times n\)</span> binary matrix, where <span class="math notranslate nohighlight">\(m\)</span> is the code redundancy, and <span class="math notranslate nohighlight">\(n\)</span> is the code length. This property is read-only.</p>
+<dd><p>The parity-check matrix <span class="math">\(H\)</span> of the code. It as an <span class="math">\(m \times n\)</span> binary matrix, where <span class="math">\(m\)</span> is the code redundancy, and <span class="math">\(n\)</span> is the code length. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.rate">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rate</span></span><a class="headerlink" href="#komm.BlockCode.rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>The rate <span class="math notranslate nohighlight">\(R = k/n\)</span> of the code. This property is read-only.</p>
+<dd><p>The rate <span class="math">\(R = k/n\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.BlockCode.redundancy">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">redundancy</span></span><a class="headerlink" href="#komm.BlockCode.redundancy" title="Permalink to this definition">¶</a></dt>
-<dd><p>The redundancy <span class="math notranslate nohighlight">\(m\)</span> of the code. This property is read-only.</p>
+<dd><p>The redundancy <span class="math">\(m\)</span> of the code. This property is read-only.</p>
 </dd></dl>
 
 </dd></dl>

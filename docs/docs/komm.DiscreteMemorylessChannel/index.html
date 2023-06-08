@@ -9,11 +9,15 @@
     <title>komm.DiscreteMemorylessChannel &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.BinarySymmetricChannel" href="../komm.BinarySymmetricChannel/" />
@@ -46,19 +50,19 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiscreteMemorylessChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transition_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/DiscreteMemorylessChannel/#DiscreteMemorylessChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.DiscreteMemorylessChannel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Discrete memoryless channel (DMC). It is defined by an <em>input alphabet</em> <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>, an <em>output alphabet</em> <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>, and a <em>transition probability matrix</em> <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>. Here, for simplicity, the input and output alphabets are always taken as <span class="math notranslate nohighlight">\(\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}\)</span>, respectively. The transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>, of size <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>-by-<span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span>, gives the conditional probability of receiving <span class="math notranslate nohighlight">\(Y = y\)</span> given that <span class="math notranslate nohighlight">\(X = x\)</span> is transmitted. See <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 7).</p>
+<dd><p>Discrete memoryless channel (DMC). It is defined by an <em>input alphabet</em> <span class="math">\(\mathcal{X}\)</span>, an <em>output alphabet</em> <span class="math">\(\mathcal{Y}\)</span>, and a <em>transition probability matrix</em> <span class="math">\(p_{Y \mid X}\)</span>. Here, for simplicity, the input and output alphabets are always taken as <span class="math">\(\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}\)</span> and <span class="math">\(\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}\)</span>, respectively. The transition probability matrix <span class="math">\(p_{Y \mid X}\)</span>, of size <span class="math">\(|\mathcal{X}|\)</span>-by-<span class="math">\(|\mathcal{Y}|\)</span>, gives the conditional probability of receiving <span class="math">\(Y = y\)</span> given that <span class="math">\(X = x\)</span> is transmitted. See <span id="id1">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 7).</p>
 <p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
 <p class="rubric">Properties</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessChannel.input_cardinality" title="komm.DiscreteMemorylessChannel.input_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_cardinality</span></code></a></p></td>
-<td><p>The channel input cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>.</p></td>
+<td><p>The channel input cardinality <span class="math">\(|\mathcal{X}|\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessChannel.output_cardinality" title="komm.DiscreteMemorylessChannel.output_cardinality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_cardinality</span></code></a></p></td>
-<td><p>The channel output cardinality <span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span>.</p></td>
+<td><p>The channel output cardinality <span class="math">\(|\mathcal{Y}|\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessChannel.transition_matrix" title="komm.DiscreteMemorylessChannel.transition_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transition_matrix</span></code></a></p></td>
-<td><p>The channel transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>.</p></td>
+<td><p>The channel transition probability matrix <span class="math">\(p_{Y \mid X}\)</span>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -69,10 +73,10 @@
 <td><p>Constructor for the class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessChannel.capacity" title="komm.DiscreteMemorylessChannel.capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capacity</span></code></a>([base])</p></td>
-<td><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>.</p></td>
+<td><p>Returns the channel capacity <span class="math">\(C\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#komm.DiscreteMemorylessChannel.mutual_information" title="komm.DiscreteMemorylessChannel.mutual_information"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mutual_information</span></code></a>(input_pmf[, base])</p></td>
-<td><p>Computes the mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span> of the channel.</p></td>
+<td><p>Computes the mutual information <span class="math">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math">\(X\)</span> and the output <span class="math">\(Y\)</span> of the channel.</p></td>
 </tr>
 </tbody>
 </table>
@@ -83,7 +87,7 @@
 <dd><p>Constructor for the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>transition_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The channel transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>. The element in row <span class="math notranslate nohighlight">\(x \in \mathcal{X}\)</span> and column <span class="math notranslate nohighlight">\(y \in \mathcal{Y}\)</span> must be equal to <span class="math notranslate nohighlight">\(p_{Y \mid X}(y \mid x)\)</span>.</p>
+<dd class="field-odd"><p><strong>transition_matrix</strong> (2D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The channel transition probability matrix <span class="math">\(p_{Y \mid X}\)</span>. The element in row <span class="math">\(x \in \mathcal{X}\)</span> and column <span class="math">\(y \in \mathcal{Y}\)</span> must be equal to <span class="math">\(p_{Y \mid X}(y \mid x)\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -98,13 +102,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel.capacity">
 <span class="sig-name descname"><span class="pre">capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/DiscreteMemorylessChannel/#DiscreteMemorylessChannel.capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.DiscreteMemorylessChannel.capacity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the channel capacity <span class="math notranslate nohighlight">\(C\)</span>. It is given by <span class="math notranslate nohighlight">\(C = \max_{p_X} \mathrm{I}(X;Y)\)</span>. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <span id="id2">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Sec. 10.8).</p>
+<dd><p>Returns the channel capacity <span class="math">\(C\)</span>. It is given by <span class="math">\(C = \max_{p_X} \mathrm{I}(X;Y)\)</span>. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <span id="id2">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Sec. 10.8).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>base</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>capacity (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The channel capacity <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<dd class="field-even"><p>capacity (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The channel capacity <span class="math">\(C\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -120,25 +124,27 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel.input_cardinality">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_cardinality</span></span><a class="headerlink" href="#komm.DiscreteMemorylessChannel.input_cardinality" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel input cardinality <span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>. This property is read-only.</p>
+<dd><p>The channel input cardinality <span class="math">\(|\mathcal{X}|\)</span>. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel.mutual_information">
 <span class="sig-name descname"><span class="pre">mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_pmf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/komm/_channels/DiscreteMemorylessChannel/#DiscreteMemorylessChannel.mutual_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#komm.DiscreteMemorylessChannel.mutual_information" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span> of the channel. It is given by</p>
-<div class="math notranslate nohighlight">
-\[\mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathrm{H}(X)\)</span> is the the entropy of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(\mathrm{H}(X \mid Y)\)</span> is the conditional entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(Y\)</span>. By default, the base of the logarithm is <span class="math notranslate nohighlight">\(2\)</span>, in which case the mutual information is measured in bits. See <span id="id3">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 2).</p>
+<dd><p>Computes the mutual information <span class="math">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math">\(X\)</span> and the output <span class="math">\(Y\)</span> of the channel. It is given by</p>
+<div class="math">
+\[\mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
+
+\]</div>
+<p>where <span class="math">\(\mathrm{H}(X)\)</span> is the the entropy of <span class="math">\(X\)</span> and <span class="math">\(\mathrm{H}(X \mid Y)\)</span> is the conditional entropy of <span class="math">\(X\)</span> given <span class="math">\(Y\)</span>. By default, the base of the logarithm is <span class="math">\(2\)</span>, in which case the mutual information is measured in bits. See <span id="id3">[<a class="reference internal" href="../references/#id6" title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</a>]</span> (Ch. 2).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The probability mass function <span class="math notranslate nohighlight">\(p_X\)</span> of the channel input <span class="math notranslate nohighlight">\(X\)</span>. It must be a valid <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>, that is, all of its values must be non-negative and sum up to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p><strong>input_pmf</strong> (1D-array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The probability mass function <span class="math">\(p_X\)</span> of the channel input <span class="math">\(X\)</span>. It must be a valid <a class="reference internal" href="../glossary/#term-pmf"><span class="xref std std-term">pmf</span></a>, that is, all of its values must be non-negative and sum up to <span class="math">\(1\)</span>.</p></li>
 <li><p><strong>base</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – The base of the logarithm to be used. It must be a positive float or the string <code class="code docutils literal notranslate"><span class="pre">'e'</span></code>. The default value is <code class="code docutils literal notranslate"><span class="pre">2.0</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>mutual_information (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The mutual information <span class="math notranslate nohighlight">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math notranslate nohighlight">\(X\)</span> and the output <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+<dd class="field-even"><p>mutual_information (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The mutual information <span class="math">\(\mathrm{I}(X ; Y)\)</span> between the input <span class="math">\(X\)</span> and the output <span class="math">\(Y\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -154,13 +160,13 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel.output_cardinality">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_cardinality</span></span><a class="headerlink" href="#komm.DiscreteMemorylessChannel.output_cardinality" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel output cardinality <span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span>. This property is read-only.</p>
+<dd><p>The channel output cardinality <span class="math">\(|\mathcal{Y}|\)</span>. This property is read-only.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="komm.DiscreteMemorylessChannel.transition_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transition_matrix</span></span><a class="headerlink" href="#komm.DiscreteMemorylessChannel.transition_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel transition probability matrix <span class="math notranslate nohighlight">\(p_{Y \mid X}\)</span>. This is a read-and-write property.</p>
+<dd><p>The channel transition probability matrix <span class="math">\(p_{Y \mid X}\)</span>. This is a read-and-write property.</p>
 </dd></dl>
 
 </dd></dl>

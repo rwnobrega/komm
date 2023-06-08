@@ -9,11 +9,15 @@
     <title>komm.qfuncinv &#8212; Komm 0.7.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/katex-math.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/katex.min.js"></script>
+    <script src="../_static/auto-render.min.js"></script>
+    <script src="../_static/katex_autorenderer.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="komm.entropy" href="../komm.entropy/" />
@@ -49,10 +53,10 @@
 <dd><p>Computes the inverse Gaussian Q-function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>y</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The input to the function. Should be a float or array of floats in the real interval <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+<dd class="field-odd"><p><strong>y</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code> or array of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The input to the function. Should be a float or array of floats in the real interval <span class="math">\([0, 1]\)</span>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>x (same as input)</em> – The value <span class="math notranslate nohighlight">\(x = \mathrm{Q^{-1}}(y)\)</span>.</p>
+<dd class="field-even"><p><em>x (same as input)</em> – The value <span class="math">\(x = \mathrm{Q^{-1}}(y)\)</span>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
