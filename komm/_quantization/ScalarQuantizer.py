@@ -6,7 +6,6 @@ class ScalarQuantizer:
     General scalar quantizer. It is defined by a list of *levels*, :math:`v_0, v_1, \ldots, v_{L-1}`, and a list of *thresholds*, :math:`t_0, t_1, \ldots, t_L`, satisfying
 
     .. math::
-
        -\infty = t_0 < v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1} < t_L = +\infty.
 
     Given an input :math:`x \in \mathbb{R}`, the output of the quantizer is given by :math:`y = v_i` if and only if :math:`t_i \leq x < t_{i+1}`, where :math:`i \in [0:L)`.

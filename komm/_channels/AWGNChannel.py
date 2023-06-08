@@ -6,14 +6,12 @@ class AWGNChannel:
     Additive white Gaussian noise (AWGN) channel. It is defined by
 
     .. math::
-
-        Y_n = X_n + Z_n,
+       Y_n = X_n + Z_n,
 
     where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
 
     .. math::
-
-        \mathrm{SNR} = \frac{P}{N},
+       \mathrm{SNR} = \frac{P}{N},
 
     where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
 

@@ -9,7 +9,7 @@ class QAModulation(ComplexModulation):
     Quadrature-amplitude modulation (QAM). It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation :math:`\mathcal{S}` is given as a Cartesian product of two PAM (:class:`PAModulation`) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely,
 
     .. math::
-        \mathcal{S} = \{ [\pm(2i_\mathrm{I} + 1)A_\mathrm{I} \pm \mathrm{j}(2i_\mathrm{Q} + 1)A_\mathrm{Q}] \exp(\mathrm{j}\phi) : i_\mathrm{I} \in [0 : M_\mathrm{I}), i_\mathrm{Q} \in [0 : M_\mathrm{Q}) \},
+       \mathcal{S} = \{ [\pm(2i_\mathrm{I} + 1)A_\mathrm{I} \pm \mathrm{j}(2i_\mathrm{Q} + 1)A_\mathrm{Q}] \exp(\mathrm{j}\phi) : i_\mathrm{I} \in [0 : M_\mathrm{I}), i_\mathrm{Q} \in [0 : M_\mathrm{Q}) \},
 
     where :math:`M_\mathrm{I}` and :math:`M_\mathrm{Q}` are the *orders* (powers of :math:`2`), and :math:`A_\mathrm{I}` and :math:`A_\mathrm{Q}` are the *base amplitudes* of the in-phase and quadrature constellations, respectively. Also, :math:`\phi` is the *phase offset*. The size of the resulting complex-valued constellation is :math:`M = M_\mathrm{I} M_\mathrm{Q}`, a power of :math:`2`. The QAM constellation is depicted below for :math:`(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)` with :math:`A_\mathrm{I} = A_\mathrm{Q} = A`, and for :math:`(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)` with :math:`A_\mathrm{I} = A` and :math:`A_\mathrm{Q} = 2A`; in both cases, :math:`\phi = 0`.
 

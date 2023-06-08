@@ -9,7 +9,7 @@ class PSKModulation(ComplexModulation):
     Phase-shift keying (PSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\mathcal{S}` are *uniformly arranged* in a circle. More precisely,
 
     .. math::
-        \mathcal{S} = \left \{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \}
+       \mathcal{S} = \left \{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \}
 
     where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *amplitude*, and :math:`\phi` is the *phase offset* of the modulation. The PSK constellation is depicted below for :math:`M = 8`.
 

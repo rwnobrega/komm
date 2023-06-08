@@ -91,7 +91,6 @@ class VariableToFixedCode:
         Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. This quantity is given by
 
         .. math::
-
            R = \frac{n}{\bar{k}},
 
         where :math:`n` is the code block size, and :math:`\bar{k}` is the expected sourceword length, assuming :term:`i.i.d.` source symbols drawn from :math:`p_X`. It is measured in bits per source symbol.

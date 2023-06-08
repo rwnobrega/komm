@@ -8,8 +8,7 @@ class GaussianPulse(FormattingPulse):
     Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
-
-        h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
+       h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
 
     where the :math:`\bar{B} = B / \sqrt{\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
 

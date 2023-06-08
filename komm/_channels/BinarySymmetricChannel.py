@@ -9,13 +9,12 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by :math:`\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}`, and transition probability matrix given by
 
     .. math::
-
-        p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix},
+       p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix},
 
     where the parameter :math:`p` is called the *crossover probability* of the channel. Equivalently, a BSC with crossover probability :math:`p` may be defined by
 
     .. math::
-        Y_n = X_n + Z_n,
+       Y_n = X_n + Z_n,
 
     where :math:`Z_n` are :term:`i.i.d.` Bernoulli random variables with :math:`\Pr[Z_n = 1] = p`. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 

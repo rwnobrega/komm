@@ -59,7 +59,6 @@ class DiscreteMemorylessChannel:
         Computes the mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by
 
         .. math::
-
            \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
 
         where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).

@@ -6,12 +6,11 @@ class RectangularPulse(FormattingPulse):
     Rectangular pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
-
-        h(t) =
-        \begin{cases}
-            1, & 0 \leq t < w, \\
-            0, & \text{otherwise}.
-        \end{cases},
+       h(t) =
+       \begin{cases}
+          1, & 0 \leq t < w, \\
+          0, & \text{otherwise}.
+       \end{cases},
 
     where :math:`w` is the *width* of the pulse, which must satisfy :math:`0 \leq w \leq 1`. The rectangular pulse is depicted below for :math:`w = 1` (called the :term:`NRZ` pulse), and for :math:`w = 0.5` (called the halfway :term:`RZ` pulse).
 

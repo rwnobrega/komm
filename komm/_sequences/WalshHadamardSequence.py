@@ -9,47 +9,45 @@ class WalshHadamardSequence(BinarySequence):
     Walsh--Hadamard sequence. Consider the following recursive matrix construction:
 
     .. math::
-
-        H_{1} =
-        \begin{bmatrix}
-            +1
-        \end{bmatrix}, \qquad
-        H_{2^n} =
-        \begin{bmatrix}
-            H_{2^{n-1}} & H_{2^{n-1}} \\
-            H_{2^{n-1}} & -H_{2^{n-1}}
-        \end{bmatrix},
+       H_{1} =
+       \begin{bmatrix}
+          +1
+       \end{bmatrix}, \qquad
+       H_{2^n} =
+       \begin{bmatrix}
+          H_{2^{n-1}} & H_{2^{n-1}} \\
+          H_{2^{n-1}} & -H_{2^{n-1}}
+       \end{bmatrix},
 
     for :math:`n = 1, 2, \ldots`. For example, for :math:`n = 3`,
 
     .. math::
-
-        H_{8} =
-        \begin{bmatrix}
-            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
-            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
-            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
-            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
-            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
-            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
-            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
-            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
-        \end{bmatrix}
+       H_{8} =
+       \begin{bmatrix}
+          +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
+          +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
+          +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
+          +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
+          +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
+          +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
+          +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
+          +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
+       \end{bmatrix}
 
     The above matrix is said to be in *natural ordering*. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained:
 
     .. math::
-        H_{8}^{\mathrm{s}} =
-        \begin{bmatrix}
-            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
-            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
-            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
-            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
-            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
-            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
-            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
-            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
-        \end{bmatrix}
+       H_{8}^{\mathrm{s}} =
+       \begin{bmatrix}
+          +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
+          +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
+          +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
+          +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
+          +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
+          +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
+          +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
+          +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
+       \end{bmatrix}
 
     The above matrix is said to be in *sequency ordering*. It has the property that row :math:`i` has exactly :math:`i` signal changes.
 

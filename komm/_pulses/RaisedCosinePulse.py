@@ -8,8 +8,7 @@ class RaisedCosinePulse(FormattingPulse):
     Raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
-
-        h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
+       h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
 
     where :math:`\alpha` is the *roll-off factor*. The raised cosine pulse is depicted below for :math:`\alpha = 0.25`, and for :math:`\alpha = 0.75`.
 

@@ -75,8 +75,7 @@ class BinarySequence:
         Returns the autocorrelation :math:`R[\ell]` of the binary sequence. This is defined as
 
         .. math::
-
-            R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],
+           R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`a_{\ell}[n] = a[n - \ell]` is the sequence :math:`a[n]` shifted by :math:`\ell` positions. The autocorrelation :math:`R[\ell]` is even and satisfies :math:`R[\ell] = 0` for :math:`|\ell| \geq L`, where :math:`L` is the length of the binary sequence.
 
@@ -99,8 +98,7 @@ class BinarySequence:
         Returns the cyclic autocorrelation :math:`\tilde{R}[\ell]` of the binary sequence. This is defined as
 
         .. math::
-
-            \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],
+           \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],
 
         where :math:`a[n]` is the binary sequence in polar format, and :math:`\tilde{a}_{\ell}[n]` is the sequence :math:`a[n]` cyclic-shifted by :math:`\ell` positions. The cyclic autocorrelation :math:`\tilde{R}[\ell]` is even and periodic with period :math:`L`, where :math:`L` is the period of the binary sequence.
 

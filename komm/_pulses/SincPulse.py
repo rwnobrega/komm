@@ -8,8 +8,7 @@ class SincPulse(FormattingPulse):
     Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
 
     .. math::
-
-        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
+       h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
 
     The sinc pulse is depicted below.
 

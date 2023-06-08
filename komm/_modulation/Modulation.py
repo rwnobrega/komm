@@ -63,8 +63,7 @@ class Modulation:
         The average symbol energy :math:`E_\mathrm{s}` of the constellation. It assumes equiprobable symbols. It is given by
 
         .. math::
-
-            E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
+           E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
 
         where :math:`|s_i|^2` is the energy of symbol :math:`s_i \in \mathcal{S}` and :math:`M` is the order of the modulation. This property is read-only.
         """
