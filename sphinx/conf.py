@@ -36,16 +36,16 @@ needs_sphinx = "1.7"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
     "sphinxcontrib.bibtex",
     "sphinxcontrib.katex",
 ]
 
 add_module_names = False
 
-# Autodoc options
+# Autodoc settings
 autodoc_typehints = "none"
 
 # Autosummary settings
