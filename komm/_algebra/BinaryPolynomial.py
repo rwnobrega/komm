@@ -113,7 +113,7 @@ class BinaryPolynomial:
 
         Returns:
 
-            :strong:`exponents` (1D-array of :obj:`int`): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
+            exponents (1D-array of :obj:`int`): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
         Examples:
 
