@@ -70,7 +70,7 @@ master_doc = "index"
 # General information about the project.
 project = "Komm"
 author = "Roberto W. Nobrega"
-copyright = f"2018–{datetime.date.today().year}, Roberto W. Nobrega"
+copyright = f"2018–{datetime.date.today().year}, {author}"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -131,7 +131,6 @@ html_sidebars = {
     "**": [
         "libref.html",
         "indices.html",
-        "relations.html",  # needs 'show_related': True theme option to display
         "sourcelink.html",
         "searchbox.html",
     ]
