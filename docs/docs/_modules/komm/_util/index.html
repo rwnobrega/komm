@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -68,21 +67,21 @@
 <span class="c1"># TODO: Vectorize those functions (e.g., axis=1).</span>
 
 
-<span class="k">def</span> <span class="nf">_binlist2int</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_binlist2int</span><span class="p">(</span><span class="n">binlist</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binlist</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="binlist2int"><a class="viewcode-back" href="../../../komm.binlist2int/#komm.binlist2int">[docs]</a><span class="k">def</span> <span class="nf">binlist2int</span><span class="p">(</span><span class="n">list_</span><span class="p">):</span>
+<div class="viewcode-block" id="binlist2int"><a class="viewcode-back" href="../../../komm.binlist2int/#komm.binlist2int">[docs]</a><span class="k">def</span> <span class="nf">binlist2int</span><span class="p">(</span><span class="n">binlist</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a bit array to its integer representation.</span>
 
 <span class="sd">    Parameters:</span>
 
-<span class="sd">        list_ (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`&#39;s and :math:`1`&#39;s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.</span>
+<span class="sd">        binlist (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`&#39;s and :math:`1`&#39;s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.</span>
 
 <span class="sd">    Returns:</span>
 
-<span class="sd">        int_ (int): The integer representation of the input bit array.</span>
+<span class="sd">        integer (:obj:`int`): The integer representation of the input bit array.</span>
 
 <span class="sd">    Examples:</span>
 
@@ -92,16 +91,16 @@
 <span class="sd">        &gt;&gt;&gt; komm.binlist2int([0, 1, 0, 1, 1, 0, 0, 0])</span>
 <span class="sd">        26</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_binlist2int</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_binlist2int</span><span class="p">(</span><span class="n">binlist</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_int2binlist</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_int2binlist</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">int_</span><span class="o">.</span><span class="n">bit_length</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[(</span><span class="n">int_</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)]</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">integer</span><span class="o">.</span><span class="n">bit_length</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">integer</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)]</span>
 
 
-<div class="viewcode-block" id="int2binlist"><a class="viewcode-back" href="../../../komm.int2binlist/#komm.int2binlist">[docs]</a><span class="k">def</span> <span class="nf">int2binlist</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="int2binlist"><a class="viewcode-back" href="../../../komm.int2binlist/#komm.int2binlist">[docs]</a><span class="k">def</span> <span class="nf">int2binlist</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an integer to its bit array representation.</span>
 
@@ -113,7 +112,7 @@
 
 <span class="sd">    Returns:</span>
 
-<span class="sd">        list_ (1D-array of :obj:`int`): An array of :math:`0`&#39;s and :math:`1`&#39;s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.</span>
+<span class="sd">        binlist (1D-array of :obj:`int`): An array of :math:`0`&#39;s and :math:`1`&#39;s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.</span>
 
 <span class="sd">    Examples:</span>
 
@@ -123,7 +122,7 @@
 <span class="sd">        &gt;&gt;&gt; komm.int2binlist(26, width=8)</span>
 <span class="sd">        array([0, 1, 0, 1, 1, 0, 0, 0])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_int2binlist</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_int2binlist</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span></div>
 
 
 <span class="k">def</span> <span class="nf">_pack</span><span class="p">(</span><span class="n">list_</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
@@ -323,7 +322,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018–2023, Roberto W. Nobrega.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
     </div>
   </body>
 </html>
