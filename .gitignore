@@ -3,7 +3,7 @@
 *.py~
 __pycache__
 build/
-docs/_build/
+site/build/
 dist/
 tmp/
 .benchmarks
