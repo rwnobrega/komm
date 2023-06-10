@@ -57,10 +57,9 @@ class DiscreteMemorylessChannel:
     def mutual_information(self, input_pmf, base=2.0):
         r"""
         Computes the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by
-
-        .. math::
-           \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
-
+        $$
+            \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
+        $$
         where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
 
         Parameters:

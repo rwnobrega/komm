@@ -115,10 +115,9 @@ def _qfunc(x):
 def qfunc(x):
     r"""
     Computes the Gaussian Q-function. It is given by
-
-    .. math::
-       \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
-
+    $$
+        \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
+    $$
     Parameters:
 
         x (:obj:`float` or array of :obj:`float`): The input to the function. May be any float or array of floats.
@@ -190,10 +189,9 @@ def _entropy(pmf, base=2.0):
 def entropy(pmf, base=2.0):
     r"""
     Computes the entropy of a random variable with a given :term:`pmf`. Let $X$ be a random variable with :term:`pmf` $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
-
-    .. math::
-       \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
-
+    $$
+        \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
+    $$
     By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
 
     Parameters:

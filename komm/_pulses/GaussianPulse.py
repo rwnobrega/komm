@@ -6,10 +6,9 @@ from .FormattingPulse import FormattingPulse
 class GaussianPulse(FormattingPulse):
     r"""
     Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
-
-    .. math::
-       h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
-
+    $$
+        h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
+    $$
     where the $\bar{B} = B / \sqrt{\ln 2}$, and $B$ is the half-power bandwidth of the filter.
 
     The Gaussian pulse is depicted below for $B = 0.5$, and for $B = 1$.

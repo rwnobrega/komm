@@ -4,15 +4,13 @@ import numpy as np
 class AWGNChannel:
     r"""
     Additive white Gaussian noise (AWGN) channel. It is defined by
-
-    .. math::
-       Y_n = X_n + Z_n,
-
+    $$
+        Y_n = X_n + Z_n,
+    $$
     where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
-
-    .. math::
-       \mathrm{SNR} = \frac{P}{N},
-
+    $$
+        \mathrm{SNR} = \frac{P}{N},
+    $$
     where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).

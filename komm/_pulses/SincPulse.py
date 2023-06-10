@@ -6,10 +6,9 @@ from .FormattingPulse import FormattingPulse
 class SincPulse(FormattingPulse):
     r"""
     Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
-
-    .. math::
-       h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
-
+    $$
+        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
+    $$
     The sinc pulse is depicted below.
 
     .. image:: figures/pulse_sinc.svg

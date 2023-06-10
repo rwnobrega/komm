@@ -6,15 +6,13 @@ from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
 class BinaryErasureChannel(DiscreteMemorylessChannel):
     r"""
     Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$, and transition probability matrix given by
-
-    .. math::
-
+    $$
         p_{Y \mid X} =
         \begin{bmatrix}
-            1 - \epsilon & 0 & \epsilon \\
+            1 - \epsilon & 0 & \epsilon \\\\
             0 & 1 - \epsilon & \epsilon
         \end{bmatrix},
-
+    $$
     where the parameter $\epsilon$ is called the *erasure probability* of the channel. See :cite:`Cover.Thomas.06` (Sec. 7.1.5).
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).

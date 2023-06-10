@@ -7,48 +7,45 @@ from .BinarySequence import BinarySequence
 class WalshHadamardSequence(BinarySequence):
     r"""
     Walsh--Hadamard sequence. Consider the following recursive matrix construction:
-
-    .. math::
-       H_{1} =
-       \begin{bmatrix}
-          +1
-       \end{bmatrix}, \qquad
-       H_{2^n} =
-       \begin{bmatrix}
-          H_{2^{n-1}} & H_{2^{n-1}} \\
-          H_{2^{n-1}} & -H_{2^{n-1}}
-       \end{bmatrix},
-
+    $$
+        H_1 =
+        \begin{bmatrix}
+            +1
+        \end{bmatrix}, \qquad
+        H_{2^n} =
+        \begin{bmatrix}
+            H_{2^{n-1}} & H_{2^{n-1}} \\\\
+            H_{2^{n-1}} & -H_{2^{n-1}}
+        \end{bmatrix},
+    $$
     for $n = 1, 2, \ldots$. For example, for $n = 3$,
-
-    .. math::
-       H_{8} =
-       \begin{bmatrix}
-          +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
-          +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
-          +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
-          +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
-          +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
-          +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
-          +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
-          +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
-       \end{bmatrix}
-
+    $$
+        H_8 =
+        \begin{bmatrix}
+            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\\\
+            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
+            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\\\
+            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\\\
+            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\\\
+            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\\\
+            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\\\
+            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
+        \end{bmatrix}
+    $$
     The above matrix is said to be in *natural ordering*. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained:
-
-    .. math::
-       H_{8}^{\mathrm{s}} =
-       \begin{bmatrix}
-          +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\
-          +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\
-          +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\
-          +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\
-          +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\
-          +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\
-          +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\
-          +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
-       \end{bmatrix}
-
+    $$
+        H_8^{\mathrm{s}} =
+        \begin{bmatrix}
+            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\\\
+            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\\\
+            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\\\
+            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\\\
+            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\\\
+            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
+            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\\\
+            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
+        \end{bmatrix}
+    $$
     The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ signal changes.
 
     The Walsh--Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is the binary sequence (:obj:`BinarySequence`) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.

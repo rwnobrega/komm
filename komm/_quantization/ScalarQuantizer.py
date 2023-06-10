@@ -4,10 +4,9 @@ import numpy as np
 class ScalarQuantizer:
     r"""
     General scalar quantizer. It is defined by a list of *levels*, $v_0, v_1, \ldots, v_{L-1}$, and a list of *thresholds*, $t_0, t_1, \ldots, t_L$, satisfying
-
-    .. math::
-       -\infty = t_0 < v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1} < t_L = +\infty.
-
+    $$
+        -\infty = t_0 < v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1} < t_L = +\infty.
+    $$
     Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x < t_{i+1}$, where $i \in [0:L)$.
 
     To invoke the quantizer, call the object giving the input signal as parameter (see example in the constructor below).
@@ -32,14 +31,13 @@ class ScalarQuantizer:
                :align: center
 
             The levels are
-
-            .. math::
-               v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,
-
+            $$
+                v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2,
+            $$
             and the thresholds are
-
-            .. math::
+            $$
                t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty.
+            $$
 
             >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
             >>> x = np.linspace(-2.5, 2.5, num=11)

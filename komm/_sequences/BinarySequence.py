@@ -73,11 +73,10 @@ class BinarySequence:
     def autocorrelation(self, shifts=None, normalized=False):
         r"""
         Returns the autocorrelation $R[\ell]$ of the binary sequence. This is defined as
-
-        .. math::
-           R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_{\ell}[n],
-
-        where $a[n]$ is the binary sequence in polar format, and $a_{\ell}[n] = a[n - \ell]$ is the sequence $a[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the binary sequence.
+        $$
+            R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_\ell[n],
+        $$
+        where $a[n]$ is the binary sequence in polar format, and $a_\ell[n] = a[n - \ell]$ is the sequence $a[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the binary sequence.
 
         Parameters:
 
@@ -96,11 +95,10 @@ class BinarySequence:
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence. This is defined as
-
-        .. math::
-           \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_{\ell}[n],
-
-        where $a[n]$ is the binary sequence in polar format, and $\tilde{a}_{\ell}[n]$ is the sequence $a[n]$ cyclic-shifted by $\ell$ positions. The cyclic autocorrelation $\tilde{R}[\ell]$ is even and periodic with period $L$, where $L$ is the period of the binary sequence.
+        $$
+            \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_\ell[n],
+        $$
+        where $a[n]$ is the binary sequence in polar format, and $\tilde{a}\_\ell[n]$ is the sequence $a[n]$ cyclic-shifted by $\ell$ positions. The cyclic autocorrelation $\tilde{R}[\ell]$ is even and periodic with period $L$, where $L$ is the period of the binary sequence.
 
         Parameters:
 

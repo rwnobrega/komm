@@ -7,16 +7,14 @@ from .Modulation import Modulation
 class APSKModulation(ComplexModulation):
     r"""
     Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation is the union of component PSK constellations (:class:`PSKModulation`), called *rings*. More precisely,
-
-    .. math::
-       \mathcal{S} = \bigcup_{k \in [0 : K)} \mathcal{S}_k,
-
+    $$
+        \mathcal{S} = \bigcup_{k \in [0 : K)} \mathcal{S}_k,
+    $$
     where $K$ is the number of rings and
-
-    .. math::
-       \mathcal{S}_k = \left \\{ A_k \exp \left( \mathrm{j} \frac{2 \pi i}{M_k} \right) \exp(\mathrm{j} \phi_k) : i \in [0 : M_k) \right \\},
-
-    where $M_k$ is the *order*, $A_k$ is the *amplitude*, and $\phi_k$ is the *phase offset* of the $k$-th ring, for $k \in [0 : K)$. The size of the resulting complex-valued constellation is $M = M_0 + M_1 + \cdots + M_{K-1}$. The order $M_k$ of each ring need not be a power of $2$; however, the order $M$ of the constructed APSK modulation must be. The APSK constellation is depicted below for $(M_0, M_1) = (8, 8)$ with $(A_0, A_1) = (A, 2A)$ and $(\phi_0, \phi_1) = (0, \pi/8)$.
+    $$
+        \mathcal{S}_k = \left\\{ A_k \exp \left( \mathrm{j} \frac{2 \pi i}{M_k} \right) \exp(\mathrm{j} \phi_k) : i \in [0 : M_k) \right\\},
+    $$
+    where $M_k$ is the *order*, $A_k$ is the *amplitude*, and $\phi_k$ is the *phase offset* of the $k$-th ring, for $k \in [0 : K)$. The size of the resulting complex-valued constellation is $M = M_0 + M_1 + \cdots + M\_{K-1}$. The order $M_k$ of each ring need not be a power of $2$; however, the order $M$ of the constructed APSK modulation must be. The APSK constellation is depicted below for $(M_0, M_1) = (8, 8)$ with $(A_0, A_1) = (A, 2A)$ and $(\phi_0, \phi_1) = (0, \pi/8)$.
 
     .. image:: figures/apsk_16.svg
        :alt: 16-APSK constellation.

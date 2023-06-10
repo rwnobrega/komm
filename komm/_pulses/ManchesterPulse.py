@@ -4,15 +4,14 @@ from .FormattingPulse import FormattingPulse
 class ManchesterPulse(FormattingPulse):
     r"""
     Manchester pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
-
-    .. math::
-       h(t) =
-       \begin{cases}
-          -1, & 0 \leq t <  1/2, \\
-           1, & 1/2 \leq t < 1, \\
-           0, & \text{otherwise},
-       \end{cases}
-
+    $$
+        h(t) =
+        \begin{cases}
+            -1, & 0 \leq t <  1/2, \\\\
+            1, & 1/2 \leq t < 1, \\\\
+            0, & \text{otherwise}.
+        \end{cases}
+    $$
     The Manchester pulse is depicted below.
 
     .. image:: figures/pulse_manchester.svg

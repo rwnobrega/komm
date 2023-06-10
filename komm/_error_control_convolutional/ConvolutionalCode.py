@@ -10,41 +10,38 @@ class ConvolutionalCode:
     Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are binary polynomials (:class:`BinaryPolynomial`) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
 
     The *transfer function matrix* (also known as *transform-domain generator matrix*) $G(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
-
-    .. math::
-       g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
-
+    $$
+        g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
+    $$
     for $i \in [0 : k)$ and $j \in [0 : n)$.
 
     .. rubric:: Constraint lengths and related parameters
 
     The *constraint lengths* of the code are defined by
-
-    .. math::
-       \nu_i = \max \\{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \\},
-
+    $$
+        \nu_i = \max \\{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \\},
+    $$
     for $i \in [0 : k)$.
 
     The *overall constraint length* of the code is defined by
-
-    .. math::
-       \nu = \sum_{0 \leq i < k} \nu_i.
+    $$
+        \nu = \sum_{0 \leq i < k} \nu_i.
+    $$
 
     The *memory order* of the code is defined by
-
-    .. math::
-       \mu = \max_{0 \leq i < k} \nu_i.
+    $$
+        \mu = \max_{0 \leq i < k} \nu_i.
+    $$
 
     .. rubric:: Space-state representation
 
     A convolutional code may also be described via the *space-state representation*. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then,
-
-    .. math::
-       \begin{aligned}
-          \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\
-          \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D,
-       \end{aligned}
-
+    $$
+    \begin{aligned}
+        \mathbf{s}\_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\\\
+        \mathbf{v}\_{t} & = \mathbf{s}_t C + \mathbf{u}\_t D,
+    \end{aligned}
+    $$
     where $A$ is the $\nu \times \nu$ *state matrix*, $B$ is the $k \times \nu$ *control matrix*, $C$ is the $\nu \times n$ *observation matrix*, and $D$ is the $k \times n$ *transition matrix*.
 
     .. rubric:: Table of convolutional codes
@@ -97,13 +94,12 @@ class ConvolutionalCode:
         Examples:
 
             The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
-
-            .. math::
-               G(D) =
-               \begin{bmatrix}
-                   D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
-               \end{bmatrix},
-
+            $$
+                G(D) =
+                \begin{bmatrix}
+                    D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
+                \end{bmatrix},
+            $$
             yielding `feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
 
             .. image:: figures/cc_2_1_6.svg
@@ -115,14 +111,13 @@ class ConvolutionalCode:
             (2, 1, 6)
 
             The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
-
-            .. math::
-               G(D) =
-               \begin{bmatrix}
-                   D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\
-                   0  &  D^3 + D  &  D^3 + D^2 + 1 \\
-               \end{bmatrix},
-
+            $$
+                G(D) =
+                \begin{bmatrix}
+                    D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
+                    0  &  D^3 + D  &  D^3 + D^2 + 1
+                \end{bmatrix},
+            $$
             yielding `feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
 
             .. image:: figures/cc_3_2_7.svg
@@ -134,13 +129,12 @@ class ConvolutionalCode:
             (3, 2, 7)
 
             The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
-
-            .. math::
-               G(D) =
-               \begin{bmatrix}
-                   1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
-               \end{bmatrix},
-
+            $$
+                G(D) =
+                \begin{bmatrix}
+                    1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+                \end{bmatrix},
+            $$
             yielding `feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and `feedback_polynomials = [0o27]`.
 
             .. image:: figures/cc_2_1_4_fb.svg

@@ -61,10 +61,9 @@ class Modulation:
     def energy_per_symbol(self):
         r"""
         The average symbol energy $E_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by
-
-        .. math::
-           E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
-
+        $$
+            E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
+        $$
         where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation. This property is read-only.
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order

@@ -6,10 +6,9 @@ from .FormattingPulse import FormattingPulse
 class RaisedCosinePulse(FormattingPulse):
     r"""
     Raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
-
-    .. math::
-       h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
-
+    $$
+        h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
+    $$
     where $\alpha$ is the *roll-off factor*. The raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
     .. rst-class:: centered

@@ -7,10 +7,9 @@ from .Modulation import Modulation
 class ASKModulation(ComplexModulation):
     r"""
     Amplitude-shift keying (ASK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a ray. More precisely,
-
-    .. math::
-       \mathcal{S} = \\{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \\},
-
+    $$
+        \mathcal{S} = \\{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \\},
+    $$
     where $M$ is the *order* (a power of $2$), $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the modulation.  The ASK constellation is depicted below for $M = 4$.
 
     .. image:: figures/ask_4.svg
