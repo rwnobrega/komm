@@ -118,5 +118,5 @@ hide: navigation
 - [**`unpack`**](unpack) – Unpacks a given bit array.
 - [**`qfunc`**](qfunc) – Computes the Gaussian Q-function.
 - [**`qfuncinv`**](qfuncinv) – Computes the inverse Gaussian Q-function.
-- [**`entropy`**](entropy) – Computes the entropy of a random variable with a given :term:`pmf`.
+- [**`entropy`**](entropy) – Computes the entropy of a random variable with a given pmf.
 
