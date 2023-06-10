@@ -87,7 +87,7 @@ class BlockCode:
 
             parity_submatrix (2D-array of :obj:`int`): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
 
-            information_set ((1D-array of :obj:`int`) or :obj:`str`, optional): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings :code:`'left'` or :code:`'right'`. The default value is :code:`'left'`.
+            information_set ((1D-array of :obj:`int`) or :obj:`str`, optional): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
         """
         if "generator_matrix" in kwargs:
             self._init_from_generator_matrix(**kwargs)
@@ -287,7 +287,7 @@ class BlockCode:
 
         Returns:
 
-            codeword (1D-array of :obj:`int`): The codeword corresponding to :code:`message`. Its length is equal to $n$.
+            codeword (1D-array of :obj:`int`): The codeword corresponding to `message`. Its length is equal to $n$.
         """
         message = np.array(message)
 
@@ -328,7 +328,7 @@ class BlockCode:
 
         Returns:
 
-            message (1D-array of :obj:`int`): The message corresponding to :code:`codeword`. Its length is equal to $k$.
+            message (1D-array of :obj:`int`): The message corresponding to `codeword`. Its length is equal to $k$.
         """
         if self._is_systematic:
             return codeword[self._information_set]
@@ -349,7 +349,7 @@ class BlockCode:
 
         Returns:
 
-            message_hat (1D-array of :obj:`int`): The message decoded from :code:`recvword`. Its length is equal to $k$.
+            message_hat (1D-array of :obj:`int`): The message decoded from `recvword`. Its length is equal to $k$.
         """
         recvword = np.array(recvword)
 
@@ -422,7 +422,7 @@ class BlockCode:
             if name.startswith("_decode_"):
                 identifier = name[8:]
                 method = getattr(cls, name)
-                table.append([method.name, ":code:`{}`".format(identifier), method.input_type])
+                table.append([method.name, "`{}`".format(identifier), method.input_type])
         return table
 
     @classmethod

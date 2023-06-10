@@ -27,7 +27,7 @@ class ConvolutionalStreamDecoder:
 
             traceback_length (:obj:`int`): The traceback length (path memory) $\tau$ of the decoder.
 
-            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is :code:`0`.
+            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is `0`.
         """
         self._convolutional_code = convolutional_code
         self._traceback_length = int(traceback_length)

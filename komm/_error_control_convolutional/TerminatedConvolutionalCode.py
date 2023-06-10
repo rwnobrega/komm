@@ -38,7 +38,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
             num_blocks (:obj:`int`): The number $h$ of information blocks.
 
-            mode (:obj:`str`, optional): The termination mode. It must be one of :code:`'direct-truncation'` | :code:`'zero-termination'` | :code:`'tail-biting'`. The default value is :code:`'zero-termination'`.
+            mode (:obj:`str`, optional): The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
         Examples:
 

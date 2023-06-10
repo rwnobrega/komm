@@ -20,11 +20,11 @@ class VariableToFixedCode:
 
         Parameters:
 
-            sourcewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of :code:`sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
+            sourcewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
 
         Note:
 
-            The code block size $n$ and the source cardinality $|\mathcal{X}|$ are inferred from :code:`sourcewords`.
+            The code block size $n$ and the source cardinality $|\mathcal{X}|$ are inferred from `sourcewords`.
 
         Examples:
 
@@ -123,7 +123,7 @@ class VariableToFixedCode:
 
         Returns:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to :code:`symbol_sequence`.
+            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to `symbol_sequence`.
 
         Examples:
 
@@ -143,7 +143,7 @@ class VariableToFixedCode:
 
         Returns:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to :code:`bits`.
+            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to `bits`.
 
         Examples:
 

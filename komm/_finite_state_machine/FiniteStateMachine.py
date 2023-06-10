@@ -140,7 +140,7 @@ class FiniteStateMachine:
 
         Returns:
 
-            output_sequence (1D-array of :obj:`int`): The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to :code:`input_sequence`, assuming the machine starts at the state given by :code:`initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output_sequence (1D-array of :obj:`int`): The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
             final_state (:obj:`int`): The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
@@ -173,7 +173,7 @@ class FiniteStateMachine:
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            initial_metrics (1D-array of :obj:`float`, optional): The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is :code:`0.0` for all states.
+            initial_metrics (1D-array of :obj:`float`, optional): The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
 
         Returns:
 
@@ -217,7 +217,7 @@ class FiniteStateMachine:
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            memory (:obj:`dict`): The metrics for each state. It must be a dictionary containing two keys: :code:`'paths'`, a 2D-array of :obj:`int` of shape $|\mathcal{S}| \times (\tau + 1)$; and :code:`'metrics'`, a 2D-array of :obj:`float` of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
+            memory (:obj:`dict`): The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of :obj:`int` of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of :obj:`float` of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
 
         Returns:
 

@@ -33,9 +33,9 @@ class APSKModulation(ComplexModulation):
 
             amplitudes (:obj:`tuple` of :obj:`float`): A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
 
-            phase_offsets ((:obj:`tuple` of :obj:`float`) or :obj:`float`, optional): A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is :code:`0.0`.
+            phase_offsets ((:obj:`tuple` of :obj:`float`) or :obj:`float`, optional): A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be equal to :code:`'natural'`. The default value is :code:`'natural'`.
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be equal to `'natural'`. The default value is `'natural'`.
 
         Examples:
 

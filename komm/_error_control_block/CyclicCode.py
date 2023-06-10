@@ -17,10 +17,10 @@ class CyclicCode(BlockCode):
     =======================  ==============================================  ======================================
     Code $(n, k, d)$   Generator polynomial $g(X)$               Integer representation
     =======================  ==============================================  ======================================
-    Hamming $(7,4,3)$  $X^3 + X + 1$                             :code:`0b1011 = 0o13 = 11`
-    Simplex $(7,3,4)$  $X^4 + X^2 + X +   1$                     :code:`0b10111 = 0o27 = 23`
-    BCH $(15,5,7)$     $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$  :code:`0b10100110111 = 0o2467 = 1335`
-    Golay $(23,12,7)$  $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$  :code:`0b101011100011 = 0o5343 = 2787`
+    Hamming $(7,4,3)$  $X^3 + X + 1$                             `0b1011 = 0o13 = 11`
+    Simplex $(7,3,4)$  $X^4 + X^2 + X +   1$                     `0b10111 = 0o27 = 23`
+    BCH $(15,5,7)$     $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$  `0b10100110111 = 0o2467 = 1335`
+    Golay $(23,12,7)$  $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$  `0b101011100011 = 0o5343 = 2787`
     =======================  ==============================================  ======================================
 
     References:
@@ -56,7 +56,7 @@ class CyclicCode(BlockCode):
 
             length (:obj:`int`): The length $n$ of the code.
 
-            systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is :code:`True`.
+            systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is `True`.
 
         Examples:
 

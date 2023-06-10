@@ -28,9 +28,9 @@ class PAModulation(RealModulation):
 
             order (:obj:`int`): The order $M$ of the modulation. It must be a power of $2$.
 
-            base_amplitude (:obj:`float`, optional): The base amplitude $A$ of the constellation. The default value is :code:`1.0`.
+            base_amplitude (:obj:`float`, optional): The base amplitude $A$ of the constellation. The default value is `1.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of `'natural'` or `'reflected'`. The default value is `'reflected'` (Gray code).
 
         Examples:
 

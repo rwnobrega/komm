@@ -51,7 +51,7 @@ class DiscreteMemorylessSource:
 
         Parameters:
 
-            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Examples:
 

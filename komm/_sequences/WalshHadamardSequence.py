@@ -67,9 +67,9 @@ class WalshHadamardSequence(BinarySequence):
 
             length (:obj:`int`): Length $L$ of the Walsh--Hadamard sequence. Must be a power of two.
 
-            ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of :code:`'natural'`, :code:`'sequency'`, or :code:`'dyadic'`. The default value is :code:`'natural'`.
+            ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of `'natural'`, `'sequency'`, or `'dyadic'`. The default value is `'natural'`.
 
-            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is :code:`0`.
+            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
 
         Examples:
 

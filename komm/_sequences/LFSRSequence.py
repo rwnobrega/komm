@@ -6,7 +6,7 @@ from .BinarySequence import BinarySequence
 
 class LFSRSequence(BinarySequence):
     r"""
-    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is :code:`0b100101`.
+    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is `0b100101`.
 
     .. image:: figures/lfsr_5_2.svg
        :alt: Linear-feedback shift register example.
@@ -49,7 +49,7 @@ class LFSRSequence(BinarySequence):
 
             feedback_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
-            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is :code:`0b1`.
+            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is `0b1`.
 
         Examples:
 
@@ -78,14 +78,14 @@ class LFSRSequence(BinarySequence):
             ================  ================================  ================  ================================
             Degree $n$  Feedback polynomial $p(X)$  Degree $n$  Feedback polynomial $p(X)$
             ================  ================================  ================  ================================
-            $1$         :code:`0b11`                      $9$         :code:`0b1000010001`
-            $2$         :code:`0b111`                     $10$        :code:`0b10000001001`
-            $3$         :code:`0b1011`                    $11$        :code:`0b100000000101`
-            $4$         :code:`0b10011`                   $12$        :code:`0b1000001010011`
-            $5$         :code:`0b100101`                  $13$        :code:`0b10000000011011`
-            $6$         :code:`0b1000011`                 $14$        :code:`0b100010001000011`
-            $7$         :code:`0b10001001`                $15$        :code:`0b1000000000000011`
-            $8$         :code:`0b100011101`               $16$        :code:`0b10001000000001011`
+            $1$         `0b11`                      $9$         `0b1000010001`
+            $2$         `0b111`                     $10$        `0b10000001001`
+            $3$         `0b1011`                    $11$        `0b100000000101`
+            $4$         `0b10011`                   $12$        `0b1000001010011`
+            $5$         `0b100101`                  $13$        `0b10000000011011`
+            $6$         `0b1000011`                 $14$        `0b100010001000011`
+            $7$         `0b10001001`                $15$        `0b1000000000000011`
+            $8$         `0b100011101`               $16$        `0b10001000000001011`
             ================  ================================  ================  ================================
 
         Examples:

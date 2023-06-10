@@ -10,7 +10,7 @@ class FiniteBifield:
     r"""
     Finite field with binary characteristic. Objects of this class represent a *finite field* $\mathrm{GF}(2^k)$ (also known as *Galois field*), with *characteristic* $2$ and *degree* $k$.
 
-    To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is $X^3 + X^2 + 1$.
+    To construct *elements* of the finite field, call the finite field object. For example, `field(0b1101)` will construct the element whose polynomial representation is $X^3 + X^2 + 1$.
 
     Examples:
 
@@ -38,14 +38,14 @@ class FiniteBifield:
                 ===========  =====================  ============  ============================
                 $k$    $p(X)$           $k$     $p(X)$
                 ===========  =====================  ============  ============================
-                $1$    :code:`0b11`           $9$     :code:`0b1000010001`
-                $2$    :code:`0b111`          $10$    :code:`0b10000001001`
-                $3$    :code:`0b1011`         $11$    :code:`0b100000000101`
-                $4$    :code:`0b10011`        $12$    :code:`0b1000001010011`
-                $5$    :code:`0b100101`       $13$    :code:`0b10000000011011`
-                $6$    :code:`0b1000011`      $14$    :code:`0b100010001000011`
-                $7$    :code:`0b10001001`     $15$    :code:`0b1000000000000011`
-                $8$    :code:`0b100011101`    $16$    :code:`0b10001000000001011`
+                $1$    `0b11`           $9$     `0b1000010001`
+                $2$    `0b111`          $10$    `0b10000001001`
+                $3$    `0b1011`         $11$    `0b100000000101`
+                $4$    `0b10011`        $12$    `0b1000001010011`
+                $5$    `0b100101`       $13$    `0b10000000011011`
+                $6$    `0b1000011`      $14$    `0b100010001000011`
+                $7$    `0b10001001`     $15$    `0b1000000000000011`
+                $8$    `0b100011101`    $16$    `0b10001000000001011`
                 ===========  =====================  ============  ============================
 
         Examples:

@@ -20,13 +20,13 @@ class FixedToVariableCode:
 
         Parameters:
 
-            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of :code:`codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of `codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
-            source_cardinality (:obj:`int`, optional): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size $k = 1$.
+            source_cardinality (:obj:`int`, optional): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is `len(codewords)`, yielding a source block size $k = 1$.
 
         Note:
 
-            The source block size $k$ is inferred from :code:`codewords` and :code:`source_cardinality`.
+            The source block size $k$ is inferred from `codewords` and `source_cardinality`.
 
         Examples:
 
@@ -129,7 +129,7 @@ class FixedToVariableCode:
 
         Returns:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to :code:`symbol_sequence`.
+            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to `symbol_sequence`.
 
         Examples:
 
@@ -150,7 +150,7 @@ class FixedToVariableCode:
 
         Returns:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to :code:`bits`.
+            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to `bits`.
 
         Examples:
 

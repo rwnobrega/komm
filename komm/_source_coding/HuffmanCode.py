@@ -39,7 +39,7 @@ class HuffmanCode(FixedToVariableCode):
 
             source_block_size (:obj:`int`, optional): The source block size $k$. The default value is $k = 1$.
 
-            policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either :code:`'high'` (move combined symbols as high as possible) or :code:`'low'` (move combined symbols as low as possible). The default value is :code:`'high'`.
+            policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
         """
         self._pmf = np.array(pmf)
         self._policy = policy

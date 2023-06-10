@@ -37,9 +37,9 @@ class QAModulation(ComplexModulation):
 
             base_amplitudes (:obj:`(float, float)` or :obj:`float`, optional): A tuple $(A_\mathrm{I}, A_\mathrm{Q})$ with the base amplitudes of the in-phase and quadrature constellations, respectively.  If specified as a single float $A$, then it is assumed that $A_\mathrm{I} = A_\mathrm{Q} = A$. The default value is $1.0$.
 
-            phase_offset (:obj:`float`, optional): The phase offset $\phi$ of the constellation. The default value is :code:`0.0`.
+            phase_offset (:obj:`float`, optional): The phase offset $\phi$ of the constellation. The default value is `0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected_2d'`. The default value is :code:`'reflected_2d'` (Gray code).
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of `'natural'` or `'reflected_2d'`. The default value is `'reflected_2d'` (Gray code).
 
         Examples:
 

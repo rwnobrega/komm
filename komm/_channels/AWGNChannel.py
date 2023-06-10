@@ -23,9 +23,9 @@ class AWGNChannel:
 
         Parameters:
 
-            snr (:obj:`float`, optional): The channel signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel). The default value is :code:`np.inf`, which corresponds to a noiseless channel.
+            snr (:obj:`float`, optional): The channel signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
-            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power $P$. If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
+            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is `1.0`.
 
         Examples:
 

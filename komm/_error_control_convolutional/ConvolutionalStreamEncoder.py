@@ -23,7 +23,7 @@ class ConvolutionalStreamEncoder:
 
             convolutional_code (:class:`ConvolutionalCode`): The convolutional code.
 
-            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is :code:`0`.
+            initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is `0`.
         """
         self._convolutional_code = convolutional_code
         self._state = int(initial_state)

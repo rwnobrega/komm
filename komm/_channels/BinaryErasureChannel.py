@@ -26,7 +26,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
         Parameters:
 
-            erasure_probability (:obj:`float`, optional): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is :code:`0.0`, which corresponds to a noiseless channel.
+            erasure_probability (:obj:`float`, optional): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
 
         Examples:
 

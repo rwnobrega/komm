@@ -16,9 +16,9 @@ class UniformQuantizer(ScalarQuantizer):
 
             num_levels (:obj:`int`): The number of quantization levels $L$.
 
-            input_peak (:obj:`float`, optional): The peak of the input signal $x_\mathrm{p}$. The default value is :code:`1.0`.
+            input_peak (:obj:`float`, optional): The peak of the input signal $x_\mathrm{p}$. The default value is `1.0`.
 
-            choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
+            choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of `'unsigned'` | `'mid-riser'` | `'mid-tread'`. The default value is `'mid-riser'`.
 
         Examples:
 
@@ -90,7 +90,7 @@ class UniformQuantizer(ScalarQuantizer):
     @property
     def choice(self):
         r"""
-        The choice for the uniform quantizer (:code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`).
+        The choice for the uniform quantizer (`'unsigned'` | `'mid-riser'` | `'mid-tread'`).
         """
         return self._choice
 

@@ -81,9 +81,9 @@ class BinarySequence:
 
         Parameters:
 
-            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is :code:`range(L)`, that is, $[0 : L)$.
+            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is `range(L)`, that is, $[0 : L)$.
 
-            normalized: (:obj:`boolean`, optional): If :code:`True`, returns the autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $R[0] = 1$. The default value is :code:`False`.
+            normalized: (:obj:`boolean`, optional): If `True`, returns the autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $R[0] = 1$. The default value is `False`.
         """
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
@@ -104,9 +104,9 @@ class BinarySequence:
 
         Parameters:
 
-            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is :code:`range(L)`, that is, $[0 : L)$.
+            shifts (1D-array of :obj:`int`, optional): An 1D array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is `range(L)`, that is, $[0 : L)$.
 
-            normalized (:obj:`boolean`, optional): If :code:`True`, returns the cyclic autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $\tilde{R}[0] = 1$. The default value is :code:`False`.
+            normalized (:obj:`boolean`, optional): If `True`, returns the cyclic autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $\tilde{R}[0] = 1$. The default value is `False`.
         """
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)

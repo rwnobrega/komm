@@ -200,7 +200,7 @@ def entropy(pmf, base=2.0):
 
         pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to $1$.
 
-        base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
+        base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
     Returns:
 

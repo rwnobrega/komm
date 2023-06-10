@@ -105,7 +105,7 @@ class Modulation:
 
         Returns:
 
-            symbols (1D-array of :obj:`int`): The symbols corresponding to :code:`bits`. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of :code:`bits` divided by $m$.
+            symbols (1D-array of :obj:`int`): The symbols corresponding to `bits`. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of `bits` divided by $m$.
         """
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
@@ -125,7 +125,7 @@ class Modulation:
 
         Returns:
 
-            bits (1D-array of :obj:`int`): The bits corresponding to :code:`symbols`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length is equal to the length of :code:`symbols` multiplied by $m = \log_2 M$.
+            bits (1D-array of :obj:`int`): The bits corresponding to `symbols`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length is equal to the length of `symbols` multiplied by $m = \log_2 M$.
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m

@@ -44,7 +44,7 @@ class GolayCode(BlockCode):
 
         Parameters:
 
-            extended (:obj:`bool`, optional): If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
+            extended (:obj:`bool`, optional): If `True`, constructs the code in extended version. The default value is `False`.
         """
         P = GolayCode._golay_parity_submatrix()
         if extended:

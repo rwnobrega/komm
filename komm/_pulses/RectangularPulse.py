@@ -34,7 +34,7 @@ class RectangularPulse(FormattingPulse):
 
         Parameters:
 
-            width (:obj:`float`): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is :code:`1.0`.
+            width (:obj:`float`): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
 
         Examples:
 
