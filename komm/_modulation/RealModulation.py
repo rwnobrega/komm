@@ -5,7 +5,7 @@ from .Modulation import Modulation
 
 class RealModulation(Modulation):
     r"""
-    General real modulation scheme. A *real modulation scheme* of order :math:`M` is defined by a *constellation* :math:`\mathcal{S}`, which is an ordered subset (a list) of real numbers, with :math:`|\mathcal{S}| = M`, and a *binary labeling* :math:`\mathcal{Q}`, which is a permutation of :math:`[0: M)`. The order :math:`M` of the modulation must be a power of :math:`2`.
+    General real modulation scheme. A *real modulation scheme* of order $M$ is defined by a *constellation* $\mathcal{S}$, which is an ordered subset (a list) of real numbers, with $|\mathcal{S}| = M$, and a *binary labeling* $\mathcal{Q}$, which is a permutation of $[0: M)$. The order $M$ of the modulation must be a power of $2$.
     """
 
     def __init__(self, constellation, labeling):
@@ -14,9 +14,9 @@ class RealModulation(Modulation):
 
         Parameters:
 
-            constellation (1D-array of :obj:`complex`): The constellation :math:`\mathcal{S}` of the modulation. Must be a 1D-array containing :math:`M` real numbers.
+            constellation (1D-array of :obj:`complex`): The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ real numbers.
 
-            labeling (1D-array of :obj:`int`): The binary labeling :math:`\mathcal{Q}` of the modulation. Must be a 1D-array of integers corresponding to a permutation of :math:`[0 : M)`.
+            labeling (1D-array of :obj:`int`): The binary labeling $\mathcal{Q}$ of the modulation. Must be a 1D-array of integers corresponding to a permutation of $[0 : M)$.
 
         Examples:
 

@@ -9,7 +9,7 @@ from .util import binary_horner, gcd, power, xgcd
 
 class BinaryPolynomial:
     r"""
-    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field :math:`\mathbb{F}_2 = \{ 0, 1 \}`. This class supports addition, multiplication, division, and exponentiation.
+    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \\{ 0, 1 \\}$. This class supports addition, multiplication, division, and exponentiation.
 
     Examples:
 
@@ -29,7 +29,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial :math:`X^4 + X^3 + X` is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.
+            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer :code:`0b11010` = :code:`0o32` = :code:`26`.
 
         Examples:
 
@@ -47,7 +47,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial :math:`X^4 + X^3 + X`.
+            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial---the $i$-th element of the array standing for the coefficient of $X^i$. For example, :code:`[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
 
@@ -63,7 +63,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            exponents (1D-array of :obj:`int`): The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial :math:`X^4 + X^3 + X`.
+            exponents (1D-array of :obj:`int`): The exponents of the nonzero terms of the binary polynomial. For example, :code:`[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
 
@@ -95,7 +95,7 @@ class BinaryPolynomial:
 
         Returns:
 
-            coefficients (1D-array of :obj:`int`): Coefficients of the binary polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+            coefficients (1D-array of :obj:`int`): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
 

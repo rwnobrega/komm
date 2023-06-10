@@ -6,12 +6,12 @@ from .Modulation import Modulation
 
 class PSKModulation(ComplexModulation):
     r"""
-    Phase-shift keying (PSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\mathcal{S}` are *uniformly arranged* in a circle. More precisely,
+    Phase-shift keying (PSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a circle. More precisely,
 
     .. math::
-       \mathcal{S} = \left \{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \}
+       \mathcal{S} = \left \\{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \\}
 
-    where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *amplitude*, and :math:`\phi` is the *phase offset* of the modulation. The PSK constellation is depicted below for :math:`M = 8`.
+    where $M$ is the *order* (a power of $2$), $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the modulation. The PSK constellation is depicted below for $M = 8$.
 
     .. image:: figures/psk_8.svg
        :alt: 8-PSK constellation.
@@ -24,13 +24,13 @@ class PSKModulation(ComplexModulation):
 
         Parameters:
 
-            order (:obj:`int`): The order :math:`M` of the modulation. It must be a power of :math:`2`.
+            order (:obj:`int`): The order $M$ of the modulation. It must be a power of $2$.
 
-            amplitude (:obj:`float`, optional): The amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+            amplitude (:obj:`float`, optional): The amplitude $A$ of the constellation. The default value is :code:`1.0`.
 
-            phase_offset (:obj:`float`, optional): The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.
+            phase_offset (:obj:`float`, optional): The phase offset $\phi$ of the constellation. The default value is :code:`0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
 
         Examples:
 

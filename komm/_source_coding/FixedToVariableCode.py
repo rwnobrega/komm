@@ -7,7 +7,7 @@ from .util import _parse_prefix_free
 
 class FixedToVariableCode:
     r"""
-    Binary, prefix-free, fixed-to-variable length code. Let :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}` be the alphabet of some discrete source. A *binary fixed-to-variable length code* of *source block size* :math:`k` is defined by an *encoding mapping* :math:`\mathrm{Enc} : \mathcal{X}^k \to \{ 0, 1 \}^+`, where :math:`\{ 0, 1 \}^+` denotes the set of all finite-length, non-empty binary strings. The elements in the image of :math:`\mathrm{Enc}` are called *codewords*.
+    Binary, prefix-free, fixed-to-variable length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary fixed-to-variable length code* of *source block size* $k$ is defined by an *encoding mapping* $\mathrm{Enc} : \mathcal{X}^k \to \\{ 0, 1 \\}^+$, where $\\{ 0, 1 \\}^+$ denotes the set of all finite-length, non-empty binary strings. The elements in the image of $\mathrm{Enc}$ are called *codewords*.
 
     Warning:
 
@@ -20,13 +20,13 @@ class FixedToVariableCode:
 
         Parameters:
 
-            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length :math:`|\mathcal{X}|^k` containing tuples of integers in :math:`\{ 0, 1 \}`. The tuple in position :math:`i` of :code:`codewords` should be equal to :math:`\mathrm{Enc}(u)`, where :math:`u` is the :math:`i`-th element in the lexicographic ordering of :math:`\mathcal{X}^k`.
+            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of :code:`codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
-            source_cardinality (:obj:`int`, optional): The cardinality :math:`|\mathcal{X}|` of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size :math:`k = 1`.
+            source_cardinality (:obj:`int`, optional): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is :code:`len(codewords)`, yielding a source block size $k = 1$.
 
         Note:
 
-            The source block size :math:`k` is inferred from :code:`codewords` and :code:`source_cardinality`.
+            The source block size $k$ is inferred from :code:`codewords` and :code:`source_cardinality`.
 
         Examples:
 
@@ -67,47 +67,47 @@ class FixedToVariableCode:
     @property
     def source_cardinality(self):
         r"""
-        The cardinality :math:`|\mathcal{X}|` of the source alphabet.
+        The cardinality $|\mathcal{X}|$ of the source alphabet.
         """
         return self._source_cardinality
 
     @property
     def source_block_size(self):
         r"""
-        The source block size :math:`k`.
+        The source block size $k$.
         """
         return self._source_block_size
 
     @property
     def enc_mapping(self):
         r"""
-        The encoding mapping :math:`\mathrm{Enc}` of the code.
+        The encoding mapping $\mathrm{Enc}$ of the code.
         """
         return self._enc_mapping
 
     @property
     def dec_mapping(self):
         r"""
-        The decoding mapping :math:`\mathrm{Dec}` of the code.
+        The decoding mapping $\mathrm{Dec}$ of the code.
         """
         return self._dec_mapping
 
     def rate(self, pmf):
         r"""
-        Computes the expected rate :math:`R` of the code, assuming a given :term:`pmf`. This quantity is given by
+        Computes the expected rate $R$ of the code, assuming a given :term:`pmf`. This quantity is given by
 
         .. math::
            R = \frac{\bar{n}}{k},
 
-        where :math:`\bar{n}` is the expected codeword length, assuming :term:`i.i.d.` source symbols drawn from :math:`p_X`, and :math:`k` is the source block size. It is measured in bits per source symbol.
+        where $\bar{n}$ is the expected codeword length, assuming :term:`i.i.d.` source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in bits per source symbol.
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The (first-order) probability mass function :math:`p_X` to be assumed.
+            pmf (1D-array of :obj:`float`): The (first-order) probability mass function $p_X$ to be assumed.
 
         Returns:
 
-            rate (:obj:`float`): The expected rate :math:`R` of the code.
+            rate (:obj:`float`): The expected rate $R$ of the code.
 
         Examples:
 
@@ -125,7 +125,7 @@ class FixedToVariableCode:
 
         Parameters:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols to be encoded. Must be a 1D-array with elements in :math:`\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}`. Its length must be a multiple of :math:`k`.
+            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$. Its length must be a multiple of $k$.
 
         Returns:
 
@@ -146,7 +146,7 @@ class FixedToVariableCode:
 
         Parameters:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits to be decoded. Must be a 1D-array with elements in :math:`\{ 0, 1 \}`.
+            bit_sequence (1D-array of :obj:`int`): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.
 
         Returns:
 

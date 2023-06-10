@@ -38,7 +38,7 @@ def binlist2int(binlist):
 
     Parameters:
 
-        binlist (:obj:`list` or 1D-array of :obj:`int`): A list or array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the output integer.
+        binlist (:obj:`list` or 1D-array of :obj:`int`): A list or array of $0$'s and $1$'s whose `i`-th element stands for the coefficient of $2^i$ in the binary representation of the output integer.
 
     Returns:
 
@@ -73,7 +73,7 @@ def int2binlist(integer, width=None):
 
     Returns:
 
-        binlist (1D-array of :obj:`int`): An array of :math:`0`'s and :math:`1`'s whose `i`-th element stands for the coefficient of :math:`2^i` in the binary representation of the input integer.
+        binlist (1D-array of :obj:`int`): An array of $0$'s and $1$'s whose `i`-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.
 
     Examples:
 
@@ -125,7 +125,7 @@ def qfunc(x):
 
     Returns:
 
-        y (same as input): The value :math:`y = \mathrm{Q}(x)`.
+        y (same as input): The value $y = \mathrm{Q}(x)$.
 
     Examples:
 
@@ -148,11 +148,11 @@ def qfuncinv(y):
 
     Parameters:
 
-        y (:obj:`float` or array of :obj:`float`): The input to the function. Should be a float or array of floats in the real interval :math:`[0, 1]`.
+        y (:obj:`float` or array of :obj:`float`): The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
 
     Returns:
 
-        x (same as input): The value :math:`x = \mathrm{Q^{-1}}(y)`.
+        x (same as input): The value $x = \mathrm{Q^{-1}}(y)$.
 
     Examples:
 
@@ -189,22 +189,22 @@ def _entropy(pmf, base=2.0):
 
 def entropy(pmf, base=2.0):
     r"""
-    Computes the entropy of a random variable with a given :term:`pmf`. Let :math:`X` be a random variable with :term:`pmf` :math:`p_X` and alphabet :math:`\mathcal{X}`. Its entropy is given by
+    Computes the entropy of a random variable with a given :term:`pmf`. Let $X$ be a random variable with :term:`pmf` $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
 
     .. math::
        \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
 
-    By default, the base of the logarithm is :math:`2`, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
+    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
 
     Parameters:
 
-        pmf (1D-array of :obj:`float`): The probability mass function :math:`p_X` of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
+        pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to $1$.
 
         base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
     Returns:
 
-        entropy (:obj:`float`): The entropy :math:`\mathrm{H}(X)` of the random variable.
+        entropy (:obj:`float`): The entropy $\mathrm{H}(X)$ of the random variable.
 
     Examples:
 

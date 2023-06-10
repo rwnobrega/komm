@@ -9,12 +9,12 @@ from .BlockCode import BlockCode
 
 class ReedMullerCode(BlockCode):
     r"""
-    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers :math:`\rho` and :math:`\mu`, which must satisfy :math:`0 \leq \rho < \mu`. See references for more details. The resulting code is denoted by :math:`\mathrm{RM}(\rho, \mu)`, and has the following parameters:
+    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
 
-    - Length: :math:`n = 2^{\mu}`
-    - Dimension: :math:`k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}`
-    - Redundancy: :math:`m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}`
-    - Minimum distance: :math:`d = 2^{\mu - \rho}`
+    - Length: $n = 2^{\mu}$
+    - Dimension: $k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}$
+    - Redundancy: $m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}$
+    - Minimum distance: $d = 2^{\mu - \rho}$
 
     References:
 
@@ -26,10 +26,10 @@ class ReedMullerCode(BlockCode):
 
     Notes:
 
-        - For :math:`\rho = 0` it reduces to a repetition code (:class:`RepetitionCode`).
-        - For :math:`\rho = 1` it reduces to a lengthened simplex code (:class:`SimplexCode`).
-        - For :math:`\rho = \mu - 2` it reduces to an extended Hamming code (:class:`HammingCode`).
-        - For :math:`\rho = \mu - 1` it reduces to a single parity check code (:class:`SingleParityCheckCode`).
+        - For $\rho = 0$ it reduces to a repetition code (:class:`RepetitionCode`).
+        - For $\rho = 1$ it reduces to a lengthened simplex code (:class:`SimplexCode`).
+        - For $\rho = \mu - 2$ it reduces to an extended Hamming code (:class:`HammingCode`).
+        - For $\rho = \mu - 1$ it reduces to a single parity check code (:class:`SingleParityCheckCode`).
 
     Examples:
 
@@ -56,11 +56,11 @@ class ReedMullerCode(BlockCode):
 
         Parameters:
 
-            rho (:obj:`int`): The parameter :math:`\rho` of the code.
+            rho (:obj:`int`): The parameter $\rho$ of the code.
 
-            mu (:obj:`int`): The parameter :math:`\mu` of the code.
+            mu (:obj:`int`): The parameter $\mu$ of the code.
 
-        The parameters must satisfy :math:`0 \leq \rho < \mu`.
+        The parameters must satisfy $0 \leq \rho < \mu$.
         """
         if not 0 <= rho < mu:
             raise ValueError("Parameters must satisfy 0 <= rho < mu")
@@ -77,14 +77,14 @@ class ReedMullerCode(BlockCode):
     @property
     def rho(self):
         r"""
-        The parameter :math:`\rho` of the code. This property is read-only.
+        The parameter $\rho$ of the code. This property is read-only.
         """
         return self._rho
 
     @property
     def mu(self):
         r"""
-        The parameter :math:`\mu` of the code. This property is read-only.
+        The parameter $\mu$ of the code. This property is read-only.
         """
         return self._mu
 

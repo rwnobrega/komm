@@ -7,11 +7,11 @@ from .BlockCode import BlockCode
 
 class SingleParityCheckCode(BlockCode):
     r"""
-    Single parity check code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending :math:`n - 1` information bits with a single parity-check bit. The repetition code has the following parameters:
+    Single parity check code. For a given length $n$, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
 
-    - Length: :math:`n`.
-    - Dimension: :math:`k = n - 1`.
-    - Minimum distance: :math:`d = 2`.
+    - Length: $n$.
+    - Dimension: $k = n - 1$.
+    - Minimum distance: $d = 2$.
 
     .. rubric:: Decoding methods
 
@@ -43,7 +43,7 @@ class SingleParityCheckCode(BlockCode):
 
         Parameters:
 
-            n (:obj:`int`): The length :math:`n` of the code. Must be a positive integer.
+            n (:obj:`int`): The length $n$ of the code. Must be a positive integer.
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int).T)
         self._minimum_distance = 2

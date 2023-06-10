@@ -10,12 +10,12 @@ from .CyclicCode import CyclicCode
 
 class BCHCode(CyclicCode):
     r"""
-    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers :math:`\mu` and :math:`\tau` which must satisfy :math:`1 \leq \tau < 2^{\mu - 1}`. The parameter :math:`\tau` is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability :math:`t` of the code. See references for more details. The resulting code is denoted by :math:`\mathrm{BCH}(\mu, \tau)`, and has the following parameters:
+    Bose--Chaudhuri--Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers $\mu$ and $\tau$ which must satisfy $1 \leq \tau < 2^{\mu - 1}$. The parameter $\tau$ is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability $t$ of the code. See references for more details. The resulting code is denoted by $\mathrm{BCH}(\mu, \tau)$, and has the following parameters:
 
-    - Length: :math:`n = 2^{\mu} - 1`
-    - Dimension: :math:`k \geq n - \mu \tau`
-    - Redundancy: :math:`m \leq \mu \tau`
-    - Minimum distance: :math:`d \geq 2\tau + 1`
+    - Length: $n = 2^{\mu} - 1$
+    - Dimension: $k \geq n - \mu \tau$
+    - Redundancy: $m \leq \mu \tau$
+    - Minimum distance: $d \geq 2\tau + 1$
 
     .. rubric:: Decoding methods
 
@@ -47,9 +47,9 @@ class BCHCode(CyclicCode):
 
         Parameters:
 
-            mu (:obj:`int`): The parameter :math:`\mu` of the code.
+            mu (:obj:`int`): The parameter $\mu$ of the code.
 
-            tau (:obj:`int`): The designed error-correcting capability :math:`\tau` of the BCH code. It will be internally replaced by the true error-correcting capability :math:`t` of the code.
+            tau (:obj:`int`): The designed error-correcting capability $\tau$ of the BCH code. It will be internally replaced by the true error-correcting capability $t$ of the code.
         """
         if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")

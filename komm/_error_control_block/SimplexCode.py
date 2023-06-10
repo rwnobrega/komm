@@ -4,12 +4,12 @@ from .HammingCode import HammingCode
 
 class SimplexCode(BlockCode):
     r"""
-    Simplex (maximum-length) code. For a given dimension :math:`k`, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the :math:`2^k - 1` nonzero binary :math:`k`-tuples. The simplex code (also known as maximum-length code) has the following parameters:
+    Simplex (maximum-length) code. For a given dimension $k$, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the $2^k - 1$ nonzero binary $k$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
 
-    - Length: :math:`n = 2^k - 1`
-    - Dimension: :math:`k`
-    - Redundancy: :math:`m = 2^k - k - 1`
-    - Minimum distance: :math:`d = 2^{k - 1}`
+    - Length: $n = 2^k - 1$
+    - Dimension: $k$
+    - Redundancy: $m = 2^k - k - 1$
+    - Minimum distance: $d = 2^{k - 1}$
 
     This class constructs the code in systematic form, with the information set on the left.
 
@@ -19,7 +19,7 @@ class SimplexCode(BlockCode):
 
     Notes:
 
-        - For :math:`k = 2` it reduces to the single parity check code (:class:`SingleParityCheckCode`) of length :math:`3`.
+        - For $k = 2$ it reduces to the single parity check code (:class:`SingleParityCheckCode`) of length $3$.
         - Its dual is the Hamming code (:class:`HammingCode`).
         - Simplex codes are constant-weight codes.
 
@@ -49,7 +49,7 @@ class SimplexCode(BlockCode):
 
         Parameters:
 
-            k (:obj:`int`): The dimension :math:`k` of the code. Must satisfy :math:`k \geq 2`.
+            k (:obj:`int`): The dimension $k$ of the code. Must satisfy $k \geq 2$.
         """
         P = HammingCode._hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)

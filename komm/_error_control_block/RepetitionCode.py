@@ -7,11 +7,11 @@ from .BlockCode import BlockCode
 
 class RepetitionCode(BlockCode):
     r"""
-    Repetition code. For a given length :math:`n`, it is the linear block code (:class:`BlockCode`) whose only two codewords are :math:`00 \cdots 0` and :math:`11 \cdots 1`. The repetition code has the following parameters:
+    Repetition code. For a given length $n$, it is the linear block code (:class:`BlockCode`) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
 
-    - Length: :math:`n`
-    - Dimension: :math:`k = 1`
-    - Minimum distance: :math:`d = n`
+    - Length: $n$
+    - Dimension: $k = 1$
+    - Minimum distance: $d = n$
 
     .. rubric:: Decoding methods
 
@@ -45,7 +45,7 @@ class RepetitionCode(BlockCode):
 
         Parameters:
 
-            n (:obj:`int`): The length :math:`n` of the code. Must be a positive integer.
+            n (:obj:`int`): The length $n$ of the code. Must be a positive integer.
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
         self._minimum_distance = n

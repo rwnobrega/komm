@@ -12,7 +12,7 @@ class RectangularPulse(FormattingPulse):
           0, & \text{otherwise}.
        \end{cases},
 
-    where :math:`w` is the *width* of the pulse, which must satisfy :math:`0 \leq w \leq 1`. The rectangular pulse is depicted below for :math:`w = 1` (called the :term:`NRZ` pulse), and for :math:`w = 0.5` (called the halfway :term:`RZ` pulse).
+    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. The rectangular pulse is depicted below for $w = 1$ (called the :term:`NRZ` pulse), and for $w = 0.5$ (called the halfway :term:`RZ` pulse).
 
     .. rst-class:: centered
 
@@ -34,7 +34,7 @@ class RectangularPulse(FormattingPulse):
 
         Parameters:
 
-            width (:obj:`float`): The width :math:`w` of the pulse. Must satisfy :math:`0 \leq w \leq 1`. The default value is :code:`1.0`.
+            width (:obj:`float`): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is :code:`1.0`.
 
         Examples:
 
@@ -56,6 +56,6 @@ class RectangularPulse(FormattingPulse):
     @property
     def width(self):
         r"""
-        The width :math:`w` of the pulse. This property is read-only.
+        The width $w$ of the pulse. This property is read-only.
         """
         return self._width

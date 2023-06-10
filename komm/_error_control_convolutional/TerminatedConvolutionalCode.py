@@ -10,13 +10,13 @@ from .._util import binlist2int, int2binlist, pack, unpack
 
 class TerminatedConvolutionalCode(BlockCode):
     r"""
-    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a :math:`(n_0, k_0)` convolutional code (:class:`ConvolutionalCode`). A total of :math:`h` information blocks (each containing :math:`k_0` information bits) is encoded. The dimension of the resulting block code is thus :math:`k = h k_0`; its length depends on the termination mode employed. There are three possible termination modes:
+    Terminated convolutional code. It is a linear block code (:class:`BlockCode`) obtained by terminating a $(n_0, k_0)$ convolutional code (:class:`ConvolutionalCode`). A total of $h$ information blocks (each containing $k_0$ information bits) is encoded. The dimension of the resulting block code is thus $k = h k_0$; its length depends on the termination mode employed. There are three possible termination modes:
 
-    - **Direct truncation**. The encoder always starts at state :math:`0`, and its output ends immediately after the last information block. The encoder may not necessarily end in state :math:`0`. The resulting block code will have length :math:`n = h n_0`.
+    - **Direct truncation**. The encoder always starts at state $0$, and its output ends immediately after the last information block. The encoder may not necessarily end in state $0$. The resulting block code will have length $n = h n_0$.
 
-    - **Zero termination**. The encoder always starts and ends at state :math:`0`. To achieve this, a sequence of :math:`k \mu` tail bits is appended to the information bits, where :math:`\mu` is the memory order of the convolutional code. The resulting block code will have length :math:`n = (h + \mu) n_0`.
+    - **Zero termination**. The encoder always starts and ends at state $0$. To achieve this, a sequence of $k \mu$ tail bits is appended to the information bits, where $\mu$ is the memory order of the convolutional code. The resulting block code will have length $n = (h + \mu) n_0$.
 
-    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length :math:`n = h n_0`.
+    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length $n = h n_0$.
 
     .. rubric:: Decoding methods
 
@@ -36,7 +36,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
             convolutional_code (:obj:`ConvolutionalCode`): The convolutional code to be terminated.
 
-            num_blocks (:obj:`int`): The number :math:`h` of information blocks.
+            num_blocks (:obj:`int`): The number $h$ of information blocks.
 
             mode (:obj:`str`, optional): The termination mode. It must be one of :code:`'direct-truncation'` | :code:`'zero-termination'` | :code:`'tail-biting'`. The default value is :code:`'zero-termination'`.
 
@@ -118,7 +118,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @property
     def num_blocks(self):
         r"""
-        The number :math:`h` of information blocks of the terminated convolutional code. This property is read-only.
+        The number $h$ of information blocks of the terminated convolutional code. This property is read-only.
         """
         return self._num_blocks
 

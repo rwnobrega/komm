@@ -37,7 +37,7 @@ class HuffmanCode(FixedToVariableCode):
 
             pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.
 
-            source_block_size (:obj:`int`, optional): The source block size :math:`k`. The default value is :math:`k = 1`.
+            source_block_size (:obj:`int`, optional): The source block size $k$. The default value is $k = 1$.
 
             policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either :code:`'high'` (move combined symbols as high as possible) or :code:`'low'` (move combined symbols as low as possible). The default value is :code:`'high'`.
         """

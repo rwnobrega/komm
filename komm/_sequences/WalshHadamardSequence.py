@@ -19,7 +19,7 @@ class WalshHadamardSequence(BinarySequence):
           H_{2^{n-1}} & -H_{2^{n-1}}
        \end{bmatrix},
 
-    for :math:`n = 1, 2, \ldots`. For example, for :math:`n = 3`,
+    for $n = 1, 2, \ldots$. For example, for $n = 3$,
 
     .. math::
        H_{8} =
@@ -49,9 +49,9 @@ class WalshHadamardSequence(BinarySequence):
           +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\
        \end{bmatrix}
 
-    The above matrix is said to be in *sequency ordering*. It has the property that row :math:`i` has exactly :math:`i` signal changes.
+    The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ signal changes.
 
-    The Walsh--Hadamard sequence of *length* :math:`L` and *index* :math:`i \in [0 : L)` is the binary sequence (:obj:`BinarySequence`) whose polar format is the :math:`i`-th row of :math:`H_L`, if assuming natural ordering, or :math:`H_L^{\mathrm{s}}`, if assuming sequency ordering.
+    The Walsh--Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is the binary sequence (:obj:`BinarySequence`) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.
 
     References:
 
@@ -65,11 +65,11 @@ class WalshHadamardSequence(BinarySequence):
 
         Parameters:
 
-            length (:obj:`int`): Length :math:`L` of the Walsh--Hadamard sequence. Must be a power of two.
+            length (:obj:`int`): Length $L$ of the Walsh--Hadamard sequence. Must be a power of two.
 
             ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of :code:`'natural'`, :code:`'sequency'`, or :code:`'dyadic'`. The default value is :code:`'natural'`.
 
-            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set :math:`[0 : L)`. The default value is :code:`0`.
+            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is :code:`0`.
 
         Examples:
 

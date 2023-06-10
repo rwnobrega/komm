@@ -7,9 +7,9 @@ class GolayCode(BlockCode):
     r"""
     Binary Golay code. It has the following parameters:
 
-    - Length: :math:`23`
-    - Dimension: :math:`12`
-    - Minimum distance: :math:`7`
+    - Length: $23$
+    - Dimension: $12$
+    - Minimum distance: $7$
 
     This class constructs the code in systematic form, with the information set on the left.
 

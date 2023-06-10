@@ -6,17 +6,17 @@ from .BinarySequence import BinarySequence
 
 class LFSRSequence(BinarySequence):
     r"""
-    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial :math:`p(X)` of degree :math:`n`, called the *feedback polynomial*. More specifically: if bit :math:`i` of the LFSR is tapped, for :math:`i \in [1 : n]`, then the coefficient of :math:`X^i` in :math:`p(X)` is :math:`1`; otherwise, it is :math:`0`; moreover, the coefficient of :math:`X^0` in :math:`p(X)` is always :math:`1`. For example, the feedback polynomial corresponding to the LFSR in the figure below is :math:`p(X) = X^5 + X^2 + 1`, whose integer representation is :code:`0b100101`.
+    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is :code:`0b100101`.
 
     .. image:: figures/lfsr_5_2.svg
        :alt: Linear-feedback shift register example.
        :align: center
 
-    The start state of the machine is specified by the so called *start state polynomial*. More specifically, the coefficient of :math:`X^i` in the start state polynomial is equal to the initial value of bit :math:`i` of the LFSR.
+    The start state of the machine is specified by the so called *start state polynomial*. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the LFSR.
 
     .. rubric:: Maximum-length sequences
 
-    If the feedback polynomial :math:`p(X)` is primitive, then the corresponding LFSR sequence will be a *maximum-length sequence* (MLS). Such sequences have the following cyclic autocorrelation:
+    If the feedback polynomial $p(X)$ is primitive, then the corresponding LFSR sequence will be a *maximum-length sequence* (MLS). Such sequences have the following cyclic autocorrelation:
 
     .. math::
        R[\ell] =
@@ -25,7 +25,7 @@ class LFSRSequence(BinarySequence):
           -1, & \text{otherwise},
        \end{cases}
 
-    where :math:`L` is the length of the sequence.
+    where $L$ is the length of the sequence.
 
     References:
 
@@ -69,23 +69,23 @@ class LFSRSequence(BinarySequence):
 
         Parameters:
 
-            degree (:obj:`int`): The degree :math:`n` of the MLS. Only degrees in the range :math:`[1 : 16]` are implemented.
+            degree (:obj:`int`): The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.
 
             start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): See the corresponding parameter of the default constructor.
 
-        The feedback polynomial :math:`p(X)` is chosen according to the following table of primitive polynomials.
+        The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.
 
             ================  ================================  ================  ================================
-            Degree :math:`n`  Feedback polynomial :math:`p(X)`  Degree :math:`n`  Feedback polynomial :math:`p(X)`
+            Degree $n$  Feedback polynomial $p(X)$  Degree $n$  Feedback polynomial $p(X)$
             ================  ================================  ================  ================================
-            :math:`1`         :code:`0b11`                      :math:`9`         :code:`0b1000010001`
-            :math:`2`         :code:`0b111`                     :math:`10`        :code:`0b10000001001`
-            :math:`3`         :code:`0b1011`                    :math:`11`        :code:`0b100000000101`
-            :math:`4`         :code:`0b10011`                   :math:`12`        :code:`0b1000001010011`
-            :math:`5`         :code:`0b100101`                  :math:`13`        :code:`0b10000000011011`
-            :math:`6`         :code:`0b1000011`                 :math:`14`        :code:`0b100010001000011`
-            :math:`7`         :code:`0b10001001`                :math:`15`        :code:`0b1000000000000011`
-            :math:`8`         :code:`0b100011101`               :math:`16`        :code:`0b10001000000001011`
+            $1$         :code:`0b11`                      $9$         :code:`0b1000010001`
+            $2$         :code:`0b111`                     $10$        :code:`0b10000001001`
+            $3$         :code:`0b1011`                    $11$        :code:`0b100000000101`
+            $4$         :code:`0b10011`                   $12$        :code:`0b1000001010011`
+            $5$         :code:`0b100101`                  $13$        :code:`0b10000000011011`
+            $6$         :code:`0b1000011`                 $14$        :code:`0b100010001000011`
+            $7$         :code:`0b10001001`                $15$        :code:`0b1000000000000011`
+            $8$         :code:`0b100011101`               $16$        :code:`0b10001000000001011`
             ================  ================================  ================  ================================
 
         Examples:
@@ -106,7 +106,7 @@ class LFSRSequence(BinarySequence):
     @property
     def feedback_polynomial(self):
         r"""
-        The feedback polynomial :math:`p(X)` of the LFSR.
+        The feedback polynomial $p(X)$ of the LFSR.
         """
         return self._feedback_polynomial
 

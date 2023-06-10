@@ -7,23 +7,23 @@ from .._util import binlist2int, int2binlist
 
 class ConvolutionalCode:
     r"""
-    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* :math:`P(D)`, of shape :math:`k \times n`, and (optionally) by a *vector of feedback polynomials* :math:`q(D)`, of length :math:`k`. The element in row :math:`i` and column :math:`j` of :math:`P(D)` is denoted by :math:`p_{i,j}(D)`, and the element in position :math:`i` of :math:`q(D)` is denoted by :math:`q_i(D)`; they are binary polynomials (:class:`BinaryPolynomial`) in :math:`D`. The parameters :math:`k` and :math:`n` are the number of input and output bits per block, respectively.
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are binary polynomials (:class:`BinaryPolynomial`) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
 
-    The *transfer function matrix* (also known as *transform-domain generator matrix*) :math:`G(D)` of the convolutional code, of shape :math:`k \times n`, is such that the element in row :math:`i` and column :math:`j` is given by
+    The *transfer function matrix* (also known as *transform-domain generator matrix*) $G(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
 
     .. math::
        g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
 
-    for :math:`i \in [0 : k)` and :math:`j \in [0 : n)`.
+    for $i \in [0 : k)$ and $j \in [0 : n)$.
 
     .. rubric:: Constraint lengths and related parameters
 
     The *constraint lengths* of the code are defined by
 
     .. math::
-       \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},
+       \nu_i = \max \\{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \\},
 
-    for :math:`i \in [0 : k)`.
+    for $i \in [0 : k)$.
 
     The *overall constraint length* of the code is defined by
 
@@ -37,7 +37,7 @@ class ConvolutionalCode:
 
     .. rubric:: Space-state representation
 
-    A convolutional code may also be described via the *space-state representation*. Let :math:`\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})` be the input block, :math:`\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})` be the output block, and :math:`\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})` be the state, all defined at time instant :math:`t`. Then,
+    A convolutional code may also be described via the *space-state representation*. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then,
 
     .. math::
        \begin{aligned}
@@ -45,36 +45,36 @@ class ConvolutionalCode:
           \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D,
        \end{aligned}
 
-    where :math:`A` is the :math:`\nu \times \nu` *state matrix*, :math:`B` is the :math:`k \times \nu` *control matrix*, :math:`C` is the :math:`\nu \times n` *observation matrix*, and :math:`D` is the :math:`k \times n` *transition matrix*.
+    where $A$ is the $\nu \times \nu$ *state matrix*, $B$ is the $k \times \nu$ *control matrix*, $C$ is the $\nu \times n$ *observation matrix*, and $D$ is the $k \times n$ *transition matrix*.
 
     .. rubric:: Table of convolutional codes
 
-    The table below lists optimal convolutional codes with parameters :math:`(n,k) = (2,1)` and :math:`(n,k) = (3,1)`, for small values of the overall constraint length :math:`\nu`. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
+    The table below lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
     =================================  ======================================
-     Parameters :math:`(n, k, \nu)`    Transfer function matrix :math:`G(D)`
+     Parameters $(n, k, \nu)$    Transfer function matrix $G(D)$
     =================================  ======================================
-     :math:`(2, 1, 1)`                  :code:`[[0o1, 0o3]]`
-     :math:`(2, 1, 2)`                  :code:`[[0o5, 0o7]]`
-     :math:`(2, 1, 3)`                  :code:`[[0o13, 0o17]]`
-     :math:`(2, 1, 4)`                  :code:`[[0o27, 0o31]]`
-     :math:`(2, 1, 5)`                  :code:`[[0o53, 0o75]]`
-     :math:`(2, 1, 6)`                  :code:`[[0o117, 0o155]]`
-     :math:`(2, 1, 7)`                  :code:`[[0o247, 0o371]]`
-     :math:`(2, 1, 8)`                  :code:`[[0o561, 0o753]]`
+     $(2, 1, 1)$                  :code:`[[0o1, 0o3]]`
+     $(2, 1, 2)$                  :code:`[[0o5, 0o7]]`
+     $(2, 1, 3)$                  :code:`[[0o13, 0o17]]`
+     $(2, 1, 4)$                  :code:`[[0o27, 0o31]]`
+     $(2, 1, 5)$                  :code:`[[0o53, 0o75]]`
+     $(2, 1, 6)$                  :code:`[[0o117, 0o155]]`
+     $(2, 1, 7)$                  :code:`[[0o247, 0o371]]`
+     $(2, 1, 8)$                  :code:`[[0o561, 0o753]]`
     =================================  ======================================
 
     =================================  ======================================
-     Parameters :math:`(n, k, \nu)`    Transfer function matrix :math:`G(D)`
+     Parameters $(n, k, \nu)$    Transfer function matrix $G(D)$
     =================================  ======================================
-     :math:`(3, 1, 1)`                  :code:`[[0o1, 0o3, 0o3]]`
-     :math:`(3, 1, 2)`                  :code:`[[0o5, 0o7, 0o7]]`
-     :math:`(3, 1, 3)`                  :code:`[[0o13, 0o15, 0o17]]`
-     :math:`(3, 1, 4)`                  :code:`[[0o25, 0o33, 0o37]]`
-     :math:`(3, 1, 5)`                  :code:`[[0o47, 0o53, 0o75]]`
-     :math:`(3, 1, 6)`                  :code:`[[0o117, 0o127, 0o155]]`
-     :math:`(3, 1, 7)`                  :code:`[[0o255, 0o331, 0o367]]`
-     :math:`(3, 1, 8)`                  :code:`[[0o575, 0o623, 0o727]]`
+     $(3, 1, 1)$                  :code:`[[0o1, 0o3, 0o3]]`
+     $(3, 1, 2)$                  :code:`[[0o5, 0o7, 0o7]]`
+     $(3, 1, 3)$                  :code:`[[0o13, 0o15, 0o17]]`
+     $(3, 1, 4)$                  :code:`[[0o25, 0o33, 0o37]]`
+     $(3, 1, 5)$                  :code:`[[0o47, 0o53, 0o75]]`
+     $(3, 1, 6)$                  :code:`[[0o117, 0o127, 0o155]]`
+     $(3, 1, 7)$                  :code:`[[0o255, 0o331, 0o367]]`
+     $(3, 1, 8)$                  :code:`[[0o575, 0o623, 0o727]]`
     =================================  ======================================
 
     References:
@@ -90,13 +90,13 @@ class ConvolutionalCode:
 
         Parameters:
 
-            feedforward_polynomials (2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)): The matrix of feedforward polynomials :math:`P(D)`, which is a :math:`k \times n` matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+            feedforward_polynomials (2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
 
-            feedback_polynomials (1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional): The vector of feedback polynomials :math:`q(D)`, which is a :math:`k`-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, :math:`q_i(D) = 1` for all :math:`i \in [0 : k)`.
+            feedback_polynomials (1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
         Examples:
 
-            The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 6)`; its transfer function matrix is given by
+            The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
 
             .. math::
                G(D) =
@@ -114,7 +114,7 @@ class ConvolutionalCode:
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
             (2, 1, 6)
 
-            The convolutional code with encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (3, 2, 7)`; its transfer function matrix is given by
+            The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
 
             .. math::
                G(D) =
@@ -133,7 +133,7 @@ class ConvolutionalCode:
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
             (3, 2, 7)
 
-            The convolutional code with feedback encoder depicted in the figure below has parameters :math:`(n, k, \nu) = (2, 1, 4)`; its transfer function matrix is given by
+            The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
 
             .. math::
                G(D) =
@@ -252,56 +252,56 @@ class ConvolutionalCode:
     @property
     def num_input_bits(self):
         r"""
-        The number of input bits per block, :math:`k`. This property is read-only.
+        The number of input bits per block, $k$. This property is read-only.
         """
         return self._num_input_bits
 
     @property
     def num_output_bits(self):
         r"""
-        The number of output bits per block, :math:`n`. This property is read-only.
+        The number of output bits per block, $n$. This property is read-only.
         """
         return self._num_output_bits
 
     @property
     def constraint_lengths(self):
         r"""
-        The constraint lengths :math:`\nu_i` of the code, for :math:`i \in [0 : k)`. This is a 1D-array of :obj:`int`. This property is read-only.
+        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of :obj:`int`. This property is read-only.
         """
         return self._constraint_lengths
 
     @property
     def overall_constraint_length(self):
         r"""
-        The overall constraint length :math:`\nu` of the code. This property is read-only.
+        The overall constraint length $\nu$ of the code. This property is read-only.
         """
         return self._overall_constraint_length
 
     @property
     def memory_order(self):
         r"""
-        The memory order :math:`\mu` of the code. This property is read-only.
+        The memory order $\mu$ of the code. This property is read-only.
         """
         return self._memory_order
 
     @property
     def feedforward_polynomials(self):
         r"""
-        The matrix of feedforward polynomials :math:`P(D)` of the code. This is a :math:`k \times n` array of :obj:`BinaryPolynomial`. This property is read-only.
+        The matrix of feedforward polynomials $P(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomial`. This property is read-only.
         """
         return self._feedforward_polynomials
 
     @property
     def feedback_polynomials(self):
         r"""
-        The vector of feedback polynomials :math:`q(D)` of the code. This is a :math:`k`-array of :obj:`BinaryPolynomial`. This property is read-only.
+        The vector of feedback polynomials $q(D)$ of the code. This is a $k$-array of :obj:`BinaryPolynomial`. This property is read-only.
         """
         return self._feedback_polynomials
 
     @property
     def transfer_function_matrix(self):
         r"""
-        The transfer function matrix :math:`G(D)` of the code. This is a :math:`k \times n` array of :obj:`BinaryPolynomialFraction`. This property is read-only.
+        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomialFraction`. This property is read-only.
         """
         return self._transfer_function_matrix
 
@@ -315,27 +315,27 @@ class ConvolutionalCode:
     @property
     def state_matrix(self):
         r"""
-        The state matrix :math:`A` of the state-space representation. This is a :math:`\nu \times \nu` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.
+        The state matrix $A$ of the state-space representation. This is a $\nu \times \nu$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
         """
         return self._state_matrix
 
     @property
     def control_matrix(self):
         r"""
-        The control matrix :math:`B` of the state-space representation. This is a :math:`k \times \nu` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.
+        The control matrix $B$ of the state-space representation. This is a $k \times \nu$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
         """
         return self._control_matrix
 
     @property
     def observation_matrix(self):
         r"""
-        The observation matrix :math:`C` of the state-space representation. This is a :math:`\nu \times n` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.
+        The observation matrix $C$ of the state-space representation. This is a $\nu \times n$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
         """
         return self._observation_matrix
 
     @property
     def transition_matrix(self):
         r"""
-        The transition matrix :math:`D` of the state-space representation. This is a :math:`k \times n` array of integers in :math:`\{ 0, 1 \}`. This property is read-only.
+        The transition matrix $D$ of the state-space representation. This is a $k \times n$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
         """
         return self._transition_matrix

@@ -5,7 +5,7 @@ from .ScalarQuantizer import ScalarQuantizer
 
 class UniformQuantizer(ScalarQuantizer):
     r"""
-    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, :math:`\Delta`, and the thresholds are the mid-point between adjacent levels.
+    Uniform scalar quantizer. It is a scalar quantizer (:obj:`ScalarQuantizer`) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels.
     """
 
     def __init__(self, num_levels, input_peak=1.0, choice="mid-riser"):
@@ -14,9 +14,9 @@ class UniformQuantizer(ScalarQuantizer):
 
         Parameters:
 
-            num_levels (:obj:`int`): The number of quantization levels :math:`L`.
+            num_levels (:obj:`int`): The number of quantization levels $L$.
 
-            input_peak (:obj:`float`, optional): The peak of the input signal :math:`x_\mathrm{p}`. The default value is :code:`1.0`.
+            input_peak (:obj:`float`, optional): The peak of the input signal $x_\mathrm{p}$. The default value is :code:`1.0`.
 
             choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of :code:`'unsigned'` | :code:`'mid-riser'` | :code:`'mid-tread'`. The default value is :code:`'mid-riser'`.
 
@@ -76,14 +76,14 @@ class UniformQuantizer(ScalarQuantizer):
     @property
     def quantization_step(self):
         r"""
-        The quantization step :math:`\Delta`.
+        The quantization step $\Delta$.
         """
         return self._quantization_step
 
     @property
     def input_peak(self):
         r"""
-        The peak of the input signal :math:`x_\mathrm{p}`.
+        The peak of the input signal $x_\mathrm{p}$.
         """
         return self._input_peak
 

@@ -8,12 +8,12 @@ class AWGNChannel:
     .. math::
        Y_n = X_n + Z_n,
 
-    where :math:`X_n` is the channel *input signal*, :math:`Y_n` is the channel *output signal*, and :math:`Z_n` is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
+    where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
 
     .. math::
        \mathrm{SNR} = \frac{P}{N},
 
-    where :math:`P = \mathrm{E}[X^2_n]` is the average power of the input signal, and :math:`N = \mathrm{E}[Z^2_n]` is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
+    where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
@@ -23,9 +23,9 @@ class AWGNChannel:
 
         Parameters:
 
-            snr (:obj:`float`, optional): The channel signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel). The default value is :code:`np.inf`, which corresponds to a noiseless channel.
+            snr (:obj:`float`, optional): The channel signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel). The default value is :code:`np.inf`, which corresponds to a noiseless channel.
 
-            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power :math:`P`. If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
+            signal_power (:obj:`float` or :obj:`str`, optional): The input signal power $P$. If equal to the string :code:`'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is :code:`1.0`.
 
         Examples:
 
@@ -41,7 +41,7 @@ class AWGNChannel:
     @property
     def snr(self):
         r"""
-        The signal-to-noise ratio :math:`\mathrm{SNR}` (linear, not decibel) of the channel. This is a read-and-write property.
+        The signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel) of the channel. This is a read-and-write property.
         """
         return self._snr
 
@@ -52,7 +52,7 @@ class AWGNChannel:
     @property
     def signal_power(self):
         r"""
-        The input signal power :math:`P`. This is a read-and-write property.
+        The input signal power $P$. This is a read-and-write property.
         """
         return self._signal_power
 
@@ -65,7 +65,7 @@ class AWGNChannel:
 
     def capacity(self):
         r"""
-        Returns the channel capacity :math:`C`. It is given by :math:`C = \frac{1}{2}\log_2(1 + \mathrm{SNR})`, in bits per dimension.
+        Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \mathrm{SNR})$, in bits per dimension.
 
         Examples:
 

@@ -10,7 +10,7 @@ class RootRaisedCosinePulse(FormattingPulse):
     .. math::
        h(t) = \frac{\sin[\pi (1 - \alpha) t] + 4 \alpha t \cos[\pi (1 + \alpha) t]}{\pi t [1 - (4 \alpha t)^2]},
 
-    where :math:`\alpha` is the *roll-off factor*. The root raised cosine pulse is depicted below for :math:`\alpha = 0.25`, and for :math:`\alpha = 0.75`.
+    where $\alpha$ is the *roll-off factor*. The root raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
     .. rst-class:: centered
 
@@ -32,7 +32,7 @@ class RootRaisedCosinePulse(FormattingPulse):
 
         Parameters:
 
-            rolloff (:obj:`float`): The roll-off factor :math:`\alpha` of the pulse. Must satisfy :math:`0 \leq \alpha \leq 1`.
+            rolloff (:obj:`float`): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
 
             length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
 
@@ -64,7 +64,7 @@ class RootRaisedCosinePulse(FormattingPulse):
     @property
     def rolloff(self):
         r"""
-        The roll-off factor :math:`\alpha` of the pulse. This property is read-only.
+        The roll-off factor $\alpha$ of the pulse. This property is read-only.
         """
         return self._rolloff
 

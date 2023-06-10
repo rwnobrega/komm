@@ -5,7 +5,7 @@ from .BlockCode import BlockCode
 
 class CordaroWagnerCode(BlockCode):
     r"""
-    Cordaro--Wagner code. It is the :math:`(n, 2)` linear block code (:obj:`BlockCode`) which is optimum for the :term:`BSC` with sufficiently small crossover probability.
+    Cordaro--Wagner code. It is the $(n, 2)$ linear block code (:obj:`BlockCode`) which is optimum for the :term:`BSC` with sufficiently small crossover probability.
 
     References:
 
@@ -35,7 +35,7 @@ class CordaroWagnerCode(BlockCode):
 
         Parameters:
 
-            n (:obj:`int`): The length :math:`n` of the code. Must satisfy :math:`n \geq 2`.
+            n (:obj:`int`): The length $n$ of the code. Must satisfy $n \geq 2$.
         """
         r = (n + 1) // 3
         s = n - 3 * r

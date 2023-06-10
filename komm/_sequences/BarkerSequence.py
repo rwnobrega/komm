@@ -3,18 +3,18 @@ from .BinarySequence import BinarySequence
 
 class BarkerSequence(BinarySequence):
     r"""
-    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation :math:`R[\ell]` satisfying :math:`|R[\ell]| \leq 1`, for :math:`\ell \neq 0`. The only known Barker sequences (up to negation and reversion) are shown in the table below.
+    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation $R[\ell]$ satisfying $|R[\ell]| \leq 1$, for $\ell \neq 0$. The only known Barker sequences (up to negation and reversion) are shown in the table below.
 
     ================  =============================
-    Length :math:`L`  Barker sequence :math:`b[n]`
+    Length $L$  Barker sequence $b[n]$
     ================  =============================
-    :math:`2`         :math:`01` and :math:`00`
-    :math:`3`         :math:`001`
-    :math:`4`         :math:`0010` and :math:`0001`
-    :math:`5`         :math:`00010`
-    :math:`7`         :math:`0001101`
-    :math:`11`        :math:`00011101101`
-    :math:`13`        :math:`0000011001010`
+    $2$         $01$ and $00$
+    $3$         $001$
+    $4$         $0010$ and $0001$
+    $5$         $00010$
+    $7$         $0001101$
+    $11$        $00011101101$
+    $13$        $0000011001010$
     ================  =============================
 
     References:
@@ -28,7 +28,7 @@ class BarkerSequence(BinarySequence):
 
         Parameters:
 
-            length (:obj:`int`): Length of the Barker sequence. Must be in the set :math:`\{ 2, 3, 4, 5, 7, 11, 13 \}`.
+            length (:obj:`int`): Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
 
         Examples:
 

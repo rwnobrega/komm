@@ -5,7 +5,7 @@ from .._util import _entropy
 
 class DiscreteMemorylessSource:
     r"""
-    Discrete memoryless source (DMS). It is defined by an *alphabet* :math:`\mathcal{X}` and a *probability mass function* (:term:`pmf`) :math:`p_X`. Here, for simplicity, the alphabet is always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}`. The :term:`pmf` :math:`p_X` gives the probability of the source emitting the symbol :math:`X = x`.
+    Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (:term:`pmf`) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The :term:`pmf` $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
     """
@@ -16,7 +16,7 @@ class DiscreteMemorylessSource:
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The source probability mass function :math:`p_X`. The element in position :math:`x \in \mathcal{X}` must be equal to :math:`p_X(x)`.
+            pmf (1D-array of :obj:`float`): The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
 
         Examples:
 
@@ -29,7 +29,7 @@ class DiscreteMemorylessSource:
     @property
     def pmf(self):
         r"""
-        The source probability mass function :math:`p_X`. This is a read-and-write property.
+        The source probability mass function $p_X$. This is a read-and-write property.
         """
         return self._pmf
 
@@ -41,13 +41,13 @@ class DiscreteMemorylessSource:
     @property
     def cardinality(self):
         r"""
-        The cardinality :math:`|\mathcal{X}|` of the source alphabet. This property is read-only.
+        The cardinality $|\mathcal{X}|$ of the source alphabet. This property is read-only.
         """
         return self._cardinality
 
     def entropy(self, base=2.0):
         r"""
-        Returns the source entropy :math:`\mathrm{H}(X)`.
+        Returns the source entropy $\mathrm{H}(X)$.
 
         Parameters:
 

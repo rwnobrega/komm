@@ -5,7 +5,7 @@ from .._util import _mutual_information
 
 class DiscreteMemorylessChannel:
     r"""
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* :math:`\mathcal{X}`, an *output alphabet* :math:`\mathcal{Y}`, and a *transition probability matrix* :math:`p_{Y \mid X}`. Here, for simplicity, the input and output alphabets are always taken as :math:`\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}` and :math:`\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}`, respectively. The transition probability matrix :math:`p_{Y \mid X}`, of size :math:`|\mathcal{X}|`-by-:math:`|\mathcal{Y}|`, gives the conditional probability of receiving :math:`Y = y` given that :math:`X = x` is transmitted. See :cite:`Cover.Thomas.06` (Ch. 7).
+    Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. See :cite:`Cover.Thomas.06` (Ch. 7).
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
@@ -16,7 +16,7 @@ class DiscreteMemorylessChannel:
 
         Parameters:
 
-            transition_matrix (2D-array of :obj:`float`): The channel transition probability matrix :math:`p_{Y \mid X}`. The element in row :math:`x \in \mathcal{X}` and column :math:`y \in \mathcal{Y}` must be equal to :math:`p_{Y \mid X}(y \mid x)`.
+            transition_matrix (2D-array of :obj:`float`): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
 
         Examples:
 
@@ -31,7 +31,7 @@ class DiscreteMemorylessChannel:
     @property
     def transition_matrix(self):
         r"""
-        The channel transition probability matrix :math:`p_{Y \mid X}`. This is a read-and-write property.
+        The channel transition probability matrix $p_{Y \mid X}$. This is a read-and-write property.
         """
         return self._transition_matrix
 
@@ -43,35 +43,35 @@ class DiscreteMemorylessChannel:
     @property
     def input_cardinality(self):
         r"""
-        The channel input cardinality :math:`|\mathcal{X}|`. This property is read-only.
+        The channel input cardinality $|\mathcal{X}|$. This property is read-only.
         """
         return self._input_cardinality
 
     @property
     def output_cardinality(self):
         r"""
-        The channel output cardinality :math:`|\mathcal{Y}|`. This property is read-only.
+        The channel output cardinality $|\mathcal{Y}|$. This property is read-only.
         """
         return self._output_cardinality
 
     def mutual_information(self, input_pmf, base=2.0):
         r"""
-        Computes the mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y` of the channel. It is given by
+        Computes the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by
 
         .. math::
            \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
 
-        where :math:`\mathrm{H}(X)` is the the entropy of :math:`X` and :math:`\mathrm{H}(X \mid Y)` is the conditional entropy of :math:`X` given :math:`Y`. By default, the base of the logarithm is :math:`2`, in which case the mutual information is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
+        where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
 
         Parameters:
 
-            input_pmf (1D-array of :obj:`float`): The probability mass function :math:`p_X` of the channel input :math:`X`. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to :math:`1`.
+            input_pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the channel input $X$. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to $1$.
 
             base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string :code:`'e'`. The default value is :code:`2.0`.
 
         Returns:
 
-            mutual_information (:obj:`float`): The mutual information :math:`\mathrm{I}(X ; Y)` between the input :math:`X` and the output :math:`Y`.
+            mutual_information (:obj:`float`): The mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$.
 
         Examples:
 
@@ -85,7 +85,7 @@ class DiscreteMemorylessChannel:
 
     def capacity(self, base=2.0):
         r"""
-        Returns the channel capacity :math:`C`. It is given by :math:`C = \max_{p_X} \mathrm{I}(X;Y)`. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+        Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
 
         Parameters:
 
@@ -93,7 +93,7 @@ class DiscreteMemorylessChannel:
 
         Returns:
 
-            capacity (:obj:`float`): The channel capacity :math:`C`.
+            capacity (:obj:`float`): The channel capacity $C$.
 
         Examples:
 

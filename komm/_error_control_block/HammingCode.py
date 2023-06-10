@@ -7,12 +7,12 @@ from .BlockCode import BlockCode
 
 class HammingCode(BlockCode):
     r"""
-    Hamming code. For a given redundancy :math:`m`, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the :math:`2^m - 1` nonzero binary :math:`m`-tuples. The Hamming code has the following parameters:
+    Hamming code. For a given redundancy $m$, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the $2^m - 1$ nonzero binary $m$-tuples. The Hamming code has the following parameters:
 
-    - Length: :math:`n = 2^m - 1`
-    - Redundancy: :math:`m`
-    - Dimension: :math:`k = 2^m - m - 1`
-    - Minimum distance: :math:`d = 3`
+    - Length: $n = 2^m - 1$
+    - Redundancy: $m$
+    - Dimension: $k = 2^m - m - 1$
+    - Minimum distance: $d = 3$
 
     This class constructs the code in systematic form, with the information set on the left.
 
@@ -26,7 +26,7 @@ class HammingCode(BlockCode):
 
     Notes:
 
-        - For :math:`m = 2` it reduces to the repetition code (:class:`RepetitionCode`) of length :math:`3`.
+        - For $m = 2$ it reduces to the repetition code (:class:`RepetitionCode`) of length $3$.
         - Its dual is the simplex code (:class:`SimplexCode`).
         - Hamming codes are perfect codes.
 
@@ -74,7 +74,7 @@ class HammingCode(BlockCode):
 
         Parameters:
 
-            m (:obj:`int`): The redundancy :math:`m` of the code. Must satisfy :math:`m \geq 2`.
+            m (:obj:`int`): The redundancy $m$ of the code. Must satisfy $m \geq 2$.
 
             extended (:obj:`bool`, optional): If :code:`True`, constructs the code in extended version. The default value is :code:`False`.
         """

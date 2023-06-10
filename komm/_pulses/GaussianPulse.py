@@ -10,9 +10,9 @@ class GaussianPulse(FormattingPulse):
     .. math::
        h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
 
-    where the :math:`\bar{B} = B / \sqrt{\ln 2}`, and :math:`B` is the half-power bandwidth of the filter.
+    where the $\bar{B} = B / \sqrt{\ln 2}$, and $B$ is the half-power bandwidth of the filter.
 
-    The Gaussian pulse is depicted below for :math:`B = 0.5`, and for :math:`B = 1`.
+    The Gaussian pulse is depicted below for $B = 0.5$, and for $B = 1$.
 
     .. rst-class:: centered
 
@@ -34,7 +34,7 @@ class GaussianPulse(FormattingPulse):
 
         Parameters:
 
-            half_power_bandwidth (:obj:`float`): The half-power bandwidth :math:`B` of the pulse.
+            half_power_bandwidth (:obj:`float`): The half-power bandwidth $B$ of the pulse.
 
             length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
 
@@ -65,7 +65,7 @@ class GaussianPulse(FormattingPulse):
     @property
     def half_power_bandwidth(self):
         r"""
-        The half-power bandwidth :math:`B` of the pulse. This property is read-only.
+        The half-power bandwidth $B$ of the pulse. This property is read-only.
         """
         return self._half_power_bandwidth
 

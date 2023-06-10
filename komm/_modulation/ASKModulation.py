@@ -6,12 +6,12 @@ from .Modulation import Modulation
 
 class ASKModulation(ComplexModulation):
     r"""
-    Amplitude-shift keying (ASK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation :math:`\mathcal{S}` are *uniformly arranged* in a ray. More precisely,
+    Amplitude-shift keying (ASK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a ray. More precisely,
 
     .. math::
-       \mathcal{S} = \{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \},
+       \mathcal{S} = \\{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \\},
 
-    where :math:`M` is the *order* (a power of :math:`2`), :math:`A` is the *base amplitude*, and :math:`\phi` is the *phase offset* of the modulation.  The ASK constellation is depicted below for :math:`M = 4`.
+    where $M$ is the *order* (a power of $2$), $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the modulation.  The ASK constellation is depicted below for $M = 4$.
 
     .. image:: figures/ask_4.svg
        :alt: 4-ASK constellation.
@@ -24,13 +24,13 @@ class ASKModulation(ComplexModulation):
 
         Parameters:
 
-            order (:obj:`int`): The order :math:`M` of the modulation. It must be a power of :math:`2`.
+            order (:obj:`int`): The order $M$ of the modulation. It must be a power of $2$.
 
-            base_amplitude (:obj:`float`, optional): The base amplitude :math:`A` of the constellation. The default value is :code:`1.0`.
+            base_amplitude (:obj:`float`, optional): The base amplitude $A$ of the constellation. The default value is :code:`1.0`.
 
-            phase_offset (:obj:`float`, optional): The phase offset :math:`\phi` of the constellation. The default value is :code:`0.0`.
+            phase_offset (:obj:`float`, optional): The phase offset $\phi$ of the constellation. The default value is :code:`0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling :math:`\mathcal{Q}` of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of :math:`[0 : M)`, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
+            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of :code:`'natural'` or :code:`'reflected'`. The default value is :code:`'reflected'` (Gray code).
 
         Examples:
 

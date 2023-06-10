@@ -8,9 +8,9 @@ from .util import power
 
 class FiniteBifield:
     r"""
-    Finite field with binary characteristic. Objects of this class represent a *finite field* :math:`\mathrm{GF}(2^k)` (also known as *Galois field*), with *characteristic* :math:`2` and *degree* :math:`k`.
+    Finite field with binary characteristic. Objects of this class represent a *finite field* $\mathrm{GF}(2^k)$ (also known as *Galois field*), with *characteristic* $2$ and *degree* $k$.
 
-    To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is :math:`X^3 + X^2 + 1`.
+    To construct *elements* of the finite field, call the finite field object. For example, :code:`field(0b1101)` will construct the element whose polynomial representation is $X^3 + X^2 + 1$.
 
     Examples:
 
@@ -31,21 +31,21 @@ class FiniteBifield:
 
         Parameters:
 
-            degree (:obj:`int`): Degree :math:`k` of the finite field. Must be a positive integer.
+            degree (:obj:`int`): Degree $k$ of the finite field. Must be a positive integer.
 
-            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) :math:`p(X)` of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see :cite:`Lin.Costello.04` (p. 42).
+            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see :cite:`Lin.Costello.04` (p. 42).
 
                 ===========  =====================  ============  ============================
-                :math:`k`    :math:`p(X)`           :math:`k`     :math:`p(X)`
+                $k$    $p(X)$           $k$     $p(X)$
                 ===========  =====================  ============  ============================
-                :math:`1`    :code:`0b11`           :math:`9`     :code:`0b1000010001`
-                :math:`2`    :code:`0b111`          :math:`10`    :code:`0b10000001001`
-                :math:`3`    :code:`0b1011`         :math:`11`    :code:`0b100000000101`
-                :math:`4`    :code:`0b10011`        :math:`12`    :code:`0b1000001010011`
-                :math:`5`    :code:`0b100101`       :math:`13`    :code:`0b10000000011011`
-                :math:`6`    :code:`0b1000011`      :math:`14`    :code:`0b100010001000011`
-                :math:`7`    :code:`0b10001001`     :math:`15`    :code:`0b1000000000000011`
-                :math:`8`    :code:`0b100011101`    :math:`16`    :code:`0b10001000000001011`
+                $1$    :code:`0b11`           $9$     :code:`0b1000010001`
+                $2$    :code:`0b111`          $10$    :code:`0b10000001001`
+                $3$    :code:`0b1011`         $11$    :code:`0b100000000101`
+                $4$    :code:`0b10011`        $12$    :code:`0b1000001010011`
+                $5$    :code:`0b100101`       $13$    :code:`0b10000000011011`
+                $6$    :code:`0b1000011`      $14$    :code:`0b100010001000011`
+                $7$    :code:`0b10001001`     $15$    :code:`0b1000000000000011`
+                $8$    :code:`0b100011101`    $16$    :code:`0b10001000000001011`
                 ===========  =====================  ============  ============================
 
         Examples:
@@ -79,35 +79,35 @@ class FiniteBifield:
     @property
     def characteristic(self):
         r"""
-        The characteristic :math:`2` of the finite field. This property is read-only.
+        The characteristic $2$ of the finite field. This property is read-only.
         """
         return self._characteristic
 
     @property
     def degree(self):
         r"""
-        The degree :math:`k` of the finite field. This property is read-only.
+        The degree $k$ of the finite field. This property is read-only.
         """
         return self._degree
 
     @property
     def modulus(self):
         r"""
-        The modulus (primitive polynomial) :math:`p(X)` of the finite field. This property is read-only.
+        The modulus (primitive polynomial) $p(X)$ of the finite field. This property is read-only.
         """
         return self._modulus
 
     @property
     def order(self):
         r"""
-        The order (number of elements) of the finite field. It is given by :math:`2^k`. This property is read-only.
+        The order (number of elements) of the finite field. It is given by $2^k$. This property is read-only.
         """
         return 2**self._degree
 
     @property
     def primitive_element(self):
         r"""
-        A primitive element :math:`\alpha` of the finite field. It satisfies :math:`p(\alpha) = 0`, where :math:`p(X)` is the modulus (primitive polynomial) of the finite field. This property is read-only.
+        A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field. This property is read-only.
 
         Examples:
 
@@ -225,7 +225,7 @@ class FiniteBifield:
         r"""
         Elements of a FiniteBifield.
 
-        Objects of this class represents *elements* of the finite field :math:`\mathrm{GF}(2^k)`.
+        Objects of this class represents *elements* of the finite field $\mathrm{GF}(2^k)$.
         """
         field: "FiniteBifield"
 

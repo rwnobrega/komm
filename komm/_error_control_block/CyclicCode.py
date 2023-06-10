@@ -10,17 +10,17 @@ from .BlockCode import BlockCode
 
 class CyclicCode(BlockCode):
     r"""
-    General binary cyclic code. A cyclic code is a linear block code (:class:`BlockCode`) such that, if :math:`c` is a codeword, then every cyclic shift of :math:`c` is also a codeword. It is characterized by its *generator polynomial* :math:`g(X)`, of degree :math:`m` (the redundancy of the code), and by its *parity-check polynomial* :math:`h(X)`, of degree :math:`k` (the dimension of the code). Those polynomials are related by :math:`g(X) h(X) = X^n + 1`, where :math:`n = k + m` is the length of the code. See references for more details.
+    General binary cyclic code. A cyclic code is a linear block code (:class:`BlockCode`) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *parity-check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code. See references for more details.
 
     Examples of generator polynomials can be found in the table below.
 
     =======================  ==============================================  ======================================
-    Code :math:`(n, k, d)`   Generator polynomial :math:`g(X)`               Integer representation
+    Code $(n, k, d)$   Generator polynomial $g(X)$               Integer representation
     =======================  ==============================================  ======================================
-    Hamming :math:`(7,4,3)`  :math:`X^3 + X + 1`                             :code:`0b1011 = 0o13 = 11`
-    Simplex :math:`(7,3,4)`  :math:`X^4 + X^2 + X +   1`                     :code:`0b10111 = 0o27 = 23`
-    BCH :math:`(15,5,7)`     :math:`X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1`  :code:`0b10100110111 = 0o2467 = 1335`
-    Golay :math:`(23,12,7)`  :math:`X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1`  :code:`0b101011100011 = 0o5343 = 2787`
+    Hamming $(7,4,3)$  $X^3 + X + 1$                             :code:`0b1011 = 0o13 = 11`
+    Simplex $(7,3,4)$  $X^4 + X^2 + X +   1$                     :code:`0b10111 = 0o27 = 23`
+    BCH $(15,5,7)$     $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$  :code:`0b10100110111 = 0o2467 = 1335`
+    Golay $(23,12,7)$  $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$  :code:`0b101011100011 = 0o5343 = 2787`
     =======================  ==============================================  ======================================
 
     References:
@@ -42,19 +42,19 @@ class CyclicCode(BlockCode):
 
         Parameters:
 
-            generator_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The generator polynomial :math:`g(X)` of the code, of degree :math:`m` (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            generator_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         **Via parity-check polynomial**
 
         `komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)`
 
-            parity_check_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The parity-check polynomial :math:`h(X)` of the code, of degree :math:`k` (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            parity_check_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         The following parameters are common to both formats:
 
         Parameters:
 
-            length (:obj:`int`): The length :math:`n` of the code.
+            length (:obj:`int`): The length $n$ of the code.
 
             systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is :code:`True`.
 
@@ -105,14 +105,14 @@ class CyclicCode(BlockCode):
     @property
     def generator_polynomial(self):
         r"""
-        The generator polynomial :math:`g(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`m`, where :math:`m` is the redundancy of the code.
+        The generator polynomial $g(X)$ of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree $m$, where $m$ is the redundancy of the code.
         """
         return self._generator_polynomial
 
     @property
     def parity_check_polynomial(self):
         r"""
-        The parity-check polynomial :math:`h(X)` of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree :math:`k`, where :math:`k` is the dimension of the code.
+        The parity-check polynomial $h(X)$ of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree $k$, where $k$ is the dimension of the code.
         """
         return self._parity_check_polynomial
 

@@ -31,7 +31,7 @@ class RationalPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial---the :math:`i`-th element of the array standing for the coefficient of :math:`X^i`. For example, :code:`[1/2, 0, 3]` represents the rational polynomial :math:`1/2 + 3 X^2`.
+            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial---the $i$-th element of the array standing for the coefficient of $X^i$. For example, :code:`[1/2, 0, 3]` represents the rational polynomial $1/2 + 3 X^2$.
 
         Examples:
 
@@ -49,13 +49,13 @@ class RationalPolynomial:
     @classmethod
     def monomial(cls, degree, coefficient=1):
         r"""
-        Constructs a monomial. This is an polynomial of the form :math:`cX^d`.
+        Constructs a monomial. This is an polynomial of the form $cX^d$.
 
         Parameters:
 
-            degree (:obj:`int`): The degree :math:`d` of the monomial.
+            degree (:obj:`int`): The degree $d$ of the monomial.
 
-            coefficient (:obj:`int`, optional): The coefficient :math:`c` of the monomial. The default value is :math:`1`.
+            coefficient (:obj:`int`, optional): The coefficient $c$ of the monomial. The default value is $1$.
 
         Examples:
 
@@ -74,7 +74,7 @@ class RationalPolynomial:
 
         Returns:
 
-            coefficients (1D-array of :obj:`int`): Coefficients of the polynomial. The :math:`i`-th element of the array stands for the coefficient of :math:`X^i`.
+            coefficients (1D-array of :obj:`int`): Coefficients of the polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
 
