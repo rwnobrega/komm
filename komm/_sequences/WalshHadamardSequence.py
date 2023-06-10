@@ -6,7 +6,7 @@ from .BinarySequence import BinarySequence
 
 class WalshHadamardSequence(BinarySequence):
     r"""
-    Walsh--Hadamard sequence. Consider the following recursive matrix construction:
+    Walsh–Hadamard sequence. Consider the following recursive matrix construction:
     $$
         H_1 =
         \begin{bmatrix}
@@ -48,7 +48,7 @@ class WalshHadamardSequence(BinarySequence):
     $$
     The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ signal changes.
 
-    The Walsh--Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is the binary sequence (:obj:`BinarySequence`) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.
+    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is the binary sequence (:obj:`BinarySequence`) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.
 
     References:
 
@@ -62,11 +62,11 @@ class WalshHadamardSequence(BinarySequence):
 
         Parameters:
 
-            length (:obj:`int`): Length $L$ of the Walsh--Hadamard sequence. Must be a power of two.
+            length (:obj:`int`): Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.
 
             ordering (:obj:`str`, optional): Ordering to be assumed. Should be one of `'natural'`, `'sequency'`, or `'dyadic'`. The default value is `'natural'`.
 
-            index (:obj:`int`, optional): Index of the Walsh--Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
+            index (:obj:`int`, optional): Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
 
         Examples:
 
@@ -106,7 +106,7 @@ class WalshHadamardSequence(BinarySequence):
     @property
     def index(self):
         r"""
-        The index of the Walsh--Hadamard sequence, with respect to the ordering assumed.
+        The index of the Walsh–Hadamard sequence, with respect to the ordering assumed.
         """
         return self._index
 

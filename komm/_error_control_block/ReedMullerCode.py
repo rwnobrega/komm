@@ -9,7 +9,7 @@ from .BlockCode import BlockCode
 
 class ReedMullerCode(BlockCode):
     r"""
-    Reed--Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
+    Reed–Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
 
     - Length: $n = 2^{\mu}$
     - Dimension: $k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}$
@@ -18,7 +18,7 @@ class ReedMullerCode(BlockCode):
 
     References:
 
-        1. :cite:`Lin.Costello.04` (p. 105--114)
+        1. :cite:`Lin.Costello.04` (p. 105–114)
 
     .. rubric:: Decoding methods
 
@@ -91,7 +91,7 @@ class ReedMullerCode(BlockCode):
     @functools.cached_property
     def reed_partitions(self):
         r"""
-        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105--114) for details. This property is read-only.
+        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105–114) for details. This property is read-only.
 
         Examples:
 
@@ -126,7 +126,7 @@ class ReedMullerCode(BlockCode):
     @staticmethod
     def _reed_muller_generator_matrix(rho, mu):
         r"""
-        [1] Lin, Costello, 2Ed, p. 105--114. Assumes 0 <= rho < mu.
+        [1] Lin, Costello, 2Ed, p. 105–114. Assumes 0 <= rho < mu.
         """
         v = np.empty((mu, 2**mu), dtype=int)
         for i in range(mu):
@@ -145,7 +145,7 @@ class ReedMullerCode(BlockCode):
     @tag(name="Reed", input_type="hard", target="message")
     def _decode_reed(self, recvword):
         r"""
-        Reed decoding algorithm for Reed--Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105--114, 439--440.
+        Reed decoding algorithm for Reed–Muller codes. It's a majority-logic decoding algorithm. See Lin, Costello, 2Ed, p. 105–114, 439–440.
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
         bx = np.copy(recvword)
@@ -158,7 +158,7 @@ class ReedMullerCode(BlockCode):
     @tag(name="Weighted Reed", input_type="soft", target="message")
     def _decode_weighted_reed(self, recvword):
         r"""
-        Weighted Reed decoding algorithm for Reed--Muller codes. See Lin, Costello, 2Ed, p. 440--442.
+        Weighted Reed decoding algorithm for Reed–Muller codes. See Lin, Costello, 2Ed, p. 440–442.
         """
         message_hat = np.empty(self._generator_matrix.shape[0], dtype=int)
         bx = (recvword < 0) * 1

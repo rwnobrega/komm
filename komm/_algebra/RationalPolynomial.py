@@ -31,7 +31,7 @@ class RationalPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial---the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[1/2, 0, 3]` represents the rational polynomial $1/2 + 3 X^2$.
+            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[1/2, 0, 3]` represents the rational polynomial $1/2 + 3 X^2$.
 
         Examples:
 

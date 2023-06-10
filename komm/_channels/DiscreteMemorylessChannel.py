@@ -84,7 +84,7 @@ class DiscreteMemorylessChannel:
 
     def capacity(self, base=2.0):
         r"""
-        Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto--Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+        Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See :cite:`Cover.Thomas.06` (Sec. 10.8).
 
         Parameters:
 
@@ -120,7 +120,7 @@ class DiscreteMemorylessChannel:
     @staticmethod
     def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
         r"""
-        Arimoto--Blahut algorithm for channel capacity. See :cite:`Cover.Thomas.06` (Sec. 10.8).
+        Arimoto–Blahut algorithm for channel capacity. See :cite:`Cover.Thomas.06` (Sec. 10.8).
         """
         p = transition_matrix
         r = initial_guess

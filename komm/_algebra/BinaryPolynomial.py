@@ -29,7 +29,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial---the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
+            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
 
         Examples:
 
@@ -47,7 +47,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial---the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
+            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
 

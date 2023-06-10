@@ -29,10 +29,10 @@ hide: navigation
 - [**`GolayCode`**](GolayCode) – Binary Golay code.
 - [**`RepetitionCode`**](RepetitionCode) – Repetition code.
 - [**`SingleParityCheckCode`**](SingleParityCheckCode) – Single parity check code.
-- [**`CordaroWagnerCode`**](CordaroWagnerCode) – Cordaro--Wagner code.
-- [**`ReedMullerCode`**](ReedMullerCode) – Reed--Muller code.
+- [**`CordaroWagnerCode`**](CordaroWagnerCode) – Cordaro–Wagner code.
+- [**`ReedMullerCode`**](ReedMullerCode) – Reed–Muller code.
 - [**`CyclicCode`**](CyclicCode) – General binary cyclic code.
-- [**`BCHCode`**](BCHCode) – Bose--Chaudhuri--Hocquenghem (BCH) code.
+- [**`BCHCode`**](BCHCode) – Bose–Chaudhuri–Hocquenghem (BCH) code.
 
 ### Convolutional coding
 
@@ -79,7 +79,7 @@ hide: navigation
 ## Quantization
 
 - [**`ScalarQuantizer`**](ScalarQuantizer) – General scalar quantizer.
-- [**`LloydMaxQuantizer`**](LloydMaxQuantizer) – Lloyd--Max scalar quantizer [Not implemented yet].
+- [**`LloydMaxQuantizer`**](LloydMaxQuantizer) – Lloyd–Max scalar quantizer [Not implemented yet].
 - [**`UniformQuantizer`**](UniformQuantizer) – Uniform scalar quantizer.
 
 ## Sequences
@@ -88,7 +88,7 @@ hide: navigation
 
 - [**`BinarySequence`**](BinarySequence) – General binary sequence.
 - [**`BarkerSequence`**](BarkerSequence) – Barker sequence.
-- [**`WalshHadamardSequence`**](WalshHadamardSequence) – Walsh--Hadamard sequence.
+- [**`WalshHadamardSequence`**](WalshHadamardSequence) – Walsh–Hadamard sequence.
 - [**`LFSRSequence`**](LFSRSequence) – Linear-feedback shift register (LFSR) sequence.
 - [**`GoldSequence`**](GoldSequence) – Gold sequence [Not implemented yet].
 - [**`KasamiSequence`**](KasamiSequence) – Kasami sequence [Not implemented yet].
