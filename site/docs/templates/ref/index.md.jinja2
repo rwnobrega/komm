@@ -1,3 +1,7 @@
+---
+hide: navigation
+---
+
 {% macro list_all_objects(objects) %}
 {% for object in objects %}
 - [{{ object.name }}]({{ object.name }}). {{ object.summary }}

@@ -27,3 +27,13 @@ plugins:
           show_root_toc_entry: false
           show_source: false
           docstring_section_style: list
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    # - navigation.sections
+    # - navigation.indexes
+    # - toc.integrate
+    - hide:
+      - navigation
