@@ -34,6 +34,7 @@ plugins:
           show_root_toc_entry: false
           show_source: false
           docstring_section_style: list
+          members_order: source
 
 theme:
   name: material
