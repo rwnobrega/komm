@@ -11,7 +11,7 @@ class RectangularPulse(FormattingPulse):
             0, & \text{otherwise}.
         \end{cases},
     $$
-    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. The rectangular pulse is depicted below for $w = 1$ (called the :term:`NRZ` pulse), and for $w = 0.5$ (called the halfway :term:`RZ` pulse).
+    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. The rectangular pulse is depicted below for $w = 1$ (called the NRZ pulse), and for $w = 0.5$ (called the halfway RZ pulse).
 
     .. rst-class:: centered
 

@@ -48,3 +48,11 @@ theme:
     # - toc.integrate
     - hide:
       - navigation
+
+markdown_extensions:
+  - abbr
+  # - md_in_html
+  - pymdownx.snippets:
+      auto_append:
+        - site/includes/acronyms.md
+  # - tables

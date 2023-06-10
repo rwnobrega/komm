@@ -223,7 +223,7 @@ class BlockCode:
     @functools.cached_property
     def codeword_table(self):
         r"""
-        The codeword table of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (:term:`MSB` in the right) is $i$.
+        The codeword table of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (MSB in the right) is $i$.
         """
         codeword_table = np.empty([2**self._dimension, self._length], dtype=int)
         for i in range(2**self._dimension):
@@ -244,7 +244,7 @@ class BlockCode:
     @functools.cached_property
     def coset_leader_table(self):
         r"""
-        The coset leader table of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (:term:`MSB` in the right) is $i$. This may be used as a :term:`LUT` for syndrome-based decoding.
+        The coset leader table of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (MSB in the right) is $i$. This may be used as a LUT for syndrome-based decoding.
         """
         coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=int)
         taken = []

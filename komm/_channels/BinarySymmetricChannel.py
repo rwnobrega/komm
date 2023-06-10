@@ -14,7 +14,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     $$
         Y_n = X_n + Z_n,
     $$
-    where $Z_n$ are :term:`i.i.d.` Bernoulli random variables with $\Pr[Z_n = 1] = p$. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
+    where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. See :cite:`Cover.Thomas.06` (Sec. 7.1.4).
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """

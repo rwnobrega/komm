@@ -7,7 +7,7 @@ class AWGNChannel:
     $$
         Y_n = X_n + Z_n,
     $$
-    where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is :term:`i.i.d.` according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
+    where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is iid according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
     $$
         \mathrm{SNR} = \frac{P}{N},
     $$

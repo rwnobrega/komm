@@ -5,7 +5,7 @@ from .._util import _entropy
 
 class DiscreteMemorylessSource:
     r"""
-    Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (:term:`pmf`) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The :term:`pmf` $p_X$ gives the probability of the source emitting the symbol $X = x$.
+    Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
     """

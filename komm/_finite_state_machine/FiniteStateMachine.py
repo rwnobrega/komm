@@ -259,7 +259,7 @@ class FiniteStateMachine:
         final_state_distribution=None,
     ):
         r"""
-        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior :term:`pmf` of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior :term:`pmf` of each input may also be provided. See :cite:`Lin.Costello.04` (Sec. 12.6).
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See :cite:`Lin.Costello.04` (Sec. 12.6).
 
         Parameters:
 
@@ -267,15 +267,15 @@ class FiniteStateMachine:
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            input_priors (2D-array of :obj:`float`, optional): The prior :term:`pmf` of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value considers uniform priors.
+            input_priors (2D-array of :obj:`float`, optional): The prior pmf of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value considers uniform priors.
 
-            initial_state_distribution (1D-array of :obj:`float`, optional): The :term:`pmf` of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            initial_state_distribution (1D-array of :obj:`float`, optional): The pmf of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
-            final_state_distribution (1D-array of :obj:`float`, optional): The :term:`pmf` of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            final_state_distribution (1D-array of :obj:`float`, optional): The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
         Returns:
 
-            input_posteriors (2D-array of :obj:`float`): The posterior :term:`pmf` of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
+            input_posteriors (2D-array of :obj:`float`): The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
         """
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 

@@ -188,7 +188,7 @@ def _entropy(pmf, base=2.0):
 
 def entropy(pmf, base=2.0):
     r"""
-    Computes the entropy of a random variable with a given :term:`pmf`. Let $X$ be a random variable with :term:`pmf` $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
+    Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
         \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
     $$
@@ -196,7 +196,7 @@ def entropy(pmf, base=2.0):
 
     Parameters:
 
-        pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the random variable. It must be a valid :term:`pmf`, that is, all of its values must be non-negative and sum up to $1$.
+        pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
 
         base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 

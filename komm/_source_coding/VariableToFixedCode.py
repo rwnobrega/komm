@@ -88,11 +88,11 @@ class VariableToFixedCode:
 
     def rate(self, pmf):
         r"""
-        Computes the expected rate $R$ of the code, assuming a given :term:`pmf`. This quantity is given by
+        Computes the expected rate $R$ of the code, assuming a given pmf. This quantity is given by
         $$
             R = \frac{n}{\bar{k}},
         $$
-        where $n$ is the code block size, and $\bar{k}$ is the expected sourceword length, assuming :term:`i.i.d.` source symbols drawn from $p_X$. It is measured in bits per source symbol.
+        where $n$ is the code block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in bits per source symbol.
 
         Parameters:
 
