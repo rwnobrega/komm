@@ -1,0 +1,29 @@
+site_name: komm
+site_url: https://komm.dev/
+repo_url: https://github.com/rwnobrega/komm/
+
+docs_dir: site/docs
+site_dir: site/build
+
+watch:
+- komm/
+- site/docs/
+
+nav:
+- Home: index.md
+- Library reference: ref/index.md
+
+extra_css: [css/custom.css]
+
+plugins:
+- search
+- mkdocstrings:
+    custom_templates: templates
+    handlers:
+      python:
+        options:
+          # show_root_heading: true
+          show_root_full_path: false
+          show_root_toc_entry: false
+          show_source: false
+          docstring_section_style: list

@@ -1,6 +1,0 @@
-﻿komm.pack
-=========
-
-.. currentmodule:: komm
-
-.. autofunction:: pack

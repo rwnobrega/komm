@@ -1,6 +1,0 @@
-﻿komm.entropy
-============
-
-.. currentmodule:: komm
-
-.. autofunction:: entropy

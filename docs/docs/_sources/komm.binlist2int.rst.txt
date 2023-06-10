@@ -1,6 +1,0 @@
-﻿komm.binlist2int
-================
-
-.. currentmodule:: komm
-
-.. autofunction:: binlist2int

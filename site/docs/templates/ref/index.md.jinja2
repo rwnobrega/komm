@@ -1,0 +1,20 @@
+{% macro list_all_objects(objects) %}
+{% for object in objects %}
+- [{{ object.name }}]({{ object.name }}). {{ object.summary }}
+{% endfor %}
+{% endmacro %}
+# Library reference
+
+{% for module, element in data.items() %}
+## {{ module }}
+
+{% if element is mapping %}{# module has submodules #}
+{% for submodule, objects in element.items() %}
+### {{ submodule }}
+
+{{ list_all_objects(objects) }}
+{% endfor %}
+{% else %}{# module has objects #}
+{{ list_all_objects(element) }}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,81 @@
+Algebra:
+- BinaryPolynomial
+- BinaryPolynomialFraction
+- FiniteBifield
+- RationalPolynomial
+- RationalPolynomialFraction
+Channels:
+- AWGNChannel
+- DiscreteMemorylessChannel
+- BinarySymmetricChannel
+- BinaryErasureChannel
+Error control:
+  Block coding:
+  - BlockCode
+  - HammingCode
+  - SimplexCode
+  - GolayCode
+  - RepetitionCode
+  - SingleParityCheckCode
+  - CordaroWagnerCode
+  - ReedMullerCode
+  - CyclicCode
+  - BCHCode
+  Convolutional coding:
+  - ConvolutionalCode
+  - ConvolutionalStreamEncoder
+  - ConvolutionalStreamDecoder
+  - TerminatedConvolutionalCode
+Finite-state machines:
+- FiniteStateMachine
+Modulation:
+  Real modulation schemes:
+  - RealModulation
+  - PAModulation
+  Complex modulation schemes:
+  - ComplexModulation
+  - ASKModulation
+  - PSKModulation
+  - APSKModulation
+  - QAModulation
+Pulse formatting:
+  Pulses:
+  - RectangularPulse
+  - ManchesterPulse
+  - SincPulse
+  - RaisedCosinePulse
+  - RootRaisedCosinePulse
+  - GaussianPulse
+  Filtering:
+  - TransmitFilter
+  - ReceiveFilter
+Quantization:
+- ScalarQuantizer
+- LloydMaxQuantizer
+- UniformQuantizer
+Sequences:
+  Binary sequences:
+  - BinarySequence
+  - BarkerSequence
+  - WalshHadamardSequence
+  - LFSRSequence
+  - GoldSequence
+  - KasamiSequence
+  Other sequences:
+  - ZadoffChuSequence
+Source coding:
+  Sources:
+  - DiscreteMemorylessSource
+  Lossless coding:
+  - FixedToVariableCode
+  - HuffmanCode
+  - VariableToFixedCode
+  - TunstallCode
+Utilities:
+- binlist2int
+- int2binlist
+- pack
+- unpack
+- qfunc
+- qfuncinv
+- entropy
