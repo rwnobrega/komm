@@ -4,7 +4,7 @@ hide: navigation
 
 {% macro list_all_objects(objects) %}
 {% for object in objects %}
-- [{{ object.name }}]({{ object.name }}). {{ object.summary }}
+- [**`{{ object.name }}`**]({{ object.name }}) – {{ object.summary }}
 {% endfor %}
 {% endmacro %}
 # Library reference
