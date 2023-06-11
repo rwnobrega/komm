@@ -16,5 +16,4 @@
 *[PSK]: phase-shift keying
 *[QAM]: quadrature amplitude modulation
 *[RZ]: return-to-zero
-*[SNR]: signal-to-noise ratio
 *[LFSR]: linear-feedback shift register
