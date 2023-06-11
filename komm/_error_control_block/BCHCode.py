@@ -10,7 +10,7 @@ from .CyclicCode import CyclicCode
 
 class BCHCode(CyclicCode):
     r"""
-    Bose–Chaudhuri–Hocquenghem (BCH) code. It is a cyclic code (:obj:`CyclicCode`) specified by two integers $\mu$ and $\tau$ which must satisfy $1 \leq \tau < 2^{\mu - 1}$. The parameter $\tau$ is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability $t$ of the code. See references for more details. The resulting code is denoted by $\mathrm{BCH}(\mu, \tau)$, and has the following parameters:
+    Bose–Chaudhuri–Hocquenghem (BCH) code. It is a [cyclic code](/ref/CyclicCode) specified by two integers $\mu$ and $\tau$ which must satisfy $1 \leq \tau < 2^{\mu - 1}$. The parameter $\tau$ is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability $t$ of the code. See references for more details. The resulting code is denoted by $\mathrm{BCH}(\mu, \tau)$, and has the following parameters:
 
     - Length: $n = 2^{\mu} - 1$
     - Dimension: $k \geq n - \mu \tau$
