@@ -26,7 +26,7 @@ class BarkerSequence(BinarySequence):
 
         Parameters:
 
-            length (:obj:`int`): Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
+            length (int): Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
 
         Examples:
 

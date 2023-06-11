@@ -46,9 +46,9 @@ class LFSRSequence(BinarySequence):
 
         Parameters:
 
-            feedback_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            feedback_polynomial (BinaryPolynomial | int): The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
-            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is `0b1`.
+            start_state_polynomial (Optional[BinaryPolynomial | int]): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is `0b1`.
 
         Examples:
 
@@ -79,9 +79,9 @@ class LFSRSequence(BinarySequence):
 
         Parameters:
 
-            degree (:obj:`int`): The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.
+            degree (int): The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.
 
-            start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): See the corresponding parameter of the default constructor.
+            start_state_polynomial (Optional[BinaryPolynomial | int]): See the corresponding parameter of the default constructor.
 
         Examples:
 
