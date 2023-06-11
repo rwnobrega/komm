@@ -32,28 +32,28 @@ class Modulation:
     @property
     def constellation(self):
         r"""
-        The constellation $\mathcal{S}$ of the modulation. This property is read-only.
+        The constellation $\mathcal{S}$ of the modulation.
         """
         return self._constellation
 
     @property
     def labeling(self):
         r"""
-        The binary labeling $\mathcal{Q}$ of the modulation. This property is read-only.
+        The binary labeling $\mathcal{Q}$ of the modulation.
         """
         return self._labeling
 
     @property
     def order(self):
         r"""
-        The order $M$ of the modulation. This property is read-only.
+        The order $M$ of the modulation.
         """
         return self._order
 
     @property
     def bits_per_symbol(self):
         r"""
-        The number $m$ of bits per symbol of the modulation. It is given by $m = \log_2 M$, where $M$ is the order of the modulation. This property is read-only.
+        The number $m$ of bits per symbol of the modulation. It is given by $m = \log_2 M$, where $M$ is the order of the modulation.
         """
         return self._bits_per_symbol
 
@@ -64,7 +64,7 @@ class Modulation:
         $$
             E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
         $$
-        where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation. This property is read-only.
+        where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation.
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
@@ -85,7 +85,7 @@ class Modulation:
     @property
     def channel_snr(self):
         r"""
-        The signal-to-noise ratio $\mathrm{SNR}$ of the channel. This is used in soft-decision methods. This is a read-and-write property.
+        The signal-to-noise ratio $\mathrm{SNR}$ of the channel. This is used in soft-decision methods.
         """
         return self._channel_snr
 

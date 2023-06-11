@@ -55,6 +55,6 @@ class RectangularPulse(FormattingPulse):
     @property
     def width(self):
         r"""
-        The width $w$ of the pulse. This property is read-only.
+        The width $w$ of the pulse.
         """
         return self._width

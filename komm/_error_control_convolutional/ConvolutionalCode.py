@@ -246,56 +246,56 @@ class ConvolutionalCode:
     @property
     def num_input_bits(self):
         r"""
-        The number of input bits per block, $k$. This property is read-only.
+        The number of input bits per block, $k$.
         """
         return self._num_input_bits
 
     @property
     def num_output_bits(self):
         r"""
-        The number of output bits per block, $n$. This property is read-only.
+        The number of output bits per block, $n$.
         """
         return self._num_output_bits
 
     @property
     def constraint_lengths(self):
         r"""
-        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of :obj:`int`. This property is read-only.
+        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of :obj:`int`.
         """
         return self._constraint_lengths
 
     @property
     def overall_constraint_length(self):
         r"""
-        The overall constraint length $\nu$ of the code. This property is read-only.
+        The overall constraint length $\nu$ of the code.
         """
         return self._overall_constraint_length
 
     @property
     def memory_order(self):
         r"""
-        The memory order $\mu$ of the code. This property is read-only.
+        The memory order $\mu$ of the code.
         """
         return self._memory_order
 
     @property
     def feedforward_polynomials(self):
         r"""
-        The matrix of feedforward polynomials $P(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomial`. This property is read-only.
+        The matrix of feedforward polynomials $P(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomial`.
         """
         return self._feedforward_polynomials
 
     @property
     def feedback_polynomials(self):
         r"""
-        The vector of feedback polynomials $q(D)$ of the code. This is a $k$-array of :obj:`BinaryPolynomial`. This property is read-only.
+        The vector of feedback polynomials $q(D)$ of the code. This is a $k$-array of :obj:`BinaryPolynomial`.
         """
         return self._feedback_polynomials
 
     @property
     def transfer_function_matrix(self):
         r"""
-        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomialFraction`. This property is read-only.
+        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomialFraction`.
         """
         return self._transfer_function_matrix
 
@@ -309,27 +309,27 @@ class ConvolutionalCode:
     @property
     def state_matrix(self):
         r"""
-        The state matrix $A$ of the state-space representation. This is a $\nu \times \nu$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
+        The state matrix $A$ of the state-space representation. This is a $\nu \times \nu$ array of integers in $\\{ 0, 1 \\}$.
         """
         return self._state_matrix
 
     @property
     def control_matrix(self):
         r"""
-        The control matrix $B$ of the state-space representation. This is a $k \times \nu$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
+        The control matrix $B$ of the state-space representation. This is a $k \times \nu$ array of integers in $\\{ 0, 1 \\}$.
         """
         return self._control_matrix
 
     @property
     def observation_matrix(self):
         r"""
-        The observation matrix $C$ of the state-space representation. This is a $\nu \times n$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
+        The observation matrix $C$ of the state-space representation. This is a $\nu \times n$ array of integers in $\\{ 0, 1 \\}$.
         """
         return self._observation_matrix
 
     @property
     def transition_matrix(self):
         r"""
-        The transition matrix $D$ of the state-space representation. This is a $k \times n$ array of integers in $\\{ 0, 1 \\}$. This property is read-only.
+        The transition matrix $D$ of the state-space representation. This is a $k \times n$ array of integers in $\\{ 0, 1 \\}$.
         """
         return self._transition_matrix

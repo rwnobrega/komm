@@ -39,7 +39,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     @property
     def crossover_probability(self):
         r"""
-        The crossover probability $p$ of the channel. This is a read-and-write property.
+        The crossover probability $p$ of the channel.
         """
         return self._crossover_probability
 

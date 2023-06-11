@@ -77,21 +77,21 @@ class ReedMullerCode(BlockCode):
     @property
     def rho(self):
         r"""
-        The parameter $\rho$ of the code. This property is read-only.
+        The parameter $\rho$ of the code.
         """
         return self._rho
 
     @property
     def mu(self):
         r"""
-        The parameter $\mu$ of the code. This property is read-only.
+        The parameter $\mu$ of the code.
         """
         return self._mu
 
     @functools.cached_property
     def reed_partitions(self):
         r"""
-        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105–114) for details. This property is read-only.
+        The Reed partitions of the code. See :cite:`Lin.Costello.04` (p. 105–114) for details.
 
         Examples:
 

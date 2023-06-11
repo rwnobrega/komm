@@ -79,35 +79,35 @@ class FiniteBifield:
     @property
     def characteristic(self):
         r"""
-        The characteristic $2$ of the finite field. This property is read-only.
+        The characteristic $2$ of the finite field.
         """
         return self._characteristic
 
     @property
     def degree(self):
         r"""
-        The degree $k$ of the finite field. This property is read-only.
+        The degree $k$ of the finite field.
         """
         return self._degree
 
     @property
     def modulus(self):
         r"""
-        The modulus (primitive polynomial) $p(X)$ of the finite field. This property is read-only.
+        The modulus (primitive polynomial) $p(X)$ of the finite field.
         """
         return self._modulus
 
     @property
     def order(self):
         r"""
-        The order (number of elements) of the finite field. It is given by $2^k$. This property is read-only.
+        The order (number of elements) of the finite field. It is given by $2^k$.
         """
         return 2**self._degree
 
     @property
     def primitive_element(self):
         r"""
-        A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field. This property is read-only.
+        A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field.
 
         Examples:
 

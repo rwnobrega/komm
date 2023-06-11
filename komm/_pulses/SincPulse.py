@@ -38,7 +38,7 @@ class SincPulse(FormattingPulse):
     @property
     def length_in_symbols(self):
         r"""
-        The length (span) of the truncated impulse response. This property is read-only.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols
 

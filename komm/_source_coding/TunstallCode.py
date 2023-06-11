@@ -42,7 +42,7 @@ class TunstallCode(VariableToFixedCode):
     @property
     def pmf(self):
         r"""
-        The probability mass function used to construct the code. This property is read-only.
+        The probability mass function used to construct the code.
         """
         return self._pmf
 

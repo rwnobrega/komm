@@ -39,7 +39,7 @@ class AWGNChannel:
     @property
     def snr(self):
         r"""
-        The signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel) of the channel. This is a read-and-write property.
+        The signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel) of the channel.
         """
         return self._snr
 
@@ -50,7 +50,7 @@ class AWGNChannel:
     @property
     def signal_power(self):
         r"""
-        The input signal power $P$. This is a read-and-write property.
+        The input signal power $P$.
         """
         return self._signal_power
 

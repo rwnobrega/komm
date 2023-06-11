@@ -22,14 +22,14 @@ class TransmitFilter:
     @property
     def pulse(self):
         r"""
-        The pulse filter. This property is read-only.
+        The pulse filter.
         """
         return self.Pulse
 
     @property
     def samples_per_symbol(self):
         r"""
-        The number of samples per symbol. This property is read-only.
+        The number of samples per symbol.
         """
         return self._samples_per_symbol
 

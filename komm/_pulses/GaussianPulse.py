@@ -64,13 +64,13 @@ class GaussianPulse(FormattingPulse):
     @property
     def half_power_bandwidth(self):
         r"""
-        The half-power bandwidth $B$ of the pulse. This property is read-only.
+        The half-power bandwidth $B$ of the pulse.
         """
         return self._half_power_bandwidth
 
     @property
     def length_in_symbols(self):
         r"""
-        The length (span) of the truncated impulse response. This property is read-only.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols

@@ -95,7 +95,7 @@ class RationalPolynomial:
     @property
     def degree(self):
         r"""
-        The degree of the polynomial. This property is read-only.
+        The degree of the polynomial.
 
         Examples:
 

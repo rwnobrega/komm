@@ -31,7 +31,7 @@ class DiscreteMemorylessChannel:
     @property
     def transition_matrix(self):
         r"""
-        The channel transition probability matrix $p_{Y \mid X}$. This is a read-and-write property.
+        The channel transition probability matrix $p_{Y \mid X}$.
         """
         return self._transition_matrix
 
@@ -43,14 +43,14 @@ class DiscreteMemorylessChannel:
     @property
     def input_cardinality(self):
         r"""
-        The channel input cardinality $|\mathcal{X}|$. This property is read-only.
+        The channel input cardinality $|\mathcal{X}|$.
         """
         return self._input_cardinality
 
     @property
     def output_cardinality(self):
         r"""
-        The channel output cardinality $|\mathcal{Y}|$. This property is read-only.
+        The channel output cardinality $|\mathcal{Y}|$.
         """
         return self._output_cardinality
 

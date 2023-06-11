@@ -64,42 +64,42 @@ class FiniteStateMachine:
     @property
     def num_states(self):
         r"""
-        The number of states of the machine. This property is read-only.
+        The number of states of the machine.
         """
         return self._num_states
 
     @property
     def num_input_symbols(self):
         r"""
-        The size (cardinality) of the input alphabet $\mathcal{X}$. This property is read-only.
+        The size (cardinality) of the input alphabet $\mathcal{X}$.
         """
         return self._num_input_symbols
 
     @property
     def num_output_symbols(self):
         r"""
-        The size (cardinality) of the output alphabet $\mathcal{Y}$. This property is read-only.
+        The size (cardinality) of the output alphabet $\mathcal{Y}$.
         """
         return self._num_output_symbols
 
     @property
     def next_states(self):
         r"""
-        The matrix of next states of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$. This property is read-only.
+        The matrix of next states of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
         """
         return self._next_states
 
     @property
     def outputs(self):
         r"""
-        The matrix of outputs of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$. This property is read-only.
+        The matrix of outputs of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
         """
         return self._outputs
 
     @property
     def input_edges(self):
         r"""
-        The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$. This property is read-only.
+        The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.
 
         Examples:
 
@@ -115,7 +115,7 @@ class FiniteStateMachine:
     @property
     def output_edges(self):
         r"""
-        The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$. This property is read-only.
+        The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.
 
         Examples:
 

@@ -63,14 +63,14 @@ class RootRaisedCosinePulse(FormattingPulse):
     @property
     def rolloff(self):
         r"""
-        The roll-off factor $\alpha$ of the pulse. This property is read-only.
+        The roll-off factor $\alpha$ of the pulse.
         """
         return self._rolloff
 
     @property
     def length_in_symbols(self):
         r"""
-        The length (span) of the truncated impulse response. This property is read-only.
+        The length (span) of the truncated impulse response.
         """
         return self._length_in_symbols
 

@@ -151,35 +151,35 @@ class BlockCode:
     @property
     def length(self):
         r"""
-        The length $n$ of the code. This property is read-only.
+        The length $n$ of the code.
         """
         return self._length
 
     @property
     def dimension(self):
         r"""
-        The dimension $k$ of the code. This property is read-only.
+        The dimension $k$ of the code.
         """
         return self._dimension
 
     @property
     def redundancy(self):
         r"""
-        The redundancy $m$ of the code. This property is read-only.
+        The redundancy $m$ of the code.
         """
         return self._redundancy
 
     @property
     def rate(self):
         r"""
-        The rate $R = k/n$ of the code. This property is read-only.
+        The rate $R = k/n$ of the code.
         """
         return self._dimension / self._length
 
     @functools.cached_property
     def minimum_distance(self):
         r"""
-        The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords. This property is read-only.
+        The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.
         """
         try:
             return self._minimum_distance
@@ -189,21 +189,21 @@ class BlockCode:
     @functools.cached_property
     def packing_radius(self):
         r"""
-        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$. This property is read-only.
+        The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.
         """
         return (self.minimum_distance - 1) // 2
 
     @functools.cached_property
     def covering_radius(self):
         r"""
-        The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders. This property is read-only.
+        The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.
         """
         return np.flatnonzero(self.coset_leader_weight_distribution)[-1]
 
     @functools.cached_property
     def generator_matrix(self):
         r"""
-        The generator matrix $G$ of the code. It as a $k \times n$ binary matrix, where $k$ is the code dimension, and $n$ is the code length. This property is read-only.
+        The generator matrix $G$ of the code. It as a $k \times n$ binary matrix, where $k$ is the code dimension, and $n$ is the code length.
         """
         try:
             return self._generator_matrix
@@ -213,7 +213,7 @@ class BlockCode:
     @functools.cached_property
     def parity_check_matrix(self):
         r"""
-        The parity-check matrix $H$ of the code. It as an $m \times n$ binary matrix, where $m$ is the code redundancy, and $n$ is the code length. This property is read-only.
+        The parity-check matrix $H$ of the code. It as an $m \times n$ binary matrix, where $m$ is the code redundancy, and $n$ is the code length.
         """
         try:
             return self._parity_check_matrix

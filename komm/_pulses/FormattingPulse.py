@@ -29,20 +29,20 @@ class FormattingPulse:
     @property
     def impulse_response(self):
         r"""
-        The impulse response of the pulse. This property is read-only.
+        The impulse response of the pulse.
         """
         return self._impulse_response
 
     @property
     def frequency_response(self):
         r"""
-        The frequency response of the pulse. This property is read-only.
+        The frequency response of the pulse.
         """
         return self._frequency_response
 
     @property
     def interval(self):
         r"""
-        The interval the pulse. This property is read-only.
+        The interval the pulse.
         """
         return self._interval

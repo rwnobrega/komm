@@ -38,7 +38,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     @property
     def erasure_probability(self):
         r"""
-        The erasure probability $\epsilon$ of the channel. This is a read-and-write property.
+        The erasure probability $\epsilon$ of the channel.
         """
         return self._erasure_probability
 

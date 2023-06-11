@@ -29,7 +29,7 @@ class DiscreteMemorylessSource:
     @property
     def pmf(self):
         r"""
-        The source probability mass function $p_X$. This is a read-and-write property.
+        The source probability mass function $p_X$.
         """
         return self._pmf
 
@@ -41,7 +41,7 @@ class DiscreteMemorylessSource:
     @property
     def cardinality(self):
         r"""
-        The cardinality $|\mathcal{X}|$ of the source alphabet. This property is read-only.
+        The cardinality $|\mathcal{X}|$ of the source alphabet.
         """
         return self._cardinality
 
