@@ -37,9 +37,9 @@ class FiniteStateMachine:
 
         Parameters:
 
-            next_states (2D-array of :obj:`int`): The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
+            next_states (Array2D[int]): The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
 
-            outputs (2D-array of :obj:`int`): The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
+            outputs (Array2D[int]): The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
 
         Examples:
 
@@ -134,15 +134,15 @@ class FiniteStateMachine:
 
         Parameters:
 
-            input_sequence (1D-array of :obj:`int`): The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
+            input_sequence (Array1D[int]): The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
 
-            initial_state (:obj:`int`): The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
+            initial_state (int): The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
 
         Returns:
 
-            output_sequence (1D-array of :obj:`int`): The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output_sequence (Array1D[int]): The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
-            final_state (:obj:`int`): The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
+            final_state (int): The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
         Examples:
 
@@ -169,17 +169,17 @@ class FiniteStateMachine:
 
         Parameters:
 
-            observed_sequence (1D-array): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            initial_metrics (1D-array of :obj:`float`, optional): The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
+            initial_metrics (Optional[Array1D[float]): The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
 
         Returns:
 
-            input_sequences_hat (2D-array of :obj:`int`): The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
+            input_sequences_hat (Array2D[int]): The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
 
-            final_metrics (1D-array of :obj:`float`): The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
+            final_metrics (Array1D[float]): The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
         L, num_states = len(observed_sequence), self._num_states
         choices = np.empty((L, num_states), dtype=int)
@@ -213,15 +213,15 @@ class FiniteStateMachine:
 
         Parameters:
 
-            observed_sequence (1D-array): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            memory (:obj:`dict`): The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of :obj:`int` of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of :obj:`float` of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
+            memory (dict): The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
 
         Returns:
 
-            input_sequence_hat (1D-array of :obj:`int`): The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
+            input_sequence_hat (Array1D[int]): The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
         """
         num_states = self._num_states
         input_sequences_hat = np.empty(len(observed_sequence), dtype=int)
@@ -263,19 +263,19 @@ class FiniteStateMachine:
 
         Parameters:
 
-            observed_sequence (1D-array): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            input_priors (2D-array of :obj:`float`, optional): The prior pmf of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value considers uniform priors.
+            input_priors (Optional[Array2D[float]): The prior pmf of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value yields uniform priors.
 
-            initial_state_distribution (1D-array of :obj:`float`, optional): The pmf of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            initial_state_distribution (Optional[Array1D[float]]): The pmf of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
-            final_state_distribution (1D-array of :obj:`float`, optional): The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            final_state_distribution (Optional[Array1D[float]]): The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
         Returns:
 
-            input_posteriors (2D-array of :obj:`float`): The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
+            input_posteriors (Array2D[float]): The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
         """
         L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
 
