@@ -69,7 +69,7 @@ class BlockCode:
 
         Parameters:
 
-            generator_matrix (Array1D[int]): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
+            generator_matrix (Array2D[int]): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
 
         **Via parity-check matrix**
 
@@ -77,7 +77,7 @@ class BlockCode:
 
         Parameters:
 
-            parity_check_matrix (Array1D[int]): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
+            parity_check_matrix (Array2D[int]): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
 
         **Via parity submatrix and information set**
 
@@ -85,7 +85,7 @@ class BlockCode:
 
         Parameters:
 
-            parity_submatrix (Array1D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
+            parity_submatrix (Array2D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
 
             information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
         """
