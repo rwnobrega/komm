@@ -14,11 +14,11 @@ class UniformQuantizer(ScalarQuantizer):
 
         Parameters:
 
-            num_levels (:obj:`int`): The number of quantization levels $L$.
+            num_levels (int): The number of quantization levels $L$.
 
-            input_peak (:obj:`float`, optional): The peak of the input signal $x_\mathrm{p}$. The default value is `1.0`.
+            input_peak (Optional[float]): The peak of the input signal $x_\mathrm{p}$. The default value is `1.0`.
 
-            choice (:obj:`str`, optional): The choice for the uniform quantizer. Must be one of `'unsigned'` | `'mid-riser'` | `'mid-tread'`. The default value is `'mid-riser'`.
+            choice (Optional[str]): The choice for the uniform quantizer. Must be one of `'unsigned'` | `'mid-riser'` | `'mid-tread'`. The default value is `'mid-riser'`.
 
         Examples:
 

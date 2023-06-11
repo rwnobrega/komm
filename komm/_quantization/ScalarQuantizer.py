@@ -18,9 +18,9 @@ class ScalarQuantizer:
 
         Parameters:
 
-            levels (1D array of :obj:`float`): The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.
+            levels (Array1D[float]): The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.
 
-            thresholds (1D array of :obj:`float`): The finite quantizer thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$. Moreover, they must satisfy $v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}$.
+            thresholds (Array1D[float]): The finite quantizer thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$. Moreover, they must satisfy $v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}$.
 
         Examples:
 
