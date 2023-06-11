@@ -6,7 +6,7 @@ from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
 
 class BinarySymmetricChannel(DiscreteMemorylessChannel):
     r"""
-    Binary symmetric channel (BSC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input and output alphabets given by $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$, and transition probability matrix given by
+    Binary symmetric channel (BSC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets given by $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$, and transition probability matrix given by
     $$
         p_{Y \mid X} = \begin{bmatrix} 1-p & p \\\\ p & 1-p \end{bmatrix},
     $$

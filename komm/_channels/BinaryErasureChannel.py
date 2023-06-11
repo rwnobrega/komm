@@ -5,7 +5,7 @@ from .DiscreteMemorylessChannel import DiscreteMemorylessChannel
 
 class BinaryErasureChannel(DiscreteMemorylessChannel):
     r"""
-    Binary erasure channel (BEC). It is a discrete memoryless channel (:obj:`DiscreteMemorylessChannel`) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$, and transition probability matrix given by
+    Binary erasure channel (BEC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$, and transition probability matrix given by
     $$
         p_{Y \mid X} =
         \begin{bmatrix}
