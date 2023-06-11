@@ -3,3 +3,15 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.md-nav__item li label {
+    font-weight: bold;
+}
+
+.md-nav__item li li label {
+    font-weight: normal;
+}
+
+.md-nav__item li li a {
+    font-size: small;
+}
