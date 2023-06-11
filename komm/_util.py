@@ -38,11 +38,11 @@ def binlist2int(binlist):
 
     Parameters:
 
-        binlist (:obj:`list` or 1D-array of :obj:`int`): A list or array of $0$'s and $1$'s whose `i`-th element stands for the coefficient of $2^i$ in the binary representation of the output integer.
+        binlist (List[int] | Array1D[int]): A list or array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the output integer.
 
     Returns:
 
-        integer (:obj:`int`): The integer representation of the input bit array.
+        integer (int): The integer representation of the input bit array.
 
     Examples:
 
@@ -67,13 +67,13 @@ def int2binlist(integer, width=None):
 
     Parameters:
 
-        int_ (:obj:`int`): The input integer. May be any nonnegative integer.
+        integer (int): The input integer. May be any nonnegative integer.
 
-        width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
+        width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
 
     Returns:
 
-        binlist (1D-array of :obj:`int`): An array of $0$'s and $1$'s whose `i`-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.
+        binlist (Array1D[int]): An array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.
 
     Examples:
 
@@ -120,11 +120,11 @@ def qfunc(x):
     $$
     Parameters:
 
-        x (:obj:`float` or array of :obj:`float`): The input to the function. May be any float or array of floats.
+        x (float | ArrayND[float]): The input to the function. May be any float or array of floats.
 
     Returns:
 
-        y (same as input): The value $y = \mathrm{Q}(x)$.
+        y (SameAsInput): The value $y = \mathrm{Q}(x)$.
 
     Examples:
 
@@ -147,11 +147,11 @@ def qfuncinv(y):
 
     Parameters:
 
-        y (:obj:`float` or array of :obj:`float`): The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
+        y (float | ArrayND[float]): The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
 
     Returns:
 
-        x (same as input): The value $x = \mathrm{Q^{-1}}(y)$.
+        x (SameAsInput): The value $x = \mathrm{Q^{-1}}(y)$.
 
     Examples:
 
@@ -196,13 +196,13 @@ def entropy(pmf, base=2.0):
 
     Parameters:
 
-        pmf (1D-array of :obj:`float`): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+        pmf (Array1D[float]): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
 
-        base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+        base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
     Returns:
 
-        entropy (:obj:`float`): The entropy $\mathrm{H}(X)$ of the random variable.
+        entropy (float): The entropy $\mathrm{H}(X)$ of the random variable.
 
     Examples:
 
