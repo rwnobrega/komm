@@ -8,7 +8,7 @@ from .util import power
 
 class RationalPolynomialFraction:
     r"""
-    Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two rational polynomials (:class:`RationalPolynomial`).
+    Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two [rational polynomials](/ref/RationalPolynomial).
     """
 
     def __init__(self, numerator: int | RationalPolynomial, denominator: int | RationalPolynomial = 1):

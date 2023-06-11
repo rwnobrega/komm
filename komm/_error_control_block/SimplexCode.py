@@ -4,7 +4,7 @@ from .HammingCode import HammingCode
 
 class SimplexCode(BlockCode):
     r"""
-    Simplex (maximum-length) code. For a given dimension $k$, it is the linear block code (:class:`BlockCode`) with generator matrix whose columns are all the $2^k - 1$ nonzero binary $k$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
+    Simplex (maximum-length) code. For a given dimension $k$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^k - 1$ nonzero binary $k$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
 
     - Length: $n = 2^k - 1$
     - Dimension: $k$
@@ -19,8 +19,8 @@ class SimplexCode(BlockCode):
 
     Notes:
 
-        - For $k = 2$ it reduces to the single parity check code (:class:`SingleParityCheckCode`) of length $3$.
-        - Its dual is the Hamming code (:class:`HammingCode`).
+        - For $k = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
+        - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
 
     Examples:

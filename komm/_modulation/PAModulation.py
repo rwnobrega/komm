@@ -6,7 +6,7 @@ from .RealModulation import RealModulation
 
 class PAModulation(RealModulation):
     r"""
-    Pulse-amplitude modulation (PAM). It is a real modulation scheme (:class:`RealModulation`) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in the real line. More precisely,
+    Pulse-amplitude modulation (PAM). It is a [real modulation scheme](/ref/RealModulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in the real line. More precisely,
     $$
         \mathcal{S} = \\{ \pm (2i + 1)A : i \in [0 : M) \\},
     $$

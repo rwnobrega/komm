@@ -7,7 +7,7 @@ from .BlockCode import BlockCode
 
 class SingleParityCheckCode(BlockCode):
     r"""
-    Single parity check code. For a given length $n$, it is the linear block code (:class:`BlockCode`) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
+    Single parity check code. For a given length $n$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
 
     - Length: $n$.
     - Dimension: $k = n - 1$.
@@ -19,7 +19,7 @@ class SingleParityCheckCode(BlockCode):
 
     Notes:
 
-        - Its dual is the repetition code (:class:`RepetitionCode`).
+        - Its dual is the [repetition code](/ref/RepetitionCode).
 
     Examples:
 

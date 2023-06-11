@@ -6,7 +6,7 @@ from .Modulation import Modulation
 
 class APSKModulation(ComplexModulation):
     r"""
-    Amplitude- and phase-shift keying (APSK) modulation. It is a complex modulation scheme (:class:`ComplexModulation`) in which the constellation is the union of component PSK constellations (:class:`PSKModulation`), called *rings*. More precisely,
+    Amplitude- and phase-shift keying (APSK) modulation. It is a [complex modulation scheme](/ref/ComplexModulation) in which the constellation is the union of component [PSK](/ref/PSKModulation) constellations, called *rings*. More precisely,
     $$
         \mathcal{S} = \bigcup_{k \in [0 : K)} \mathcal{S}_k,
     $$

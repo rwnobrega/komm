@@ -5,7 +5,7 @@ from .FormattingPulse import FormattingPulse
 
 class RaisedCosinePulse(FormattingPulse):
     r"""
-    Raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Raised cosine pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
     $$
@@ -24,7 +24,7 @@ class RaisedCosinePulse(FormattingPulse):
     .. |quad| unicode:: 0x2001
        :trim:
 
-    For  $\alpha = 0$, the raised cosine pulse reduces to the sinc pulse (:class:`SincPulse`).
+    For  $\alpha = 0$, the raised cosine pulse reduces to the [sinc pulse](/ref/SincPulse).
     """
 
     def __init__(self, rolloff, length_in_symbols):

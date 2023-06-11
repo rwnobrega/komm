@@ -7,7 +7,7 @@ from .._util import binlist2int, int2binlist
 
 class ConvolutionalCode:
     r"""
-    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are binary polynomials (:class:`BinaryPolynomial`) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are [binary polynomials](/ref/BinaryPolynomial) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
 
     The *transfer function matrix* (also known as *transform-domain generator matrix*) $G(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
     $$

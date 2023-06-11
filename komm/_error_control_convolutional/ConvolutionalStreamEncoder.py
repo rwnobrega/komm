@@ -3,7 +3,7 @@ from .._util import pack, unpack
 
 class ConvolutionalStreamEncoder:
     r"""
-    Convolutional stream encoder. Encode a bit stream using a given convolutional code (:class:`ConvolutionalCode`). The internal state of the encoder is maintained across each call.
+    Convolutional stream encoder. Encode a bit stream using a given [convolutional code](/ref/ConvolutionalCode). The internal state of the encoder is maintained across each call.
 
     Examples:
 
@@ -21,7 +21,7 @@ class ConvolutionalStreamEncoder:
 
         Parameters:
 
-            convolutional_code (:class:`ConvolutionalCode`): The convolutional code.
+            convolutional_code (:obj:`ConvolutionalCode`): The convolutional code.
 
             initial_state (:obj:`int`, optional): Initial state of the encoder. The default value is `0`.
         """

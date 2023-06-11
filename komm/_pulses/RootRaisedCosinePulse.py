@@ -5,7 +5,7 @@ from .FormattingPulse import FormattingPulse
 
 class RootRaisedCosinePulse(FormattingPulse):
     r"""
-    Root raised cosine pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Root raised cosine pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) = \frac{\sin[\pi (1 - \alpha) t] + 4 \alpha t \cos[\pi (1 + \alpha) t]}{\pi t [1 - (4 \alpha t)^2]},
     $$

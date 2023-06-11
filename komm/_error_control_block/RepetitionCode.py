@@ -7,7 +7,7 @@ from .BlockCode import BlockCode
 
 class RepetitionCode(BlockCode):
     r"""
-    Repetition code. For a given length $n$, it is the linear block code (:class:`BlockCode`) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
+    Repetition code. For a given length $n$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
 
     - Length: $n$
     - Dimension: $k = 1$
@@ -19,7 +19,7 @@ class RepetitionCode(BlockCode):
 
     Notes:
 
-        - Its dual is the single parity check code (:class:`SingleParityCheckCode`).
+        - Its dual is the [single parity check code](/ref/SingleParityCheckCode).
 
     Examples:
 

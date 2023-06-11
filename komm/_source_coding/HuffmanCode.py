@@ -8,7 +8,7 @@ from .FixedToVariableCode import FixedToVariableCode
 
 class HuffmanCode(FixedToVariableCode):
     r"""
-    Huffman code. It is an optimal (minimal expected rate) fixed-to-variable length code (:class:`FixedToVariableCode`) for a given probability mass function.
+    Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function.
 
     Examples:
 

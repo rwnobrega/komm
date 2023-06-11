@@ -9,7 +9,7 @@ from .BlockCode import BlockCode
 
 class ReedMullerCode(BlockCode):
     r"""
-    Reed–Muller code. It is a linear block code (:obj:`BlockCode`) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
+    Reed–Muller code. It is a [linear block code](/ref/BlockCode) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
 
     - Length: $n = 2^{\mu}$
     - Dimension: $k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}$
@@ -26,10 +26,10 @@ class ReedMullerCode(BlockCode):
 
     Notes:
 
-        - For $\rho = 0$ it reduces to a repetition code (:class:`RepetitionCode`).
-        - For $\rho = 1$ it reduces to a lengthened simplex code (:class:`SimplexCode`).
-        - For $\rho = \mu - 2$ it reduces to an extended Hamming code (:class:`HammingCode`).
-        - For $\rho = \mu - 1$ it reduces to a single parity check code (:class:`SingleParityCheckCode`).
+        - For $\rho = 0$ it reduces to a [repetition code](/ref/RepetitionCode).
+        - For $\rho = 1$ it reduces to a lengthened [simplex code](/ref/SimplexCode).
+        - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
+        - For $\rho = \mu - 1$ it reduces to a [single parity check code](/ref/SingleParityCheckCode).
 
     Examples:
 

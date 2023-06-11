@@ -5,7 +5,7 @@ from .FormattingPulse import FormattingPulse
 
 class SincPulse(FormattingPulse):
     r"""
-    Sinc pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Sinc pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
     $$

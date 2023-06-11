@@ -12,7 +12,7 @@ class TransmitFilter:
 
         Parameters:
 
-            pulse (:class:`komm.Pulse`): The pulse filter.
+            pulse (:obj:`FormattingPulse`): The pulse filter.
 
             samples_per_symbol (:obj:`int`): The number of samples (of the output) per symbol (of the input).
         """

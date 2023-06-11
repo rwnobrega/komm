@@ -3,7 +3,7 @@ from .FormattingPulse import FormattingPulse
 
 class RectangularPulse(FormattingPulse):
     r"""
-    Rectangular pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Rectangular pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) =
         \begin{cases}

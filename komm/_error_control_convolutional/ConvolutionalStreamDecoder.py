@@ -5,7 +5,7 @@ from .._util import int2binlist, unpack
 
 class ConvolutionalStreamDecoder:
     r"""
-    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a convolutional code (:class:`ConvolutionalCode`), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
+    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
 
     Examples:
 
@@ -23,7 +23,7 @@ class ConvolutionalStreamDecoder:
 
         Parameters:
 
-            convolutional_code (:class:`ConvolutionalCode`): The convolutional code.
+            convolutional_code (:obj:`ConvolutionalCode`): The convolutional code.
 
             traceback_length (:obj:`int`): The traceback length (path memory) $\tau$ of the decoder.
 

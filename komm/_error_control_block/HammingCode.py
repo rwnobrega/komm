@@ -7,7 +7,7 @@ from .BlockCode import BlockCode
 
 class HammingCode(BlockCode):
     r"""
-    Hamming code. For a given redundancy $m$, it is the linear block code (:class:`BlockCode`) with parity-check matrix whose columns are all the $2^m - 1$ nonzero binary $m$-tuples. The Hamming code has the following parameters:
+    Hamming code. For a given redundancy $m$, it is the [linear block code](/ref/BlockCode) with parity-check matrix whose columns are all the $2^m - 1$ nonzero binary $m$-tuples. The Hamming code has the following parameters:
 
     - Length: $n = 2^m - 1$
     - Redundancy: $m$
@@ -26,8 +26,8 @@ class HammingCode(BlockCode):
 
     Notes:
 
-        - For $m = 2$ it reduces to the repetition code (:class:`RepetitionCode`) of length $3$.
-        - Its dual is the simplex code (:class:`SimplexCode`).
+        - For $m = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.
+        - Its dual is the [simplex code](/ref/SimplexCode).
         - Hamming codes are perfect codes.
 
     Examples:

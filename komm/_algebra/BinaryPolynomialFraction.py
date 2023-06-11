@@ -4,7 +4,7 @@ from .util import power
 
 class BinaryPolynomialFraction:
     r"""
-    Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two binary polynomials (:class:`BinaryPolynomial`).
+    Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two [binary polynomials](/ref/BinaryPolynomial).
     """
 
     def __init__(self, numerator: int | BinaryPolynomial, denominator: int | BinaryPolynomial = 0b1):

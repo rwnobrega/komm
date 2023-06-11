@@ -3,7 +3,7 @@ from .FormattingPulse import FormattingPulse
 
 class ManchesterPulse(FormattingPulse):
     r"""
-    Manchester pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Manchester pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) =
         \begin{cases}

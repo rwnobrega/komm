@@ -5,7 +5,7 @@ from .FormattingPulse import FormattingPulse
 
 class GaussianPulse(FormattingPulse):
     r"""
-    Gaussian pulse. It is a formatting pulse (:class:`FormattingPulse`) with impulse response given by
+    Gaussian pulse. It is a formatting pulse with impulse response given by
     $$
         h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}
     $$

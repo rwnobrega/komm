@@ -7,7 +7,7 @@ from .VariableToFixedCode import VariableToFixedCode
 
 class TunstallCode(VariableToFixedCode):
     r"""
-    Tunstall code. It is an optimal (minimal expected rate) variable-to-fixed length code (:class:`VariableToFixedCode`) for a given probability mass function.
+    Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function.
 
     Examples:
 
