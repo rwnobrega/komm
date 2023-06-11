@@ -7,11 +7,8 @@ site_dir: site/build
 
 watch:
 - komm/
+- site/templates/
 - site/docs/
-
-nav:
-- Home: index.md
-- Library reference: ref/index.md
 
 extra_css:
   - css/custom.css
@@ -25,6 +22,9 @@ extra_javascript:
 
 plugins:
 - search
+- literate-nav:
+    nav_file: NAV.md
+    tab_length: 2
 - mkdocstrings:
     custom_templates: site/templates
     handlers:
@@ -44,7 +44,7 @@ theme:
   features:
     - navigation.tabs
     # - navigation.sections
-    # - navigation.indexes
+    - navigation.indexes
     # - toc.integrate
     - hide:
       - navigation

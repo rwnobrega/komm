@@ -1,0 +1,22 @@
+- [Home](index.md)
+- [Library reference](ref/index.md)
+{% macro list_all_objects(objects) %}
+{% for object in objects %}
+- [{{ object.name }}](ref/{{ object.name }}.md)
+{% endfor %}
+{% endmacro %}
+{% for module, element in data.items() %}
+  - {{ module }}
+{% if element is mapping %}{# module has submodules #}
+{% for submodule, objects in element.items() %}
+    - {{ submodule }}
+{% filter indent(6, True) %}
+{{ list_all_objects(objects) -}}
+{% endfilter %}
+{% endfor %}
+{% else %}{# module has no submodules #}
+{% filter indent(4, True) %}
+{{ list_all_objects(element) -}}
+{% endfilter %}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,83 @@
+- [Home](index.md)
+- [Library reference](ref/index.md)
+  - Algebra
+    - [BinaryPolynomial](ref/BinaryPolynomial.md)
+    - [BinaryPolynomialFraction](ref/BinaryPolynomialFraction.md)
+    - [FiniteBifield](ref/FiniteBifield.md)
+    - [RationalPolynomial](ref/RationalPolynomial.md)
+    - [RationalPolynomialFraction](ref/RationalPolynomialFraction.md)
+  - Channels
+    - [AWGNChannel](ref/AWGNChannel.md)
+    - [DiscreteMemorylessChannel](ref/DiscreteMemorylessChannel.md)
+    - [BinarySymmetricChannel](ref/BinarySymmetricChannel.md)
+    - [BinaryErasureChannel](ref/BinaryErasureChannel.md)
+  - Error control
+    - Block coding
+      - [BlockCode](ref/BlockCode.md)
+      - [HammingCode](ref/HammingCode.md)
+      - [SimplexCode](ref/SimplexCode.md)
+      - [GolayCode](ref/GolayCode.md)
+      - [RepetitionCode](ref/RepetitionCode.md)
+      - [SingleParityCheckCode](ref/SingleParityCheckCode.md)
+      - [CordaroWagnerCode](ref/CordaroWagnerCode.md)
+      - [ReedMullerCode](ref/ReedMullerCode.md)
+      - [CyclicCode](ref/CyclicCode.md)
+      - [BCHCode](ref/BCHCode.md)
+    - Convolutional coding
+      - [ConvolutionalCode](ref/ConvolutionalCode.md)
+      - [ConvolutionalStreamEncoder](ref/ConvolutionalStreamEncoder.md)
+      - [ConvolutionalStreamDecoder](ref/ConvolutionalStreamDecoder.md)
+      - [TerminatedConvolutionalCode](ref/TerminatedConvolutionalCode.md)
+  - Finite-state machines
+    - [FiniteStateMachine](ref/FiniteStateMachine.md)
+  - Modulation
+    - Real modulation schemes
+      - [RealModulation](ref/RealModulation.md)
+      - [PAModulation](ref/PAModulation.md)
+    - Complex modulation schemes
+      - [ComplexModulation](ref/ComplexModulation.md)
+      - [ASKModulation](ref/ASKModulation.md)
+      - [PSKModulation](ref/PSKModulation.md)
+      - [APSKModulation](ref/APSKModulation.md)
+      - [QAModulation](ref/QAModulation.md)
+  - Pulse formatting
+    - Pulses
+      - [RectangularPulse](ref/RectangularPulse.md)
+      - [ManchesterPulse](ref/ManchesterPulse.md)
+      - [SincPulse](ref/SincPulse.md)
+      - [RaisedCosinePulse](ref/RaisedCosinePulse.md)
+      - [RootRaisedCosinePulse](ref/RootRaisedCosinePulse.md)
+      - [GaussianPulse](ref/GaussianPulse.md)
+    - Filtering
+      - [TransmitFilter](ref/TransmitFilter.md)
+      - [ReceiveFilter](ref/ReceiveFilter.md)
+  - Quantization
+    - [ScalarQuantizer](ref/ScalarQuantizer.md)
+    - [LloydMaxQuantizer](ref/LloydMaxQuantizer.md)
+    - [UniformQuantizer](ref/UniformQuantizer.md)
+  - Sequences
+    - Binary sequences
+      - [BinarySequence](ref/BinarySequence.md)
+      - [BarkerSequence](ref/BarkerSequence.md)
+      - [WalshHadamardSequence](ref/WalshHadamardSequence.md)
+      - [LFSRSequence](ref/LFSRSequence.md)
+      - [GoldSequence](ref/GoldSequence.md)
+      - [KasamiSequence](ref/KasamiSequence.md)
+    - Other sequences
+      - [ZadoffChuSequence](ref/ZadoffChuSequence.md)
+  - Source coding
+    - Sources
+      - [DiscreteMemorylessSource](ref/DiscreteMemorylessSource.md)
+    - Lossless coding
+      - [FixedToVariableCode](ref/FixedToVariableCode.md)
+      - [HuffmanCode](ref/HuffmanCode.md)
+      - [VariableToFixedCode](ref/VariableToFixedCode.md)
+      - [TunstallCode](ref/TunstallCode.md)
+  - Utilities
+    - [binlist2int](ref/binlist2int.md)
+    - [int2binlist](ref/int2binlist.md)
+    - [pack](ref/pack.md)
+    - [unpack](ref/unpack.md)
+    - [qfunc](ref/qfunc.md)
+    - [qfuncinv](ref/qfuncinv.md)
+    - [entropy](ref/entropy.md)

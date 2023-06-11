@@ -14,6 +14,7 @@ def main():
     data = get_data(toc)
     gen_doc_objects(data)
     gen_doc_index(data)
+    gen_nav(data)
 
 
 def get_data(toc):
@@ -58,6 +59,11 @@ def gen_doc_objects(toc):
 def gen_doc_index(data):
     template = JINJA_ENV.get_template("templates/ref/index.md.jinja2")
     template.stream(data=data).dump("docs/ref/index.md")
+
+
+def gen_nav(data):
+    template = JINJA_ENV.get_template("templates/NAV.md.jinja2")
+    template.stream(data=data).dump("docs/NAV.md")
 
 
 if __name__ == "__main__":

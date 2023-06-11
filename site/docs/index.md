@@ -1,5 +1,5 @@
 ---
-hide: navigation
+hide: toc
 ---
 
 # Home
