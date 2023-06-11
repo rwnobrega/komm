@@ -16,7 +16,7 @@ class DiscreteMemorylessSource:
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
+            pmf (Array1D[float]): The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
 
         Examples:
 
@@ -51,7 +51,7 @@ class DiscreteMemorylessSource:
 
         Parameters:
 
-            base (:obj:`float` or :obj:`str`, optional): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+            base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Examples:
 

@@ -35,11 +35,11 @@ class HuffmanCode(FixedToVariableCode):
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.
+            pmf (Array1D[float]): The probability mass function used to construct the code.
 
-            source_block_size (:obj:`int`, optional): The source block size $k$. The default value is $k = 1$.
+            source_block_size (Optional[int]): The source block size $k$. The default value is $k = 1$.
 
-            policy (:obj:`str`, optional): The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
+            policy (Optional[str]): The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
         """
         self._pmf = np.array(pmf)
         self._policy = policy

@@ -20,9 +20,9 @@ class FixedToVariableCode:
 
         Parameters:
 
-            codewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of `codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+            codewords (List[Tuple[int]]): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of `codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
-            source_cardinality (:obj:`int`, optional): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is `len(codewords)`, yielding a source block size $k = 1$.
+            source_cardinality (Optional[int]): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is `len(codewords)`, yielding a source block size $k = 1$.
 
         Note:
 
@@ -102,11 +102,11 @@ class FixedToVariableCode:
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The (first-order) probability mass function $p_X$ to be assumed.
+            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be assumed.
 
         Returns:
 
-            rate (:obj:`float`): The expected rate $R$ of the code.
+            rate (float): The expected rate $R$ of the code.
 
         Examples:
 
@@ -124,11 +124,11 @@ class FixedToVariableCode:
 
         Parameters:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$. Its length must be a multiple of $k$.
+            symbol_sequence (Array1D[int]): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$. Its length must be a multiple of $k$.
 
         Returns:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to `symbol_sequence`.
+            bit_sequence (Array1D[int]): The sequence of bits corresponding to `symbol_sequence`.
 
         Examples:
 
@@ -145,11 +145,11 @@ class FixedToVariableCode:
 
         Parameters:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.
+            bit_sequence (Array1D[int]): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.
 
         Returns:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to `bits`.
+            symbol_sequence (Array1D[int]): The sequence of symbols corresponding to `bit_sequence`.
 
         Examples:
 

@@ -20,7 +20,7 @@ class VariableToFixedCode:
 
         Parameters:
 
-            sourcewords (:obj:`list` of :obj:`tuple` of :obj:`int`): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
+            sourcewords (List[Tuple[int]]): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
 
         Note:
 
@@ -96,11 +96,11 @@ class VariableToFixedCode:
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The (first-order) probability mass function $p_X$ to be assumed.
+            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be assumed.
 
         Returns:
 
-            rate (:obj:`float`): The expected rate $R$ of the code.
+            rate (float): The expected rate $R$ of the code.
 
         Examples:
 
@@ -118,11 +118,11 @@ class VariableToFixedCode:
 
         Parameters:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$.
+            symbol_sequence (Array1D[int]): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$.
 
         Returns:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits corresponding to `symbol_sequence`.
+            bit_sequence (Array1D[int]): The sequence of bits corresponding to `symbol_sequence`.
 
         Examples:
 
@@ -138,11 +138,11 @@ class VariableToFixedCode:
 
         Parameters:
 
-            bit_sequence (1D-array of :obj:`int`): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.  Its length must be a multiple of $n$.
+            bit_sequence (Array1D[int]): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.  Its length must be a multiple of $n$.
 
         Returns:
 
-            symbol_sequence (1D-array of :obj:`int`): The sequence of symbols corresponding to `bits`.
+            symbol_sequence (Array1D[int]): The sequence of symbols corresponding to `bit_sequence`.
 
         Examples:
 

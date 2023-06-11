@@ -28,9 +28,9 @@ class TunstallCode(VariableToFixedCode):
 
         Parameters:
 
-            pmf (1D-array of :obj:`float`): The probability mass function used to construct the code.
+            pmf (Array1D[float]): The probability mass function used to construct the code.
 
-            code_block_size (:obj:`int`, optional): The code block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$, where $|\mathcal{X}|$ is the cardinality of the source alphabet, given by `len(pmf)`.
+            code_block_size (Optional[int]): The code block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$, where $|\mathcal{X}|$ is the cardinality of the source alphabet, given by `len(pmf)`.
         """
         self._pmf = np.array(pmf)
 
