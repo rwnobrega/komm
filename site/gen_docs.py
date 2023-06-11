@@ -41,7 +41,7 @@ def get_data(toc):
 
 
 def gen_doc_objects(toc):
-    template = JINJA_ENV.get_template("templates/ref/object.md.jinja2")
+    template = JINJA_ENV.get_template("templates/ref/object.md.j2")
 
     def _gen_doc_file(obj):
         template.stream(obj=obj).dump(f"docs/ref/{obj['name']}.md")
@@ -57,12 +57,12 @@ def gen_doc_objects(toc):
 
 
 def gen_doc_index(data):
-    template = JINJA_ENV.get_template("templates/ref/index.md.jinja2")
+    template = JINJA_ENV.get_template("templates/ref/index.md.j2")
     template.stream(data=data).dump("docs/ref/index.md")
 
 
 def gen_nav(data):
-    template = JINJA_ENV.get_template("templates/NAV.md.jinja2")
+    template = JINJA_ENV.get_template("templates/NAV.md.j2")
     template.stream(data=data).dump("docs/NAV.md")
 
 
