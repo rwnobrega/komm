@@ -12,9 +12,9 @@ class FormattingPulse:
 
         Parameters:
 
-            impulse_response (:obj:`function`): The impulse response of the pulse.
+            impulse_response (function): The impulse response of the pulse.
 
-            frequency_response (:obj:`function`): The frequency response of the pulse.
+            frequency_response (function): The frequency response of the pulse.
         """
         if impulse_response:
             self._impulse_response = np.vectorize(impulse_response)

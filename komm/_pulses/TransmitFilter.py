@@ -12,9 +12,9 @@ class TransmitFilter:
 
         Parameters:
 
-            pulse (:obj:`FormattingPulse`): The pulse filter.
+            pulse (FormattingPulse): The pulse filter.
 
-            samples_per_symbol (:obj:`int`): The number of samples (of the output) per symbol (of the input).
+            samples_per_symbol (int): The number of samples (of the output) per symbol (of the input).
         """
         self.Pulse = pulse
         self._samples_per_symbol = int(samples_per_symbol)
@@ -39,11 +39,11 @@ class TransmitFilter:
 
         Parameters:
 
-            inp (1D-array of :obj:`float`): The input signal, containing symbols of a modulation.
+            inp (Array1D[float]): The input signal, containing symbols of a modulation.
 
         Returns:
 
-            outp (1D-array of :obj:`float`): The output signal, formatted.
+            outp (Array1D[float]): The output signal, formatted.
         """
         sps = self._samples_per_symbol
         t0, t1 = self.Pulse.interval

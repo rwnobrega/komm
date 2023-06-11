@@ -33,9 +33,9 @@ class RaisedCosinePulse(FormattingPulse):
 
         Parameters:
 
-            rolloff (:obj:`float`): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
+            rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
 
-            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
+            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
 

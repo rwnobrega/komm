@@ -22,7 +22,7 @@ class SincPulse(FormattingPulse):
 
         Parameters:
 
-            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
+            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
 

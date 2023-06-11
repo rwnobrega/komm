@@ -33,9 +33,9 @@ class GaussianPulse(FormattingPulse):
 
         Parameters:
 
-            half_power_bandwidth (:obj:`float`): The half-power bandwidth $B$ of the pulse.
+            half_power_bandwidth (float): The half-power bandwidth $B$ of the pulse.
 
-            length_in_symbols (:obj:`int`): The length (span) of the truncated impulse response, in symbols.
+            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
 
