@@ -83,9 +83,9 @@ class ConvolutionalCode:
 
         Parameters:
 
-            feedforward_polynomials (2D-array of (:obj:`BinaryPolynomial` or :obj:`int`)): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+            feedforward_polynomials (Array2D[BinaryPolynomial, int]): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
 
-            feedback_polynomials (1D-array of  (:obj:`BinaryPolynomial` or :obj:`int`), optional): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
+            feedback_polynomials (Optional[Array1D[BinaryPolynomial, int]]): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
         Examples:
 
@@ -256,7 +256,7 @@ class ConvolutionalCode:
     @property
     def constraint_lengths(self):
         r"""
-        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of :obj:`int`.
+        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a Array1D[int].
         """
         return self._constraint_lengths
 

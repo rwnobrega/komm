@@ -34,11 +34,11 @@ class TerminatedConvolutionalCode(BlockCode):
 
         Parameters:
 
-            convolutional_code (:obj:`ConvolutionalCode`): The convolutional code to be terminated.
+            convolutional_code (ConvolutionalCode): The convolutional code to be terminated.
 
-            num_blocks (:obj:`int`): The number $h$ of information blocks.
+            num_blocks (int): The number $h$ of information blocks.
 
-            mode (:obj:`str`, optional): The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
+            mode (Optional[str]): The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
         Examples:
 
