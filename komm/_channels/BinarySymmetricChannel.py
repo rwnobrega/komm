@@ -25,7 +25,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
         Parameters:
 
-            crossover_probability (:obj:`float`, optional): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
+            crossover_probability (Optional[float]): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
 
         Examples:
 
