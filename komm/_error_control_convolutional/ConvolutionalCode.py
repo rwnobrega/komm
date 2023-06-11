@@ -256,7 +256,7 @@ class ConvolutionalCode:
     @property
     def constraint_lengths(self):
         r"""
-        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a Array1D[int].
+        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of integers.
         """
         return self._constraint_lengths
 
