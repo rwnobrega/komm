@@ -14,9 +14,9 @@ class ComplexModulation(Modulation):
 
         Parameters:
 
-            constellation (1D-array of :obj:`complex`): The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ complex numbers.
+            constellation (Array1D[complex]): The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ complex numbers.
 
-            labeling (1D-array of :obj:`int`): The binary labeling $\mathcal{Q}$ of the modulation. Must be a 1D-array of integers corresponding to a permutation of $[0 : M)$.
+            labeling (Array1D[int]): The binary labeling $\mathcal{Q}$ of the modulation. Must be a 1D-array of integers corresponding to a permutation of $[0 : M)$.
 
         Examples:
 

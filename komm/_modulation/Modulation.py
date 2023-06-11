@@ -100,11 +100,11 @@ class Modulation:
 
         Parameters:
 
-            bits (1D-array of :obj:`int`): The bits to be converted. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
+            bits (Array1D[int]): The bits to be converted. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
 
         Returns:
 
-            symbols (1D-array of :obj:`int`): The symbols corresponding to `bits`. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of `bits` divided by $m$.
+            symbols (Array1D[int]): The symbols corresponding to `bits`. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of `bits` divided by $m$.
         """
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
@@ -120,11 +120,11 @@ class Modulation:
 
         Parameters:
 
-            symbols (1D-array of :obj:`int`): The symbols to be converted. It should be a 1D-array of integers in the set $[0 : M)$. It may be of any length.
+            symbols (Array1D[int]): The symbols to be converted. It should be a 1D-array of integers in the set $[0 : M)$. It may be of any length.
 
         Returns:
 
-            bits (1D-array of :obj:`int`): The bits corresponding to `symbols`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length is equal to the length of `symbols` multiplied by $m = \log_2 M$.
+            bits (Array1D[int]): The bits corresponding to `symbols`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length is equal to the length of `symbols` multiplied by $m = \log_2 M$.
         """
         m = self._bits_per_symbol
         n_bits = len(symbols) * m

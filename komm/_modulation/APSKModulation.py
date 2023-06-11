@@ -27,13 +27,13 @@ class APSKModulation(ComplexModulation):
 
         Parameters:
 
-            orders (:obj:`tuple` of :obj:`int`): A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. The sum $M_0 + M_1 + \cdots + M_{K-1}$ must be a power of $2$.
+            orders (Tuple[int, ...]): A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. The sum $M_0 + M_1 + \cdots + M_{K-1}$ must be a power of $2$.
 
-            amplitudes (:obj:`tuple` of :obj:`float`): A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
+            amplitudes (Tuple[float, ...]): A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
 
-            phase_offsets ((:obj:`tuple` of :obj:`float`) or :obj:`float`, optional): A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
+            phase_offsets (Optional[Tuple[float, ...] | float]): A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be equal to `'natural'`. The default value is `'natural'`.
+            labeling (Optional[Array1D[int] | str]): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be equal to `'natural'`. The default value is `'natural'`.
 
         Examples:
 

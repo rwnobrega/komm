@@ -23,13 +23,13 @@ class PSKModulation(ComplexModulation):
 
         Parameters:
 
-            order (:obj:`int`): The order $M$ of the modulation. It must be a power of $2$.
+            order (int): The order $M$ of the modulation. It must be a power of $2$.
 
-            amplitude (:obj:`float`, optional): The amplitude $A$ of the constellation. The default value is `1.0`.
+            amplitude (Optional[float]): The amplitude $A$ of the constellation. The default value is `1.0`.
 
-            phase_offset (:obj:`float`, optional): The phase offset $\phi$ of the constellation. The default value is `0.0`.
+            phase_offset (Optional[float]): The phase offset $\phi$ of the constellation. The default value is `0.0`.
 
-            labeling ((1D-array of :obj:`int`) or :obj:`str`, optional): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of `'natural'` or `'reflected'`. The default value is `'reflected'` (Gray code).
+            labeling (Optional[Array1D[int] | str]): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of `'natural'` or `'reflected'`. The default value is `'reflected'` (Gray code).
 
         Examples:
 
