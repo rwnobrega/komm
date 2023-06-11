@@ -44,35 +44,31 @@ class ConvolutionalCode:
     $$
     where $A$ is the $\nu \times \nu$ *state matrix*, $B$ is the $k \times \nu$ *control matrix*, $C$ is the $\nu \times n$ *observation matrix*, and $D$ is the $k \times n$ *transition matrix*.
 
-    .. rubric:: Table of convolutional codes
+    .. rubric:: Tables of convolutional codes
 
-    The table below lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
+    The tables below lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 
-    =================================  ======================================
-     Parameters $(n, k, \nu)$    Transfer function matrix $G(D)$
-    =================================  ======================================
-     $(2, 1, 1)$                  `[[0o1, 0o3]]`
-     $(2, 1, 2)$                  `[[0o5, 0o7]]`
-     $(2, 1, 3)$                  `[[0o13, 0o17]]`
-     $(2, 1, 4)$                  `[[0o27, 0o31]]`
-     $(2, 1, 5)$                  `[[0o53, 0o75]]`
-     $(2, 1, 6)$                  `[[0o117, 0o155]]`
-     $(2, 1, 7)$                  `[[0o247, 0o371]]`
-     $(2, 1, 8)$                  `[[0o561, 0o753]]`
-    =================================  ======================================
+    | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
+    | :----------------------: | ------------------------------- |
+    | $(2, 1, 1)$              | `[[0o1, 0o3]]`                  |
+    | $(2, 1, 2)$              | `[[0o5, 0o7]]`                  |
+    | $(2, 1, 3)$              | `[[0o13, 0o17]]`                |
+    | $(2, 1, 4)$              | `[[0o27, 0o31]]`                |
+    | $(2, 1, 5)$              | `[[0o53, 0o75]]`                |
+    | $(2, 1, 6)$              | `[[0o117, 0o155]]`              |
+    | $(2, 1, 7)$              | `[[0o247, 0o371]]`              |
+    | $(2, 1, 8)$              | `[[0o561, 0o753]]`              |
 
-    =================================  ======================================
-     Parameters $(n, k, \nu)$    Transfer function matrix $G(D)$
-    =================================  ======================================
-     $(3, 1, 1)$                  `[[0o1, 0o3, 0o3]]`
-     $(3, 1, 2)$                  `[[0o5, 0o7, 0o7]]`
-     $(3, 1, 3)$                  `[[0o13, 0o15, 0o17]]`
-     $(3, 1, 4)$                  `[[0o25, 0o33, 0o37]]`
-     $(3, 1, 5)$                  `[[0o47, 0o53, 0o75]]`
-     $(3, 1, 6)$                  `[[0o117, 0o127, 0o155]]`
-     $(3, 1, 7)$                  `[[0o255, 0o331, 0o367]]`
-     $(3, 1, 8)$                  `[[0o575, 0o623, 0o727]]`
-    =================================  ======================================
+    | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
+    | :----------------------: | ------------------------------- |
+    | $(3, 1, 1)$              | `[[0o1, 0o3, 0o3]]`             |
+    | $(3, 1, 2)$              | `[[0o5, 0o7, 0o7]]`             |
+    | $(3, 1, 3)$              | `[[0o13, 0o15, 0o17]]`          |
+    | $(3, 1, 4)$              | `[[0o25, 0o33, 0o37]]`          |
+    | $(3, 1, 5)$              | `[[0o47, 0o53, 0o75]]`          |
+    | $(3, 1, 6)$              | `[[0o117, 0o127, 0o155]]`       |
+    | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`       |
+    | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`       |
 
     References:
 

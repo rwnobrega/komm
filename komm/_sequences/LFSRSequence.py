@@ -64,28 +64,24 @@ class LFSRSequence(BinarySequence):
     @classmethod
     def maximum_length_sequence(cls, degree, start_state_polynomial=0b1):
         r"""
-        Constructs a maximum-length sequences (MLS) of a given degree.
+        Constructs a maximum-length sequences (MLS) of a given degree. The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.
+
+        | Degree $n$ | Feedback polynomial $p(X)$ | Degree $n$ | Feedback polynomial $p(X)$ |
+        | :--------: | -------------------------- | :--------: | -------------------------- |
+        | $1$        | `0b11`                     | $9$        | `0b1000010001`             |
+        | $2$        | `0b111`                    | $10$       | `0b10000001001`            |
+        | $3$        | `0b1011`                   | $11$       | `0b100000000101`           |
+        | $4$        | `0b10011`                  | $12$       | `0b1000001010011`          |
+        | $5$        | `0b100101`                 | $13$       | `0b10000000011011`         |
+        | $6$        | `0b1000011`                | $14$       | `0b100010001000011`        |
+        | $7$        | `0b10001001`               | $15$       | `0b1000000000000011`       |
+        | $8$        | `0b100011101`              | $16$       | `0b10001000000001011`      |
 
         Parameters:
 
             degree (:obj:`int`): The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.
 
             start_state_polynomial (:obj:`BinaryPolynomial` or :obj:`int`, optional): See the corresponding parameter of the default constructor.
-
-        The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.
-
-            ================  ================================  ================  ================================
-            Degree $n$  Feedback polynomial $p(X)$  Degree $n$  Feedback polynomial $p(X)$
-            ================  ================================  ================  ================================
-            $1$         `0b11`                      $9$         `0b1000010001`
-            $2$         `0b111`                     $10$        `0b10000001001`
-            $3$         `0b1011`                    $11$        `0b100000000101`
-            $4$         `0b10011`                   $12$        `0b1000001010011`
-            $5$         `0b100101`                  $13$        `0b10000000011011`
-            $6$         `0b1000011`                 $14$        `0b100010001000011`
-            $7$         `0b10001001`                $15$        `0b1000000000000011`
-            $8$         `0b100011101`               $16$        `0b10001000000001011`
-            ================  ================================  ================  ================================
 
         Examples:
 
