@@ -9,9 +9,8 @@ JINJA_ENV = Environment(loader=FileSystemLoader("./"), trim_blocks=True, lstrip_
 
 def main():
     toc = yaml.safe_load(open("toc.yaml", "r"))
-    os.chdir("docs")
-    os.system("mkdir -p ref")
-    os.system("rm -rf ref/*")
+    os.system("mkdir -p docs/ref")
+    os.system("rm -rf docs/ref/*")
     data = get_data(toc)
     gen_doc_objects(data)
     gen_doc_index(data)
@@ -44,7 +43,7 @@ def gen_doc_objects(toc):
     template = JINJA_ENV.get_template("templates/ref/object.md.jinja2")
 
     def _gen_doc_file(obj):
-        template.stream(obj=obj).dump(f"ref/{obj['name']}.md")
+        template.stream(obj=obj).dump(f"docs/ref/{obj['name']}.md")
 
     for elements in toc.values():
         if isinstance(elements, list):  # module has no submodules
@@ -58,7 +57,7 @@ def gen_doc_objects(toc):
 
 def gen_doc_index(data):
     template = JINJA_ENV.get_template("templates/ref/index.md.jinja2")
-    template.stream(data=data).dump("ref/index.md")
+    template.stream(data=data).dump("docs/ref/index.md")
 
 
 if __name__ == "__main__":

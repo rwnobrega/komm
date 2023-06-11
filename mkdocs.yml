@@ -26,7 +26,7 @@ extra_javascript:
 plugins:
 - search
 - mkdocstrings:
-    custom_templates: site/docs/templates
+    custom_templates: site/templates
     handlers:
       python:
         options:
