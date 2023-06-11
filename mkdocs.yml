@@ -45,6 +45,7 @@ theme:
     - navigation.tabs
     # - navigation.sections
     - navigation.indexes
+    - navigation.footer
     # - toc.integrate
     - hide:
       - navigation
