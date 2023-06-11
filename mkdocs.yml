@@ -55,4 +55,4 @@ markdown_extensions:
   - pymdownx.snippets:
       auto_append:
         - site/includes/acronyms.md
-  # - tables
+  - tables
