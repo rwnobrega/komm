@@ -3,7 +3,7 @@ from .BinarySequence import BinarySequence
 
 class BarkerSequence(BinarySequence):
     r"""
-    Barker sequence. A Barker sequence is a binary sequence (:obj:`BinarySequence`) with autocorrelation $R[\ell]$ satisfying $|R[\ell]| \leq 1$, for $\ell \neq 0$. The only known Barker sequences (up to negation and reversion) are shown in the table below.
+    Barker sequence. A Barker sequence is a [binary sequence](/ref/BinarySequence) with autocorrelation $R[\ell]$ satisfying $|R[\ell]| \leq 1$, for $\ell \neq 0$. The only known Barker sequences (up to negation and reversion) are shown in the table below.
 
     | Length $L$ | Barker sequence $b[n]$ |
     | :--------: | ---------------------- |

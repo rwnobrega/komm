@@ -43,7 +43,7 @@ class BinaryPolynomial:
     @classmethod
     def from_coefficients(cls, coefficients):
         r"""
-        Constructs a :obj:`BinaryPolynomial` from its coefficients.
+        Constructs a binary polynomial from its coefficients.
 
         Parameters:
 
@@ -59,7 +59,7 @@ class BinaryPolynomial:
     @classmethod
     def from_exponents(cls, exponents):
         r"""
-        Constructs a :obj:`BinaryPolynomial` from its exponents.
+        Constructs a binary polynomial from its exponents.
 
         Parameters:
 

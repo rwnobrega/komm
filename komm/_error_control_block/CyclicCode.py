@@ -40,7 +40,7 @@ class CyclicCode(BlockCode):
 
         Parameters:
 
-            generator_polynomial (BinaryPolynomial | int): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            generator_polynomial (BinaryPolynomial | int): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
         **Via parity-check polynomial**
 
@@ -48,7 +48,7 @@ class CyclicCode(BlockCode):
 
         Parameters:
 
-            parity_check_polynomial (BinaryPolynomial | int): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            parity_check_polynomial (BinaryPolynomial | int): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
         The following parameters are common to both formats:
 
@@ -105,14 +105,14 @@ class CyclicCode(BlockCode):
     @property
     def generator_polynomial(self):
         r"""
-        The generator polynomial $g(X)$ of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree $m$, where $m$ is the redundancy of the code.
+        The generator polynomial $g(X)$ of the cyclic code. It is a [binary polynomial](/ref/BinaryPolynomial) of degree $m$, where $m$ is the redundancy of the code.
         """
         return self._generator_polynomial
 
     @property
     def parity_check_polynomial(self):
         r"""
-        The parity-check polynomial $h(X)$ of the cyclic code. It is a binary polynomial (:obj:`BinaryPolynomial`) of degree $k$, where $k$ is the dimension of the code.
+        The parity-check polynomial $h(X)$ of the cyclic code. It is a [binary polynomial](/ref/BinaryPolynomial) of degree $k$, where $k$ is the dimension of the code.
         """
         return self._parity_check_polynomial
 

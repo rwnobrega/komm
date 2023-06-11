@@ -6,7 +6,7 @@ from .BinarySequence import BinarySequence
 
 class LFSRSequence(BinarySequence):
     r"""
-    Linear-feedback shift register (LFSR) sequence. It is the binary sequence (:obj:`BinarySequence`) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is `0b100101`.
+    Linear-feedback shift register (LFSR) sequence. It is a [binary sequence](/ref/BinarySequence) obtained from the output of a LFSR. The LFSR feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is `0b100101`.
 
     .. image:: figures/lfsr_5_2.svg
        :alt: Linear-feedback shift register example.
@@ -46,9 +46,9 @@ class LFSRSequence(BinarySequence):
 
         Parameters:
 
-            feedback_polynomial (BinaryPolynomial | int): The feedback polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            feedback_polynomial (BinaryPolynomial | int): The feedback polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
-            start_state_polynomial (Optional[BinaryPolynomial | int]): The start state polynomial of the LFSR, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. The default value is `0b1`.
+            start_state_polynomial (Optional[BinaryPolynomial | int]): The start state polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. The default value is `0b1`.
 
         Examples:
 

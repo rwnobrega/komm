@@ -110,7 +110,7 @@ def xrref(M):
 
     pivots
 
-    Such that :obj:`M_rref = P @ M` (where :obj:`@` stands for matrix multiplication).
+    Such that `M_rref = P @ M` (where `@` stands for matrix multiplication).
     """
     eye = np.eye(M.shape[0], dtype=int)
 

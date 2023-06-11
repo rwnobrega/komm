@@ -83,9 +83,9 @@ class ConvolutionalCode:
 
         Parameters:
 
-            feedforward_polynomials (Array2D[BinaryPolynomial, int]): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former.
+            feedforward_polynomials (Array2D[BinaryPolynomial, int]): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
-            feedback_polynomials (Optional[Array1D[BinaryPolynomial, int]]): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either binary polynomials (:obj:`BinaryPolynomial`) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
+            feedback_polynomials (Optional[Array1D[BinaryPolynomial, int]]): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
         Examples:
 
@@ -256,7 +256,7 @@ class ConvolutionalCode:
     @property
     def constraint_lengths(self):
         r"""
-        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a 1D-array of integers.
+        The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a $k$-array of integers.
         """
         return self._constraint_lengths
 
@@ -277,21 +277,21 @@ class ConvolutionalCode:
     @property
     def feedforward_polynomials(self):
         r"""
-        The matrix of feedforward polynomials $P(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomial`.
+        The matrix of feedforward polynomials $P(D)$ of the code. This is a $k \times n$ array of [binary polynomials](/ref/BinaryPolynomial).
         """
         return self._feedforward_polynomials
 
     @property
     def feedback_polynomials(self):
         r"""
-        The vector of feedback polynomials $q(D)$ of the code. This is a $k$-array of :obj:`BinaryPolynomial`.
+        The vector of feedback polynomials $q(D)$ of the code. This is a $k$-array of [binary polynomials](/ref/BinaryPolynomial).
         """
         return self._feedback_polynomials
 
     @property
     def transfer_function_matrix(self):
         r"""
-        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of :obj:`BinaryPolynomialFraction`.
+        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """
         return self._transfer_function_matrix
 
