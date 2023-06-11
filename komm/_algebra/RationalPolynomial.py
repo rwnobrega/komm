@@ -31,7 +31,7 @@ class RationalPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int` or :obj:`str` or :obj:`Fraction`): The coefficients of the rational polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[1/2, 0, 3]` represents the rational polynomial $1/2 + 3 X^2$.
+            coefficients (Array1D[int | str | Fraction]): The coefficients of the rational polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `['1/2', '0', '3']` represents the rational polynomial $1/2 + 3 X^2$.
 
         Examples:
 
@@ -53,9 +53,9 @@ class RationalPolynomial:
 
         Parameters:
 
-            degree (:obj:`int`): The degree $d$ of the monomial.
+            degree (int): The degree $d$ of the monomial.
 
-            coefficient (:obj:`int`, optional): The coefficient $c$ of the monomial. The default value is $1$.
+            coefficient (Optional[int]): The coefficient $c$ of the monomial. The default value is $1$.
 
         Examples:
 
@@ -70,11 +70,11 @@ class RationalPolynomial:
 
         Parameters:
 
-            width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
 
-            coefficients (1D-array of :obj:`int`): Coefficients of the polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
+            coefficients (Array1D[int]): Coefficients of the polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
 
@@ -163,11 +163,11 @@ class RationalPolynomial:
 
         Parameters:
 
-            point (ring-like type): Any Python object supporting the operations of addition, subtraction, and multiplication.
+            point (RingElement): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
         Returns:
 
-            result (ring-like type): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
+            result (RingElement): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
 
         Examples:
 

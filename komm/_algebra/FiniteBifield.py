@@ -31,9 +31,9 @@ class FiniteBifield:
 
         Parameters:
 
-            degree (:obj:`int`): Degree $k$ of the finite field. Must be a positive integer.
+            degree (int): Degree $k$ of the finite field. Must be a positive integer.
 
-            modulus (:obj:`BinaryPolynomial` or :obj:`int`, optional): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see :cite:`Lin.Costello.04` (p. 42).
+            modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below. For more details, see :cite:`Lin.Costello.04` (p. 42).
 
                 | Degree $k$ | Modulus $p(X)$ | Degree $k$ | Modulus $p(X)$        |
                 | :--------: | -------------- | :--------: | --------------------- |

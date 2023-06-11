@@ -29,7 +29,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            integer (:obj:`int`): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
+            integer (int): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
 
         Examples:
 
@@ -47,7 +47,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            coefficients (1D-array of :obj:`int`): The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
+            coefficients (Array1D[int]): The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
 
@@ -63,7 +63,7 @@ class BinaryPolynomial:
 
         Parameters:
 
-            exponents (1D-array of :obj:`int`): The exponents of the nonzero terms of the binary polynomial. For example, `[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
+            exponents (Array1D[int]): The exponents of the nonzero terms of the binary polynomial. For example, `[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
 
@@ -91,11 +91,11 @@ class BinaryPolynomial:
 
         Parameters:
 
-            width (:obj:`int`, optional): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
 
-            coefficients (1D-array of :obj:`int`): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
+            coefficients (Array1D[int]): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
 
@@ -113,7 +113,7 @@ class BinaryPolynomial:
 
         Returns:
 
-            exponents (1D-array of :obj:`int`): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
+            exponents (Array1D[int]): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
         Examples:
 
@@ -171,11 +171,11 @@ class BinaryPolynomial:
 
         Parameters:
 
-            point (ring-like type): Any Python object supporting the operations of addition, subtraction, and multiplication.
+            point (RingElement): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
         Returns:
 
-            result (ring-like type): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
+            result (RingElement): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
 
         Examples:
 
