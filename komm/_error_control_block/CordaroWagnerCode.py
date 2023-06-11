@@ -35,7 +35,7 @@ class CordaroWagnerCode(BlockCode):
 
         Parameters:
 
-            n (:obj:`int`): The length $n$ of the code. Must satisfy $n \geq 2$.
+            n (int): The length $n$ of the code. Must satisfy $n \geq 2$.
         """
         r = (n + 1) // 3
         s = n - 3 * r

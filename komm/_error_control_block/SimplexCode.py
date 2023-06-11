@@ -49,7 +49,7 @@ class SimplexCode(BlockCode):
 
         Parameters:
 
-            k (:obj:`int`): The dimension $k$ of the code. Must satisfy $k \geq 2$.
+            k (int): The dimension $k$ of the code. Must satisfy $k \geq 2$.
         """
         P = HammingCode._hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)

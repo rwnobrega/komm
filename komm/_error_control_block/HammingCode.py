@@ -74,9 +74,9 @@ class HammingCode(BlockCode):
 
         Parameters:
 
-            m (:obj:`int`): The redundancy $m$ of the code. Must satisfy $m \geq 2$.
+            m (int): The redundancy $m$ of the code. Must satisfy $m \geq 2$.
 
-            extended (:obj:`bool`, optional): If `True`, constructs the code in extended version. The default value is `False`.
+            extended (Optional[bool]): If `True`, constructs the code in extended version. The default value is `False`.
         """
         P = self._hamming_parity_submatrix(m)
         if extended:

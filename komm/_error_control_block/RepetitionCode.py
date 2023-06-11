@@ -45,7 +45,7 @@ class RepetitionCode(BlockCode):
 
         Parameters:
 
-            n (:obj:`int`): The length $n$ of the code. Must be a positive integer.
+            n (int): The length $n$ of the code. Must be a positive integer.
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
         self._minimum_distance = n

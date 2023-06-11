@@ -56,9 +56,9 @@ class ReedMullerCode(BlockCode):
 
         Parameters:
 
-            rho (:obj:`int`): The parameter $\rho$ of the code.
+            rho (int): The parameter $\rho$ of the code.
 
-            mu (:obj:`int`): The parameter $\mu$ of the code.
+            mu (int): The parameter $\mu$ of the code.
 
         The parameters must satisfy $0 \leq \rho < \mu$.
         """

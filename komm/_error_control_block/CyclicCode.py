@@ -40,21 +40,23 @@ class CyclicCode(BlockCode):
 
         Parameters:
 
-            generator_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+            generator_polynomial (BinaryPolynomial | int): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         **Via parity-check polynomial**
 
         `komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)`
 
-            parity_check_polynomial (:obj:`BinaryPolynomial` or :obj:`int`): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
+        Parameters:
+
+            parity_check_polynomial (BinaryPolynomial | int): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a :obj:`BinaryPolynomial` or as an :obj:`int` to be converted to the former.
 
         The following parameters are common to both formats:
 
         Parameters:
 
-            length (:obj:`int`): The length $n$ of the code.
+            length (int): The length $n$ of the code.
 
-            systematic (:obj:`bool`, optional): Whether the encoder is systematic. Default is `True`.
+            systematic (Optional[bool]): Whether the encoder is systematic. Default is `True`.
 
         Examples:
 

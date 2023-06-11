@@ -69,7 +69,7 @@ class BlockCode:
 
         Parameters:
 
-            generator_matrix (2D-array of :obj:`int`): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
+            generator_matrix (Array1D[int]): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
 
         **Via parity-check matrix**
 
@@ -77,7 +77,7 @@ class BlockCode:
 
         Parameters:
 
-            parity_check_matrix (2D-array of :obj:`int`): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
+            parity_check_matrix (Array1D[int]): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
 
         **Via parity submatrix and information set**
 
@@ -85,9 +85,9 @@ class BlockCode:
 
         Parameters:
 
-            parity_submatrix (2D-array of :obj:`int`): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
+            parity_submatrix (Array1D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
 
-            information_set ((1D-array of :obj:`int`) or :obj:`str`, optional): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
+            information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
         """
         if "generator_matrix" in kwargs:
             self._init_from_generator_matrix(**kwargs)
@@ -281,13 +281,13 @@ class BlockCode:
 
         Parameters:
 
-            message (1D-array of :obj:`int`): The message to be encoded. Its length must be $k$.
+            message (Array1D[int]): The message to be encoded. Its length must be $k$.
 
-            method (:obj:`str`, optional): The encoding method to be used.
+            method (Optional[str]): The encoding method to be used.
 
         Returns:
 
-            codeword (1D-array of :obj:`int`): The codeword corresponding to `message`. Its length is equal to $n$.
+            codeword (Array1D[int]): The codeword corresponding to `message`. Its length is equal to $n$.
         """
         message = np.array(message)
 
@@ -324,11 +324,11 @@ class BlockCode:
 
         Parameters:
 
-            codeword (1D-array of :obj:`int`): A codeword from the code. Its length must be $n$.
+            codeword (Array1D[int]): A codeword from the code. Its length must be $n$.
 
         Returns:
 
-            message (1D-array of :obj:`int`): The message corresponding to `codeword`. Its length is equal to $k$.
+            message (Array1D[int]): The message corresponding to `codeword`. Its length is equal to $k$.
         """
         if self._is_systematic:
             return codeword[self._information_set]
@@ -341,15 +341,15 @@ class BlockCode:
 
         Parameters:
 
-            recvword (1D-array of (:obj:`int` or :obj:`float`)): The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in $\\{ 0, 1 \\}$). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit $0$ and negative values represent bit $1$). Its length must be $n$.
+            recvword (Array1D[int] | Array1D[float]): The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in $\\{ 0, 1 \\}$). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit $0$ and negative values represent bit $1$). Its length must be $n$.
 
-            method (:obj:`str`, optional): The decoding method to be used.
+            method (Optional[str]): The decoding method to be used.
 
             **kwargs: Keyword arguments to be passed to the decoding method.
 
         Returns:
 
-            message_hat (1D-array of :obj:`int`): The message decoded from `recvword`. Its length is equal to $k$.
+            message_hat (Array1D[int]): The message decoded from `recvword`. Its length is equal to $k$.
         """
         recvword = np.array(recvword)
 

@@ -47,9 +47,9 @@ class BCHCode(CyclicCode):
 
         Parameters:
 
-            mu (:obj:`int`): The parameter $\mu$ of the code.
+            mu (int): The parameter $\mu$ of the code.
 
-            tau (:obj:`int`): The designed error-correcting capability $\tau$ of the BCH code. It will be internally replaced by the true error-correcting capability $t$ of the code.
+            tau (int): The designed error-correcting capability $\tau$ of the BCH code. It will be internally replaced by the true error-correcting capability $t$ of the code.
         """
         if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
