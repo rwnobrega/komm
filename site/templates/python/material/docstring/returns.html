@@ -41,7 +41,7 @@
         {% if returns.name %}<b><code>{{ returns.name }}</code></b>{% endif %}
         {% if returns.annotation %}
           {% with expression = returns.annotation %}
-            {% if returns.name %} ({% endif %}<code>{% include "expression.html" with context %}</code>{% if returns.name %}) {% endif %}
+            <span class="doc-param-annotation">{% if returns.name %} ({% endif %}<code>{% include "expression.html" with context %}</code>{% if returns.name %}) {% endif %}</span>
           {% endwith %}
         {% endif %}
         –

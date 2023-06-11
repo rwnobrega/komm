@@ -50,7 +50,7 @@
         <b><code>{{ parameter.name }}</code></b>
         {% if parameter.annotation %}
           {% with expression = parameter.annotation %}
-            (<code>{% include "expression.html" with context %}</code>)
+            <span class="doc-param-annotation">(<code>{% include "expression.html" with context %}</code>)</span>
           {% endwith %}
         {% endif %}
         –

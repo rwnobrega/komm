@@ -3,3 +3,13 @@ div.doc-contents:not(.first) {
     padding-left: 25px;
     border-left: .05rem solid var(--md-typeset-table-color);
 }
+
+.doc-param-annotation {
+    font-size: 0.9em;
+}
+
+.doc-param-annotation code {
+    font-style: italic;
+    color: var(--md-code-hl-constant-color);
+    background-color: white;
+}
