@@ -420,14 +420,3 @@ class BlockCode:
                 method = getattr(cls, name)
                 table.append([method.name, "`{}`".format(identifier), method.input_type])
         return table
-
-    @classmethod
-    def _process_docstring(cls):
-        table = cls._available_decoding_methods()
-        indent = " " * 4
-        rst = ".. csv-table::\n"
-        rst += "{indent}   :header: Method, Identifier, Input type\n".format(indent=indent)
-        rst += "{indent}   :widths: 5, 5, 2\n\n".format(indent=indent)
-        for row in table:
-            rst += "{indent}   {row}\n".format(indent=indent, row=", ".join(row))
-        cls.__doc__ = cls.__doc__.replace("[[decoding_methods]]", rst)

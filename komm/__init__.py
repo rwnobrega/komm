@@ -1,5 +1,6 @@
 import inspect as _inspect
 import sys as _sys
+from importlib import metadata
 
 from ._algebra import *
 from ._channels import *
@@ -13,11 +14,5 @@ from ._sequences import *
 from ._source_coding import *
 from ._sources import *
 from ._util import *
-
-for _, _cls in _inspect.getmembers(_sys.modules[__name__], _inspect.isclass):
-    if hasattr(_cls, "_process_docstring"):
-        _cls._process_docstring()
-
-from importlib import metadata
 
 __version__ = metadata.version("komm")
