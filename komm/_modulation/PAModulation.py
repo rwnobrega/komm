@@ -12,11 +12,9 @@ class PAModulation(RealModulation):
     $$
     where $M$ is the *order* (a power of $2$), and $A$ is the *base amplitude*. The PAM constellation is depicted below for $M = 8$.
 
-    |
-
-    .. image:: figures/pam_8.svg
-       :alt: 8-PAM constellation.
-       :align: center
+    <figure markdown>
+    ![8-PAM constellation.](/figures/pam_8.svg)
+    </figure>
     """
 
     def __init__(self, order, base_amplitude=1.0, labeling="reflected"):

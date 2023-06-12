@@ -12,9 +12,9 @@ class PSKModulation(ComplexModulation):
     $$
     where $M$ is the *order* (a power of $2$), $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the modulation. The PSK constellation is depicted below for $M = 8$.
 
-    .. image:: figures/psk_8.svg
-       :alt: 8-PSK constellation.
-       :align: center
+    <figure markdown>
+    ![8-PSK constellation.](/figures/psk_8.svg)
+    </figure>
     """
 
     def __init__(self, order, amplitude=1.0, phase_offset=0.0, labeling="reflected"):

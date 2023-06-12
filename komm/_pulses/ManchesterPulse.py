@@ -14,9 +14,9 @@ class ManchesterPulse(FormattingPulse):
     $$
     The Manchester pulse is depicted below.
 
-    .. image:: figures/pulse_manchester.svg
-       :alt: Manchester pulse
-       :align: center
+    <figure markdown>
+    ![Manchester pulse](/figures/pulse_manchester.svg)
+    </figure>
     """
 
     def __init__(self):

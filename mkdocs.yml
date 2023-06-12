@@ -53,7 +53,8 @@ theme:
 
 markdown_extensions:
   - abbr
-  # - md_in_html
+  - attr_list
+  - md_in_html
   - pymdownx.snippets:
       auto_append:
         - site/includes/acronyms.md

@@ -1,5 +1,4 @@
 import numpy as np
-import numpy.typing as npt
 from scipy import special
 
 
@@ -9,9 +8,9 @@ class FiniteStateMachine:
 
     For example, consider the finite-state machine whose state diagram depicted in the figure below.
 
-    .. image:: figures/mealy.svg
-       :alt: Finite-state machine (Mealy machine) example.
-       :align: center
+    <figure markdown>
+    ![Finite-state machine (Mealy machine) example.](/figures/mealy.svg)
+    </figure>
 
     It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$, and transition function $T$ given by the table below.
 

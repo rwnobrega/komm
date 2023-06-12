@@ -11,9 +11,9 @@ class SincPulse(FormattingPulse):
     $$
     The sinc pulse is depicted below.
 
-    .. image:: figures/pulse_sinc.svg
-       :alt: Sinc pulse
-       :align: center
+    <figure markdown>
+    ![Sinc pulse](/figures/pulse_sinc.svg)
+    </figure>
     """
 
     def __init__(self, length_in_symbols):

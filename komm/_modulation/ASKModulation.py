@@ -12,9 +12,9 @@ class ASKModulation(ComplexModulation):
     $$
     where $M$ is the *order* (a power of $2$), $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the modulation.  The ASK constellation is depicted below for $M = 4$.
 
-    .. image:: figures/ask_4.svg
-       :alt: 4-ASK constellation.
-       :align: center
+    <figure markdown>
+    ![4-ASK constellation.](/figures/ask_4.svg)
+    </figure>
     """
 
     def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling="reflected"):
