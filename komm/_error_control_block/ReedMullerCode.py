@@ -20,10 +20,6 @@ class ReedMullerCode(BlockCode):
 
         1. :cite:`Lin.Costello.04` (p. 105–114)
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Notes:
 
         - For $\rho = 0$ it reduces to a [repetition code](/ref/RepetitionCode).

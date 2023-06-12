@@ -16,10 +16,6 @@ class BlockCode:
 
         1. :cite:`Lin.Costello.04` (Ch. 3).
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Examples:
 
         >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])

@@ -11,10 +11,6 @@ class CordaroWagnerCode(BlockCode):
 
         1. :cite:`Cordaro.Wagner.67`
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Examples:
 
         >>> code = komm.CordaroWagnerCode(11)

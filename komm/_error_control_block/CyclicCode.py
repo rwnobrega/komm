@@ -24,10 +24,6 @@ class CyclicCode(BlockCode):
     References:
 
         1. :cite:`Lin.Costello.04` (Chapter 5)
-
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
     """
 
     def __init__(self, length, systematic=True, **kwargs):

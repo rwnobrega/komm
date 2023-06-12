@@ -20,10 +20,6 @@ class HammingCode(BlockCode):
 
         1. :cite:`Lin.Costello.04` (Sec 4.1)
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Notes:
 
         - For $m = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.

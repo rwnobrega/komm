@@ -15,7 +15,7 @@ class ConvolutionalCode:
     $$
     for $i \in [0 : k)$ and $j \in [0 : n)$.
 
-    .. rubric:: Constraint lengths and related parameters
+    <h2>Constraint lengths and related parameters</h2>
 
     The *constraint lengths* of the code are defined by
     $$
@@ -33,7 +33,7 @@ class ConvolutionalCode:
         \mu = \max_{0 \leq i < k} \nu_i.
     $$
 
-    .. rubric:: Space-state representation
+    <h2>Space-state representation</h2>
 
     A convolutional code may also be described via the *space-state representation*. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then,
     $$
@@ -44,7 +44,7 @@ class ConvolutionalCode:
     $$
     where $A$ is the $\nu \times \nu$ *state matrix*, $B$ is the $k \times \nu$ *control matrix*, $C$ is the $\nu \times n$ *observation matrix*, and $D$ is the $k \times n$ *transition matrix*.
 
-    .. rubric:: Tables of convolutional codes
+    <h2>Tables of convolutional codes</h2>
 
     The tables below lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
 

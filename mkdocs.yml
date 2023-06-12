@@ -36,6 +36,7 @@ plugins:
           show_source: false
           docstring_section_style: list
           members_order: source
+          group_by_category: false
 
 theme:
   name: material

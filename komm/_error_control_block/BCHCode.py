@@ -17,10 +17,6 @@ class BCHCode(CyclicCode):
     - Redundancy: $m \leq \mu \tau$
     - Minimum distance: $d \geq 2\tau + 1$
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     References:
 
         1. :cite:`Lin.Costello.04` (Ch. 6)

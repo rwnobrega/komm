@@ -13,10 +13,6 @@ class GolayCode(BlockCode):
 
     This class constructs the code in systematic form, with the information set on the left.
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Notes:
 
         - The binary Golay code is a perfect code.

@@ -18,10 +18,6 @@ class TerminatedConvolutionalCode(BlockCode):
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length $n = h n_0$.
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     References:
 
         1. :cite:`Lin.Costello.04`

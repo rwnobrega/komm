@@ -13,10 +13,6 @@ class RepetitionCode(BlockCode):
     - Dimension: $k = 1$
     - Minimum distance: $d = n$
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Notes:
 
         - Its dual is the [single parity check code](/ref/SingleParityCheckCode).

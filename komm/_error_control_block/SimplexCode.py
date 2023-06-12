@@ -13,10 +13,6 @@ class SimplexCode(BlockCode):
 
     This class constructs the code in systematic form, with the information set on the left.
 
-    .. rubric:: Decoding methods
-
-    [[decoding_methods]]
-
     Notes:
 
         - For $k = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.

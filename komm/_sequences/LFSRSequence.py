@@ -14,7 +14,7 @@ class LFSRSequence(BinarySequence):
 
     The start state of the machine is specified by the so called *start state polynomial*. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the LFSR.
 
-    .. rubric:: Maximum-length sequences
+    <h2>Maximum-length sequences</h2>
 
     If the feedback polynomial $p(X)$ is primitive, then the corresponding LFSR sequence will be a *maximum-length sequence* (MLS). Such sequences have the following cyclic autocorrelation:
     $$
