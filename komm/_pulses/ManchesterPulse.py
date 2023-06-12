@@ -15,7 +15,7 @@ class ManchesterPulse(FormattingPulse):
     The Manchester pulse is depicted below.
 
     <figure markdown>
-      ![Manchester pulse](/figures/pulse_manchester.svg)
+      ![Manchester pulse.](/figures/pulse_manchester.svg)
     </figure>
     """
 

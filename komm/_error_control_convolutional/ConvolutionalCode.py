@@ -99,7 +99,7 @@ class ConvolutionalCode:
             yielding `feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
 
             <figure markdown>
-              ![Convolutional encoder example .](/figures/cc_2_1_6.svg)
+              ![Convolutional encoder for (2, 1, 6) code.](/figures/cc_2_1_6.svg)
             </figure>
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
@@ -117,7 +117,7 @@ class ConvolutionalCode:
             yielding `feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
 
             <figure markdown>
-              ![Convolutional encoder example.](/figures/cc_3_2_7.svg)
+              ![Convolutional encoder for (3, 2, 7) code.](/figures/cc_3_2_7.svg)
             </figure>
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
@@ -134,7 +134,7 @@ class ConvolutionalCode:
             yielding `feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and `feedback_polynomials = [0o27]`.
 
             <figure markdown>
-              ![Convolutional feedback encoder example.](/figures/cc_2_1_4_fb.svg)
+              ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
             </figure>
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])
