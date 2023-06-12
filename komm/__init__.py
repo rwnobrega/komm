@@ -1,5 +1,3 @@
-import inspect as _inspect
-import sys as _sys
 from importlib import metadata
 
 from ._algebra import *
