@@ -15,20 +15,16 @@ class FiniteStateMachine:
 
     It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$, and transition function $T$ given by the table below.
 
-    .. csv-table:: Transition function
-       :align: center
-       :header: State, Input, Next state, Output
-
-       0, 0, 0, 0
-       0, 1, 1, 3
-       1, 0, 2, 1
-       1, 1, 3, 2
-       2, 0, 0, 3
-       2, 1, 1, 0
-       3, 0, 2, 2
-       3, 1, 3, 1
-
-    |
+    | State | Input | Next state | Output |
+    | :---: | :---: | :--------: | :----: |
+    | $0$   | $0$   | $0$        | $0$    |
+    | $0$   | $1$   | $1$        | $3$    |
+    | $1$   | $0$   | $2$        | $1$    |
+    | $1$   | $1$   | $3$        | $2$    |
+    | $2$   | $0$   | $0$        | $3$    |
+    | $2$   | $1$   | $1$        | $0$    |
+    | $3$   | $0$   | $2$        | $2$    |
+    | $3$   | $1$   | $3$        | $1$    |
     """
 
     def __init__(self, next_states, outputs):
