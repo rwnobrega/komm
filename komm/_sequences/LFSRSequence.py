@@ -55,7 +55,7 @@ class LFSRSequence(BinarySequence):
             >>> komm.LFSRSequence(feedback_polynomial=0b10011)
             LFSRSequence(feedback_polynomial=0b10011)
 
-        See also the class method :func:`maximum_length_sequence` for a more convenient way to construct a maximum-length sequence.
+        See also the class method [`maximum_length_sequence`](./#maximum_length_sequence) for a more convenient way to construct a maximum-length sequence.
         """
         self._feedback_polynomial = BinaryPolynomial(feedback_polynomial)
         self._start_state_polynomial = BinaryPolynomial(start_state_polynomial)

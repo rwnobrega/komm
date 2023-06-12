@@ -36,7 +36,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
 
-        There are two alternative constructors for this class, the class methods :func:`from_coefficients` and :func:`from_exponents`.  See their documentation for details.
+        See also the class methods [`from_coefficients`](./#from_coefficients) and [`from_exponents`](./#from_exponents) for alternative ways to construct a binary polynomial.
         """
         self._integer = int(integer)
 
