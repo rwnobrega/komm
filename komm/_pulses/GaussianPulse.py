@@ -13,18 +13,14 @@ class GaussianPulse(FormattingPulse):
 
     The Gaussian pulse is depicted below for $B = 0.5$, and for $B = 1$.
 
-    .. rst-class:: centered
-
-       |fig1| |quad| |quad| |quad| |quad| |fig2|
-
-    .. |fig1| image:: figures/pulse_gaussian_50.svg
-       :alt: Gaussian pulse with half-power bandwidth of 0.5
-
-    .. |fig2| image:: figures/pulse_gaussian_100.svg
-       :alt: Gaussian pulse with half-power bandwidth of 1
-
-    .. |quad| unicode:: 0x2001
-       :trim:
+    <div class="centered" markdown>
+      <span>
+        ![Gaussian pulse with half-power bandwidth of 0.5.](/figures/pulse_gaussian_50.svg)
+      </span>
+      <span>
+        ![Gaussian pulse with half-power bandwidth of 1.](/figures/pulse_gaussian_100.svg)
+      </span>
+    </div>
     """
 
     def __init__(self, half_power_bandwidth, length_in_symbols):

@@ -11,18 +11,14 @@ class RootRaisedCosinePulse(FormattingPulse):
     $$
     where $\alpha$ is the *roll-off factor*. The root raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
-    .. rst-class:: centered
-
-       |fig1| |quad| |quad| |quad| |fig2|
-
-    .. |fig1| image:: figures/pulse_root_raised_cosine_25.svg
-       :alt: Root raised cosine pulse with roll-off factor 0.25
-
-    .. |fig2| image:: figures/pulse_root_raised_cosine_75.svg
-       :alt: Root raised cosine pulse with roll-off factor 0.75
-
-    .. |quad| unicode:: 0x2001
-       :trim:
+    <div class="centered" markdown>
+      <span>
+        ![Root raised cosine pulse with roll-off factor 0.25.](/figures/pulse_root_raised_cosine_25.svg)
+      </span>
+      <span>
+        ![Root raised cosine pulse with roll-off factor 0.75.](/figures/pulse_root_raised_cosine_75.svg)
+      </span>
+    </div>
     """
 
     def __init__(self, rolloff, length_in_symbols):

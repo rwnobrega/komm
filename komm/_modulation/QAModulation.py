@@ -12,18 +12,14 @@ class QAModulation(ComplexModulation):
     $$
     where $M_\mathrm{I}$ and $M_\mathrm{Q}$ are the *orders* (powers of $2$), and $A_\mathrm{I}$ and $A_\mathrm{Q}$ are the *base amplitudes* of the in-phase and quadrature constellations, respectively. Also, $\phi$ is the *phase offset*. The size of the resulting complex-valued constellation is $M = M_\mathrm{I} M_\mathrm{Q}$, a power of $2$. The QAM constellation is depicted below for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ with $A_\mathrm{I} = A_\mathrm{Q} = A$, and for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ with $A_\mathrm{I} = A$ and $A_\mathrm{Q} = 2A$; in both cases, $\phi = 0$.
 
-    .. rst-class:: centered
-
-       |fig1| |quad| |quad| |quad| |quad| |fig2|
-
-    .. |fig1| image:: figures/qam_16.svg
-       :alt: 16-QAM constellation
-
-    .. |fig2| image:: figures/qam_8.svg
-       :alt: 8-QAM constellation
-
-    .. |quad| unicode:: 0x2001
-       :trim:
+    <div class="centered" markdown>
+      <span>
+        ![16-QAM constellation.](/figures/qam_16.svg)
+      </span>
+      <span>
+        ![8-QAM constellation.](/figures/qam_8.svg)
+      </span>
+    </div>
     """
 
     def __init__(self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling="reflected_2d"):

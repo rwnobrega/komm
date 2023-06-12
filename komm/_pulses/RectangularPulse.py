@@ -13,18 +13,14 @@ class RectangularPulse(FormattingPulse):
     $$
     where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. The rectangular pulse is depicted below for $w = 1$ (called the NRZ pulse), and for $w = 0.5$ (called the halfway RZ pulse).
 
-    .. rst-class:: centered
-
-       |fig1| |quad| |quad| |quad| |quad| |fig2|
-
-    .. |fig1| image:: figures/pulse_rectangular_nrz.svg
-       :alt: Rectangular NRZ pulse
-
-    .. |fig2| image:: figures/pulse_rectangular_rz.svg
-       :alt: Rectangular RZ pulse
-
-    .. |quad| unicode:: 0x2001
-       :trim:
+    <div class="centered" markdown>
+      <span>
+        ![Rectangular NRZ pulse.](/figures/pulse_rectangular_nrz.svg)
+      </span>
+      <span>
+        ![Rectangular RZ pulse.](/figures/pulse_rectangular_rz.svg)
+      </span>
+    </div>
     """
 
     def __init__(self, width=1.0):

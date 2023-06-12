@@ -11,18 +11,14 @@ class RaisedCosinePulse(FormattingPulse):
     $$
     where $\alpha$ is the *roll-off factor*. The raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
-    .. rst-class:: centered
-
-       |fig1| |quad| |quad| |quad| |fig2|
-
-    .. |fig1| image:: figures/pulse_raised_cosine_25.svg
-       :alt: Raised cosine pulse with roll-off factor 0.25
-
-    .. |fig2| image:: figures/pulse_raised_cosine_75.svg
-       :alt: Raised cosine pulse with roll-off factor 0.75
-
-    .. |quad| unicode:: 0x2001
-       :trim:
+    <div class="centered" markdown>
+      <span>
+        ![Raised cosine pulse with roll-off factor 0.25.](/figures/pulse_raised_cosine_25.svg)
+      </span>
+      <span>
+        ![Raised cosine pulse with roll-off factor 0.75.](/figures/pulse_raised_cosine_75.svg)
+      </span>
+    </div>
 
     For  $\alpha = 0$, the raised cosine pulse reduces to the [sinc pulse](/ref/SincPulse).
     """
