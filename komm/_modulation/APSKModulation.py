@@ -17,7 +17,7 @@ class APSKModulation(ComplexModulation):
     where $M_k$ is the *order*, $A_k$ is the *amplitude*, and $\phi_k$ is the *phase offset* of the $k$-th ring, for $k \in [0 : K)$. The size of the resulting complex-valued constellation is $M = M_0 + M_1 + \cdots + M\_{K-1}$. The order $M_k$ of each ring need not be a power of $2$; however, the order $M$ of the constructed APSK modulation must be. The APSK constellation is depicted below for $(M_0, M_1) = (8, 8)$ with $(A_0, A_1) = (A, 2A)$ and $(\phi_0, \phi_1) = (0, \pi/8)$.
 
     <figure markdown>
-    ![16-APSK constellation.](/figures/apsk_16.svg)
+      ![16-APSK constellation.](/figures/apsk_16.svg)
     </figure>
     """
 

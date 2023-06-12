@@ -13,7 +13,7 @@ class PAModulation(RealModulation):
     where $M$ is the *order* (a power of $2$), and $A$ is the *base amplitude*. The PAM constellation is depicted below for $M = 8$.
 
     <figure markdown>
-    ![8-PAM constellation.](/figures/pam_8.svg)
+      ![8-PAM constellation.](/figures/pam_8.svg)
     </figure>
     """
 

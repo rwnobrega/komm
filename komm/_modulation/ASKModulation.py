@@ -13,7 +13,7 @@ class ASKModulation(ComplexModulation):
     where $M$ is the *order* (a power of $2$), $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the modulation.  The ASK constellation is depicted below for $M = 4$.
 
     <figure markdown>
-    ![4-ASK constellation.](/figures/ask_4.svg)
+      ![4-ASK constellation.](/figures/ask_4.svg)
     </figure>
     """
 

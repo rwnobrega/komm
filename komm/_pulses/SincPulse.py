@@ -12,7 +12,7 @@ class SincPulse(FormattingPulse):
     The sinc pulse is depicted below.
 
     <figure markdown>
-    ![Sinc pulse](/figures/pulse_sinc.svg)
+      ![Sinc pulse](/figures/pulse_sinc.svg)
     </figure>
     """
 
