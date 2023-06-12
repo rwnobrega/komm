@@ -4,14 +4,12 @@
     margin-right: auto;
 }
 
-.md-nav__item li label {
-    font-weight: bold;
-}
-
-.md-nav__item li li label {
-    font-weight: normal;
+.md-nav__item a {
+    color: var(--md-primary-fg-color);
+    font-size: 1.1em;
 }
 
 .md-nav__item li li a {
-    font-size: small;
+    color: black;
+    font-size: 0.9em;
 }
