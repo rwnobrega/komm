@@ -20,6 +20,9 @@ extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
   - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
 
+hooks:
+  - site/tidy_html.py
+
 plugins:
 - search
 - gen-files:
