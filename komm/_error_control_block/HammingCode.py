@@ -16,9 +16,7 @@ class HammingCode(BlockCode):
 
     This class constructs the code in systematic form, with the information set on the left.
 
-    References:
-
-        1. :cite:`Lin.Costello.04` (Sec 4.1)
+    For more details, see [LC04, Sec. 4.1].
 
     Notes:
 

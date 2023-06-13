@@ -17,9 +17,7 @@ class BCHCode(CyclicCode):
     - Redundancy: $m \leq \mu \tau$
     - Minimum distance: $d \geq 2\tau + 1$
 
-    References:
-
-        1. :cite:`Lin.Costello.04` (Ch. 6)
+    For more details, see [LC04, Ch. 6].
 
     Examples:
 
@@ -70,7 +68,7 @@ class BCHCode(CyclicCode):
     @staticmethod
     def _bch_code_generator_polynomial(field, tau):
         r"""
-        Assumes 1 <= tau < 2**(mu - 1). See :cite:`Lin.Costello.04` (p. 194–195).
+        Assumes 1 <= tau < 2**(mu - 1). See [LC04, p. 194–195].
         """
         alpha = field.primitive_element
 
@@ -86,7 +84,7 @@ class BCHCode(CyclicCode):
 
     def _bch_general_decoder(self, recvword, syndrome_computer, key_equation_solver, root_finder):
         r"""
-        General BCH decoder. See :cite:`Lin.Costello.04` (p. 205–209).
+        General BCH decoder. See [LC04, p. 205–209].
         """
         recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
         syndrome_polynomial = syndrome_computer(recvword_polynomial)
@@ -99,7 +97,7 @@ class BCHCode(CyclicCode):
 
     def _bch_syndrome(self, recvword_polynomial):
         r"""
-        BCH syndrome computation. See :cite:`Lin.Costello.04` (p. 205–209).
+        BCH syndrome computation. See [LC04, p. 205–209].
         """
         syndrome_polynomial = np.empty(len(self._beta), dtype=object)
         for i, (b, b_min_polynomial) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
@@ -125,7 +123,7 @@ class BCHCode(CyclicCode):
 
     def _berlekamp_algorithm(self, syndrome_polynomial):
         r"""
-        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See :cite:`Lin.Costello.04` (p. 209–212) and :cite:`Ryan.Lin.09` (p. 114–121).
+        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See [LC04, p. 209–212] and [RL09, p. 114–121].
         """
         field = self._field
         t = self._packing_radius

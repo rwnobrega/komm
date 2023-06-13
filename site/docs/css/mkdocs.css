@@ -13,3 +13,9 @@
     color: black;
     font-size: 0.9em;
 }
+
+.doc sup {
+    padding-left: 0.1em;
+    font-size: small;
+    color: var(--md-primary-fg-color);
+}

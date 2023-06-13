@@ -11,7 +11,7 @@ class AWGNChannel:
     $$
         \mathrm{SNR} = \frac{P}{N},
     $$
-    where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. See :cite:`Cover.Thomas.06` (Ch. 9).
+    where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see [CT06, Ch. 9].
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """

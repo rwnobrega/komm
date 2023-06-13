@@ -190,9 +190,9 @@ def entropy(pmf, base=2.0):
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
-        \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)},
+        \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)}.
     $$
-    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. See :cite:`Cover.Thomas.06` (Ch. 2).
+    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see [CT06, Ch. 2].
 
     Parameters:
 

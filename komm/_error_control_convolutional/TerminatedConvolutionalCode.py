@@ -18,10 +18,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length $n = h n_0$.
 
-    References:
-
-        1. :cite:`Lin.Costello.04`
-        2. :cite:`Weiss.01`
+    For more details, see [LC04, Chs. 11, 12] and [WBR01].
     """
 
     def __init__(self, convolutional_code, num_blocks, mode="zero-termination"):

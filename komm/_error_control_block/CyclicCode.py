@@ -10,7 +10,7 @@ from .BlockCode import BlockCode
 
 class CyclicCode(BlockCode):
     r"""
-    General binary cyclic code. A cyclic code is a [linear block code](/ref/BlockCode) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *parity-check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code. See references for more details.
+    General binary cyclic code. A cyclic code is a [linear block code](/ref/BlockCode) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *parity-check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.
 
     Examples of generator polynomials can be found in the table below.
 
@@ -21,9 +21,7 @@ class CyclicCode(BlockCode):
     | BCH $(15,5,7)$    | $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$ | `0b10100110111 = 0o2467 = 1335`  |
     | Golay $(23,12,7)$ | $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$ | `0b101011100011 = 0o5343 = 2787` |
 
-    References:
-
-        1. :cite:`Lin.Costello.04` (Chapter 5)
+    For more details, see [LC04, Ch. 5].
     """
 
     def __init__(self, length, systematic=True, **kwargs):
@@ -115,7 +113,7 @@ class CyclicCode(BlockCode):
     @functools.cached_property
     def meggitt_table(self):
         r"""
-        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
+        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See [XiD03, Sec. 3.4].
         """
         meggitt_table = {}
         for w in range(self.packing_radius + 1):
@@ -168,7 +166,7 @@ class CyclicCode(BlockCode):
     @tag(name="Meggitt decoder", input_type="hard", target="codeword")
     def _decode_meggitt(self, recvword):
         r"""
-        Meggitt decoder. See :cite:`Xambo-Descamps.03` (Sec. 3.4) for more details.
+        Meggitt decoder. See [XiD03, Sec. 3.4] for more details.
         """
         meggitt_table = self.meggitt_table
         recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)

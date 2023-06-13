@@ -46,7 +46,7 @@ class ConvolutionalCode:
 
     <h2>Tables of convolutional codes</h2>
 
-    The tables below lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$. For more details, see :cite:`Lin.Costello.04` (Sec. 12.3).
+    The tables below [LC04, Sec. 12.3] lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$.
 
     | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
     | :----------------------: | ------------------------------- |
@@ -70,11 +70,7 @@ class ConvolutionalCode:
     | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`       |
     | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`       |
 
-    References:
-
-        1. :cite:`Johannesson.Zigangirov.15`
-        2. :cite:`Lin.Costello.04`
-        3. :cite:`Weiss.01`
+    For more details, see [JZ15] and [LC04, Chs. 11, 12].
     """
 
     def __init__(self, feedforward_polynomials, feedback_polynomials=None):
