@@ -5,7 +5,7 @@ from .BlockCode import BlockCode
 
 class CordaroWagnerCode(BlockCode):
     r"""
-    Cordaro–Wagner code. It is the $(n, 2)$ [linear block code](/ref/BlockCode) which is optimum for the BSC with sufficiently small crossover probability. For more details, see [CW67].
+    Cordaro–Wagner code. It is the $(n, 2)$ [linear block code](/ref/BlockCode) which is optimum for the BSC with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.
 
     Examples:
 
