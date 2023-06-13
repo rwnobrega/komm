@@ -5,7 +5,7 @@ from .._util import _mutual_information
 
 class DiscreteMemorylessChannel:
     r"""
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see [CT06, Ch. 7].
+    Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
@@ -60,7 +60,7 @@ class DiscreteMemorylessChannel:
         $$
             \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
         $$
-        where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See [CT06, Ch. 2].
+        where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite>CT06, Ch. 2</cite>.
 
         Parameters:
 
@@ -84,7 +84,7 @@ class DiscreteMemorylessChannel:
 
     def capacity(self, base=2.0):
         r"""
-        Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See [CT06, Sec. 10.8].
+        Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite>CT06, Sec. 10.8</cite>.
 
         Parameters:
 
@@ -120,7 +120,7 @@ class DiscreteMemorylessChannel:
     @staticmethod
     def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
         r"""
-        Arimoto–Blahut algorithm for channel capacity. See [CT06, Sec. 10.8].
+        Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
         """
         p = transition_matrix
         r = initial_guess

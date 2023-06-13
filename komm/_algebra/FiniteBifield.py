@@ -33,7 +33,7 @@ class FiniteBifield:
 
             degree (int): Degree $k$ of the finite field. Must be a positive integer.
 
-            modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below [LC04, p.42].
+            modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite>LC04, p.42</cite>.
 
                 | Degree $k$ | Modulus $p(X)$ | Degree $k$ | Modulus $p(X)$        |
                 | :--------: | -------------- | :--------: | --------------------- |
@@ -159,7 +159,7 @@ class FiniteBifield:
     @staticmethod
     def conjugates(x):
         r"""
-        Returns the conjugates of a given element. See [LC04, Sec. 2.5].
+        Returns the conjugates of a given element. See <cite>LC04, Sec. 2.5</cite>.
         """
         conjugate_list = []
         exponent = 0
@@ -175,7 +175,7 @@ class FiniteBifield:
     @staticmethod
     def minimal_polynomial(x):
         r"""
-        Returns the minimal polynomial of a given element. See [LC04, Sec. 2.5].
+        Returns the minimal polynomial of a given element. See <cite>LC04, Sec. 2.5</cite>.
         """
         one = x.field(1)
         monomials = [np.array([y, one], dtype=object) for y in x.conjugates()]

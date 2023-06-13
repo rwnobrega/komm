@@ -14,7 +14,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     $$
         Y_n = X_n + Z_n,
     $$
-    where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see [CT06, Sec. 7.1.4].
+    where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite>CT06, Sec. 7.1.4</cite>.
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
     """
@@ -50,7 +50,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     def capacity(self):
         r"""
-        Returns the channel capacity $C$. It is given by $C = 1 - \mathcal{H}(p)$. See [CT06, Sec. 7.1.4].
+        Returns the channel capacity $C$. It is given by $C = 1 - \mathcal{H}(p)$. See <cite>CT06, Sec. 7.1.4</cite>.
 
         Examples:
 

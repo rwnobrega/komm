@@ -21,7 +21,7 @@ class CyclicCode(BlockCode):
     | BCH $(15,5,7)$    | $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$ | `0b10100110111 = 0o2467 = 1335`  |
     | Golay $(23,12,7)$ | $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$ | `0b101011100011 = 0o5343 = 2787` |
 
-    For more details, see [LC04, Ch. 5].
+    For more details, see <cite>LC04, Ch. 5</cite>.
     """
 
     def __init__(self, length, systematic=True, **kwargs):
@@ -113,7 +113,7 @@ class CyclicCode(BlockCode):
     @functools.cached_property
     def meggitt_table(self):
         r"""
-        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See [XiD03, Sec. 3.4].
+        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See <cite>XiD03, Sec. 3.4</cite>.
         """
         meggitt_table = {}
         for w in range(self.packing_radius + 1):
@@ -166,7 +166,7 @@ class CyclicCode(BlockCode):
     @tag(name="Meggitt decoder", input_type="hard", target="codeword")
     def _decode_meggitt(self, recvword):
         r"""
-        Meggitt decoder. See [XiD03, Sec. 3.4] for more details.
+        Meggitt decoder. See <cite>XiD03, Sec. 3.4</cite> for more details.
         """
         meggitt_table = self.meggitt_table
         recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)

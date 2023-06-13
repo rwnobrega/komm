@@ -10,7 +10,7 @@ from .._util import binlist2int, int2binlist
 
 class BlockCode:
     r"""
-    General binary linear block code. It is characterized by its *generator matrix* $G$, a binary $k \times n$ matrix, and by its *parity-check matrix* $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by $k + m = n$. For more details, see [LC04, Ch. 3].
+    General binary linear block code. It is characterized by its *generator matrix* $G$, a binary $k \times n$ matrix, and by its *parity-check matrix* $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
 
     Examples:
 

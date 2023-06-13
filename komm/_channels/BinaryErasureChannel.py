@@ -13,7 +13,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
             0 & 1 - \epsilon & \epsilon
         \end{bmatrix},
     $$
-    where the parameter $\epsilon$ is called the *erasure probability* of the channel. For more details, see [CT06, Sec. 7.1.5].
+    where the parameter $\epsilon$ is called the *erasure probability* of the channel. For more details, see <cite>CT06, Sec. 7.1.5</cite>.
 
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
@@ -49,7 +49,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     def capacity(self):
         r"""
-        Returns the channel capacity $C$. It is given by $C = 1 - \epsilon$. See [CT06, Sec. 7.1.5].
+        Returns the channel capacity $C$. It is given by $C = 1 - \epsilon$. See <cite>CT06, Sec. 7.1.5</cite>.
 
         Examples:
 

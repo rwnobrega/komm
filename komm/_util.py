@@ -192,7 +192,7 @@ def entropy(pmf, base=2.0):
     $$
         \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)}.
     $$
-    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see [CT06, Ch. 2].
+    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Ch. 2</cite>.
 
     Parameters:
 

@@ -16,7 +16,7 @@ class ReedMullerCode(BlockCode):
     - Redundancy: $m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}$
     - Minimum distance: $d = 2^{\mu - \rho}$
 
-    For more details, see [LC04, Sec. 4.3].
+    For more details, see <cite>LC04, Sec. 4.3</cite>.
 
     Notes:
 
@@ -85,7 +85,7 @@ class ReedMullerCode(BlockCode):
     @functools.cached_property
     def reed_partitions(self):
         r"""
-        The Reed partitions of the code. See [LC04, Sec. 4.3].
+        The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
         Examples:
 

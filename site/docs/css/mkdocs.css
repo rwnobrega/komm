@@ -19,3 +19,11 @@
     font-size: small;
     color: var(--md-primary-fg-color);
 }
+
+.doc cite::before {
+    content: "[";
+}
+
+.doc cite::after {
+    content: "]";
+}
