@@ -1,0 +1,29 @@
+.md-typeset__table {
+    width: auto !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.md-nav__item a {
+    color: var(--md-primary-fg-color);
+    font-size: 1.1em;
+}
+
+.md-nav__item li li a {
+    color: black;
+    font-size: 0.9em;
+}
+
+.doc sup {
+    padding-left: 0.1em;
+    font-size: small;
+    color: var(--md-primary-fg-color);
+}
+
+.doc cite::before {
+    content: "[";
+}
+
+.doc cite::after {
+    content: "]";
+}

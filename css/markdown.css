@@ -1,0 +1,7 @@
+div .centered {
+    text-align: center;
+}
+
+div .centered span {
+    margin: 1em;
+}
