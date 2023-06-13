@@ -9,8 +9,9 @@ tmp/
 .benchmarks
 .cache
 .ipynb_checkpoints
-.spyproject
+.mypy_cache
 .pytest_cache
+.spyproject
 .ttxfolder
 .venv
 .vscode
