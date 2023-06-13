@@ -70,7 +70,7 @@ class ConvolutionalCode:
     | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`       |
     | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`       |
 
-    For more details, see <cite>JZ15<cite> and <cite>LC04, Chs. 11, 12</cite>.
+    For more details, see <cite>JZ15</cite> and <cite>LC04, Chs. 11, 12</cite>.
     """
 
     def __init__(self, feedforward_polynomials, feedback_polynomials=None):
