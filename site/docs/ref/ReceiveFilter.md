@@ -1,3 +1,0 @@
-# komm.ReceiveFilter
-
-::: komm._pulses.ReceiveFilter.ReceiveFilter

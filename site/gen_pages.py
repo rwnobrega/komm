@@ -1,24 +1,12 @@
-import os
 import sys
 
+import mkdocs_gen_files
 import yaml
 from jinja2 import Environment, FileSystemLoader
 
-JINJA_ENV = Environment(loader=FileSystemLoader("./"), trim_blocks=True, lstrip_blocks=True)
-
-
-def main():
-    toc = yaml.safe_load(open("toc.yaml", "r"))
-    os.system("mkdir -p docs/ref")
-    os.system("rm -rf docs/ref/*")
-    data = get_data(toc)
-    gen_doc_objects(data)
-    gen_doc_index(data)
-    gen_nav(data)
-
 
 def get_data(toc):
-    sys.path.insert(0, os.path.join(sys.path[0], ".."))
+    sys.path.append(".")
     import komm
 
     def _get_object_data(obj):
@@ -40,31 +28,38 @@ def get_data(toc):
     return data
 
 
-def gen_doc_objects(toc):
+def gen_ref_objects(toc):
     template = JINJA_ENV.get_template("templates/ref/object.md.j2")
 
-    def _gen_doc_file(obj):
-        template.stream(obj=obj).dump(f"docs/ref/{obj['name']}.md")
+    def _gen_ref_file(obj):
+        with mkdocs_gen_files.open(f"ref/{obj['name']}.md", "w") as f:
+            template.stream(obj=obj).dump(f)
 
     for elements in toc.values():
         if isinstance(elements, list):  # module has no submodules
             for obj in elements:
-                _gen_doc_file(obj)
+                _gen_ref_file(obj)
         else:  # module has submodules
             for objects in elements.values():
                 for obj in objects:
-                    _gen_doc_file(obj)
+                    _gen_ref_file(obj)
 
 
-def gen_doc_index(data):
+def gen_ref_index(data):
     template = JINJA_ENV.get_template("templates/ref/index.md.j2")
-    template.stream(data=data).dump("docs/ref/index.md")
+    with mkdocs_gen_files.open("ref/index.md", "w") as f:
+        template.stream(data=data).dump(f)
 
 
 def gen_nav(data):
-    template = JINJA_ENV.get_template("templates/NAV.md.j2")
-    template.stream(data=data).dump("docs/NAV.md")
+    template = JINJA_ENV.get_template("templates/nav.md.j2")
+    with mkdocs_gen_files.open("nav.md", "w") as f:
+        template.stream(data=data).dump(f)
 
 
-if __name__ == "__main__":
-    main()
+JINJA_ENV = Environment(loader=FileSystemLoader("site"), trim_blocks=True, lstrip_blocks=True)
+toc = yaml.safe_load(open("site/toc.yaml", "r"))
+data = get_data(toc)
+gen_ref_objects(data)
+gen_ref_index(data)
+gen_nav(data)

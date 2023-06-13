@@ -7,9 +7,7 @@ site_dir: site/build
 
 watch:
 - komm/
-- site/docs/
-- site/includes/
-- site/templates/
+- site/
 
 extra_css:
   - css/markdown.css
@@ -24,8 +22,11 @@ extra_javascript:
 
 plugins:
 - search
+- gen-files:
+    scripts:
+      - site/gen_pages.py
 - literate-nav:
-    nav_file: NAV.md
+    nav_file: nav.md
     tab_length: 2
 - mkdocstrings:
     custom_templates: site/templates
