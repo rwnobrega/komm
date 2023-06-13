@@ -7,8 +7,9 @@ site_dir: site/build
 
 watch:
 - komm/
-- site/templates/
 - site/docs/
+- site/includes/
+- site/templates/
 
 extra_css:
   - css/markdown.css
