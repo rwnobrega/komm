@@ -23,43 +23,6 @@ class HammingCode(BlockCode):
         - For $m = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.
         - Its dual is the [simplex code](/ref/SimplexCode).
         - Hamming codes are perfect codes.
-
-    Examples:
-
-        >>> code = komm.HammingCode(3)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (7, 4, 3)
-        >>> code.generator_matrix
-        array([[1, 0, 0, 0, 1, 1, 0],
-               [0, 1, 0, 0, 1, 0, 1],
-               [0, 0, 1, 0, 0, 1, 1],
-               [0, 0, 0, 1, 1, 1, 1]])
-        >>> code.parity_check_matrix
-        array([[1, 1, 0, 1, 1, 0, 0],
-               [1, 0, 1, 1, 0, 1, 0],
-               [0, 1, 1, 1, 0, 0, 1]])
-        >>> code.encode([1, 0, 1, 1])
-        array([1, 0, 1, 1, 0, 1, 0])
-        >>> code.decode([0, 1, 0, 0, 0, 1, 1])
-        array([1, 1, 0, 0])
-
-        >>> code = komm.HammingCode(3, extended=True)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (8, 4, 4)
-        >>> code.generator_matrix
-        array([[1, 0, 0, 0, 1, 1, 0, 1],
-               [0, 1, 0, 0, 1, 0, 1, 1],
-               [0, 0, 1, 0, 0, 1, 1, 1],
-               [0, 0, 0, 1, 1, 1, 1, 0]])
-        >>> code.parity_check_matrix
-        array([[1, 1, 0, 1, 1, 0, 0, 0],
-               [1, 0, 1, 1, 0, 1, 0, 0],
-               [0, 1, 1, 1, 0, 0, 1, 0],
-               [1, 1, 1, 0, 0, 0, 0, 1]])
-        >>> code.encode([1, 0, 1, 1])
-        array([1, 0, 1, 1, 0, 1, 0, 0])
-        >>> code.decode([0, 1, 0, 0, 0, 1, 1, 0])
-        array([1, 1, 0, 0])
     """
 
     def __init__(self, m, extended=False):
@@ -71,6 +34,43 @@ class HammingCode(BlockCode):
             m (int): The redundancy $m$ of the code. Must satisfy $m \geq 2$.
 
             extended (Optional[bool]): If `True`, constructs the code in extended version. The default value is `False`.
+
+        Examples:
+
+            >>> code = komm.HammingCode(3)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (7, 4, 3)
+            >>> code.generator_matrix
+            array([[1, 0, 0, 0, 1, 1, 0],
+                   [0, 1, 0, 0, 1, 0, 1],
+                   [0, 0, 1, 0, 0, 1, 1],
+                   [0, 0, 0, 1, 1, 1, 1]])
+            >>> code.parity_check_matrix
+            array([[1, 1, 0, 1, 1, 0, 0],
+                   [1, 0, 1, 1, 0, 1, 0],
+                   [0, 1, 1, 1, 0, 0, 1]])
+            >>> code.encode([1, 0, 1, 1])
+            array([1, 0, 1, 1, 0, 1, 0])
+            >>> code.decode([0, 1, 0, 0, 0, 1, 1])
+            array([1, 1, 0, 0])
+
+            >>> code = komm.HammingCode(3, extended=True)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (8, 4, 4)
+            >>> code.generator_matrix
+            array([[1, 0, 0, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 0, 1, 0, 1, 1],
+                   [0, 0, 1, 0, 0, 1, 1, 1],
+                   [0, 0, 0, 1, 1, 1, 1, 0]])
+            >>> code.parity_check_matrix
+            array([[1, 1, 0, 1, 1, 0, 0, 0],
+                   [1, 0, 1, 1, 0, 1, 0, 0],
+                   [0, 1, 1, 1, 0, 0, 1, 0],
+                   [1, 1, 1, 0, 0, 0, 0, 1]])
+            >>> code.encode([1, 0, 1, 1])
+            array([1, 0, 1, 1, 0, 1, 0, 0])
+            >>> code.decode([0, 1, 0, 0, 0, 1, 1, 0])
+            array([1, 1, 0, 0])
         """
         P = self._hamming_parity_submatrix(m)
         if extended:

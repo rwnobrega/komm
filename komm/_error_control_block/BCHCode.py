@@ -18,21 +18,6 @@ class BCHCode(CyclicCode):
     - Minimum distance: $d \geq 2\tau + 1$
 
     For more details, see <cite>LC04, Ch. 6</cite>.
-
-    Examples:
-
-        >>> code = komm.BCHCode(5, 3)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (31, 16, 7)
-        >>> code.generator_polynomial
-        BinaryPolynomial(0b1000111110101111)
-
-        >>> # The true error-correcting capability is equal to the designed one:
-        >>> code = komm.BCHCode(7, 15); code
-        BCHCode(7, 15)
-        >>> # The true error-correcting capability is greater than the designed one:
-        >>> code = komm.BCHCode(7, 16); code
-        BCHCode(7, 21)
     """
 
     def __init__(self, mu, tau):
@@ -44,6 +29,21 @@ class BCHCode(CyclicCode):
             mu (int): The parameter $\mu$ of the code.
 
             tau (int): The designed error-correcting capability $\tau$ of the BCH code. It will be internally replaced by the true error-correcting capability $t$ of the code.
+
+        Examples:
+
+            >>> code = komm.BCHCode(5, 3)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (31, 16, 7)
+            >>> code.generator_polynomial
+            BinaryPolynomial(0b1000111110101111)
+
+            >>> # The true error-correcting capability is equal to the designed one:
+            >>> code = komm.BCHCode(7, 15); code
+            BCHCode(7, 15)
+            >>> # The true error-correcting capability is greater than the designed one:
+            >>> code = komm.BCHCode(7, 16); code
+            BCHCode(7, 21)
         """
         if not 1 <= tau < 2 ** (mu - 1):
             raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")

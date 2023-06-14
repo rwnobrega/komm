@@ -11,44 +11,6 @@ from .._util import binlist2int, int2binlist
 class BlockCode:
     r"""
     General binary linear block code. It is characterized by its *generator matrix* $G$, a binary $k \times n$ matrix, and by its *parity-check matrix* $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
-
-    Examples:
-
-        >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (6, 3, 3)
-        >>> code.generator_matrix
-        array([[1, 0, 0, 0, 1, 1],
-               [0, 1, 0, 1, 0, 1],
-               [0, 0, 1, 1, 1, 0]])
-        >>> code.parity_check_matrix
-        array([[0, 1, 1, 1, 0, 0],
-               [1, 0, 1, 0, 1, 0],
-               [1, 1, 0, 0, 0, 1]])
-        >>> code.codeword_table
-        array([[0, 0, 0, 0, 0, 0],
-               [1, 0, 0, 0, 1, 1],
-               [0, 1, 0, 1, 0, 1],
-               [1, 1, 0, 1, 1, 0],
-               [0, 0, 1, 1, 1, 0],
-               [1, 0, 1, 1, 0, 1],
-               [0, 1, 1, 0, 1, 1],
-               [1, 1, 1, 0, 0, 0]])
-        >>> code.codeword_weight_distribution
-        array([1, 0, 0, 4, 3, 0, 0])
-        >>> code.coset_leader_table
-        array([[0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 1, 0, 0],
-               [0, 0, 0, 0, 1, 0],
-               [0, 0, 1, 0, 0, 0],
-               [0, 0, 0, 0, 0, 1],
-               [0, 1, 0, 0, 0, 0],
-               [1, 0, 0, 0, 0, 0],
-               [1, 0, 0, 1, 0, 0]])
-        >>> code.coset_leader_weight_distribution
-        array([1, 6, 1, 0, 0, 0, 0])
-        >>> (code.packing_radius, code.covering_radius)
-        (1, 2)
     """
 
     def __init__(self, **kwargs):
@@ -80,6 +42,19 @@ class BlockCode:
             parity_submatrix (Array2D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
 
             information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
+
+        Examples:
+
+            The following constructs equivalent codes.
+
+            >>> komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set=[0, 1, 2])
+
+            >>> komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
+            BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
+
+            >>> komm.BlockCode(parity_check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
+            BlockCode(parity_check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
         """
         if "generator_matrix" in kwargs:
             self._init_from_generator_matrix(**kwargs)
@@ -144,6 +119,12 @@ class BlockCode:
     def length(self):
         r"""
         The length $n$ of the code.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.length
+            6
         """
         return self._length
 
@@ -151,6 +132,12 @@ class BlockCode:
     def dimension(self):
         r"""
         The dimension $k$ of the code.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.dimension
+            3
         """
         return self._dimension
 
@@ -158,6 +145,12 @@ class BlockCode:
     def redundancy(self):
         r"""
         The redundancy $m$ of the code.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.redundancy
+            3
         """
         return self._redundancy
 
@@ -165,6 +158,12 @@ class BlockCode:
     def rate(self):
         r"""
         The rate $R = k/n$ of the code.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.rate
+            0.5
         """
         return self._dimension / self._length
 
@@ -172,6 +171,12 @@ class BlockCode:
     def minimum_distance(self):
         r"""
         The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.minimum_distance
+            3
         """
         try:
             return self._minimum_distance
@@ -182,6 +187,12 @@ class BlockCode:
     def packing_radius(self):
         r"""
         The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.packing_radius
+            1
         """
         return (self.minimum_distance - 1) // 2
 
@@ -189,6 +200,12 @@ class BlockCode:
     def covering_radius(self):
         r"""
         The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.covering_radius
+            2
         """
         return np.flatnonzero(self.coset_leader_weight_distribution)[-1]
 
@@ -196,6 +213,14 @@ class BlockCode:
     def generator_matrix(self):
         r"""
         The generator matrix $G$ of the code. It as a $k \times n$ binary matrix, where $k$ is the code dimension, and $n$ is the code length.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.generator_matrix
+            array([[1, 0, 0, 0, 1, 1],
+                   [0, 1, 0, 1, 0, 1],
+                   [0, 0, 1, 1, 1, 0]])
         """
         try:
             return self._generator_matrix
@@ -206,6 +231,14 @@ class BlockCode:
     def parity_check_matrix(self):
         r"""
         The parity-check matrix $H$ of the code. It as an $m \times n$ binary matrix, where $m$ is the code redundancy, and $n$ is the code length.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.parity_check_matrix
+            array([[0, 1, 1, 1, 0, 0],
+                   [1, 0, 1, 0, 1, 0],
+                   [1, 1, 0, 0, 0, 1]])
         """
         try:
             return self._parity_check_matrix
@@ -216,6 +249,19 @@ class BlockCode:
     def codeword_table(self):
         r"""
         The codeword table of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (MSB in the right) is $i$.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.codeword_table
+            array([[0, 0, 0, 0, 0, 0],
+                   [1, 0, 0, 0, 1, 1],
+                   [0, 1, 0, 1, 0, 1],
+                   [1, 1, 0, 1, 1, 0],
+                   [0, 0, 1, 1, 1, 0],
+                   [1, 0, 1, 1, 0, 1],
+                   [0, 1, 1, 0, 1, 1],
+                   [1, 1, 1, 0, 0, 0]])
         """
         codeword_table = np.empty([2**self._dimension, self._length], dtype=int)
         for i in range(2**self._dimension):
@@ -227,6 +273,12 @@ class BlockCode:
     def codeword_weight_distribution(self):
         r"""
         The codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.codeword_weight_distribution
+            array([1, 0, 0, 4, 3, 0, 0])
         """
         try:
             return self._codeword_weight_distribution
@@ -237,6 +289,19 @@ class BlockCode:
     def coset_leader_table(self):
         r"""
         The coset leader table of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (MSB in the right) is $i$. This may be used as a LUT for syndrome-based decoding.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.coset_leader_table
+            array([[0, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 1, 0],
+                   [0, 0, 1, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 1],
+                   [0, 1, 0, 0, 0, 0],
+                   [1, 0, 0, 0, 0, 0],
+                   [1, 0, 0, 1, 0, 0]])
         """
         coset_leader_table = np.empty([2**self._redundancy, self._length], dtype=int)
         taken = []
@@ -257,6 +322,12 @@ class BlockCode:
     def coset_leader_weight_distribution(self):
         r"""
         The coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
+
+        Examples:
+
+            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code.coset_leader_weight_distribution
+            array([1, 6, 1, 0, 0, 0, 0])
         """
         try:
             return self._coset_leader_weight_distribution

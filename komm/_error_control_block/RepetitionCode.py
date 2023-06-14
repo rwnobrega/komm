@@ -16,23 +16,6 @@ class RepetitionCode(BlockCode):
     Notes:
 
         - Its dual is the [single parity check code](/ref/SingleParityCheckCode).
-
-    Examples:
-
-        >>> code = komm.RepetitionCode(5)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (5, 1, 5)
-        >>> code.generator_matrix
-        array([[1, 1, 1, 1, 1]])
-        >>> code.parity_check_matrix
-        array([[1, 1, 0, 0, 0],
-               [1, 0, 1, 0, 0],
-               [1, 0, 0, 1, 0],
-               [1, 0, 0, 0, 1]])
-        >>> code.encode([1])
-        array([1, 1, 1, 1, 1])
-        >>> code.decode([1, 0, 1, 0, 0])
-        array([0])
     """
 
     def __init__(self, n):
@@ -42,6 +25,23 @@ class RepetitionCode(BlockCode):
         Parameters:
 
             n (int): The length $n$ of the code. Must be a positive integer.
+
+        Examples:
+
+            >>> code = komm.RepetitionCode(5)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (5, 1, 5)
+            >>> code.generator_matrix
+            array([[1, 1, 1, 1, 1]])
+            >>> code.parity_check_matrix
+            array([[1, 1, 0, 0, 0],
+                   [1, 0, 1, 0, 0],
+                   [1, 0, 0, 1, 0],
+                   [1, 0, 0, 0, 1]])
+            >>> code.encode([1])
+            array([1, 1, 1, 1, 1])
+            >>> code.decode([1, 0, 1, 0, 0])
+            array([0])
         """
         super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
         self._minimum_distance = n

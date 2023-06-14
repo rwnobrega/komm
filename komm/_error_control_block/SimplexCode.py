@@ -18,25 +18,6 @@ class SimplexCode(BlockCode):
         - For $k = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
-
-    Examples:
-
-        >>> code = komm.SimplexCode(3)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (7, 3, 4)
-        >>> code.generator_matrix
-        array([[1, 0, 0, 1, 1, 0, 1],
-               [0, 1, 0, 1, 0, 1, 1],
-               [0, 0, 1, 0, 1, 1, 1]])
-        >>> code.parity_check_matrix
-        array([[1, 1, 0, 1, 0, 0, 0],
-               [1, 0, 1, 0, 1, 0, 0],
-               [0, 1, 1, 0, 0, 1, 0],
-               [1, 1, 1, 0, 0, 0, 1]])
-        >>> code.encode([1, 0, 1])
-        array([1, 0, 1, 1, 0, 1, 0])
-        >>> code.decode([1, 0, 1, 1, 1, 1, 0])
-        array([1, 0, 1])
     """
 
     def __init__(self, k):
@@ -46,6 +27,25 @@ class SimplexCode(BlockCode):
         Parameters:
 
             k (int): The dimension $k$ of the code. Must satisfy $k \geq 2$.
+
+        Examples:
+
+            >>> code = komm.SimplexCode(3)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (7, 3, 4)
+            >>> code.generator_matrix
+            array([[1, 0, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 1, 0, 1, 1],
+                   [0, 0, 1, 0, 1, 1, 1]])
+            >>> code.parity_check_matrix
+            array([[1, 1, 0, 1, 0, 0, 0],
+                   [1, 0, 1, 0, 1, 0, 0],
+                   [0, 1, 1, 0, 0, 1, 0],
+                   [1, 1, 1, 0, 0, 0, 1]])
+            >>> code.encode([1, 0, 1])
+            array([1, 0, 1, 1, 0, 1, 0])
+            >>> code.decode([1, 0, 1, 1, 1, 1, 0])
+            array([1, 0, 1])
         """
         P = HammingCode._hamming_parity_submatrix(k).T
         super().__init__(parity_submatrix=P)

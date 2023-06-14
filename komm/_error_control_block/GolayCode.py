@@ -16,22 +16,6 @@ class GolayCode(BlockCode):
     Notes:
 
         - The binary Golay code is a perfect code.
-
-    Examples:
-
-        >>> code = komm.GolayCode()
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (23, 12, 7)
-        >>> recvword = np.zeros(23, dtype=int); recvword[[2, 10, 19]] = 1
-        >>> code.decode(recvword)  # Golay code can correct up to 3 errors.
-        array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        >>> recvword = np.zeros(23, dtype=int); recvword[[2, 3, 10, 19]] = 1
-        >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
-        array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
-
-        >>> code = komm.GolayCode(extended=True)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (24, 12, 8)
     """
 
     def __init__(self, extended=False):
@@ -41,6 +25,22 @@ class GolayCode(BlockCode):
         Parameters:
 
             extended (Optional[bool]): If `True`, constructs the code in extended version. The default value is `False`.
+
+        Examples:
+
+            >>> code = komm.GolayCode()
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (23, 12, 7)
+            >>> recvword = np.zeros(23, dtype=int); recvword[[2, 10, 19]] = 1
+            >>> code.decode(recvword)  # Golay code can correct up to 3 errors.
+            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            >>> recvword = np.zeros(23, dtype=int); recvword[[2, 3, 10, 19]] = 1
+            >>> code.decode(recvword)  # Golay code cannot correct more than 3 errors.
+            array([0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
+
+            >>> code = komm.GolayCode(extended=True)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (24, 12, 8)
         """
         P = GolayCode._golay_parity_submatrix()
         if extended:

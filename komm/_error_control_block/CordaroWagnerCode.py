@@ -6,19 +6,6 @@ from .BlockCode import BlockCode
 class CordaroWagnerCode(BlockCode):
     r"""
     Cordaro–Wagner code. It is the $(n, 2)$ [linear block code](/ref/BlockCode) which is optimum for the BSC with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.
-
-    Examples:
-
-        >>> code = komm.CordaroWagnerCode(11)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (11, 2, 7)
-        >>> code.generator_matrix
-        array([[1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-               [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]])
-        >>> code.codeword_weight_distribution
-        array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])
-        >>> code.coset_leader_weight_distribution
-        array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
     """
 
     def __init__(self, n):
@@ -28,6 +15,19 @@ class CordaroWagnerCode(BlockCode):
         Parameters:
 
             n (int): The length $n$ of the code. Must satisfy $n \geq 2$.
+
+        Examples:
+
+            >>> code = komm.CordaroWagnerCode(11)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (11, 2, 7)
+            >>> code.generator_matrix
+            array([[1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+                   [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]])
+            >>> code.codeword_weight_distribution
+            array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])
+            >>> code.coset_leader_weight_distribution
+            array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
         """
         r = (n + 1) // 3
         s = n - 3 * r
