@@ -11,8 +11,10 @@ class TunstallCode(VariableToFixedCode):
 
     Examples:
 
+        >>> from pprint import pprint
+
         >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
-        >>> pprint(code.enc_mapping)
+        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
         {(0, 0, 0): (0, 0, 0),
          (0, 0, 1): (0, 0, 1),
          (0, 0, 2): (0, 1, 0),

@@ -7,7 +7,7 @@ from .util import _parse_prefix_free
 
 class VariableToFixedCode:
     r"""
-    Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary variable-to-fixed length code* of *code block size* $n$ is defined by a (possibly partial) decoding mapping $\Dec : \\{ 0, 1 \\}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\Dec$ are called *sourcewords*.
+    Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary variable-to-fixed length code* of *code block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \\{ 0, 1 \\}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
 
     Warning:
 
@@ -20,7 +20,7 @@ class VariableToFixedCode:
 
         Parameters:
 
-            sourcewords (List[Tuple[int]]): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\Dec(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
+            sourcewords (List[Tuple[int]]): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
 
         Note:
 
@@ -28,10 +28,12 @@ class VariableToFixedCode:
 
         Examples:
 
+            >>> from pprint import pprint
+
             >>> code = komm.VariableToFixedCode(sourcewords=[(1,), (2,), (0,1), (0,2), (0,0,0), (0,0,1), (0,0,2)])
             >>> (code.source_cardinality, code.code_block_size)
             (3, 3)
-            >>> pprint(code.dec_mapping)
+            >>> pprint(code.dec_mapping)  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (1,),
              (0, 0, 1): (2,),
              (0, 1, 0): (0, 1),
@@ -39,7 +41,7 @@ class VariableToFixedCode:
              (1, 0, 0): (0, 0, 0),
              (1, 0, 1): (0, 0, 1),
              (1, 1, 0): (0, 0, 2)}
-            >>> pprint(code.enc_mapping)
+            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (1, 0, 0),
              (0, 0, 1): (1, 0, 1),
              (0, 0, 2): (1, 1, 0),
@@ -75,14 +77,14 @@ class VariableToFixedCode:
     @property
     def enc_mapping(self):
         r"""
-        The encoding mapping $\Enc$ of the code.
+        The encoding mapping $\mathrm{Enc}$ of the code.
         """
         return self._enc_mapping
 
     @property
     def dec_mapping(self):
         r"""
-        The decoding mapping $\Dec$ of the code.
+        The decoding mapping $\mathrm{Dec}$ of the code.
         """
         return self._dec_mapping
 

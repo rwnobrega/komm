@@ -12,12 +12,16 @@ class HuffmanCode(FixedToVariableCode):
 
     Examples:
 
+        >>> from pprint import pprint
+
         >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
-        >>> pprint(code.enc_mapping)
-        {(0,): (0,), (1,): (1, 1), (2,): (1, 0)}
+        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+        {(0,): (0,),
+         (1,): (1, 1),
+         (2,): (1, 0)}
 
         >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
-        >>> pprint(code.enc_mapping)
+        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
         {(0, 0): (1,),
          (0, 1): (0, 0, 0, 0),
          (0, 2): (0, 1, 1),
