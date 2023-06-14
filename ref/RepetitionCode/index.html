@@ -522,24 +522,6 @@
                     </li>
                   </ul>
                 </details>
-                <p><strong>Examples:</strong></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RepetitionCode</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
-<span class="go">(5, 1, 5)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
-<span class="go">array([[1, 1, 1, 1, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">parity_check_matrix</span>
-<span class="go">array([[1, 1, 0, 0, 0],</span>
-<span class="go">       [1, 0, 1, 0, 0],</span>
-<span class="go">       [1, 0, 0, 1, 0],</span>
-<span class="go">       [1, 0, 0, 0, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">array([1, 1, 1, 1, 1])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([0])</span>
-</code></pre>
-                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code></h2>
@@ -554,6 +536,24 @@
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RepetitionCode</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
+<span class="go">(5, 1, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 1, 1, 1, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">parity_check_matrix</span>
+<span class="go">array([[1, 1, 0, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 0],</span>
+<span class="go">       [1, 0, 0, 1, 0],</span>
+<span class="go">       [1, 0, 0, 0, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 1, 1, 1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>

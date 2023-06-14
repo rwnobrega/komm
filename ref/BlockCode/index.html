@@ -603,45 +603,6 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>General binary linear block code. It is characterized by its <em>generator matrix</em> $G$, a binary $k \times n$ matrix, and by its <em>parity-check matrix</em> $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code <em>dimension</em>, <em>redundancy</em>, and <em>length</em>, respectively, and are related by $k + m = n$. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 3</cite>.</p>
-                <p><strong>Examples:</strong></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
-<span class="go">(6, 3, 3)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
-<span class="go">array([[1, 0, 0, 0, 1, 1],</span>
-<span class="go">       [0, 1, 0, 1, 0, 1],</span>
-<span class="go">       [0, 0, 1, 1, 1, 0]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">parity_check_matrix</span>
-<span class="go">array([[0, 1, 1, 1, 0, 0],</span>
-<span class="go">       [1, 0, 1, 0, 1, 0],</span>
-<span class="go">       [1, 1, 0, 0, 0, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_table</span>
-<span class="go">array([[0, 0, 0, 0, 0, 0],</span>
-<span class="go">       [1, 0, 0, 0, 1, 1],</span>
-<span class="go">       [0, 1, 0, 1, 0, 1],</span>
-<span class="go">       [1, 1, 0, 1, 1, 0],</span>
-<span class="go">       [0, 0, 1, 1, 1, 0],</span>
-<span class="go">       [1, 0, 1, 1, 0, 1],</span>
-<span class="go">       [0, 1, 1, 0, 1, 1],</span>
-<span class="go">       [1, 1, 1, 0, 0, 0]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_weight_distribution</span>
-<span class="go">array([1, 0, 0, 4, 3, 0, 0])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_table</span>
-<span class="go">array([[0, 0, 0, 0, 0, 0],</span>
-<span class="go">       [0, 0, 0, 1, 0, 0],</span>
-<span class="go">       [0, 0, 0, 0, 1, 0],</span>
-<span class="go">       [0, 0, 1, 0, 0, 0],</span>
-<span class="go">       [0, 0, 0, 0, 0, 1],</span>
-<span class="go">       [0, 1, 0, 0, 0, 0],</span>
-<span class="go">       [1, 0, 0, 0, 0, 0],</span>
-<span class="go">       [1, 0, 0, 1, 0, 0]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span>
-<span class="go">array([1, 6, 1, 0, 0, 0, 0])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">packing_radius</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">covering_radius</span><span class="p">)</span>
-<span class="go">(1, 2)</span>
-</code></pre>
-                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></h2>
@@ -686,84 +647,210 @@
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <p>The following constructs equivalent codes.</p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set=[0, 1, 2])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_check_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="go">BlockCode(parity_check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._error_control_block.BlockCode.BlockCode.length" class="doc doc-heading"><code class="highlight language-python"><span class="n">length</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The length $n$ of the code.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">length</span>
+<span class="go">6</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._error_control_block.BlockCode.BlockCode.dimension" class="doc doc-heading"><code class="highlight language-python"><span class="n">dimension</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The dimension $k$ of the code.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dimension</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._error_control_block.BlockCode.BlockCode.redundancy" class="doc doc-heading"><code class="highlight language-python"><span class="n">redundancy</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The redundancy $m$ of the code.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">redundancy</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._error_control_block.BlockCode.BlockCode.rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The rate $R = k/n$ of the code.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span>
+<span class="go">0.5</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.packing_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">packing_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.packing_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">packing_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">packing_radius</span>
+<span class="go">1</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.covering_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">covering_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.covering_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">covering_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">covering_radius</span>
+<span class="go">2</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.generator_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.generator_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The generator matrix $G$ of the code. It as a $k \times n$ binary matrix, where $k$ is the code dimension, and $n$ is the code length.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 0, 0, 0, 1, 1],</span>
+<span class="go">       [0, 1, 0, 1, 0, 1],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.parity_check_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">parity_check_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.parity_check_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">parity_check_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The parity-check matrix $H$ of the code. It as an $m \times n$ binary matrix, where $m$ is the code redundancy, and $n$ is the code length.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">parity_check_matrix</span>
+<span class="go">array([[0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 0, 0, 0, 1]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.codeword_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.codeword_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The codeword table of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_table</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 0, 1, 1],</span>
+<span class="go">       [0, 1, 0, 1, 0, 1],</span>
+<span class="go">       [1, 1, 0, 1, 1, 0],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0],</span>
+<span class="go">       [1, 0, 1, 1, 0, 1],</span>
+<span class="go">       [0, 1, 1, 0, 1, 1],</span>
+<span class="go">       [1, 1, 1, 0, 0, 0]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.codeword_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.codeword_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_weight_distribution</span>
+<span class="go">array([1, 0, 0, 4, 3, 0, 0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.coset_leader_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.coset_leader_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The coset leader table of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$. This may be used as a <abbr title="lookup table">LUT</abbr> for syndrome-based decoding.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_table</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 1, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 1],</span>
+<span class="go">       [0, 1, 0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 1, 0, 0]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._error_control_block.BlockCode.BlockCode.coset_leader_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="komm._error_control_block.BlockCode.BlockCode.coset_leader_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span>
+<span class="go">array([1, 6, 1, 0, 0, 0, 0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">

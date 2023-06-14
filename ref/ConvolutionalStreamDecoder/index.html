@@ -507,16 +507,7 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a <a href="/ref/ConvolutionalCode">convolutional code</a>, assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.</p>
-                <p><strong>Examples:</strong></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mo">0o7</span><span class="p">,</span> <span class="mo">0o5</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalStreamDecoder</span><span class="p">(</span><span class="n">convolutional_code</span><span class="p">,</span> <span class="n">traceback_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
-<span class="go">array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])</span>
-</code></pre>
-                </div>
+                <p>To invoke the decoder, call the object giving the input signal as parameter (see example in the constructor below).</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">convolutional_code</span><span class="p">,</span> <span class="n">traceback_length</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s1">'hard'</span><span class="p">)</span></code></h2>
@@ -543,6 +534,16 @@
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mo">0o7</span><span class="p">,</span> <span class="mo">0o5</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalStreamDecoder</span><span class="p">(</span><span class="n">convolutional_code</span><span class="p">,</span> <span class="n">traceback_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_decoder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+<span class="go">array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>

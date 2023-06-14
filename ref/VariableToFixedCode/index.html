@@ -548,7 +548,7 @@
             <h1 id="kommvariabletofixedcode">komm.VariableToFixedCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}$ be the alphabet of some discrete source. A <em>binary variable-to-fixed length code</em> of <em>code block size</em> $n$ is defined by a (possibly partial) decoding mapping $\Dec : \{ 0, 1 \}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\Dec$ are called <em>sourcewords</em>.</p>
+                <p>Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}$ be the alphabet of some discrete source. A <em>binary variable-to-fixed length code</em> of <em>code block size</em> $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \{ 0, 1 \}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
                 <details class="warning" open="">
                   <summary>
                     Warning
@@ -565,7 +565,7 @@
                         <li class="field-body">
                           <b><code>sourcewords</code></b> <span class="doc-param-annotation">(<code>List[Tuple[int]]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of <code>sourcewords</code> should be equal to $\Dec(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\{ 0, 1 \}^n$.</p>
+                            <p>The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of <code>sourcewords</code> should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\{ 0, 1 \}^n$.</p>
                           </div>
                         </li>
                       </ul>
@@ -576,6 +576,10 @@
                         <p>The code block size $n$ and the source cardinality $|\mathcal{X}|$ are inferred from <code>sourcewords</code>.</p>
                       </details>
                       <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+</code></pre>
+                      </div>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">(</span><span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">code_block_size</span><span class="p">)</span>
@@ -615,13 +619,13 @@
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">enc_mapping</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The encoding mapping $\Enc$ of the code.</p>
+                      <p>The encoding mapping $\mathrm{Enc}$ of the code.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">dec_mapping</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The decoding mapping $\Dec$ of the code.</p>
+                      <p>The decoding mapping $\mathrm{Dec}$ of the code.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">

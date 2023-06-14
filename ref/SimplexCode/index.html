@@ -527,9 +527,23 @@
                     <li>Simplex codes are constant-weight codes.</li>
                   </ul>
                 </details>
-                <p><strong>Examples:</strong></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SimplexCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Constructor for the class.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>k</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The dimension $k$ of the code. Must satisfy $k \geq 2$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SimplexCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
 <span class="go">(7, 3, 4)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
@@ -546,21 +560,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([1, 0, 1])</span>
 </code></pre>
-                </div>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>k</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The dimension $k$ of the code. Must satisfy $k \geq 2$.</p>
-                          </div>
-                        </li>
-                      </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
