@@ -16,7 +16,7 @@
   :root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}
   </style>
   <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
-  <link rel="stylesheet" href="../../css/extra.css">
+  <link rel="stylesheet" href="../../css/katex.css">
   <link rel="stylesheet" href="../../css/markdown.css">
   <link rel="stylesheet" href="../../css/mkdocs.css">
   <link rel="stylesheet" href="../../css/mkdocstrings.css">
@@ -524,7 +524,7 @@
             <h1 id="kommawgnchannel">komm.AWGNChannel</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Additive white Gaussian noise (<abbr title="additive white Gaussian noise">AWGN</abbr>) channel. It is defined by $$ Y_n = X_n + Z_n, $$ where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by $$ \mathrm{SNR} = \frac{P}{N}, $$ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 9</cite>.</p>
+                <p>Additive white Gaussian noise (<abbr title="additive white Gaussian noise">AWGN</abbr>) channel. It is defined by $$ Y_n = X_n + Z_n, $$ where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by $$ \snr = \frac{P}{N}, $$ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 9</cite>.</p>
                 <p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
@@ -536,7 +536,7 @@
                         <li class="field-body">
                           <b><code>snr</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The channel signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
+                            <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
                           </div>
                         </li>
                         <li class="field-body">
@@ -560,7 +560,7 @@
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._channels.AWGNChannel.AWGNChannel.snr" class="doc doc-heading"><code class="highlight language-python"><span class="n">snr</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-writable"><code>writable</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel) of the channel.</p>
+                      <p>The signal-to-noise ratio $\snr$ (linear, not decibel) of the channel.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
@@ -572,7 +572,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \mathrm{SNR})$, in bits per dimension.</p>
+                      <p>Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>

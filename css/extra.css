@@ -1,8 +1,0 @@
-h1 {
-    word-break: break-word;
-}
-
-.katex-display {
-    overflow-x: auto;
-    overflow-y: hidden;
-}
