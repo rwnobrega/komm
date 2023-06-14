@@ -8,20 +8,6 @@ from .VariableToFixedCode import VariableToFixedCode
 class TunstallCode(VariableToFixedCode):
     r"""
     Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function.
-
-    Examples:
-
-        >>> from pprint import pprint
-
-        >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
-        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
-        {(0, 0, 0): (0, 0, 0),
-         (0, 0, 1): (0, 0, 1),
-         (0, 0, 2): (0, 1, 0),
-         (0, 1): (0, 1, 1),
-         (0, 2): (1, 0, 0),
-         (1,): (1, 0, 1),
-         (2,): (1, 1, 0)}
     """
 
     def __init__(self, pmf, code_block_size):
@@ -33,6 +19,20 @@ class TunstallCode(VariableToFixedCode):
             pmf (Array1D[float]): The probability mass function used to construct the code.
 
             code_block_size (Optional[int]): The code block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$, where $|\mathcal{X}|$ is the cardinality of the source alphabet, given by `len(pmf)`.
+
+        Examples:
+
+            >>> from pprint import pprint
+
+            >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
+            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            {(0, 0, 0): (0, 0, 0),
+            (0, 0, 1): (0, 0, 1),
+            (0, 0, 2): (0, 1, 0),
+            (0, 1): (0, 1, 1),
+            (0, 2): (1, 0, 0),
+            (1,): (1, 0, 1),
+            (2,): (1, 1, 0)}
         """
         self._pmf = np.array(pmf)
 

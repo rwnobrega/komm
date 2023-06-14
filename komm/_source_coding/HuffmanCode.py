@@ -9,28 +9,6 @@ from .FixedToVariableCode import FixedToVariableCode
 class HuffmanCode(FixedToVariableCode):
     r"""
     Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function.
-
-    Examples:
-
-        >>> from pprint import pprint
-
-        >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
-        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
-        {(0,): (0,),
-         (1,): (1, 1),
-         (2,): (1, 0)}
-
-        >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
-        >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
-        {(0, 0): (1,),
-         (0, 1): (0, 0, 0, 0),
-         (0, 2): (0, 1, 1),
-         (1, 0): (0, 1, 0),
-         (1, 1): (0, 0, 0, 1, 1, 1),
-         (1, 2): (0, 0, 0, 1, 1, 0),
-         (2, 0): (0, 0, 1),
-         (2, 1): (0, 0, 0, 1, 0, 1),
-         (2, 2): (0, 0, 0, 1, 0, 0)}
     """
 
     def __init__(self, pmf, source_block_size=1, policy="high"):
@@ -44,6 +22,28 @@ class HuffmanCode(FixedToVariableCode):
             source_block_size (Optional[int]): The source block size $k$. The default value is $k = 1$.
 
             policy (Optional[str]): The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
+
+        Examples:
+
+            >>> from pprint import pprint
+
+            >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
+            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            {(0,): (0,),
+            (1,): (1, 1),
+            (2,): (1, 0)}
+
+            >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
+            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            {(0, 0): (1,),
+            (0, 1): (0, 0, 0, 0),
+            (0, 2): (0, 1, 1),
+            (1, 0): (0, 1, 0),
+            (1, 1): (0, 0, 0, 1, 1, 1),
+            (1, 2): (0, 0, 0, 1, 1, 0),
+            (2, 0): (0, 0, 1),
+            (2, 1): (0, 0, 0, 1, 0, 1),
+            (2, 2): (0, 0, 0, 1, 0, 0)}
         """
         self._pmf = np.array(pmf)
         self._policy = policy
