@@ -5,14 +5,7 @@ class ConvolutionalStreamEncoder:
     r"""
     Convolutional stream encoder. Encode a bit stream using a given [convolutional code](/ref/ConvolutionalCode). The internal state of the encoder is maintained across each call.
 
-    Examples:
-
-        >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-        >>> convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
-        >>> convolutional_encoder([1, 1, 1, 1])
-        array([1, 1, 0, 1, 1, 0, 1, 0])
-        >>> convolutional_encoder([1, 1, 1, 1])
-        array([1, 0, 1, 0, 1, 0, 1, 0])
+    To invoke the encoder, call the object giving the input signal as parameter (see example in the constructor below).
     """
 
     def __init__(self, convolutional_code, initial_state=0):
@@ -24,6 +17,15 @@ class ConvolutionalStreamEncoder:
             convolutional_code (ConvolutionalCode): The convolutional code.
 
             initial_state (Optional[int]): Initial state of the encoder. The default value is `0`.
+
+        Examples:
+
+            >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
+            >>> convolutional_encoder([1, 1, 1, 1])
+            array([1, 1, 0, 1, 1, 0, 1, 0])
+            >>> convolutional_encoder([1, 1, 1, 1])
+            array([1, 0, 1, 0, 1, 0, 1, 0])
         """
         self._convolutional_code = convolutional_code
         self._state = int(initial_state)
