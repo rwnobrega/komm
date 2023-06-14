@@ -30,14 +30,6 @@ class LFSRSequence(BinarySequence):
 
         1. https://en.wikipedia.org/wiki/Linear-feedback_shift_register
         2. https://en.wikipedia.org/wiki/Maximum_length_sequence
-
-    Examples:
-
-        >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
-        >>> lfsr.bit_sequence  #doctest: +NORMALIZE_WHITESPACE
-        array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
-        >>> lfsr.cyclic_autocorrelation()  #doctest: +NORMALIZE_WHITESPACE
-        array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
     """
 
     def __init__(self, feedback_polynomial, start_state_polynomial=0b1):
@@ -52,8 +44,11 @@ class LFSRSequence(BinarySequence):
 
         Examples:
 
-            >>> komm.LFSRSequence(feedback_polynomial=0b10011)
-            LFSRSequence(feedback_polynomial=0b10011)
+            >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
+            >>> lfsr.bit_sequence  #doctest: +NORMALIZE_WHITESPACE
+            array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
+            >>> lfsr.cyclic_autocorrelation()  #doctest: +NORMALIZE_WHITESPACE
+            array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
 
         See also the class method [`maximum_length_sequence`](./#maximum_length_sequence) for a more convenient way to construct a maximum-length sequence.
         """
@@ -85,8 +80,8 @@ class LFSRSequence(BinarySequence):
 
         Examples:
 
-            >>> komm.LFSRSequence.maximum_length_sequence(degree=4)
-            LFSRSequence(feedback_polynomial=0b10011)
+            >>> komm.LFSRSequence.maximum_length_sequence(degree=5)
+            LFSRSequence(feedback_polynomial=0b100101)
         """
         return cls(
             feedback_polynomial=cls._default_primitive_polynomial(degree), start_state_polynomial=start_state_polynomial
