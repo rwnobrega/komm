@@ -13,3 +13,11 @@ div.doc-contents:not(.first) {
     color: var(--md-code-hl-constant-color);
     background-color: white;
 }
+
+.doc cite::before {
+    content: "[";
+}
+
+.doc cite::after {
+    content: "]";
+}
