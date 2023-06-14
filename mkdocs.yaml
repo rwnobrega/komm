@@ -10,7 +10,6 @@ watch:
 - site/
 
 extra_css:
-  - css/extra.css
   - css/markdown.css
   - css/mkdocs.css
   - css/mkdocstrings.css
