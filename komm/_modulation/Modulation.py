@@ -85,7 +85,7 @@ class Modulation:
     @property
     def channel_snr(self):
         r"""
-        The signal-to-noise ratio $\mathrm{SNR}$ of the channel. This is used in soft-decision methods.
+        The signal-to-noise ratio $\snr$ of the channel. This is used in soft-decision methods.
         """
         return self._channel_snr
 

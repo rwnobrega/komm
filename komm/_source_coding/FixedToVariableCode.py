@@ -7,7 +7,7 @@ from .util import _parse_prefix_free
 
 class FixedToVariableCode:
     r"""
-    Binary, prefix-free, fixed-to-variable length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary fixed-to-variable length code* of *source block size* $k$ is defined by an *encoding mapping* $\mathrm{Enc} : \mathcal{X}^k \to \\{ 0, 1 \\}^+$, where $\\{ 0, 1 \\}^+$ denotes the set of all finite-length, non-empty binary strings. The elements in the image of $\mathrm{Enc}$ are called *codewords*.
+    Binary, prefix-free, fixed-to-variable length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary fixed-to-variable length code* of *source block size* $k$ is defined by an *encoding mapping* $\Enc : \mathcal{X}^k \to \\{ 0, 1 \\}^+$, where $\\{ 0, 1 \\}^+$ denotes the set of all finite-length, non-empty binary strings. The elements in the image of $\Enc$ are called *codewords*.
 
     Warning:
 
@@ -20,7 +20,7 @@ class FixedToVariableCode:
 
         Parameters:
 
-            codewords (List[Tuple[int]]): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of `codewords` should be equal to $\mathrm{Enc}(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+            codewords (List[Tuple[int]]): The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\\{ 0, 1 \\}$. The tuple in position $i$ of `codewords` should be equal to $\Enc(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
             source_cardinality (Optional[int]): The cardinality $|\mathcal{X}|$ of the source alphabet. The default value is `len(codewords)`, yielding a source block size $k = 1$.
 
@@ -81,14 +81,14 @@ class FixedToVariableCode:
     @property
     def enc_mapping(self):
         r"""
-        The encoding mapping $\mathrm{Enc}$ of the code.
+        The encoding mapping $\Enc$ of the code.
         """
         return self._enc_mapping
 
     @property
     def dec_mapping(self):
         r"""
-        The decoding mapping $\mathrm{Dec}$ of the code.
+        The decoding mapping $\Dec$ of the code.
         """
         return self._dec_mapping
 

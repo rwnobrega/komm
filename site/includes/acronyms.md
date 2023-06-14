@@ -7,6 +7,7 @@
 *[DMC]: discrete memoryless channel
 *[DMS]: discrete memoryless source
 *[iid]: independent and identically distributed
+*[LFSR]: linear-feedback shift register
 *[LSB]: least significant bit
 *[LUT]: lookup table
 *[MSB]: most significant bit
@@ -16,4 +17,4 @@
 *[PSK]: phase-shift keying
 *[QAM]: quadrature amplitude modulation
 *[RZ]: return-to-zero
-*[LFSR]: linear-feedback shift register
+*[SNR]: signal-to-noise ratio

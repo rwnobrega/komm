@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
             { left: '$$', right: '$$', display: true },
             { left: '$', right: '$', display: false },
         ],
+        macros: {
+            "\\bch": "\\mathrm{BCH}",
+            "\\snr": "\\mathrm{SNR}",
+            "\\Enc": "\\mathrm{Enc}",
+            "\\Dec": "\\mathrm{Dec}",
+        },
         throwOnError: false
     });
 });

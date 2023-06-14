@@ -9,7 +9,7 @@ class AWGNChannel:
     $$
     where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is iid according to a Gaussian distribution with zero mean. The channel *signal-to-noise ratio* is calculated by
     $$
-        \mathrm{SNR} = \frac{P}{N},
+        \snr = \frac{P}{N},
     $$
     where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite>CT06, Ch. 9</cite>.
 
@@ -21,7 +21,7 @@ class AWGNChannel:
 
         Parameters:
 
-            snr (Optional[float]): The channel signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
+            snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
             signal_power (Optional[float | str]): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is `1.0`.
 
@@ -39,7 +39,7 @@ class AWGNChannel:
     @property
     def snr(self):
         r"""
-        The signal-to-noise ratio $\mathrm{SNR}$ (linear, not decibel) of the channel.
+        The signal-to-noise ratio $\snr$ (linear, not decibel) of the channel.
         """
         return self._snr
 
@@ -63,7 +63,7 @@ class AWGNChannel:
 
     def capacity(self):
         r"""
-        Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \mathrm{SNR})$, in bits per dimension.
+        Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.
 
         Examples:
 
