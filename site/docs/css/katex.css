@@ -1,0 +1,4 @@
+.katex-display {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
