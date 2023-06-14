@@ -27,12 +27,12 @@ class TunstallCode(VariableToFixedCode):
             >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
             >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (0, 0, 0),
-            (0, 0, 1): (0, 0, 1),
-            (0, 0, 2): (0, 1, 0),
-            (0, 1): (0, 1, 1),
-            (0, 2): (1, 0, 0),
-            (1,): (1, 0, 1),
-            (2,): (1, 1, 0)}
+             (0, 0, 1): (0, 0, 1),
+             (0, 0, 2): (0, 1, 0),
+             (0, 1): (0, 1, 1),
+             (0, 2): (1, 0, 0),
+             (1,): (1, 0, 1),
+             (2,): (1, 1, 0)}
         """
         self._pmf = np.array(pmf)
 

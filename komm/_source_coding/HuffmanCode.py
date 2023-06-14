@@ -30,20 +30,20 @@ class HuffmanCode(FixedToVariableCode):
             >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
             >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0,),
-            (1,): (1, 1),
-            (2,): (1, 0)}
+             (1,): (1, 1),
+             (2,): (1, 0)}
 
             >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
             >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0): (1,),
-            (0, 1): (0, 0, 0, 0),
-            (0, 2): (0, 1, 1),
-            (1, 0): (0, 1, 0),
-            (1, 1): (0, 0, 0, 1, 1, 1),
-            (1, 2): (0, 0, 0, 1, 1, 0),
-            (2, 0): (0, 0, 1),
-            (2, 1): (0, 0, 0, 1, 0, 1),
-            (2, 2): (0, 0, 0, 1, 0, 0)}
+             (0, 1): (0, 0, 0, 0),
+             (0, 2): (0, 1, 1),
+             (1, 0): (0, 1, 0),
+             (1, 1): (0, 0, 0, 1, 1, 1),
+             (1, 2): (0, 0, 0, 1, 1, 0),
+             (2, 0): (0, 0, 1),
+             (2, 1): (0, 0, 0, 1, 0, 1),
+             (2, 2): (0, 0, 0, 1, 0, 0)}
         """
         self._pmf = np.array(pmf)
         self._policy = policy
