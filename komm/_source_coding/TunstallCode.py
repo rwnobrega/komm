@@ -16,16 +16,24 @@ class TunstallCode(VariableToFixedCode):
 
         Parameters:
 
-            pmf (Array1D[float]): The probability mass function used to construct the code.
+            pmf (Array1D[float]): The probability mass function of the source.
 
             code_block_size (Optional[int]): The code block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$, where $|\mathcal{X}|$ is the cardinality of the source alphabet, given by `len(pmf)`.
 
         Examples:
 
-            >>> from pprint import pprint
+            >>> pmf = [0.7, 0.15, 0.15]
 
-            >>> code = komm.TunstallCode([0.6, 0.3, 0.1], code_block_size=3)
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code = komm.TunstallCode(pmf, code_block_size=2)
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+            {(0,): (0, 0),
+             (1,): (0, 1),
+             (2,): (1, 0)}
+            >>> np.around(code.rate(pmf), decimals=6)
+            2.0
+
+            >>> code = komm.TunstallCode(pmf, code_block_size=3)
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (0, 0, 0),
              (0, 0, 1): (0, 0, 1),
              (0, 0, 2): (0, 1, 0),
@@ -33,20 +41,16 @@ class TunstallCode(VariableToFixedCode):
              (0, 2): (1, 0, 0),
              (1,): (1, 0, 1),
              (2,): (1, 1, 0)}
+            >>> np.around(code.rate(pmf), decimals=6)
+            1.369863
         """
         self._pmf = np.array(pmf)
+        self._code_block_size = code_block_size
 
-        if 2**code_block_size < len(pmf):
+        if 2**self._code_block_size < self._pmf.size:
             raise ValueError("Code block size is too low")
 
-        super().__init__(sourcewords=TunstallCode._tunstall_algorithm(pmf, code_block_size))
-
-    @property
-    def pmf(self):
-        r"""
-        The probability mass function used to construct the code.
-        """
-        return self._pmf
+        super().__init__(sourcewords=TunstallCode._tunstall_algorithm(self._pmf, self._code_block_size))
 
     @staticmethod
     def _tunstall_algorithm(pmf, code_block_size):
@@ -61,7 +65,7 @@ class TunstallCode(VariableToFixedCode):
         queue = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
         heapq.heapify(queue)
 
-        while len(queue) + len(pmf) - 1 < 2**code_block_size:
+        while len(queue) + pmf.size - 1 < 2**code_block_size:
             node = heapq.heappop(queue)
             for symbol, probability in enumerate(pmf):
                 new_node = Node(node.symbols + (symbol,), node.probability * probability)
@@ -71,5 +75,5 @@ class TunstallCode(VariableToFixedCode):
         return sourcewords
 
     def __repr__(self):
-        args = "pmf={}, code_block_size={}".format(self._pmf.tolist(), self._code_block_size)
-        return "{}({})".format(self.__class__.__name__, args)
+        args = f"pmf={self._pmf.tolist()}, code_block_size={self._code_block_size}"
+        return f"{self.__class__.__name__}({args})"

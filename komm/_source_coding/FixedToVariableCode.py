@@ -30,16 +30,14 @@ class FixedToVariableCode:
 
         Examples:
 
-            >>> from pprint import pprint
-
             >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0), (1,1)])
             >>> (code.source_cardinality, code.source_block_size)
             (3, 1)
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0,),
              (1,): (1, 0),
              (2,): (1, 1)}
-            >>> pprint(code.dec_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0,),
              (1, 0): (1,),
              (1, 1): (2,)}
@@ -47,16 +45,16 @@ class FixedToVariableCode:
             >>> code = komm.FixedToVariableCode(codewords=[(0,), (1,0,0), (1,1), (1,0,1)], source_cardinality=2)
             >>> (code.source_cardinality, code.source_block_size)
             (2, 2)
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0): (0,),
              (0, 1): (1, 0, 0),
              (1, 0): (1, 1),
              (1, 1): (1, 0, 1)}
-            >>> pprint(code.dec_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0, 0),
              (1, 0, 0): (0, 1),
-             (1, 0, 1): (1, 1),
-             (1, 1): (1, 0)}
+             (1, 1): (1, 0),
+             (1, 0, 1): (1, 1)}
         """
         # TODO: Assert prefix-free
         self._codewords = codewords

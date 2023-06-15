@@ -28,12 +28,10 @@ class VariableToFixedCode:
 
         Examples:
 
-            >>> from pprint import pprint
-
             >>> code = komm.VariableToFixedCode(sourcewords=[(1,), (2,), (0,1), (0,2), (0,0,0), (0,0,1), (0,0,2)])
             >>> (code.source_cardinality, code.code_block_size)
             (3, 3)
-            >>> pprint(code.dec_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (1,),
              (0, 0, 1): (2,),
              (0, 1, 0): (0, 1),
@@ -41,14 +39,14 @@ class VariableToFixedCode:
              (1, 0, 0): (0, 0, 0),
              (1, 0, 1): (0, 0, 1),
              (1, 1, 0): (0, 0, 2)}
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
-            {(0, 0, 0): (1, 0, 0),
-             (0, 0, 1): (1, 0, 1),
-             (0, 0, 2): (1, 1, 0),
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+            {(1,): (0, 0, 0),
+             (2,): (0, 0, 1),
              (0, 1): (0, 1, 0),
              (0, 2): (0, 1, 1),
-             (1,): (0, 0, 0),
-             (2,): (0, 0, 1)}
+             (0, 0, 0): (1, 0, 0),
+             (0, 0, 1): (1, 0, 1),
+             (0, 0, 2): (1, 1, 0)}
         """
         # TODO: Assert prefix-free
         self._sourcewords = sourcewords

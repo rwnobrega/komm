@@ -17,7 +17,7 @@ class HuffmanCode(FixedToVariableCode):
 
         Parameters:
 
-            pmf (Array1D[float]): The probability mass function used to construct the code.
+            pmf (Array1D[float]): The probability mass function of the source.
 
             source_block_size (Optional[int]): The source block size $k$. The default value is $k = 1$.
 
@@ -25,16 +25,18 @@ class HuffmanCode(FixedToVariableCode):
 
         Examples:
 
-            >>> from pprint import pprint
+            >>> pmf = [0.7, 0.15, 0.15]
 
-            >>> code = komm.HuffmanCode([0.7, 0.15, 0.15])
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code = komm.HuffmanCode(pmf)
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0,),
              (1,): (1, 1),
              (2,): (1, 0)}
+            >>> np.around(code.rate(pmf), decimals=6)
+            1.3
 
-            >>> code = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
-            >>> pprint(code.enc_mapping)  # doctest: +NORMALIZE_WHITESPACE
+            >>> code = komm.HuffmanCode(pmf, source_block_size=2)
+            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0): (1,),
              (0, 1): (0, 0, 0, 0),
              (0, 2): (0, 1, 1),
@@ -44,23 +46,20 @@ class HuffmanCode(FixedToVariableCode):
              (2, 0): (0, 0, 1),
              (2, 1): (0, 0, 0, 1, 0, 1),
              (2, 2): (0, 0, 0, 1, 0, 0)}
+            >>> np.around(code.rate(pmf), decimals=6)
+            1.1975
         """
-        self._pmf = np.array(pmf)
-        self._policy = policy
-
         if policy not in ["high", "low"]:
             raise ValueError("Parameter 'policy' must be in {'high', 'low'}")
 
-        super().__init__(
-            codewords=HuffmanCode._huffman_algorithm(pmf, source_block_size, policy), source_cardinality=self._pmf.size
-        )
+        self._pmf = np.array(pmf)
+        self._source_block_size = source_block_size
+        self._policy = policy
 
-    @property
-    def pmf(self):
-        r"""
-        The probability mass function used to construct the code.
-        """
-        return self._pmf
+        super().__init__(
+            codewords=HuffmanCode._huffman_algorithm(self._pmf, self._source_block_size, self._policy),
+            source_cardinality=self._pmf.size,
+        )
 
     @staticmethod
     def _huffman_algorithm(pmf, source_block_size, policy):
@@ -91,7 +90,7 @@ class HuffmanCode(FixedToVariableCode):
             tree.append(node)
 
         codewords = []
-        for symbol in range(len(pmf) ** source_block_size):
+        for symbol in range(pmf.size**source_block_size):
             node = tree[symbol]
             bits = []
             while node.parent is not None:
@@ -102,5 +101,5 @@ class HuffmanCode(FixedToVariableCode):
         return codewords
 
     def __repr__(self):
-        args = "pmf={}, source_block_size={}".format(self._pmf.tolist(), self._source_block_size)
-        return "{}({})".format(self.__class__.__name__, args)
+        args = f"pmf={self._pmf.tolist()}, source_block_size={self._source_block_size}, policy='{self._policy}'"
+        return f"{self.__class__.__name__}({args})"
