@@ -435,9 +435,6 @@
                                           <li class="md-nav__item">
                                             <a href="#__init__" class="md-nav__link">__init__()</a>
                                           </li>
-                                          <li class="md-nav__item">
-                                            <a href="#komm._source_coding.HuffmanCode.HuffmanCode.pmf" class="md-nav__link">pmf</a>
-                                          </li>
                                         </ul>
                                       </nav>
                                     </li>
@@ -499,9 +496,6 @@
                   <li class="md-nav__item">
                     <a href="#__init__" class="md-nav__link">__init__()</a>
                   </li>
-                  <li class="md-nav__item">
-                    <a href="#komm._source_coding.HuffmanCode.HuffmanCode.pmf" class="md-nav__link">pmf</a>
-                  </li>
                 </ul>
               </nav>
             </div>
@@ -524,7 +518,7 @@
                         <li class="field-body">
                           <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The probability mass function used to construct the code.</p>
+                            <p>The probability mass function of the source.</p>
                           </div>
                         </li>
                         <li class="field-body">
@@ -542,37 +536,35 @@
                       </ul>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>
 </code></pre>
                       </div>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HuffmanCode</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span><span class="p">)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HuffmanCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
 <span class="go">{(0,): (0,),</span>
-<span class="go">(1,): (1, 1),</span>
-<span class="go">(2,): (1, 0)}</span>
+<span class="go"> (1,): (1, 1),</span>
+<span class="go"> (2,): (1, 0)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">1.3</span>
 </code></pre>
                       </div>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HuffmanCode</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span> <span class="n">source_block_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span><span class="p">)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HuffmanCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">source_block_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
 <span class="go">{(0, 0): (1,),</span>
-<span class="go">(0, 1): (0, 0, 0, 0),</span>
-<span class="go">(0, 2): (0, 1, 1),</span>
-<span class="go">(1, 0): (0, 1, 0),</span>
-<span class="go">(1, 1): (0, 0, 0, 1, 1, 1),</span>
-<span class="go">(1, 2): (0, 0, 0, 1, 1, 0),</span>
-<span class="go">(2, 0): (0, 0, 1),</span>
-<span class="go">(2, 1): (0, 0, 0, 1, 0, 1),</span>
-<span class="go">(2, 2): (0, 0, 0, 1, 0, 0)}</span>
+<span class="go"> (0, 1): (0, 0, 0, 0),</span>
+<span class="go"> (0, 2): (0, 1, 1),</span>
+<span class="go"> (1, 0): (0, 1, 0),</span>
+<span class="go"> (1, 1): (0, 0, 0, 1, 1, 1),</span>
+<span class="go"> (1, 2): (0, 0, 0, 1, 1, 0),</span>
+<span class="go"> (2, 0): (0, 0, 1),</span>
+<span class="go"> (2, 1): (0, 0, 0, 1, 0, 1),</span>
+<span class="go"> (2, 2): (0, 0, 0, 1, 0, 0)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">1.1975</span>
 </code></pre>
                       </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._source_coding.HuffmanCode.HuffmanCode.pmf" class="doc doc-heading"><code class="highlight language-python"><span class="n">pmf</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The probability mass function used to construct the code.</p>
                     </div>
                   </div>
                 </div>
