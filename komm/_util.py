@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import special
+from scipy import stats
 
 __all__ = [
     "binlist2int",
@@ -108,8 +108,8 @@ def unpack(list_, width):
     return _unpack(list_, width)
 
 
-def _qfunc(x):
-    return 0.5 * special.erfc(x / np.sqrt(2))
+_qfunc = stats.norm.sf
+_qfuncinv = stats.norm.isf
 
 
 def qfunc(x):
@@ -137,10 +137,6 @@ def qfunc(x):
     return _qfunc(x)
 
 
-def _qfuncinv(y):
-    return np.sqrt(2) * special.erfcinv(2 * y)
-
-
 def qfuncinv(y):
     r"""
     Computes the inverse Gaussian Q-function.
@@ -155,11 +151,11 @@ def qfuncinv(y):
 
     Examples:
 
-        >>> komm.qfuncinv(0.5)  #doctest: +SKIP
+        >>> komm.qfuncinv(0.5)
         0.0
 
-        >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])  #doctest: +SKIP
-        array([-1., 0.,  1.])
+        >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])
+        array([-1.,  0.,  1.])
     """
     return _qfuncinv(np.array(y))
 
