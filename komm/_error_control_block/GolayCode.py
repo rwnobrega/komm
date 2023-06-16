@@ -42,10 +42,11 @@ class GolayCode(BlockCode):
             >>> (code.length, code.dimension, code.minimum_distance)
             (24, 12, 8)
         """
-        P = GolayCode._golay_parity_submatrix()
+        parity_submatrix = GolayCode._golay_parity_submatrix()
         if extended:
-            P = BlockCode._extended_parity_submatrix(P)
-        super().__init__(parity_submatrix=P)
+            parity_submatrix = BlockCode._extended_parity_submatrix(parity_submatrix)
+        super().__init__()
+        super()._init_from_parity_submatrix(parity_submatrix)
         self._minimum_distance = 8 if extended else 7
         self._extended = extended
 

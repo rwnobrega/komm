@@ -62,6 +62,7 @@ class TerminatedConvolutionalCode(BlockCode):
                    [0, 0, 1, 1, 0, 1],
                    [0, 1, 0, 0, 1, 1]])
         """
+        super().__init__()
         self._convolutional_code = convolutional_code
         self._mode = mode
         self._num_blocks = h = num_blocks
@@ -72,11 +73,11 @@ class TerminatedConvolutionalCode(BlockCode):
         k0, n0 = convolutional_code.num_input_bits, convolutional_code.num_output_bits
         nu, mu = convolutional_code.overall_constraint_length, convolutional_code.memory_order
 
-        self._dimension = h * k0
         if mode in ["direct-truncation", "tail-biting"]:
             self._length = h * n0
         elif mode == "zero-termination":
             self._length = (h + mu) * n0
+        self._dimension = h * k0
         self._redundancy = self._length - self._dimension
 
         A, B = convolutional_code.state_matrix, convolutional_code.control_matrix

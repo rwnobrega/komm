@@ -47,8 +47,9 @@ class SimplexCode(BlockCode):
             >>> code.decode([1, 0, 1, 1, 1, 1, 0])
             array([1, 0, 1])
         """
-        P = HammingCode._hamming_parity_submatrix(k).T
-        super().__init__(parity_submatrix=P)
+        parity_submatrix = HammingCode._hamming_parity_submatrix(k).T
+        super().__init__()
+        super()._init_from_parity_submatrix(parity_submatrix)
         self._minimum_distance = 2 ** (k - 1)
         self._k = k
 

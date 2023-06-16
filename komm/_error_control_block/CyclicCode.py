@@ -24,75 +24,88 @@ class CyclicCode(BlockCode):
     For more details, see <cite>LC04, Ch. 5</cite>.
     """
 
-    def __init__(self, length, systematic=True, **kwargs):
+    def __init__(self, length, systematic=True):
+        super().__init__()
+        self._length = length
+        self._modulus = BinaryPolynomial.from_exponents([0, self._length])
+        self._systematic = bool(systematic)
+
+    def _init_from_generator_polynomial(self, generator_polynomial):
+        self._generator_polynomial = BinaryPolynomial(generator_polynomial)
+        self._parity_check_polynomial, remainder = divmod(self._modulus, self._generator_polynomial)
+        if remainder != 0b0:
+            raise ValueError("The generator polynomial must be a factor of X^n + 1")
+        self._constructed_from = "generator_polynomial"
+        self._post_init()
+
+    def _init_from_parity_check_polynomial(self, parity_check_polynomial):
+        self._parity_check_polynomial = BinaryPolynomial(parity_check_polynomial)
+        self._generator_polynomial, remainder = divmod(self._modulus, self._parity_check_polynomial)
+        if remainder != 0b0:
+            raise ValueError("The parity-check polynomial must be a factor of X^n + 1")
+        self._constructed_from = "parity_check_polynomial"
+        self._post_init()
+
+    def _post_init(self):
+        self._dimension = self._parity_check_polynomial.degree
+        self._redundancy = self._generator_polynomial.degree
+        if self._systematic:
+            self._information_set = np.arange(self._redundancy, self._length)
+
+    @classmethod
+    def from_generator_polynomial(cls, length, generator_polynomial, systematic=True):
         r"""
-        Constructor for the class. It expects one of the following formats:
-
-        **Via generator polynomial**
-
-        `komm.CyclicCode(length, generator_polynomial=generator_polynomial, systematic=True)`
-
-        Parameters:
-
-            generator_polynomial (BinaryPolynomial | int): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
-
-        **Via parity-check polynomial**
-
-        `komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)`
-
-        Parameters:
-
-            parity_check_polynomial (BinaryPolynomial | int): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
-
-        The following parameters are common to both formats:
+        Constructs a binary cyclic block code from its generator polynomial.
 
         Parameters:
 
             length (int): The length $n$ of the code.
 
+            generator_polynomial (BinaryPolynomial | int): The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
+
             systematic (Optional[bool]): Whether the encoder is systematic. Default is `True`.
 
         Examples:
 
-            >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
-            >>> (code.length, code.dimension, code.minimum_distance)
-            (23, 12, 7)
-
-            >>> code = komm.CyclicCode(length=23, parity_check_polynomial=0b1010010011111)  # Golay (23, 12)
+            >>> code = komm.CyclicCode.from_generator_polynomial(23, 0b101011100011)  # Golay (23, 12)
             >>> (code.length, code.dimension, code.minimum_distance)
             (23, 12, 7)
         """
-        self._length = length
-        self._modulus = BinaryPolynomial.from_exponents([0, self._length])
-        kwargs_set = set(kwargs.keys())
-        if kwargs_set == {"generator_polynomial"}:
-            self._generator_polynomial = BinaryPolynomial(kwargs["generator_polynomial"])
-            self._parity_check_polynomial, remainder = divmod(self._modulus, self._generator_polynomial)
-            if remainder != 0b0:
-                raise ValueError("The generator polynomial must be a factor of X^n + 1")
-            self._constructed_from = "generator_polynomial"
-        elif kwargs_set == {"parity_check_polynomial"}:
-            self._parity_check_polynomial = BinaryPolynomial(kwargs["parity_check_polynomial"])
-            self._generator_polynomial, remainder = divmod(self._modulus, self._parity_check_polynomial)
-            if remainder != 0b0:
-                raise ValueError("The parity-check polynomial must be a factor of X^n + 1")
-            self._constructed_from = "parity_check_polynomial"
-        else:
-            raise ValueError("Either specify 'generator_polynomial' or 'parity_check_polynomial'")
-        self._dimension = self._parity_check_polynomial.degree
-        self._redundancy = self._generator_polynomial.degree
-        self._is_systematic = bool(systematic)
-        if self._is_systematic:
-            self._information_set = np.arange(self._redundancy, self._length)
+        obj = cls(length, systematic)
+        obj._init_from_generator_polynomial(generator_polynomial)
+        return obj
+
+    @classmethod
+    def from_parity_check_polynomial(cls, length, parity_check_polynomial, systematic=True):
+        r"""
+        Constructs a binary cyclic block code from its parity-check polynomial.
+
+        Parameters:
+
+            length (int): The length $n$ of the code.
+
+            parity_check_polynomial (BinaryPolynomial | int): The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
+
+            systematic (Optional[bool]): Whether the encoder is systematic. Default is `True`.
+
+        Examples:
+
+            >>> code = komm.CyclicCode.from_parity_check_polynomial(23, 0b1010010011111)  # Golay (23, 12)
+            >>> (code.length, code.dimension, code.minimum_distance)
+            (23, 12, 7)
+        """
+        obj = cls(length, systematic)
+        obj._init_from_parity_check_polynomial(parity_check_polynomial)
+        return obj
 
     def __repr__(self):
         if self._constructed_from == "generator_polynomial":
             args = "length={}, generator_polynomial={}, systematic={}".format(
-                self._length, self._generator_polynomial, self._is_systematic
+                self._length, self._generator_polynomial, self._systematic
             )
         else:  # if self._constructed_from == "parity_check_polynomial":
             args = "length={}, parity_check_polynomial={}, systematic={}".format(
-                self._length, self._parity_check_polynomial, self._is_systematic
+                self._length, self._parity_check_polynomial, self._systematic
             )
         return "{}({})".format(self.__class__.__name__, args)
 
@@ -140,7 +153,7 @@ class CyclicCode(BlockCode):
         return (message_polynomial_shifted + parity).coefficients(width=self._length)
 
     def _default_encoder(self):
-        if self._is_systematic:
+        if self._systematic:
             return "cyclic_systematic"
         else:
             return "cyclic_direct"
@@ -156,11 +169,11 @@ class CyclicCode(BlockCode):
 
     @functools.cached_property
     def parity_check_matrix(self):
-        n, k = self.length, self.dimension
-        parity_check_matrix = np.empty((n - k, n), dtype=int)
+        n, m = self.length, self.redundancy
+        parity_check_matrix = np.empty((m, n), dtype=int)
         row = self._parity_check_polynomial.coefficients(width=n)[::-1]
-        for i in range(n - k):
-            parity_check_matrix[n - k - i - 1] = np.roll(row, -i)
+        for i in range(m):
+            parity_check_matrix[m - i - 1] = np.roll(row, -i)
         return parity_check_matrix
 
     @tag(name="Meggitt decoder", input_type="hard", target="codeword")

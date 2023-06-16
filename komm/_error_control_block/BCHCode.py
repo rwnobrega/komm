@@ -50,11 +50,12 @@ class BCHCode(CyclicCode):
 
         field = FiniteBifield(mu)
         generator_polynomial, t = self._bch_code_generator_polynomial(field, tau)
-        super().__init__(length=2**mu - 1, generator_polynomial=generator_polynomial)
+        super().__init__(length=2**mu - 1)
+        super()._init_from_generator_polynomial(generator_polynomial)
 
         self._field = field
         self._mu = mu
-        self._packing_radius = t
+        self._tau = t
         self._minimum_distance = 2 * t + 1
 
         alpha = field.primitive_element
@@ -62,7 +63,7 @@ class BCHCode(CyclicCode):
         self._beta_minimal_polynomial = [b.minimal_polynomial() for b in self._beta]
 
     def __repr__(self):
-        args = "{}, {}".format(self._mu, self._packing_radius)
+        args = "{}, {}".format(self._mu, self._tau)
         return "{}({})".format(self.__class__.__name__, args)
 
     @staticmethod
@@ -126,7 +127,6 @@ class BCHCode(CyclicCode):
         Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See <cite>LC04, p. 209–212</cite> and <cite>RL09, p. 114–121</cite>.
         """
         field = self._field
-        t = self._packing_radius
 
         sigma = {-1: np.array([field(1)], dtype=object), 0: np.array([field(1)], dtype=object)}
         discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
@@ -156,7 +156,7 @@ class BCHCode(CyclicCode):
                 for idx in range(1, degree[mu + 1] + 1):
                     discrepancy[mu + 1] += sigma[mu + 1][idx] * syndrome_polynomial[mu + 1 - idx]
 
-        return sigma[2 * t]
+        return sigma[2 * self._tau]
 
     @tag(name="Berlekamp decoder", input_type="hard", target="codeword")
     def _decode_berlekamp(self, recvword):

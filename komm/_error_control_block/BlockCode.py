@@ -13,70 +13,30 @@ class BlockCode:
     General binary linear block code. It is characterized by its *generator matrix* $G$, a binary $k \times n$ matrix, and by its *parity-check matrix* $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code *dimension*, *redundancy*, and *length*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
     """
 
-    def __init__(self, **kwargs):
-        r"""
-        Constructor for the class. It expects one of the following formats:
-
-        **Via generator matrix**
-
-        `komm.BlockCode(generator_matrix=generator_matrix)`
-
-        Parameters:
-
-            generator_matrix (Array2D[int]): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
-
-        **Via parity-check matrix**
-
-        `komm.BlockCode(parity_check_matrix=parity_check_matrix)`
-
-        Parameters:
-
-            parity_check_matrix (Array2D[int]): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
-
-        **Via parity submatrix and information set**
-
-        `komm.BlockCode(parity_submatrix=parity_submatrix, information_set=information_set)`
-
-        Parameters:
-
-            parity_submatrix (Array2D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
-
-            information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
-
-        Examples:
-
-            The following constructs equivalent codes.
-
-            >>> komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
-            BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set=[0, 1, 2])
-
-            >>> komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-
-            >>> komm.BlockCode(parity_check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
-            BlockCode(parity_check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
-        """
-        if "generator_matrix" in kwargs:
-            self._init_from_generator_matrix(**kwargs)
-        elif "parity_check_matrix" in kwargs:
-            self._init_from_parity_check_matrix(**kwargs)
-        elif "parity_submatrix" in kwargs:
-            self._init_from_parity_submatrix(**kwargs)
-        else:
-            raise ValueError("Either specify 'generator_matrix' or 'parity_check_matrix' or 'parity_submatrix'")
+    def __init__(self):
+        self._generator_matrix = None
+        self._parity_check_matrix = None
+        self._parity_submatrix = None
+        self._information_set = None
+        self._parity_set = None
+        self._length = None
+        self._dimension = None
+        self._redundancy = None
+        self._constructed_from = None
+        self._minimum_distance = None
+        self._codeword_weight_distribution = None
+        self._coset_leader_weight_distribution = None
 
     def _init_from_generator_matrix(self, generator_matrix):
         self._generator_matrix = np.array(generator_matrix, dtype=int) % 2
         self._dimension, self._length = self._generator_matrix.shape
         self._redundancy = self._length - self._dimension
-        self._is_systematic = False
         self._constructed_from = "generator_matrix"
 
     def _init_from_parity_check_matrix(self, parity_check_matrix):
         self._parity_check_matrix = np.array(parity_check_matrix, dtype=int) % 2
         self._redundancy, self._length = self._parity_check_matrix.shape
         self._dimension = self._length - self._redundancy
-        self._is_systematic = False
         self._constructed_from = "parity_check_matrix"
 
     def _init_from_parity_submatrix(self, parity_submatrix, information_set="left"):
@@ -84,10 +44,11 @@ class BlockCode:
         self._dimension, self._redundancy = self._parity_submatrix.shape
         self._length = self._dimension + self._redundancy
         if information_set == "left":
-            information_set = np.arange(self._dimension)
+            self._information_set = np.arange(self._dimension)
         elif information_set == "right":
-            information_set = np.arange(self._redundancy, self._length)
-        self._information_set = np.array(information_set, dtype=int)
+            self._information_set = np.arange(self._redundancy, self._length)
+        else:
+            self._information_set = np.array(information_set, dtype=int)
         if (
             self._information_set.size != self._dimension
             or self._information_set.min() < 0
@@ -101,19 +62,72 @@ class BlockCode:
         self._parity_check_matrix = np.empty((self._redundancy, self._length), dtype=int)
         self._parity_check_matrix[:, self._information_set] = self._parity_submatrix.T
         self._parity_check_matrix[:, self._parity_set] = np.eye(self._redundancy, dtype=int)
-        self._is_systematic = True
         self._constructed_from = "parity_submatrix"
+
+    @classmethod
+    def from_generator_matrix(cls, generator_matrix):
+        r"""
+        Constructs a binary linear block code from its generator matrix.
+
+        Parameters:
+
+            generator_matrix (Array2D[int]): Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.
+
+        Examples:
+
+            >>> komm.BlockCode().from_generator_matrix([[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
+            BlockCode.from_generator_matrix([[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
+        """
+        obj = cls()
+        obj._init_from_generator_matrix(generator_matrix)
+        return obj
+
+    @classmethod
+    def from_parity_check_matrix(cls, parity_check_matrix):
+        r"""
+        Constructs a binary linear block code from its parity-check matrix.
+
+        Parameters:
+
+            parity_check_matrix (Array2D[int]): Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.
+
+        Examples:
+
+            >>> komm.BlockCode().from_parity_check_matrix([[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
+            BlockCode.from_parity_check_matrix([[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
+        """
+        obj = cls()
+        obj._init_from_parity_check_matrix(parity_check_matrix)
+        return obj
+
+    @classmethod
+    def from_parity_submatrix(cls, parity_submatrix, information_set="left"):
+        r"""
+        Constructs a binary linear block code from its parity submatrix and information set.
+
+        Parameters:
+
+            parity_submatrix (Array2D[int]): Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.
+
+            information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
+
+        Examples:
+
+            >>> komm.BlockCode().from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set=[0, 1, 2])
+        """
+        obj = cls()
+        obj._init_from_parity_submatrix(parity_submatrix, information_set)
+        return obj
 
     def __repr__(self):
         if self._constructed_from == "generator_matrix":
-            args = "generator_matrix={}".format(self._generator_matrix.tolist())
+            args = f"{self._generator_matrix.tolist()}"
         elif self._constructed_from == "parity_check_matrix":
-            args = "parity_check_matrix={}".format(self._parity_check_matrix.tolist())
+            args = f"{self._parity_check_matrix.tolist()}"
         elif self._constructed_from == "parity_submatrix":
-            args = "parity_submatrix={}, information_set={}".format(
-                self._parity_submatrix.tolist(), self._information_set.tolist()
-            )
-        return "{}({})".format(self.__class__.__name__, args)
+            args = f"{self._parity_submatrix.tolist()}, information_set={self._information_set.tolist()}"
+        return f"{self.__class__.__name__}.from_{self._constructed_from}({args})"
 
     @property
     def length(self):
@@ -122,7 +136,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.length
             6
         """
@@ -135,7 +149,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.dimension
             3
         """
@@ -148,7 +162,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.redundancy
             3
         """
@@ -161,7 +175,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.rate
             0.5
         """
@@ -174,14 +188,13 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.minimum_distance
             3
         """
-        try:
-            return self._minimum_distance
-        except AttributeError:
+        if self._minimum_distance is None:
             return np.flatnonzero(self.codeword_weight_distribution)[1]
+        return self._minimum_distance
 
     @functools.cached_property
     def packing_radius(self):
@@ -190,7 +203,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.packing_radius
             1
         """
@@ -203,7 +216,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.covering_radius
             2
         """
@@ -216,16 +229,15 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.generator_matrix
             array([[1, 0, 0, 0, 1, 1],
                    [0, 1, 0, 1, 0, 1],
                    [0, 0, 1, 1, 1, 0]])
         """
-        try:
-            return self._generator_matrix
-        except AttributeError:
+        if self._generator_matrix is None:
             return null_matrix(self._parity_check_matrix)
+        return self._generator_matrix
 
     @functools.cached_property
     def parity_check_matrix(self):
@@ -234,16 +246,15 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.parity_check_matrix
             array([[0, 1, 1, 1, 0, 0],
                    [1, 0, 1, 0, 1, 0],
                    [1, 1, 0, 0, 0, 1]])
         """
-        try:
-            return self._parity_check_matrix
-        except AttributeError:
+        if self._parity_check_matrix is None:
             return null_matrix(self._generator_matrix)
+        return self._parity_check_matrix
 
     @functools.cached_property
     def codeword_table(self):
@@ -252,7 +263,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.codeword_table
             array([[0, 0, 0, 0, 0, 0],
                    [1, 0, 0, 0, 1, 1],
@@ -276,14 +287,13 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.codeword_weight_distribution
             array([1, 0, 0, 4, 3, 0, 0])
         """
-        try:
-            return self._codeword_weight_distribution
-        except AttributeError:
+        if self._codeword_weight_distribution is None:
             return np.bincount(np.sum(self.codeword_table, axis=1), minlength=self._length + 1)
+        return self._codeword_weight_distribution
 
     @functools.cached_property
     def coset_leader_table(self):
@@ -292,7 +302,7 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.coset_leader_table
             array([[0, 0, 0, 0, 0, 0],
                    [0, 0, 0, 1, 0, 0],
@@ -325,14 +335,13 @@ class BlockCode:
 
         Examples:
 
-            >>> code = komm.BlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+            >>> code = komm.BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
             >>> code.coset_leader_weight_distribution
             array([1, 6, 1, 0, 0, 0, 0])
         """
-        try:
-            return self._coset_leader_weight_distribution
-        except AttributeError:
+        if self._coset_leader_weight_distribution is None:
             return np.bincount(np.sum(self.coset_leader_table, axis=1), minlength=self._length + 1)
+        return self._coset_leader_weight_distribution
 
     @functools.cached_property
     def _generator_matrix_right_inverse(self):
@@ -376,7 +385,7 @@ class BlockCode:
         return codeword
 
     def _default_encoder(self):
-        if self._is_systematic:
+        if self._constructed_from == "parity_submatrix":
             return "systematic_generator_matrix"
         else:
             return "generator_matrix"
@@ -393,7 +402,7 @@ class BlockCode:
 
             message (Array1D[int]): The message corresponding to `codeword`. Its length is equal to $k$.
         """
-        if self._is_systematic:
+        if self._constructed_from == "parity_submatrix":
             return codeword[self._information_set]
         else:
             return np.dot(codeword, self._generator_matrix_right_inverse) % 2
@@ -408,7 +417,7 @@ class BlockCode:
 
             method (Optional[str]): The decoding method to be used.
 
-            **kwargs: Keyword arguments to be passed to the decoding method.
+            kwargs (): Keyword arguments to be passed to the decoding method.
 
         Returns:
 

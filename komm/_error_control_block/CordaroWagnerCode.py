@@ -41,7 +41,8 @@ class CordaroWagnerCode(BlockCode):
         I = np.repeat([[0], [1]], repeats=i, axis=1)
         J = np.repeat([[1], [1]], repeats=j, axis=1)
         generator_matrix = np.hstack((H, I, J))
-        super().__init__(generator_matrix=generator_matrix)
+        super().__init__()
+        super()._init_from_generator_matrix(generator_matrix)
         self._minimum_distance = h + i
 
     def __repr__(self):

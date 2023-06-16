@@ -58,8 +58,9 @@ class ReedMullerCode(BlockCode):
         """
         if not 0 <= rho < mu:
             raise ValueError("Parameters must satisfy 0 <= rho < mu")
-
-        super().__init__(generator_matrix=ReedMullerCode._reed_muller_generator_matrix(rho, mu))
+        generator_matrix = ReedMullerCode._reed_muller_generator_matrix(rho, mu)
+        super().__init__()
+        super()._init_from_generator_matrix(generator_matrix)
         self._minimum_distance = 2 ** (mu - rho)
         self._rho = rho
         self._mu = mu

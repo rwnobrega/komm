@@ -43,7 +43,9 @@ class RepetitionCode(BlockCode):
             >>> code.decode([1, 0, 1, 0, 0])
             array([0])
         """
-        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int))
+        parity_submatrix = np.ones((1, n - 1), dtype=int)
+        super().__init__()
+        super()._init_from_parity_submatrix(parity_submatrix)
         self._minimum_distance = n
         self._coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range((n + 1) // 2):

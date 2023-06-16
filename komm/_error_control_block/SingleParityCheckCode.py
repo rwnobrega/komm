@@ -41,7 +41,9 @@ class SingleParityCheckCode(BlockCode):
             >>> code.encode([1, 0, 1, 1])
             array([1, 0, 1, 1, 1])
         """
-        super().__init__(parity_submatrix=np.ones((1, n - 1), dtype=int).T)
+        parity_submatrix = np.ones((1, n - 1), dtype=int).T
+        super().__init__()
+        super()._init_from_parity_submatrix(parity_submatrix)
         self._minimum_distance = 2
         self._codeword_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range(0, n + 1, 2):

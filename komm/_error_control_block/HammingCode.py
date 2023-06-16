@@ -72,10 +72,11 @@ class HammingCode(BlockCode):
             >>> code.decode([0, 1, 0, 0, 0, 1, 1, 0])
             array([1, 1, 0, 0])
         """
-        P = self._hamming_parity_submatrix(m)
+        parity_submatrix = self._hamming_parity_submatrix(m)
         if extended:
-            P = BlockCode._extended_parity_submatrix(P)
-        super().__init__(parity_submatrix=P)
+            parity_submatrix = BlockCode._extended_parity_submatrix(parity_submatrix)
+        super().__init__()
+        super()._init_from_parity_submatrix(parity_submatrix)
         self._minimum_distance = 4 if extended else 3
         self._m = m
         self._extended = extended
