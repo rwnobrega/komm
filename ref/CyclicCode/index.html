@@ -211,7 +211,10 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
+                                            <a href="#from_generator_polynomial" class="md-nav__link">from_generator_polynomial()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#from_parity_check_polynomial" class="md-nav__link">from_parity_check_polynomial()</a>
                                           </li>
                                           <li class="md-nav__item">
                                             <a href="#komm._error_control_block.CyclicCode.CyclicCode.generator_polynomial" class="md-nav__link">generator_polynomial</a>
@@ -503,7 +506,10 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
+                    <a href="#from_generator_polynomial" class="md-nav__link">from_generator_polynomial()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#from_parity_check_polynomial" class="md-nav__link">from_parity_check_polynomial()</a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#komm._error_control_block.CyclicCode.CyclicCode.generator_polynomial" class="md-nav__link">generator_polynomial</a>
@@ -561,38 +567,21 @@
                 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 5</cite>.</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></h2>
+                    <h2 id="from_generator_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_generator_polynomial</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Constructor for the class. It expects one of the following formats:</p>
-                      <p><strong>Via generator polynomial</strong></p>
-                      <p><code>komm.CyclicCode(length, generator_polynomial=generator_polynomial, systematic=True)</code></p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>generator_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Via parity-check polynomial</strong></p>
-                      <p><code>komm.CyclicCode(length, parity_check_polynomial=parity_check_polynomial, systematic=True)</code></p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>parity_check_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p>The following parameters are common to both formats:</p>
+                      <p>Constructs a binary cyclic block code from its generator polynomial.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                           <div class="doc-md-description">
                             <p>The length $n$ of the code.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>generator_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
                           </div>
                         </li>
                         <li class="field-body">
@@ -604,13 +593,41 @@
                       </ul>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="o">.</span><span class="n">from_generator_polynomial</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
 <span class="go">(23, 12, 7)</span>
 </code></pre>
                       </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="from_parity_check_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_parity_check_polynomial</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">parity_check_polynomial</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>Constructs a binary cyclic block code from its parity-check polynomial.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The length $n$ of the code.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>parity_check_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>systematic</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>Whether the encoder is systematic. Default is <code>True</code>.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">parity_check_polynomial</span><span class="o">=</span><span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="o">.</span><span class="n">from_parity_check_polynomial</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
 <span class="go">(23, 12, 7)</span>
 </code></pre>
