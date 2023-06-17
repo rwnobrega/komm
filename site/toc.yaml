@@ -61,7 +61,7 @@ Sequences:
   - LFSRSequence
   - GoldSequence
   - KasamiSequence
-  Other sequences:
+  Complex sequences:
   - ZadoffChuSequence
 Source coding:
   Sources:
