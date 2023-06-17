@@ -9,7 +9,7 @@ class BinarySequence:
     General binary sequence. It may be represented either in *bit format*, denoted by $b[n]$, with elements in the set $\\{ 0, 1 \\}$, or in *polar format*, denoted by $a[n]$, with elements in the set $\\{ \pm 1 \\}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, bit_sequence=None, polar_sequence=None):
         r"""
         Constructor for the class. It expects *exactly one* the following parameters:
 
@@ -19,18 +19,16 @@ class BinarySequence:
 
             polar_sequence (Array1D[int]): The binary sequence in polar format. Must be a 1D-array with elements in $\\{ \pm 1 \\}$.
         """
-        kwargs_set = set(kwargs.keys())
-        if kwargs_set == {"bit_sequence"}:
-            self._bit_sequence = np.array(kwargs["bit_sequence"], dtype=int)
+        if bit_sequence is not None and polar_sequence is None:
+            self._bit_sequence = np.array(bit_sequence, dtype=int)
             self._polar_sequence = (-1) ** self._bit_sequence
             self._constructed_from = "bit_sequence"
-        elif kwargs_set == {"polar_sequence"}:
-            self._polar_sequence = np.array(kwargs["polar_sequence"], dtype=int)
+        elif polar_sequence is not None and bit_sequence is None:
+            self._polar_sequence = np.array(polar_sequence, dtype=int)
             self._bit_sequence = 1 * (self._polar_sequence < 0)
             self._constructed_from = "polar_sequence"
         else:
             raise ValueError("Either specify 'bit_sequence' or 'polar_sequence'")
-
         self._length = self._bit_sequence.size
 
     def __repr__(self):
