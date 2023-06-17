@@ -85,10 +85,7 @@ class BinarySequence:
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
         autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0 for ell in shifts])
-        if normalized:
-            return autocorrelation / L
-        else:
-            return autocorrelation
+        return autocorrelation / L if normalized else autocorrelation
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
         r"""
@@ -107,7 +104,4 @@ class BinarySequence:
         L = self._length
         shifts = np.arange(L) if shifts is None else np.array(shifts)
         cyclic_autocorrelation = self._cyclic_autocorrelation[shifts % L]
-        if normalized:
-            return cyclic_autocorrelation / L
-        else:
-            return cyclic_autocorrelation
+        return cyclic_autocorrelation / L if normalized else cyclic_autocorrelation
