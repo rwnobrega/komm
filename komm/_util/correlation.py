@@ -3,15 +3,15 @@ import numpy as np
 
 def acorr(seq, shifts=None, normalized=False):
     r"""
-    Computes the autocorrelation $R[\ell]$ of a real or complex sequence $a[n]$. This is defined as
+    Computes the autocorrelation $R[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
-        R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a^*_\ell[n],
+        R[\ell] = \sum_{n \in \mathbb{Z}} x[n] x^*_\ell[n],
     $$
-    where $a^\*\_\ell[n] = a^\*[n - \ell]$ is the complex conjugate of $a[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.
+    where $x^\*\_\ell[n] = x^\*[n - \ell]$ is the complex conjugate of $x[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.
 
     Parameters:
 
-        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $a[n]$, of length $L$.
+        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
 
         shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is `range(len(seq))`, that is, $[0 : L)$.
 
@@ -43,15 +43,15 @@ def acorr(seq, shifts=None, normalized=False):
 
 def cyclic_acorr(seq, shifts=None, normalized=False):
     r"""
-    Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $a[n]$. This is defined as
+    Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
-        \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}^*_\ell[n],
+        \tilde{R}[\ell] = \sum_{n \in [0:L)} x[n] \tilde{x}^*_\ell[n],
     $$
-    where $\tilde{a}^\*\_\ell[n]$ is the complex conjugate of $a[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.
+    where $\tilde{x}^\*\_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.
 
     Parameters:
 
-        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $a[n]$, of length $L$.
+        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
 
         shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is `range(len(seq))`, that is, $[0 : L)$.
 
