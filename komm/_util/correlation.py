@@ -47,7 +47,7 @@ def cyclic_autocorrelation(seq, shifts=None, normalized=False):
     $$
         \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}^*_\ell[n],
     $$
-    where $\tilde{a}^\*\_\ell[n]$ is the complex conjugate of $a[n]$ cyclic-shifted by $\ell$ positions. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$, where $L$ is the period of the sequence.
+    where $\tilde{a}^\*\_\ell[n]$ is the complex conjugate of $a[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.
 
     Parameters:
 
