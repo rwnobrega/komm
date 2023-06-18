@@ -1,12 +1,11 @@
-import functools
-
 import numpy as np
-import numpy.typing as npt
+
+from .._util import acorr, cyclic_acorr
 
 
 class BinarySequence:
     r"""
-    General binary sequence. It may be represented either in *bit format*, denoted by $b[n]$, with elements in the set $\\{ 0, 1 \\}$, or in *polar format*, denoted by $a[n]$, with elements in the set $\\{ \pm 1 \\}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.
+    General binary sequence. It may be represented either in *bit format*, denoted by $b[n]$, with elements in the set $\\{ 0, 1 \\}$, or in *polar format*, denoted by $x[n]$, with elements in the set $\\{ \pm 1 \\}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.
     """
 
     def __init__(self, bit_sequence=None, polar_sequence=None):
@@ -18,6 +17,20 @@ class BinarySequence:
             bit_sequence (Array1D[int]): The binary sequence in bit format. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.
 
             polar_sequence (Array1D[int]): The binary sequence in polar format. Must be a 1D-array with elements in $\\{ \pm 1 \\}$.
+
+        Examples:
+
+            >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
+            >>> seq.bit_sequence
+            array([0, 1, 1, 0])
+            >>> seq.polar_sequence
+            array([ 1, -1, -1,  1])
+
+            >>> seq = komm.BinarySequence(polar_sequence=[1, -1, -1, 1])
+            >>> seq.bit_sequence
+            array([0, 1, 1, 0])
+            >>> seq.polar_sequence
+            array([ 1, -1, -1,  1])
         """
         if bit_sequence is not None and polar_sequence is None:
             self._bit_sequence = np.array(bit_sequence, dtype=int)
@@ -45,7 +58,7 @@ class BinarySequence:
     @property
     def polar_sequence(self):
         r"""
-        The binary sequence in polar format, $a[n] \in \\{ \pm 1 \\}$.
+        The binary sequence in polar format, $x[n] \in \\{ \pm 1 \\}$.
         """
         return self._polar_sequence
 
@@ -56,52 +69,46 @@ class BinarySequence:
         """
         return self._length
 
-    @functools.cached_property
-    def _autocorrelation(self) -> npt.NDArray[np.int_]:
-        seq = self._polar_sequence
-        L = self._length
-        return np.correlate(seq, seq, mode="full")[L - 1 :]
-
-    @functools.cached_property
-    def _cyclic_autocorrelation(self) -> npt.NDArray[np.int_]:
-        seq = self._polar_sequence
-        L = self._length
-        return np.array([np.dot(seq, np.roll(seq, ell)) for ell in range(L)])
-
     def autocorrelation(self, shifts=None, normalized=False):
         r"""
-        Returns the autocorrelation $R[\ell]$ of the binary sequence. This is defined as
-        $$
-            R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_\ell[n],
-        $$
-        where $a[n]$ is the binary sequence in polar format, and $a_\ell[n] = a[n - \ell]$ is the sequence $a[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the binary sequence.
+        Returns the autocorrelation $R[\ell]$ of the binary sequence in polar format. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
 
         Parameters:
 
-            shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is `range(L)`, that is, $[0 : L)$.
+            shifts (Optional[Array1D[int]]): See [`komm.autocorrelation`](/ref/autocorrelation). The default value yields $[0 : L)$.
 
-            normalized (Optional[bool]): If `True`, returns the autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $R[0] = 1$. The default value is `False`.
+            normalized (Optional[bool]): See [`komm.autocorrelation`](/ref/autocorrelation). The default value is `False`.
+
+        Returns:
+
+            autocorrelation (Array1D[complex]): The autocorrelation $R[\ell]$ of the complex sequence.
+
+        Examples:
+
+            >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
+            >>> seq.autocorrelation()
+            array([ 4, -1, -2,  1])
         """
-        L = self._length
-        shifts = np.arange(L) if shifts is None else np.array(shifts)
-        autocorrelation = np.array([self._autocorrelation[abs(ell)] if abs(ell) < L else 0 for ell in shifts])
-        return autocorrelation / L if normalized else autocorrelation
+        return acorr(self._polar_sequence, shifts=shifts, normalized=normalized)
 
     def cyclic_autocorrelation(self, shifts=None, normalized=False):
         r"""
-        Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence. This is defined as
-        $$
-            \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_\ell[n],
-        $$
-        where $a[n]$ is the binary sequence in polar format, and $\tilde{a}\_\ell[n]$ is the sequence $a[n]$ cyclic-shifted by $\ell$ positions. The cyclic autocorrelation $\tilde{R}[\ell]$ is even and periodic with period $L$, where $L$ is the period of the binary sequence.
+        Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence in polar format. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.
 
         Parameters:
 
-            shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is `range(L)`, that is, $[0 : L)$.
+            shifts (Optional[Array1D[int]]): See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation). The default value yields $[0 : L)$.
 
-            normalized (Optional[bool]): If `True`, returns the cyclic autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $\tilde{R}[0] = 1$. The default value is `False`.
+            normalized (Optional[bool]): See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation). The default value is `False`.
+
+        Returns:
+
+            cyclic_autocorrelation (Array1D[complex]): The cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence.
+
+        Examples:
+
+            >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
+            >>> seq.cyclic_autocorrelation()
+            array([ 4,  0, -4,  0])
         """
-        L = self._length
-        shifts = np.arange(L) if shifts is None else np.array(shifts)
-        cyclic_autocorrelation = self._cyclic_autocorrelation[shifts % L]
-        return cyclic_autocorrelation / L if normalized else cyclic_autocorrelation
+        return cyclic_acorr(self._polar_sequence, shifts=shifts, normalized=normalized)
