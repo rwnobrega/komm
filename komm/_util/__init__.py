@@ -22,15 +22,18 @@ from .bit_operations import (
     pack,
     unpack,
 )
+from .correlation import autocorrelation, cyclic_autocorrelation
 from .information_theory import _entropy, _mutual_information, entropy
 from .special_functions import qfunc, qfuncinv
 
 __all__ = [
+    "autocorrelation",
     "binlist2int",
+    "cyclic_autocorrelation",
+    "entropy",
     "int2binlist",
     "pack",
-    "unpack",
     "qfunc",
     "qfuncinv",
-    "entropy",
+    "unpack",
 ]

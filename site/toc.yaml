@@ -78,4 +78,6 @@ Utilities:
 - unpack
 - qfunc
 - qfuncinv
+- autocorrelation
+- cyclic_autocorrelation
 - entropy
