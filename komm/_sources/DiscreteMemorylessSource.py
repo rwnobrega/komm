@@ -47,11 +47,11 @@ class DiscreteMemorylessSource:
 
     def entropy(self, base=2.0):
         r"""
-        Returns the source entropy $\mathrm{H}(X)$.
+        Returns the source entropy $\mathrm{H}(X)$. See [`komm.entropy`](/ref/entropy) for more details.
 
         Parameters:
 
-            base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+            base (Optional[float | str]): See [`komm.entropy`](/ref/entropy). The default value is $2.0$.
 
         Examples:
 
