@@ -10,9 +10,13 @@ def get_data(toc):
     import komm
 
     def _get_object_data(obj):
+        try:
+            summary = obj.__doc__.split(".")[0].strip() + "."
+        except AttributeError:
+            summary = "*No summary available.*"
         return {
             "name": obj.__name__,
-            "summary": obj.__doc__.split(".")[0].strip() + ".",
+            "summary": summary,
             "qualname": f"{obj.__module__}.{obj.__qualname__}",
         }
 
