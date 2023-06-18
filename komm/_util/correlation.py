@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def autocorrelation(seq, shifts=None, normalized=False):
+def acorr(seq, shifts=None, normalized=False):
     r"""
     Computes the autocorrelation $R[\ell]$ of a real or complex sequence $a[n]$. This is defined as
     $$
@@ -19,11 +19,11 @@ def autocorrelation(seq, shifts=None, normalized=False):
 
     Returns:
 
-        autocorrelation (SameAsInput): The autocorrelation $R[\ell]$ of the sequence.
+        acorr (SameAsInput): The autocorrelation $R[\ell]$ of the sequence.
 
     Examples:
 
-        >>> komm.autocorrelation([1.0, 2.0, 3.0, 4.0], shifts=[-2, -1, 0, 1, 2])
+        >>> komm.acorr([1.0, 2.0, 3.0, 4.0], shifts=[-2, -1, 0, 1, 2])
         array([11., 20., 30., 20., 11.])
     """
     seq = np.asarray(seq)
@@ -41,7 +41,7 @@ def autocorrelation(seq, shifts=None, normalized=False):
     return acorr / energy if normalized else acorr
 
 
-def cyclic_autocorrelation(seq, shifts=None, normalized=False):
+def cyclic_acorr(seq, shifts=None, normalized=False):
     r"""
     Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $a[n]$. This is defined as
     $$
@@ -59,11 +59,11 @@ def cyclic_autocorrelation(seq, shifts=None, normalized=False):
 
     Returns:
 
-        cyclic_autocorrelation (SameAsInput): The cyclic autocorrelation $\tilde{R}[\ell]$ of the sequence.
+        cyclic_acorr (SameAsInput): The cyclic autocorrelation $\tilde{R}[\ell]$ of the sequence.
 
     Examples:
 
-        >>> komm.cyclic_autocorrelation([1.0, 2.0, 3.0, 4.0], shifts=[-2, -1, 0, 1, 2])
+        >>> komm.cyclic_acorr([1.0, 2.0, 3.0, 4.0], shifts=[-2, -1, 0, 1, 2])
         array([22., 24., 30., 24., 22.])
     """
     shifts = np.arange(len(seq)) if shifts is None else shifts
