@@ -413,10 +413,13 @@
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Other sequences <span class="md-nav__icon md-icon"></span></label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Complex sequences <span class="md-nav__icon md-icon"></span></label>
                                 <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Other sequences</label>
+                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="../ComplexSequence/" class="md-nav__link">ComplexSequence</a>
+                                    </li>
                                     <li class="md-nav__item">
                                       <a href="../ZadoffChuSequence/" class="md-nav__link">ZadoffChuSequence</a>
                                     </li>
@@ -489,6 +492,12 @@
                                 <a href="../qfuncinv/" class="md-nav__link">qfuncinv</a>
                               </li>
                               <li class="md-nav__item">
+                                <a href="../acorr/" class="md-nav__link">acorr</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_acorr/" class="md-nav__link">cyclic_acorr</a>
+                              </li>
+                              <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link">entropy</a>
                               </li>
                             </ul>
@@ -536,10 +545,10 @@
             <h1 id="kommbinarysequence">komm.BinarySequence</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>General binary sequence. It may be represented either in <em>bit format</em>, denoted by $b[n]$, with elements in the set $\{ 0, 1 \}$, or in <em>polar format</em>, denoted by $a[n]$, with elements in the set $\{ \pm 1 \}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.</p>
+                <p>General binary sequence. It may be represented either in <em>bit format</em>, denoted by $b[n]$, with elements in the set $\{ 0, 1 \}$, or in <em>polar format</em>, denoted by $x[n]$, with elements in the set $\{ \pm 1 \}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></h2>
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">bit_sequence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">polar_sequence</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Constructor for the class. It expects <em>exactly one</em> the following parameters:</p>
                       <p><strong>Parameters:</strong></p>
@@ -557,6 +566,23 @@
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySequence</span><span class="p">(</span><span class="n">bit_sequence</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">bit_sequence</span>
+<span class="go">array([0, 1, 1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">polar_sequence</span>
+<span class="go">array([ 1, -1, -1,  1])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySequence</span><span class="p">(</span><span class="n">polar_sequence</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">bit_sequence</span>
+<span class="go">array([0, 1, 1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">polar_sequence</span>
+<span class="go">array([ 1, -1, -1,  1])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
@@ -568,7 +594,7 @@
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._sequences.BinarySequence.BinarySequence.polar_sequence" class="doc doc-heading"><code class="highlight language-python"><span class="n">polar_sequence</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The binary sequence in polar format, $a[n] \in \{ \pm 1 \}$.</p>
+                      <p>The binary sequence in polar format, $x[n] \in \{ \pm 1 \}$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
@@ -580,43 +606,75 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="autocorrelation" class="doc doc-heading"><code class="highlight language-python"><span class="n">autocorrelation</span><span class="p">(</span><span class="n">shifts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the autocorrelation $R[\ell]$ of the binary sequence. This is defined as $$ R[\ell] = \sum_{n \in \mathbb{Z}} a[n] a_\ell[n], $$ where $a[n]$ is the binary sequence in polar format, and $a_\ell[n] = a[n - \ell]$ is the sequence $a[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the binary sequence.</p>
+                      <p>Returns the autocorrelation $R[\ell]$ of the binary sequence in polar format. See <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a> for more details.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>shifts</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int]]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is <code>range(L)</code>, that is, $[0 : L)$.</p>
+                            <p>See <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a>. The default value yields $[0 : L)$.</p>
                           </div>
                         </li>
                         <li class="field-body">
                           <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>If <code>True</code>, returns the autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $R[0] = 1$. The default value is <code>False</code>.</p>
+                            <p>See <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a>. The default value is <code>False</code>.</p>
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>autocorrelation</code></b> <span class="doc-param-annotation">(<code>Array1D[complex]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The autocorrelation $R[\ell]$ of the complex sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySequence</span><span class="p">(</span><span class="n">bit_sequence</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">autocorrelation</span><span class="p">()</span>
+<span class="go">array([ 4, -1, -2,  1])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="cyclic_autocorrelation" class="doc doc-heading"><code class="highlight language-python"><span class="n">cyclic_autocorrelation</span><span class="p">(</span><span class="n">shifts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence. This is defined as $$ \tilde{R}[\ell] = \sum_{n \in [0:L)} a[n] \tilde{a}_\ell[n], $$ where $a[n]$ is the binary sequence in polar format, and $\tilde{a}_\ell[n]$ is the sequence $a[n]$ cyclic-shifted by $\ell$ positions. The cyclic autocorrelation $\tilde{R}[\ell]$ is even and periodic with period $L$, where $L$ is the period of the binary sequence.</p>
+                      <p>Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence in polar format. See <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a> for more details.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>shifts</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int]]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is <code>range(L)</code>, that is, $[0 : L)$.</p>
+                            <p>See <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a>. The default value yields $[0 : L)$.</p>
                           </div>
                         </li>
                         <li class="field-body">
                           <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>If <code>True</code>, returns the cyclic autocorrelation divided by $L$, where $L$ is the length of the binary sequence, so that $\tilde{R}[0] = 1$. The default value is <code>False</code>.</p>
+                            <p>See <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a>. The default value is <code>False</code>.</p>
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>cyclic_autocorrelation</code></b> <span class="doc-param-annotation">(<code>Array1D[complex]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySequence</span><span class="p">(</span><span class="n">bit_sequence</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">cyclic_autocorrelation</span><span class="p">()</span>
+<span class="go">array([ 4,  0, -4,  0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>

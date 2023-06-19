@@ -404,10 +404,13 @@
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Other sequences <span class="md-nav__icon md-icon"></span></label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Complex sequences <span class="md-nav__icon md-icon"></span></label>
                                 <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Other sequences</label>
+                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="../ComplexSequence/" class="md-nav__link">ComplexSequence</a>
+                                    </li>
                                     <li class="md-nav__item">
                                       <a href="../ZadoffChuSequence/" class="md-nav__link">ZadoffChuSequence</a>
                                     </li>
@@ -480,6 +483,12 @@
                                 <a href="../qfuncinv/" class="md-nav__link">qfuncinv</a>
                               </li>
                               <li class="md-nav__item">
+                                <a href="../acorr/" class="md-nav__link">acorr</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_acorr/" class="md-nav__link">cyclic_acorr</a>
+                              </li>
+                              <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link">entropy</a>
                               </li>
                             </ul>
@@ -519,7 +528,7 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p class="doc doc-class-bases">Bases: <code><span title="komm._sequences.BinarySequence.BinarySequence">BinarySequence</span></code></p>
-                <p>Walsh–Hadamard sequence. Consider the following recursive matrix construction: $$ H_1 = \begin{bmatrix} +1 \end{bmatrix}, \qquad H_{2^n} = \begin{bmatrix} H_{2^{n-1}} & H_{2^{n-1}} \\ H_{2^{n-1}} & -H_{2^{n-1}} \end{bmatrix}, $$ for $n = 1, 2, \ldots$. For example, for $n = 3$, $$ H_8 = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>natural ordering</em>. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained: $$ H_8^{\mathrm{s}} = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>sequency ordering</em>. It has the property that row $i$ has exactly $i$ signal changes.</p>
+                <p>Walsh–Hadamard sequence. Consider the following recursive matrix construction: $$ H_1 = \begin{bmatrix} +1 \end{bmatrix}, \qquad H_{2^n} = \begin{bmatrix} H_{2^{n-1}} & H_{2^{n-1}} \\ H_{2^{n-1}} & -H_{2^{n-1}} \end{bmatrix}, $$ for $n = 1, 2, \ldots$. For example, for $n = 3$, $$ H_8 = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>natural ordering</em>. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained: $$ H_8^{\mathrm{s}} = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>sequency ordering</em>. It has the property that row $i$ has exactly $i$ sign changes.</p>
                 <p>The Walsh–Hadamard sequence of <em>length</em> $L$ and <em>index</em> $i \in [0 : L)$ is a <a href="/ref/BinarySequence">binary sequence</a> whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.</p>
                 <details class="references" open="">
                   <summary>

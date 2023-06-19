@@ -407,10 +407,13 @@
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Other sequences <span class="md-nav__icon md-icon"></span></label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Complex sequences <span class="md-nav__icon md-icon"></span></label>
                                 <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Other sequences</label>
+                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="../ComplexSequence/" class="md-nav__link">ComplexSequence</a>
+                                    </li>
                                     <li class="md-nav__item">
                                       <a href="../ZadoffChuSequence/" class="md-nav__link">ZadoffChuSequence</a>
                                     </li>
@@ -483,6 +486,12 @@
                                 <a href="../qfuncinv/" class="md-nav__link">qfuncinv</a>
                               </li>
                               <li class="md-nav__item">
+                                <a href="../acorr/" class="md-nav__link">acorr</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_acorr/" class="md-nav__link">cyclic_acorr</a>
+                              </li>
+                              <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link">entropy</a>
                               </li>
                             </ul>
@@ -531,7 +540,7 @@
                 </figure>
                 <p>The start state of the machine is specified by the so called <em>start state polynomial</em>. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the <abbr title="linear-feedback shift register">LFSR</abbr>.</p>
                 <h2>Maximum-length sequences</h2>
-                <p>If the feedback polynomial $p(X)$ is primitive, then the corresponding <abbr title="linear-feedback shift register">LFSR</abbr> sequence will be a <em>maximum-length sequence</em> (MLS). Such sequences have the following cyclic autocorrelation: $$ R[\ell] = \begin{cases} L, & \ell = 0, \, \pm L, \, \pm 2L, \ldots, \\ -1, & \text{otherwise}, \end{cases} $$ where $L$ is the length of the sequence.</p>
+                <p>If the feedback polynomial $p(X)$ is primitive, then the corresponding <abbr title="linear-feedback shift register">LFSR</abbr> sequence will be a <em>maximum-length sequence</em> (MLS). Such sequences have the following cyclic autocorrelation: $$ \tilde{R}[\ell] = \begin{cases} L, & \ell = 0, \, \pm L, \, \pm 2L, \ldots, \\ -1, & \text{otherwise}, \end{cases} $$ where $L$ is the length of the sequence.</p>
                 <details class="references" open="">
                   <summary>
                     References

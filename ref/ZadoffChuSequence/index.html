@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/ZadoffChuSequence/">
-  <link rel="prev" href="../KasamiSequence/">
+  <link rel="prev" href="../ComplexSequence/">
   <link rel="next" href="../DiscreteMemorylessSource/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
@@ -390,12 +390,29 @@
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2" checked> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Other sequences <span class="md-nav__icon md-icon"></span></label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2" checked> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Complex sequences <span class="md-nav__icon md-icon"></span></label>
                                 <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="true">
-                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Other sequences</label>
+                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="../ComplexSequence/" class="md-nav__link">ComplexSequence</a>
+                                    </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active">ZadoffChuSequence</a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">ZadoffChuSequence <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">ZadoffChuSequence</a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#__init__" class="md-nav__link">__init__()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#komm._sequences.ZadoffChuSequence.ZadoffChuSequence.length" class="md-nav__link">length</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#komm._sequences.ZadoffChuSequence.ZadoffChuSequence.root_index" class="md-nav__link">root_index</a>
+                                          </li>
+                                        </ul>
+                                      </nav>
                                     </li>
                                   </ul>
                                 </nav>
@@ -466,6 +483,12 @@
                                 <a href="../qfuncinv/" class="md-nav__link">qfuncinv</a>
                               </li>
                               <li class="md-nav__item">
+                                <a href="../acorr/" class="md-nav__link">acorr</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_acorr/" class="md-nav__link">cyclic_acorr</a>
+                              </li>
+                              <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link">entropy</a>
                               </li>
                             </ul>
@@ -482,7 +505,20 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#__init__" class="md-nav__link">__init__()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._sequences.ZadoffChuSequence.ZadoffChuSequence.length" class="md-nav__link">length</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._sequences.ZadoffChuSequence.ZadoffChuSequence.root_index" class="md-nav__link">root_index</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -491,7 +527,53 @@
             <h1 id="kommzadoffchusequence">komm.ZadoffChuSequence</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Zadoff–Chu sequence [Not implemented yet].</p>
+                <p class="doc doc-class-bases">Bases: <code><span title="komm._sequences.ComplexSequence.ComplexSequence">ComplexSequence</span></code></p>
+                <p>Zadoff–Chu sequence. It is a periodic, <a href="/ref/ComplexSequence">complex sequence</a> given by $$ z_q[n] = \mathrm{e}^{-\mathrm{j} \pi q n (n + 1) / L}, $$ where $L$ is the <em>length</em> (and period) of the sequence (which must be an odd integer) and $q \in [1:L)$ is called the <em>root index</em> of the sequence.</p>
+                <p>Zadoff–Chu sequences have constant amplitude (equal to $1$). Moreover, if $\mathrm{gcd}(q, L) = 1$, then the cyclic autocorrelation of $z_q$ is zero for all shifts in $[1:L)$; and if $\mathrm{gcd}(|q_2 - q_1|, L) = 1$, then the magnitude of the cyclic cross-correlation is constant and equal to $\sqrt{L}$.</p>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">root_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Constructor for the class.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The length $L$ of the Zadoff–Chu sequence. Must be an odd integer.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>root_index</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The root index $q$ of the Zadoff–Chu sequence. Must be in $[1:L)$. The default value is $1$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">zadoff_chu</span> <span class="o">=</span> <span class="n">ZadoffChuSequence</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">root_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">zadoff_chu</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">array([ 1.      +0.j      ,  0.309017-0.951057j, -0.809017+0.587785j,  0.309017-0.951057j,  1.      +0.j      ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">zadoff_chu</span><span class="o">.</span><span class="n">cyclic_autocorrelation</span><span class="p">(</span><span class="n">normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">array([ 1.+0.j, -0.-0.j, -0.-0.j,  0.+0.j, -0.+0.j])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._sequences.ZadoffChuSequence.ZadoffChuSequence.length" class="doc doc-heading"><code class="highlight language-python"><span class="n">length</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The length $L$ of the Zadoff–Chu sequence.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._sequences.ZadoffChuSequence.ZadoffChuSequence.root_index" class="doc doc-heading"><code class="highlight language-python"><span class="n">root_index</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The root index $q$ of the Zadoff–Chu sequence.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </article>
@@ -500,7 +582,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../KasamiSequence/" class="md-footer__link md-footer__link--prev" aria-label="Previous: KasamiSequence" rel="prev">
+        <a href="../ComplexSequence/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ComplexSequence" rel="prev">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
@@ -508,7 +590,7 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            KasamiSequence
+            ComplexSequence
           </div>
         </div></a> <a href="../DiscreteMemorylessSource/" class="md-footer__link md-footer__link--next" aria-label="Next: DiscreteMemorylessSource" rel="next">
         <div class="md-footer__title">

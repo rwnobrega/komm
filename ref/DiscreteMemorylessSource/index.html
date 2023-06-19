@@ -390,10 +390,13 @@
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Other sequences <span class="md-nav__icon md-icon"></span></label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_9_2"> <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">Complex sequences <span class="md-nav__icon md-icon"></span></label>
                                 <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Other sequences</label>
+                                  <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="../ComplexSequence/" class="md-nav__link">ComplexSequence</a>
+                                    </li>
                                     <li class="md-nav__item">
                                       <a href="../ZadoffChuSequence/" class="md-nav__link">ZadoffChuSequence</a>
                                     </li>
@@ -483,6 +486,12 @@
                                 <a href="../qfuncinv/" class="md-nav__link">qfuncinv</a>
                               </li>
                               <li class="md-nav__item">
+                                <a href="../acorr/" class="md-nav__link">acorr</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_acorr/" class="md-nav__link">cyclic_acorr</a>
+                              </li>
+                              <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link">entropy</a>
                               </li>
                             </ul>
@@ -564,13 +573,13 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="entropy" class="doc doc-heading"><code class="highlight language-python"><span class="n">entropy</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the source entropy $\mathrm{H}(X)$.</p>
+                      <p>Returns the source entropy $\mathrm{H}(X)$. See <a href="/ref/entropy"><code>komm.entropy</code></a> for more details.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>base</code></b> <span class="doc-param-annotation">(<code>Optional[float | str]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The base of the logarithm to be used. It must be a positive float or the string <code>'e'</code>. The default value is <code>2.0</code>.</p>
+                            <p>See <a href="/ref/entropy"><code>komm.entropy</code></a>. The default value is $2.0$.</p>
                           </div>
                         </li>
                       </ul>
