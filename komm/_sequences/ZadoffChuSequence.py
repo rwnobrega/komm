@@ -18,17 +18,21 @@ class ZadoffChuSequence(ComplexSequence):
         |z_{L,q}[n]| = 1, \quad \forall n.
     $$
 
-    2. *Zero autocorrelation:* If $q$ is coprime to $L$, then the autocorrelation of $z_{L,q}$ satisfies
+    2. *Zero autocorrelation:* If $q$ is coprime to $L$, then the cyclic autocorrelation of $z_{L,q}$ satisfies
     $$
-        R_{z_{L,q}}[\ell] = 0, \quad \forall \ell \neq 0 \mod L.
+        \tilde{R}\_{z_{L,q}}[\ell] = 0, \quad \forall \ell \neq 0 \mod L.
     $$
 
-    3. *Constant cross-correlation:* If $|q' - q|$ is coprime to $L$, then the magnitude of the cross-correlation of $z_{L,q}$ and $z_{L,q'}$ satisfies
+    3. *Constant cross-correlation:* If $|q' - q|$ is coprime to $L$, then the magnitude of the cyclic cross-correlation of $z_{L,q}$ and $z_{L,q'}$ satisfies
     $$
-        |R_{z_{L,q}, z_{L,q'}}[\ell]| = \sqrt{L}, \quad \forall \ell.
+        |\tilde{R}\_{z_{L,q}, z_{L,q'}}[\ell]| = \sqrt{L}, \quad \forall \ell.
     $$
 
     For more details, see <cite>And22</cite>.
+
+    Notes:
+
+        - Theses sequences are also called *Frank–Zadoff–Chu* sequences.
     """
 
     def __init__(self, length, root_index=1):
