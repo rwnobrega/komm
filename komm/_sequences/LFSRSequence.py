@@ -18,7 +18,7 @@ class LFSRSequence(BinarySequence):
 
     If the feedback polynomial $p(X)$ is primitive, then the corresponding LFSR sequence will be a *maximum-length sequence* (MLS). Such sequences have the following cyclic autocorrelation:
     $$
-        R[\ell] =
+        \tilde{R}[\ell] =
         \begin{cases}
             L, & \ell = 0, \, \pm L, \, \pm 2L, \ldots, \\\\
             -1, & \text{otherwise},
