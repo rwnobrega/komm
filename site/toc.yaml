@@ -62,6 +62,7 @@ Sequences:
   - GoldSequence
   - KasamiSequence
   Complex sequences:
+  - ComplexSequence
   - ZadoffChuSequence
 Source coding:
   Sources:
