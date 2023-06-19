@@ -5,3 +5,4 @@
 *[RL09]: William Ryan and Shu Lin. Channel Codes: Classical and Modern. Cambridge University Press, 1st edition, 2009. ISBN 978-0521848688.
 *[WBR01]: Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.
 *[XiD03]: Sebastià Xambó i Descamps. Block Error-Correcting Codes: A Computational Primer. Springer-Verlag, 2003. ISBN 978-3642189975.
+*[And22]: Jeffrey G. Andrews. A Primer on Zadoff Chu Sequences. arXiv:2211.05702v2 [cs.IT], 2022.

@@ -7,11 +7,28 @@ class ZadoffChuSequence(ComplexSequence):
     r"""
     Zadoff–Chu sequence. It is a periodic, [complex sequence](/ref/ComplexSequence) given by
     $$
-        z_q[n] = \mathrm{e}^{-\mathrm{j} \pi q n (n + 1) / L},
+        z_{L,q}[n] = \mathrm{e}^{-\mathrm{j} \pi q n (n + 1) / L},
     $$
     where $L$ is the *length* (and period) of the sequence (which must be an odd integer) and $q \in [1:L)$ is called the *root index* of the sequence.
 
-    Zadoff–Chu sequences have constant amplitude (equal to $1$). Moreover, if $\mathrm{gcd}(q, L) = 1$, then the cyclic autocorrelation of $z_q$ is zero for all shifts in $[1:L)$; and if $\mathrm{gcd}(|q_2 - q_1|, L) = 1$, then the magnitude of the cyclic cross-correlation is constant and equal to $\sqrt{L}$.
+    Zadoff–Chu sequences have the following properties:
+
+    1. *Constant amplitude:* The magnitude of the sequence satisfies
+    $$
+        |z_{L,q}[n]| = 1, \quad \forall n.
+    $$
+
+    2. *Zero autocorrelation:* If $q$ is coprime to $L$, then the autocorrelation of $z_{L,q}$ satisfies
+    $$
+        R_{z_{L,q}}[\ell] = 0, \quad \forall \ell \neq 0 \mod L.
+    $$
+
+    3. *Constant cross-correlation:* If $|q' - q|$ is coprime to $L$, then the magnitude of the cross-correlation of $z_{L,q}$ and $z_{L,q'}$ satisfies
+    $$
+        |R_{z_{L,q}, z_{L,q'}}[\ell]| = \sqrt{L}, \quad \forall \ell.
+    $$
+
+    For more details, see <cite>And22</cite>.
     """
 
     def __init__(self, length, root_index=1):
