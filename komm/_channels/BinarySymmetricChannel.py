@@ -29,10 +29,11 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
         Examples:
 
+            >>> np.random.seed(1)
             >>> bsc = komm.BinarySymmetricChannel(0.1)
             >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
-            >>> y = bsc(x); y  #doctest: +SKIP
-            array([0, 1, 1, 1, 0, 0, 0, 1, 0, 0])
+            >>> y = bsc(x); y
+            array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
         """
         self.crossover_probability = crossover_probability
 

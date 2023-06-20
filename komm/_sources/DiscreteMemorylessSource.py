@@ -20,9 +20,10 @@ class DiscreteMemorylessSource:
 
         Examples:
 
+            >>> np.random.seed(42)
             >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
-            >>> dms(10)  #doctest: +SKIP
-            array([1, 2, 1, 0, 0, 1, 1, 0, 1, 1])
+            >>> dms(10)
+            array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
         """
         self.pmf = pmf
 

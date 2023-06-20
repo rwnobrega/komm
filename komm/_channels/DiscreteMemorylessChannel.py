@@ -20,10 +20,11 @@ class DiscreteMemorylessChannel:
 
         Examples:
 
+            >>> np.random.seed(1)
             >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
             >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
-            >>> y = dmc(x); y  #doctest: +SKIP
-            array([0, 2, 0, 2, 1, 1, 0, 0, 0, 2])
+            >>> y = dmc(x); y
+            array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
         """
         self.transition_matrix = transition_matrix
         self._arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}

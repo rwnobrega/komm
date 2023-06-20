@@ -27,11 +27,11 @@ class AWGNChannel:
 
         Examples:
 
-            >>> awgn = komm.AWGNChannel(snr=100.0, signal_power=5.0)
+            >>> np.random.seed(1)
+            >>> awgn = komm.AWGNChannel(snr=200.0, signal_power=5.0)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-            >>> y = awgn(x); y  #doctest: +SKIP
-            array([ 0.91623839,  2.66229342, -2.96852259, -1.07689368, -0.89296933,
-                    0.80128101,  3.34942297,  1.24031682, -0.84460601,  2.96762221])
+            >>> y = awgn(x); np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
+            array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
         """
         self.snr = snr
         self.signal_power = signal_power
