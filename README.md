@@ -32,9 +32,4 @@ pip install .
 
 ## Testing
 
-To run the tests, you need to have [pytest](https://pytest.org/) installed. Then, from the root directory of the project, run:
-
-``` bash
-python -m pytest komm/ --doctest-modules
-python -m pytest tests/
-```
+To run the tests, you need to have [pytest](https://pytest.org/) installed. Then, from the root directory of the project, run `pytest`.
