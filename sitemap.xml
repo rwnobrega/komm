@@ -6,6 +6,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://komm.dev/demo/</loc>
+         <lastmod>2023-06-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://komm.dev/ref/</loc>
          <lastmod>2023-06-20</lastmod>
          <changefreq>daily</changefreq>

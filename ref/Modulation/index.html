@@ -591,19 +591,13 @@
                       </ul>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">constellation</span>
-<span class="go">array([-0.5,  0. ,  0.5,  2. ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([-0.5,  0.5, -0.5,  0. ,  0. ])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[0, 1, 3, 2])</span>
 </code></pre>
                       </div>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">constellation</span>
-<span class="go">array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">Modulation(constellation=[0j, (-1+0j), (1+0j), 1j], labeling=[0, 1, 2, 3])</span>
 </code></pre>
                       </div>
                     </div>
@@ -612,42 +606,91 @@
                     <h2 id="komm._modulation.Modulation.Modulation.constellation" class="doc doc-heading"><code class="highlight language-python"><span class="n">constellation</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The constellation $\mathcal{S}$ of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">constellation</span>
+<span class="go">array([-0.5,  0. ,  0.5,  2. ])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.labeling" class="doc doc-heading"><code class="highlight language-python"><span class="n">labeling</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The binary labeling $\mathcal{Q}$ of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">labeling</span>
+<span class="go">array([0, 1, 3, 2])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.order" class="doc doc-heading"><code class="highlight language-python"><span class="n">order</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The order $M$ of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">order</span>
+<span class="go">4</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.bits_per_symbol" class="doc doc-heading"><code class="highlight language-python"><span class="n">bits_per_symbol</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The number $m$ of bits per symbol of the modulation. It is given by $m = \log_2 M$, where $M$ is the order of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">bits_per_symbol</span>
+<span class="go">2</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.energy_per_symbol" class="doc doc-heading"><code class="highlight language-python"><span class="n">energy_per_symbol</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The average symbol energy $E_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by $$ E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2, $$ where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">energy_per_symbol</span>
+<span class="go">1.125</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.energy_per_bit" class="doc doc-heading"><code class="highlight language-python"><span class="n">energy_per_bit</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The average bit energy $E_\mathrm{b}$ of the constellation. It assumes equiprobable symbols. It is given by $E_\mathrm{b} = E_\mathrm{s} / m$, where $E_\mathrm{s}$ is the average symbol energy, and $m$ is the number of bits per symbol of the modulation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">energy_per_bit</span>
+<span class="go">0.5625</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="komm._modulation.Modulation.Modulation.minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The minimum euclidean distance of the constellation.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">minimum_distance</span>
+<span class="go">0.5</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
@@ -678,6 +721,14 @@
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">bits_to_symbols</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+<span class="go">array([0, 2, 0, 1, 1])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
@@ -698,22 +749,79 @@
                         <li class="field-body">
                           <b><code>bits</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The bits corresponding to <code>symbols</code>. It is a 1D-array of integers in the set $\{ 0, 1 \}$. Its length is equal to the length of <code>symbols</code> multiplied by $m = \log_2 M$.</p>
+                            <p>The bits corresponding to <code>symbols</code>. It is a 1D-array of integers in the set $\{ 0, 1 \}$. Its length is equal to the length of <code>symbols</code> multiplied by $m$.</p>
                           </div>
                         </li>
                       </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">symbols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">symbols_to_bits</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+<span class="go">array([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="modulate" class="doc doc-heading"><code class="highlight language-python"><span class="n">modulate</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Modulates a sequence of bits to its corresponding constellation points.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>bits</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The bits to be modulated. It should be a 1D-array of integers in the set $\{ 0, 1 \}$. Its length must be a multiple of $m$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>symbols</code></b> <span class="doc-param-annotation">(<code>Array1D[complex] | Array1D[float]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The constellation points corresponding to <code>bits</code>. It is a 1D-array of real or complex numbers. Its length is equal to the length of <code>bits</code> divided by $m$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([-0.5,  0.5, -0.5,  0. ,  0. ])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="demodulate" class="doc doc-heading"><code class="highlight language-python"><span class="n">demodulate</span><span class="p">(</span><span class="n">received</span><span class="p">,</span> <span class="n">decision_method</span><span class="o">=</span><span class="s1">'hard'</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Demodulates a sequence of received points to a sequence of bits.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>received</code></b> <span class="doc-param-annotation">(<code>Array1D[complex] | Array1D[float]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>decision_method</code></b> <span class="doc-param-annotation">(<code>str</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The decision method to be used. It should be either <code>'hard'</code> (corresponding to <em>hard-decision decoding</em>) or <code>'soft'</code> (corresponding to <em>soft-decision decoding</em>). The default value is <code>'hard'</code>.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>bits_or_soft_bits</code></b> <span class="doc-param-annotation">(<code>Array1D[int] | Array1D[float]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The (hard or soft) bits corresponding to <code>received</code>. It is a 1D-array of integers in the set $\{ 0, 1 \}$ (in the case of hard-decision decoding) or a 1D-array of real numbers (in the case of soft-decision decoding). Its length is equal to the length of <code>received</code> multiplied by $m$.</p>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
