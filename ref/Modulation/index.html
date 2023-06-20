@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/RealModulation/">
+  <link rel="canonical" href="https://komm.dev/ref/Modulation/">
   <link rel="prev" href="../FiniteStateMachine/">
   <link rel="next" href="../PAModulation/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
-  <title>RealModulation - Komm</title>
+  <title>Modulation - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
@@ -30,7 +30,7 @@
   var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])
   </script> <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommrealmodulation" class="md-skip">Skip to content</a>
+    <a href="#kommmodulation" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -44,7 +44,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">RealModulation</span>
+            <span class="md-ellipsis">Modulation</span>
           </div>
         </div>
       </div><label class="md-header__button md-icon" for="__search"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
@@ -253,50 +253,67 @@
                           <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
                             <label class="md-nav__title" for="__nav_2_6"><span class="md-nav__icon md-icon"></span> Modulation</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
-                              <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_6_1" checked> <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">Real modulation schemes <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="true">
-                                  <label class="md-nav__title" for="__nav_2_6_1"><span class="md-nav__icon md-icon"></span> Real modulation schemes</label>
-                                  <ul class="md-nav__list" data-md-scrollfix="">
-                                    <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">RealModulation <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">RealModulation</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                              <li class="md-nav__item md-nav__item--active">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">Modulation <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">Modulation</a>
+                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="#__init__" class="md-nav__link">__init__()</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../PAModulation/" class="md-nav__link">PAModulation</a>
+                                      <a href="#komm._modulation.Modulation.Modulation.constellation" class="md-nav__link">constellation</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.labeling" class="md-nav__link">labeling</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.order" class="md-nav__link">order</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.bits_per_symbol" class="md-nav__link">bits_per_symbol</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.energy_per_symbol" class="md-nav__link">energy_per_symbol</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.energy_per_bit" class="md-nav__link">energy_per_bit</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.minimum_distance" class="md-nav__link">minimum_distance</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#komm._modulation.Modulation.Modulation.channel_snr" class="md-nav__link">channel_snr</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#bits_to_symbols" class="md-nav__link">bits_to_symbols()</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#symbols_to_bits" class="md-nav__link">symbols_to_bits()</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#modulate" class="md-nav__link">modulate()</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#demodulate" class="md-nav__link">demodulate()</a>
                                     </li>
                                   </ul>
                                 </nav>
                               </li>
-                              <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_6_2"> <label class="md-nav__link" for="__nav_2_6_2" id="__nav_2_6_2_label" tabindex="0">Complex modulation schemes <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_6_2"><span class="md-nav__icon md-icon"></span> Complex modulation schemes</label>
-                                  <ul class="md-nav__list" data-md-scrollfix="">
-                                    <li class="md-nav__item">
-                                      <a href="../ComplexModulation/" class="md-nav__link">ComplexModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../ASKModulation/" class="md-nav__link">ASKModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../PSKModulation/" class="md-nav__link">PSKModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../APSKModulation/" class="md-nav__link">APSKModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../QAModulation/" class="md-nav__link">QAModulation</a>
-                                    </li>
-                                  </ul>
-                                </nav>
+                              <li class="md-nav__item">
+                                <a href="../PAModulation/" class="md-nav__link">PAModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../QAModulation/" class="md-nav__link">QAModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../ASKModulation/" class="md-nav__link">ASKModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../PSKModulation/" class="md-nav__link">PSKModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../APSKModulation/" class="md-nav__link">APSKModulation</a>
                               </li>
                             </ul>
                           </nav>
@@ -505,6 +522,42 @@
                   <li class="md-nav__item">
                     <a href="#__init__" class="md-nav__link">__init__()</a>
                   </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.constellation" class="md-nav__link">constellation</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.labeling" class="md-nav__link">labeling</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.order" class="md-nav__link">order</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.bits_per_symbol" class="md-nav__link">bits_per_symbol</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.energy_per_symbol" class="md-nav__link">energy_per_symbol</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.energy_per_bit" class="md-nav__link">energy_per_bit</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.minimum_distance" class="md-nav__link">minimum_distance</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#komm._modulation.Modulation.Modulation.channel_snr" class="md-nav__link">channel_snr</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#bits_to_symbols" class="md-nav__link">bits_to_symbols()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#symbols_to_bits" class="md-nav__link">symbols_to_bits()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#modulate" class="md-nav__link">modulate()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#demodulate" class="md-nav__link">demodulate()</a>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -512,11 +565,10 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommrealmodulation">komm.RealModulation</h1>
+            <h1 id="kommmodulation">komm.Modulation</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
-                <p>General real modulation scheme. A <em>real modulation scheme</em> of order $M$ is defined by a <em>constellation</em> $\mathcal{S}$, which is an ordered subset (a list) of real numbers, with $|\mathcal{S}| = M$, and a <em>binary labeling</em> $\mathcal{Q}$, which is a permutation of $[0: M)$. The order $M$ of the modulation must be a power of $2$.</p>
+                <p>General modulation scheme. A <em>modulation scheme</em> of order $M$ is defined by a <em>constellation</em> $\mathcal{S}$, which is an ordered subset (a list) of real or complex numbers, with $|\mathcal{S}| = M$, and a <em>binary labeling</em> $\mathcal{Q}$, which is a permutation of $[0: M)$. The order $M$ of the modulation must be a power of $2$.</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">constellation</span><span class="p">,</span> <span class="n">labeling</span><span class="p">)</span></code></h2>
@@ -525,9 +577,9 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>constellation</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                          <b><code>constellation</code></b> <span class="doc-param-annotation">(<code>Array1D[float] | Array1D[complex]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ real numbers.</p>
+                            <p>The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.</p>
                           </div>
                         </li>
                         <li class="field-body">
@@ -539,13 +591,129 @@
                       </ul>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RealModulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">constellation</span>
 <span class="go">array([-0.5,  0. ,  0.5,  2. ])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([-0.5,  0.5, -0.5,  0. ,  0. ])</span>
 </code></pre>
                       </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Modulation</span><span class="p">(</span><span class="n">constellation</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="n">labeling</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">constellation</span>
+<span class="go">array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.constellation" class="doc doc-heading"><code class="highlight language-python"><span class="n">constellation</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The constellation $\mathcal{S}$ of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.labeling" class="doc doc-heading"><code class="highlight language-python"><span class="n">labeling</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The binary labeling $\mathcal{Q}$ of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.order" class="doc doc-heading"><code class="highlight language-python"><span class="n">order</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The order $M$ of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.bits_per_symbol" class="doc doc-heading"><code class="highlight language-python"><span class="n">bits_per_symbol</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The number $m$ of bits per symbol of the modulation. It is given by $m = \log_2 M$, where $M$ is the order of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.energy_per_symbol" class="doc doc-heading"><code class="highlight language-python"><span class="n">energy_per_symbol</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The average symbol energy $E_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by $$ E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2, $$ where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.energy_per_bit" class="doc doc-heading"><code class="highlight language-python"><span class="n">energy_per_bit</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The average bit energy $E_\mathrm{b}$ of the constellation. It assumes equiprobable symbols. It is given by $E_\mathrm{b} = E_\mathrm{s} / m$, where $E_\mathrm{s}$ is the average symbol energy, and $m$ is the number of bits per symbol of the modulation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The minimum euclidean distance of the constellation.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._modulation.Modulation.Modulation.channel_snr" class="doc doc-heading"><code class="highlight language-python"><span class="n">channel_snr</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-writable"><code>writable</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The signal-to-noise ratio $\snr$ of the channel. This is used in soft-decision methods.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="bits_to_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">bits_to_symbols</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Converts bits to symbols using the modulation binary labeling.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>bits</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The bits to be converted. It should be a 1D-array of integers in the set $\{ 0, 1 \}$. Its length must be a multiple of $m$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>symbols</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The symbols corresponding to <code>bits</code>. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of <code>bits</code> divided by $m$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="symbols_to_bits" class="doc doc-heading"><code class="highlight language-python"><span class="n">symbols_to_bits</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Converts symbols to bits using the modulation binary labeling.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>symbols</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The symbols to be converted. It should be a 1D-array of integers in the set $[0 : M)$. It may be of any length.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>bits</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The bits corresponding to <code>symbols</code>. It is a 1D-array of integers in the set $\{ 0, 1 \}$. Its length is equal to the length of <code>symbols</code> multiplied by $m = \log_2 M$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="modulate" class="doc doc-heading"><code class="highlight language-python"><span class="n">modulate</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Modulates a sequence of bits to its corresponding constellation points.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="demodulate" class="doc doc-heading"><code class="highlight language-python"><span class="n">demodulate</span><span class="p">(</span><span class="n">received</span><span class="p">,</span> <span class="n">decision_method</span><span class="o">=</span><span class="s1">'hard'</span><span class="p">)</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Demodulates a sequence of received points to a sequence of bits.</p>
                     </div>
                   </div>
                 </div>

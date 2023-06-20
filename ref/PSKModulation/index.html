@@ -253,50 +253,31 @@
                           <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
                             <label class="md-nav__title" for="__nav_2_6"><span class="md-nav__icon md-icon"></span> Modulation</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
-                              <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_6_1"> <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">Real modulation schemes <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_6_1"><span class="md-nav__icon md-icon"></span> Real modulation schemes</label>
-                                  <ul class="md-nav__list" data-md-scrollfix="">
+                              <li class="md-nav__item">
+                                <a href="../Modulation/" class="md-nav__link">Modulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../PAModulation/" class="md-nav__link">PAModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../QAModulation/" class="md-nav__link">QAModulation</a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../ASKModulation/" class="md-nav__link">ASKModulation</a>
+                              </li>
+                              <li class="md-nav__item md-nav__item--active">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">PSKModulation <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">PSKModulation</a>
+                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="../RealModulation/" class="md-nav__link">RealModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../PAModulation/" class="md-nav__link">PAModulation</a>
+                                      <a href="#__init__" class="md-nav__link">__init__()</a>
                                     </li>
                                   </ul>
                                 </nav>
                               </li>
-                              <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_6_2" checked> <label class="md-nav__link" for="__nav_2_6_2" id="__nav_2_6_2_label" tabindex="0">Complex modulation schemes <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="true">
-                                  <label class="md-nav__title" for="__nav_2_6_2"><span class="md-nav__icon md-icon"></span> Complex modulation schemes</label>
-                                  <ul class="md-nav__list" data-md-scrollfix="">
-                                    <li class="md-nav__item">
-                                      <a href="../ComplexModulation/" class="md-nav__link">ComplexModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../ASKModulation/" class="md-nav__link">ASKModulation</a>
-                                    </li>
-                                    <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">PSKModulation <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">PSKModulation</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../APSKModulation/" class="md-nav__link">APSKModulation</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../QAModulation/" class="md-nav__link">QAModulation</a>
-                                    </li>
-                                  </ul>
-                                </nav>
+                              <li class="md-nav__item">
+                                <a href="../APSKModulation/" class="md-nav__link">APSKModulation</a>
                               </li>
                             </ul>
                           </nav>
@@ -515,8 +496,8 @@
             <h1 id="kommpskmodulation">komm.PSKModulation</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.ComplexModulation.ComplexModulation">ComplexModulation</span></code></p>
-                <p>Phase-shift keying (<abbr title="phase-shift keying">PSK</abbr>) modulation. It is a <a href="/ref/ComplexModulation">complex modulation scheme</a> in which the points of the constellation $\mathcal{S}$ are <em>uniformly arranged</em> in a circle. More precisely, $$ \mathcal{S} = \left \{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \} $$ where $M$ is the <em>order</em> (a power of $2$), $A$ is the <em>amplitude</em>, and $\phi$ is the <em>phase offset</em> of the modulation. The <abbr title="phase-shift keying">PSK</abbr> constellation is depicted below for $M = 8$.</p>
+                <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
+                <p>Phase-shift keying (<abbr title="phase-shift keying">PSK</abbr>) modulation. It is a <a href="/ref/Modulation">modulation scheme</a> in which the points of the constellation $\mathcal{S}$ are <em>uniformly arranged</em> in a circle. More precisely, $$ \mathcal{S} = \left \{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \} $$ where $M$ is the <em>order</em> (a power of $2$), $A$ is the <em>amplitude</em>, and $\phi$ is the <em>phase offset</em> of the modulation. The <abbr title="phase-shift keying">PSK</abbr> constellation is depicted below for $M = 8$.</p>
                 <figure>
                   <p><img alt="8-PSK constellation." src="/figures/psk_8.svg"></p>
                 </figure>
