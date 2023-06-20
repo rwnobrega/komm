@@ -36,8 +36,8 @@ class APSKModulation(Modulation):
 
         Examples:
 
-            >>> apsk = komm.APSKModulation(orders=(8,8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-            >>> np.round(apsk.constellation, 4)  #doctest: +SKIP
+            >>> apsk = komm.APSKModulation(orders=(8, 8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
+            >>> np.around(apsk.constellation, decimals=4)
             array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
                    -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
                     1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
