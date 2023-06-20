@@ -131,7 +131,7 @@ class DiscreteMemorylessChannel:
             last_r = r
             q = r[np.newaxis].T * p
             q /= np.sum(q, axis=0)
-            r = np.product(q**p, axis=1)
+            r = np.prod(q**p, axis=1)
             r /= np.sum(r, axis=0)
             iters += 1
         return r

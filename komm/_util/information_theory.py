@@ -57,7 +57,7 @@ def entropy(pmf, base=2.0):
         ValueError: Invalid pmf
     """
     pmf = np.array(pmf, dtype=float)
-    if not np.allclose(np.sum(pmf), 1.0) or not np.alltrue(pmf >= 0.0):
+    if not np.allclose(np.sum(pmf), 1.0) or not np.all(pmf >= 0.0):
         raise ValueError("Invalid pmf")
     return _entropy(pmf, base)
 
