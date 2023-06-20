@@ -32,6 +32,9 @@ plugins:
 - literate-nav:
     nav_file: nav.md
     tab_length: 2
+- include-markdown:
+    opening_tag: "{!"
+    closing_tag: "!}"
 - mkdocstrings:
     custom_templates: site/templates
     handlers:
