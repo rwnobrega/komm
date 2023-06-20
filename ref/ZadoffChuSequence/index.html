@@ -535,13 +535,21 @@
                     <p><em>Constant amplitude:</em> The magnitude of the sequence satisfies $$ |z_{L,q}[n]| = 1, \quad \forall n. $$</p>
                   </li>
                   <li>
-                    <p><em>Zero autocorrelation:</em> If $q$ is coprime to $L$, then the autocorrelation of $z_{L,q}$ satisfies $$ R_{z_{L,q}}[\ell] = 0, \quad \forall \ell \neq 0 \mod L. $$</p>
+                    <p><em>Zero autocorrelation:</em> If $q$ is coprime to $L$, then the cyclic autocorrelation of $z_{L,q}$ satisfies $$ \tilde{R}_{z_{L,q}}[\ell] = 0, \quad \forall \ell \neq 0 \mod L. $$</p>
                   </li>
                   <li>
-                    <p><em>Constant cross-correlation:</em> If $|q' - q|$ is coprime to $L$, then the magnitude of the cross-correlation of $z_{L,q}$ and $z_{L,q'}$ satisfies $$ |R_{z_{L,q}, z_{L,q'}}[\ell]| = \sqrt{L}, \quad \forall \ell. $$</p>
+                    <p><em>Constant cross-correlation:</em> If $|q' - q|$ is coprime to $L$, then the magnitude of the cyclic cross-correlation of $z_{L,q}$ and $z_{L,q'}$ satisfies $$ |\tilde{R}_{z_{L,q}, z_{L,q'}}[\ell]| = \sqrt{L}, \quad \forall \ell. $$</p>
                   </li>
                 </ol>
                 <p>For more details, see <cite><abbr title="Jeffrey G. Andrews. A Primer on Zadoff Chu Sequences. arXiv:2211.05702v2 [cs.IT], 2022.">And22</abbr></cite>.</p>
+                <details class="notes" open="">
+                  <summary>
+                    Notes
+                  </summary>
+                  <ul>
+                    <li>Theses sequences are also called <em>Frank–Zadoff–Chu</em> sequences.</li>
+                  </ul>
+                </details>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">root_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code></h2>
