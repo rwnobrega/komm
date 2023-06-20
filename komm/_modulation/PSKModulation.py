@@ -1,12 +1,11 @@
 import numpy as np
 
-from .ComplexModulation import ComplexModulation
 from .Modulation import Modulation
 
 
-class PSKModulation(ComplexModulation):
+class PSKModulation(Modulation):
     r"""
-    Phase-shift keying (PSK) modulation. It is a [complex modulation scheme](/ref/ComplexModulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a circle. More precisely,
+    Phase-shift keying (PSK) modulation. It is a [modulation scheme](/ref/Modulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a circle. More precisely,
     $$
         \mathcal{S} = \left \\{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \\}
     $$

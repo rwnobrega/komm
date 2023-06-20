@@ -1,12 +1,11 @@
 import numpy as np
 
-from .ComplexModulation import ComplexModulation
 from .Modulation import Modulation
 
 
-class ASKModulation(ComplexModulation):
+class ASKModulation(Modulation):
     r"""
-    Amplitude-shift keying (ASK) modulation. It is a [complex modulation scheme](/ref/ComplexModulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a ray. More precisely,
+    Amplitude-shift keying (ASK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a ray. More precisely,
     $$
         \mathcal{S} = \\{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \\},
     $$

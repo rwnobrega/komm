@@ -6,8 +6,38 @@ from .._util import int2binlist
 
 
 class Modulation:
+    r"""
+    General modulation scheme. A *modulation scheme* of order $M$ is defined by a *constellation* $\mathcal{S}$, which is an ordered subset (a list) of real or complex numbers, with $|\mathcal{S}| = M$, and a *binary labeling* $\mathcal{Q}$, which is a permutation of $[0: M)$. The order $M$ of the modulation must be a power of $2$.
+    """
+
     def __init__(self, constellation, labeling):
-        self._constellation = np.array(constellation)
+        r"""
+        Constructor for the class.
+
+        Parameters:
+
+            constellation (Array1D[float] | Array1D[complex]): The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
+
+            labeling (Array1D[int]): The binary labeling $\mathcal{Q}$ of the modulation. Must be a 1D-array of integers corresponding to a permutation of $[0 : M)$.
+
+        Examples:
+
+            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod.constellation
+            array([-0.5,  0. ,  0.5,  2. ])
+            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([-0.5,  0.5, -0.5,  0. ,  0. ])
+
+            >>> mod = komm.Modulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])
+            >>> mod.constellation
+            array([ 0.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])
+            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+            array([ 0.+0.j,  0.+1.j,  0.+0.j, -1.+0.j, -1.+0.j])
+        """
+        if np.isrealobj(constellation):
+            self._constellation = np.array(constellation, dtype=float)
+        else:
+            self._constellation = np.array(constellation, dtype=complex)
         self._order = self._constellation.size
         if self._order & (self._order - 1):
             raise ValueError("The length of constellation must be a power of two")

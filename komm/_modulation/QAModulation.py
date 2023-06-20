@@ -1,12 +1,11 @@
 import numpy as np
 
-from .ComplexModulation import ComplexModulation
 from .Modulation import Modulation
 
 
-class QAModulation(ComplexModulation):
+class QAModulation(Modulation):
     r"""
-    Quadrature-amplitude modulation (QAM). It is a [complex modulation scheme](/ref/ComplexModulation) in which the constellation $\mathcal{S}$ is given as a Cartesian product of two [PAM](/ref/PAModulation) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely,
+    Quadrature-amplitude modulation (QAM). It is a complex [modulation scheme](/ref/Modulation) in which the constellation $\mathcal{S}$ is given as a Cartesian product of two [PAM](/ref/PAModulation) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely,
     $$
         \mathcal{S} = \\{ [\pm(2i_\mathrm{I} + 1)A_\mathrm{I} \pm \mathrm{j}(2i_\mathrm{Q} + 1)A_\mathrm{Q}] \exp(\mathrm{j}\phi) : i_\mathrm{I} \in [0 : M_\mathrm{I}), i_\mathrm{Q} \in [0 : M_\mathrm{Q}) \\},
     $$

@@ -29,15 +29,12 @@ Error control:
 Finite-state machines:
 - FiniteStateMachine
 Modulation:
-  Real modulation schemes:
-  - RealModulation
+  - Modulation
   - PAModulation
-  Complex modulation schemes:
-  - ComplexModulation
+  - QAModulation
   - ASKModulation
   - PSKModulation
   - APSKModulation
-  - QAModulation
 Pulse formatting:
   Pulses:
   - RectangularPulse
