@@ -7,7 +7,7 @@ license = "GPL"
 name = "komm"
 readme = "README.md"
 repository = "https://github.com/rwnobrega/komm"
-version = "0.7.4"
+version = "0.8.0"
 
 [project.urls]
 Documentation = "https://komm.dev/docs/"
@@ -18,7 +18,7 @@ exclude = ["contrib", "docs", "tests*"]
 
 [build-system]
 python_requires = ">=3.8"
-requires = ["numpy", "scipy"]
+requires = ["setuptools", "wheel", "numpy", "scipy"]
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
