@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.3/full/pyodide.js"></script>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript">
+        async function main() {
+            let pyodide = await loadPyodide();
+
+            await pyodide.loadPackage("micropip");
+            const micropip = pyodide.pyimport("micropip");
+            await micropip.install('komm');
+            pyodide.runPython(`
+  import numpy as np
+  print(np.arange(10))
+  `);
+            console.log(pyodide.runPython("1 + 2"));
+        }
+        main();
+  </script>
+</body>
+</html>
