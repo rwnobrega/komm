@@ -1,24 +1,18 @@
 [project]
-authors = [{name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com"}]
-description = "An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems."
-documentation = "https://komm.dev/docs/"
-homepage = "https://komm.dev/"
-license = "GPL"
 name = "komm"
+authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
+description = "An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems."
 readme = "README.md"
-repository = "https://github.com/rwnobrega/komm"
+urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/komm/" }
+license = { file = "LICENSE" }
 version = "0.8.0"
-
-[project.urls]
-Documentation = "https://komm.dev/docs/"
-Source = "https://github.com/rwnobrega/komm/"
-
-[project.packages]
-exclude = ["contrib", "docs", "tests*"]
+requires-python = ">=3.8"
 
 [build-system]
-python_requires = ">=3.8"
 requires = ["setuptools", "wheel", "numpy", "scipy"]
+
+[tool.setuptools]
+py-modules = []
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
