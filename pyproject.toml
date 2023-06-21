@@ -21,4 +21,4 @@ addopts = "--doctest-modules"
 python_files = "test_*.py"
 python_functions = "test_*"
 pythonpath = "."
-testpaths = ["komm", "tests"]
+testpaths = ["src/komm", "tests"]
