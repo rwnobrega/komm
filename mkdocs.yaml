@@ -6,7 +6,7 @@ docs_dir: site/docs
 site_dir: site/build
 
 watch:
-- komm/
+- src/komm/
 - site/
 
 extra_css:
