@@ -12,7 +12,7 @@
 *[LUT]: lookup table
 *[MSB]: most significant bit
 *[NRZ]: non-return-to-zero
-*[PAM]: pulse amplitude modulation
+*[PAM]: pulse-amplitude modulation
 *[pmf]: probability mass function
 *[PSK]: phase-shift keying
 *[QAM]: quadrature amplitude modulation
