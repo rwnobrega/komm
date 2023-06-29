@@ -9,7 +9,7 @@ class PAModulation(Modulation):
     $$
         x_i = A \left( 2i - M + 1 \right), \quad i \in [0 : M),
     $$
-    where $M$ is the *order* (a power of $2$), and $A$ is the *base amplitude*. The PAM constellation is depicted below for $M = 8$.
+    where $M$ is the *order* (a power of $2$), and $A$ is the *base amplitude* of the modulation. The PAM constellation is depicted below for $M = 8$.
 
     <figure markdown>
       ![8-PAM constellation.](/figures/pam_8.svg)
