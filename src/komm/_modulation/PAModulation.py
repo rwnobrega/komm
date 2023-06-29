@@ -5,7 +5,7 @@ from .Modulation import Modulation
 
 class PAModulation(Modulation):
     r"""
-    Pulse-amplitude modulation (PAM). It is a real [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in the real line and have zero mean. More precisely, the rows of the constellation $\mathbf{X}$ are given by
+    Pulse-amplitude modulation (PAM). It is a real [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in the real line and have zero mean. More precisely, the the $i$-th constellation symbol is given by
     $$
         x_i = A \left( 2i - M + 1 \right), \quad i \in [0 : M),
     $$

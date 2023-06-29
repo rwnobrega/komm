@@ -5,7 +5,7 @@ from .Modulation import Modulation
 
 class ASKModulation(Modulation):
     r"""
-    Amplitude-shift keying (ASK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the points of the constellation symbols are *uniformly arranged* in a ray. More precisely, the rows of the constellation $\mathbf{X}$ are given by
+    Amplitude-shift keying (ASK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the points of the constellation symbols are *uniformly arranged* in a ray. More precisely, the $i$-th constellation symbol is given by
     $$
         x_i = iA \exp(\mathrm{j}\phi), \quad i \in [0 : M),
     $$
