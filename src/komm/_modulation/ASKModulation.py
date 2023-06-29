@@ -32,10 +32,10 @@ class ASKModulation(Modulation):
 
         Examples:
 
-            The ASK constellation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
+            The ASK modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
 
             <figure markdown>
-              ![4-ASK constellation with Gray labeling.](/figures/ask_4_gray.svg)
+              ![4-ASK modulation with Gray labeling.](/figures/ask_4_gray.svg)
             </figure>
 
             >>> ask = komm.ASKModulation(4)

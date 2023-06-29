@@ -30,10 +30,10 @@ class PAModulation(Modulation):
 
         Examples:
 
-            The PAM constellation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
+            The PAM modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
 
             <figure markdown>
-              ![4-PAM constellation with Gray labeling.](/figures/pam_4_gray.svg)
+              ![4-PAM modulation with Gray labeling.](/figures/pam_4_gray.svg)
             </figure>
 
             >>> pam = komm.PAModulation(4)
