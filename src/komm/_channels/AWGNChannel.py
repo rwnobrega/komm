@@ -61,6 +61,13 @@ class AWGNChannel:
         else:
             self._signal_power = float(value)
 
+    @property
+    def noise_power(self):
+        r"""
+        The noise power $N$.
+        """
+        return self._signal_power / self._snr
+
     def capacity(self):
         r"""
         Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.
