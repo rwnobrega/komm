@@ -16,14 +16,14 @@ class AWGNChannel:
     To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
     """
 
-    def __init__(self, snr=np.inf, signal_power=1.0):
+    def __init__(self, signal_power, snr=np.inf):
         r"""Constructor for the class.
 
         Parameters:
 
-            snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
+            signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
-            signal_power (Optional[float | str]): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is `1.0`.
+            snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
         Examples:
 
@@ -67,7 +67,7 @@ class AWGNChannel:
 
         Examples:
 
-            >>> awgn = komm.AWGNChannel(snr=63.0)
+            >>> awgn = komm.AWGNChannel(signal_power=1.0, snr=63.0)
             >>> awgn.capacity()
             3.0
         """
