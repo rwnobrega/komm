@@ -5,9 +5,9 @@ from .Modulation import Modulation
 
 class PSKModulation(Modulation):
     r"""
-    Phase-shift keying (PSK) modulation. It is a [modulation scheme](/ref/Modulation) in which the points of the constellation $\mathcal{S}$ are *uniformly arranged* in a circle. More precisely,
+    Phase-shift keying (PSK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in a circle. More precisely, the the $i$-th constellation symbol is given by
     $$
-        \mathcal{S} = \left \\{ A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi) : i \in [0 : M) \right \\}
+        x_i = A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi), \quad i \in [0 : M),
     $$
     where $M$ is the *order* (a power of $2$), $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the modulation. The PSK constellation is depicted below for $M = 8$.
 
@@ -28,15 +28,24 @@ class PSKModulation(Modulation):
 
             phase_offset (Optional[float]): The phase offset $\phi$ of the constellation. The default value is `0.0`.
 
-            labeling (Optional[Array1D[int] | str]): The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of `'natural'` or `'reflected'`. The default value is `'reflected'` (Gray code).
+            labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
+
+        The PSK modulation with order $M = 4$, base amplitude $A = 1$, phase offset $\phi = \pi/4$, and Gray labeling is depicted below.
+
+        <figure markdown>
+          ![4-PSK modulation with Gray labeling.](/figures/psk_4_gray.svg)
+        </figure>
 
         Examples:
 
-            >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4)
+            >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4.0)
             >>> psk.constellation  #doctest: +NORMALIZE_WHITESPACE
             array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])
             >>> psk.labeling
-            array([0, 1, 3, 2])
+            array([[0, 0],
+                   [1, 0],
+                   [1, 1],
+                   [0, 1]])
             >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
             array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
         """
