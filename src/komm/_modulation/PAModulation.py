@@ -33,7 +33,7 @@ class PAModulation(Modulation):
             The PAM constellation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
 
             <figure markdown>
-              ![4-PAM constellation with Gray labeling.](/figures/pam_4.svg)
+              ![4-PAM constellation with Gray labeling.](/figures/pam_4_gray.svg)
             </figure>
 
             >>> pam = komm.PAModulation(4)
