@@ -52,8 +52,22 @@ def test_pam_modulation_3(order, labeling):
     assert np.allclose(pam.demodulate(y, decision_method="hard"), bits)
 
 
+@pytest.mark.parametrize(
+    "order, demodulated",
+    [
+        (2, [0, 0, 0, 1, 1, 1]),
+        (4, [0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1]),
+        (8, [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1]),
+    ],
+)
+def test_pam_modulation_4(order, demodulated):
+    ask = komm.PAModulation(order)
+    y = [-20.0, -7.1, -0.5, 1.5, 6.2, 100.0]
+    assert np.allclose(ask.demodulate(y), demodulated)
+
+
 @pytest.mark.parametrize("channel_snr", [0.1, 0.3, 1.0, 3.0, 10.0, np.inf])
-def test_pam_modulation_4(channel_snr):
+def test_pam_modulation_5(channel_snr):
     # Test soft demodulation for BPSK
     pam2 = komm.PAModulation(2)
     assert np.allclose(
