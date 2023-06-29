@@ -68,7 +68,7 @@ def test_pam_modulation_4(order, demodulated):
 
 @pytest.mark.parametrize("channel_snr", [0.1, 0.3, 1.0, 3.0, 10.0, np.inf])
 def test_pam_modulation_5(channel_snr):
-    # Test soft demodulation for BPSK
+    # Test soft demodulation for 2-PAM
     pam2 = komm.PAModulation(2)
     assert np.allclose(
         pam2.demodulate([-1.0, 1.0], decision_method="soft", channel_snr=channel_snr),
