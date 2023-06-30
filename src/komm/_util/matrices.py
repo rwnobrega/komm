@@ -4,7 +4,7 @@ import numpy as np
 def cartesian_product(A, B):
     r"""
     Computes the Cartesian product of two vectors/matrices.
-    See SA15, eq. (2.2), where it is called the 'ordered direct product'.
+    See SA15, eq. (2.2), where it is called the 'ordered direct product' and uses a different convention.
     """
     rA, cA = A.shape
     rB, cB = B.shape
