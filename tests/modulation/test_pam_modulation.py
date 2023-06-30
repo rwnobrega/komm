@@ -47,9 +47,7 @@ def test_pam_modulation_3(order, labeling):
     pam = komm.PAModulation(order, labeling=labeling)
     m = pam.bits_per_symbol
     bits = np.random.randint(0, 2, size=100 * m, dtype=int)
-    x = pam.modulate(bits)
-    y = x
-    assert np.allclose(pam.demodulate(y, decision_method="hard"), bits)
+    assert np.allclose(pam.demodulate(pam.modulate(bits)), bits)
 
 
 @pytest.mark.parametrize(
