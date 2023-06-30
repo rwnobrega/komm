@@ -49,7 +49,7 @@ class PSKModulation(Modulation):
             >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
             array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
         """
-        constellation = amplitude * np.exp(2j * np.pi * np.arange(order) / order) * np.exp(1j * phase_offset)
+        constellation = self._psk_constellation(order, amplitude, phase_offset)
 
         if isinstance(labeling, str):
             if labeling in ["natural", "reflected"]:
@@ -65,3 +65,7 @@ class PSKModulation(Modulation):
     def __repr__(self):
         args = "{}, amplitude={}, phase_offset={}".format(self._order, self._amplitude, self._phase_offset)
         return "{}({})".format(self.__class__.__name__, args)
+
+    @staticmethod
+    def _psk_constellation(order, amplitude, phase_offset):
+        return amplitude * np.exp(2j * np.pi * np.arange(order) / order) * np.exp(1j * phase_offset)

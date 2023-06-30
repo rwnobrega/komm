@@ -56,7 +56,7 @@ class ASKModulation(Modulation):
             "labeling": labeling,
         }
 
-        constellation = base_amplitude * np.arange(order, dtype=int) * np.exp(1j * phase_offset)
+        constellation = self.ask_constellation(order, base_amplitude, phase_offset)
 
         if isinstance(labeling, str):
             if labeling in ["natural", "reflected"]:
@@ -73,3 +73,7 @@ class ASKModulation(Modulation):
         order, base_amplitude, phase_offset, labeling = self._constructor_kwargs.values()
         args = f"{order}, base_amplitude={base_amplitude}, phase_offset={phase_offset}, labeling={labeling}"
         return f"{self.__class__.__name__}({args})"
+
+    @staticmethod
+    def ask_constellation(order, base_amplitude, phase_offset):
+        return base_amplitude * np.arange(order, dtype=int) * np.exp(1j * phase_offset)

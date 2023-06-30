@@ -53,7 +53,7 @@ class PAModulation(Modulation):
             "labeling": labeling,
         }
 
-        constellation = base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
+        constellation = self._pam_constellation(order, base_amplitude)
 
         if isinstance(labeling, str):
             if labeling in ["natural", "reflected"]:
@@ -69,6 +69,10 @@ class PAModulation(Modulation):
         order, base_amplitude, labeling = self._constructor_kwargs.values()
         args = f"{order}, base_amplitude={base_amplitude}, labeling='{labeling}'"
         return f"{self.__class__.__name__}({args})"
+
+    @staticmethod
+    def _pam_constellation(order, base_amplitude):
+        return base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
 
     def _demodulate_hard(self, received):
         indices = np.clip(
