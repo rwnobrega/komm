@@ -4,7 +4,7 @@ import numpy as np
 def _cartesian_product_2d(A, B):
     rA, cA = A.shape
     rB, cB = B.shape
-    C = np.empty((rA * rB, cA + cB), dtype=A.dtype)
+    C = np.empty((rA * rB, cA + cB), dtype=np.result_type(A, B))
     for i, rowA in enumerate(A):
         for j, rowB in enumerate(B):
             C[j * rA + i, :] = np.concatenate((rowA, rowB))
