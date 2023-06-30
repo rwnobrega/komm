@@ -61,9 +61,9 @@ def test_pam_modulation_3(order, labeling):
     ],
 )
 def test_pam_modulation_4(order, demodulated):
-    ask = komm.PAModulation(order)
+    pam = komm.PAModulation(order)
     y = [-20.0, -7.1, -0.5, 1.5, 6.2, 100.0]
-    assert np.allclose(ask.demodulate(y), demodulated)
+    assert np.allclose(pam.demodulate(y), demodulated)
 
 
 @pytest.mark.parametrize("channel_snr", [0.1, 0.3, 1.0, 3.0, 10.0, np.inf])
