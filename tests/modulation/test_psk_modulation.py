@@ -52,6 +52,4 @@ def test_psk_modulation_3(order, labeling):
     psk = komm.PSKModulation(order, labeling=labeling)
     m = psk.bits_per_symbol
     bits = np.random.randint(0, 2, size=100 * m, dtype=int)
-    x = psk.modulate(bits)
-    y = x
-    assert np.allclose(psk.demodulate(y, decision_method="hard"), bits)
+    assert np.allclose(psk.demodulate(psk.modulate(bits)), bits)
