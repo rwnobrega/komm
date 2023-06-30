@@ -2,7 +2,7 @@ import itertools as it
 
 import numpy as np
 
-from .._util import int2binlist
+from .._util import cartesian_product, int2binlist
 
 
 class Modulation:
@@ -353,13 +353,7 @@ class Modulation:
 
     @staticmethod
     def _labeling_reflected_2d(M_I, M_Q):
-        m1 = M_I.bit_length() - 1
-        m2 = M_Q.bit_length() - 1
-        labeling_I = Modulation._labeling_reflected(M_I)
-        labeling_Q = Modulation._labeling_reflected(M_Q)
-        labeling = np.empty((M_I * M_Q, m1 + m2), dtype=int)
-        for i_I, bits_I in enumerate(labeling_I):
-            for i_Q, bits_Q in enumerate(labeling_Q):
-                labeling[i_I + i_Q * M_I, :] = np.concatenate((bits_I, bits_Q))
-
-        return labeling
+        return cartesian_product(
+            Modulation._labeling_reflected(M_I),
+            Modulation._labeling_reflected(M_Q),
+        )

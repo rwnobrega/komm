@@ -24,6 +24,7 @@ from .bit_operations import (
 )
 from .correlation import acorr, cyclic_acorr
 from .information_theory import _entropy, _mutual_information, entropy
+from .matrices import cartesian_product
 from .special_functions import qfunc, qfuncinv
 
 __all__ = [
