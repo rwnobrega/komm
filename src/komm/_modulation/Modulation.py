@@ -2,12 +2,14 @@ import itertools as it
 
 import numpy as np
 
-from .._util import int2binlist
+from .._util import cartesian_product, int2binlist
 
 
 class Modulation:
     r"""
-    General modulation scheme. A *modulation scheme* of order $M$ is defined by a *constellation* $\mathcal{S}$, which is an ordered subset (a list) of real or complex numbers, with $|\mathcal{S}| = M$, and a *binary labeling* $\mathcal{Q}$, which is a permutation of $[0: M)$. The order $M$ of the modulation must be a power of $2$.
+    General modulation scheme. A *modulation scheme* of *order* $M = 2^m$ is defined by a *constellation* $\mathbf{X}$, which is a real or complex vector of length $M$, and a *binary labeling* $\mathbf{Q}$, which is an $M \times m$ binary matrix whose rows are all distinct. The $i$-th element of $\mathbf{X}$, for $i \in [0:M)$, is denoted by $x_i$ and is called the $i$-th *constellation symbol*. The $i$-th row of $\mathbf{Q}$, for $i \in [0:M)$, is called the *binary representation* of the $i$-th constellation symbol.
+
+    For more details, see <cite>SA15, Sec. 2.5</cite>.
     """
 
     def __init__(self, constellation, labeling):
@@ -16,17 +18,67 @@ class Modulation:
 
         Parameters:
 
-            constellation (Array1D[float] | Array1D[complex]): The constellation $\mathcal{S}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
+            constellation (Array1D[float] | Array1D[complex]): The constellation $\mathbf{X}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
 
-            labeling (Array1D[int]): The binary labeling $\mathcal{Q}$ of the modulation. Must be a 1D-array of integers corresponding to a permutation of $[0 : M)$.
+            labeling (Array2D[int]): The binary labeling $\mathbf{Q}$ of the modulation. Must be a 2D-array of shape $(M, m)$ where each row is a distinct binary $m$-tuple.
 
         Examples:
 
-            >>> komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
-            Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[0, 1, 3, 2])
+            The real modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.
 
-            >>> komm.Modulation(constellation=[0.0, -1, 1, 1j], labeling=[0, 1, 2, 3])
-            Modulation(constellation=[0j, (-1+0j), (1+0j), 1j], labeling=[0, 1, 2, 3])
+            <figure markdown>
+              ![Example for real modulation with M = 4](/figures/modulation_real_4.svg)
+            </figure>
+
+            The constellation is given by
+            $$
+                \mathbf{X} = \begin{bmatrix}
+                    -0.5 \\\\
+                    0.0 \\\\
+                    0.5 \\\\
+                    2.0
+                \end{bmatrix},
+            $$
+            and the binary labeling is given by
+            $$
+                \mathbf{Q} = \begin{bmatrix}
+                    1 & 0 \\\\
+                    1 & 1 \\\\
+                    0 & 1 \\\\
+                    0 & 0
+                \end{bmatrix}.
+            $$
+
+            >>> komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
+            Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
+
+            The complex modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.
+
+            <figure markdown>
+              ![Example for complex modulation with M = 4](/figures/modulation_complex_4.svg)
+            </figure>
+
+            The constellation is given by
+            $$
+                \mathbf{X} = \begin{bmatrix}
+                    0  \\\\
+                    -1  \\\\
+                    1  \\\\
+                    \mathrm{j}
+                \end{bmatrix},
+            $$
+            and the binary labeling is given by
+            $$
+                \mathbf{Q} = \begin{bmatrix}
+                    0 & 0 \\\\
+                    0 & 1 \\\\
+                    1 & 0 \\\\
+                    1 & 1
+                \end{bmatrix}.
+            $$
+
+            >>> komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
+            Modulation(constellation=[0j, (-1+0j), (1+0j), 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
         """
         if np.isrealobj(constellation):
             self._constellation = np.array(constellation, dtype=float)
@@ -34,20 +86,18 @@ class Modulation:
             self._constellation = np.array(constellation, dtype=complex)
         self._order = self._constellation.size
         if self._order & (self._order - 1):
-            raise ValueError("The length of constellation must be a power of two")
+            raise ValueError("The length of `constellation` must be a power of two")
         self._bits_per_symbol = (self._order - 1).bit_length()
 
         self._labeling = np.array(labeling, dtype=int)
-        if not np.array_equal(np.sort(self._labeling), np.arange(self._order)):
-            raise ValueError("The labeling must be a permutation of [0 : order)")
-        self._mapping = {
-            symbol: tuple(int2binlist(label, width=self._bits_per_symbol))
-            for (symbol, label) in enumerate(self._labeling)
-        }
-        self._inverse_mapping = dict((value, key) for key, value in self._mapping.items())
+        if self._labeling.shape != (self._order, self._bits_per_symbol):
+            raise ValueError("The shape of `labeling` must be ({}, {})".format(self._order, self._bits_per_symbol))
+        if np.any(self._labeling < 0) or np.any(self._labeling > 1):
+            raise ValueError("The elements of `labeling` must be either 0 or 1")
+        if len(set(tuple(row) for row in self._labeling)) != self._order:
+            raise ValueError("The rows of `labeling` must be distinct")
 
-        self._channel_snr = 1.0
-        self._channel_N0 = self.energy_per_symbol / self._channel_snr
+        self._inverse_labeling = dict(zip(map(tuple, self._labeling), range(self._order)))
 
     def __repr__(self):
         args = "constellation={}, labeling={}".format(self._constellation.tolist(), self._labeling.tolist())
@@ -56,11 +106,11 @@ class Modulation:
     @property
     def constellation(self):
         r"""
-        The constellation $\mathcal{S}$ of the modulation.
+        The constellation $\mathbf{X}$ of the modulation.
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.constellation
             array([-0.5,  0. ,  0.5,  2. ])
         """
@@ -69,13 +119,16 @@ class Modulation:
     @property
     def labeling(self):
         r"""
-        The binary labeling $\mathcal{Q}$ of the modulation.
+        The binary labeling $\mathbf{Q}$ of the modulation.
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.labeling
-            array([0, 1, 3, 2])
+            array([[1, 0],
+                   [1, 1],
+                   [0, 1],
+                   [0, 0]])
         """
         return self._labeling
 
@@ -86,7 +139,7 @@ class Modulation:
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.order
             4
         """
@@ -99,7 +152,7 @@ class Modulation:
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.bits_per_symbol
             2
         """
@@ -110,15 +163,19 @@ class Modulation:
         r"""
         The average symbol energy $E_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by
         $$
-            E_\mathrm{s} = \frac{1}{M} \sum_{s_i \in \mathcal{S}} |s_i|^2,
+            E_\mathrm{s} = \frac{1}{M} \sum_{i \in [0:M)} |x_i|^2,
         $$
-        where $|s_i|^2$ is the energy of symbol $s_i \in \mathcal{S}$ and $M$ is the order of the modulation.
+        where $|x_i|^2$ is the energy of constellation symbol $x_i$, and $M$ is the order of the modulation.
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_symbol
             1.125
+
+            >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
+            >>> mod.energy_per_symbol
+            0.75
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
@@ -129,22 +186,53 @@ class Modulation:
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_bit
             0.5625
+
+            >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
+            >>> mod.energy_per_bit
+            0.375
         """
         return self.energy_per_symbol / np.log2(self._order)
 
     @property
-    def minimum_distance(self):
+    def symbol_mean(self):
         r"""
-        The minimum euclidean distance of the constellation.
+        The mean $\mu_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by
+        $$
+            \mu_\mathrm{s} = \frac{1}{M} \sum_{i \in [0:M)} x_i.
+        $$
 
         Examples:
 
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
+            >>> mod.symbol_mean
+            0.5
+
+            >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
+            >>> mod.symbol_mean
+            0.25j
+        """
+        return np.sum(self._constellation) / self._order
+
+    @property
+    def minimum_distance(self):
+        r"""
+        The minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
+        $$
+            d_\mathrm{min} = \min_{i, j \in [0:M), ~ i \neq j} |x_i - x_j|.
+        $$
+
+        Examples:
+
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.minimum_distance
             0.5
+
+            >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
+            >>> mod.minimum_distance
+            1.0
         """
         return np.min(
             np.fromiter(
@@ -153,74 +241,9 @@ class Modulation:
             )
         )
 
-    @property
-    def channel_snr(self):
-        r"""
-        The signal-to-noise ratio $\snr$ of the channel. This is used in soft-decision methods.
-        """
-        return self._channel_snr
-
-    @channel_snr.setter
-    def channel_snr(self, value):
-        self._channel_snr = value
-        self._channel_N0 = self.energy_per_symbol / self._channel_snr
-
-    def bits_to_symbols(self, bits):
-        r"""
-        Converts bits to symbols using the modulation binary labeling.
-
-        Parameters:
-
-            bits (Array1D[int]): The bits to be converted. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
-
-        Returns:
-
-            symbols (Array1D[int]): The symbols corresponding to `bits`. It is a 1D-array of integers in the set $[0 : M)$. Its length is equal to the length of `bits` divided by $m$.
-
-        Examples:
-
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
-            >>> bits = np.array([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-            >>> mod.bits_to_symbols(bits)
-            array([0, 2, 0, 1, 1])
-        """
-        m = self._bits_per_symbol
-        n_symbols = len(bits) // m
-        assert len(bits) == n_symbols * m
-        symbols = np.empty(n_symbols, dtype=int)
-        for i, bit_sequence in enumerate(np.reshape(bits, newshape=(n_symbols, m))):
-            symbols[i] = self._inverse_mapping[tuple(bit_sequence)]
-        return symbols
-
-    def symbols_to_bits(self, symbols):
-        r"""
-        Converts symbols to bits using the modulation binary labeling.
-
-        Parameters:
-
-            symbols (Array1D[int]): The symbols to be converted. It should be a 1D-array of integers in the set $[0 : M)$. It may be of any length.
-
-        Returns:
-
-            bits (Array1D[int]): The bits corresponding to `symbols`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length is equal to the length of `symbols` multiplied by $m$.
-
-        Examples:
-
-            >>> mod = komm.Modulation(constellation=[-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
-            >>> symbols = np.array([0, 2, 0, 1, 1])
-            >>> mod.symbols_to_bits(symbols)
-            array([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-        """
-        m = self._bits_per_symbol
-        n_bits = len(symbols) * m
-        bits = np.empty(n_bits, dtype=int)
-        for i, symbol in enumerate(symbols):
-            bits[i * m : (i + 1) * m] = self._mapping[symbol]
-        return bits
-
     def modulate(self, bits):
         r"""
-        Modulates a sequence of bits to its corresponding constellation points.
+        Modulates a sequence of bits to its corresponding constellation symbols.
 
         Parameters:
 
@@ -228,29 +251,35 @@ class Modulation:
 
         Returns:
 
-            symbols (Array1D[complex] | Array1D[float]): The constellation points corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
+            symbols (Array1D[complex] | Array1D[float]): The constellation symbols corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
 
         Examples:
 
-            >>> mod = komm.Modulation([-0.5, 0, 0.5, 2], labeling=[0, 1, 3, 2])
-            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-            array([-0.5,  0.5, -0.5,  0. ,  0. ])
-        """
-        symbols = self.bits_to_symbols(bits)
-        return self._constellation[symbols]
-
-    def _hard_symbol_demodulator(self, received):
-        r"""
-        General minimum distance hard demodulator.
-        """
-        mpoints, mconst = np.meshgrid(received, self._constellation)
-        return np.argmin(np.absolute(mpoints - mconst), axis=0)
-
-    def _soft_bit_demodulator(self, received):
-        r"""
-        Computes L-values of received points.
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
+            >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0])
+            array([ 2. ,  0. ,  2. , -0.5])
         """
         m = self._bits_per_symbol
+        n_symbols = len(bits) // m
+        if len(bits) != n_symbols * m:
+            raise ValueError("The length of `bits` must be a multiple of the number of bits per symbol.")
+        symbols = np.empty(n_symbols, dtype=self._constellation.dtype)
+        for i, bit_sequence in enumerate(np.reshape(bits, newshape=(n_symbols, m))):
+            symbols[i] = self._constellation[self._inverse_labeling[tuple(bit_sequence)]]
+        return symbols
+
+    def _demodulate_hard(self, received):
+        # General minimum Euclidean distance hard demodulator.
+        hard_bits = np.empty((len(received), self._bits_per_symbol), dtype=int)
+        for i, y in enumerate(received):
+            hard_bits[i, :] = self._labeling[np.argmin(np.abs(self._constellation - y)), :]
+        return np.reshape(hard_bits, newshape=-1)
+
+    def _demodulate_soft(self, received, channel_snr=1.0):
+        # Computes the L-values (LLR) of each bit.
+        # Assumes uniformly distributed bits. See SA15, eq. (3.50).
+        m = self._bits_per_symbol
+        N0 = self.energy_per_symbol / channel_snr
 
         def pdf_received_given_bit(bit_index, bit_value):
             bits = np.empty(m, dtype=int)
@@ -259,8 +288,8 @@ class Modulation:
             f = 0.0
             for b_rest in it.product([0, 1], repeat=m - 1):
                 bits[rest_index] = b_rest
-                point = self._constellation[self._inverse_mapping[tuple(bits)]]
-                f += np.exp(-np.abs(received - point) ** 2 / self._channel_N0)
+                point = self._constellation[self._inverse_labeling[tuple(bits)]]
+                f += np.exp(-np.abs(received - point) ** 2 / N0)
             return f
 
         soft_bits = np.empty(len(received) * m, dtype=float)
@@ -271,7 +300,7 @@ class Modulation:
 
         return soft_bits
 
-    def demodulate(self, received, decision_method="hard"):
+    def demodulate(self, received, decision_method="hard", **kwargs):
         r"""
         Demodulates a sequence of received points to a sequence of bits.
 
@@ -281,34 +310,27 @@ class Modulation:
 
             decision_method (str): The decision method to be used. It should be either `'hard'` (corresponding to *hard-decision decoding*) or `'soft'` (corresponding to *soft-decision decoding*). The default value is `'hard'`.
 
+            kwargs (): Keyword arguments to be passed to the demodulator.
+
         Returns:
 
-            bits_or_soft_bits (Array1D[int] | Array1D[float]): The (hard or soft) bits corresponding to `received`. It is a 1D-array of integers in the set $\\{ 0, 1 \\}$ (in the case of hard-decision decoding) or a 1D-array of real numbers (in the case of soft-decision decoding). Its length is equal to the length of `received` multiplied by $m$.
+            bits_or_soft_bits (Array1D[int] | Array1D[float]): The (hard or soft) bits corresponding to `received`. In the case of hard-decision decoding, it is a 1D-array of bits (integers in the set $\\{ 0, 1 \\}$); in the case of of soft-decision decoding, it is a 1D-array of L-values (real numbers, where positive values correspond to bit $0$ and negative values correspond to bit $1$). Its length is equal to the length of `received` multiplied by $m$.
+
+        Examples:
+
+            >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
+            >>> received = [2.17, -0.06, 1.94, -0.61]
+
+            >>> mod.demodulate(received)
+            array([0, 0, 1, 1, 0, 0, 1, 0])
+
+            >>> mod.demodulate(received, decision_method='soft', channel_snr=100.0)
+            array([ 416.        ,  245.33333333,  -27.5555556 ,  -16.88888889,
+                    334.22222222,  184.        , -108.44444444,   32.        ])
+
         """
-        if decision_method == "hard":
-            symbols_hat = self._hard_symbol_demodulator(received)
-            return self.symbols_to_bits(symbols_hat)
-        elif decision_method == "soft":
-            return self._soft_bit_demodulator(received)
+        if decision_method in ["hard", "soft"]:
+            demodulate = getattr(self, "_demodulate_" + decision_method)
         else:
-            raise ValueError("Parameter 'decision_method' should be either 'hard' or 'soft'")
-
-    @staticmethod
-    def _labeling_natural(order):
-        labeling = np.arange(order)
-        return labeling
-
-    @staticmethod
-    def _labeling_reflected(order):
-        labeling = np.arange(order)
-        labeling ^= labeling >> 1
-        return labeling
-
-    @staticmethod
-    def _labeling_reflected_2d(order_I, order_Q):
-        labeling_I = Modulation._labeling_reflected(order_I)
-        labeling_Q = Modulation._labeling_reflected(order_Q)
-        labeling = np.empty(order_I * order_Q, dtype=int)
-        for i, (i_Q, i_I) in enumerate(it.product(labeling_Q, labeling_I)):
-            labeling[i] = i_I + order_I * i_Q
-        return labeling
+            raise ValueError("Parameter `decision_method` should be either 'hard' or 'soft'")
+        return demodulate(np.asarray(received), **kwargs)

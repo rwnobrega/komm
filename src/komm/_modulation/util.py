@@ -3,14 +3,6 @@
 import numpy as np
 
 
-def uniform_real_hard_demodulator(received, order):
-    return np.clip(np.around((received + order - 1) / 2), 0, order - 1).astype(int)
-
-
-def uniform_real_soft_bit_demodulator(received, snr):
-    return -4 * snr * received
-
-
 def ask_hard_demodulator(received, order):
     return np.clip(np.around((received.real + order - 1) / 2), 0, order - 1).astype(int)
 
