@@ -1,5 +1,7 @@
 import numpy as np
 
+from .constellations import constellation_pam
+from .labelings import labelings
 from .Modulation import Modulation
 
 
@@ -53,26 +55,20 @@ class PAModulation(Modulation):
             "labeling": labeling,
         }
 
-        constellation = self._pam_constellation(order, base_amplitude)
-
-        if isinstance(labeling, str):
-            if labeling in ["natural", "reflected"]:
-                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
-            else:
-                raise ValueError(f"Only 'natural' or 'reflected' are supported for {self.__class__.__name__}")
-
-        super().__init__(constellation, labeling)
-
         self._base_amplitude = float(base_amplitude)
+
+        allowed_labelings = ["natural", "reflected"]
+        if labeling in allowed_labelings:
+            labeling = labelings[labeling](order)
+        elif isinstance(labeling, str):
+            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+
+        super().__init__(constellation=constellation_pam(order, self._base_amplitude), labeling=labeling)
 
     def __repr__(self):
         order, base_amplitude, labeling = self._constructor_kwargs.values()
         args = f"{order}, base_amplitude={base_amplitude}, labeling='{labeling}'"
         return f"{self.__class__.__name__}({args})"
-
-    @staticmethod
-    def _pam_constellation(order, base_amplitude):
-        return base_amplitude * np.arange(-order + 1, order, step=2, dtype=int)
 
     def _demodulate_hard(self, received):
         indices = np.clip(

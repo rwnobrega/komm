@@ -1,5 +1,5 @@
-import numpy as np
-
+from .constellations import constellation_psk
+from .labelings import labelings
 from .Modulation import Modulation
 
 
@@ -49,23 +49,17 @@ class PSKModulation(Modulation):
             >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  #doctest: +NORMALIZE_WHITESPACE
             array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
         """
-        constellation = self._psk_constellation(order, amplitude, phase_offset)
-
-        if isinstance(labeling, str):
-            if labeling in ["natural", "reflected"]:
-                labeling = getattr(Modulation, "_labeling_" + labeling)(order)
-            else:
-                raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
-
-        super().__init__(constellation, labeling)
-
         self._amplitude = float(amplitude)
         self._phase_offset = float(phase_offset)
+
+        allowed_labelings = ["natural", "reflected"]
+        if labeling in allowed_labelings:
+            labeling = labelings[labeling](order)
+        elif isinstance(labeling, str):
+            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+
+        super().__init__(constellation_psk(order, self._amplitude, self._phase_offset), labeling)
 
     def __repr__(self):
         args = "{}, amplitude={}, phase_offset={}".format(self._order, self._amplitude, self._phase_offset)
         return "{}({})".format(self.__class__.__name__, args)
-
-    @staticmethod
-    def _psk_constellation(order, amplitude, phase_offset):
-        return amplitude * np.exp(2j * np.pi * np.arange(order) / order) * np.exp(1j * phase_offset)

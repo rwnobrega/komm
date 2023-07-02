@@ -334,33 +334,3 @@ class Modulation:
         else:
             raise ValueError("Parameter `decision_method` should be either 'hard' or 'soft'")
         return demodulate(np.asarray(received), **kwargs)
-
-    @staticmethod
-    def _labeling_natural(M):
-        m = M.bit_length() - 1
-        labeling = np.empty((M, m), dtype=int)
-        for i in range(M):
-            labeling[i, :] = int2binlist(i, m)
-        return labeling
-
-    @staticmethod
-    def _labeling_reflected(M):
-        m = M.bit_length() - 1
-        labeling = np.empty((M, m), dtype=int)
-        for i in range(M):
-            labeling[i, :] = int2binlist(i ^ (i >> 1), m)
-        return labeling
-
-    @staticmethod
-    def _labeling_natural_2d(M_I, M_Q):
-        return cartesian_product(
-            Modulation._labeling_natural(M_I),
-            Modulation._labeling_natural(M_Q),
-        )
-
-    @staticmethod
-    def _labeling_reflected_2d(M_I, M_Q):
-        return cartesian_product(
-            Modulation._labeling_reflected(M_I),
-            Modulation._labeling_reflected(M_Q),
-        )

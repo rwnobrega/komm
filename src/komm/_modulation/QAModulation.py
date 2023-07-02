@@ -1,7 +1,8 @@
-import numpy as np
+import math
 
+from .constellations import constellation_qam
+from .labelings import labelings
 from .Modulation import Modulation
-from .PAModulation import PAModulation
 
 
 class QAModulation(Modulation):
@@ -81,38 +82,26 @@ class QAModulation(Modulation):
         """
         if isinstance(orders, (tuple, list)):
             order_I, order_Q = int(orders[0]), int(orders[1])
-            self._orders = (order_I, order_Q)
         else:
-            order_I = order_Q = int(np.sqrt(orders))
-            self._orders = int(orders)
+            order_I = order_Q = math.isqrt(orders)
+        self._orders = (order_I, order_Q)
 
         if isinstance(base_amplitudes, (tuple, list)):
             base_amplitude_I, base_amplitude_Q = float(base_amplitudes[0]), float(base_amplitudes[1])
-            self._base_amplitudes = (base_amplitude_I, base_amplitude_Q)
         else:
             base_amplitude_I = base_amplitude_Q = float(base_amplitudes)
-            self._base_amplitudes = base_amplitude_I
+        self._base_amplitudes = (base_amplitude_I, base_amplitude_Q)
 
-        constellation = self._qam_constellation(order_I, order_Q, base_amplitude_I, base_amplitude_Q, phase_offset)
-
-        if isinstance(labeling, str):
-            if labeling in ["natural_2d", "reflected_2d"]:
-                labeling = getattr(Modulation, "_labeling_" + labeling)(order_I, order_Q)
-            else:
-                raise ValueError(f"Only 'natural_2d' or 'reflected_2d' are supported for {self.__class__.__name__}")
-
-        super().__init__(constellation, labeling)
-
-        self._orders = orders
-        self._base_amplitudes = base_amplitudes
         self._phase_offset = float(phase_offset)
+
+        allowed_labelings = ["natural_2d", "reflected_2d"]
+        if labeling in allowed_labelings:
+            labeling = labelings[labeling](self._orders)
+        elif isinstance(labeling, str):
+            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+
+        super().__init__(constellation_qam(self._orders, self._base_amplitudes, self._phase_offset), labeling)
 
     def __repr__(self):
         args = "{}, base_amplitudes={}, phase_offset={}".format(self._orders, self._base_amplitudes, self._phase_offset)
         return "{}({})".format(self.__class__.__name__, args)
-
-    @staticmethod
-    def _qam_constellation(order_I, order_Q, base_amplitude_I, base_amplitude_Q, phase_offset):
-        constellation_I = PAModulation._pam_constellation(order_I, base_amplitude_I)
-        constellation_Q = PAModulation._pam_constellation(order_Q, base_amplitude_Q)
-        return (constellation_I + 1j * constellation_Q[np.newaxis].T).flatten() * np.exp(1j * phase_offset)
