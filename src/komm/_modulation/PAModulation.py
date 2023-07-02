@@ -59,7 +59,7 @@ class PAModulation(Modulation):
             if labeling in ["natural", "reflected"]:
                 labeling = getattr(Modulation, "_labeling_" + labeling)(order)
             else:
-                raise ValueError("Only 'natural' or 'reflected' are supported for {}".format(self.__class__.__name__))
+                raise ValueError(f"Only 'natural' or 'reflected' are supported for {self.__class__.__name__}")
 
         super().__init__(constellation, labeling)
 
