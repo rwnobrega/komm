@@ -497,7 +497,7 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
-                <p>Quadrature-amplitude modulation (<abbr title="quadrature amplitude modulation">QAM</abbr>). It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the constellation $\mathcal{S}$ is given as a Cartesian product of two <a href="/ref/PAModulation"><abbr title="pulse amplitude modulation">PAM</abbr></a> constellations, namely, the <em>in-phase constellation</em>, and the <em>quadrature constellation</em>. More precisely, $$ \mathcal{S} = \{ [\pm(2i_\mathrm{I} + 1)A_\mathrm{I} \pm \mathrm{j}(2i_\mathrm{Q} + 1)A_\mathrm{Q}] \exp(\mathrm{j}\phi) : i_\mathrm{I} \in [0 : M_\mathrm{I}), i_\mathrm{Q} \in [0 : M_\mathrm{Q}) \}, $$ where $M_\mathrm{I}$ and $M_\mathrm{Q}$ are the <em>orders</em> (powers of $2$), and $A_\mathrm{I}$ and $A_\mathrm{Q}$ are the <em>base amplitudes</em> of the in-phase and quadrature constellations, respectively. Also, $\phi$ is the <em>phase offset</em>. The size of the resulting complex-valued constellation is $M = M_\mathrm{I} M_\mathrm{Q}$, a power of $2$. The <abbr title="quadrature amplitude modulation">QAM</abbr> constellation is depicted below for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ with $A_\mathrm{I} = A_\mathrm{Q} = A$, and for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ with $A_\mathrm{I} = A$ and $A_\mathrm{Q} = 2A$; in both cases, $\phi = 0$.</p>
+                <p>Quadrature-amplitude modulation (<abbr title="quadrature amplitude modulation">QAM</abbr>). It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the constellation is given as a Cartesian product of two <a href="/ref/PAModulation"><abbr title="pulse-amplitude modulation">PAM</abbr></a> constellations, namely, the <em>in-phase constellation</em>, and the <em>quadrature constellation</em>. More precisely, the $i$-th constellation symbol is given by $$ \begin{aligned} x_i = \left[ A_\mathrm{I} \left( 2i_\mathrm{I} - M_\mathrm{I} + 1 \right) + \mathrm{j} A_\mathrm{Q} \left( 2i_\mathrm{Q} - M_\mathrm{Q} + 1 \right) \right] \exp(\mathrm{j}\phi), \quad & i \in [0 : M), \\ & i_\mathrm{I} = i \bmod M_\mathrm{I}, \\ & i_\mathrm{Q} = \lfloor i / M_\mathrm{I} \rfloor, \end{aligned} $$ where $M_\mathrm{I}$ and $M_\mathrm{Q}$ are the <em>orders</em> (powers of $2$), and $A_\mathrm{I}$ and $A_\mathrm{Q}$ are the <em>base amplitudes</em> of the in-phase and quadrature constellations, respectively. Also, $\phi$ is the <em>phase offset</em>. The order of the resulting complex-valued constellation is $M = M_\mathrm{I} M_\mathrm{Q}$, a power of $2$. The <abbr title="quadrature amplitude modulation">QAM</abbr> constellation is depicted below for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ with ($A_\mathrm{I}, A_\mathrm{Q}) = (A, A)$; and for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ with $(A_\mathrm{I}, A_\mathrm{Q}) = (A, 2A)$; in both cases, $\phi = 0$.</p>
                 <div class="centered">
                   <p><span><img alt="16-QAM constellation." src="/figures/qam_16.svg"></span> <span><img alt="8-QAM constellation." src="/figures/qam_8.svg"></span></p>
                 </div>
@@ -529,11 +529,15 @@
                         <li class="field-body">
                           <b><code>labeling</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int] | str]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of <code>'natural'</code> or <code>'reflected_2d'</code>. The default value is <code>'reflected_2d'</code> (Gray code).</p>
+                            <p>The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see <a href="/ref/Modulation">base class</a> for details), or as a string. In the latter case, the string must be either <code>'natural_2d'</code> or <code>'reflected_2d'</code>. The default value is <code>'reflected_2d'</code>, corresponding to the Gray labeling.</p>
                           </div>
                         </li>
                       </ul>
                       <p><strong>Examples:</strong></p>
+                      <p>The square $16$-<abbr title="quadrature amplitude modulation">QAM</abbr> modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 1)$, and Gray labeling is depicted below.</p>
+                      <figure>
+                        <p><img alt="16-QAM modulation with Gray labeling." src="/figures/qam_16_gray.svg"></p>
+                      </figure>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">QAModulation</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">constellation</span>
@@ -542,17 +546,26 @@
 <span class="go">       -3.+1.j, -1.+1.j,  1.+1.j,  3.+1.j,</span>
 <span class="go">       -3.+3.j, -1.+3.j,  1.+3.j,  3.+3.j])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">labeling</span>
-<span class="go">array([ 0,  1,  3,  2,  4,  5,  7,  6, 12, 13, 15, 14,  8,  9, 11, 10])</span>
+<span class="go">array([[0, 0, 0, 0], [1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0], [1, 0, 1, 0], [1, 1, 1, 0], [0, 1, 1, 0],</span>
+<span class="go">       [0, 0, 1, 1], [1, 0, 1, 1], [1, 1, 1, 1], [0, 1, 1, 1],</span>
+<span class="go">       [0, 0, 0, 1], [1, 0, 0, 1], [1, 1, 0, 1], [0, 1, 0, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([-3.+1.j, -3.-1.j])</span>
 </code></pre>
                       </div>
+                      <p>The rectangular $8$-<abbr title="quadrature amplitude modulation">QAM</abbr> modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 2)$, and Gray labeling is depicted below.</p>
+                      <figure>
+                        <p><img alt="8-QAM modulation with Gray labeling." src="/figures/qam_8_gray.svg"></p>
+                      </figure>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">QAModulation</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">base_amplitudes</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">constellation</span>
-<span class="go">array([-3.-2.j, -1.-2.j,  1.-2.j,  3.-2.j, -3.+2.j, -1.+2.j,  1.+2.j,  3.+2.j])</span>
+<span class="go">array([-3.-2.j, -1.-2.j,  1.-2.j,  3.-2.j,</span>
+<span class="go">       -3.+2.j, -1.+2.j,  1.+2.j,  3.+2.j])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">labeling</span>
-<span class="go">array([0, 1, 3, 2, 4, 5, 7, 6])</span>
+<span class="go">array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],</span>
+<span class="go">       [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qam</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">array([-3.+2.j, -1.-2.j, -1.+2.j])</span>
 </code></pre>

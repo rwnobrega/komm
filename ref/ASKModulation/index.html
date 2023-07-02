@@ -497,7 +497,7 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
-                <p>Amplitude-shift keying (<abbr title="amplitude-shift keying">ASK</abbr>) modulation. It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the points of the constellation $\mathcal{S}$ are <em>uniformly arranged</em> in a ray. More precisely, $$ \mathcal{S} = \{ iA \exp(\mathrm{j}\phi): i \in [0 : M) \}, $$ where $M$ is the <em>order</em> (a power of $2$), $A$ is the <em>base amplitude</em>, and $\phi$ is the <em>phase offset</em> of the modulation. The <abbr title="amplitude-shift keying">ASK</abbr> constellation is depicted below for $M = 4$.</p>
+                <p>Amplitude-shift keying (<abbr title="amplitude-shift keying">ASK</abbr>) modulation. It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the points of the constellation symbols are <em>uniformly arranged</em> in a ray. More precisely, the $i$-th constellation symbol is given by $$ x_i = iA \exp(\mathrm{j}\phi), \quad i \in [0 : M), $$ where $M$ is the <em>order</em> (a power of $2$), $A$ is the <em>base amplitude</em>, and $\phi$ is the <em>phase offset</em> of the modulation. The <abbr title="amplitude-shift keying">ASK</abbr> constellation is depicted below for $M = 4$.</p>
                 <figure>
                   <p><img alt="4-ASK constellation." src="/figures/ask_4.svg"></p>
                 </figure>
@@ -529,21 +529,26 @@
                         <li class="field-body">
                           <b><code>labeling</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int] | str]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be one of <code>'natural'</code> or <code>'reflected'</code>. The default value is <code>'reflected'</code> (Gray code).</p>
+                            <p>The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see <a href="/ref/Modulation">base class</a> for details), or as a string. In the latter case, the string must be either <code>'natural'</code> or <code>'reflected'</code>. The default value is <code>'reflected'</code>, corresponding to the Gray labeling.</p>
                           </div>
                         </li>
                       </ul>
                       <p><strong>Examples:</strong></p>
+                      <p>The <abbr title="amplitude-shift keying">ASK</abbr> modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.</p>
+                      <figure>
+                        <p><img alt="4-ASK modulation with Gray labeling." src="/figures/ask_4_gray.svg"></p>
+                      </figure>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ASKModulation</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">base_amplitude</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ASKModulation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span><span class="o">.</span><span class="n">constellation</span>
-<span class="go">array([0.+0.j, 2.+0.j, 4.+0.j, 6.+0.j])</span>
+<span class="go">array([0.+0.j, 1.+0.j, 2.+0.j, 3.+0.j])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span><span class="o">.</span><span class="n">labeling</span>
-<span class="go">array([0, 1, 3, 2])</span>
+<span class="go">array([[0, 0],</span>
+<span class="go">       [1, 0],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [0, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([0.+0.j, 4.+0.j, 0.+0.j, 2.+0.j, 2.+0.j])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ask</span><span class="o">.</span><span class="n">demodulate</span><span class="p">([(</span><span class="mf">0.99</span><span class="o">+</span><span class="mf">0.3</span><span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.01</span><span class="o">-</span><span class="mf">0.5</span><span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="mf">4.99</span><span class="o">+</span><span class="mf">0.7</span><span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="mf">5.01</span><span class="o">-</span><span class="mf">0.9</span><span class="n">j</span><span class="p">)])</span>
-<span class="go">array([0, 0, 1, 0, 1, 1, 0, 1])</span>
+<span class="go">array([0.+0.j, 2.+0.j, 0.+0.j, 1.+0.j, 1.+0.j])</span>
 </code></pre>
                       </div>
                     </div>

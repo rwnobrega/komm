@@ -171,6 +171,9 @@
                                       <a href="#komm._channels.AWGNChannel.AWGNChannel.signal_power" class="md-nav__link">signal_power</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="#komm._channels.AWGNChannel.AWGNChannel.noise_power" class="md-nav__link">noise_power</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="#capacity" class="md-nav__link">capacity()</a>
                                     </li>
                                   </ul>
@@ -502,6 +505,9 @@
                     <a href="#komm._channels.AWGNChannel.AWGNChannel.signal_power" class="md-nav__link">signal_power</a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="#komm._channels.AWGNChannel.AWGNChannel.noise_power" class="md-nav__link">noise_power</a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#capacity" class="md-nav__link">capacity()</a>
                   </li>
                 </ul>
@@ -518,21 +524,21 @@
                 <p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span></code></h2>
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">signal_power</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Constructor for the class.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>snr</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
+                          <b><code>signal_power</code></b> <span class="doc-param-annotation">(<code>float | str</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
+                            <p>The input signal power $P$. If equal to the string <code>'measured'</code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>signal_power</code></b> <span class="doc-param-annotation">(<code>Optional[float | str]</code>)</span> –
+                          <b><code>snr</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The input signal power $P$. If equal to the string <code>'measured'</code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm). The default value is <code>1.0</code>.</p>
+                            <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
                           </div>
                         </li>
                       </ul>
@@ -559,13 +565,19 @@
                       <p>The input signal power $P$.</p>
                     </div>
                   </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="komm._channels.AWGNChannel.AWGNChannel.noise_power" class="doc doc-heading"><code class="highlight language-python"><span class="n">noise_power</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The noise power $N$.</p>
+                    </div>
+                  </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
 <span class="go">3.0</span>
 </code></pre>

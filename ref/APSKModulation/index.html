@@ -497,10 +497,10 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
-                <p>Amplitude- and phase-shift keying (<abbr title="amplitude- and phase-shift keying">APSK</abbr>) modulation. It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the constellation is the union of component <a href="/ref/PSKModulation"><abbr title="phase-shift keying">PSK</abbr></a> constellations, called <em>rings</em>. More precisely, $$ \mathcal{S} = \bigcup_{k \in [0 : K)} \mathcal{S}_k, $$ where $K$ is the number of rings and $$ \mathcal{S}_k = \left\{ A_k \exp \left( \mathrm{j} \frac{2 \pi i}{M_k} \right) \exp(\mathrm{j} \phi_k) : i \in [0 : M_k) \right\}, $$ where $M_k$ is the <em>order</em>, $A_k$ is the <em>amplitude</em>, and $\phi_k$ is the <em>phase offset</em> of the $k$-th ring, for $k \in [0 : K)$. The size of the resulting complex-valued constellation is $M = M_0 + M_1 + \cdots + M_{K-1}$. The order $M_k$ of each ring need not be a power of $2$; however, the order $M$ of the constructed <abbr title="amplitude- and phase-shift keying">APSK</abbr> modulation must be. The <abbr title="amplitude- and phase-shift keying">APSK</abbr> constellation is depicted below for $(M_0, M_1) = (8, 8)$ with $(A_0, A_1) = (A, 2A)$ and $(\phi_0, \phi_1) = (0, \pi/8)$.</p>
-                <figure>
-                  <p><img alt="16-APSK constellation." src="/figures/apsk_16.svg"></p>
-                </figure>
+                <p>Amplitude- and phase-shift keying (<abbr title="amplitude- and phase-shift keying">APSK</abbr>) modulation. It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the constellation is the union (concatenation) of component <a href="/ref/PSKModulation"><abbr title="phase-shift keying">PSK</abbr></a> constellations, called <em>rings</em>. More precisely, consider $K$ rings $\mathbf{X}_k$, for $k \in [0 : K)$, where the $k$-th ring has order $M_k$, amplitude $A_k$, and phase offset $\phi_k$. The $i$-th constellation symbol of the $k$-th ring is given by $$ x_{k,i} = A_k \exp \left( \mathrm{j} \frac{2 \pi i}{M_k} \right) \exp(\mathrm{j} \phi_k), \quad k \in [0 : K), \quad i \in [0 : M_k). $$ The resulting <abbr title="amplitude- and phase-shift keying">APSK</abbr> constellation is therefore given by $$ \mathbf{X} = \begin{bmatrix} \mathbf{X}_0 \\ \vdots \\ \mathbf{X}_{K-1} \end{bmatrix}, $$ which has order $M = M_0 + M_1 + \cdots + M_{K-1}$. The order $M_k$ of each ring need not be a power of $2$; however, the order $M$ of the constructed <abbr title="amplitude- and phase-shift keying">APSK</abbr> modulation must be. The <abbr title="amplitude- and phase-shift keying">APSK</abbr> constellation is depicted below for $(M_0, M_1) = (8, 8)$ with $(A_0, A_1) = (A, 2A)$ and $(\phi_0, \phi_1) = (0, \pi/8)$; and for $(M_0, M_1) = (4, 12)$ with $(A_0, A_1) = (\sqrt{2}A, 3A)$ and $(\phi_0, \phi_1) = (\pi/4, 0)$.</p>
+                <div class="centered">
+                  <p><span><img alt="(8,8)-APSK constellation." src="/figures/apsk_8_8.svg"></span> <span><img alt="(4,12)-APSK constellation." src="/figures/apsk_4_12.svg"></span></p>
+                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">amplitudes</span><span class="p">,</span> <span class="n">phase_offsets</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s1">'natural'</span><span class="p">)</span></code></h2>
@@ -529,7 +529,7 @@
                         <li class="field-body">
                           <b><code>labeling</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int] | str]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The binary labeling $\mathcal{Q}$ of the modulation. Can be specified either as a 1D-array of integers, in which case must be permutation of $[0 : M)$, or as a string, in which case must be equal to <code>'natural'</code>. The default value is <code>'natural'</code>.</p>
+                            <p>The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see <a href="/ref/Modulation">base class</a> for details), or as a string. In the latter case, the string must be equal to <code>'natural'</code>. The default value is <code>'natural'</code>.</p>
                           </div>
                         </li>
                       </ul>
@@ -541,6 +541,15 @@
 <span class="go">       -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,</span>
 <span class="go">        1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,</span>
 <span class="go">       -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">APSKModulation</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">amplitudes</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">),</span> <span class="n">phase_offsets</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">apsk</span><span class="o">.</span><span class="n">constellation</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([ 1.    +1.j    , -1.    +1.j    , -1.    -1.j    ,  1.    -1.j    ,</span>
+<span class="go">        3.    +0.j    ,  2.5981+1.5j   ,  1.5   +2.5981j,  0.    +3.j    ,</span>
+<span class="go">       -1.5   +2.5981j, -2.5981+1.5j   , -3.    +0.j    , -2.5981-1.5j   ,</span>
+<span class="go">       -1.5   -2.5981j, -0.    -3.j    ,  1.5   -2.5981j,  2.5981-1.5j   ])</span>
 </code></pre>
                       </div>
                     </div>
