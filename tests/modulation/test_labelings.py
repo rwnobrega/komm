@@ -91,3 +91,62 @@ def test_labeling_reflected_2d():
             [0, 1, 0, 1],
         ],
     )
+
+
+def test_labeling_natural_2d():
+    assert np.array_equal(
+        komm.Modulation._labeling_natural_2d(2, 2),
+        [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+            [1, 1],
+        ],
+    )
+    assert np.array_equal(
+        komm.Modulation._labeling_natural_2d(2, 4),
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [0, 1, 0],
+            [1, 1, 0],
+            [0, 0, 1],
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 1, 1],
+        ],
+    )
+    assert np.array_equal(
+        komm.Modulation._labeling_natural_2d(4, 2),
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [0, 1, 0],
+            [1, 1, 0],
+            [0, 0, 1],
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 1, 1],
+        ],
+    )
+    assert np.array_equal(
+        komm.Modulation._labeling_natural_2d(4, 4),
+        [
+            [0, 0, 0, 0],
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [1, 1, 0, 0],
+            [0, 0, 1, 0],
+            [1, 0, 1, 0],
+            [0, 1, 1, 0],
+            [1, 1, 1, 0],
+            [0, 0, 0, 1],
+            [1, 0, 0, 1],
+            [0, 1, 0, 1],
+            [1, 1, 0, 1],
+            [0, 0, 1, 1],
+            [1, 0, 1, 1],
+            [0, 1, 1, 1],
+            [1, 1, 1, 1],
+        ],
+    )

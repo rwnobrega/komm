@@ -352,6 +352,13 @@ class Modulation:
         return labeling
 
     @staticmethod
+    def _labeling_natural_2d(M_I, M_Q):
+        return cartesian_product(
+            Modulation._labeling_natural(M_I),
+            Modulation._labeling_natural(M_Q),
+        )
+
+    @staticmethod
     def _labeling_reflected_2d(M_I, M_Q):
         return cartesian_product(
             Modulation._labeling_reflected(M_I),
