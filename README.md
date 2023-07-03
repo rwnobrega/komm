@@ -1,7 +1,6 @@
 # Komm
 
 [![PyPI page](https://badge.fury.io/py/komm.svg)](https://pypi.org/project/komm/)
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rwnobrega/komm/master?filepath=demo)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
 
 Welcome to **Komm**!
