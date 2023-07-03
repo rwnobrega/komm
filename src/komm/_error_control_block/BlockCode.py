@@ -236,7 +236,7 @@ class BlockCode:
                    [0, 0, 1, 1, 1, 0]])
         """
         if self._generator_matrix is None:
-            return null_matrix(self._parity_check_matrix)
+            return null_matrix(self.parity_check_matrix)
         return self._generator_matrix
 
     @functools.cached_property
@@ -253,7 +253,7 @@ class BlockCode:
                    [1, 1, 0, 0, 0, 1]])
         """
         if self._parity_check_matrix is None:
-            return null_matrix(self._generator_matrix)
+            return null_matrix(self.generator_matrix)
         return self._parity_check_matrix
 
     @functools.cached_property

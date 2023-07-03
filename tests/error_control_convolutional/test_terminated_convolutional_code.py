@@ -38,10 +38,12 @@ import komm
 )
 def test_terminated_convolutional_code_1(mode, parameters, generator_matrix):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
-
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
-    assert (code.length, code.dimension, code.minimum_distance) == parameters
-    assert np.array_equal(code.generator_matrix, generator_matrix)
+    (n, k, d) = (code.length, code.dimension, code.minimum_distance)
+    (G, H) = code.generator_matrix, code.parity_check_matrix
+    assert (n, k, d) == parameters
+    assert np.array_equal(G, generator_matrix)
+    assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, n - k), dtype=int))
 
 
 def test_terminated_convolutional_code_tail_biting_1():
