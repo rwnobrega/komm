@@ -11,7 +11,7 @@ div.doc-contents:not(.first) {
 .doc-param-annotation code {
     font-style: italic;
     color: var(--md-code-hl-constant-color);
-    background-color: white;
+    background-color: var(--md-code-hl-background-color);
 }
 
 .doc cite::before {
