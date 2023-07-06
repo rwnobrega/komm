@@ -2,6 +2,7 @@ import itertools as it
 
 import numpy as np
 
+from .._validation import must_be_prefix_free, validate
 from .util import _parse_prefix_free
 
 
@@ -14,6 +15,7 @@ class FixedToVariableCode:
         Only *prefix-free* codes are considered, in which no codeword is a prefix of any other codeword.
     """
 
+    @validate(codewords=must_be_prefix_free)
     def __init__(self, codewords, source_cardinality=None):
         r"""
         Constructor for the class.
@@ -56,7 +58,6 @@ class FixedToVariableCode:
              (1, 1): (1, 0),
              (1, 0, 1): (1, 1)}
         """
-        # TODO: Assert prefix-free
         self._codewords = codewords
         self._source_cardinality = len(codewords) if source_cardinality is None else int(source_cardinality)
         self._source_block_size = 1
