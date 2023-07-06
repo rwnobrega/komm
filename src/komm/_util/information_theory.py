@@ -1,28 +1,23 @@
 import numpy as np
 
-
-def _entropy_base_e(pmf):
-    # Assumptions:
-    # - pmf is a 1D numpy array.
-    # - pmf is a valid pmf.
-    return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
-
-
-def _entropy_base_2(pmf):
-    # Assumptions: Same as _entropy_base_e.
-    return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
+from komm._validation import validate, validate_base, validate_pmf
 
 
 def _entropy(pmf, base=2.0):
-    # Assumptions: Same as _entropy_base_e.
+    # Assumptions:
+    # - pmf is a valid pmf.
+    def _entropy_base_e(pmf):
+        return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
+
     if base == "e":
         return _entropy_base_e(pmf)
     elif base == 2:
-        return _entropy_base_2(pmf)
+        return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
     else:
         return _entropy_base_e(pmf) / np.log(base)
 
 
+@validate(pmf=validate_pmf, base=validate_base)
 def entropy(pmf, base=2.0):
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
@@ -47,18 +42,10 @@ def entropy(pmf, base=2.0):
         >>> np.around(entropy, decimals=6)
         2.0
 
-        >>> entropy = komm.entropy([1/3, 1/3, 1/3], base=3.0)
+        >>> entropy = komm.entropy(base=3.0, pmf=[1/3, 1/3, 1/3])
         >>> np.around(entropy, decimals=6)
         1.0
-
-        >>> komm.entropy([1.0, 1.0])
-        Traceback (most recent call last):
-        ...
-        ValueError: Invalid pmf
     """
-    pmf = np.array(pmf, dtype=float)
-    if not np.allclose(np.sum(pmf), 1.0) or not np.all(pmf >= 0.0):
-        raise ValueError("Invalid pmf")
     return _entropy(pmf, base)
 
 
