@@ -2,6 +2,7 @@ import heapq
 
 import numpy as np
 
+from .._validation import must_be_at_least, must_be_pmf, validate
 from .VariableToFixedCode import VariableToFixedCode
 
 
@@ -10,6 +11,10 @@ class TunstallCode(VariableToFixedCode):
     Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function.
     """
 
+    @validate(
+        pmf=must_be_pmf,
+        code_block_size=must_be_at_least(1),
+    )
     def __init__(self, pmf, code_block_size):
         r"""
         Constructor for the class.
@@ -44,7 +49,7 @@ class TunstallCode(VariableToFixedCode):
             >>> np.around(code.rate(pmf), decimals=6)
             1.369863
         """
-        self._pmf = np.array(pmf)
+        self._pmf = pmf
         self._code_block_size = code_block_size
 
         if 2**self._code_block_size < self._pmf.size:
