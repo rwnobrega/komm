@@ -2,7 +2,7 @@ import itertools as it
 
 import numpy as np
 
-from .._validation import must_be_prefix_free, validate
+from .._validation import must_be_pmf, must_be_prefix_free, validate
 from .util import _parse_prefix_free
 
 
@@ -103,6 +103,7 @@ class FixedToVariableCode:
         """
         return self._dec_mapping
 
+    @validate(pmf=must_be_pmf)
     def rate(self, pmf):
         r"""
         Computes the expected rate $R$ of the code, assuming a given pmf. This quantity is given by
@@ -125,7 +126,10 @@ class FixedToVariableCode:
             >>> code.rate([0.5, 0.25, 0.25])
             1.5
         """
-        probabilities = np.array([np.prod(ps) for ps in it.product(pmf, repeat=self._source_block_size)])
+        probabilities = np.array(
+            [np.prod(ps) for ps in it.product(pmf, repeat=self._source_block_size)],
+            dtype=float,
+        )
         lengths = [len(bits) for bits in self._codewords]
         return np.dot(lengths, probabilities) / self._source_block_size
 
