@@ -1,6 +1,7 @@
 import numpy as np
 
 from .._util import _entropy
+from .._validation import validate, validate_pmf
 
 
 class DiscreteMemorylessSource:
@@ -10,6 +11,7 @@ class DiscreteMemorylessSource:
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
     """
 
+    @validate(pmf=validate_pmf)
     def __init__(self, pmf):
         r"""
         Constructor for the class.
@@ -25,7 +27,7 @@ class DiscreteMemorylessSource:
             >>> dms(10)
             array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
         """
-        self.pmf = pmf
+        self._pmf = pmf
 
     @property
     def pmf(self):
@@ -37,14 +39,13 @@ class DiscreteMemorylessSource:
     @pmf.setter
     def pmf(self, value):
         self._pmf = np.array(value, dtype=float)
-        self._cardinality = self._pmf.size
 
     @property
     def cardinality(self):
         r"""
         The cardinality $|\mathcal{X}|$ of the source alphabet.
         """
-        return self._cardinality
+        return self._pmf.size
 
     def entropy(self, base=2.0):
         r"""
@@ -65,7 +66,7 @@ class DiscreteMemorylessSource:
         return _entropy(self._pmf, base=base)
 
     def __call__(self, size):
-        return np.random.choice(self._cardinality, p=self._pmf, size=size)
+        return np.random.choice(self._pmf.size, p=self._pmf, size=size)
 
     def __repr__(self):
         args = "pmf={}".format(self._pmf.tolist())

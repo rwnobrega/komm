@@ -4,7 +4,20 @@ import pytest
 import komm
 
 
-@pytest.mark.parametrize("pmf", [[0.5, 0.4, 0.1], [0.3, 0.7]])
+def test_discrete_memoryless_source_init():
+    pmf = [0.5, 0.4, 0.1]
+    dms = komm.DiscreteMemorylessSource(pmf)
+    assert np.array_equal(dms.pmf, pmf)
+    assert dms.cardinality == 3
+
+
+@pytest.mark.parametrize(
+    "pmf",
+    [
+        [0.5, 0.4, 0.1],
+        [0.3, 0.7],
+    ],
+)
 def test_discrete_memoryless_source_output(pmf):
     dms = komm.DiscreteMemorylessSource(pmf)
     symbols = dms(1000)
@@ -36,3 +49,15 @@ def test_discrete_memoryless_source_entropy(pmf, x_entropy_base_2, x_entropy_bas
 def test_discrete_memoryless_source_constant(pmf, x_symbol):
     dms = komm.DiscreteMemorylessSource(pmf)
     assert np.all(dms(1000) == x_symbol)
+
+
+@pytest.mark.parametrize(
+    "pmf",
+    [
+        [0.5, 0.5, 0.1],
+        [0.5, -1.5],
+    ],
+)
+def test_discrete_memoryless_source_invalid_pmf(pmf):
+    with pytest.raises(ValueError):
+        komm.DiscreteMemorylessSource(pmf)
