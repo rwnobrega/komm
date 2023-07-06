@@ -1,5 +1,6 @@
 import functools
 import inspect
+import itertools as it
 
 import numpy as np
 
@@ -39,6 +40,15 @@ def must_be_at_least(min):
         return value
 
     return validator
+
+
+def must_be_prefix_free(value):
+    if not isinstance(value, list):
+        raise ValueError("Must be a list")
+    for c1, c2 in it.combinations(value, 2):
+        if c1[: len(c2)] == c2 or c2[: len(c1)] == c1:
+            raise ValueError("Must be prefix-free")
+    return value
 
 
 def validate(**validators):
