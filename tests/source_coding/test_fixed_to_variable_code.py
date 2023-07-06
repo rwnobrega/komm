@@ -1,19 +1,55 @@
 import numpy as np
+import pytest
 
 import komm
 
 
-def test_fixed_to_variable_code():
-    code1 = komm.FixedToVariableCode([(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0)])
-    code2 = komm.FixedToVariableCode([(0, 0), (1, 0), (1, 1), (0, 1, 0), (0, 1, 1)])
+@pytest.mark.parametrize(
+    "codewords, x_output, x_rate",
+    [
+        (
+            [(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0)],
+            [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+            3.0,
+        ),
+        (
+            [(0, 0), (1, 0), (1, 1), (0, 1, 0), (0, 1, 1)],
+            [0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0],
+            2.2,
+        ),
+    ],
+)
+def test_fixed_to_variable_code(codewords, x_output, x_rate):
+    code = komm.FixedToVariableCode(codewords)
     x = [3, 0, 1, 1, 1, 0, 2, 0]
-    y1 = [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-    y2 = [0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0]
     pmf = [0.4, 0.2, 0.2, 0.1, 0.1]
+    assert np.array_equal(code.encode(x), x_output)
+    assert np.array_equal(code.decode(x_output), x)
+    assert np.isclose(code.rate(pmf), x_rate)
 
-    assert np.array_equal(code1.encode(x), y1)
-    assert np.array_equal(code1.decode(y1), x)
-    assert np.array_equal(code2.encode(x), y2)
-    assert np.array_equal(code2.decode(y2), x)
-    assert np.isclose(code1.rate(pmf), 3.0)
-    assert np.isclose(code2.rate(pmf), 2.2)
+
+@pytest.mark.parametrize(
+    "codewords",
+    [
+        [(0, 0), (0, 0)],
+        [(0,), (0, 0), (1, 0)],
+        [(0, 0), (0,), (1, 0)],
+        [(0, 0), (1, 0), (0,)],
+    ],
+)
+def test_fixed_to_variable_code_not_prefix_free(codewords):
+    with pytest.raises(ValueError):
+        komm.FixedToVariableCode(codewords)
+
+
+@pytest.mark.parametrize(
+    "pmf",
+    [
+        [0.5, 0.5, 0.1],
+        [-0.4, 0.4, 1.0],
+    ],
+)
+def test_fixed_to_variable_code_invalid_pmf(pmf):
+    code = komm.FixedToVariableCode([(0,), (1, 0), (1, 1)])
+    with pytest.raises(ValueError):
+        code.rate(pmf)
