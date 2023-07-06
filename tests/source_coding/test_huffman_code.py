@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -57,3 +58,12 @@ def test_huffman_code_4():
     assert np.isclose(code1.rate(pmf), 1.3)
     code2 = komm.HuffmanCode([0.7, 0.15, 0.15], source_block_size=2)
     assert np.isclose(code2.rate(pmf), 1.1975)
+
+
+def test_huffman_code_invalid_init():
+    with pytest.raises(ValueError):
+        komm.HuffmanCode([0.5, 0.5, 0.1])
+    with pytest.raises(ValueError):
+        komm.HuffmanCode([0.5, 0.5], source_block_size=0)
+    with pytest.raises(ValueError):
+        komm.HuffmanCode([0.5, 0.5], policy="unknown")

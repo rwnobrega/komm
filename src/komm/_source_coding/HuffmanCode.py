@@ -3,6 +3,7 @@ import itertools
 
 import numpy as np
 
+from .._validation import must_be_at_least, must_be_in_set, must_be_pmf, validate
 from .FixedToVariableCode import FixedToVariableCode
 
 
@@ -11,6 +12,11 @@ class HuffmanCode(FixedToVariableCode):
     Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function.
     """
 
+    @validate(
+        pmf=must_be_pmf,
+        source_block_size=must_be_at_least(1),
+        policy=must_be_in_set({"high", "low"}),
+    )
     def __init__(self, pmf, source_block_size=1, policy="high"):
         r"""
         Constructor for the class.
@@ -49,10 +55,7 @@ class HuffmanCode(FixedToVariableCode):
             >>> np.around(code.rate(pmf), decimals=6)
             1.1975
         """
-        if policy not in ["high", "low"]:
-            raise ValueError("Parameter 'policy' must be in {'high', 'low'}")
-
-        self._pmf = np.array(pmf)
+        self._pmf = pmf
         self._source_block_size = source_block_size
         self._policy = policy
 
