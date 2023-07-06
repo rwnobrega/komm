@@ -2,6 +2,7 @@ import itertools as it
 
 import numpy as np
 
+from .._validation import must_be_pmf, must_be_prefix_free, validate
 from .util import _parse_prefix_free
 
 
@@ -14,6 +15,7 @@ class VariableToFixedCode:
         Only *prefix-free* codes are considered, in which no sourceword is a prefix of any other sourceword.
     """
 
+    @validate(sourcewords=must_be_prefix_free)
     def __init__(self, sourcewords):
         r"""
         Constructor for the class.
@@ -48,7 +50,6 @@ class VariableToFixedCode:
              (0, 0, 1): (1, 0, 1),
              (0, 0, 2): (1, 1, 0)}
         """
-        # TODO: Assert prefix-free
         self._sourcewords = sourcewords
         self._source_cardinality = max(it.chain(*sourcewords)) + 1
         self._code_block_size = (len(sourcewords) - 1).bit_length()
@@ -86,6 +87,7 @@ class VariableToFixedCode:
         """
         return self._dec_mapping
 
+    @validate(pmf=must_be_pmf)
     def rate(self, pmf):
         r"""
         Computes the expected rate $R$ of the code, assuming a given pmf. This quantity is given by
@@ -108,7 +110,10 @@ class VariableToFixedCode:
             >>> code.rate([2/3, 1/3])
             0.9473684210526315
         """
-        probabilities = np.array([np.prod([pmf[x] for x in symbols]) for symbols in self._sourcewords])
+        probabilities = np.array(
+            [np.prod([pmf[x] for x in symbols]) for symbols in self._sourcewords],
+            dtype=float,
+        )
         lengths = [len(symbols) for symbols in self._sourcewords]
         return self._code_block_size / np.dot(lengths, probabilities)
 
