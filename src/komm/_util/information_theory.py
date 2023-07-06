@@ -1,6 +1,6 @@
 import numpy as np
 
-from komm._validation import validate, validate_base, validate_pmf
+from komm._validation import must_be_log_base, must_be_pmf, validate
 
 
 def _entropy(pmf, base=2.0):
@@ -17,7 +17,7 @@ def _entropy(pmf, base=2.0):
         return _entropy_base_e(pmf) / np.log(base)
 
 
-@validate(pmf=validate_pmf, base=validate_base)
+@validate(pmf=must_be_pmf, base=must_be_log_base)
 def entropy(pmf, base=2.0):
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by

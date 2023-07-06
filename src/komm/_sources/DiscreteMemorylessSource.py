@@ -1,7 +1,7 @@
 import numpy as np
 
 from .._util import _entropy
-from .._validation import validate, validate_pmf
+from .._validation import must_be_pmf, validate
 
 
 class DiscreteMemorylessSource:
@@ -11,7 +11,7 @@ class DiscreteMemorylessSource:
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
     """
 
-    @validate(pmf=validate_pmf)
+    @validate(pmf=must_be_pmf)
     def __init__(self, pmf):
         r"""
         Constructor for the class.

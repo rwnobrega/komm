@@ -4,7 +4,7 @@ import inspect
 import numpy as np
 
 
-def validate_pmf(value):
+def must_be_pmf(value):
     value = np.asarray(value, dtype=float)
     if value.ndim != 1:
         raise ValueError("Must be a 1D-array")
@@ -15,12 +15,30 @@ def validate_pmf(value):
     return value
 
 
-def validate_base(value):
+def must_be_log_base(value):
     if isinstance(value, str) and value != "e":
         raise ValueError("If string, must be 'e'")
     if isinstance(value, float) and value <= 0.0:
         raise ValueError("If float, must be positive")
     return value
+
+
+def must_be_in_set(set):
+    def validator(value):
+        if value not in set:
+            raise ValueError(f"Must be in {set}")
+        return value
+
+    return validator
+
+
+def must_be_at_least(min):
+    def validator(value):
+        if value < min:
+            raise ValueError(f"Must be at least {min}")
+        return value
+
+    return validator
 
 
 def validate(**validators):
@@ -33,7 +51,10 @@ def validate(**validators):
             bound.apply_defaults()
             for arg, validator in validators.items():
                 if arg in bound.arguments:
-                    bound.arguments[arg] = validator(bound.arguments[arg])
+                    try:
+                        bound.arguments[arg] = validator(bound.arguments[arg])
+                    except ValueError as e:
+                        raise ValueError(f"Invalid value for argument '{arg}': {e}")
             return func(*bound.args, **bound.kwargs)
 
         return wrapper
