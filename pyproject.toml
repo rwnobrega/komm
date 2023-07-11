@@ -5,7 +5,7 @@ description = "An open-source library for Python 3 providing tools for analysis 
 readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
 license = { text = "GPL-3.0-only" }
-dependencies = ["numpy", "scipy"]
+dependencies = ["attrs", "numpy", "scipy"]
 requires-python = ">=3.8"
 urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/komm/" }
 
