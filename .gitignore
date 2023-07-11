@@ -10,6 +10,7 @@ tmp/
 .cache
 .ipynb_checkpoints
 .mypy_cache
+.pdm-python
 .pytest_cache
 .spyproject
 .ttxfolder

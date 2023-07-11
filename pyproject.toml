@@ -5,12 +5,13 @@ description = "An open-source library for Python 3 providing tools for analysis 
 readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
 license = { text = "GPL-3.0-only" }
-dependencies = ["attrs", "numpy", "scipy"]
+dependencies = [
+    "attrs>=23.1.0",
+    "numpy>=1.24.4",
+    "scipy>=1.9.3",
+]
 requires-python = ">=3.8"
 urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/komm/" }
-
-[project.optional-dependencies]
-dev = ["black", "isort", "pytest", "mkdocs", "mkdocs-material", "mkdocstrings"]
 
 [build-system]
 requires = ["setuptools>=61.0.0", "wheel"]
@@ -22,3 +23,21 @@ python_files = "test_*.py"
 python_functions = "test_*"
 pythonpath = "."
 testpaths = ["src/komm", "tests"]
+
+[tool.pdm.dev-dependencies]
+lint = [
+    "black>=23.7.0",
+    "isort>=5.12.0",
+]
+test = [
+    "pytest>=7.4.0",
+]
+doc = [
+    "mkdocs>=1.4.3",
+    "mkdocs-material>=9.1.18",
+    "mkdocstrings>=0.22.0",
+    "mkdocstrings-python>=1.1.2",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-include-markdown-plugin>=3.9.1",
+    "mkdocs-literate-nav>=0.6.0",
+]
