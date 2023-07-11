@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/TunstallCode/">
-  <link rel="prev" href="../VariableToFixedCode/">
+  <link rel="prev" href="../VariableToFixedDecoder/">
   <link rel="next" href="../binlist2int/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
@@ -418,21 +418,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
+                                    </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">TunstallCode <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">TunstallCode</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -486,75 +490,59 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
             <h1 id="kommtunstallcode">komm.TunstallCode</h1>
-            <div class="doc doc-object doc-class">
+            <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._source_coding.VariableToFixedCode.VariableToFixedCode">VariableToFixedCode</span></code></p>
-                <p>Tunstall code. It is an optimal (minimal expected rate) <a href="/ref/VariableToFixedCode">variable-to-fixed length code</a> for a given probability mass function.</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">code_block_size</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The probability mass function of the source.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>code_block_size</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The code block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$, where $|\mathcal{X}|$ is the cardinality of the source alphabet, given by <code>len(pmf)</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>
+                <p>Binary Tunstall code. It is an optimal (minimal expected rate) <a href="/ref/VariableToFixedCode">variable-to-fixed length code</a> for a given probability mass function.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The probability mass function of the source.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>target_block_size</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The target block size $n$. Must satisfy $2^n \geq S$, where $S$ is the cardinality of the source alphabet, given by <code>len(pmf)</code>. The default value is $n = \lceil \log_2 S \rceil$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TunstallCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">code_block_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
-<span class="go">{(0,): (0, 0),</span>
-<span class="go"> (1,): (0, 1),</span>
-<span class="go"> (2,): (1, 0)}</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TunstallCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
+<span class="go">{(0, 0): (0,),</span>
+<span class="go"> (0, 1): (1,),</span>
+<span class="go"> (1, 0): (2,)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">2.0</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TunstallCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="n">code_block_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TunstallCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
 <span class="go">{(0, 0, 0): (0, 0, 0),</span>
 <span class="go"> (0, 0, 1): (0, 0, 1),</span>
-<span class="go"> (0, 0, 2): (0, 1, 0),</span>
-<span class="go"> (0, 1): (0, 1, 1),</span>
-<span class="go"> (0, 2): (1, 0, 0),</span>
-<span class="go"> (1,): (1, 0, 1),</span>
-<span class="go"> (2,): (1, 1, 0)}</span>
+<span class="go"> (0, 1, 0): (0, 0, 2),</span>
+<span class="go"> (0, 1, 1): (0, 1),</span>
+<span class="go"> (1, 0, 0): (0, 2),</span>
+<span class="go"> (1, 0, 1): (1,),</span>
+<span class="go"> (1, 1, 0): (2,)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">1.369863</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -564,7 +552,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../VariableToFixedCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: VariableToFixedCode" rel="prev">
+        <a href="../VariableToFixedDecoder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: VariableToFixedDecoder" rel="prev">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
@@ -572,7 +560,7 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            VariableToFixedCode
+            VariableToFixedDecoder
           </div>
         </div></a> <a href="../binlist2int/" class="md-footer__link md-footer__link--next" aria-label="Next: binlist2int" rel="next">
         <div class="md-footer__title">

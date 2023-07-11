@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/VariableToFixedCode/">
   <link rel="prev" href="../HuffmanCode/">
-  <link rel="next" href="../TunstallCode/">
+  <link rel="next" href="../VariableToFixedEncoder/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
   <title>VariableToFixedCode - Komm</title>
@@ -418,6 +418,12 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
@@ -426,31 +432,34 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
+                                            <a href="#from_dec_mapping" class="md-nav__link">from_dec_mapping()</a>
                                           </li>
                                           <li class="md-nav__item">
-                                            <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.source_cardinality" class="md-nav__link">source_cardinality</a>
+                                            <a href="#from_sourcewords" class="md-nav__link">from_sourcewords()</a>
                                           </li>
                                           <li class="md-nav__item">
-                                            <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.code_block_size" class="md-nav__link">code_block_size</a>
+                                            <a href="#sourcewords" class="md-nav__link">sourcewords</a>
                                           </li>
                                           <li class="md-nav__item">
-                                            <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.enc_mapping" class="md-nav__link">enc_mapping</a>
+                                            <a href="#inv_dec_mapping" class="md-nav__link">inv_dec_mapping</a>
                                           </li>
                                           <li class="md-nav__item">
-                                            <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.dec_mapping" class="md-nav__link">dec_mapping</a>
+                                            <a href="#is_unique_encodable" class="md-nav__link">is_unique_encodable()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#is_prefix_free" class="md-nav__link">is_prefix_free()</a>
                                           </li>
                                           <li class="md-nav__item">
                                             <a href="#rate" class="md-nav__link">rate()</a>
                                           </li>
-                                          <li class="md-nav__item">
-                                            <a href="#encode" class="md-nav__link">encode()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#decode" class="md-nav__link">decode()</a>
-                                          </li>
                                         </ul>
                                       </nav>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
@@ -511,28 +520,25 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
+                    <a href="#from_dec_mapping" class="md-nav__link">from_dec_mapping()</a>
                   </li>
                   <li class="md-nav__item">
-                    <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.source_cardinality" class="md-nav__link">source_cardinality</a>
+                    <a href="#from_sourcewords" class="md-nav__link">from_sourcewords()</a>
                   </li>
                   <li class="md-nav__item">
-                    <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.code_block_size" class="md-nav__link">code_block_size</a>
+                    <a href="#sourcewords" class="md-nav__link">sourcewords</a>
                   </li>
                   <li class="md-nav__item">
-                    <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.enc_mapping" class="md-nav__link">enc_mapping</a>
+                    <a href="#inv_dec_mapping" class="md-nav__link">inv_dec_mapping</a>
                   </li>
                   <li class="md-nav__item">
-                    <a href="#komm._source_coding.VariableToFixedCode.VariableToFixedCode.dec_mapping" class="md-nav__link">dec_mapping</a>
+                    <a href="#is_unique_encodable" class="md-nav__link">is_unique_encodable()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#is_prefix_free" class="md-nav__link">is_prefix_free()</a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#rate" class="md-nav__link">rate()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#encode" class="md-nav__link">encode()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#decode" class="md-nav__link">decode()</a>
                   </li>
                 </ul>
               </nav>
@@ -544,38 +550,64 @@
             <h1 id="kommvariabletofixedcode">komm.VariableToFixedCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}$ be the alphabet of some discrete source. A <em>binary variable-to-fixed length code</em> of <em>code block size</em> $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \{ 0, 1 \}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
-                <details class="warning" open="">
-                  <summary>
-                    Warning
-                  </summary>
-                  <p>Only <em>prefix-free</em> codes are considered, in which no sourceword is a prefix of any other sourceword.</p>
-                </details>
+                <p>Variable-to-fixed length code. A <em>variable-to-fixed length code</em> with <em>target alphabet</em> $\mathcal{T}$, <em>source alphabet</em> $\mathcal{S}$, and <em>target block size</em> $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \to \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>target_cardinality</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The target cardinality $T$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>source_cardinality</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The source cardinality $S$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>target_block_size</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The target block size $n$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>dec_mapping</code></b> <span class="doc-param-annotation">(<code>dict[<span title="komm._source_coding.util.Word">Word</span>, <span title="komm._source_coding.util.Word">Word</span>]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The decoding mapping $\mathrm{Dec}$ of the code. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.</p>
+                    </div>
+                  </li>
+                </ul>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">sourcewords</span><span class="p">)</span></code></h2>
+                    <h2 id="from_dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_dec_mapping</span><span class="p">(</span><span class="n">dec_mapping</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
+                      <p>Constructs a variable-to-fixed code from the decoding map $\Dec$.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>sourcewords</code></b> <span class="doc-param-annotation">(<code>List[Tuple[int]]</code>)</span> –
+                          <b><code>dec_mapping</code></b> <span class="doc-param-annotation">(<code>dict[<span title="komm._source_coding.util.Word">Word</span>, <span title="komm._source_coding.util.Word">Word</span>]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of <code>sourcewords</code> should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\{ 0, 1 \}^n$.</p>
+                            <p>The decoding map $\Dec$. See the corresponding attribute for more details.</p>
                           </div>
                         </li>
                       </ul>
-                      <details class="note" open="">
-                        <summary>
-                          Note
-                        </summary>
-                        <p>The code block size $n$ and the source cardinality $|\mathcal{X}|$ are inferred from <code>sourcewords</code>.</p>
-                      </details>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">(</span><span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">code_block_size</span><span class="p">)</span>
-<span class="go">(3, 3)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_dec_mapping</span><span class="p">({(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span><span class="p">)</span>
+<span class="go">(2, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
+<span class="go">{(0, 0): (0, 0, 0),</span>
+<span class="go"> (0, 1): (0, 0, 1),</span>
+<span class="go"> (1, 0): (0, 1),</span>
+<span class="go"> (1, 1): (1,)}</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_dec_mapping</span><span class="p">({(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span>
+<span class="go">(2, 3, 3)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
 <span class="go">{(0, 0, 0): (1,),</span>
 <span class="go"> (0, 0, 1): (2,),</span>
@@ -584,52 +616,107 @@
 <span class="go"> (1, 0, 0): (0, 0, 0),</span>
 <span class="go"> (1, 0, 1): (0, 0, 1),</span>
 <span class="go"> (1, 1, 0): (0, 0, 2)}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
-<span class="go">{(1,): (0, 0, 0),</span>
-<span class="go"> (2,): (0, 0, 1),</span>
-<span class="go"> (0, 1): (0, 1, 0),</span>
-<span class="go"> (0, 2): (0, 1, 1),</span>
-<span class="go"> (0, 0, 0): (1, 0, 0),</span>
-<span class="go"> (0, 0, 1): (1, 0, 1),</span>
-<span class="go"> (0, 0, 2): (1, 1, 0)}</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="from_sourcewords" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_sourcewords</span><span class="p">(</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">sourcewords</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>Constructs a variable-to-fixed code from the target cardinality $T$ and a list of sourcewords.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>target_cardinality</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The target cardinality $T$. Must be an integer greater than or equal to $2$.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>sourcewords</code></b> <span class="doc-param-annotation">(<code>list[<span title="komm._source_coding.util.Word">Word</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The sourcewords of the code. See the <a href="./#sourcewords">corresponding property</a> for more details.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span><span class="p">)</span>
+<span class="go">(2, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
+<span class="go">{(0, 0): (0, 0, 0),</span>
+<span class="go"> (0, 1): (0, 0, 1),</span>
+<span class="go"> (1, 0): (0, 1),</span>
+<span class="go"> (1, 1): (1,)}</span>
 </code></pre>
                       </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.source_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">source_cardinality</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="sourcewords" class="doc doc-heading"><code class="highlight language-python"><span class="n">sourcewords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Word</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The cardinality $|\mathcal{X}|$ of the source alphabet.</p>
+                      <p>The sourcewords of the code. It is a list of length at most $T^n$ containing tuples of integers in $[0:S)$. The tuple in position $i$ of <code>sourcewords</code> is equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $[0:T)^n$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_dec_mapping</span><span class="p">({(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">sourcewords</span>
+<span class="go">[(0, 0, 0), (0, 0, 1), (0, 1), (1,)]</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.code_block_size" class="doc doc-heading"><code class="highlight language-python"><span class="n">code_block_size</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="inv_dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">inv_dec_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Word</span><span class="p">,</span> <span class="n">Word</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The code block size $n$.</p>
+                      <p>The inverse decoding mapping $\mathrm{Dec}^{-1}$ of the code. It is a dictionary of length at most $T^n$ whose keys are all the sourcewords of the code, and whose values are the corresponding target words.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">inv_dec_mapping</span>
+<span class="go">{(0, 0, 0): (0, 0),</span>
+<span class="go"> (0, 0, 1): (0, 1),</span>
+<span class="go"> (0, 1): (1, 0),</span>
+<span class="go"> (1,): (1, 1)}</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">enc_mapping</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="is_unique_encodable" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_unique_encodable</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>The encoding mapping $\mathrm{Enc}$ of the code.</p>
+                      <p>Returns whether the code is unique encodable or not. [Not implemented yet].</p>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._source_coding.VariableToFixedCode.VariableToFixedCode.dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">dec_mapping</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="is_prefix_free" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_prefix_free</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>The decoding mapping $\mathrm{Dec}$ of the code.</p>
+                      <p>Returns whether the code is prefix-free or not. A <em>prefix-free</em> code is a code in which no sourceword is a prefix of any other sourceword.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
+<span class="go">True</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
+<span class="go">False</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Computes the expected rate $R$ of the code, assuming a given <abbr title="probability mass function">pmf</abbr>. This quantity is given by $$ R = \frac{n}{\bar{k}}, $$ where $n$ is the code block size, and $\bar{k}$ is the expected sourceword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$. It is measured in bits per source symbol.</p>
+                      <p>Computes the expected rate $R$ of the code, considering a given <abbr title="probability mass function">pmf</abbr>. This quantity is given by $$ R = \frac{n}{\bar{k}}, $$ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The (first-order) probability mass function $p_X$ to be assumed.</p>
+                            <p>The (first-order) probability mass function $p_X$ to be considered.</p>
                           </div>
                         </li>
                       </ul>
@@ -644,71 +731,9 @@
                       </ul>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">([</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
 <span class="go">0.9473684210526315</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="encode" class="doc doc-heading"><code class="highlight language-python"><span class="n">encode</span><span class="p">(</span><span class="n">symbol_sequence</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Encodes a sequence of symbols to its corresponding sequence of bits.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>symbol_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \{0, 1, \ldots, |\mathcal{X} - 1| \}$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Returns:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>bit_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The sequence of bits corresponding to <code>symbol_sequence</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="decode" class="doc doc-heading"><code class="highlight language-python"><span class="n">decode</span><span class="p">(</span><span class="n">bit_sequence</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Decodes a sequence of bits to its corresponding sequence of symbols.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>bit_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The sequence of bits to be decoded. Must be a 1D-array with elements in $\{ 0, 1 \}$. Its length must be a multiple of $n$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Returns:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>symbol_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The sequence of symbols corresponding to <code>bit_sequence</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])</span>
 </code></pre>
                       </div>
                     </div>
@@ -732,11 +757,11 @@
           <div class="md-ellipsis">
             HuffmanCode
           </div>
-        </div></a> <a href="../TunstallCode/" class="md-footer__link md-footer__link--next" aria-label="Next: TunstallCode" rel="next">
+        </div></a> <a href="../VariableToFixedEncoder/" class="md-footer__link md-footer__link--next" aria-label="Next: VariableToFixedEncoder" rel="next">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            TunstallCode
+            VariableToFixedEncoder
           </div>
         </div>
         <div class="md-footer__button md-icon">

@@ -409,13 +409,7 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.pmf" class="md-nav__link">pmf</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.cardinality" class="md-nav__link">cardinality</a>
+                                            <a href="#cardinality" class="md-nav__link">cardinality</a>
                                           </li>
                                           <li class="md-nav__item">
                                             <a href="#entropy" class="md-nav__link">entropy()</a>
@@ -435,10 +429,22 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
@@ -499,13 +505,7 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.pmf" class="md-nav__link">pmf</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.cardinality" class="md-nav__link">cardinality</a>
+                    <a href="#cardinality" class="md-nav__link">cardinality</a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#entropy" class="md-nav__link">entropy()</a>
@@ -522,38 +522,26 @@
               <div class="doc doc-contents first">
                 <p>Discrete memoryless source (<abbr title="discrete memoryless source">DMS</abbr>). It is defined by an <em>alphabet</em> $\mathcal{X}$ and a <em>probability mass function</em> (<abbr title="probability mass function">pmf</abbr>) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$. The <abbr title="probability mass function">pmf</abbr> $p_X$ gives the probability of the source emitting the symbol $X = x$.</p>
                 <p>To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessSource</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="go">array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.pmf" class="doc doc-heading"><code class="highlight language-python"><span class="n">pmf</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-writable"><code>writable</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The source probability mass function $p_X$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="komm._sources.DiscreteMemorylessSource.DiscreteMemorylessSource.cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">cardinality</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">cardinality</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The cardinality $|\mathcal{X}|$ of the source alphabet.</p>
                     </div>
