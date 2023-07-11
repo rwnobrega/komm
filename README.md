@@ -2,6 +2,7 @@
 
 [![PyPI page](https://badge.fury.io/py/komm.svg)](https://pypi.org/project/komm/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/rwnobrega/komm/issues)
 
 Welcome to **Komm**!
 
@@ -12,7 +13,7 @@ Welcome to **Komm**!
 For library reference, please check the [project's website](https://komm.dev/).
 
 <!--notes-start-->
-This software is still under development. Contributions are very welcome!
+Please be advised that this project is currently under development. As such, there may be changes to the project's codebase, including the API.
 <!--notes-end-->
 
 ## Installation
