@@ -7,8 +7,8 @@ import komm
 def test_tunstall_code():
     # Sayood.06, p. 71.
     pmf = [0.6, 0.3, 0.1]
-    code = komm.TunstallCode(pmf, code_block_size=3)
-    assert code.enc_mapping == {
+    code = komm.TunstallCode(pmf, 3)
+    assert code.inv_dec_mapping == {
         (0, 0, 0): (0, 0, 0),
         (0, 0, 1): (0, 0, 1),
         (0, 0, 2): (0, 1, 0),
@@ -22,6 +22,6 @@ def test_tunstall_code():
 
 def test_tunstall_code_invalid_init():
     with pytest.raises(ValueError):
-        komm.TunstallCode([0.5, 0.5, 0.1], code_block_size=3)
+        komm.TunstallCode([0.5, 0.5, 0.1], 3)
     with pytest.raises(ValueError):
-        komm.TunstallCode([0.5, 0.5], code_block_size=0)
+        komm.TunstallCode([0.5, 0.5], 0)

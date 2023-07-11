@@ -1,9 +1,10 @@
 import numpy as np
+from attrs import field
 
-from komm._validation import must_be_log_base, must_be_pmf, validate
+from komm._validation import is_log_base, is_pmf, validate_call
 
 
-def _entropy(pmf, base=2.0):
+def _entropy(pmf, base):
     # Assumptions:
     # - pmf is a valid pmf.
     def _entropy_base_e(pmf):
@@ -11,14 +12,17 @@ def _entropy(pmf, base=2.0):
 
     if base == "e":
         return _entropy_base_e(pmf)
-    elif base == 2:
+    elif base == 2.0:
         return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
     else:
         return _entropy_base_e(pmf) / np.log(base)
 
 
-@validate(pmf=must_be_pmf, base=must_be_log_base)
-def entropy(pmf, base=2.0):
+@validate_call(
+    pmf=field(converter=np.asarray, validator=is_pmf),
+    base=field(validator=is_log_base),
+)
+def entropy(pmf, base: float | str = 2.0):
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$

@@ -1,38 +1,65 @@
 import itertools as it
 
 import numpy as np
+from attrs import define, field, validators
 
-from .._validation import must_be_pmf, must_be_prefix_free, validate
-from .util import _parse_prefix_free
+from .._validation import is_pmf, validate_call
+from .util import Word, is_prefix_free
 
 
+@define
 class VariableToFixedCode:
     r"""
-    Binary, prefix-free, variable-to-fixed length code. Let $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$ be the alphabet of some discrete source. A *binary variable-to-fixed length code* of *code block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \\{ 0, 1 \\}^n \to \mathcal{X}^+$, where $\mathcal{X}^+$ denotes the set of all finite-length, non-empty strings from the source alphabet. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    Variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \to \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
 
-    Warning:
+    Attributes:
 
-        Only *prefix-free* codes are considered, in which no sourceword is a prefix of any other sourceword.
+        target_cardinality: The target cardinality $T$.
+
+        source_cardinality: The source cardinality $S$.
+
+        target_block_size: The target block size $n$.
+
+        dec_mapping: The decoding mapping $\mathrm{Dec}$ of the code. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.
     """
+    target_cardinality: int = field(validator=validators.ge(2))
+    source_cardinality: int = field(validator=validators.ge(2))
+    target_block_size: int = field(validator=validators.ge(1))
+    dec_mapping: dict[Word, Word] = field()
 
-    @validate(sourcewords=must_be_prefix_free)
-    def __init__(self, sourcewords):
+    def __attrs_post_init__(self):
+        domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
+        T, S, n = self.target_cardinality, self.source_cardinality, self.target_block_size
+        if not set(domain) <= set(it.product(range(T), repeat=n)):
+            raise ValueError(f"'dec_mapping': invalid domain")
+        if not all(all(0 <= x < S for x in word) and len(word) > 0 for word in codomain):
+            raise ValueError(f"'dec_mapping': invalid co-domain")
+        if len(set(codomain)) != len(codomain):
+            raise ValueError(f"'dec_mapping': non-injective mapping")
+
+    @classmethod
+    def from_dec_mapping(cls, dec_mapping: dict[Word, Word]):
         r"""
-        Constructor for the class.
+        Constructs a variable-to-fixed code from the decoding map $\Dec$.
 
         Parameters:
 
-            sourcewords (List[Tuple[int]]): The sourcewords of the code. Must be a list of length at most $2^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ of `sourcewords` should be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $\\{ 0, 1 \\}^n$.
-
-        Note:
-
-            The code block size $n$ and the source cardinality $|\mathcal{X}|$ are inferred from `sourcewords`.
+            dec_mapping: The decoding map $\Dec$. See the corresponding attribute for more details.
 
         Examples:
 
-            >>> code = komm.VariableToFixedCode(sourcewords=[(1,), (2,), (0,1), (0,2), (0,0,0), (0,0,1), (0,0,2)])
-            >>> (code.source_cardinality, code.code_block_size)
-            (3, 3)
+            >>> code = komm.VariableToFixedCode.from_dec_mapping({(0,0): (0,0,0), (0,1): (0,0,1), (1,0): (0,1), (1,1): (1,)})
+            >>> (code.target_cardinality, code.source_cardinality, code.target_block_size)
+            (2, 2, 2)
+            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+            {(0, 0): (0, 0, 0),
+             (0, 1): (0, 0, 1),
+             (1, 0): (0, 1),
+             (1, 1): (1,)}
+
+            >>> code = komm.VariableToFixedCode.from_dec_mapping({(0,0,0): (1,), (0,0,1): (2,), (0,1,0): (0,1), (0,1,1): (0,2), (1,0,0): (0,0,0), (1,0,1): (0,0,1), (1,1,0): (0,0,2)})
+            >>> code.target_cardinality, code.source_cardinality, code.target_block_size
+            (2, 3, 3)
             >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (1,),
              (0, 0, 1): (2,),
@@ -41,123 +68,116 @@ class VariableToFixedCode:
              (1, 0, 0): (0, 0, 0),
              (1, 0, 1): (0, 0, 1),
              (1, 1, 0): (0, 0, 2)}
-            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
-            {(1,): (0, 0, 0),
-             (2,): (0, 0, 1),
-             (0, 1): (0, 1, 0),
-             (0, 2): (0, 1, 1),
-             (0, 0, 0): (1, 0, 0),
-             (0, 0, 1): (1, 0, 1),
-             (0, 0, 2): (1, 1, 0)}
         """
-        self._sourcewords = sourcewords
-        self._source_cardinality = max(it.chain(*sourcewords)) + 1
-        self._code_block_size = (len(sourcewords) - 1).bit_length()
-        self._enc_mapping = {}
-        self._dec_mapping = {}
-        for symbols, bits in zip(it.product(range(2), repeat=self._code_block_size), sourcewords):
-            self._enc_mapping[bits] = tuple(symbols)
-            self._dec_mapping[tuple(symbols)] = bits
+        domain, codomain = dec_mapping.keys(), dec_mapping.values()
+        T = max(max(word) for word in domain) + 1
+        S = max(max(word) for word in codomain) + 1
+        n = len(next(iter(domain)))
+        return cls(T, S, n, dec_mapping)
+
+    @classmethod
+    @validate_call(target_cardinality=field(validator=validators.ge(2)))
+    def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]):
+        r"""
+        Constructs a variable-to-fixed code from the target cardinality $T$ and a list of sourcewords.
+
+        Parameters:
+
+            target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$.
+
+            sourcewords: The sourcewords of the code. See the [corresponding property](./#sourcewords) for more details.
+
+        Examples:
+
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> (code.target_cardinality, code.source_cardinality, code.target_block_size)
+            (2, 2, 2)
+            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+            {(0, 0): (0, 0, 0),
+             (0, 1): (0, 0, 1),
+             (1, 0): (0, 1),
+             (1, 1): (1,)}
+        """
+        T = target_cardinality
+        S = max(max(word) for word in sourcewords) + 1
+        n = next(n for n in it.count(1) if T ** n >= len(sourcewords))
+        dec_mapping = dict(zip(it.product(range(T), repeat=n), sourcewords))
+        return cls(T, S, n, dec_mapping)
 
     @property
-    def source_cardinality(self):
+    def sourcewords(self) -> list[Word]:
         r"""
-        The cardinality $|\mathcal{X}|$ of the source alphabet.
+        The sourcewords of the code. It is a list of length at most $T^n$ containing tuples of integers in $[0:S)$. The tuple in position $i$ of `sourcewords` is equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $[0:T)^n$.
+
+        Examples:
+
+            >>> code = komm.VariableToFixedCode.from_dec_mapping({(0,0): (0,0,0), (0,1): (0,0,1), (1,0): (0,1), (1,1): (1,)})
+            >>> code.sourcewords
+            [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
         """
-        return self._source_cardinality
+        return list(self.dec_mapping.values())
 
     @property
-    def code_block_size(self):
+    def inv_dec_mapping(self) -> dict[Word, Word]:
         r"""
-        The code block size $n$.
-        """
-        return self._code_block_size
+        The inverse decoding mapping $\mathrm{Dec}^{-1}$ of the code. It is a dictionary of length at most $T^n$ whose keys are all the sourcewords of the code, and whose values are the corresponding target words.
 
-    @property
-    def enc_mapping(self):
-        r"""
-        The encoding mapping $\mathrm{Enc}$ of the code.
-        """
-        return self._enc_mapping
+        Examples:
 
-    @property
-    def dec_mapping(self):
-        r"""
-        The decoding mapping $\mathrm{Dec}$ of the code.
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> code.inv_dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+            {(0, 0, 0): (0, 0),
+             (0, 0, 1): (0, 1),
+             (0, 1): (1, 0),
+             (1,): (1, 1)}
         """
-        return self._dec_mapping
+        return {v: k for k, v in self.dec_mapping.items()}
 
-    @validate(pmf=must_be_pmf)
-    def rate(self, pmf):
+    def is_unique_encodable(self) -> bool:
         r"""
-        Computes the expected rate $R$ of the code, assuming a given pmf. This quantity is given by
+        Returns whether the code is unique encodable or not. [Not implemented yet].
+        """
+        # This method should implement the Sardinas–Patterson algorithm.
+        raise NotImplementedError
+
+    def is_prefix_free(self) -> bool:
+        r"""Returns whether the code is prefix-free or not. A *prefix-free* code is a code in which no sourceword is a prefix of any other sourceword.
+
+        Examples:
+
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> code.is_prefix_free()
+            True
+
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,1,0), (0,1), (1,)])
+            >>> code.is_prefix_free()
+            False
+        """
+        return is_prefix_free(self.sourcewords)
+
+    @validate_call(pmf=field(converter=np.asarray, validator=is_pmf))
+    def rate(self, pmf) -> float:
+        r"""
+        Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
         $$
             R = \frac{n}{\bar{k}},
         $$
-        where $n$ is the code block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in bits per source symbol.
+        where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.
 
         Parameters:
 
-            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be assumed.
+            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be considered.
 
         Returns:
 
-            rate (float): The expected rate $R$ of the code.
+            rate: The expected rate $R$ of the code.
 
         Examples:
 
-            >>> code = komm.VariableToFixedCode([(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> code.rate([2/3, 1/3])
             0.9473684210526315
         """
-        probabilities = np.array(
-            [np.prod([pmf[x] for x in symbols]) for symbols in self._sourcewords],
-            dtype=float,
-        )
-        lengths = [len(symbols) for symbols in self._sourcewords]
-        return self._code_block_size / np.dot(lengths, probabilities)
-
-    def encode(self, symbol_sequence):
-        r"""
-        Encodes a sequence of symbols to its corresponding sequence of bits.
-
-        Parameters:
-
-            symbol_sequence (Array1D[int]): The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X} = \\{0, 1, \ldots, |\mathcal{X} - 1| \\}$.
-
-        Returns:
-
-            bit_sequence (Array1D[int]): The sequence of bits corresponding to `symbol_sequence`.
-
-        Examples:
-
-            >>> code = komm.VariableToFixedCode([(0,0,0), (0,0,1), (0,1), (1,)])
-            >>> code.encode([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
-            array([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
-        """
-        return np.array(_parse_prefix_free(symbol_sequence, self._enc_mapping))
-
-    def decode(self, bit_sequence):
-        r"""
-        Decodes a sequence of bits to its corresponding sequence of symbols.
-
-        Parameters:
-
-            bit_sequence (Array1D[int]): The sequence of bits to be decoded. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.  Its length must be a multiple of $n$.
-
-        Returns:
-
-            symbol_sequence (Array1D[int]): The sequence of symbols corresponding to `bit_sequence`.
-
-        Examples:
-
-            >>> code = komm.VariableToFixedCode([(0,0,0), (0,0,1), (0,1), (1,)])
-            >>> code.decode([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
-            array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
-        """
-        bits_reshaped = np.reshape(bit_sequence, newshape=(-1, self._code_block_size))
-        return np.concatenate([self._dec_mapping[tuple(bits)] for bits in bits_reshaped])
-
-    def __repr__(self):
-        args = "sourcewords={}".format(self._sourcewords)
-        return "{}({})".format(self.__class__.__name__, args)
+        probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
+        lengths = [len(word) for word in self.sourcewords]
+        return self.target_block_size / np.dot(lengths, probabilities)

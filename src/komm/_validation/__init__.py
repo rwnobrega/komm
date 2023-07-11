@@ -1,57 +1,25 @@
 import functools
 import inspect
-import itertools as it
 
 import numpy as np
+from attrs import asdict, make_class
 
 
-def must_be_pmf(value):
-    value = np.asarray(value, dtype=float)
+def is_pmf(inst, attr, value: np.ndarray):
     if value.ndim != 1:
-        raise ValueError("Must be a 1D-array")
+        raise ValueError(f"'{attr.name}' must be a 1D array")
     if not np.all(value >= 0.0):
-        raise ValueError("All elements must be non-negative")
+        raise ValueError(f"'{attr.name}' must be non-negative")
     if not np.isclose(value.sum(), 1.0):
-        raise ValueError("The sum of all elements must be 1.0")
-    return value
+        raise ValueError(f"'{attr.name}' must sum to 1.0")
 
 
-def must_be_log_base(value):
-    if isinstance(value, str) and value != "e":
-        raise ValueError("If string, must be 'e'")
-    if isinstance(value, float) and value <= 0.0:
-        raise ValueError("If float, must be positive")
-    return value
+def is_log_base(inst, attr, value: float | str):
+    if (isinstance(value, str) and value != "e") or (isinstance(value, float) and value <= 0.0):
+        raise ValueError(f"'{attr.name}' must be 'e' or a positive float")
 
 
-def must_be_in_set(set):
-    def validator(value):
-        if value not in set:
-            raise ValueError(f"Must be in {set}")
-        return value
-
-    return validator
-
-
-def must_be_at_least(min):
-    def validator(value):
-        if value < min:
-            raise ValueError(f"Must be at least {min}")
-        return value
-
-    return validator
-
-
-def must_be_prefix_free(value):
-    if not isinstance(value, list):
-        raise ValueError("Must be a list")
-    for c1, c2 in it.combinations(value, 2):
-        if c1[: len(c2)] == c2 or c2[: len(c1)] == c1:
-            raise ValueError("Must be prefix-free")
-    return value
-
-
-def validate(**validators):
+def validate_call(**fields):
     def decorator(func):
         sig = inspect.signature(func)
 
@@ -59,13 +27,11 @@ def validate(**validators):
         def wrapper(*args, **kwargs):
             bound = sig.bind(*args, **kwargs)
             bound.apply_defaults()
-            for arg, validator in validators.items():
-                if arg in bound.arguments:
-                    try:
-                        bound.arguments[arg] = validator(bound.arguments[arg])
-                    except ValueError as e:
-                        raise ValueError(f"Invalid value for argument '{arg}': {e}")
-            return func(*bound.args, **bound.kwargs)
+            Params = make_class("Params", fields)
+            bound_args = {k: v for k, v in bound.arguments.items() if k in fields}
+            inst = Params(**bound_args)  # Use attrs to validate and convert args
+            bound.arguments.update(asdict(inst))
+            return func(**bound.arguments)
 
         return wrapper
 

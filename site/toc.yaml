@@ -66,8 +66,12 @@ Source coding:
   - DiscreteMemorylessSource
   Lossless coding:
   - FixedToVariableCode
+  - FixedToVariableEncoder
+  - FixedToVariableDecoder
   - HuffmanCode
   - VariableToFixedCode
+  - VariableToFixedEncoder
+  - VariableToFixedDecoder
   - TunstallCode
 Utilities:
 - binlist2int
