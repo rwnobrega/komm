@@ -41,3 +41,7 @@ doc = [
     "mkdocs-include-markdown-plugin>=3.9.1",
     "mkdocs-literate-nav>=0.6.0",
 ]
+debug = [
+    "ipykernel>=6.24.0",
+    "matplotlib>=3.7.2",
+]
