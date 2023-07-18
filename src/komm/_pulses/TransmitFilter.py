@@ -39,17 +39,17 @@ class TransmitFilter:
 
         Parameters:
 
-            inp (Array1D[float]): The input signal, containing symbols of a modulation.
+            inp (Array1D[float] | Array1D[complex]): The input signal, containing symbols of a modulation.
 
         Returns:
 
-            outp (Array1D[float]): The output signal, formatted.
+            outp (SameAsInput): The output signal, formatted.
         """
         sps = self._samples_per_symbol
         t0, t1 = self.Pulse.interval
         t = np.arange(t0, t1, step=1 / sps)
         taps = (np.vectorize(self.Pulse.impulse_response))(t)
-        inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=float)
+        inp_interp = np.zeros((len(inp) - 1) * sps + 1, dtype=inp.dtype)
         inp_interp[::sps] = inp
         outp = np.convolve(taps, inp_interp)
         return outp
