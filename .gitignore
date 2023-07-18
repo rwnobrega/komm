@@ -6,6 +6,7 @@ build/
 site/build/
 dist/
 tmp/
+pdm.lock
 .benchmarks
 .cache
 .ipynb_checkpoints
