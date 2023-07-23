@@ -12,7 +12,7 @@ from .._util import binlist2int, int2binlist, pack, unpack
 from .BlockCode import BlockCode
 
 
-@frozen
+@frozen(slots=False)
 class TerminatedConvolutionalCode(BlockCode):
     r"""
     Terminated convolutional code. It is a [linear block code](/ref/BlockCode) obtained by terminating a $(n_0, k_0)$ [convolutional code](/ref/ConvolutionalCode). A total of $h$ information blocks (each containing $k_0$ information bits) is encoded. The dimension of the resulting block code is thus $k = h k_0$; its length depends on the termination mode employed. There are three possible termination modes:

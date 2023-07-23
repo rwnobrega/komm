@@ -6,7 +6,7 @@ from ._registry import RegistryBlockDecoder
 from .BlockCode import BlockCode
 
 
-@frozen
+@frozen(slots=False)
 class BlockDecoder:
     r"""
     Decoder for [linear block codes](/ref/BlockCode).

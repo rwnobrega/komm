@@ -6,7 +6,7 @@ from ._matrices import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 
-@frozen
+@frozen(slots=False)
 class SimplexCode(SystematicBlockCode):
     r"""
     Simplex (maximum-length) code. For a given parameter $\kappa \geq 2$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^\kappa - 1$ nonzero binary $\kappa$-tuples. The simplex code (also known as maximum-length code) has the following parameters:

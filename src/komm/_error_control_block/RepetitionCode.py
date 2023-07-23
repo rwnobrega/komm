@@ -7,7 +7,7 @@ from scipy import special
 from .BlockCode import BlockCode
 
 
-@frozen
+@frozen(slots=False)
 class RepetitionCode(BlockCode):
     r"""
     Repetition code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
