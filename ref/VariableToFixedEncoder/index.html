@@ -518,6 +518,24 @@
                     </div>
                   </li>
                 </ul>
+                <p><strong>Input:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>in0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Output:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>out0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.</p>
+                    </div>
+                  </li>
+                </ul>
                 <p><strong>Examples:</strong></p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
