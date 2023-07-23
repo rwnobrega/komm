@@ -14,10 +14,98 @@ class BlockDecoder:
     Attributes:
 
         code: The [block code](/ref/BlockCode) to be considered.
-        method: The method to be used for decoding. The default corresponds to `code.default_decoder`.
+        method: The identifier of the method to be used for decoding. The default corresponds to `code.default_decoder`.
         decoder_kwargs: Additional keyword arguments to be passed to the decoder.
 
-    <a href="/ref/BlockDecoderMethods">Click here</a> to see the available decoding methods for a given code.
+    Note:
+
+        To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders`.
+
+    ??? info "Available decoding methods"
+
+        **`bcjr`**: Bahl–Cocke–Jelinek–Raviv (BCJR)
+
+        - Input type: soft
+        - Output type: soft
+        - Target: message
+        - Supported by: [`TerminatedConvolutionalCode`](/ref/TerminatedConvolutionalCode).
+
+        **`berlekamp`**: Berlekamp decoder
+
+        - Input type: hard
+        - Output type: hard
+        - Target: codeword
+        - Supported by: [`BCHCode`](/ref/BCHCode).
+
+        **`exhaustive_search_hard`**: Exhaustive search (hard-decision). Minimum Hamming distance decoder
+
+        - Input type: hard
+        - Output type: hard
+        - Target: codeword
+        - Supported by: All codes.
+
+        **`exhaustive_search_soft`**: Exhaustive search (soft-decision). Minimum Euclidean distance decoder
+
+        - Input type: soft
+        - Output type: hard
+        - Target: codeword
+        - Supported by: All codes.
+
+        **`majority_logic_repetition_code`**: Majority-logic decoder. A hard-decision decoder for Repetition codes only.
+
+        - Input type: hard
+        - Output type: hard
+        - Target: message
+        - Supported by: [`RepetitionCode`](/ref/RepetitionCode).
+
+        **`meggitt`**: Meggitt decoder
+
+        - Input type: hard
+        - Output type: hard
+        - Target: codeword
+        - Supported by: [`BCHCode`](/ref/BCHCode), [`CyclicCode`](/ref/CyclicCode).
+
+        **`reed`**: Reed decoding algorithm for Reed–Muller codes. It's a majority-logic decoding algorithm.
+
+        - Input type: hard
+        - Output type: hard
+        - Target: message
+        - Supported by: [`ReedMullerCode`](/ref/ReedMullerCode).
+
+        **`syndrome_table`**: Syndrome table decoder
+
+        - Input type: hard
+        - Output type: hard
+        - Target: codeword
+        - Supported by: All codes.
+
+        **`viterbi_hard`**: Viterbi (hard-decision)
+
+        - Input type: hard
+        - Output type: hard
+        - Target: message
+        - Supported by: [`TerminatedConvolutionalCode`](/ref/TerminatedConvolutionalCode).
+
+        **`viterbi_soft`**: Viterbi (soft-decision)
+
+        - Input type: soft
+        - Output type: hard
+        - Target: message
+        - Supported by: [`TerminatedConvolutionalCode`](/ref/TerminatedConvolutionalCode).
+
+        **`wagner`**: Wagner decoder. A soft-decision decoder for SingleParityCheck codes only.
+
+        - Input type: soft
+        - Output type: hard
+        - Target: codeword
+        - Supported by: [`SingleParityCheckCode`](/ref/SingleParityCheckCode).
+
+        **`weighted_reed`**: Weighted Reed decoding algorithm for Reed–Muller codes.
+
+        - Input type: soft
+        - Output type: hard
+        - Target: message
+        - Supported by: [`ReedMullerCode`](/ref/ReedMullerCode).
 
     Returns: Input:
 
@@ -26,10 +114,6 @@ class BlockDecoder:
     Returns: Output:
 
         out0 (Array1D[int]): The decoded bit sequence. Its length is a multiple of the code's dimension $k$.
-
-    Note:
-
-        To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders`.
 
     Examples:
 
