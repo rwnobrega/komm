@@ -65,6 +65,7 @@ class SingleParityCheckCode(BlockCode):
             codeword_weight_distribution[w] = special.comb(n, w, exact=True)
         return codeword_weight_distribution
 
+    @classmethod
     @property
-    def supported_decoders(self):
-        return super().supported_decoders + ["wagner"]
+    def supported_decoders(cls):
+        return cls.__base__.supported_decoders + ["wagner"]  # type: ignore

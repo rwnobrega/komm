@@ -164,9 +164,10 @@ class CyclicCode(BlockCode):
     def default_decoder(self) -> str:
         return "cyclic_meggitt"
 
+    @classmethod
     @property
-    def supported_decoders(self) -> list[str]:
-        return super().supported_decoders + ["cyclic_meggitt"]
+    def supported_decoders(cls) -> list[str]:
+        return cls.__base__.supported_decoders + ["cyclic_meggitt"]  # type: ignore
 
     @cached_property
     def meggitt_table(self) -> dict[BinaryPolynomial, BinaryPolynomial]:

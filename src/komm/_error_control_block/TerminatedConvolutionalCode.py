@@ -125,9 +125,10 @@ class TerminatedConvolutionalCode(BlockCode):
     def default_decoder(self):
         return "viterbi_hard"
 
+    @classmethod
     @property
-    def supported_decoders(self):
-        return super().supported_decoders + ["viterbi_hard", "viterbi_soft", "bcjr"]
+    def supported_decoders(cls):
+        return cls.__base__.supported_decoders + ["viterbi_hard", "viterbi_soft", "bcjr"]  # type: ignore
 
     @cached_property
     def tail_projector(self) -> np.ndarray:

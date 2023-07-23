@@ -286,6 +286,7 @@ class BlockCode:
     def default_decoder(self) -> str:
         return "exhaustive_search_hard" if self.dimension <= self.redundancy else "syndrome_table"
 
+    @classmethod
     @property
-    def supported_decoders(self) -> list[str]:
+    def supported_decoders(cls) -> list[str]:
         return ["exhaustive_search_hard", "exhaustive_search_soft", "syndrome_table"]
