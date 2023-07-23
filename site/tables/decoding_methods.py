@@ -1,7 +1,7 @@
 import inspect
 
 import komm
-from komm._error_control_block.registry import RegistryBlockDecoder
+from komm._error_control_block._registry import RegistryBlockDecoder
 
 supported_decoders = {}
 all_classes = []

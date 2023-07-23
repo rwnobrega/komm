@@ -1,4 +1,4 @@
-from importlib import metadata
+from importlib import metadata as _metadata
 
 from ._algebra import *
 from ._channels import *
@@ -13,4 +13,4 @@ from ._source_coding import *
 from ._sources import *
 from ._util import *
 
-__version__ = metadata.version("komm")
+__version__ = _metadata.version("komm")

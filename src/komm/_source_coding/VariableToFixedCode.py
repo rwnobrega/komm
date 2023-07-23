@@ -4,7 +4,7 @@ import numpy as np
 from attrs import define, field, validators
 
 from .._validation import is_pmf, validate_call
-from .util import Word, is_prefix_free
+from ._util import Word, is_prefix_free
 
 
 @define

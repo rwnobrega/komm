@@ -4,7 +4,6 @@ from .BlockDecoder import BlockDecoder
 from .BlockEncoder import BlockEncoder
 from .CordaroWagnerCode import CordaroWagnerCode
 from .CyclicCode import CyclicCode
-from .decoders import *
 from .GolayCode import GolayCode
 from .HammingCode import HammingCode
 from .ReedMullerCode import ReedMullerCode

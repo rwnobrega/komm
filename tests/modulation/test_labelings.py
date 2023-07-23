@@ -1,6 +1,6 @@
 import numpy as np
 
-from komm._modulation.labelings import (
+from komm._modulation._labelings import (
     labeling_natural,
     labeling_natural_2d,
     labeling_reflected,

@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 
-from ..registry import RegistryBlockDecoder
+from .._registry import RegistryBlockDecoder
 from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 

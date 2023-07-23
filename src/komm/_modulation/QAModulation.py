@@ -1,7 +1,7 @@
 import math
 
-from .constellations import constellation_qam
-from .labelings import labelings
+from ._constellations import constellation_qam
+from ._labelings import labelings
 from .Modulation import Modulation
 
 

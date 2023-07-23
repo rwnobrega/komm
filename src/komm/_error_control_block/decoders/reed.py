@@ -1,8 +1,8 @@
 import numpy as np
 import numpy.typing as npt
 
+from .._registry import RegistryBlockDecoder
 from ..ReedMullerCode import ReedMullerCode
-from ..registry import RegistryBlockDecoder
 
 
 def decode_reed(code: ReedMullerCode, r: npt.ArrayLike) -> np.ndarray:

@@ -1,8 +1,8 @@
 import numpy as np
 from attrs import define
 
+from ._util import parse_prefix_free
 from .FixedToVariableCode import FixedToVariableCode
-from .util import parse_prefix_free
 
 
 @define

@@ -1,5 +1,5 @@
 from . import BinaryPolynomial
-from .util import power
+from ._util import power
 
 
 class BinaryPolynomialFraction:

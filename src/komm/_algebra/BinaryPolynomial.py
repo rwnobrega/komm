@@ -4,7 +4,7 @@ import operator
 import numpy as np
 
 from .._util import _binlist2int, _int2binlist
-from .util import binary_horner, gcd, power, xgcd
+from ._util import binary_horner, gcd, power, xgcd
 
 
 class BinaryPolynomial:

@@ -2,8 +2,8 @@ import numpy as np
 import numpy.typing as npt
 
 from ..._util import binlist2int
+from .._registry import RegistryBlockDecoder
 from ..BlockCode import BlockCode
-from ..registry import RegistryBlockDecoder
 
 
 def decode_syndrome_table(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:

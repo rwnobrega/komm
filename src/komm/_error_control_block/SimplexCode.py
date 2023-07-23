@@ -2,7 +2,7 @@ from functools import cached_property
 
 from attrs import frozen
 
-from .lib import hamming_parity_submatrix
+from ._matrices import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 

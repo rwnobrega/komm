@@ -3,7 +3,7 @@ from fractions import Fraction
 import numpy as np
 
 from . import RationalPolynomial
-from .util import power
+from ._util import power
 
 
 class RationalPolynomialFraction:

@@ -1,7 +1,7 @@
 import numpy as np
 from attrs import define
 
-from .util import parse_prefix_free
+from ._util import parse_prefix_free
 from .VariableToFixedCode import VariableToFixedCode
 
 
