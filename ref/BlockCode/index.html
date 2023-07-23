@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/BlockCode/">
   <link rel="prev" href="../BinaryErasureChannel/">
-  <link rel="next" href="../HammingCode/">
+  <link rel="next" href="../SystematicBlockCode/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
   <title>BlockCode - Komm</title>
@@ -193,15 +193,6 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#from_generator_matrix" class="md-nav__link">from_generator_matrix()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#from_parity_check_matrix" class="md-nav__link">from_parity_check_matrix()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#from_parity_submatrix" class="md-nav__link">from_parity_submatrix()</a>
-                                          </li>
-                                          <li class="md-nav__item">
                                             <a href="#length" class="md-nav__link">length</a>
                                           </li>
                                           <li class="md-nav__item">
@@ -214,6 +205,27 @@
                                             <a href="#rate" class="md-nav__link">rate</a>
                                           </li>
                                           <li class="md-nav__item">
+                                            <a href="#enc_mapping" class="md-nav__link">enc_mapping()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#inv_enc_mapping" class="md-nav__link">inv_enc_mapping()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#codewords" class="md-nav__link">codewords</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#codeword_weight_distribution" class="md-nav__link">codeword_weight_distribution</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#chk_mapping" class="md-nav__link">chk_mapping()</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#coset_leaders" class="md-nav__link">coset_leaders</a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#coset_leader_weight_distribution" class="md-nav__link">coset_leader_weight_distribution</a>
+                                          </li>
+                                          <li class="md-nav__item">
                                             <a href="#minimum_distance" class="md-nav__link">minimum_distance</a>
                                           </li>
                                           <li class="md-nav__item">
@@ -222,35 +234,14 @@
                                           <li class="md-nav__item">
                                             <a href="#covering_radius" class="md-nav__link">covering_radius</a>
                                           </li>
-                                          <li class="md-nav__item">
-                                            <a href="#generator_matrix" class="md-nav__link">generator_matrix</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#parity_check_matrix" class="md-nav__link">parity_check_matrix</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#codeword_table" class="md-nav__link">codeword_table</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#codeword_weight_distribution" class="md-nav__link">codeword_weight_distribution</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#coset_leader_table" class="md-nav__link">coset_leader_table</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#coset_leader_weight_distribution" class="md-nav__link">coset_leader_weight_distribution</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#encode" class="md-nav__link">encode()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#message_from_codeword" class="md-nav__link">message_from_codeword()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#decode" class="md-nav__link">decode()</a>
-                                          </li>
                                         </ul>
                                       </nav>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
@@ -274,10 +265,13 @@
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -480,25 +474,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -556,15 +550,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#from_generator_matrix" class="md-nav__link">from_generator_matrix()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#from_parity_check_matrix" class="md-nav__link">from_parity_check_matrix()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#from_parity_submatrix" class="md-nav__link">from_parity_submatrix()</a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#length" class="md-nav__link">length</a>
                   </li>
                   <li class="md-nav__item">
@@ -577,6 +562,27 @@
                     <a href="#rate" class="md-nav__link">rate</a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="#enc_mapping" class="md-nav__link">enc_mapping()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#inv_enc_mapping" class="md-nav__link">inv_enc_mapping()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#codewords" class="md-nav__link">codewords</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#codeword_weight_distribution" class="md-nav__link">codeword_weight_distribution</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#chk_mapping" class="md-nav__link">chk_mapping()</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#coset_leaders" class="md-nav__link">coset_leaders</a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#coset_leader_weight_distribution" class="md-nav__link">coset_leader_weight_distribution</a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#minimum_distance" class="md-nav__link">minimum_distance</a>
                   </li>
                   <li class="md-nav__item">
@@ -584,33 +590,6 @@
                   </li>
                   <li class="md-nav__item">
                     <a href="#covering_radius" class="md-nav__link">covering_radius</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#generator_matrix" class="md-nav__link">generator_matrix</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#parity_check_matrix" class="md-nav__link">parity_check_matrix</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#codeword_table" class="md-nav__link">codeword_table</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#codeword_weight_distribution" class="md-nav__link">codeword_weight_distribution</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#coset_leader_table" class="md-nav__link">coset_leader_table</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#coset_leader_weight_distribution" class="md-nav__link">coset_leader_weight_distribution</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#encode" class="md-nav__link">encode()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#message_from_codeword" class="md-nav__link">message_from_codeword()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#decode" class="md-nav__link">decode()</a>
                   </li>
                 </ul>
               </nav>
@@ -622,206 +601,120 @@
             <h1 id="kommblockcode">komm.BlockCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>General binary linear block code. It is characterized by its <em>generator matrix</em> $G$, a binary $k \times n$ matrix, and by its <em>parity-check matrix</em> $H$, a binary $m \times n$ matrix. Those matrix are related by $G H^\top = 0$. The parameters $k$, $m$, and $n$ are called the code <em>dimension</em>, <em>redundancy</em>, and <em>length</em>, respectively, and are related by $k + m = n$. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 3</cite>.</p>
+                <p>General binary linear block code. It is characterized by its <em>generator matrix</em> $G \in \mathbb{B}^{k \times n}$, and by its <em>check matrix</em> $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\top = 0$. The parameters $n$, $k$, and $m$ are called the code <em>length</em>, <em>dimension</em>, and <em>redundancy</em>, respectively, and are related by $k + m = n$. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 3</cite>.</p>
+                <p>The constructor expects either the generator matrix or the check matrix.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>generator_matrix</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>check_matrix</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The check matrix $H$ of the code, which is a $m \times n$ binary matrix.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
+<span class="go">(6, 3, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 0, 0, 0, 1, 1],</span>
+<span class="go">       [0, 1, 0, 1, 0, 1],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">check_matrix</span>
+<span class="go">array([[0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 0, 0, 0, 1]])</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">check_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
+<span class="go">(6, 3, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 0, 0, 0, 1, 1],</span>
+<span class="go">       [0, 1, 0, 1, 0, 1],</span>
+<span class="go">       [0, 0, 1, 1, 1, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">check_matrix</span>
+<span class="go">array([[0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 0, 0, 0, 1]])</span>
+</code></pre>
+                </div>
                 <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="from_generator_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_generator_matrix</span><span class="p">(</span><span class="n">generator_matrix</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs a binary linear block code from its generator matrix.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>generator_matrix</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Generator matrix $G$ for the code, which is a $k \times n$ binary matrix.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">()</span><span class="o">.</span><span class="n">from_generator_matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="go">BlockCode.from_generator_matrix([[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="from_parity_check_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_parity_check_matrix</span><span class="p">(</span><span class="n">parity_check_matrix</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs a binary linear block code from its parity-check matrix.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>parity_check_matrix</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Parity-check matrix $H$ for the code, which is an $m \times n$ binary matrix.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">()</span><span class="o">.</span><span class="n">from_parity_check_matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="go">BlockCode.from_parity_check_matrix([[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="from_parity_submatrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_parity_submatrix</span><span class="p">(</span><span class="n">parity_submatrix</span><span class="p">,</span> <span class="n">information_set</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs a binary linear block code from its parity submatrix and information set.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>parity_submatrix</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Parity submatrix $P$ for the code, which is a $k \times m$ binary matrix.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>information_set</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int] | str]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings <code>'left'</code> or <code>'right'</code>. The default value is <code>'left'</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">()</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="go">BlockCode.from_parity_submatrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set=[0, 1, 2])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="length" class="doc doc-heading"><code class="highlight language-python"><span class="n">length</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="length" class="doc doc-heading"><code class="highlight language-python"><span class="n">length</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The length $n$ of the code.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">length</span>
-<span class="go">6</span>
-</code></pre>
-                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="dimension" class="doc doc-heading"><code class="highlight language-python"><span class="n">dimension</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="dimension" class="doc doc-heading"><code class="highlight language-python"><span class="n">dimension</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The dimension $k$ of the code.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dimension</span>
-<span class="go">3</span>
-</code></pre>
-                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="redundancy" class="doc doc-heading"><code class="highlight language-python"><span class="n">redundancy</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="redundancy" class="doc doc-heading"><code class="highlight language-python"><span class="n">redundancy</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The redundancy $m$ of the code.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">redundancy</span>
-<span class="go">3</span>
-</code></pre>
-                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span><span class="p">:</span> <span class="nb">float</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The rate $R = k/n$ of the code.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span>
 <span class="go">0.5</span>
 </code></pre>
                       </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">enc_mapping</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
+                      <p>The encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This is a function that takes a message $u \in \mathbb{B}^k$ and returns the corresponding codeword $v \in \mathbb{B}^n$.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span>
-<span class="go">3</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc_mapping</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc_mapping</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 0, 1, 1, 0, 1])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="inv_enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">inv_enc_mapping</span><span class="p">()</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>The inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes a codeword $v \in \mathbb{B}^n$ and returns the corresponding message $u \in \mathbb{B}^k$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inv_enc_mapping</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">inv_enc_mapping</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inv_enc_mapping</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 0, 1])</span>
 </code></pre>
                       </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="packing_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">packing_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="codewords" class="doc doc-heading"><code class="highlight language-python"><span class="n">codewords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.</p>
+                      <p>The codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">packing_radius</span>
-<span class="go">1</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="covering_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">covering_radius</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">covering_radius</span>
-<span class="go">2</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="generator_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The generator matrix $G$ of the code. It as a $k \times n$ binary matrix, where $k$ is the code dimension, and $n$ is the code length.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
-<span class="go">array([[1, 0, 0, 0, 1, 1],</span>
-<span class="go">       [0, 1, 0, 1, 0, 1],</span>
-<span class="go">       [0, 0, 1, 1, 1, 0]])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="parity_check_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">parity_check_matrix</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The parity-check matrix $H$ of the code. It as an $m \times n$ binary matrix, where $m$ is the code redundancy, and $n$ is the code length.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">parity_check_matrix</span>
-<span class="go">array([[0, 1, 1, 1, 0, 0],</span>
-<span class="go">       [1, 0, 1, 0, 1, 0],</span>
-<span class="go">       [1, 1, 0, 0, 0, 1]])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="codeword_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The codeword table of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$.</p>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_table</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codewords</span>
 <span class="go">array([[0, 0, 0, 0, 0, 0],</span>
 <span class="go">       [1, 0, 0, 0, 1, 1],</span>
 <span class="go">       [0, 1, 0, 1, 0, 1],</span>
@@ -835,26 +728,40 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="codeword_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="codeword_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">codeword_weight_distribution</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_weight_distribution</span>
 <span class="go">array([1, 0, 0, 4, 3, 0, 0])</span>
 </code></pre>
                       </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="coset_leader_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="chk_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">chk_mapping</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>The coset leader table of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$. This may be used as a <abbr title="lookup table">LUT</abbr> for syndrome-based decoding.</p>
+                      <p>The check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes a received word $r \in \mathbb{B}^n$ and returns the corresponding syndrome $s \in \mathbb{B}^m$.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_table</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chk_mapping</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">chk_mapping</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chk_mapping</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([0, 0, 0])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="coset_leaders" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leaders</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (<abbr title="most significant bit">MSB</abbr> in the right) is $i$, and whose Hamming weight is minimal. This may be used as a <abbr title="lookup table">LUT</abbr> for syndrome-based decoding.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leaders</span>
 <span class="go">array([[0, 0, 0, 0, 0, 0],</span>
 <span class="go">       [0, 0, 0, 1, 0, 0],</span>
 <span class="go">       [0, 0, 0, 0, 1, 0],</span>
@@ -868,106 +775,55 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="coset_leader_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_weight_distribution</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="coset_leader_weight_distribution" class="doc doc-heading"><code class="highlight language-python"><span class="n">coset_leader_weight_distribution</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="o">.</span><span class="n">from_parity_submatrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span>
 <span class="go">array([1, 6, 1, 0, 0, 0, 0])</span>
 </code></pre>
                       </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="encode" class="doc doc-heading"><code class="highlight language-python"><span class="n">encode</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></h2>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Encodes a given message to its corresponding codeword.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>message</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The message to be encoded. Its length must be $k$.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>method</code></b> <span class="doc-param-annotation">(<code>Optional[str]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The encoding method to be used.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Returns:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>codeword</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The codeword corresponding to <code>message</code>. Its length is equal to $n$.</p>
-                          </div>
-                        </li>
-                      </ul>
+                      <p>The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="message_from_codeword" class="doc doc-heading"><code class="highlight language-python"><span class="n">message_from_codeword</span><span class="p">(</span><span class="n">codeword</span><span class="p">)</span></code></h2>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="packing_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">packing_radius</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the message corresponding to a given codeword. In other words, applies the inverse encoding map.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>codeword</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>A codeword from the code. Its length must be $n$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Returns:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>message</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The message corresponding to <code>codeword</code>. Its length is equal to $k$.</p>
-                          </div>
-                        </li>
-                      </ul>
+                      <p>The packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">packing_radius</span>
+<span class="go">1</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="decode" class="doc doc-heading"><code class="highlight language-python"><span class="n">decode</span><span class="p">(</span><span class="n">recvword</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></h2>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="covering_radius" class="doc doc-heading"><code class="highlight language-python"><span class="n">covering_radius</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Decodes a received word to a message.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>recvword</code></b> <span class="doc-param-annotation">(<code>Array1D[int] | Array1D[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The word to be decoded. If using a hard-decision decoding method, then the elements of the array must be bits (integers in $\{ 0, 1 \}$). If using a soft-decision decoding method, then the elements of the array must be soft-bits (floats standing for log-probability ratios, in which positive values represent bit $0$ and negative values represent bit $1$). Its length must be $n$.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>method</code></b> <span class="doc-param-annotation">(<code>Optional[str]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The decoding method to be used.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>kwargs</code></b> –
-                          <div class="doc-md-description">
-                            <p>Keyword arguments to be passed to the decoding method.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Returns:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>message_hat</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The message decoded from <code>recvword</code>. Its length is equal to $k$.</p>
-                          </div>
-                        </li>
-                      </ul>
+                      <p>The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">covering_radius</span>
+<span class="go">2</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -989,11 +845,11 @@
           <div class="md-ellipsis">
             BinaryErasureChannel
           </div>
-        </div></a> <a href="../HammingCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HammingCode" rel="next">
+        </div></a> <a href="../SystematicBlockCode/" class="md-footer__link md-footer__link--next" aria-label="Next: SystematicBlockCode" rel="next">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            HammingCode
+            SystematicBlockCode
           </div>
         </div>
         <div class="md-footer__button md-icon">

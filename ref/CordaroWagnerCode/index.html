@@ -191,6 +191,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -206,24 +212,19 @@
                                       <a href="../SingleParityCheckCode/" class="md-nav__link">SingleParityCheckCode</a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">CordaroWagnerCode <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">CordaroWagnerCode</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active">CordaroWagnerCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -426,25 +427,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -498,14 +499,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -514,25 +508,25 @@
             <h1 id="kommcordarowagnercode">komm.CordaroWagnerCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._error_control_block.BlockCode.BlockCode">BlockCode</span></code></p>
-                <p>Cordaro–Wagner code. It is the $(n, 2)$ <a href="/ref/BlockCode">linear block code</a> which is optimum for the <abbr title="binary symmetric channel">BSC</abbr> with sufficiently small crossover probability. For more details, see <cite><abbr title="Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.">CW67</abbr></cite>.</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>n</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The length $n$ of the code. Must satisfy $n \geq 2$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CordaroWagnerCode</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+                <p>Cordaro–Wagner code. For a given length $n \geq 2$, it is the <a href="/ref/BlockCode">linear block code</a> with dimension $k = 2$ which is optimum for the <a href="/ref/BinarySymmetricChannel"><abbr title="binary symmetric channel">BSC</abbr></a> with sufficiently small crossover probability. For more details, see <cite><abbr title="Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.">CW67</abbr></cite>.</p>
+                <ul>
+                  <li>Length: $n$</li>
+                  <li>Dimension: $k = 2$</li>
+                  <li>Redundancy: $m = n - 2$</li>
+                  <li>Minimum distance: $d = \left\lceil 2n / 3 \right\rceil - 1$</li>
+                </ul>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>n</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The length $n$ of the code. Must satisfy $n \geq 2$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CordaroWagnerCode</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
 <span class="go">(11, 2, 7)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
@@ -543,10 +537,8 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span>
 <span class="go">array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>

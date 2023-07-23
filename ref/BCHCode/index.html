@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/BCHCode/">
-  <link rel="prev" href="../CyclicCode/">
-  <link rel="next" href="../ConvolutionalCode/">
+  <link rel="prev" href="../ReedMullerCode/">
+  <link rel="next" href="../BlockEncoder/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
   <title>BCHCode - Komm</title>
@@ -191,6 +191,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -211,19 +217,14 @@
                                     <li class="md-nav__item">
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
-                                    <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
-                                    </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">BCHCode <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">BCHCode</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link">__init__()</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active">BCHCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -426,25 +427,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -498,14 +499,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link">__init__()</a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -514,56 +508,124 @@
             <h1 id="kommbchcode">komm.BCHCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._error_control_block.CyclicCode.CyclicCode">CyclicCode</span></code></p>
-                <p>Bose–Chaudhuri–Hocquenghem (<abbr title="Bose–Chaudhuri–Hocquenghem">BCH</abbr>) code. It is a <a href="/ref/CyclicCode">cyclic code</a> specified by two integers $\mu$ and $\tau$ which must satisfy $1 \leq \tau &lt; 2^{\mu - 1}$. The parameter $\tau$ is called the <em>designed error-correcting capability</em> of the <abbr title="Bose–Chaudhuri–Hocquenghem">BCH</abbr> code; it will be internally replaced by the true error-correcting capability $t$ of the code. See references for more details. The resulting code is denoted by $\bch(\mu, \tau)$, and has the following parameters:</p>
+                <p>Bose–Ray-Chaudhuri–Hocquenghem (<abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr>) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a <em>binary <abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> code</em> is a <a href="/ref/CyclicCode">cyclic code</a> with generator polynomial given by $$ g(X) = \mathrm{lcm} \left\{ \phi_1(X), \phi_2(X), \ldots, \phi_{\delta - 1}(X) \right\}, $$ where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a primitive element of $\mathrm{GF}(2^\mu)$. The parameter $\delta$ must be a <em>Bose distance</em>. The resulting code is denoted by $\bch(\mu, \delta)$, and has the following parameters, where $\delta = 2 \tau + 1$:</p>
                 <ul>
                   <li>Length: $n = 2^{\mu} - 1$</li>
                   <li>Dimension: $k \geq n - \mu \tau$</li>
                   <li>Redundancy: $m \leq \mu \tau$</li>
-                  <li>Minimum distance: $d \geq 2\tau + 1$</li>
+                  <li>Minimum distance: $d \geq \delta$</li>
                 </ul>
-                <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 6</cite>.</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>mu</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The parameter $\mu$ of the code.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>tau</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The designed error-correcting capability $\tau$ of the <abbr title="Bose–Chaudhuri–Hocquenghem">BCH</abbr> code. It will be internally replaced by the true error-correcting capability $t$ of the code.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                <p>Only <em>narrow-sense</em> and <em>primitive</em> <abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> codes are implemented. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 6</cite> and <cite><abbr title="W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.">HP03</abbr>, Sec. 5.1</cite>.</p>
+                <p>The table below lists the possible values of $\delta$ for $2 \leq \mu \leq 10$.</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th align="center">$\mu$</th>
+                      <th align="center">$n$</th>
+                      <th>Bose distances $\delta$</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td align="center">$2$</td>
+                      <td align="center">$3$</td>
+                      <td>$3$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$3$</td>
+                      <td align="center">$7$</td>
+                      <td>$3$, $7$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$4$</td>
+                      <td align="center">$15$</td>
+                      <td>$3$, $5$, $7$, $15$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$5$</td>
+                      <td align="center">$31$</td>
+                      <td>$3$, $5$, $7$, $11$, $15$, $31$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$6$</td>
+                      <td align="center">$63$</td>
+                      <td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $21$, $23$, $27$, $31$, $63$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$7$</td>
+                      <td align="center">$127$</td>
+                      <td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $19$, $21$, $23$, $27$, $29$, $31$, $43$, $47$, $55$, $63$, $127$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$8$</td>
+                      <td align="center">$255$</td>
+                      <td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $37$, $39$, $43$, $45$, $47$, $51$, $53$, $55$, $59$, $61$, $63$, $85$, $87$, $91$, $95$, $111$, $119$, $127$, $255$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$9$</td>
+                      <td align="center">$511$</td>
+                      <td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $91$, $93$, $95$, $103$, $107$, $109$, $111$, $117$, $119$, $123$, $125$, $127$, $171$, $175$, $183$, $187$, $191$, $219$, $223$, $239$, $255$, $511$</td>
+                    </tr>
+                    <tr>
+                      <td align="center">$10$</td>
+                      <td align="center">$1023$</td>
+                      <td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $33$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $69$, $71$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $89$, $91$, $93$, $95$, $99$, $101$, $103$, $105$, $107$, $109$, $111$, $115$, $117$, $119$, $121$, $123$, $125$, $127$, $147$, $149$, $151$, $155$, $157$, $159$, $165$, $167$, $171$, $173$, $175$, $179$, $181$, $183$, $187$, $189$, $191$, $205$, $207$, $213$, $215$, $219$, $221$, $223$, $231$, $235$, $237$, $239$, $245$, $247$, $251$, $253$, $255$, $341$, $343$, $347$, $351$, $363$, $367$, $375$, $379$, $383$, $439$, $447$, $479$, $495$, $511$, $1023$</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <details class="notes" open="">
+                  <summary>
+                    Notes
+                  </summary>
+                  <ul>
+                    <li>For $\delta = 3$ it reduces to the <a href="/ref/HammingCode">Hamming code</a>.
+                    </li>
+                    <li>For $\delta = 2^{\mu} - 1$ it reduces to the <a href="/ref/RepetitionCode">repetition code</a>.
+                    </li>
+                  </ul>
+                </details>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>mu</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The parameter $\mu$ of the <abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> code.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>delta</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The Bose distance $\delta$ of the <abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> code.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
 <span class="go">(31, 16, 7)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_polynomial</span>
 <span class="go">BinaryPolynomial(0b1000111110101111)</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The true error-correcting capability is equal to the designed one:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span> <span class="n">code</span>
-<span class="go">BCHCode(7, 15)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The true error-correcting capability is greater than the designed one:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span> <span class="n">code</span>
-<span class="go">BCHCode(7, 21)</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+<span class="go">BCHCode(mu=7, delta=31)</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">'delta' must be a Bose distance (the next one is 43).</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BCHCode</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">43</span><span class="p">)</span>
+<span class="go">BCHCode(mu=7, delta=43)</span>
+</code></pre>
+                </div>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>
@@ -572,7 +634,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../CyclicCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CyclicCode" rel="prev">
+        <a href="../ReedMullerCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ReedMullerCode" rel="prev">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
@@ -580,13 +642,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            CyclicCode
+            ReedMullerCode
           </div>
-        </div></a> <a href="../ConvolutionalCode/" class="md-footer__link md-footer__link--next" aria-label="Next: ConvolutionalCode" rel="next">
+        </div></a> <a href="../BlockEncoder/" class="md-footer__link md-footer__link--next" aria-label="Next: BlockEncoder" rel="next">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            ConvolutionalCode
+            BlockEncoder
           </div>
         </div>
         <div class="md-footer__button md-icon">

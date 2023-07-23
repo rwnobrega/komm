@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/FixedToVariableCode/">
   <link rel="prev" href="../DiscreteMemorylessSource/">
-  <link rel="next" href="../FixedToVariableEncoder/">
+  <link rel="next" href="../HuffmanCode/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
   <title>FixedToVariableCode - Komm</title>
@@ -191,6 +191,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -212,10 +218,13 @@
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -444,25 +453,25 @@
                                       </nav>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -580,7 +589,7 @@
                 </ul>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="from_enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_enc_mapping</span><span class="p">(</span><span class="n">enc_mapping</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
+                    <h2 id="from_enc_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_enc_mapping</span><span class="p">()</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.</p>
                       <p><strong>Parameters:</strong></p>
@@ -617,7 +626,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="from_codewords" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_codewords</span><span class="p">(</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">codewords</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
+                    <h2 id="from_codewords" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_codewords</span><span class="p">()</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>Constructs a fixed-to-variable length code from the source cardinality $S$ and a list of codewords.</p>
                       <p><strong>Parameters:</strong></p>
@@ -713,7 +722,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span></code></h2>
+                    <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Computes the expected rate $R$ of the code, considering a given <abbr title="probability mass function">pmf</abbr>. This quantity is given by $$ R = \frac{\bar{n}}{k}, $$ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.</p>
                       <p><strong>Parameters:</strong></p>
@@ -762,11 +771,11 @@
           <div class="md-ellipsis">
             DiscreteMemorylessSource
           </div>
-        </div></a> <a href="../FixedToVariableEncoder/" class="md-footer__link md-footer__link--next" aria-label="Next: FixedToVariableEncoder" rel="next">
+        </div></a> <a href="../HuffmanCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HuffmanCode" rel="next">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            FixedToVariableEncoder
+            HuffmanCode
           </div>
         </div>
         <div class="md-footer__button md-icon">

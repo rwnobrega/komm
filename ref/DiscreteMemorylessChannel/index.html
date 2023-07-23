@@ -214,6 +214,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -235,10 +241,13 @@
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -441,25 +450,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -548,7 +557,7 @@
                 <p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">transition_matrix</span><span class="p">)</span></code></h2>
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Constructor for the class.</p>
                       <p><strong>Parameters:</strong></p>
@@ -590,7 +599,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span><span class="p">(</span><span class="n">input_pmf</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span></code></h2>
+                    <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Computes the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by $$ \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y), $$ where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 2</cite>.</p>
                       <p><strong>Parameters:</strong></p>
@@ -629,7 +638,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span></code></h2>
+                    <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 10.8</cite>.</p>
                       <p><strong>Parameters:</strong></p>

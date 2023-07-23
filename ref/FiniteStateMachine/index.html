@@ -191,6 +191,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -212,10 +218,13 @@
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -459,25 +468,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -648,7 +657,7 @@
                 </table>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">next_states</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code></h2>
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Constructor for the class.</p>
                       <p><strong>Parameters:</strong></p>
@@ -736,7 +745,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="process" class="doc doc-heading"><code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span></code></h2>
+                    <h2 id="process" class="doc doc-heading"><code class="highlight language-python"><span class="n">process</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.</p>
                       <p><strong>Parameters:</strong></p>
@@ -783,7 +792,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="viterbi" class="doc doc-heading"><code class="highlight language-python"><span class="n">viterbi</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">,</span> <span class="n">initial_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></h2>
+                    <h2 id="viterbi" class="doc doc-heading"><code class="highlight language-python"><span class="n">viterbi</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.1</cite>.</p>
                       <p><strong>Parameters:</strong></p>
@@ -825,7 +834,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="viterbi_streaming" class="doc doc-heading"><code class="highlight language-python"><span class="n">viterbi_streaming</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span></code></h2>
+                    <h2 id="viterbi_streaming" class="doc doc-heading"><code class="highlight language-python"><span class="n">viterbi_streaming</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite>.</p>
                       <p><strong>Parameters:</strong></p>
@@ -861,7 +870,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
-                    <h2 id="forward_backward" class="doc doc-heading"><code class="highlight language-python"><span class="n">forward_backward</span><span class="p">(</span><span class="n">observed_sequence</span><span class="p">,</span> <span class="n">metric_function</span><span class="p">,</span> <span class="n">input_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initial_state_distribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">final_state_distribution</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></h2>
+                    <h2 id="forward_backward" class="doc doc-heading"><code class="highlight language-python"><span class="n">forward_backward</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior <abbr title="probability mass function">pmf</abbr> of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior <abbr title="probability mass function">pmf</abbr> of each input may also be provided. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, 12.6</cite>.</p>
                       <p><strong>Parameters:</strong></p>

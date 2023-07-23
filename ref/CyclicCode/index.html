@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/CyclicCode/">
-  <link rel="prev" href="../ReedMullerCode/">
-  <link rel="next" href="../BCHCode/">
+  <link rel="prev" href="../SystematicBlockCode/">
+  <link rel="next" href="../HammingCode/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
   <title>CyclicCode - Komm</title>
@@ -191,6 +191,20 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item md-nav__item--active">
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">CyclicCode <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">CyclicCode</a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#meggitt_table" class="md-nav__link">meggitt_table</a>
+                                          </li>
+                                        </ul>
+                                      </nav>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -211,31 +225,14 @@
                                     <li class="md-nav__item">
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
-                                    <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc">CyclicCode <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active">CyclicCode</a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#from_generator_polynomial" class="md-nav__link">from_generator_polynomial()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#from_parity_check_polynomial" class="md-nav__link">from_parity_check_polynomial()</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#generator_polynomial" class="md-nav__link">generator_polynomial</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#parity_check_polynomial" class="md-nav__link">parity_check_polynomial</a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#meggitt_table" class="md-nav__link">meggitt_table</a>
-                                          </li>
-                                        </ul>
-                                      </nav>
-                                    </li>
                                     <li class="md-nav__item">
                                       <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -438,25 +435,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -514,18 +511,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#from_generator_polynomial" class="md-nav__link">from_generator_polynomial()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#from_parity_check_polynomial" class="md-nav__link">from_parity_check_polynomial()</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#generator_polynomial" class="md-nav__link">generator_polynomial</a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#parity_check_polynomial" class="md-nav__link">parity_check_polynomial</a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#meggitt_table" class="md-nav__link">meggitt_table</a>
                   </li>
                 </ul>
@@ -538,8 +523,7 @@
             <h1 id="kommcycliccode">komm.CyclicCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._error_control_block.BlockCode.BlockCode">BlockCode</span></code></p>
-                <p>General binary cyclic code. A cyclic code is a <a href="/ref/BlockCode">linear block code</a> such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its <em>generator polynomial</em> $g(X)$, of degree $m$ (the redundancy of the code), and by its <em>parity-check polynomial</em> $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.</p>
+                <p>General binary cyclic code. A cyclic code is a <a href="/ref/BlockCode">linear block code</a> such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its <em>generator polynomial</em> $g(X)$, of degree $m$ (the redundancy of the code), and by its <em>check polynomial</em> $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.</p>
                 <p>Examples of generator polynomials can be found in the table below.</p>
                 <table>
                   <thead>
@@ -561,7 +545,7 @@
                       <td><code>0b10111 = 0o27 = 23</code></td>
                     </tr>
                     <tr>
-                      <td><abbr title="Bose–Chaudhuri–Hocquenghem">BCH</abbr> $(15,5,7)$</td>
+                      <td><abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> $(15,5,7)$</td>
                       <td>$X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$</td>
                       <td><code>0b10100110111 = 0o2467 = 1335</code></td>
                     </tr>
@@ -573,89 +557,54 @@
                   </tbody>
                 </table>
                 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 5</cite>.</p>
+                <p>The constructor expects either the generator polynomial or the check polynomial.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>length</code></b> –
+                    <div class="doc-md-description">
+                      <p>The length $n$ of the code.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>generator_polynomial</code></b> –
+                    <div class="doc-md-description">
+                      <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>check_polynomial</code></b> –
+                    <div class="doc-md-description">
+                      <p>The check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>systematic</code></b> –
+                    <div class="doc-md-description">
+                      <p>Whether the encoder is systematic. Default is <code>True</code>.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
+<span class="go">(23, 12, 11)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span>
+<span class="go">7</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">check_polynomial</span><span class="o">=</span><span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
+<span class="go">(23, 12, 11)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span>
+<span class="go">7</span>
+</code></pre>
+                </div>
                 <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="from_generator_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_generator_polynomial</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs a binary cyclic block code from its generator polynomial.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The length $n$ of the code.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>generator_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>systematic</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Whether the encoder is systematic. Default is <code>True</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="o">.</span><span class="n">from_generator_polynomial</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
-<span class="go">(23, 12, 7)</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="from_parity_check_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_parity_check_polynomial</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">parity_check_polynomial</span><span class="p">,</span> <span class="n">systematic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs a binary cyclic block code from its parity-check polynomial.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The length $n$ of the code.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>parity_check_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The parity-check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>systematic</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Whether the encoder is systematic. Default is <code>True</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><strong>Examples:</strong></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="o">.</span><span class="n">from_parity_check_polynomial</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">)</span>
-<span class="go">(23, 12, 7)</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="generator_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_polynomial</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The generator polynomial $g(X)$ of the cyclic code. It is a <a href="/ref/BinaryPolynomial">binary polynomial</a> of degree $m$, where $m$ is the redundancy of the code.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="parity_check_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">parity_check_polynomial</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The parity-check polynomial $h(X)$ of the cyclic code. It is a <a href="/ref/BinaryPolynomial">binary polynomial</a> of degree $k$, where $k$ is the dimension of the code.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="meggitt_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">meggitt_table</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="meggitt_table" class="doc doc-heading"><code class="highlight language-python"><span class="n">meggitt_table</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">BinaryPolynomial</span><span class="p">,</span> <span class="n">BinaryPolynomial</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See <cite><abbr title="Sebastià Xambó i Descamps. Block Error-Correcting Codes: A Computational Primer. Springer-Verlag, 2003. ISBN 978-3642189975.">XiD03</abbr>, Sec. 3.4</cite>.</p>
                     </div>
@@ -669,7 +618,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../ReedMullerCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ReedMullerCode" rel="prev">
+        <a href="../SystematicBlockCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SystematicBlockCode" rel="prev">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
@@ -677,13 +626,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            ReedMullerCode
+            SystematicBlockCode
           </div>
-        </div></a> <a href="../BCHCode/" class="md-footer__link md-footer__link--next" aria-label="Next: BCHCode" rel="next">
+        </div></a> <a href="../HammingCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HammingCode" rel="next">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            BCHCode
+            HammingCode
           </div>
         </div>
         <div class="md-footer__button md-icon">

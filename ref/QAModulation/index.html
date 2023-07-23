@@ -191,6 +191,12 @@
                                       <a href="../BlockCode/" class="md-nav__link">BlockCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SystematicBlockCode/" class="md-nav__link">SystematicBlockCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../HammingCode/" class="md-nav__link">HammingCode</a>
                                     </li>
                                     <li class="md-nav__item">
@@ -212,10 +218,13 @@
                                       <a href="../ReedMullerCode/" class="md-nav__link">ReedMullerCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../CyclicCode/" class="md-nav__link">CyclicCode</a>
+                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../BCHCode/" class="md-nav__link">BCHCode</a>
+                                      <a href="../BlockEncoder/" class="md-nav__link">BlockEncoder</a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BlockDecoder/" class="md-nav__link">BlockDecoder</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -426,25 +435,25 @@
                                       <a href="../FixedToVariableCode/" class="md-nav__link">FixedToVariableCode</a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../FixedToVariableEncoder/" class="md-nav__link">FixedToVariableEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../FixedToVariableDecoder/" class="md-nav__link">FixedToVariableDecoder</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../HuffmanCode/" class="md-nav__link">HuffmanCode</a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../VariableToFixedCode/" class="md-nav__link">VariableToFixedCode</a>
+                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedEncoder/" class="md-nav__link">VariableToFixedEncoder</a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../VariableToFixedDecoder/" class="md-nav__link">VariableToFixedDecoder</a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../TunstallCode/" class="md-nav__link">TunstallCode</a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -514,14 +523,13 @@
             <h1 id="kommqamodulation">komm.QAModulation</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p class="doc doc-class-bases">Bases: <code><span title="komm._modulation.Modulation.Modulation">Modulation</span></code></p>
                 <p>Quadrature-amplitude modulation (<abbr title="quadrature amplitude modulation">QAM</abbr>). It is a complex <a href="/ref/Modulation">modulation scheme</a> in which the constellation is given as a Cartesian product of two <a href="/ref/PAModulation"><abbr title="pulse-amplitude modulation">PAM</abbr></a> constellations, namely, the <em>in-phase constellation</em>, and the <em>quadrature constellation</em>. More precisely, the $i$-th constellation symbol is given by $$ \begin{aligned} x_i = \left[ A_\mathrm{I} \left( 2i_\mathrm{I} - M_\mathrm{I} + 1 \right) + \mathrm{j} A_\mathrm{Q} \left( 2i_\mathrm{Q} - M_\mathrm{Q} + 1 \right) \right] \exp(\mathrm{j}\phi), \quad & i \in [0 : M), \\ & i_\mathrm{I} = i \bmod M_\mathrm{I}, \\ & i_\mathrm{Q} = \lfloor i / M_\mathrm{I} \rfloor, \end{aligned} $$ where $M_\mathrm{I}$ and $M_\mathrm{Q}$ are the <em>orders</em> (powers of $2$), and $A_\mathrm{I}$ and $A_\mathrm{Q}$ are the <em>base amplitudes</em> of the in-phase and quadrature constellations, respectively. Also, $\phi$ is the <em>phase offset</em>. The order of the resulting complex-valued constellation is $M = M_\mathrm{I} M_\mathrm{Q}$, a power of $2$. The <abbr title="quadrature amplitude modulation">QAM</abbr> constellation is depicted below for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ with ($A_\mathrm{I}, A_\mathrm{Q}) = (A, A)$; and for $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ with $(A_\mathrm{I}, A_\mathrm{Q}) = (A, 2A)$; in both cases, $\phi = 0$.</p>
                 <div class="centered">
                   <p><span><img alt="16-QAM constellation." src="/figures/qam_16.svg"></span> <span><img alt="8-QAM constellation." src="/figures/qam_8.svg"></span></p>
                 </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">base_amplitudes</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">phase_offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">labeling</span><span class="o">=</span><span class="s1">'reflected_2d'</span><span class="p">)</span></code></h2>
+                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Constructor for the class.</p>
                       <p><strong>Parameters:</strong></p>
