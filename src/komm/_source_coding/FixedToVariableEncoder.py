@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.typing as npt
 from attrs import define
 
 from .FixedToVariableCode import FixedToVariableCode
@@ -13,6 +14,14 @@ class FixedToVariableEncoder:
 
         code: The code to be considered.
 
+    Parameters: Input:
+
+        in0 (Array1D[int]): The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+
+    Parameters: Output:
+
+        out0 (Array1D[int]): The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+
     Examples:
 
         >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
@@ -22,6 +31,7 @@ class FixedToVariableEncoder:
     """
     code: FixedToVariableCode
 
-    def __call__(self, x) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
         k, enc = self.code.source_block_size, self.code.enc_mapping
-        return np.concatenate([enc[tuple(s)] for s in np.reshape(x, newshape=(-1, k))])
+        out0 = np.concatenate([enc[tuple(s)] for s in np.reshape(in0, newshape=(-1, k))])
+        return out0
