@@ -14,11 +14,11 @@ class BlockEncoder:
 
         code: The [block code](/ref/BlockCode) to be considered.
 
-    Returns: Input:
+    Parameters: Input
 
         in0 (Array1D[int]): The bit sequence to be encoded. Its length must be a multiple of the code's dimension $k$.
 
-    Returns: Output:
+    Parameters: Output:
 
         out0 (Array1D[int]): The encoded bit sequence. Its length is a multiple of the code's block length $n$.
 

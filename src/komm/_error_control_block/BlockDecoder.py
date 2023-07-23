@@ -107,11 +107,11 @@ class BlockDecoder:
         - Target: message
         - Supported by: [`ReedMullerCode`](/ref/ReedMullerCode).
 
-    Returns: Input:
+    Parameters: Input
 
         in0 (Array1D[int] | Array1D[float]): The (hard or soft) bit sequence to be decoded. Its length must be a multiple of the code's block length $n$.
 
-    Returns: Output:
+    Parameters: Output:
 
         out0 (Array1D[int]): The decoded bit sequence. Its length is a multiple of the code's dimension $k$.
 
