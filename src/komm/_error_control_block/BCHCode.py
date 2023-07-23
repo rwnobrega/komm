@@ -1,174 +1,110 @@
-import functools
 import operator
+from functools import cache, cached_property, reduce
 
-import numpy as np
+from attrs import frozen
 
 from .._algebra import BinaryPolynomial, FiniteBifield
-from .._aux import tag
 from .CyclicCode import CyclicCode
 
 
+@frozen
 class BCHCode(CyclicCode):
     r"""
-    Bose–Chaudhuri–Hocquenghem (BCH) code. It is a [cyclic code](/ref/CyclicCode) specified by two integers $\mu$ and $\tau$ which must satisfy $1 \leq \tau < 2^{\mu - 1}$. The parameter $\tau$ is called the *designed error-correcting capability* of the BCH code; it will be internally replaced by the true error-correcting capability $t$ of the code. See references for more details. The resulting code is denoted by $\bch(\mu, \tau)$, and has the following parameters:
+    Bose–Ray-Chaudhuri–Hocquenghem (BCH) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *binary BCH code* is a [cyclic code](/ref/CyclicCode) with generator polynomial given by
+    $$
+        g(X) = \mathrm{lcm} \left\\{ \phi_1(X), \phi_2(X), \ldots, \phi_{\delta - 1}(X) \right\\},
+    $$
+    where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a primitive element of $\mathrm{GF}(2^\mu)$. The parameter $\delta$ must be a *Bose distance*. The resulting code is denoted by $\bch(\mu, \delta)$, and has the following parameters, where $\delta = 2 \tau + 1$:
 
     - Length: $n = 2^{\mu} - 1$
     - Dimension: $k \geq n - \mu \tau$
     - Redundancy: $m \leq \mu \tau$
-    - Minimum distance: $d \geq 2\tau + 1$
+    - Minimum distance: $d \geq \delta$
 
-    For more details, see <cite>LC04, Ch. 6</cite>.
+    Only *narrow-sense* and *primitive* BCH codes are implemented. For more details, see <cite>LC04, Ch. 6</cite> and <cite>HP03, Sec. 5.1</cite>.
+
+    The table below lists the possible values of $\delta$ for $2 \leq \mu \leq 10$.
+
+    | $\mu$ | $n$ |  Bose distances $\delta$ |
+    | :-: | :-: | --- |
+    | $2$ | $3$ | $3$ |
+    | $3$ | $7$ | $3$, $7$ |
+    | $4$ | $15$ | $3$, $5$, $7$, $15$ |
+    | $5$ | $31$ | $3$, $5$, $7$, $11$, $15$, $31$ |
+    | $6$ | $63$ | $3$, $5$, $7$, $9$, $11$, $13$, $15$, $21$, $23$, $27$, $31$, $63$ |
+    | $7$ | $127$ | $3$, $5$, $7$, $9$, $11$, $13$, $15$, $19$, $21$, $23$, $27$, $29$, $31$, $43$, $47$, $55$, $63$, $127$ |
+    | $8$ | $255$ | $3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $37$, $39$, $43$, $45$, $47$, $51$, $53$, $55$, $59$, $61$, $63$, $85$, $87$, $91$, $95$, $111$, $119$, $127$, $255$ |
+    | $9$ | $511$ | $3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $91$, $93$, $95$, $103$, $107$, $109$, $111$, $117$, $119$, $123$, $125$, $127$, $171$, $175$, $183$, $187$, $191$, $219$, $223$, $239$, $255$, $511$ |
+    | $10$ | $1023$ | $3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $33$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $69$, $71$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $89$, $91$, $93$, $95$, $99$, $101$, $103$, $105$, $107$, $109$, $111$, $115$, $117$, $119$, $121$, $123$, $125$, $127$, $147$, $149$, $151$, $155$, $157$, $159$, $165$, $167$, $171$, $173$, $175$, $179$, $181$, $183$, $187$, $189$, $191$, $205$, $207$, $213$, $215$, $219$, $221$, $223$, $231$, $235$, $237$, $239$, $245$, $247$, $251$, $253$, $255$, $341$, $343$, $347$, $351$, $363$, $367$, $375$, $379$, $383$, $439$, $447$, $479$, $495$, $511$, $1023$ |
+
+    Notes:
+
+        - For $\delta = 3$ it reduces to the [Hamming code](/ref/HammingCode).
+        - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode).
+
+    Attributes:
+
+        mu (int): The parameter $\mu$ of the BCH code.
+        delta (int): The Bose distance $\delta$ of the BCH code.
+
+    Examples:
+
+        >>> code = komm.BCHCode(mu=5, delta=7)
+        >>> (code.length, code.dimension, code.minimum_distance)
+        (31, 16, 7)
+        >>> code.generator_polynomial
+        BinaryPolynomial(0b1000111110101111)
+
+        >>> komm.BCHCode(mu=7, delta=31)
+        BCHCode(mu=7, delta=31)
+
+        >>> komm.BCHCode(mu=7, delta=32)
+        Traceback (most recent call last):
+        ...
+        ValueError: 'delta' must be a Bose distance (the next one is 43).
+
+        >>> komm.BCHCode(mu=7, delta=43)
+        BCHCode(mu=7, delta=43)
     """
+    mu: int
+    delta: int
 
-    def __init__(self, mu, tau):
-        r"""
-        Constructor for the class.
+    def __attrs_post_init__(self) -> None:
+        if self.mu < 2:
+            raise ValueError("'mu' must satisfy mu >= 2.")
+        if not 2 <= self.delta <= 2**self.mu - 1:
+            raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1.")
+        if self.phi(self.delta) in self.lcm_set:
+            bose_distance = self.delta
+            while self.phi(bose_distance) in self.lcm_set:
+                bose_distance += 1
+            raise ValueError(f"'delta' must be a Bose distance (the next one is {bose_distance}).")
 
-        Parameters:
+    @cached_property
+    def length(self) -> BinaryPolynomial:
+        return 2**self.mu - 1
 
-            mu (int): The parameter $\mu$ of the code.
+    @cached_property
+    def generator_polynomial(self) -> BinaryPolynomial:
+        return reduce(operator.mul, self.lcm_set)
 
-            tau (int): The designed error-correcting capability $\tau$ of the BCH code. It will be internally replaced by the true error-correcting capability $t$ of the code.
+    @property
+    def default_decoder(self):
+        return "berlekamp"
 
-        Examples:
+    @property
+    def supported_decoders(self) -> list[str]:
+        return super().supported_decoders + ["berlekamp"]
 
-            >>> code = komm.BCHCode(5, 3)
-            >>> (code.length, code.dimension, code.minimum_distance)
-            (31, 16, 7)
-            >>> code.generator_polynomial
-            BinaryPolynomial(0b1000111110101111)
+    @cached_property
+    def field(self):
+        return FiniteBifield(self.mu)
 
-            >>> # The true error-correcting capability is equal to the designed one:
-            >>> code = komm.BCHCode(7, 15); code
-            BCHCode(7, 15)
-            >>> # The true error-correcting capability is greater than the designed one:
-            >>> code = komm.BCHCode(7, 16); code
-            BCHCode(7, 21)
-        """
-        if not 1 <= tau < 2 ** (mu - 1):
-            raise ValueError("Parameters must satisfy 1 <= tau < 2**(mu - 1)")
+    @cached_property
+    def lcm_set(self) -> set[BinaryPolynomial]:
+        return {self.phi(i) for i in range(1, self.delta)}
 
-        field = FiniteBifield(mu)
-        generator_polynomial, t = self._bch_code_generator_polynomial(field, tau)
-        super().__init__(length=2**mu - 1)
-        super()._init_from_generator_polynomial(generator_polynomial)
-
-        self._field = field
-        self._mu = mu
-        self._tau = t
-        self._minimum_distance = 2 * t + 1
-
-        alpha = field.primitive_element
-        self._beta = [alpha ** (i + 1) for i in range(2 * t)]
-        self._beta_minimal_polynomial = [b.minimal_polynomial() for b in self._beta]
-
-    def __repr__(self):
-        args = "{}, {}".format(self._mu, self._tau)
-        return "{}({})".format(self.__class__.__name__, args)
-
-    @staticmethod
-    def _bch_code_generator_polynomial(field, tau):
-        r"""
-        Assumes 1 <= tau < 2**(mu - 1). See <cite>LC04, p. 194–195</cite>.
-        """
-        alpha = field.primitive_element
-
-        t = tau
-        lcm_set = {(alpha ** (2 * i + 1)).minimal_polynomial() for i in range(t)}
-        while True:
-            if (alpha ** (2 * t + 1)).minimal_polynomial() not in lcm_set:
-                break
-            t += 1
-        generator_polynomial = functools.reduce(operator.mul, lcm_set)
-
-        return generator_polynomial, t
-
-    def _bch_general_decoder(self, recvword, syndrome_computer, key_equation_solver, root_finder):
-        r"""
-        General BCH decoder. See <cite>LC04, p. 205–209</cite>.
-        """
-        recvword_polynomial = BinaryPolynomial.from_coefficients(recvword)
-        syndrome_polynomial = syndrome_computer(recvword_polynomial)
-        if np.all([x == self._field(0) for x in syndrome_polynomial]):
-            return recvword
-        error_location_polynomial = key_equation_solver(syndrome_polynomial)
-        error_locations = [e.inverse().logarithm() for e in root_finder(error_location_polynomial)]
-        errorword = np.bincount(error_locations, minlength=recvword.size)
-        return np.bitwise_xor(recvword, errorword)
-
-    def _bch_syndrome(self, recvword_polynomial):
-        r"""
-        BCH syndrome computation. See <cite>LC04, p. 205–209</cite>.
-        """
-        syndrome_polynomial = np.empty(len(self._beta), dtype=object)
-        for i, (b, b_min_polynomial) in enumerate(zip(self._beta, self._beta_minimal_polynomial)):
-            syndrome_polynomial[i] = (recvword_polynomial % b_min_polynomial).evaluate(b)
-        return syndrome_polynomial
-
-    def _find_roots(self, polynomial):
-        r"""
-        Exhaustive search.
-        """
-        zero = self._field(0)
-        roots = []
-        for i in range(self._field.order):
-            x = self._field(i)
-            evaluated = zero
-            for coefficient in reversed(polynomial):  # Horner's method
-                evaluated = evaluated * x + coefficient
-            if evaluated == zero:
-                roots.append(x)
-                if len(roots) >= len(polynomial) - 1:
-                    break
-        return roots
-
-    def _berlekamp_algorithm(self, syndrome_polynomial):
-        r"""
-        Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code. See <cite>LC04, p. 209–212</cite> and <cite>RL09, p. 114–121</cite>.
-        """
-        field = self._field
-
-        sigma = {-1: np.array([field(1)], dtype=object), 0: np.array([field(1)], dtype=object)}
-        discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
-        degree = {-1: 0, 0: 0}
-
-        # TODO: This mu is not the same as the mu in __init__...
-        for mu in range(2 * t):
-            if discrepancy[mu] == field(0):
-                degree[mu + 1] = degree[mu]
-                sigma[mu + 1] = sigma[mu]
-            else:
-                rho, max_so_far = -1, -1
-                for i in range(-1, mu):
-                    if discrepancy[i] != field(0) and i - degree[i] > max_so_far:
-                        rho, max_so_far = i, i - degree[i]
-                degree[mu + 1] = max(degree[mu], degree[rho] + mu - rho)
-                sigma[mu + 1] = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
-                first_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
-                first_guy[: degree[mu] + 1] = sigma[mu]
-                second_guy = np.array([field(0)] * (degree[mu + 1] + 1), dtype=object)
-                second_guy[mu - rho : degree[rho] + mu - rho + 1] = sigma[rho]
-                e = discrepancy[mu] / discrepancy[rho]
-                second_guy = np.array([e * x for x in second_guy], dtype=object)
-                sigma[mu + 1] = first_guy + second_guy
-            if mu < 2 * t - 1:
-                discrepancy[mu + 1] = syndrome_polynomial[mu + 1]
-                for idx in range(1, degree[mu + 1] + 1):
-                    discrepancy[mu + 1] += sigma[mu + 1][idx] * syndrome_polynomial[mu + 1 - idx]
-
-        return sigma[2 * self._tau]
-
-    @tag(name="Berlekamp decoder", input_type="hard", target="codeword")
-    def _decode_berlekamp(self, recvword):
-        return self._bch_general_decoder(
-            recvword,
-            syndrome_computer=self._bch_syndrome,
-            key_equation_solver=self._berlekamp_algorithm,
-            root_finder=self._find_roots,
-        )
-
-    def _default_decoder(self, dtype):
-        if dtype == int:
-            return "berlekamp"
-        else:
-            return super()._default_decoder(dtype)
+    @cache
+    def phi(self, i: int) -> BinaryPolynomial:
+        alpha = self.field.primitive_element
+        return (alpha**i).minimal_polynomial()

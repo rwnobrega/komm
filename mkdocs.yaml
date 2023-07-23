@@ -40,6 +40,7 @@ plugins:
     handlers:
       python:
         options:
+          show_bases: false
           # show_root_heading: true
           show_root_full_path: false
           show_root_toc_entry: false
@@ -47,6 +48,7 @@ plugins:
           docstring_section_style: list
           members_order: source
           group_by_category: false
+          show_signature: false
 
 theme:
   name: material

@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -23,7 +24,7 @@ class TestHammingCode:
         )
 
     def test_parity_check_matrix(self):
-        H = self.code.parity_check_matrix
+        H = self.code.check_matrix
         assert np.array_equal(
             H,
             [
@@ -40,23 +41,39 @@ class TestHammingCode:
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
-        H = self.code.parity_check_matrix
+        H = self.code.check_matrix
         assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
-    def test_encoding(self):
-        assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1])
-        assert np.array_equal(self.code.encode([1, 0, 1, 1]), [1, 0, 1, 1, 0, 1, 0])
-        assert np.array_equal(self.code.encode([1, 1, 1, 1]), [1, 1, 1, 1, 1, 1, 1])
+    @pytest.mark.parametrize(
+        "u, v",
+        [
+            ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1]),
+            ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0]),
+            ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]),
+        ],
+    )
+    def test_enc_mapping(self, u, v):
+        assert np.array_equal(self.code.enc_mapping(u), v)
+        assert np.array_equal(self.code.inv_enc_mapping(v), u)
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table
+        codewords = self.code.codewords
         assert codewords.shape == (2**k, n)
 
-    def test_decoding(self):
-        assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 1]), [1, 1, 1, 1])
-        assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 0]), [1, 1, 1, 1])
-        assert np.array_equal(self.code.decode([1, 0, 1, 1, 1, 1, 0]), [1, 0, 1, 1])
+    def test_encoder(self):
+        encoder = komm.BlockEncoder(self.code)
+        assert np.array_equal(
+            encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
+            [1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+        )
+
+    def test_decoder(self):
+        decoder = komm.BlockDecoder(self.code)
+        assert np.array_equal(
+            decoder([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]),
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+        )
 
 
 class TestExtendedHammingCode:
@@ -79,7 +96,7 @@ class TestExtendedHammingCode:
         )
 
     def test_parity_check_matrix(self):
-        H = self.code.parity_check_matrix
+        H = self.code.check_matrix
         assert np.array_equal(
             H,
             [
@@ -97,20 +114,36 @@ class TestExtendedHammingCode:
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
         G = self.code.generator_matrix
-        H = self.code.parity_check_matrix
+        H = self.code.check_matrix
         assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
 
-    def test_encoding(self):
-        assert np.array_equal(self.code.encode([1, 0, 0, 1]), [1, 0, 0, 1, 0, 0, 1, 1])
-        assert np.array_equal(self.code.encode([1, 0, 1, 1]), [1, 0, 1, 1, 0, 1, 0, 0])
-        assert np.array_equal(self.code.encode([1, 1, 1, 1]), [1, 1, 1, 1, 1, 1, 1, 1])
+    @pytest.mark.parametrize(
+        "u, v",
+        [
+            ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1, 1]),
+            ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0, 0]),
+            ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]),
+        ],
+    )
+    def test_enc_mapping(self, u, v):
+        assert np.array_equal(self.code.enc_mapping(u), v)
+        assert np.array_equal(self.code.inv_enc_mapping(v), u)
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codeword_table
+        codewords = self.code.codewords
         assert codewords.shape == (2**k, n)
 
-    def test_decoding(self):
-        assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 1, 0]), [1, 1, 1, 1])
-        assert np.array_equal(self.code.decode([1, 1, 1, 1, 1, 1, 0, 1]), [1, 1, 1, 1])
-        assert np.array_equal(self.code.decode([1, 0, 1, 1, 1, 1, 0, 0]), [1, 0, 1, 1])
+    def test_encoder(self):
+        encoder = komm.BlockEncoder(self.code)
+        assert np.array_equal(
+            encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
+            [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+        )
+
+    def test_decoder(self):
+        decoder = komm.BlockDecoder(self.code)
+        assert np.array_equal(
+            decoder([1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]),
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+        )

@@ -12,6 +12,8 @@ Channels:
 Error control:
   Block coding:
   - BlockCode
+  - SystematicBlockCode
+  - CyclicCode
   - HammingCode
   - SimplexCode
   - GolayCode
@@ -19,8 +21,9 @@ Error control:
   - SingleParityCheckCode
   - CordaroWagnerCode
   - ReedMullerCode
-  - CyclicCode
   - BCHCode
+  - BlockEncoder
+  - BlockDecoder
   Convolutional coding:
   - ConvolutionalCode
   - ConvolutionalStreamEncoder
@@ -66,13 +69,13 @@ Source coding:
   - DiscreteMemorylessSource
   Lossless coding:
   - FixedToVariableCode
+  - HuffmanCode
   - FixedToVariableEncoder
   - FixedToVariableDecoder
-  - HuffmanCode
   - VariableToFixedCode
+  - TunstallCode
   - VariableToFixedEncoder
   - VariableToFixedDecoder
-  - TunstallCode
 Utilities:
 - binlist2int
 - int2binlist

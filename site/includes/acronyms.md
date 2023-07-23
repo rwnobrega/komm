@@ -1,7 +1,7 @@
 *[APSK]: amplitude- and phase-shift keying
 *[ASK]: amplitude-shift keying
 *[AWGN]: additive white Gaussian noise
-*[BCH]: Bose–Chaudhuri–Hocquenghem
+*[BCH]: Bose–Ray-Chaudhuri–Hocquenghem
 *[BEC]: binary erasure channel
 *[BSC]: binary symmetric channel
 *[DMC]: discrete memoryless channel

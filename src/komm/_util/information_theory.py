@@ -1,7 +1,7 @@
 import numpy as np
 from attrs import field
 
-from komm._validation import is_log_base, is_pmf, validate_call
+from .._validation import is_log_base, is_pmf, validate_call
 
 
 def _entropy(pmf, base):

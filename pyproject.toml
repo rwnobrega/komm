@@ -19,10 +19,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
-python_files = "test_*.py"
-python_functions = "test_*"
+python_files = ["test_*.py", "bench_*.py"]
+python_functions = ["test_*", "bench_*"]
 pythonpath = "."
-testpaths = ["src/komm", "tests"]
+testpaths = ["src/komm", "tests", "benchmarks"]
 
 [tool.pdm.dev-dependencies]
 lint = [
@@ -31,6 +31,7 @@ lint = [
 ]
 test = [
     "pytest>=7.4.0",
+    "pytest-benchmark>=4.0.0",
 ]
 doc = [
     "mkdocs>=1.4.3",

@@ -1,58 +1,81 @@
-from .BlockCode import BlockCode
-from .HammingCode import HammingCode
+from functools import cached_property
+
+from attrs import frozen
+
+from .lib import hamming_parity_submatrix
+from .SystematicBlockCode import SystematicBlockCode
 
 
-class SimplexCode(BlockCode):
+@frozen
+class SimplexCode(SystematicBlockCode):
     r"""
-    Simplex (maximum-length) code. For a given dimension $k$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^k - 1$ nonzero binary $k$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
+    Simplex (maximum-length) code. For a given parameter $\kappa \geq 2$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^\kappa - 1$ nonzero binary $\kappa$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
 
-    - Length: $n = 2^k - 1$
-    - Dimension: $k$
-    - Redundancy: $m = 2^k - k - 1$
-    - Minimum distance: $d = 2^{k - 1}$
+    - Length: $n = 2^\kappa - 1$
+    - Dimension: $k = \kappa$
+    - Redundancy: $m = 2^\kappa - \kappa - 1$
+    - Minimum distance: $d = 2^{\kappa - 1}$
 
-    This class constructs the code in systematic form, with the information set on the left.
+    In its extended version, the simplex code has the following parameters:
+
+    - Length: $n = 2^\kappa$
+    - Dimension: $k = \kappa + 1$
+    - Redundancy: $m = 2^\kappa - \kappa - 1$
+    - Minimum distance: $d = 2^{\kappa - 1}$
 
     Notes:
 
-        - For $k = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
+        - For $\kappa = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
+
+    Attributes:
+
+        kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
+        extended: Whether to use the extended version of the Simplex code. Default is `False`.
+
+    This function constructs the code in systematic form, with the information set on the left.
+
+    Examples:
+
+        >>> code = komm.SimplexCode(3)
+        >>> (code.length, code.dimension, code.redundancy)
+        (7, 3, 4)
+        >>> code.minimum_distance
+        4
+        >>> code.generator_matrix
+        array([[1, 0, 0, 1, 1, 0, 1],
+               [0, 1, 0, 1, 0, 1, 1],
+               [0, 0, 1, 0, 1, 1, 1]])
+        >>> code.check_matrix
+        array([[1, 1, 0, 1, 0, 0, 0],
+               [1, 0, 1, 0, 1, 0, 0],
+               [0, 1, 1, 0, 0, 1, 0],
+               [1, 1, 1, 0, 0, 0, 1]])
+
+        >>> code = komm.SimplexCode(3, extended=True)
+        >>> (code.length, code.dimension, code.redundancy)
+        (8, 4, 4)
+        >>> code.minimum_distance
+        4
+        >>> code.generator_matrix
+        array([[1, 0, 0, 0, 1, 1, 0, 1],
+               [0, 1, 0, 0, 1, 0, 1, 1],
+               [0, 0, 1, 0, 0, 1, 1, 1],
+               [0, 0, 0, 1, 1, 1, 1, 0]])
+        >>> code.check_matrix
+        array([[1, 1, 0, 1, 1, 0, 0, 0],
+               [1, 0, 1, 1, 0, 1, 0, 0],
+               [0, 1, 1, 1, 0, 0, 1, 0],
+               [1, 1, 1, 0, 0, 0, 0, 1]])
     """
+    kappa: int
+    extended: bool = False
 
-    def __init__(self, k):
-        r"""
-        Constructor for the class.
+    @cached_property
+    def parity_submatrix(self):
+        return hamming_parity_submatrix(self.kappa, self.extended).T
 
-        Parameters:
-
-            k (int): The dimension $k$ of the code. Must satisfy $k \geq 2$.
-
-        Examples:
-
-            >>> code = komm.SimplexCode(3)
-            >>> (code.length, code.dimension, code.minimum_distance)
-            (7, 3, 4)
-            >>> code.generator_matrix
-            array([[1, 0, 0, 1, 1, 0, 1],
-                   [0, 1, 0, 1, 0, 1, 1],
-                   [0, 0, 1, 0, 1, 1, 1]])
-            >>> code.parity_check_matrix
-            array([[1, 1, 0, 1, 0, 0, 0],
-                   [1, 0, 1, 0, 1, 0, 0],
-                   [0, 1, 1, 0, 0, 1, 0],
-                   [1, 1, 1, 0, 0, 0, 1]])
-            >>> code.encode([1, 0, 1])
-            array([1, 0, 1, 1, 0, 1, 0])
-            >>> code.decode([1, 0, 1, 1, 1, 1, 0])
-            array([1, 0, 1])
-        """
-        parity_submatrix = HammingCode._hamming_parity_submatrix(k).T
-        super().__init__()
-        super()._init_from_parity_submatrix(parity_submatrix)
-        self._minimum_distance = 2 ** (k - 1)
-        self._k = k
-
-    def __repr__(self):
-        args = "{}".format(self._k)
-        return "{}({})".format(self.__class__.__name__, args)
+    @property
+    def minimum_distance(self):
+        return 2 ** (self.kappa - 1)

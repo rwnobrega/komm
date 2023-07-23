@@ -12,7 +12,7 @@ class VariableToFixedEncoder:
 
     Attributes:
 
-        code (VariableToFixedCode): The code to be considered.
+        code: The code to be considered.
 
     Examples:
 

@@ -12,7 +12,7 @@ class FixedToVariableDecoder:
 
     Attributes:
 
-        code (FixedToVariableCode): The code to be considered, which must be a prefix-free code (that is, no codeword is a prefix of another codeword).
+        code: The code to be considered, which must be a prefix-free code (that is, no codeword is a prefix of another codeword).
 
     Examples:
 
