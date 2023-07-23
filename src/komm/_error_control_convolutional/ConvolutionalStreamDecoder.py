@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Any
 
 import numpy as np
@@ -8,7 +9,7 @@ from .._util import int2binlist, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
 
-@define
+@define(slots=False)
 class ConvolutionalStreamDecoder:
     r"""
     Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
@@ -43,15 +44,18 @@ class ConvolutionalStreamDecoder:
     state: int = field(default=0)
     input_type: str = field(default="hard")
     memory: dict[str, Any] = field(init=False)
-    cache_bit: np.ndarray = field(init=False)
 
     def __attrs_post_init__(self):
-        n, fsm = self.convolutional_code.num_output_bits, self.convolutional_code.finite_state_machine
+        fsm = self.convolutional_code.finite_state_machine
         self.memory = {}
         self.memory["metrics"] = np.full((fsm.num_states, self.traceback_length + 1), fill_value=np.inf)
         self.memory["metrics"][self.state, -1] = 0.0
         self.memory["paths"] = np.zeros((fsm.num_states, self.traceback_length + 1), dtype=int)
-        self.cache_bit = np.array([int2binlist(y, width=n) for y in range(2**n)])
+
+    @cached_property
+    def cache_bit(self) -> np.ndarray:
+        n = self.convolutional_code.num_output_bits
+        return np.array([int2binlist(y, width=n) for y in range(2**n)])
 
     def metric_function(self, y: int, z: np.ndarray) -> float:
         if self.input_type == "hard":
