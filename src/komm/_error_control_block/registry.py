@@ -27,3 +27,7 @@ class RegistryBlockDecoder:
     @classmethod
     def get(cls, method: str) -> BlockDecoderData:
         return cls._registry[method]
+
+    @classmethod
+    def list(cls) -> list[str]:
+        return list(cls._registry.keys())
