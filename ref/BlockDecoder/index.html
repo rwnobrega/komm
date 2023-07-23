@@ -520,7 +520,7 @@
                   <li class="field-body">
                     <b><code>method</code></b> <span class="doc-param-annotation">(<code>str | None</code>)</span> –
                     <div class="doc-md-description">
-                      <p>The method to be used for decoding. The default corresponds to <code>code.default_decoder</code>.</p>
+                      <p>The identifier of the method to be used for decoding. The default corresponds to <code>code.default_decoder</code>.</p>
                     </div>
                   </li>
                   <li class="field-body">
@@ -530,7 +530,110 @@
                     </div>
                   </li>
                 </ul>
-                <p><a href="/ref/BlockDecoderMethods">Click here</a> to see the available decoding methods for a given code.</p>
+                <details class="note" open="">
+                  <summary>
+                    Note
+                  </summary>
+                  <p>To see the default decoding method for a given code, use <code>code.default_decoder</code>; to see the available decoding methods for a given code, use <code>code.supported_decoders</code>.</p>
+                </details>
+                <details class="info">
+                  <summary>
+                    Available decoding methods
+                  </summary>
+                  <p><strong><code>bcjr</code></strong>: Bahl–Cocke–Jelinek–Raviv (BCJR)</p>
+                  <ul>
+                    <li>Input type: soft</li>
+                    <li>Output type: soft</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>berlekamp</code></strong>: Berlekamp decoder</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: <a href="/ref/BCHCode"><code>BCHCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>exhaustive_search_hard</code></strong>: Exhaustive search (hard-decision). Minimum Hamming distance decoder</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: All codes.</li>
+                  </ul>
+                  <p><strong><code>exhaustive_search_soft</code></strong>: Exhaustive search (soft-decision). Minimum Euclidean distance decoder</p>
+                  <ul>
+                    <li>Input type: soft</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: All codes.</li>
+                  </ul>
+                  <p><strong><code>majority_logic_repetition_code</code></strong>: Majority-logic decoder. A hard-decision decoder for Repetition codes only.</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/RepetitionCode"><code>RepetitionCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>meggitt</code></strong>: Meggitt decoder</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: <a href="/ref/BCHCode"><code>BCHCode</code></a>, <a href="/ref/CyclicCode"><code>CyclicCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>reed</code></strong>: Reed decoding algorithm for Reed–Muller codes. It's a majority-logic decoding algorithm.</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/ReedMullerCode"><code>ReedMullerCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>syndrome_table</code></strong>: Syndrome table decoder</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: All codes.</li>
+                  </ul>
+                  <p><strong><code>viterbi_hard</code></strong>: Viterbi (hard-decision)</p>
+                  <ul>
+                    <li>Input type: hard</li>
+                    <li>Output type: hard</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>viterbi_soft</code></strong>: Viterbi (soft-decision)</p>
+                  <ul>
+                    <li>Input type: soft</li>
+                    <li>Output type: hard</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>wagner</code></strong>: Wagner decoder. A soft-decision decoder for SingleParityCheck codes only.</p>
+                  <ul>
+                    <li>Input type: soft</li>
+                    <li>Output type: hard</li>
+                    <li>Target: codeword</li>
+                    <li>Supported by: <a href="/ref/SingleParityCheckCode"><code>SingleParityCheckCode</code></a>.
+                    </li>
+                  </ul>
+                  <p><strong><code>weighted_reed</code></strong>: Weighted Reed decoding algorithm for Reed–Muller codes.</p>
+                  <ul>
+                    <li>Input type: soft</li>
+                    <li>Output type: hard</li>
+                    <li>Target: message</li>
+                    <li>Supported by: <a href="/ref/ReedMullerCode"><code>ReedMullerCode</code></a>.
+                    </li>
+                  </ul>
+                </details>
                 <p><strong>Input:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -549,12 +652,6 @@
                     </div>
                   </li>
                 </ul>
-                <details class="note" open="">
-                  <summary>
-                    Note
-                  </summary>
-                  <p>To see the default decoding method for a given code, use <code>code.default_decoder</code>; to see the available decoding methods for a given code, use <code>code.supported_decoders</code>.</p>
-                </details>
                 <p><strong>Examples:</strong></p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
