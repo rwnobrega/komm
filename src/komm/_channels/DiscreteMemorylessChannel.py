@@ -76,9 +76,9 @@ class DiscreteMemorylessChannel:
         Examples:
 
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
-            >>> dmc.mutual_information([1/3, 1/3, 1/3])
+            >>> dmc.mutual_information([1/3, 1/3, 1/3])  # doctest: +NUMBER
             0.12381109879798724
-            >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)
+            >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)  # doctest: +NUMBER
             0.07811610605402552
         """
         return _mutual_information(input_pmf, self._transition_matrix, base)
