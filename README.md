@@ -18,7 +18,7 @@ Please be advised that this project is currently under development. As such, the
 
 ## Installation
 
-Before you start, make sure you have [Python](https://www.python.org/) (version 3.8 or later) installed.
+Before you start, make sure you have [Python](https://www.python.org/) (version 3.10 or later) installed.
 
 ### From PyPI
 
