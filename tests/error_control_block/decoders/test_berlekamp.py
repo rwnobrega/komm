@@ -45,3 +45,9 @@ def test_bch_berlekamp():
         decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]),
         [0, 0, 0, 0, 0],
     )
+
+
+def test_bch_berlekamp_zero_codeword():
+    code = komm.BCHCode(mu=4, delta=7)
+    decoder = komm.BlockDecoder(code, method="berlekamp")
+    assert np.array_equal(decoder([0] * code.length), [0] * code.dimension)
