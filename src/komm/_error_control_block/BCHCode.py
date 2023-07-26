@@ -81,7 +81,7 @@ class BCHCode(CyclicCode):
             raise ValueError(f"'delta' must be a Bose distance (the next one is {bose_distance}).")
 
     @cached_property
-    def length(self) -> BinaryPolynomial:
+    def length(self) -> int:
         return 2**self.mu - 1
 
     @cached_property
