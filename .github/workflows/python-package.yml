@@ -25,5 +25,5 @@ jobs:
           pip install -e .
       - name: Test with pytest
         run: |
-          pip install pytest
-          pytest src/ tests/
+          pip install pytest pytest-cov
+          pytest

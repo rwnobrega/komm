@@ -18,11 +18,11 @@ requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules"
+addopts = "--doctest-modules --cov=komm --cov-report=html"
 python_files = ["test_*.py", "bench_*.py"]
 python_functions = ["test_*", "bench_*"]
 pythonpath = "."
-testpaths = ["src/komm", "tests", "benchmarks"]
+testpaths = ["src/komm", "tests"]
 
 [tool.pdm.dev-dependencies]
 lint = [
@@ -32,6 +32,7 @@ lint = [
 test = [
     "pytest>=7.4.0",
     "pytest-benchmark>=4.0.0",
+    "pytest-cov>=4.1.0",
 ]
 doc = [
     "mkdocs>=1.4.3",
