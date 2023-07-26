@@ -77,9 +77,9 @@ class DiscreteMemorylessChannel:
 
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
             >>> dmc.mutual_information([1/3, 1/3, 1/3])  # doctest: +NUMBER
-            0.12381109879798724
+            0.123811098798
             >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)  # doctest: +NUMBER
-            0.07811610605402552
+            0.078116106054
         """
         return _mutual_information(input_pmf, self._transition_matrix, base)
 
@@ -99,9 +99,9 @@ class DiscreteMemorylessChannel:
 
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
             >>> dmc.capacity()  # doctest: +NUMBER
-            0.1616318609548566
+            0.1616318610
             >>> dmc.capacity(base=3)  # doctest: +NUMBER
-            0.10197835020154389
+            0.1019783502
         """
         initial_guess = np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
         optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)

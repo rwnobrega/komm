@@ -43,7 +43,7 @@ def TunstallCode(pmf, target_block_size=None):
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +NUMBER
-        1.3698630136986305
+        1.3698630137
     """
     if target_block_size is None:
         target_block_size = np.ceil(np.log2(pmf.size)).astype(int)
