@@ -30,7 +30,7 @@ def TunstallCode(pmf, target_block_size=None):
         {(0, 0): (0,),
          (0, 1): (1,),
          (1, 0): (2,)}
-        >>> np.around(code.rate(pmf), decimals=6)
+        >>> code.rate(pmf)  # doctest: +NUMBER
         2.0
 
         >>> code = komm.TunstallCode(pmf, 3)
@@ -42,8 +42,8 @@ def TunstallCode(pmf, target_block_size=None):
          (1, 0, 0): (0, 2),
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
-        >>> np.around(code.rate(pmf), decimals=6)
-        1.369863
+        >>> code.rate(pmf)  # doctest: +NUMBER
+        1.3698630136986305
     """
     if target_block_size is None:
         target_block_size = np.ceil(np.log2(pmf.size)).astype(int)

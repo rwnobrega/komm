@@ -34,7 +34,7 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
         {(0,): (0,),
          (1,): (1, 1),
          (2,): (1, 0)}
-        >>> np.around(code.rate(pmf), decimals=6)
+        >>> code.rate(pmf)  # doctest: +NUMBER
         1.3
 
         >>> code = komm.HuffmanCode(pmf, 2)
@@ -48,7 +48,7 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
          (2, 0): (0, 0, 1),
          (2, 1): (0, 0, 0, 1, 0, 1),
          (2, 2): (0, 0, 0, 1, 0, 0)}
-        >>> np.around(code.rate(pmf), decimals=6)
+        >>> code.rate(pmf)  # doctest: +NUMBER
         1.1975
     """
     code = FixedToVariableCode.from_codewords(

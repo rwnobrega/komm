@@ -42,12 +42,10 @@ def entropy(pmf, base: float | str = 2.0):
 
     Examples:
 
-        >>> entropy = komm.entropy([1/4, 1/4, 1/4, 1/4])
-        >>> np.around(entropy, decimals=6)
+        >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
         2.0
 
-        >>> entropy = komm.entropy(base=3.0, pmf=[1/3, 1/3, 1/3])
-        >>> np.around(entropy, decimals=6)
+        >>> komm.entropy(base=3.0, pmf=[1/3, 1/3, 1/3])  # doctest: +NUMBER
         1.0
     """
     return _entropy(pmf, base)

@@ -98,9 +98,9 @@ class DiscreteMemorylessChannel:
         Examples:
 
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
-            >>> dmc.capacity()
+            >>> dmc.capacity()  # doctest: +NUMBER
             0.1616318609548566
-            >>> dmc.capacity(base=3)
+            >>> dmc.capacity(base=3)  # doctest: +NUMBER
             0.10197835020154389
         """
         initial_guess = np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
