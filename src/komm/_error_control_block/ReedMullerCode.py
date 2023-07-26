@@ -51,7 +51,7 @@ class ReedMullerCode(BlockCode):
     rho: int
     mu: int
 
-    def __post_init__(self):
+    def __attrs_post_init__(self):
         if not 0 <= self.rho < self.mu:
             raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
 

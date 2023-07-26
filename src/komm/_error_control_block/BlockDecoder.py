@@ -135,7 +135,7 @@ class BlockDecoder:
     method: str | None = None
     decoder_kwargs: dict = field(factory=dict)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         method = self.method or self.code.default_decoder
         help_message = f"To see the available decoding methods for a given code, use `code.supported_decoders`"
         if not RegistryBlockDecoder.is_registered(method):
