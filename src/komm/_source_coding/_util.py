@@ -4,8 +4,8 @@ Word = tuple[int, ...]
 
 
 def is_prefix_free(words: list[Word]) -> bool:
-    for c1, c2 in it.combinations(words, 2):
-        if c1[: len(c2)] == c2 or c2[: len(c1)] == c1:
+    for c1, c2 in it.permutations(words, 2):
+        if c1[: len(c2)] == c2:
             return False
     return True
 
@@ -15,12 +15,12 @@ def is_uniquely_decodable(words: list[Word]) -> bool:
     augmented_words = set(words)
     while True:
         dangling_suffixes = set()
-        for c1, c2 in it.product(augmented_words, repeat=2):
-            if c1 != c2 and c1[: len(c2)] == c2:
+        for c1, c2 in it.permutations(augmented_words, 2):
+            if c1[: len(c2)] == c2:
                 dangling_suffixes.add(c1[len(c2) :])
-        if any(suffix in words for suffix in dangling_suffixes):
+        if dangling_suffixes & set(words):
             return False
-        if all(suffix in augmented_words for suffix in dangling_suffixes):
+        if dangling_suffixes <= augmented_words:
             return True
         augmented_words |= dangling_suffixes
 
