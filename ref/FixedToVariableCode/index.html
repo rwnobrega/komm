@@ -699,13 +699,32 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="is_uniquely_decodable" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_uniquely_decodable</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns whether the code is uniquely decodable or not [Not implemented yet].</p>
+                      <p>Returns whether the code is uniquely decodable or not. A code is <em>uniquely decodable</em> if $$ s_1 \cdots s_n \neq s'_1 \cdots s'_m \implies \Enc(s_1) \cdots \Enc(s_n) \neq \Enc(s'_1) \cdots \Enc(s'_m). $$</p>
+                      <p><strong>Examples:</strong></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_decodable</span><span class="p">()</span>
+<span class="go">True</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_decodable</span><span class="p">()</span>
+<span class="go">True</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_decodable</span><span class="p">()</span>
+<span class="go">False</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="is_prefix_free" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_prefix_free</span><span class="p">()</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns whether the code is prefix-free or not. A <em>prefix-free</em> code is a code in which no codeword is a prefix of any other codeword.</p>
+                      <p>Returns whether the code is prefix-free or not. A code is <em>prefix-free</em> if no codeword is a prefix of any other codeword.</p>
                       <p><strong>Examples:</strong></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
@@ -714,7 +733,13 @@
 </code></pre>
                       </div>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
+<span class="go">False</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
 <span class="go">False</span>
 </code></pre>
