@@ -10,6 +10,21 @@ def is_prefix_free(words: list[Word]) -> bool:
     return True
 
 
+def is_uniquely_decodable(words: list[Word]) -> bool:
+    # Sardinas–Patterson algorithm. See [Say06, Sec. 2.4.1].
+    augmented_words = set(words)
+    while True:
+        dangling_suffixes = set()
+        for c1, c2 in it.product(augmented_words, repeat=2):
+            if c1 != c2 and c1[: len(c2)] == c2:
+                dangling_suffixes.add(c1[len(c2) :])
+        if any(suffix in words for suffix in dangling_suffixes):
+            return False
+        if all(suffix in augmented_words for suffix in dangling_suffixes):
+            return True
+        augmented_words |= dangling_suffixes
+
+
 def parse_prefix_free(input_sequence, dictionary):
     output_sequence = []
     i = 0

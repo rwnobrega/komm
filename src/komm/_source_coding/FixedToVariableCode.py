@@ -4,7 +4,7 @@ import numpy as np
 from attrs import define, field, validators
 
 from .._validation import is_pmf, validate_call
-from ._util import Word, is_prefix_free
+from ._util import Word, is_prefix_free, is_uniquely_decodable
 
 
 @define
@@ -138,14 +138,30 @@ class FixedToVariableCode:
 
     def is_uniquely_decodable(self) -> bool:
         r"""
-        Returns whether the code is uniquely decodable or not [Not implemented yet].
+        Returns whether the code is uniquely decodable or not. A code is *uniquely decodable* if
+        $$
+            s_1 \cdots s_n \neq s'_1 \cdots s'_m \implies \Enc(s_1) \cdots \Enc(s_n) \neq \Enc(s'_1) \cdots \Enc(s'_m).
+        $$
+
+        Examples:
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.is_uniquely_decodable()
+            True
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,1)])
+            >>> code.is_uniquely_decodable()
+            True
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
+            >>> code.is_uniquely_decodable()
+            False
         """
-        # This method should implement the Sardinas–Patterson algorithm.
-        raise NotImplementedError
+        return is_uniquely_decodable(self.codewords)
 
     def is_prefix_free(self) -> bool:
         r"""
-        Returns whether the code is prefix-free or not. A *prefix-free* code is a code in which no codeword is a prefix of any other codeword.
+        Returns whether the code is prefix-free or not. A code is *prefix-free* if no codeword is a prefix of any other codeword.
 
         Examples:
 
@@ -153,7 +169,11 @@ class FixedToVariableCode:
             >>> code.is_prefix_free()
             True
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,0,1)])
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,1)])
+            >>> code.is_prefix_free()
+            False
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
             >>> code.is_prefix_free()
             False
         """

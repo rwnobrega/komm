@@ -137,11 +137,11 @@ class VariableToFixedCode:
         r"""
         Returns whether the code is unique encodable or not. [Not implemented yet].
         """
-        # This method should implement the Sardinas–Patterson algorithm.
         raise NotImplementedError
 
     def is_prefix_free(self) -> bool:
-        r"""Returns whether the code is prefix-free or not. A *prefix-free* code is a code in which no sourceword is a prefix of any other sourceword.
+        r"""
+        Returns whether the code is prefix-free or not. A code is *prefix-free* if no sourceword is a prefix of any other sourceword.
 
         Examples:
 
