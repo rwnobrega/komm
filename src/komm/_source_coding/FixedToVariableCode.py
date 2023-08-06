@@ -1,13 +1,13 @@
 import itertools as it
 
 import numpy as np
-from attrs import define, field, validators
+from attrs import field, frozen, validators
 
 from .._validation import is_pmf, validate_call
 from ._util import Word, is_prefix_free, is_uniquely_decodable
 
 
-@define
+@frozen
 class FixedToVariableCode:
     r"""
     Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an injective *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
