@@ -35,7 +35,7 @@ class BlockCode:
                [1, 0, 1, 0, 1, 0],
                [1, 1, 0, 0, 0, 1]])
 
-        >>> code = komm.BlockCode(check_matrix = [[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
+        >>> code = komm.BlockCode(check_matrix=[[0, 1, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0], [1, 1, 0, 0, 0, 1]])
         >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)
         >>> code.generator_matrix
