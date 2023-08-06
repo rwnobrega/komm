@@ -51,11 +51,10 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
         >>> code.rate(pmf)  # doctest: +NUMBER
         1.1975
     """
-    code = FixedToVariableCode.from_codewords(
+    return FixedToVariableCode.from_codewords(
         source_cardinality=pmf.size,
         codewords=huffman_algorithm(pmf, source_block_size, policy),
     )
-    return code
 
 
 def huffman_algorithm(pmf, source_block_size, policy):

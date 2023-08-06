@@ -49,11 +49,10 @@ def TunstallCode(pmf, target_block_size=None):
         target_block_size = np.ceil(np.log2(pmf.size)).astype(int)
     elif 2**target_block_size < pmf.size:
         raise ValueError("'target_block_size' is too low")
-    code = VariableToFixedCode.from_sourcewords(
+    return VariableToFixedCode.from_sourcewords(
         target_cardinality=2,
         sourcewords=tunstall_algorithm(pmf, target_block_size),
     )
-    return code
 
 
 def tunstall_algorithm(pmf, code_block_size):
