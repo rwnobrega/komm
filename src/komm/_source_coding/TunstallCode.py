@@ -1,8 +1,7 @@
 import heapq
-import itertools
 
 import numpy as np
-from attrs import field, validators
+from attrs import field
 
 from .._validation import is_pmf, validate_call
 from .VariableToFixedCode import VariableToFixedCode
