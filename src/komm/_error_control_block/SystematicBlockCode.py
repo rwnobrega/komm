@@ -7,7 +7,7 @@ from attrs import field, frozen
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False, kw_only=True)
+@frozen(kw_only=True)
 class SystematicBlockCode(BlockCode):
     r"""
     Systematic linear block code. A *systematic linear block code* is a [linear block code](/ref/BlockCode) in which the information bits can be found in predefined positions in the codeword, called the *information set* $\mathcal{K}$, which is a $k$-sublist of $[0 : n)$; the remaining positions are called the *parity set* $\mathcal{M}$, which is a $m$-sublist of $[0 : n)$. In this case, the generator matrix then has the property that the columns indexed by $\mathcal{K}$ are equal to $I_k$, and the columns indexed by $\mathcal{M}$ are equal to $P$. The check matrix has the property that the columns indexed by $\mathcal{M}$ are equal to $I_m$, and the columns indexed by $\mathcal{K}$ are equal to $P^\top$. The matrix $P \in \mathbb{B}^{k \times m}$ is called the *parity submatrix* of the code.
@@ -34,8 +34,12 @@ class SystematicBlockCode(BlockCode):
                [1, 0, 1, 0, 1, 0],
                [1, 1, 0, 0, 0, 1]])
     """
-    _parity_submatrix: npt.ArrayLike = field(default=None, repr=False, alias="parity_submatrix")
-    _information_set: np.ndarray = field(default="left", repr=False, alias="information_set")
+    _parity_submatrix: npt.ArrayLike = field(
+        default=None, repr=False, alias="parity_submatrix"
+    )
+    _information_set: np.ndarray = field(
+        default="left", repr=False, alias="information_set"
+    )
 
     def __repr__(self) -> str:
         args = {}
@@ -60,8 +64,14 @@ class SystematicBlockCode(BlockCode):
         try:
             information_set = np.asarray(information_set)
         except TypeError:
-            raise ValueError("'information_set' must be either 'left', 'right' or an array of indices")
-        if information_set.size != k or information_set.min() < 0 or information_set.max() > n:
+            raise ValueError(
+                "'information_set' must be either 'left', 'right' or an array of indices"
+            )
+        if (
+            information_set.size != k
+            or information_set.min() < 0
+            or information_set.max() > n
+        ):
             raise ValueError("'information_set' must be a 'k'-sublist of 'range(n)'")
         return information_set
 

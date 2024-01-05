@@ -12,7 +12,7 @@ from .._util import binlist2int, int2binlist, pack, unpack
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class TerminatedConvolutionalCode(BlockCode):
     r"""
     Terminated convolutional code. It is a [linear block code](/ref/BlockCode) obtained by terminating a $(n_0, k_0)$ [convolutional code](/ref/ConvolutionalCode). A total of $h$ information blocks (each containing $k_0$ information bits) is encoded. The dimension of the resulting block code is thus $k = h k_0$; its length depends on the termination mode employed. There are three possible termination modes:
@@ -63,14 +63,18 @@ class TerminatedConvolutionalCode(BlockCode):
     """
     convolutional_code: ConvolutionalCode
     num_blocks: int
-    mode: Literal["direct-truncation", "zero-termination", "tail-biting"] = "zero-termination"
+    mode: Literal[
+        "direct-truncation", "zero-termination", "tail-biting"
+    ] = "zero-termination"
 
     def __attrs_post_init__(self):
         if self.mode == "tail-biting":
             try:
                 self.zs_multiplier
             except:
-                raise ValueError("This convolutional code does not support tail-biting for this number of blocks")
+                raise ValueError(
+                    "This convolutional code does not support tail-biting for this number of blocks"
+                )
 
     @property
     def length(self):
@@ -91,7 +95,9 @@ class TerminatedConvolutionalCode(BlockCode):
         generator_matrix = np.zeros((k, n), dtype=int)
         top_rows = np.apply_along_axis(self.enc_mapping, 1, np.eye(k0, k, dtype=int))
         for t in range(self.num_blocks):
-            generator_matrix[k0 * t : k0 * (t + 1), :] = np.roll(top_rows, shift=n0 * t, axis=1)
+            generator_matrix[k0 * t : k0 * (t + 1), :] = np.roll(
+                top_rows, shift=n0 * t, axis=1
+            )
             if self.mode == "direct-truncation":
                 generator_matrix[k0 * t : k0 * (t + 1), : n0 * t] = 0
         return generator_matrix
@@ -115,7 +121,9 @@ class TerminatedConvolutionalCode(BlockCode):
             # See [WBR01, Sec III.B].
             input_sequence = pack(u, width=k0)
             _, zs_response = fsm.process(input_sequence, initial_state=0)
-            initial_state = binlist2int(np.dot(int2binlist(zs_response, width=nu), self.zs_multiplier) % 2)
+            initial_state = binlist2int(
+                np.dot(int2binlist(zs_response, width=nu), self.zs_multiplier) % 2
+            )
 
         output_sequence, _ = fsm.process(input_sequence, initial_state)
         v = unpack(output_sequence, width=n0)
@@ -133,13 +141,22 @@ class TerminatedConvolutionalCode(BlockCode):
     @cached_property
     def tail_projector(self) -> np.ndarray:
         if self.mode != "zero-termination":
-            raise ValueError("This property is only defined for mode='zero-termination'")
+            raise ValueError(
+                "This property is only defined for mode='zero-termination'"
+            )
         h = self.num_blocks
         mu = self.convolutional_code.memory_order
         A_mat = self.convolutional_code.state_matrix
         B_mat = self.convolutional_code.control_matrix
-        AnB_message = np.vstack([np.dot(B_mat, matrix_power(A_mat, j)) % 2 for j in range(mu + h - 1, mu - 1, -1)])
-        AnB_tail = np.vstack([np.dot(B_mat, matrix_power(A_mat, j)) % 2 for j in range(mu - 1, -1, -1)])
+        AnB_message = np.vstack(
+            [
+                np.dot(B_mat, matrix_power(A_mat, j)) % 2
+                for j in range(mu + h - 1, mu - 1, -1)
+            ]
+        )
+        AnB_tail = np.vstack(
+            [np.dot(B_mat, matrix_power(A_mat, j)) % 2 for j in range(mu - 1, -1, -1)]
+        )
         return np.dot(AnB_message, right_inverse(AnB_tail)) % 2
 
     @cached_property

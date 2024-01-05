@@ -7,7 +7,7 @@ from scipy import special
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class RepetitionCode(BlockCode):
     r"""
     Repetition code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
@@ -64,7 +64,9 @@ class RepetitionCode(BlockCode):
         for w in range((n + 1) // 2):
             coset_leader_weight_distribution[w] = special.comb(n, w, exact=True)
         if n % 2 == 0:
-            coset_leader_weight_distribution[n // 2] = special.comb(n, n // 2, exact=True) // 2
+            coset_leader_weight_distribution[n // 2] = (
+                special.comb(n, n // 2, exact=True) // 2
+            )
         return coset_leader_weight_distribution
 
     @property

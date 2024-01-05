@@ -9,7 +9,7 @@ from .._algebra import BinaryPolynomial
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False, kw_only=True)
+@frozen(kw_only=True)
 class CyclicCode(BlockCode):
     r"""
     General binary cyclic code. A cyclic code is a [linear block code](/ref/BlockCode) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.
@@ -52,14 +52,24 @@ class CyclicCode(BlockCode):
         7
     """
     _length: int = field(default=None, repr=False, alias="length")
-    _generator_polynomial: BinaryPolynomial | int = field(default=None, repr=False, alias="generator_polynomial")
-    _check_polynomial: BinaryPolynomial | int = field(default=None, repr=False, alias="check_polynomial")
+    _generator_polynomial: BinaryPolynomial | int = field(
+        default=None, repr=False, alias="generator_polynomial"
+    )
+    _check_polynomial: BinaryPolynomial | int = field(
+        default=None, repr=False, alias="check_polynomial"
+    )
     _systematic: bool = field(default=True, repr=False, alias="systematic")
 
     def __attrs_post_init__(self):
-        if self._generator_polynomial is not None and self.modulus % self.generator_polynomial != 0b0:
+        if (
+            self._generator_polynomial is not None
+            and self.modulus % self.generator_polynomial != 0b0
+        ):
             raise ValueError("'generator_polynomial' must be a factor of X^n + 1")
-        if self._check_polynomial is not None and self.modulus % self.check_polynomial != 0b0:
+        if (
+            self._check_polynomial is not None
+            and self.modulus % self.check_polynomial != 0b0
+        ):
             raise ValueError("'check_polynomial' must be a factor of X^n + 1")
 
     def __repr__(self):
@@ -117,7 +127,9 @@ class CyclicCode(BlockCode):
         else:
             generator_matrix[:, m:] = np.eye(k, dtype=int)
             for i in range(k):
-                b_i_poly = BinaryPolynomial.from_exponents([m + i]) % self.generator_polynomial
+                b_i_poly = (
+                    BinaryPolynomial.from_exponents([m + i]) % self.generator_polynomial
+                )
                 b_i = b_i_poly.coefficients(width=m)
                 generator_matrix[i, :m] = b_i
         return generator_matrix

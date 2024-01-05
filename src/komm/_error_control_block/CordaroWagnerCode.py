@@ -6,7 +6,7 @@ from attrs import frozen
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class CordaroWagnerCode(BlockCode):
     r"""
     Cordaro–Wagner code. For a given length $n \geq 2$, it is the [linear block code](/ref/BlockCode) with dimension $k = 2$ which is optimum for the [BSC](/ref/BinarySymmetricChannel) with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.

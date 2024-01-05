@@ -6,7 +6,7 @@ from ._matrices import golay_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 
-@frozen(slots=False)
+@frozen
 class GolayCode(SystematicBlockCode):
     r"""
     Binary Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix

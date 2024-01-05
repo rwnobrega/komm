@@ -7,7 +7,7 @@ from .._algebra import BinaryPolynomial, FiniteBifield
 from .CyclicCode import CyclicCode
 
 
-@frozen(slots=False)
+@frozen
 class BCHCode(CyclicCode):
     r"""
     Bose–Ray-Chaudhuri–Hocquenghem (BCH) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *binary BCH code* is a [cyclic code](/ref/CyclicCode) with generator polynomial given by
@@ -78,7 +78,9 @@ class BCHCode(CyclicCode):
             bose_distance = self.delta
             while self.phi(bose_distance) in self.lcm_set:
                 bose_distance += 1
-            raise ValueError(f"'delta' must be a Bose distance (the next one is {bose_distance}).")
+            raise ValueError(
+                f"'delta' must be a Bose distance (the next one is {bose_distance})."
+            )
 
     @cached_property
     def length(self) -> int:

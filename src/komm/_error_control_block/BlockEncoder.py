@@ -5,7 +5,7 @@ from numpy import typing as npt
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class BlockEncoder:
     r"""
     Encoder for [linear block codes](/ref/BlockCode).

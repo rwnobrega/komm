@@ -9,7 +9,7 @@ from .._algebra._util import null_matrix, right_inverse, rref
 from .._util import binlist2int, int2binlist
 
 
-@frozen(slots=False, kw_only=True)
+@frozen(kw_only=True)
 class BlockCode:
     r"""
     General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\top = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
@@ -47,7 +47,9 @@ class BlockCode:
                [1, 0, 1, 0, 1, 0],
                [1, 1, 0, 0, 0, 1]])
     """
-    _generator_matrix: npt.ArrayLike = field(default=None, repr=False, alias="generator_matrix")
+    _generator_matrix: npt.ArrayLike = field(
+        default=None, repr=False, alias="generator_matrix"
+    )
     _check_matrix: npt.ArrayLike = field(default=None, repr=False, alias="check_matrix")
 
     def __repr__(self) -> str:
@@ -241,7 +243,9 @@ class BlockCode:
             >>> code.coset_leader_weight_distribution
             array([1, 6, 1, 0, 0, 0, 0])
         """
-        return np.bincount(np.sum(self.coset_leaders, axis=1), minlength=self.length + 1)
+        return np.bincount(
+            np.sum(self.coset_leaders, axis=1), minlength=self.length + 1
+        )
 
     @cached_property
     def minimum_distance(self) -> int:
@@ -284,7 +288,11 @@ class BlockCode:
 
     @property
     def default_decoder(self) -> str:
-        return "exhaustive_search_hard" if self.dimension <= self.redundancy else "syndrome_table"
+        return (
+            "exhaustive_search_hard"
+            if self.dimension <= self.redundancy
+            else "syndrome_table"
+        )
 
     @classmethod
     @property

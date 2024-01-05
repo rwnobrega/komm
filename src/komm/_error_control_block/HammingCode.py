@@ -6,7 +6,7 @@ from ._matrices import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 
-@frozen(slots=False)
+@frozen
 class HammingCode(SystematicBlockCode):
     r"""
     Hamming code. For a given parameter $\mu \geq 2$, it is the [linear block code](/ref/BlockCode) with check matrix whose columns are all the $2^\mu - 1$ nonzero binary $\mu$-tuples. The Hamming code has the following parameters:

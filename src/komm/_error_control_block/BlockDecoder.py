@@ -6,7 +6,7 @@ from ._registry import RegistryBlockDecoder
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class BlockDecoder:
     r"""
     Decoder for [linear block codes](/ref/BlockCode).
@@ -141,14 +141,20 @@ class BlockDecoder:
         if not RegistryBlockDecoder.is_registered(method):
             raise ValueError(f"Method '{method}' is unknown. {help_message}")
         if method not in self.code.supported_decoders:
-            raise ValueError(f"Method '{method}' is not supported by the code. {help_message}")
+            raise ValueError(
+                f"Method '{method}' is not supported by the code. {help_message}"
+            )
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
         method = self.method or self.code.default_decoder
         decoder_data = RegistryBlockDecoder.get(method)
-        if decoder_data["type_in"] == "hard" and not np.issubdtype(np.asarray(in0).dtype, np.integer):
+        if decoder_data["type_in"] == "hard" and not np.issubdtype(
+            np.asarray(in0).dtype, np.integer
+        ):
             raise TypeError(f"Input type must be 'int' for method '{method}'")
-        if decoder_data["type_in"] == "soft" and not np.issubdtype(np.asarray(in0).dtype, np.floating):
+        if decoder_data["type_in"] == "soft" and not np.issubdtype(
+            np.asarray(in0).dtype, np.floating
+        ):
             raise TypeError(f"Input type must be 'float' for method '{method}'")
         r = np.reshape(in0, (-1, self.code.length))
         decoder = lambda r: decoder_data["decoder"](self.code, r, **self.decoder_kwargs)

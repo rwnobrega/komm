@@ -7,7 +7,7 @@ from attrs import frozen
 from .BlockCode import BlockCode
 
 
-@frozen(slots=False)
+@frozen
 class ReedMullerCode(BlockCode):
     r"""
     Reed–Muller code. It is a [linear block code](/ref/BlockCode) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
@@ -61,7 +61,12 @@ class ReedMullerCode(BlockCode):
         rho, mu = self.rho, self.mu
         v = np.empty((mu, 2**mu), dtype=int)
         for i in range(mu):
-            block = np.hstack((np.zeros(2 ** (mu - i - 1), dtype=int), np.ones(2 ** (mu - i - 1), dtype=int)))
+            block = np.hstack(
+                (
+                    np.zeros(2 ** (mu - i - 1), dtype=int),
+                    np.ones(2 ** (mu - i - 1), dtype=int),
+                )
+            )
             v[mu - i - 1] = np.tile(block, 2**i)
 
         G_list = []
@@ -112,8 +117,12 @@ class ReedMullerCode(BlockCode):
         rho, mu = self.rho, self.mu
         reed_partitions = []
         for ell in range(rho, -1, -1):
-            binary_vectors_I = np.fliplr(np.array(list(it.product([0, 1], repeat=ell)), dtype=int))
-            binary_vectors_J = np.fliplr(np.array(list(it.product([0, 1], repeat=mu - ell)), dtype=int))
+            binary_vectors_I = np.fliplr(
+                np.array(list(it.product([0, 1], repeat=ell)), dtype=int)
+            )
+            binary_vectors_J = np.fliplr(
+                np.array(list(it.product([0, 1], repeat=mu - ell)), dtype=int)
+            )
             for I in it.combinations(range(mu), ell):
                 I = np.array(I, dtype=int)
                 E = np.setdiff1d(np.arange(mu), I, assume_unique=True)
