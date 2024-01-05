@@ -24,6 +24,11 @@ extra_javascript:
 hooks:
   - site/tidy_html.py
 
+validation:
+  links:
+    absolute_links: ignore
+    unrecognized_links: ignore
+
 plugins:
 - search
 - gen-files:
