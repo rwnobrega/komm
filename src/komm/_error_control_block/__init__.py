@@ -12,3 +12,5 @@ from .SimplexCode import SimplexCode
 from .SingleParityCheckCode import SingleParityCheckCode
 from .SystematicBlockCode import SystematicBlockCode
 from .TerminatedConvolutionalCode import TerminatedConvolutionalCode
+
+from .decoders import *
