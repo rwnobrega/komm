@@ -147,7 +147,7 @@ class FiniteStateMachine:
             >>> output_sequence
             array([3, 2, 2, 0, 1])
             >>> final_state
-            2
+            np.int64(2)
         """
         output_sequence = np.empty_like(input_sequence, dtype=int)
         s = initial_state

@@ -76,7 +76,7 @@ class AWGNChannel:
 
             >>> awgn = komm.AWGNChannel(signal_power=1.0, snr=63.0)
             >>> awgn.capacity()
-            3.0
+            np.float64(3.0)
         """
         return 0.5 * np.log1p(self._snr) / np.log(2.0)
 

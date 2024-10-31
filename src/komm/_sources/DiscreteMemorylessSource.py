@@ -45,9 +45,9 @@ class DiscreteMemorylessSource:
 
             >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
             >>> dms.entropy()
-            1.75
+            np.float64(1.75)
             >>> dms.entropy(base=4)
-            0.875
+            np.float64(0.875)
         """
         return _entropy(self.pmf, base)
 

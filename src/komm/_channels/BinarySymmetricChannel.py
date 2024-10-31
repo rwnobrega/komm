@@ -57,7 +57,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
             >>> bsc = komm.BinarySymmetricChannel(0.25)
             >>> bsc.capacity()
-            0.18872187554086717
+            np.float64(0.18872187554086717)
         """
         return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]), 2.0)
 

@@ -171,11 +171,11 @@ class Modulation:
 
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_symbol
-            1.125
+            np.float64(1.125)
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.energy_per_symbol
-            0.75
+            np.float64(0.75)
         """
         return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
 
@@ -188,11 +188,11 @@ class Modulation:
 
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_bit
-            0.5625
+            np.float64(0.5625)
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.energy_per_bit
-            0.375
+            np.float64(0.375)
         """
         return self.energy_per_symbol / np.log2(self._order)
 
@@ -208,11 +208,11 @@ class Modulation:
 
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.symbol_mean
-            0.5
+            np.float64(0.5)
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.symbol_mean
-            0.25j
+            np.complex128(0.25j)
         """
         return np.sum(self._constellation) / self._order
 
@@ -228,11 +228,11 @@ class Modulation:
 
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.minimum_distance
-            0.5
+            np.float64(0.5)
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.minimum_distance
-            1.0
+            np.float64(1.0)
         """
         return np.min(
             np.fromiter(

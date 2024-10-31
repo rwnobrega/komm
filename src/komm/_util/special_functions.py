@@ -22,7 +22,7 @@ def qfunc(x):
     Examples:
 
         >>> komm.qfunc(0.0)
-        0.5
+        np.float64(0.5)
 
         >>> komm.qfunc([-1.0, 0.0, 1.0])
         array([0.84134475, 0.5       , 0.15865525])
@@ -45,7 +45,7 @@ def qfuncinv(y):
     Examples:
 
         >>> komm.qfuncinv(0.5)
-        0.0
+        np.float64(0.0)
 
         >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])
         array([-1.,  0.,  1.])

@@ -181,7 +181,7 @@ class BinaryPolynomial:
 
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
-            2751
+            np.int64(2751)
             >>> point = np.array([[1, 2], [3, 4]])
             >>> poly.evaluate(point)  # same as point**4 + point**3 + point
             array([[  3,  26],

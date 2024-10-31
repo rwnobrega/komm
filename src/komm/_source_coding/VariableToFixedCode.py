@@ -176,7 +176,7 @@ class VariableToFixedCode:
 
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> code.rate([2/3, 1/3])
-            0.9473684210526315
+            np.float64(0.9473684210526315)
         """
         probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
         lengths = [len(word) for word in self.sourcewords]

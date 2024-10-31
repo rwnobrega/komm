@@ -51,7 +51,7 @@ class BCHCode(CyclicCode):
 
         >>> code = komm.BCHCode(mu=5, delta=7)
         >>> (code.length, code.dimension, code.minimum_distance)
-        (31, 16, 7)
+        (31, 16, np.int64(7))
         >>> code.generator_polynomial
         BinaryPolynomial(0b1000111110101111)
 

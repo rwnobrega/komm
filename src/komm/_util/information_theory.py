@@ -43,10 +43,10 @@ def entropy(pmf, base: float | str = 2.0):
     Examples:
 
         >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
-        2.0
+        np.float64(2.0)
 
         >>> komm.entropy(base=3.0, pmf=[1/3, 1/3, 1/3])  # doctest: +NUMBER
-        1.0
+        np.float64(1.0)
     """
     return _entropy(pmf, base)
 

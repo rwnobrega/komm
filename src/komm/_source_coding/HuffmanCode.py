@@ -35,7 +35,7 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
          (1,): (1, 1),
          (2,): (1, 0)}
         >>> code.rate(pmf)  # doctest: +NUMBER
-        1.3
+        np.float64(1.3)
 
         >>> code = komm.HuffmanCode(pmf, 2)
         >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
@@ -49,7 +49,7 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
          (2, 1): (0, 0, 0, 1, 0, 1),
          (2, 2): (0, 0, 0, 1, 0, 0)}
         >>> code.rate(pmf)  # doctest: +NUMBER
-        1.1975
+        np.float64(1.1975)
     """
     return FixedToVariableCode.from_codewords(
         source_cardinality=pmf.size,

@@ -6,9 +6,9 @@ readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
 license = { text = "GPL-3.0-only" }
 dependencies = [
-    "attrs>=23.2.0",
-    "numpy>=1.26.3",
-    "scipy>=1.11.4",
+    "attrs>=24.2.0",
+    "numpy>=2.1.1",
+    "scipy>=1.14.1",
 ]
 requires-python = ">=3.10"
 urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/komm/" }

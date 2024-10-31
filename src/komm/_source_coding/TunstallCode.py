@@ -30,7 +30,7 @@ def TunstallCode(pmf, target_block_size=None):
          (0, 1): (1,),
          (1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +NUMBER
-        2.0
+        np.float64(2.0)
 
         >>> code = komm.TunstallCode(pmf, 3)
         >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
@@ -42,7 +42,7 @@ def TunstallCode(pmf, target_block_size=None):
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +NUMBER
-        1.3698630137
+        np.float64(1.3698630137)
     """
     if target_block_size is None:
         target_block_size = np.ceil(np.log2(pmf.size)).astype(int)

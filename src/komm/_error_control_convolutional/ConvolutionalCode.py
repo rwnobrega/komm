@@ -100,7 +100,7 @@ class ConvolutionalCode:
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-            (2, 1, 6)
+            (2, 1, np.int64(6))
 
             The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
             $$
@@ -118,7 +118,7 @@ class ConvolutionalCode:
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-            (3, 2, 7)
+            (3, 2, np.int64(7))
 
             The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
             $$
@@ -135,7 +135,7 @@ class ConvolutionalCode:
 
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-            (2, 1, 4)
+            (2, 1, np.int64(4))
         """
         self._feedforward_polynomials = np.empty_like(feedforward_polynomials, dtype=BinaryPolynomial)
         for (i, j), p in np.ndenumerate(feedforward_polynomials):
