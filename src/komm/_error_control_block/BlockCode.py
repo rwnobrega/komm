@@ -146,6 +146,12 @@ class BlockCode:
             >>> inv_enc_mapping([1, 0, 1, 1, 0, 1])
             array([1, 0, 1])
         """
+        v = np.asarray(v)
+        if v.size != self.length:
+            raise ValueError("The length of 'v' must be equal to the code length")
+        s = self.chk_mapping(v)
+        if not np.all(s == 0):
+            raise ValueError("The input 'v' is not a valid codeword")
         u = np.dot(v, self.generator_matrix_right_inverse) % 2
         return u
 
