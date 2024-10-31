@@ -80,7 +80,7 @@ def test_convolutional_space_state_representation_2(feedforward_polynomials, fee
 
     s = np.zeros(nu, dtype=int)
 
-    for t, u in enumerate(np.reshape(input_bits, newshape=(-1, k))):
+    for t, u in enumerate(np.reshape(input_bits, shape=(-1, k))):
         s, v = (np.dot(s, A) + np.dot(u, B)) % 2, (np.dot(s, C) + np.dot(u, D)) % 2
         output_bits[t * n : (t + 1) * n] = v
 

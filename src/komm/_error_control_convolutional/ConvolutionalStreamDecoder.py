@@ -75,7 +75,7 @@ class ConvolutionalStreamDecoder:
             self.convolutional_code.finite_state_machine,
         )
         input_sequence_hat = fsm.viterbi_streaming(
-            observed_sequence=np.reshape(in0, newshape=(-1, n)),
+            observed_sequence=np.reshape(in0, shape=(-1, n)),
             metric_function=self.metric_function,
             memory=self.memory,
         )

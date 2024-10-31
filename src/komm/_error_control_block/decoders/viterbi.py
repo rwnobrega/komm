@@ -20,7 +20,7 @@ def decode_viterbi(code: TerminatedConvolutionalCode, r: npt.ArrayLike, metric_f
     initial_metrics = np.full(fsm.num_states, fill_value=np.inf)
     initial_metrics[0] = 0.0
 
-    z = np.reshape(r, newshape=(-1, n0))
+    z = np.reshape(r, shape=(-1, n0))
     xs_hat, final_metrics = fsm.viterbi(z, metric_function=metric_function, initial_metrics=initial_metrics)
 
     if code.mode == "direct-truncation":

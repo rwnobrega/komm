@@ -91,16 +91,24 @@ class Modulation:
 
         self._labeling = np.array(labeling, dtype=int)
         if self._labeling.shape != (self._order, self._bits_per_symbol):
-            raise ValueError("The shape of `labeling` must be ({}, {})".format(self._order, self._bits_per_symbol))
+            raise ValueError(
+                "The shape of `labeling` must be ({}, {})".format(
+                    self._order, self._bits_per_symbol
+                )
+            )
         if np.any(self._labeling < 0) or np.any(self._labeling > 1):
             raise ValueError("The elements of `labeling` must be either 0 or 1")
         if len(set(tuple(row) for row in self._labeling)) != self._order:
             raise ValueError("The rows of `labeling` must be distinct")
 
-        self._inverse_labeling = dict(zip(map(tuple, self._labeling), range(self._order)))
+        self._inverse_labeling = dict(
+            zip(map(tuple, self._labeling), range(self._order))
+        )
 
     def __repr__(self):
-        args = "constellation={}, labeling={}".format(self._constellation.tolist(), self._labeling.tolist())
+        args = "constellation={}, labeling={}".format(
+            self._constellation.tolist(), self._labeling.tolist()
+        )
         return "{}({})".format(self.__class__.__name__, args)
 
     @property
@@ -177,7 +185,10 @@ class Modulation:
             >>> mod.energy_per_symbol
             np.float64(0.75)
         """
-        return np.real(np.dot(self._constellation, self._constellation.conj())) / self._order
+        return (
+            np.real(np.dot(self._constellation, self._constellation.conj()))
+            / self._order
+        )
 
     @property
     def energy_per_bit(self):
@@ -262,18 +273,24 @@ class Modulation:
         m = self._bits_per_symbol
         n_symbols = len(bits) // m
         if len(bits) != n_symbols * m:
-            raise ValueError("The length of `bits` must be a multiple of the number of bits per symbol.")
+            raise ValueError(
+                "The length of `bits` must be a multiple of the number of bits per symbol."
+            )
         symbols = np.empty(n_symbols, dtype=self._constellation.dtype)
-        for i, bit_sequence in enumerate(np.reshape(bits, newshape=(n_symbols, m))):
-            symbols[i] = self._constellation[self._inverse_labeling[tuple(bit_sequence)]]
+        for i, bit_sequence in enumerate(np.reshape(bits, shape=(n_symbols, m))):
+            symbols[i] = self._constellation[
+                self._inverse_labeling[tuple(bit_sequence)]
+            ]
         return symbols
 
     def _demodulate_hard(self, received):
         # General minimum Euclidean distance hard demodulator.
         hard_bits = np.empty((len(received), self._bits_per_symbol), dtype=int)
         for i, y in enumerate(received):
-            hard_bits[i, :] = self._labeling[np.argmin(np.abs(self._constellation - y)), :]
-        return np.reshape(hard_bits, newshape=-1)
+            hard_bits[i, :] = self._labeling[
+                np.argmin(np.abs(self._constellation - y)), :
+            ]
+        return np.reshape(hard_bits, shape=-1)
 
     def _demodulate_soft(self, received, channel_snr=1.0):
         # Computes the L-values (LLR) of each bit.
@@ -332,5 +349,7 @@ class Modulation:
         if decision_method in ["hard", "soft"]:
             demodulate = getattr(self, "_demodulate_" + decision_method)
         else:
-            raise ValueError("Parameter `decision_method` should be either 'hard' or 'soft'")
+            raise ValueError(
+                "Parameter `decision_method` should be either 'hard' or 'soft'"
+            )
         return demodulate(np.asarray(received), **kwargs)

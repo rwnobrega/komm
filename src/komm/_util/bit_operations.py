@@ -60,7 +60,7 @@ def int2binlist(integer, width=None):
 
 
 def _pack(list_, width):
-    return np.apply_along_axis(_binlist2int, 1, np.reshape(list_, newshape=(-1, width)))
+    return np.apply_along_axis(_binlist2int, 1, np.reshape(list_, shape=(-1, width)))
 
 
 def pack(list_, width):

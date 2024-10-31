@@ -76,7 +76,7 @@ class PAModulation(Modulation):
             0,
             self._order - 1,
         ).astype(int)
-        return np.reshape(self._labeling[indices], newshape=-1)
+        return np.reshape(self._labeling[indices], shape=-1)
 
     @staticmethod
     def _demodulate_soft_pam2(y, gamma):

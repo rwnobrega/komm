@@ -23,7 +23,7 @@ def decode_bcjr(code: TerminatedConvolutionalCode, r: npt.ArrayLike, *, snr: flo
         initial_state_distribution = np.eye(1, fsm.num_states, 0)
         final_state_distribution = np.eye(1, fsm.num_states, 0)
 
-    z = np.reshape(r, newshape=(-1, n0))
+    z = np.reshape(r, shape=(-1, n0))
     input_posteriors = fsm.forward_backward(
         z,
         metric_function=metric_function,
