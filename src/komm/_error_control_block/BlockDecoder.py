@@ -19,7 +19,7 @@ class BlockDecoder:
 
     Note:
 
-        To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders`.
+        To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders()`.
 
     ??? info "Available decoding methods"
 
@@ -120,7 +120,7 @@ class BlockDecoder:
         >>> code = komm.HammingCode(3)
         >>> code.default_decoder
         'syndrome_table'
-        >>> code.supported_decoders
+        >>> code.supported_decoders()
         ['exhaustive_search_hard', 'exhaustive_search_soft', 'syndrome_table']
 
         >>> decoder = komm.BlockDecoder(code)
