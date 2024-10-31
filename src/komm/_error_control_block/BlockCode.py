@@ -295,6 +295,5 @@ class BlockCode:
         )
 
     @classmethod
-    @property
     def supported_decoders(cls) -> list[str]:
         return ["exhaustive_search_hard", "exhaustive_search_soft", "syndrome_table"]

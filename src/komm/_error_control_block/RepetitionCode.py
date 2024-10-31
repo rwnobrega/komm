@@ -74,6 +74,5 @@ class RepetitionCode(BlockCode):
         return "majority_logic_repetition_code"
 
     @classmethod
-    @property
     def supported_decoders(cls):
-        return cls.__base__.supported_decoders + ["majority_logic_repetition_code"]  # type: ignore
+        return cls.__base__.supported_decoders() + ["majority_logic_repetition_code"]  # type: ignore

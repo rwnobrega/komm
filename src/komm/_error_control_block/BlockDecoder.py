@@ -140,7 +140,7 @@ class BlockDecoder:
         help_message = f"To see the available decoding methods for a given code, use `code.supported_decoders`"
         if not RegistryBlockDecoder.is_registered(method):
             raise ValueError(f"Method '{method}' is unknown. {help_message}")
-        if method not in self.code.supported_decoders:
+        if method not in self.code.supported_decoders():
             raise ValueError(
                 f"Method '{method}' is not supported by the code. {help_message}"
             )

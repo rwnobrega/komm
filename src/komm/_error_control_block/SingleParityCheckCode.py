@@ -66,6 +66,5 @@ class SingleParityCheckCode(BlockCode):
         return codeword_weight_distribution
 
     @classmethod
-    @property
     def supported_decoders(cls):
-        return cls.__base__.supported_decoders + ["wagner"]  # type: ignore
+        return cls.__base__.supported_decoders() + ["wagner"]  # type: ignore

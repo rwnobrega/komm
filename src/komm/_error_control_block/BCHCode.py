@@ -95,9 +95,8 @@ class BCHCode(CyclicCode):
         return "berlekamp"
 
     @classmethod
-    @property
     def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders + ["berlekamp"]  # type: ignore
+        return cls.__base__.supported_decoders() + ["berlekamp"]  # type: ignore
 
     @cached_property
     def field(self):

@@ -7,7 +7,7 @@ supported_decoders = {}
 all_classes = []
 for name, cls in inspect.getmembers(komm, inspect.isclass):
     if issubclass(cls, komm.BlockCode):
-        supported_decoders[name] = cls.supported_decoders
+        supported_decoders[name] = cls.supported_decoders()
         all_classes.append(name)
 
 for method in RegistryBlockDecoder.list():
