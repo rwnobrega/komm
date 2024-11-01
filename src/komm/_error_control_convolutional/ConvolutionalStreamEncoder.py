@@ -1,12 +1,12 @@
 import numpy as np
 import numpy.typing as npt
-from attrs import define, field
+from attrs import field, mutable
 
 from .._util import pack, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
 
-@define
+@mutable
 class ConvolutionalStreamEncoder:
     r"""
     Convolutional stream encoder. Encode a bit stream using a given [convolutional code](/ref/ConvolutionalCode). The internal state of the encoder is maintained across each call.

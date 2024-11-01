@@ -1,11 +1,11 @@
 import numpy as np
-from attrs import define, field
+from attrs import field, mutable
 
 from .._util import _entropy
 from .._validation import is_log_base, is_pmf, validate_call
 
 
-@define
+@mutable
 class DiscreteMemorylessSource:
     r"""
     Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.

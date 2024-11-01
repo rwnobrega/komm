@@ -1,12 +1,12 @@
 import numpy as np
 import numpy.typing as npt
-from attrs import define
+from attrs import mutable
 
 from ._util import parse_prefix_free
 from .FixedToVariableCode import FixedToVariableCode
 
 
-@define
+@mutable
 class FixedToVariableDecoder:
     r"""
     Prefix-free decoder for [fixed-to-variable length code](/ref/FixedToVariableCode).

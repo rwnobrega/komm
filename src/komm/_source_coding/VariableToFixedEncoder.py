@@ -1,12 +1,12 @@
 import numpy as np
 import numpy.typing as npt
-from attrs import define
+from attrs import mutable
 
 from ._util import parse_prefix_free
 from .VariableToFixedCode import VariableToFixedCode
 
 
-@define
+@mutable
 class VariableToFixedEncoder:
     r"""
     Prefix-free encoder for [variable-to-fixed length code](/ref/VariableToFixedCode).

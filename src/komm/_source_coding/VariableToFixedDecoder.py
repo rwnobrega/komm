@@ -1,11 +1,11 @@
 import numpy as np
 import numpy.typing as npt
-from attrs import define
+from attrs import mutable
 
 from .VariableToFixedCode import VariableToFixedCode
 
 
-@define
+@mutable
 class VariableToFixedDecoder:
     r"""
     Decoder for [variable-to-fixed length code](/ref/VariableToFixedCode).
