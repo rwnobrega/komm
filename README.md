@@ -1,5 +1,7 @@
 # Komm
 
+_A Python library for communication systems_.
+
 [![PyPI page](https://badge.fury.io/py/komm.svg)](https://pypi.org/project/komm/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/rwnobrega/komm/issues)
@@ -16,7 +18,8 @@ For library reference, please check the [project's website](https://komm.dev/).
 
 <!--notes-start-->
 
-Please be advised that this project is currently under development. As such, there may be changes to the project's codebase, including the API.
+> [!WARNING]
+> Please be advised that this project is currently under development. As such, there may be changes to the project's codebase, including the API.
 
 <!--notes-end-->
 
@@ -30,14 +33,40 @@ Before you start, make sure you have [Python](https://www.python.org/) (version 
 pip install komm
 ```
 
-### From source
+### From GitHub
+
+```bash
+pip install git+https://github.com/rwnobrega/komm.git@main
+```
+
+## Development
+
+First, clone the repository:
 
 ```bash
 git clone https://github.com/rwnobrega/komm
-cd komm/
-pip install .
+cd komm
 ```
 
-## Testing
+This project uses [PDM](https://pdm-project.org/) for dependency management. After installing PDM, install the dependencies and activate the virtual environment:
 
-To run the tests, you need to have [pytest](https://pytest.org/) installed. Then, from the root directory of the project, run `pytest`.
+```bash
+pdm install
+pdm venv activate
+```
+
+### Testing
+
+The test suite is written using the [pytest](https://docs.pytest.org/) framework. To run the tests, execute:
+
+```bash
+pytest
+```
+
+### Documentation
+
+The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. To serve the documentation locally, run:
+
+```bash
+mkdocs serve
+```
