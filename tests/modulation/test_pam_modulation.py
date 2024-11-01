@@ -12,7 +12,9 @@ import komm
         (8, 3, [-7, -5, -3, -1, 1, 3, 5, 7], 21.0, 7.0),
     ],
 )
-def test_pam_modulation_1(order, constellation, bits_per_symbol, energy_per_symbol, energy_per_bit):
+def test_pam_modulation_1(
+    order, constellation, bits_per_symbol, energy_per_symbol, energy_per_bit
+):
     pam = komm.PAModulation(order)
     assert pam.order == order
     assert pam.bits_per_symbol == bits_per_symbol

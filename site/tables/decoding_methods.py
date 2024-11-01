@@ -18,7 +18,9 @@ for method in RegistryBlockDecoder.list():
         decoder_data["type_out"],
         decoder_data["target"],
     )
-    supported_by = [name for name, decoders in supported_decoders.items() if method in decoders]
+    supported_by = [
+        name for name, decoders in supported_decoders.items() if method in decoders
+    ]
 
     if supported_by == all_classes:
         supported_by = "All codes"

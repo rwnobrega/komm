@@ -5,7 +5,9 @@ from .._registry import RegistryBlockDecoder
 from ..RepetitionCode import RepetitionCode
 
 
-def decode_majority_logic_repetition_code(code: RepetitionCode, r: npt.ArrayLike) -> np.ndarray:
+def decode_majority_logic_repetition_code(
+    code: RepetitionCode, r: npt.ArrayLike
+) -> np.ndarray:
     u_hat = np.array([np.argmax(np.bincount(r))])
     return u_hat
 

@@ -145,7 +145,9 @@ class BinaryPolynomial:
         return self.__class__(self._integer.__xor__(other._integer))
 
     def __mul__(self, other):
-        return self.from_coefficients(np.convolve(self.coefficients(), other.coefficients()) % 2)
+        return self.from_coefficients(
+            np.convolve(self.coefficients(), other.coefficients()) % 2
+        )
 
     def __pow__(self, exponent):
         return power(self, exponent, self.__class__)

@@ -59,10 +59,15 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
             >>> bsc.capacity()
             np.float64(0.18872187554086717)
         """
-        return 1.0 - _entropy(np.array([self._crossover_probability, 1.0 - self._crossover_probability]), 2.0)
+        return 1.0 - _entropy(
+            np.array([self._crossover_probability, 1.0 - self._crossover_probability]),
+            2.0,
+        )
 
     def __call__(self, input_sequence):
-        error_pattern = (np.random.rand(np.size(input_sequence)) < self._crossover_probability).astype(int)
+        error_pattern = (
+            np.random.rand(np.size(input_sequence)) < self._crossover_probability
+        ).astype(int)
         return (input_sequence + error_pattern) % 2
 
     def __repr__(self):

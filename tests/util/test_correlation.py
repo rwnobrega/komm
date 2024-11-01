@@ -30,7 +30,10 @@ def test_acorr_2(shifts, answer):
 @pytest.mark.parametrize(
     "seq, answer",
     [
-        ([1.0, 2.0, 3.0, 4.0, 5.0], [5.0, 14.0, 26.0, 40.0, 55.0, 40.0, 26.0, 14.0, 5.0]),
+        (
+            [1.0, 2.0, 3.0, 4.0, 5.0],
+            [5.0, 14.0, 26.0, 40.0, 55.0, 40.0, 26.0, 14.0, 5.0],
+        ),
         ([1.0, 1.0j, -1.0, -1.0j], [1.0j, -2.0, -3.0j, 4.0, 3.0j, -2.0, -1.0j]),
     ],
 )
@@ -73,18 +76,25 @@ def test_cyclic_acorr_2(shifts, answer):
 @pytest.mark.parametrize(
     "seq, answer",
     [
-        ([1.0, 2.0, 3.0, 4.0, 5.0], [45.0, 40.0, 40.0, 45.0, 55.0, 45.0, 40.0, 40.0, 45.0]),
+        (
+            [1.0, 2.0, 3.0, 4.0, 5.0],
+            [45.0, 40.0, 40.0, 45.0, 55.0, 45.0, 40.0, 40.0, 45.0],
+        ),
         ([1.0, 1.0j, -1.0, -1.0j], [4.0j, -4.0, -4.0j, 4.0, 4.0j, -4.0, -4.0j]),
     ],
 )
 def test_cyclic_acorr_3(seq, answer):
     L = len(seq)
-    assert np.allclose(np.fft.ifft(np.fft.fft(seq) * np.conj(np.fft.fft(seq))), answer[L - 1 :])
+    assert np.allclose(
+        np.fft.ifft(np.fft.fft(seq) * np.conj(np.fft.fft(seq))), answer[L - 1 :]
+    )
     for max_lag in range(1, 2 * L):
         shifts = np.arange(-max_lag, max_lag + 1)
         if max_lag < L:
             expected = answer[L - max_lag - 1 : L + max_lag]
         else:
             extra = max_lag - L + 1
-            expected = np.concatenate((answer[L - extra : L], answer, answer[L - 1 : L - 1 + extra]))
+            expected = np.concatenate(
+                (answer[L - extra : L], answer, answer[L - 1 : L - 1 + extra])
+            )
         assert np.allclose(cyclic_acorr(seq, shifts), expected)

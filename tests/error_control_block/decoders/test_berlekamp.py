@@ -25,10 +25,14 @@ def test_bch_berlekamp_step_by_step():
     alpha = field.primitive_element
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     r_poly = komm.BinaryPolynomial.from_coefficients(r)
-    s_vec = np.array([field(1), field(1), alpha**10, field(1), alpha**10, alpha**5], dtype=object)
+    s_vec = np.array(
+        [field(1), field(1), alpha**10, field(1), alpha**10, alpha**5], dtype=object
+    )
     assert np.array_equal(s_vec, bch_syndrome_vector(code, r_poly))
     sigma = berlekamp_algorithm(field, code.delta, bch_syndrome_vector(code, r_poly))
-    assert np.array_equal(sigma, np.array([field(1), field(1), field(0), alpha**5], dtype=object))
+    assert np.array_equal(
+        sigma, np.array([field(1), field(1), field(0), alpha**5], dtype=object)
+    )
     roots = set(find_roots(field, sigma))
     assert roots == {alpha**3, alpha**10, alpha**12}
     inv_roots = {root.inverse() for root in roots}

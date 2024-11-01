@@ -22,6 +22,7 @@ class FixedToVariableCode:
 
         enc_mapping: The encoding mapping $\Enc$ of the code. Must be a dictionary of length $S^k$ whose keys are $k$-tuples of integers in $[0:S)$ and whose values are distinct non-empty tuples of integers in $[0:T)$.
     """
+
     source_cardinality: int = field(validator=validators.ge(2))
     target_cardinality: int = field(validator=validators.ge(2))
     source_block_size: int = field(validator=validators.ge(1))
@@ -29,10 +30,16 @@ class FixedToVariableCode:
 
     def __attrs_post_init__(self):
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
-        S, T, k = self.source_cardinality, self.target_cardinality, self.source_block_size
+        S, T, k = (
+            self.source_cardinality,
+            self.target_cardinality,
+            self.source_block_size,
+        )
         if set(domain) != set(it.product(range(S), repeat=k)):
             raise ValueError(f"'enc_mapping': invalid domain")
-        if not all(all(0 <= x < T for x in word) and len(word) > 0 for word in codomain):
+        if not all(
+            all(0 <= x < T for x in word) and len(word) > 0 for word in codomain
+        ):
             raise ValueError(f"'enc_mapping': invalid co-domain")
         if len(set(codomain)) != len(codomain):
             raise ValueError(f"'enc_mapping': non-injective mapping")
@@ -202,6 +209,8 @@ class FixedToVariableCode:
             >>> code.rate([0.5, 0.25, 0.25])
             np.float64(1.5)
         """
-        probabilities = [np.prod(ps) for ps in it.product(pmf, repeat=self.source_block_size)]
+        probabilities = [
+            np.prod(ps) for ps in it.product(pmf, repeat=self.source_block_size)
+        ]
         lengths = [len(word) for word in self.codewords]
         return np.dot(lengths, probabilities) / self.source_block_size

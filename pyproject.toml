@@ -26,7 +26,7 @@ testpaths = ["src/komm", "tests"]
 
 [tool.pdm.dev-dependencies]
 lint = [
-    "black>=23.12.1",
+    "black>=24.10.0",
     "isort>=5.13.2",
 ]
 test = [

@@ -51,7 +51,9 @@ class RaisedCosinePulse(FormattingPulse):
             f2 = (1 + a) / 2
             H = 1.0 * (abs(f) < f1)
             if a > 0:
-                H += (f1 < abs(f) < f2) * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1)))
+                H += (f1 < abs(f) < f2) * (
+                    0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1))
+                )
             return H
 
         super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
@@ -71,5 +73,7 @@ class RaisedCosinePulse(FormattingPulse):
         return self._length_in_symbols
 
     def __repr__(self):
-        args = "rolloff={}, length_in_symbols={}".format(self._rolloff, self._length_in_symbols)
+        args = "rolloff={}, length_in_symbols={}".format(
+            self._rolloff, self._length_in_symbols
+        )
         return "{}({})".format(self.__class__.__name__, args)

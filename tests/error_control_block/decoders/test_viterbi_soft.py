@@ -24,6 +24,8 @@ import komm
     ],
 )
 def test_viterbi_soft(convolutional_code, num_blocks, mode, r, u_hat):
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=num_blocks, mode=mode)
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, num_blocks=num_blocks, mode=mode
+    )
     decoder = komm.BlockDecoder(code, method="viterbi_soft")
     assert np.array_equal(decoder(r), u_hat)

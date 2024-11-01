@@ -48,7 +48,9 @@ test_data = [
     test_data,
 )
 def test_init(code_parameters):
-    source_cardinality, target_cardinality, source_block_size, codewords = code_parameters.values()
+    source_cardinality, target_cardinality, source_block_size, codewords = (
+        code_parameters.values()
+    )
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     assert code.source_cardinality == source_cardinality
     assert code.target_cardinality == target_cardinality
@@ -67,7 +69,12 @@ def test_invalid_target_cardinality():
 
 
 def test_invalid_enc_mapping_domain_1():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     del enc_mapping[(1, 0)]
     with pytest.raises(ValueError):
@@ -75,7 +82,12 @@ def test_invalid_enc_mapping_domain_1():
 
 
 def test_invalid_enc_mapping_domain_2():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(2, 1)] = enc_mapping.pop((0, 1))
     with pytest.raises(ValueError):
@@ -83,7 +95,12 @@ def test_invalid_enc_mapping_domain_2():
 
 
 def test_invalid_enc_mapping_domain_3():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0,)] = enc_mapping.pop((0, 1))
     with pytest.raises(ValueError):
@@ -99,7 +116,12 @@ def test_invalid_enc_mapping_domain_4():
 
 
 def test_invalid_enc_mapping_codomain_1():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0, 1)] = (1, 0, 2)
     with pytest.raises(ValueError):
@@ -107,7 +129,12 @@ def test_invalid_enc_mapping_codomain_1():
 
 
 def test_invalid_enc_mapping_codomain_2():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0, 1)] = ()
     with pytest.raises(ValueError):
@@ -115,7 +142,12 @@ def test_invalid_enc_mapping_codomain_2():
 
 
 def test_non_injective_enc_mapping():
-    enc_mapping: dict = {(0, 0): (0,), (0, 1): (1, 0, 0), (1, 0): (1, 1), (1, 1): (1, 0, 1)}
+    enc_mapping: dict = {
+        (0, 0): (0,),
+        (0, 1): (1, 0, 0),
+        (1, 0): (1, 1),
+        (1, 1): (1, 0, 1),
+    }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(1, 1)] = (1, 1)
     with pytest.raises(ValueError):
@@ -147,11 +179,17 @@ def test_decoding_not_prefix_free(source_cardinality, codewords):
         (test_data[2], [0.4, 0.6], 1.18),
         (test_data[3], [0.25, 0.25, 0.2, 0.15, 0.15], 2.3),  # [CT06, Example 5.6.1]
         (test_data[4], [0.25, 0.25, 0.2, 0.15, 0.15], 1.5),  # [CT06, Example 5.6.2]
-        (test_data[5], [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0], 1.7),  # [CT06, Example 5.6.3]
+        (
+            test_data[5],
+            [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0],
+            1.7,
+        ),  # [CT06, Example 5.6.3]
     ],
 )
 def test_rate(code_parameters, pmf, rate):
-    source_cardinality, target_cardinality, source_block_size, codewords = code_parameters.values()
+    source_cardinality, target_cardinality, source_block_size, codewords = (
+        code_parameters.values()
+    )
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     assert np.isclose(code.rate(pmf), rate)
 
@@ -190,7 +228,9 @@ def test_rate_invalid_pmf(pmf):
     ],
 )
 def test_encoding_decoding(code_parameters, x, y):
-    source_cardinality, target_cardinality, source_block_size, codewords = code_parameters.values()
+    source_cardinality, target_cardinality, source_block_size, codewords = (
+        code_parameters.values()
+    )
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     encoder = komm.FixedToVariableEncoder(code)
     decoder = komm.FixedToVariableDecoder(code)

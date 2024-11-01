@@ -69,9 +69,15 @@ def huffman_algorithm(pmf, source_block_size, policy):
             if policy == "high":
                 return (self.probability, self.index) < (other.probability, other.index)
             elif policy == "low":
-                return (self.probability, -self.index) < (other.probability, -other.index)
+                return (self.probability, -self.index) < (
+                    other.probability,
+                    -other.index,
+                )
 
-    tree = [Node(i, np.prod(probs)) for (i, probs) in enumerate(itertools.product(pmf, repeat=source_block_size))]
+    tree = [
+        Node(i, np.prod(probs))
+        for (i, probs) in enumerate(itertools.product(pmf, repeat=source_block_size))
+    ]
     queue = [node for node in tree]
     heapq.heapify(queue)
     while len(queue) > 1:

@@ -44,7 +44,9 @@ class RationalPolynomial:
         elif isinstance(coefficients, self.__class__):
             coefficients = coefficients._coefficients
 
-        self._coefficients = np.array(np.trim_zeros([Fraction(x) for x in coefficients], trim="b"))
+        self._coefficients = np.array(
+            np.trim_zeros([Fraction(x) for x in coefficients], trim="b")
+        )
 
     @classmethod
     def monomial(cls, degree, coefficient=1):
@@ -111,21 +113,37 @@ class RationalPolynomial:
     def __add__(self, other):
         if self.degree > other.degree:
             return self.__class__(
-                self._coefficients + np.pad(other._coefficients, (0, self.degree - other.degree), mode="constant")
+                self._coefficients
+                + np.pad(
+                    other._coefficients,
+                    (0, self.degree - other.degree),
+                    mode="constant",
+                )
             )
         else:
             return self.__class__(
-                np.pad(self._coefficients, (0, other.degree - self.degree), mode="constant") + other._coefficients
+                np.pad(
+                    self._coefficients, (0, other.degree - self.degree), mode="constant"
+                )
+                + other._coefficients
             )
 
     def __sub__(self, other):
         if self.degree > other.degree:
             return self.__class__(
-                self._coefficients - np.pad(other._coefficients, (0, self.degree - other.degree), mode="constant")
+                self._coefficients
+                - np.pad(
+                    other._coefficients,
+                    (0, self.degree - other.degree),
+                    mode="constant",
+                )
             )
         else:
             return self.__class__(
-                np.pad(self._coefficients, (0, other.degree - self.degree), mode="constant") - other._coefficients
+                np.pad(
+                    self._coefficients, (0, other.degree - self.degree), mode="constant"
+                )
+                - other._coefficients
             )
 
     def __neg__(self):

@@ -8,7 +8,9 @@ def main():
             src_path = f"figures/{filename}"
             dst_path = f"docs/figures/{filename}".replace(".pdf", ".svg")
             # Check if destination file is older than source file
-            if os.path.exists(dst_path) and os.path.getmtime(dst_path) > os.path.getmtime(src_path):
+            if os.path.exists(dst_path) and os.path.getmtime(
+                dst_path
+            ) > os.path.getmtime(src_path):
                 continue
             os.system(f"iperender -svg {src_path} {dst_path}")
             print(f"Generated {dst_path}")

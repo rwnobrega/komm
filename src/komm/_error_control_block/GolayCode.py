@@ -57,6 +57,7 @@ class GolayCode(SystematicBlockCode):
         >>> code.minimum_distance
         8
     """
+
     extended: bool = False
 
     @cached_property

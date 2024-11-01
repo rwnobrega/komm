@@ -78,5 +78,7 @@ def test_qam_modulation_2(orders, base_amplitudes):
     qam_doc_formula = []
     for i in range(M_I * M_Q):
         i_I, i_Q = i % M_I, i // M_I
-        qam_doc_formula.append(A_I * (2 * i_I - M_I + 1) + 1j * A_Q * (2 * i_Q - M_Q + 1))
+        qam_doc_formula.append(
+            A_I * (2 * i_I - M_I + 1) + 1j * A_Q * (2 * i_Q - M_Q + 1)
+        )
     assert np.allclose(qam_doc_formula, qam.constellation)

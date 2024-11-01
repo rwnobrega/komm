@@ -47,6 +47,7 @@ class RepetitionCode(BlockCode):
         array([    1,    16,   120,   560,  1820,  4368,  8008, 11440,  6435,
                    0,     0,     0,     0,     0,     0,     0,     0])
     """
+
     n: int
 
     @cached_property

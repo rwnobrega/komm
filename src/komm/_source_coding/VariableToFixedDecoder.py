@@ -29,6 +29,7 @@ class VariableToFixedDecoder:
         >>> decoder([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
         array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
     """
+
     code: VariableToFixedCode
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:

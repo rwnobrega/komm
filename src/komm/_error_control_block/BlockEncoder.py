@@ -29,6 +29,7 @@ class BlockEncoder:
         >>> encoder([1, 1, 0, 0, 1, 0, 1, 1])
         array([1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0])
     """
+
     code: BlockCode
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:

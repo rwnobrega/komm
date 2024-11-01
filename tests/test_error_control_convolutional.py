@@ -13,7 +13,9 @@ def test_convolutional_code():
     assert np.array_equal(code.overall_constraint_length, 3)
 
     # Lin.Costello.04, p. 456--458.
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]
+    )
     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
     assert np.array_equal(code.constraint_lengths, [1, 1])
     assert np.array_equal(code.memory_order, 1)
@@ -27,7 +29,9 @@ def test_convolutional_code():
     assert np.array_equal(code.overall_constraint_length, 2)
 
     # Ibid.
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111]
+    )
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
     assert np.array_equal(code.constraint_lengths, [2])
     assert np.array_equal(code.memory_order, 2)
@@ -66,7 +70,9 @@ def test_convolutional_space_state_representation():
         ([[0o27, 0o31]], [0o27]),
     ],
 )
-def test_convolutional_space_state_representation_2(feedforward_polynomials, feedback_polynomials):
+def test_convolutional_space_state_representation_2(
+    feedforward_polynomials, feedback_polynomials
+):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     n, k, nu = code.num_output_bits, code.num_input_bits, code.overall_constraint_length
 
@@ -101,13 +107,19 @@ def test_convolutional_stream_encoder():
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1101, 0b1111]])
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(
-        convolutional_encoder([1, 0, 1, 1, 1, 0, 0, 0]), [1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1]
+        convolutional_encoder([1, 0, 1, 1, 1, 0, 0, 0]),
+        [1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
     )
 
     # Lin.Costello.04, p. 456--458.
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]
+    )
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
-    assert np.array_equal(convolutional_encoder([1, 1, 0, 1, 1, 0, 0, 0]), [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1])
+    assert np.array_equal(
+        convolutional_encoder([1, 1, 0, 1, 1, 0, 0, 0]),
+        [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    )
 
     # Ryan.Lin.09, p. 154.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
@@ -115,7 +127,9 @@ def test_convolutional_stream_encoder():
     assert np.array_equal(convolutional_encoder([1, 0, 0, 0]), [1, 1, 1, 0, 1, 1, 0, 0])
 
     # Ibid.
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111])
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b111, 0b101]], feedback_polynomials=[0b111]
+    )
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(convolutional_encoder([1, 1, 1, 0]), [1, 1, 1, 0, 1, 1, 0, 0])
 
@@ -124,9 +138,13 @@ def test_convolutional_stream_decoder():
     # Abrantes.10, p. 307.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     traceback_length = 12
-    convolutional_decoder = komm.ConvolutionalStreamDecoder(code, traceback_length, input_type="hard")
+    convolutional_decoder = komm.ConvolutionalStreamDecoder(
+        code, traceback_length, input_type="hard"
+    )
     recvword = np.array([1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
-    recvword_ = np.concatenate([recvword, np.zeros(traceback_length * code.num_output_bits, dtype=int)])
+    recvword_ = np.concatenate(
+        [recvword, np.zeros(traceback_length * code.num_output_bits, dtype=int)]
+    )
     message_hat = convolutional_decoder(recvword_)
     message_hat_ = message_hat[traceback_length:]
     assert np.array_equal(message_hat_, [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
@@ -157,7 +175,10 @@ def test_convolutional_stream_decoder():
             [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
             None,
             komm.int2binlist(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
-            komm.int2binlist(0x6C889449F6801E93DAF4E498CCF75404897D7459CE571F1581A4D05B2011986C0C8501D4000, 300),
+            komm.int2binlist(
+                0x6C889449F6801E93DAF4E498CCF75404897D7459CE571F1581A4D05B2011986C0C8501D4000,
+                300,
+            ),
         ),
         (
             [[0o27, 0o31]],
@@ -170,7 +191,9 @@ def test_convolutional_stream_decoder():
         ),
     ],
 )
-def test_convolutional_stream_encoder_2(feedforward_polynomials, feedback_polynomials, message, codeword):
+def test_convolutional_stream_encoder_2(
+    feedforward_polynomials, feedback_polynomials, message, codeword
+):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
     assert np.array_equal(convolutional_encoder(message), codeword)
@@ -200,7 +223,10 @@ def test_convolutional_stream_encoder_2(feedforward_polynomials, feedback_polyno
         (
             [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
             None,
-            komm.int2binlist(0x7577B289B10E5F299954FCC6BCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 300),
+            komm.int2binlist(
+                0x7577B289B10E5F299954FCC6BCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200,
+                300,
+            ),
             komm.int2binlist(0x4B592F74786E69C9E75CFA836CFFA14F917D51AAE2C9ED60, 200),
         ),
         (
@@ -214,10 +240,14 @@ def test_convolutional_stream_encoder_2(feedforward_polynomials, feedback_polyno
         ),
     ],
 )
-def test_convolutional_stream_decoder_2(feedforward_polynomials, feedback_polynomials, recvword, message_hat):
+def test_convolutional_stream_decoder_2(
+    feedforward_polynomials, feedback_polynomials, recvword, message_hat
+):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     L = len(message_hat) // code.num_input_bits
     recvword = np.concatenate([recvword, np.zeros(code.num_output_bits * L)])
-    convolutional_decoder = komm.ConvolutionalStreamDecoder(code, traceback_length=L, input_type="hard")
+    convolutional_decoder = komm.ConvolutionalStreamDecoder(
+        code, traceback_length=L, input_type="hard"
+    )
     message_hat = np.pad(message_hat, (len(message_hat), 0), mode="constant")
     assert np.array_equal(message_hat, convolutional_decoder(recvword))

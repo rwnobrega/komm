@@ -54,7 +54,11 @@ class LFSRSequence(BinarySequence):
         """
         self._feedback_polynomial = BinaryPolynomial(feedback_polynomial)
         self._start_state_polynomial = BinaryPolynomial(start_state_polynomial)
-        super().__init__(bit_sequence=self._lfsr_sequence(self._feedback_polynomial, self._start_state_polynomial))
+        super().__init__(
+            bit_sequence=self._lfsr_sequence(
+                self._feedback_polynomial, self._start_state_polynomial
+            )
+        )
 
     @classmethod
     def maximum_length_sequence(cls, degree, start_state_polynomial=0b1):
@@ -84,7 +88,8 @@ class LFSRSequence(BinarySequence):
             LFSRSequence(feedback_polynomial=0b100101)
         """
         return cls(
-            feedback_polynomial=cls._default_primitive_polynomial(degree), start_state_polynomial=start_state_polynomial
+            feedback_polynomial=cls._default_primitive_polynomial(degree),
+            start_state_polynomial=start_state_polynomial,
         )
 
     def __repr__(self):
@@ -110,7 +115,9 @@ class LFSRSequence(BinarySequence):
     @staticmethod
     def _lfsr_sequence(feedback_polynomial, start_state_polynomial):
         taps = (feedback_polynomial + BinaryPolynomial(1)).exponents()
-        start_state = start_state_polynomial.coefficients(width=feedback_polynomial.degree)
+        start_state = start_state_polynomial.coefficients(
+            width=feedback_polynomial.degree
+        )
         m = taps[-1]
         L = 2**m - 1
         state = np.copy(start_state)

@@ -137,23 +137,31 @@ class ConvolutionalCode:
             >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
             (2, 1, np.int64(4))
         """
-        self._feedforward_polynomials = np.empty_like(feedforward_polynomials, dtype=BinaryPolynomial)
+        self._feedforward_polynomials = np.empty_like(
+            feedforward_polynomials, dtype=BinaryPolynomial
+        )
         for (i, j), p in np.ndenumerate(feedforward_polynomials):
             self._feedforward_polynomials[i, j] = BinaryPolynomial(p)
 
         k, n = self._feedforward_polynomials.shape
 
         if feedback_polynomials is None:
-            self._feedback_polynomials = np.array([BinaryPolynomial(0b1) for _ in range(k)], dtype=object)
+            self._feedback_polynomials = np.array(
+                [BinaryPolynomial(0b1) for _ in range(k)], dtype=object
+            )
             self._constructed_from = "no_feedback_polynomials"
         else:
-            self._feedback_polynomials = np.empty_like(feedback_polynomials, dtype=object)
+            self._feedback_polynomials = np.empty_like(
+                feedback_polynomials, dtype=object
+            )
             for i, q in np.ndenumerate(feedback_polynomials):
                 self._feedback_polynomials[i] = BinaryPolynomial(q)
             self._constructed_from = "feedback_polynomials"
 
         nus = np.empty(k, dtype=int)
-        for i, (ps, q) in enumerate(zip(self._feedforward_polynomials, self._feedback_polynomials)):
+        for i, (ps, q) in enumerate(
+            zip(self._feedforward_polynomials, self._feedback_polynomials)
+        ):
             nus[i] = max(np.amax([p.degree for p in ps]), q.degree)
 
         self._num_input_bits = k
@@ -165,33 +173,50 @@ class ConvolutionalCode:
         self._transfer_function_matrix = np.empty((k, n), dtype=object)
         for (i, j), p in np.ndenumerate(feedforward_polynomials):
             q = self._feedback_polynomials[i]
-            self._transfer_function_matrix[i, j] = BinaryPolynomialFraction(p) / BinaryPolynomialFraction(q)
+            self._transfer_function_matrix[i, j] = BinaryPolynomialFraction(
+                p
+            ) / BinaryPolynomialFraction(q)
 
         self._setup_finite_state_machine_direct_form()
         self._setup_space_state_representation()
 
     def __repr__(self):
-        feedforward_polynomials_str = str(np.vectorize(str)(self._feedforward_polynomials).tolist()).replace("'", "")
+        feedforward_polynomials_str = str(
+            np.vectorize(str)(self._feedforward_polynomials).tolist()
+        ).replace("'", "")
         args = "feedforward_polynomials={}".format(feedforward_polynomials_str)
         if self._constructed_from == "feedback_polynomials":
-            feedback_polynomials_str = str(np.vectorize(str)(self._feedback_polynomials).tolist()).replace("'", "")
+            feedback_polynomials_str = str(
+                np.vectorize(str)(self._feedback_polynomials).tolist()
+            ).replace("'", "")
             args = "{}, feedback_polynomials={}".format(args, feedback_polynomials_str)
         return "{}({})".format(self.__class__.__name__, args)
 
     def _setup_finite_state_machine_direct_form(self):
-        n, k, nu = self._num_output_bits, self._num_input_bits, self._overall_constraint_length
+        n, k, nu = (
+            self._num_output_bits,
+            self._num_input_bits,
+            self._overall_constraint_length,
+        )
 
         x_indices = np.concatenate(([0], np.cumsum(self._constraint_lengths + 1)[:-1]))
         s_indices = np.setdiff1d(np.arange(k + nu), x_indices)
 
         feedforward_taps = []
         for j in range(n):
-            taps = np.concatenate([self._feedforward_polynomials[i, j].exponents() + x_indices[i] for i in range(k)])
+            taps = np.concatenate(
+                [
+                    self._feedforward_polynomials[i, j].exponents() + x_indices[i]
+                    for i in range(k)
+                ]
+            )
             feedforward_taps.append(taps)
 
         feedback_taps = []
         for i in range(k):
-            taps = (BinaryPolynomial(0b1) + self._feedback_polynomials[i]).exponents() + x_indices[i]
+            taps = (
+                BinaryPolynomial(0b1) + self._feedback_polynomials[i]
+            ).exponents() + x_indices[i]
             feedback_taps.append(taps)
 
         bits = np.empty(k + nu, dtype=int)
@@ -201,21 +226,31 @@ class ConvolutionalCode:
         for s, x in np.ndindex(2**nu, 2**k):
             bits[s_indices] = int2binlist(s, width=nu)
             bits[x_indices] = int2binlist(x, width=k)
-            bits[x_indices] ^= [np.count_nonzero(bits[feedback_taps[i]]) % 2 for i in range(k)]
+            bits[x_indices] ^= [
+                np.count_nonzero(bits[feedback_taps[i]]) % 2 for i in range(k)
+            ]
 
             next_state_bits = bits[s_indices - 1]
-            output_bits = [np.count_nonzero(bits[feedforward_taps[j]]) % 2 for j in range(n)]
+            output_bits = [
+                np.count_nonzero(bits[feedforward_taps[j]]) % 2 for j in range(n)
+            ]
 
             next_states[s, x] = binlist2int(next_state_bits)
             outputs[s, x] = binlist2int(output_bits)
 
-        self._finite_state_machine = FiniteStateMachine(next_states=next_states, outputs=outputs)
+        self._finite_state_machine = FiniteStateMachine(
+            next_states=next_states, outputs=outputs
+        )
 
     def _setup_finite_state_machine_transposed_form(self):
         pass
 
     def _setup_space_state_representation(self):
-        k, n, nu = self._num_input_bits, self._num_output_bits, self._overall_constraint_length
+        k, n, nu = (
+            self._num_input_bits,
+            self._num_output_bits,
+            self._overall_constraint_length,
+        )
 
         self._state_matrix = np.empty((nu, nu), dtype=int)
         self._observation_matrix = np.empty((nu, n), dtype=int)

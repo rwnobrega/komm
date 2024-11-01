@@ -61,11 +61,12 @@ class TerminatedConvolutionalCode(BlockCode):
                [0, 0, 1, 1, 0, 1],
                [0, 1, 0, 0, 1, 1]])
     """
+
     convolutional_code: ConvolutionalCode
     num_blocks: int
-    mode: Literal[
-        "direct-truncation", "zero-termination", "tail-biting"
-    ] = "zero-termination"
+    mode: Literal["direct-truncation", "zero-termination", "tail-biting"] = (
+        "zero-termination"
+    )
 
     def __attrs_post_init__(self):
         if self.mode == "tail-biting":

@@ -61,7 +61,9 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         return 1.0 - self._erasure_probability
 
     def __call__(self, input_sequence):
-        erasure_pattern = np.random.rand(np.size(input_sequence)) < self._erasure_probability
+        erasure_pattern = (
+            np.random.rand(np.size(input_sequence)) < self._erasure_probability
+        )
         output_sequence = np.copy(input_sequence)
         output_sequence[erasure_pattern] = 2
         return output_sequence

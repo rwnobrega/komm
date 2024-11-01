@@ -23,7 +23,9 @@ class FormattingPulse:
         self._interval = interval
 
     def __repr__(self):
-        args = "impulse_response={}, interval={}".format(self._impulse_response, self._interval)
+        args = "impulse_response={}, interval={}".format(
+            self._impulse_response, self._interval
+        )
         return "{}({})".format(self.__class__.__name__, args)
 
     @property

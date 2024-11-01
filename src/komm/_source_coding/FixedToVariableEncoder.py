@@ -29,6 +29,7 @@ class FixedToVariableEncoder:
         >>> encoder([1, 0, 1, 0, 2, 0])
         array([1, 0, 0, 1, 0, 0, 1, 1, 0])
     """
+
     code: FixedToVariableCode
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:

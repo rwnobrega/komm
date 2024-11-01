@@ -33,6 +33,7 @@ class CordaroWagnerCode(BlockCode):
         >>> code.coset_leader_weight_distribution
         array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
     """
+
     n: int
 
     @cached_property

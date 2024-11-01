@@ -7,7 +7,11 @@ class BinaryPolynomialFraction:
     Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two [binary polynomials](/ref/BinaryPolynomial).
     """
 
-    def __init__(self, numerator: int | BinaryPolynomial, denominator: int | BinaryPolynomial = 0b1):
+    def __init__(
+        self,
+        numerator: int | BinaryPolynomial,
+        denominator: int | BinaryPolynomial = 0b1,
+    ):
         self._numerator = BinaryPolynomial(numerator)
         self._denominator = BinaryPolynomial(denominator)
         if denominator == 0:
@@ -44,12 +48,16 @@ class BinaryPolynomialFraction:
         return self._denominator
 
     def __add__(self, other):
-        numerator = self._numerator * other._denominator + self._denominator * other._numerator
+        numerator = (
+            self._numerator * other._denominator + self._denominator * other._numerator
+        )
         denominator = self._denominator * other._denominator
         return self.__class__(numerator, denominator)
 
     def __sub__(self, other):
-        numerator = self._numerator * other._denominator - self._denominator * other._numerator
+        numerator = (
+            self._numerator * other._denominator - self._denominator * other._numerator
+        )
         denominator = self._denominator * other._denominator
         return self.__class__(numerator, denominator)
 
@@ -67,7 +75,9 @@ class BinaryPolynomialFraction:
         return power(self, exponent, self.__class__)
 
     def __eq__(self, other):
-        return self._numerator * other._denominator == self._denominator * other._numerator
+        return (
+            self._numerator * other._denominator == self._denominator * other._numerator
+        )
 
     def inverse(self):
         r"""

@@ -39,7 +39,9 @@ class DiscreteMemorylessChannel:
     @transition_matrix.setter
     def transition_matrix(self, value):
         self._transition_matrix = np.array(value, dtype=float)
-        self._input_cardinality, self._output_cardinality = self._transition_matrix.shape
+        self._input_cardinality, self._output_cardinality = (
+            self._transition_matrix.shape
+        )
 
     @property
     def input_cardinality(self):
@@ -103,13 +105,21 @@ class DiscreteMemorylessChannel:
             >>> dmc.capacity(base=3)  # doctest: +NUMBER
             np.float64(0.1019783502)
         """
-        initial_guess = np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
-        optimal_input_pmf = self._arimoto_blahut(self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs)
-        return _mutual_information(optimal_input_pmf, self._transition_matrix, base=base)
+        initial_guess = (
+            np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
+        )
+        optimal_input_pmf = self._arimoto_blahut(
+            self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs
+        )
+        return _mutual_information(
+            optimal_input_pmf, self._transition_matrix, base=base
+        )
 
     def __call__(self, input_sequence):
         output_sequence = [
-            np.random.choice(self._output_cardinality, p=self._transition_matrix[input_symbol])
+            np.random.choice(
+                self._output_cardinality, p=self._transition_matrix[input_symbol]
+            )
             for input_symbol in input_sequence
         ]
         return np.array(output_sequence)

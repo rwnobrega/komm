@@ -16,7 +16,9 @@ class ASKModulation(Modulation):
     </figure>
     """
 
-    def __init__(self, order, base_amplitude=1.0, phase_offset=0.0, labeling="reflected"):
+    def __init__(
+        self, order, base_amplitude=1.0, phase_offset=0.0, labeling="reflected"
+    ):
         r"""
         Constructor for the class.
 
@@ -63,11 +65,17 @@ class ASKModulation(Modulation):
         if labeling in allowed_labelings:
             labeling = labelings[labeling](order)
         elif isinstance(labeling, str):
-            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+            raise ValueError(
+                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+            )
 
-        super().__init__(constellation_ask(order, self._base_amplitude, self._phase_offset), labeling)
+        super().__init__(
+            constellation_ask(order, self._base_amplitude, self._phase_offset), labeling
+        )
 
     def __repr__(self):
-        order, base_amplitude, phase_offset, labeling = self._constructor_kwargs.values()
+        order, base_amplitude, phase_offset, labeling = (
+            self._constructor_kwargs.values()
+        )
         args = f"{order}, base_amplitude={base_amplitude}, phase_offset={phase_offset}, labeling={labeling}"
         return f"{self.__class__.__name__}({args})"

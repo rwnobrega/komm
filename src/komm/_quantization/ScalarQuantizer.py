@@ -82,10 +82,16 @@ class ScalarQuantizer:
         return self._num_levels
 
     def __call__(self, input_signal):
-        input_signal_tile = np.tile(input_signal, reps=(self._thresholds.size, 1)).transpose()
-        output_signal = self._levels[np.sum(input_signal_tile >= self._thresholds, axis=1)]
+        input_signal_tile = np.tile(
+            input_signal, reps=(self._thresholds.size, 1)
+        ).transpose()
+        output_signal = self._levels[
+            np.sum(input_signal_tile >= self._thresholds, axis=1)
+        ]
         return output_signal
 
     def __repr__(self):
-        args = "levels={}, thresholds={}".format(self._levels.tolist(), self._thresholds.tolist())
+        args = "levels={}, thresholds={}".format(
+            self._levels.tolist(), self._thresholds.tolist()
+        )
         return "{}({})".format(self.__class__.__name__, args)

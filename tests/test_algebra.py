@@ -6,7 +6,10 @@ import komm
 
 def test_binary_polynomial():
     poly = komm.BinaryPolynomial(0b10100110111)
-    assert komm.BinaryPolynomial.from_coefficients([1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1]) == poly
+    assert (
+        komm.BinaryPolynomial.from_coefficients([1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1])
+        == poly
+    )
     assert komm.BinaryPolynomial.from_exponents([0, 1, 2, 4, 5, 8, 10]) == poly
     assert poly.degree == 10
     assert np.array_equal(poly.coefficients(), [1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1])
@@ -54,7 +57,11 @@ def test_finite_bifield():
     assert alpha**5 == alpha + alpha**2 == field(0b0110)
     assert alpha**6 == alpha**2 + alpha**3 == field(0b1100)
     assert (
-        alpha**7 == one + alpha + alpha**3 == alpha**4 / alpha**12 == alpha**12 / alpha**5 == field(0b1011)
+        alpha**7
+        == one + alpha + alpha**3
+        == alpha**4 / alpha**12
+        == alpha**12 / alpha**5
+        == field(0b1011)
     )
     assert alpha**13 == alpha**5 + alpha**7 == field(0b1101)
     assert one + alpha**5 + alpha**10 == field(0)
@@ -69,9 +76,19 @@ def test_conjugates():
     assert set(field(0).conjugates()) == {field(0)}
     assert set(field(1).conjugates()) == {field(1)}
     assert set(field(alpha).conjugates()) == {alpha, alpha**2, alpha**4, alpha**8}
-    assert set(field(alpha**3).conjugates()) == {alpha**3, alpha**6, alpha**9, alpha**12}
+    assert set(field(alpha**3).conjugates()) == {
+        alpha**3,
+        alpha**6,
+        alpha**9,
+        alpha**12,
+    }
     assert set(field(alpha**5).conjugates()) == {alpha**5, alpha**10}
-    assert set(field(alpha**7).conjugates()) == {alpha**7, alpha**11, alpha**13, alpha**14}
+    assert set(field(alpha**7).conjugates()) == {
+        alpha**7,
+        alpha**11,
+        alpha**13,
+        alpha**14,
+    }
 
 
 def test_minimal_polynomial():
@@ -105,7 +122,9 @@ def test_logarithm(m):
 
 
 def test_rational_polynomial():
-    assert komm.RationalPolynomial([1, 0, -1]) == komm.RationalPolynomial([1, 0, -1, 0, 0, 0])
+    assert komm.RationalPolynomial([1, 0, -1]) == komm.RationalPolynomial(
+        [1, 0, -1, 0, 0, 0]
+    )
 
     poly0 = komm.RationalPolynomial([1])
     poly1 = komm.RationalPolynomial([0, 1])

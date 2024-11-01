@@ -46,7 +46,10 @@ def find_roots(field: FiniteBifield, coefficients) -> list[FiniteBifield._Elemen
 def berlekamp_algorithm(field: FiniteBifield, delta: int, syndrome_polynomial):
     # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
     # See [LC04, p. 209–212] and [RL09, p. 114–121].
-    sigma = {-1: np.array([field(1)], dtype=object), 0: np.array([field(1)], dtype=object)}
+    sigma = {
+        -1: np.array([field(1)], dtype=object),
+        0: np.array([field(1)], dtype=object),
+    }
     discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
     degree = {-1: 0, 0: 0}
 
@@ -71,7 +74,9 @@ def berlekamp_algorithm(field: FiniteBifield, delta: int, syndrome_polynomial):
         if j < delta - 2:
             discrepancy[j + 1] = syndrome_polynomial[j + 1]
             for idx in range(1, degree[j + 1] + 1):
-                discrepancy[j + 1] += sigma[j + 1][idx] * syndrome_polynomial[j + 1 - idx]
+                discrepancy[j + 1] += (
+                    sigma[j + 1][idx] * syndrome_polynomial[j + 1 - idx]
+                )
 
     return sigma[delta - 1]
 

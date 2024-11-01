@@ -66,6 +66,7 @@ class BCHCode(CyclicCode):
         >>> komm.BCHCode(mu=7, delta=43)
         BCHCode(mu=7, delta=43)
     """
+
     mu: int
     delta: int
 

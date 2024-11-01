@@ -12,7 +12,14 @@ import komm
         (8, 3, [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0], 17.5, 35 / 6, 3.5),
     ],
 )
-def test_ask_modulation_1(order, constellation, bits_per_symbol, energy_per_symbol, energy_per_bit, symbol_mean):
+def test_ask_modulation_1(
+    order,
+    constellation,
+    bits_per_symbol,
+    energy_per_symbol,
+    energy_per_bit,
+    symbol_mean,
+):
     ask = komm.ASKModulation(order)
     assert ask.order == order
     assert ask.bits_per_symbol == bits_per_symbol
@@ -34,11 +41,15 @@ def test_ask_modulation_1(order, constellation, bits_per_symbol, energy_per_symb
     ],
 )
 def test_ask_modulation_2(base_amplitude, phase_offset, constellation):
-    ask4 = komm.ASKModulation(4, base_amplitude=base_amplitude, phase_offset=phase_offset)
+    ask4 = komm.ASKModulation(
+        4, base_amplitude=base_amplitude, phase_offset=phase_offset
+    )
     assert np.allclose(ask4.constellation, constellation)
     assert np.allclose(ask4.energy_per_symbol, 3.5 * base_amplitude**2)
     assert np.allclose(ask4.energy_per_bit, 1.75 * base_amplitude**2)
-    assert np.allclose(ask4.symbol_mean, 1.5 * base_amplitude * np.exp(1j * phase_offset))
+    assert np.allclose(
+        ask4.symbol_mean, 1.5 * base_amplitude * np.exp(1j * phase_offset)
+    )
     assert np.allclose(ask4.minimum_distance, base_amplitude)
 
 

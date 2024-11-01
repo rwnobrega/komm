@@ -56,10 +56,16 @@ class PSKModulation(Modulation):
         if labeling in allowed_labelings:
             labeling = labelings[labeling](order)
         elif isinstance(labeling, str):
-            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+            raise ValueError(
+                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+            )
 
-        super().__init__(constellation_psk(order, self._amplitude, self._phase_offset), labeling)
+        super().__init__(
+            constellation_psk(order, self._amplitude, self._phase_offset), labeling
+        )
 
     def __repr__(self):
-        args = "{}, amplitude={}, phase_offset={}".format(self._order, self._amplitude, self._phase_offset)
+        args = "{}, amplitude={}, phase_offset={}".format(
+            self._order, self._amplitude, self._phase_offset
+        )
         return "{}({})".format(self.__class__.__name__, args)

@@ -8,7 +8,13 @@ def test_huffman_code_1():
     # Sayood.06, p. 47.
     pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
     code = komm.HuffmanCode(pmf)
-    assert code.enc_mapping == {(0,): (1, 1), (1,): (0, 0), (2,): (1, 0), (3,): (0, 1, 1), (4,): (0, 1, 0)}
+    assert code.enc_mapping == {
+        (0,): (1, 1),
+        (1,): (0, 0),
+        (2,): (1, 0),
+        (3,): (0, 1, 1),
+        (4,): (0, 1, 0),
+    }
     assert code.rate(pmf) == 2.2
 
 
@@ -16,7 +22,13 @@ def test_huffman_code_2():
     # Sayood.06, p. 44.
     pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
     code = komm.HuffmanCode(pmf, policy="low")
-    assert code.enc_mapping == {(0,): (0, 1), (1,): (1,), (2,): (0, 0, 0), (3,): (0, 0, 1, 0), (4,): (0, 0, 1, 1)}
+    assert code.enc_mapping == {
+        (0,): (0, 1),
+        (1,): (1,),
+        (2,): (0, 0, 0),
+        (3,): (0, 0, 1, 0),
+        (4,): (0, 0, 1, 1),
+    }
     assert code.rate(pmf) == 2.2
 
 

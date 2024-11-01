@@ -12,7 +12,9 @@ import komm
             4,
             "zero-termination",
             {"snr": 1.25},
-            -np.array([+0.3, +0.1, -0.5, +0.2, +0.8, +0.5, -0.5, +0.3, +0.1, -0.7, +1.5, -0.4]),
+            -np.array(
+                [+0.3, +0.1, -0.5, +0.2, +0.8, +0.5, -0.5, +0.3, +0.1, -0.7, +1.5, -0.4]
+            ),
             -np.array([1.78, 0.24, -1.97, 5.52]),
         ),
         (  # Lin.Costello.04, p. 572--575.
@@ -26,6 +28,8 @@ import komm
     ],
 )
 def test_bcjr(convolutional_code, num_blocks, mode, decoder_kwargs, r, u_hat):
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=num_blocks, mode=mode)
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, num_blocks=num_blocks, mode=mode
+    )
     decoder = komm.BlockDecoder(code, method="bcjr", decoder_kwargs=decoder_kwargs)
     assert np.allclose(decoder(r), u_hat, atol=0.05)

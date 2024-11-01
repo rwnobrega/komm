@@ -73,12 +73,19 @@ class APSKModulation(Modulation):
         if labeling in allowed_labelings:
             labeling = labelings[labeling](sum(orders))
         elif isinstance(labeling, str):
-            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+            raise ValueError(
+                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+            )
 
         super().__init__(
-            constellation=constellation_apsk(self._orders, self._amplitudes, phase_offsets), labeling=labeling
+            constellation=constellation_apsk(
+                self._orders, self._amplitudes, phase_offsets
+            ),
+            labeling=labeling,
         )
 
     def __repr__(self):
-        args = "{}, amplitudes={}, phase_offsets={}".format(self._orders, self._amplitudes, self._phase_offsets)
+        args = "{}, amplitudes={}, phase_offsets={}".format(
+            self._orders, self._amplitudes, self._phase_offsets
+        )
         return "{}({})".format(self.__class__.__name__, args)

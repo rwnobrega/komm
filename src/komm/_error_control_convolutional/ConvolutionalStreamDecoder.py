@@ -39,6 +39,7 @@ class ConvolutionalStreamDecoder:
             array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
 
     """
+
     convolutional_code: ConvolutionalCode
     traceback_length: int
     state: int = field(default=0)

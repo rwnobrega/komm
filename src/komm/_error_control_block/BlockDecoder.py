@@ -131,6 +131,7 @@ class BlockDecoder:
         >>> decoder([-0.98, -0.85, 1.07, -0.78, 1.11, -0.95, -1.16, -0.87, 1.11, -0.83, -0.95, 0.94, 1.07, 0.91])
         array([1, 1, 0, 0, 1, 0, 1, 1])
     """
+
     code: BlockCode
     method: str | None = None
     decoder_kwargs: dict = field(factory=dict)

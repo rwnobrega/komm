@@ -34,6 +34,7 @@ class SystematicBlockCode(BlockCode):
                [1, 0, 1, 0, 1, 0],
                [1, 1, 0, 0, 0, 1]])
     """
+
     _parity_submatrix: npt.ArrayLike = field(
         default=None, repr=False, alias="parity_submatrix"
     )

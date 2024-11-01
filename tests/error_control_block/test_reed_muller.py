@@ -15,16 +15,30 @@ class TestReedMuller:
             self.code.generator_matrix,
             [
                 komm.int2binlist(i)
-                for i in [0x8888, 0xA0A0, 0xAA00, 0xC0C0, 0xCC00, 0xF000, 0xAAAA, 0xCCCC, 0xF0F0, 0xFF00, 0xFFFF]
+                for i in [
+                    0x8888,
+                    0xA0A0,
+                    0xAA00,
+                    0xC0C0,
+                    0xCC00,
+                    0xF000,
+                    0xAAAA,
+                    0xCCCC,
+                    0xF0F0,
+                    0xFF00,
+                    0xFFFF,
+                ]
             ],
         )
 
     def test_weight_distributions(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution, [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1]
+            self.code.codeword_weight_distribution,
+            [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1],
         )
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution, [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            self.code.coset_leader_weight_distribution,
+            [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         )
 
     def test_GH_orthogonality(self):
@@ -55,12 +69,47 @@ def test_encoder():
     encoder = komm.BlockEncoder(code)
     assert np.array_equal(
         encoder([0, 0, 0, 0, 0, 1]),
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+        ],
     )
 
 
 def test_decoder():
-    code = komm.ReedMullerCode(1, 5)  # Minimum distance is 16, so it can correct up to 7 errors.
+    code = komm.ReedMullerCode(
+        1, 5
+    )  # Minimum distance is 16, so it can correct up to 7 errors.
     decoder = komm.BlockDecoder(code)
     r = np.ones(32, dtype=int)
     r[[2, 10, 15, 16, 17, 19, 29]] = 0

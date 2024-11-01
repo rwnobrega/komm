@@ -11,7 +11,11 @@ class RationalPolynomialFraction:
     Rational polynomial fraction. A *rational polynomial fraction* is a ratio of two [rational polynomials](/ref/RationalPolynomial).
     """
 
-    def __init__(self, numerator: int | RationalPolynomial, denominator: int | RationalPolynomial = 1):
+    def __init__(
+        self,
+        numerator: int | RationalPolynomial,
+        denominator: int | RationalPolynomial = 1,
+    ):
         self._numerator = RationalPolynomial(numerator)
         self._denominator = RationalPolynomial(denominator)
         if self._denominator.degree == -1:
@@ -62,12 +66,16 @@ class RationalPolynomialFraction:
         return self._denominator
 
     def __add__(self, other):
-        numerator = self._numerator * other._denominator + self._denominator * other._numerator
+        numerator = (
+            self._numerator * other._denominator + self._denominator * other._numerator
+        )
         denominator = self._denominator * other._denominator
         return self.__class__(numerator, denominator)
 
     def __sub__(self, other):
-        numerator = self._numerator * other._denominator - self._denominator * other._numerator
+        numerator = (
+            self._numerator * other._denominator - self._denominator * other._numerator
+        )
         denominator = self._denominator * other._denominator
         return self.__class__(numerator, denominator)
 
@@ -88,7 +96,9 @@ class RationalPolynomialFraction:
         return power(self, exponent, self.__class__)
 
     def __eq__(self, other):
-        return self._numerator * other._denominator == self._denominator * other._numerator
+        return (
+            self._numerator * other._denominator == self._denominator * other._numerator
+        )
 
     def inverse(self):
         r"""

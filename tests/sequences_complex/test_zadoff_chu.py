@@ -11,17 +11,41 @@ def test_zadoff_chu_1():
     s_1 = komm.ZadoffChuSequence(5, root_index=1).sequence
     assert np.allclose(
         s_1,
-        np.array([1.0, np.exp(-2j * np.pi / 5), np.exp(-6j * np.pi / 5), np.exp(-2j * np.pi / 5), 1.0]),
+        np.array(
+            [
+                1.0,
+                np.exp(-2j * np.pi / 5),
+                np.exp(-6j * np.pi / 5),
+                np.exp(-2j * np.pi / 5),
+                1.0,
+            ]
+        ),
     )
     assert np.allclose(
         np.roll(s_1, -2),
-        np.array([np.exp(-6j * np.pi / 5), np.exp(-2j * np.pi / 5), 1.0, 1.0, np.exp(-2j * np.pi / 5)]),
+        np.array(
+            [
+                np.exp(-6j * np.pi / 5),
+                np.exp(-2j * np.pi / 5),
+                1.0,
+                1.0,
+                np.exp(-2j * np.pi / 5),
+            ]
+        ),
     )
     assert np.allclose(np.vdot(s_1, np.roll(s_1, -2)), 0.0)
     s_4 = komm.ZadoffChuSequence(5, root_index=4).sequence
     assert np.allclose(
         s_4,
-        np.array([1.0, np.exp(2j * np.pi / 5), np.exp(-4j * np.pi / 5), np.exp(2j * np.pi / 5), 1.0]),
+        np.array(
+            [
+                1.0,
+                np.exp(2j * np.pi / 5),
+                np.exp(-4j * np.pi / 5),
+                np.exp(2j * np.pi / 5),
+                1.0,
+            ]
+        ),
     )
     for shift in range(5):
         assert np.allclose(np.abs(np.vdot(s_1, np.roll(s_4, shift))), np.sqrt(5))

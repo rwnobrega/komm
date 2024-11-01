@@ -93,14 +93,18 @@ class WalshHadamardSequence(BinarySequence):
         elif ordering == "dyadic":
             raise NotImplementedError
         else:
-            raise ValueError("Parameter 'ordering' must be 'natural', 'sequency' or 'dyadic'")
+            raise ValueError(
+                "Parameter 'ordering' must be 'natural', 'sequency' or 'dyadic'"
+            )
 
         self._index = index
         self._ordering = ordering
         super().__init__(polar_sequence=self._hadamard_matrix(length)[natural_index])
 
     def __repr__(self):
-        args = "length={}, ordering='{}', index={}".format(self._length, self._ordering, self._index)
+        args = "length={}, ordering='{}', index={}".format(
+            self._length, self._ordering, self._index
+        )
         return "{}({})".format(self.__class__.__name__, args)
 
     @property

@@ -51,6 +51,7 @@ class CyclicCode(BlockCode):
         >>> code.minimum_distance
         np.int64(7)
     """
+
     _length: int = field(default=None, repr=False, alias="length")
     _generator_polynomial: BinaryPolynomial | int = field(
         default=None, repr=False, alias="generator_polynomial"

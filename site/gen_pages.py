@@ -28,7 +28,10 @@ def get_data(toc):
         if isinstance(element, list):  # module has no submodules
             data[module] = _get_objects_data(element)
         else:  # module has submodules
-            data[module] = {submodule: _get_objects_data(objects) for submodule, objects in element.items()}
+            data[module] = {
+                submodule: _get_objects_data(objects)
+                for submodule, objects in element.items()
+            }
     return data
 
 
@@ -61,7 +64,11 @@ def gen_nav(data):
         template.stream(data=data).dump(f)
 
 
-JINJA_ENV = Environment(loader=FileSystemLoader("site"), trim_blocks=True, lstrip_blocks=True)
+JINJA_ENV = Environment(
+    loader=FileSystemLoader("site"),
+    trim_blocks=True,
+    lstrip_blocks=True,
+)
 toc = yaml.safe_load(open("site/toc.yaml", "r"))
 data = get_data(toc)
 gen_ref_objects(data)

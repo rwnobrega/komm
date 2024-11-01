@@ -71,6 +71,7 @@ class HammingCode(SystematicBlockCode):
                [0, 1, 1, 1, 0, 0, 1, 0],
                [1, 1, 1, 0, 0, 0, 0, 1]])
     """
+
     mu: int
     extended: bool = False
 

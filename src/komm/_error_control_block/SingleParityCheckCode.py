@@ -47,6 +47,7 @@ class SingleParityCheckCode(BlockCode):
         >>> code.coset_leader_weight_distribution
         array([1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     """
+
     n: int
 
     @cached_property

@@ -47,6 +47,7 @@ class BlockCode:
                [1, 0, 1, 0, 1, 0],
                [1, 1, 0, 0, 0, 1]])
     """
+
     _generator_matrix: npt.ArrayLike = field(
         default=None, repr=False, alias="generator_matrix"
     )

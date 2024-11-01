@@ -22,6 +22,7 @@ class VariableToFixedCode:
 
         dec_mapping: The decoding mapping $\mathrm{Dec}$ of the code. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.
     """
+
     target_cardinality: int = field(validator=validators.ge(2))
     source_cardinality: int = field(validator=validators.ge(2))
     target_block_size: int = field(validator=validators.ge(1))
@@ -29,10 +30,16 @@ class VariableToFixedCode:
 
     def __attrs_post_init__(self):
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
-        T, S, n = self.target_cardinality, self.source_cardinality, self.target_block_size
+        T, S, n = (
+            self.target_cardinality,
+            self.source_cardinality,
+            self.target_block_size,
+        )
         if not set(domain) <= set(it.product(range(T), repeat=n)):
             raise ValueError(f"'dec_mapping': invalid domain")
-        if not all(all(0 <= x < S for x in word) and len(word) > 0 for word in codomain):
+        if not all(
+            all(0 <= x < S for x in word) and len(word) > 0 for word in codomain
+        ):
             raise ValueError(f"'dec_mapping': invalid co-domain")
         if len(set(codomain)) != len(codomain):
             raise ValueError(f"'dec_mapping': non-injective mapping")

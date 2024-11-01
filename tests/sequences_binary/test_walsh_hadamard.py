@@ -14,7 +14,9 @@ def test_walsh_hadamard_1(length):
     assert np.array_equal(walsh_hadamard.polar_sequence, [1, -1] * (length // 2))
     if length > 2:
         walsh_hadamard = komm.WalshHadamardSequence(length, index=2)
-        assert np.array_equal(walsh_hadamard.polar_sequence, [1, 1, -1, -1] * (length // 4))
+        assert np.array_equal(
+            walsh_hadamard.polar_sequence, [1, 1, -1, -1] * (length // 4)
+        )
 
 
 @pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))

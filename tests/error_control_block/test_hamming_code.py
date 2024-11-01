@@ -35,8 +35,12 @@ class TestHammingCode:
         )
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 7, 7, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 7, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(
+            self.code.codeword_weight_distribution, [1, 0, 0, 7, 7, 0, 0, 1]
+        )
+        assert np.array_equal(
+            self.code.coset_leader_weight_distribution, [1, 7, 0, 0, 0, 0, 0, 0]
+        )
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -108,8 +112,12 @@ class TestExtendedHammingCode:
         )
 
     def test_weight_distributions(self):
-        assert np.array_equal(self.code.codeword_weight_distribution, [1, 0, 0, 0, 14, 0, 0, 0, 1])
-        assert np.array_equal(self.code.coset_leader_weight_distribution, [1, 8, 7, 0, 0, 0, 0, 0, 0])
+        assert np.array_equal(
+            self.code.codeword_weight_distribution, [1, 0, 0, 0, 14, 0, 0, 0, 1]
+        )
+        assert np.array_equal(
+            self.code.coset_leader_weight_distribution, [1, 8, 7, 0, 0, 0, 0, 0, 0]
+        )
 
     def test_GH_orthogonality(self):
         k, m = self.code.dimension, self.code.redundancy
@@ -144,6 +152,8 @@ class TestExtendedHammingCode:
     def test_decoder(self):
         decoder = komm.BlockDecoder(self.code)
         assert np.array_equal(
-            decoder([1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]),
+            decoder(
+                [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]
+            ),
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
         )

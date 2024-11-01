@@ -42,16 +42,19 @@ class RootRaisedCosinePulse(FormattingPulse):
 
         def impulse_response(t):
             t += 1e-8
-            return (np.sin(np.pi * (1 - a) * t) + 4 * a * t * np.cos(np.pi * (1 + a) * t)) / (
-                np.pi * t * (1 - (4 * a * t) ** 2)
-            )
+            return (
+                np.sin(np.pi * (1 - a) * t) + 4 * a * t * np.cos(np.pi * (1 + a) * t)
+            ) / (np.pi * t * (1 - (4 * a * t) ** 2))
 
         def frequency_response(f):
             f1 = (1 - a) / 2
             f2 = (1 + a) / 2
             H = 1.0 * (abs(f) < f1)
             if a > 0:
-                H += np.sqrt((f1 < abs(f) < f2) * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1))))
+                H += np.sqrt(
+                    (f1 < abs(f) < f2)
+                    * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1)))
+                )
             return H
 
         super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
@@ -71,5 +74,7 @@ class RootRaisedCosinePulse(FormattingPulse):
         return self._length_in_symbols
 
     def __repr__(self):
-        args = "rolloff={}, length_in_symbols={}".format(self._rolloff, self._length_in_symbols)
+        args = "rolloff={}, length_in_symbols={}".format(
+            self._rolloff, self._length_in_symbols
+        )
         return "{}({})".format(self.__class__.__name__, args)

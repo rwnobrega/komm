@@ -51,7 +51,11 @@ class UniformQuantizer(ScalarQuantizer):
             >>> quantizer.thresholds
             array([-0.75, -0.25,  0.25])
         """
-        delta = input_peak / num_levels if choice == "unsigned" else 2.0 * input_peak / num_levels
+        delta = (
+            input_peak / num_levels
+            if choice == "unsigned"
+            else 2.0 * input_peak / num_levels
+        )
 
         if choice == "unsigned":
             min_level = 0.0
@@ -59,12 +63,18 @@ class UniformQuantizer(ScalarQuantizer):
             levels = np.linspace(min_level, max_level, num=num_levels, endpoint=False)
         elif choice == "mid-riser":
             min_level = -input_peak + (delta / 2) * (num_levels % 2 == 0)
-            levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 0))
+            levels = np.linspace(
+                min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 0)
+            )
         elif choice == "mid-tread":
             min_level = -input_peak + (delta / 2) * (num_levels % 2 == 1)
-            levels = np.linspace(min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 1))
+            levels = np.linspace(
+                min_level, -min_level, num=num_levels, endpoint=(num_levels % 2 == 1)
+            )
         else:
-            raise ValueError("Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}")
+            raise ValueError(
+                "Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}"
+            )
 
         thresholds = (levels + delta / 2)[:-1]
         super().__init__(levels, thresholds)
@@ -101,9 +111,13 @@ class UniformQuantizer(ScalarQuantizer):
             quantized = delta * np.floor(input_signal / delta + 0.5)
         else:  # self._choice == "mid-riser"
             quantized = delta * (np.floor(input_signal / delta) + 0.5)
-        output_signal = np.clip(quantized, a_min=self._levels[0], a_max=self._levels[-1])
+        output_signal = np.clip(
+            quantized, a_min=self._levels[0], a_max=self._levels[-1]
+        )
         return output_signal
 
     def __repr__(self):
-        args = "num_levels={}, input_peak={}, choice='{}'".format(self._num_levels, self._input_peak, self._choice)
+        args = "num_levels={}, input_peak={}, choice='{}'".format(
+            self._num_levels, self._input_peak, self._choice
+        )
         return "{}({})".format(self.__class__.__name__, args)

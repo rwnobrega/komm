@@ -61,9 +61,14 @@ class PAModulation(Modulation):
         if labeling in allowed_labelings:
             labeling = labelings[labeling](order)
         elif isinstance(labeling, str):
-            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+            raise ValueError(
+                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+            )
 
-        super().__init__(constellation=constellation_pam(order, self._base_amplitude), labeling=labeling)
+        super().__init__(
+            constellation=constellation_pam(order, self._base_amplitude),
+            labeling=labeling,
+        )
 
     def __repr__(self):
         order, base_amplitude, labeling = self._constructor_kwargs.values()

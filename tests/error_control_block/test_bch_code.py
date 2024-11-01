@@ -20,7 +20,19 @@ def test_bch_generator_polynomial():
         13: komm.BinaryPolynomial(0b1110011),
         15: komm.BinaryPolynomial(0b0001011),
     }
-    dimensions = {1: 57, 2: 51, 3: 45, 4: 39, 5: 36, 6: 30, 7: 24, 10: 18, 11: 16, 13: 10, 15: 7}
+    dimensions = {
+        1: 57,
+        2: 51,
+        3: 45,
+        4: 39,
+        5: 36,
+        6: 30,
+        7: 24,
+        10: 18,
+        11: 16,
+        13: 10,
+        15: 7,
+    }
 
     for tau, dimension in dimensions.items():
         delta = 2 * tau + 1
@@ -28,5 +40,6 @@ def test_bch_generator_polynomial():
         assert code.length == 63
         assert code.dimension == dimension
         assert code.generator_polynomial == reduce(
-            operator.mul, [factors.get(i, komm.BinaryPolynomial(0b1)) for i in range(1, tau + 1)]
+            operator.mul,
+            [factors.get(i, komm.BinaryPolynomial(0b1)) for i in range(1, tau + 1)],
         )

@@ -19,7 +19,16 @@ def test_labeling_natural():
     )
     assert np.array_equal(
         labeling_natural(8),
-        [[0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1]],
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [0, 1, 0],
+            [1, 1, 0],
+            [0, 0, 1],
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 1, 1],
+        ],
     )
 
 
@@ -35,7 +44,16 @@ def test_labeling_reflected():
     # There is a typo in [AS15, Fig. 2.12], where the last two columns are swapped.
     assert np.array_equal(
         labeling_reflected(8),
-        [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 1, 1], [1, 1, 1], [1, 0, 1], [0, 0, 1]],
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 1, 1],
+            [1, 1, 1],
+            [1, 0, 1],
+            [0, 0, 1],
+        ],
     )
 
 

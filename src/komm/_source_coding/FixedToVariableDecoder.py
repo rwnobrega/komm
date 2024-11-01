@@ -36,6 +36,7 @@ class FixedToVariableDecoder:
         ...
         ValueError: The code is not prefix-free.
     """
+
     code: FixedToVariableCode
 
     def __attrs_post_init__(self):

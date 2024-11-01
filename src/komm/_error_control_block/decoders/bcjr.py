@@ -5,7 +5,9 @@ from .._registry import RegistryBlockDecoder
 from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 
-def decode_bcjr(code: TerminatedConvolutionalCode, r: npt.ArrayLike, *, snr: float) -> np.ndarray:
+def decode_bcjr(
+    code: TerminatedConvolutionalCode, r: npt.ArrayLike, *, snr: float
+) -> np.ndarray:
     if code.mode == "tail-biting":
         raise NotImplementedError("BCJR algorithm not implemented for 'tail-biting'")
 

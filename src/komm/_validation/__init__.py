@@ -15,7 +15,9 @@ def is_pmf(inst, attr, value: np.ndarray):
 
 
 def is_log_base(inst, attr, value: float | str):
-    if (isinstance(value, str) and value != "e") or (isinstance(value, float) and value <= 0.0):
+    if (isinstance(value, str) and value != "e") or (
+        isinstance(value, float) and value <= 0.0
+    ):
         raise ValueError(f"'{attr.name}' must be 'e' or a positive float")
 
 

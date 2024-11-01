@@ -33,6 +33,7 @@ class ConvolutionalStreamEncoder:
         >>> convolutional_encoder([1, 1, 1, 1])
         array([1, 0, 1, 0, 1, 0, 1, 0])
     """
+
     convolutional_code: ConvolutionalCode
     state: int = field(default=0)
 
@@ -42,7 +43,9 @@ class ConvolutionalStreamEncoder:
             self.convolutional_code.num_input_bits,
             self.convolutional_code.finite_state_machine,
         )
-        output_sequence, self.state = fsm.process(input_sequence=pack(in0, width=k), initial_state=self.state)
+        output_sequence, self.state = fsm.process(
+            input_sequence=pack(in0, width=k), initial_state=self.state
+        )
 
         out0 = unpack(output_sequence, width=n)
         return out0

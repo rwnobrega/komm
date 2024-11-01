@@ -28,7 +28,9 @@ class QAModulation(Modulation):
     </div>
     """
 
-    def __init__(self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling="reflected_2d"):
+    def __init__(
+        self, orders, base_amplitudes=1.0, phase_offset=0.0, labeling="reflected_2d"
+    ):
         r"""
         Constructor for the class.
 
@@ -87,7 +89,9 @@ class QAModulation(Modulation):
         self._orders = (order_I, order_Q)
 
         if isinstance(base_amplitudes, (tuple, list)):
-            base_amplitude_I, base_amplitude_Q = float(base_amplitudes[0]), float(base_amplitudes[1])
+            base_amplitude_I, base_amplitude_Q = float(base_amplitudes[0]), float(
+                base_amplitudes[1]
+            )
         else:
             base_amplitude_I = base_amplitude_Q = float(base_amplitudes)
         self._base_amplitudes = (base_amplitude_I, base_amplitude_Q)
@@ -98,10 +102,17 @@ class QAModulation(Modulation):
         if labeling in allowed_labelings:
             labeling = labelings[labeling](self._orders)
         elif isinstance(labeling, str):
-            raise ValueError(f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling.")
+            raise ValueError(
+                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+            )
 
-        super().__init__(constellation_qam(self._orders, self._base_amplitudes, self._phase_offset), labeling)
+        super().__init__(
+            constellation_qam(self._orders, self._base_amplitudes, self._phase_offset),
+            labeling,
+        )
 
     def __repr__(self):
-        args = "{}, base_amplitudes={}, phase_offset={}".format(self._orders, self._base_amplitudes, self._phase_offset)
+        args = "{}, base_amplitudes={}, phase_offset={}".format(
+            self._orders, self._base_amplitudes, self._phase_offset
+        )
         return "{}({})".format(self.__class__.__name__, args)

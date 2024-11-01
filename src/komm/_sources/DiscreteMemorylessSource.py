@@ -23,6 +23,7 @@ class DiscreteMemorylessSource:
         >>> dms(10)
         array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
     """
+
     pmf: np.ndarray = field(converter=np.asarray, validator=is_pmf)
 
     @property

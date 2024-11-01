@@ -46,14 +46,18 @@ class FiniteStateMachine:
         self._num_output_symbols = np.amax(self._outputs)
 
         self._input_edges = np.full((self._num_states, self._num_states), fill_value=-1)
-        self._output_edges = np.full((self._num_states, self._num_states), fill_value=-1)
+        self._output_edges = np.full(
+            (self._num_states, self._num_states), fill_value=-1
+        )
         for state_from in range(self._num_states):
             for x, state_to in enumerate(self._next_states[state_from, :]):
                 self._input_edges[state_from, state_to] = x
                 self._output_edges[state_from, state_to] = self._outputs[state_from, x]
 
     def __repr__(self):
-        args = "next_states={}, outputs={}".format(self._next_states.tolist(), self._outputs.tolist())
+        args = "next_states={}, outputs={}".format(
+            self._next_states.tolist(), self._outputs.tolist()
+        )
         return "{}({})".format(self.__class__.__name__, args)
 
     @property
@@ -272,7 +276,11 @@ class FiniteStateMachine:
 
             input_posteriors (Array2D[float]): The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
         """
-        L, num_states, num_input_symbols = len(observed_sequence), self._num_states, self._num_input_symbols
+        L, num_states, num_input_symbols = (
+            len(observed_sequence),
+            self._num_states,
+            self._num_input_symbols,
+        )
 
         if input_priors is None:
             input_priors = np.ones((L, num_input_symbols)) / num_input_symbols
@@ -297,11 +305,15 @@ class FiniteStateMachine:
 
         for t in range(0, L - 1):
             for s1 in range(num_states):
-                log_alpha[t + 1, s1] = special.logsumexp(log_gamma[t, :, s1] + log_alpha[t, :])
+                log_alpha[t + 1, s1] = special.logsumexp(
+                    log_gamma[t, :, s1] + log_alpha[t, :]
+                )
 
         for t in range(L - 1, -1, -1):
             for s0 in range(num_states):
-                log_beta[t, s0] = special.logsumexp(log_gamma[t, s0, :] + log_beta[t + 1, :])
+                log_beta[t, s0] = special.logsumexp(
+                    log_gamma[t, s0, :] + log_beta[t + 1, :]
+                )
 
         log_input_posteriors = np.empty((L, num_input_symbols), dtype=float)
         edge_labels = np.empty(num_states, dtype=float)
@@ -309,10 +321,14 @@ class FiniteStateMachine:
             for x in range(num_input_symbols):
                 for s0 in range(num_states):
                     s1 = self._next_states[s0, x]
-                    edge_labels[s0] = log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
+                    edge_labels[s0] = (
+                        log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
+                    )
                 log_input_posteriors[t, x] = special.logsumexp(edge_labels)
 
-        input_posteriors = np.exp(log_input_posteriors - np.amax(log_input_posteriors, axis=1, keepdims=True))
+        input_posteriors = np.exp(
+            log_input_posteriors - np.amax(log_input_posteriors, axis=1, keepdims=True)
+        )
         input_posteriors /= np.sum(input_posteriors, axis=1, keepdims=True)
 
         return input_posteriors
