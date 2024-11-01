@@ -35,13 +35,14 @@ test = [
     "pytest-cov>=4.1.0",
 ]
 doc = [
-    "mkdocs>=1.5.3",
-    "mkdocs-material>=9.5.3",
-    "mkdocstrings>=0.24.0",
-    "mkdocstrings-python>=1.7.5",
-    "mkdocs-gen-files>=0.5.0",
-    "mkdocs-include-markdown-plugin>=6.0.4",
-    "mkdocs-literate-nav>=0.6.1",
+    "griffe==0.49",
+    "mkdocs==1.5.3",
+    "mkdocs-material==9.5.3",
+    "mkdocstrings==0.26.2",
+    "mkdocstrings-python==1.12.2",
+    "mkdocs-gen-files==0.5.0",
+    "mkdocs-include-markdown-plugin==6.0.4",
+    "mkdocs-literate-nav==0.6.1",
 ]
 debug = [
     "ipykernel>=6.28.0",
