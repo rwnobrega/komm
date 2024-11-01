@@ -26,7 +26,6 @@ class TerminatedConvolutionalCode(BlockCode):
     For more details, see <cite>LC04, Sec. 12.7</cite> and <cite>WBR01</cite>.
 
     Attributes:
-
         convolutional_code: The convolutional code to be terminated.
 
         num_blocks: The number $h$ of information blocks.
@@ -34,7 +33,6 @@ class TerminatedConvolutionalCode(BlockCode):
         mode: The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
     Examples:
-
         >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
 
         >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')

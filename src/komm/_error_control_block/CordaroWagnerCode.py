@@ -17,11 +17,9 @@ class CordaroWagnerCode(BlockCode):
     - Minimum distance: $d = \left\lceil 2n / 3 \right\rceil - 1$
 
     Attributes:
-
         n: The length $n$ of the code. Must satisfy $n \geq 2$.
 
     Examples:
-
         >>> code = komm.CordaroWagnerCode(11)
         >>> (code.length, code.dimension, code.minimum_distance)
         (11, 2, 7)

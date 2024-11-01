@@ -24,20 +24,17 @@ class SimplexCode(SystematicBlockCode):
     - Minimum distance: $d = 2^{\kappa - 1}$
 
     Notes:
-
         - For $\kappa = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
 
     Attributes:
-
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
         extended: Whether to use the extended version of the Simplex code. Default is `False`.
 
     This function constructs the code in systematic form, with the information set on the left.
 
     Examples:
-
         >>> code = komm.SimplexCode(3)
         >>> (code.length, code.dimension, code.redundancy)
         (7, 3, 4)

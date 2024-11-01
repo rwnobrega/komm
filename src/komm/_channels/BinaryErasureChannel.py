@@ -23,11 +23,9 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         Constructor for the class.
 
         Parameters:
-
             erasure_probability (Optional[float]): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
 
         Examples:
-
             >>> np.random.seed(1)
             >>> bec = komm.BinaryErasureChannel(0.1)
             >>> x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]
@@ -53,7 +51,6 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         Returns the channel capacity $C$. It is given by $C = 1 - \epsilon$. See <cite>CT06, Sec. 7.1.5</cite>.
 
         Examples:
-
             >>> bec = komm.BinaryErasureChannel(0.25)
             >>> bec.capacity()
             0.75

@@ -28,13 +28,11 @@ class GaussianPulse(FormattingPulse):
         Constructor for the class.
 
         Parameters:
-
             half_power_bandwidth (float): The half-power bandwidth $B$ of the pulse.
 
             length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
-
             >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.5, length_in_symbols=4)
 
             >>> pulse = komm.GaussianPulse(half_power_bandwidth=1.0, length_in_symbols=2)

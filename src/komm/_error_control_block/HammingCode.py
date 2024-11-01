@@ -26,20 +26,17 @@ class HammingCode(SystematicBlockCode):
     For more details, see <cite>LC04, Sec. 4.1</cite>.
 
     Notes:
-
         - For $\mu = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.
         - Its dual is the [simplex code](/ref/SimplexCode).
         - Hamming codes are perfect codes.
 
     Attributes:
-
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
         extended: Whether to use the extended version of the Hamming code. Default is `False`.
 
     This function returns the code in systematic form, with the information set on the left.
 
     Examples:
-
         >>> code = komm.HammingCode(3)
         >>> (code.length, code.dimension, code.redundancy)
         (7, 4, 3)

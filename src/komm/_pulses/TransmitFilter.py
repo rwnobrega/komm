@@ -11,7 +11,6 @@ class TransmitFilter:
         Constructor for the class.
 
         Parameters:
-
             pulse (FormattingPulse): The pulse filter.
 
             samples_per_symbol (int): The number of samples (of the output) per symbol (of the input).
@@ -38,11 +37,9 @@ class TransmitFilter:
         Formats a sequence of symbols.
 
         Parameters:
-
             inp (Array1D[float] | Array1D[complex]): The input signal, containing symbols of a modulation.
 
         Returns:
-
             outp (SameAsInput): The output signal, formatted.
         """
         sps = self._samples_per_symbol

@@ -35,7 +35,6 @@ class QAModulation(Modulation):
         Constructor for the class.
 
         Parameters:
-
             orders (Tuple(int, int) | int): A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively; both $M_\mathrm{I}$ and $M_\mathrm{Q}$ must be powers of $2$. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be an square power of $2$.
 
             base_amplitudes (Optional[Tuple(float, float) | float]): A tuple $(A_\mathrm{I}, A_\mathrm{Q})$ with the base amplitudes of the in-phase and quadrature constellations, respectively. If specified as a single float $A$, then it is assumed that $A_\mathrm{I} = A_\mathrm{Q} = A$. The default value is $1.0$.
@@ -45,7 +44,6 @@ class QAModulation(Modulation):
             labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural_2d'` or `'reflected_2d'`. The default value is `'reflected_2d'`, corresponding to the Gray labeling.
 
         Examples:
-
             The square $16$-QAM modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 1)$, and Gray labeling is depicted below.
 
             <figure markdown>

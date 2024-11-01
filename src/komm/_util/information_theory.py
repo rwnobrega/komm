@@ -31,17 +31,14 @@ def entropy(pmf, base: float | str = 2.0):
     By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Ch. 2</cite>.
 
     Parameters:
-
         pmf (Array1D[float]): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
 
         base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
     Returns:
-
         entropy (float): The entropy $\mathrm{H}(X)$ of the random variable.
 
     Examples:
-
         >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
         np.float64(2.0)
 

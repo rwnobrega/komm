@@ -24,11 +24,9 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         Constructor for the class.
 
         Parameters:
-
             crossover_probability (Optional[float]): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
 
         Examples:
-
             >>> np.random.seed(1)
             >>> bsc = komm.BinarySymmetricChannel(0.1)
             >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
@@ -54,7 +52,6 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         Returns the channel capacity $C$. It is given by $C = 1 - \mathcal{H}(p)$. See <cite>CT06, Sec. 7.1.4</cite>.
 
         Examples:
-
             >>> bsc = komm.BinarySymmetricChannel(0.25)
             >>> bsc.capacity()
             np.float64(0.18872187554086717)

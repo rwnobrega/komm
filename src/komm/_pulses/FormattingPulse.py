@@ -11,7 +11,6 @@ class FormattingPulse:
         Constructor for the class.
 
         Parameters:
-
             impulse_response (function): The impulse response of the pulse.
 
             frequency_response (function): The frequency response of the pulse.

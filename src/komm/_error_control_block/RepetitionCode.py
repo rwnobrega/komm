@@ -18,15 +18,12 @@ class RepetitionCode(BlockCode):
     - Minimum distance: $d = n$
 
     Notes:
-
         - Its dual is the [single parity check code](/ref/SingleParityCheckCode).
 
     Attributes:
-
         n: The length $n$ of the code. Must be a positive integer.
 
     Examples:
-
         >>> code = komm.RepetitionCode(5)
         >>> (code.length, code.dimension, code.redundancy)
         (5, 1, 4)

@@ -13,7 +13,6 @@ class VariableToFixedCode:
     Variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \to \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
 
     Attributes:
-
         target_cardinality: The target cardinality $T$.
 
         source_cardinality: The source cardinality $S$.
@@ -50,11 +49,9 @@ class VariableToFixedCode:
         Constructs a variable-to-fixed code from the decoding map $\Dec$.
 
         Parameters:
-
             dec_mapping: The decoding map $\Dec$. See the corresponding attribute for more details.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_dec_mapping({(0,0): (0,0,0), (0,1): (0,0,1), (1,0): (0,1), (1,1): (1,)})
             >>> (code.target_cardinality, code.source_cardinality, code.target_block_size)
             (2, 2, 2)
@@ -89,13 +86,11 @@ class VariableToFixedCode:
         Constructs a variable-to-fixed code from the target cardinality $T$ and a list of sourcewords.
 
         Parameters:
-
             target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$.
 
             sourcewords: The sourcewords of the code. See the [corresponding property](./#sourcewords) for more details.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> (code.target_cardinality, code.source_cardinality, code.target_block_size)
             (2, 2, 2)
@@ -117,7 +112,6 @@ class VariableToFixedCode:
         The sourcewords of the code. It is a list of length at most $T^n$ containing tuples of integers in $[0:S)$. The tuple in position $i$ of `sourcewords` is equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $[0:T)^n$.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_dec_mapping({(0,0): (0,0,0), (0,1): (0,0,1), (1,0): (0,1), (1,1): (1,)})
             >>> code.sourcewords
             [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
@@ -130,7 +124,6 @@ class VariableToFixedCode:
         The inverse decoding mapping $\mathrm{Dec}^{-1}$ of the code. It is a dictionary of length at most $T^n$ whose keys are all the sourcewords of the code, and whose values are the corresponding target words.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> code.inv_dec_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0, 0): (0, 0),
@@ -151,7 +144,6 @@ class VariableToFixedCode:
         Returns whether the code is prefix-free or not. A code is *prefix-free* if no sourceword is a prefix of any other sourceword.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> code.is_prefix_free()
             True
@@ -172,15 +164,12 @@ class VariableToFixedCode:
         where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.
 
         Parameters:
-
             pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be considered.
 
         Returns:
-
             rate: The expected rate $R$ of the code.
 
         Examples:
-
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
             >>> code.rate([2/3, 1/3])
             np.float64(0.9473684210526315)

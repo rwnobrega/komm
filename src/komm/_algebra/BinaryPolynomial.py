@@ -12,7 +12,6 @@ class BinaryPolynomial:
     Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \\{ 0, 1 \\}$. This class supports addition, multiplication, division, and exponentiation.
 
     Examples:
-
         >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
         >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
         >>> poly1 + poly2  # X^3 + X^2 + X
@@ -28,11 +27,9 @@ class BinaryPolynomial:
         Default constructor for the class.
 
         Parameters:
-
             integer (int): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
 
         Examples:
-
             >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
 
@@ -46,11 +43,9 @@ class BinaryPolynomial:
         Constructs a binary polynomial from its coefficients.
 
         Parameters:
-
             coefficients (Array1D[int]): The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
-
             >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
@@ -62,11 +57,9 @@ class BinaryPolynomial:
         Constructs a binary polynomial from its exponents.
 
         Parameters:
-
             exponents (Array1D[int]): The exponents of the nonzero terms of the binary polynomial. For example, `[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
-
             >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
@@ -78,7 +71,6 @@ class BinaryPolynomial:
         The degree of the polynomial.
 
         Examples:
-
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.degree
             4
@@ -90,15 +82,12 @@ class BinaryPolynomial:
         Returns the coefficients of the binary polynomial.
 
         Parameters:
-
             width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
-
             coefficients (Array1D[int]): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
-
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.coefficients()
             array([0, 1, 0, 1, 1])
@@ -112,11 +101,9 @@ class BinaryPolynomial:
         Returns the exponents of the binary polynomial.
 
         Returns:
-
             exponents (Array1D[int]): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
         Examples:
-
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.exponents()
             array([1, 3, 4])
@@ -172,15 +159,12 @@ class BinaryPolynomial:
         Evaluates the polynomial at a given point. Uses Horner's method.
 
         Parameters:
-
             point (RingElement): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
         Returns:
-
             result (RingElement): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
 
         Examples:
-
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
             np.int64(2751)

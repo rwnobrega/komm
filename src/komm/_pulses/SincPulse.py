@@ -21,11 +21,9 @@ class SincPulse(FormattingPulse):
         Constructor for the class.
 
         Parameters:
-
             length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
-
             >>> pulse = komm.SincPulse(length_in_symbols=64)
         """
         L = self._length_in_symbols = int(length_in_symbols)

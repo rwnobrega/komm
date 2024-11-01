@@ -13,13 +13,11 @@ class BinarySequence:
         Constructor for the class. It expects *exactly one* the following parameters:
 
         Parameters:
-
             bit_sequence (Array1D[int]): The binary sequence in bit format. Must be a 1D-array with elements in $\\{ 0, 1 \\}$.
 
             polar_sequence (Array1D[int]): The binary sequence in polar format. Must be a 1D-array with elements in $\\{ \pm 1 \\}$.
 
         Examples:
-
             >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
             >>> seq.bit_sequence
             array([0, 1, 1, 0])
@@ -74,17 +72,14 @@ class BinarySequence:
         Returns the autocorrelation $R[\ell]$ of the binary sequence in polar format. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
 
         Parameters:
-
             shifts (Optional[Array1D[int]]): See [`komm.autocorrelation`](/ref/autocorrelation). The default value yields $[0 : L)$.
 
             normalized (Optional[bool]): See [`komm.autocorrelation`](/ref/autocorrelation). The default value is `False`.
 
         Returns:
-
             autocorrelation (Array1D[complex]): The autocorrelation $R[\ell]$ of the complex sequence.
 
         Examples:
-
             >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
             >>> seq.autocorrelation()
             array([ 4, -1, -2,  1])
@@ -96,17 +91,14 @@ class BinarySequence:
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence in polar format. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.
 
         Parameters:
-
             shifts (Optional[Array1D[int]]): See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation). The default value yields $[0 : L)$.
 
             normalized (Optional[bool]): See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation). The default value is `False`.
 
         Returns:
-
             cyclic_autocorrelation (Array1D[complex]): The cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence.
 
         Examples:
-
             >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
             >>> seq.cyclic_autocorrelation()
             array([ 4,  0, -4,  0])

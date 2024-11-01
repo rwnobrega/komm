@@ -17,13 +17,11 @@ class ScalarQuantizer:
         Constructor for the class.
 
         Parameters:
-
             levels (Array1D[float]): The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.
 
             thresholds (Array1D[float]): The finite quantizer thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$. Moreover, they must satisfy $v_0 < t_1 < v_1 < \cdots < t_{L - 1} < v_{L - 1}$.
 
         Examples:
-
             The following example considers the $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.
 
             <figure markdown>

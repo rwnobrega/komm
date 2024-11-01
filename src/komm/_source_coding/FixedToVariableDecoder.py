@@ -12,19 +12,15 @@ class FixedToVariableDecoder:
     Prefix-free decoder for [fixed-to-variable length code](/ref/FixedToVariableCode).
 
     Attributes:
-
         code: The code to be considered, which must be a prefix-free code (that is, no codeword is a prefix of another codeword).
 
     Parameters: Input:
-
         in0 (Array1D[int]): The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
 
     Parameters: Output:
-
         out0 (Array1D[int]): The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
 
     Examples:
-
         >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
         >>> decoder = komm.FixedToVariableDecoder(code)
         >>> decoder([1, 0, 0, 1, 0, 0, 1, 1, 0])

@@ -21,7 +21,6 @@ class PSKModulation(Modulation):
         Constructor for the class.
 
         Parameters:
-
             order (int): The order $M$ of the modulation. It must be a power of $2$.
 
             amplitude (Optional[float]): The amplitude $A$ of the constellation. The default value is `1.0`.
@@ -37,7 +36,6 @@ class PSKModulation(Modulation):
         </figure>
 
         Examples:
-
             >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4.0)
             >>> psk.constellation  #doctest: +NORMALIZE_WHITESPACE
             array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])

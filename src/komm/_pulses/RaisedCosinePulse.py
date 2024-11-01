@@ -28,13 +28,11 @@ class RaisedCosinePulse(FormattingPulse):
         Constructor for the class.
 
         Parameters:
-
             rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
 
             length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
 
         Examples:
-
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
 
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.75, length_in_symbols=16)

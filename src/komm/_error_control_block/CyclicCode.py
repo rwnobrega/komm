@@ -28,7 +28,6 @@ class CyclicCode(BlockCode):
     The constructor expects either the generator polynomial or the check polynomial.
 
     Parameters:
-
         length: The length $n$ of the code.
 
         generator_polynomial: The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
@@ -38,7 +37,6 @@ class CyclicCode(BlockCode):
         systematic: Whether the encoder is systematic. Default is `True`.
 
     Examples:
-
         >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
         >>> (code.length, code.dimension, code.redundancy)
         (23, 12, 11)

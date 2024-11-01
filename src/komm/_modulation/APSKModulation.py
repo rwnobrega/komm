@@ -36,7 +36,6 @@ class APSKModulation(Modulation):
         Constructor for the class.
 
         Parameters:
-
             orders (Tuple[int, ...]): A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. The sum $M_0 + M_1 + \cdots + M_{K-1}$ must be a power of $2$.
 
             amplitudes (Tuple[float, ...]): A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
@@ -46,7 +45,6 @@ class APSKModulation(Modulation):
             labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be equal to `'natural'`. The default value is `'natural'`.
 
         Examples:
-
             >>> apsk = komm.APSKModulation(orders=(8, 8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
             >>> np.around(apsk.constellation, decimals=4)
             array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,

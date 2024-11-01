@@ -31,7 +31,6 @@ class ZadoffChuSequence(ComplexSequence):
     For more details, see <cite>And22</cite>.
 
     Notes:
-
         - Theses sequences are also called *Frank–Zadoff–Chu* sequences.
     """
 
@@ -40,13 +39,11 @@ class ZadoffChuSequence(ComplexSequence):
         Constructor for the class.
 
         Parameters:
-
             length (int): The length $L$ of the Zadoff–Chu sequence. Must be an odd integer.
 
             root_index (Optional[int]): The root index $q$ of the Zadoff–Chu sequence. Must be in $[1:L)$. The default value is $1$.
 
         Examples:
-
             >>> zadoff_chu = ZadoffChuSequence(5, root_index=1)
             >>> np.around(zadoff_chu.sequence, decimals=6)  #doctest: +NORMALIZE_WHITESPACE
             array([ 1.      +0.j      ,  0.309017-0.951057j, -0.809017+0.587785j,  0.309017-0.951057j,  1.      +0.j      ])

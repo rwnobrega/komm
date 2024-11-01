@@ -17,13 +17,11 @@ class Modulation:
         Constructor for the class.
 
         Parameters:
-
             constellation (Array1D[float] | Array1D[complex]): The constellation $\mathbf{X}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
 
             labeling (Array2D[int]): The binary labeling $\mathbf{Q}$ of the modulation. Must be a 2D-array of shape $(M, m)$ where each row is a distinct binary $m$-tuple.
 
         Examples:
-
             The real modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.
 
             <figure markdown>
@@ -117,7 +115,6 @@ class Modulation:
         The constellation $\mathbf{X}$ of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.constellation
             array([-0.5,  0. ,  0.5,  2. ])
@@ -130,7 +127,6 @@ class Modulation:
         The binary labeling $\mathbf{Q}$ of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.labeling
             array([[1, 0],
@@ -146,7 +142,6 @@ class Modulation:
         The order $M$ of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.order
             4
@@ -159,7 +154,6 @@ class Modulation:
         The number $m$ of bits per symbol of the modulation. It is given by $m = \log_2 M$, where $M$ is the order of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.bits_per_symbol
             2
@@ -176,7 +170,6 @@ class Modulation:
         where $|x_i|^2$ is the energy of constellation symbol $x_i$, and $M$ is the order of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_symbol
             np.float64(1.125)
@@ -196,7 +189,6 @@ class Modulation:
         The average bit energy $E_\mathrm{b}$ of the constellation. It assumes equiprobable symbols. It is given by $E_\mathrm{b} = E_\mathrm{s} / m$, where $E_\mathrm{s}$ is the average symbol energy, and $m$ is the number of bits per symbol of the modulation.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_bit
             np.float64(0.5625)
@@ -216,7 +208,6 @@ class Modulation:
         $$
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.symbol_mean
             np.float64(0.5)
@@ -236,7 +227,6 @@ class Modulation:
         $$
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.minimum_distance
             np.float64(0.5)
@@ -257,15 +247,12 @@ class Modulation:
         Modulates a sequence of bits to its corresponding constellation symbols.
 
         Parameters:
-
             bits (Array1D[int]): The bits to be modulated. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
 
         Returns:
-
             symbols (Array1D[complex] | Array1D[float]): The constellation symbols corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.modulate([0, 0, 1, 1, 0, 0, 1, 0])
             array([ 2. ,  0. ,  2. , -0.5])
@@ -322,7 +309,6 @@ class Modulation:
         Demodulates a sequence of received points to a sequence of bits.
 
         Parameters:
-
             received (Array1D[complex] | Array1D[float]): The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
 
             decision_method (str): The decision method to be used. It should be either `'hard'` (corresponding to *hard-decision decoding*) or `'soft'` (corresponding to *soft-decision decoding*). The default value is `'hard'`.
@@ -330,11 +316,9 @@ class Modulation:
             kwargs (): Keyword arguments to be passed to the demodulator.
 
         Returns:
-
             bits_or_soft_bits (Array1D[int] | Array1D[float]): The (hard or soft) bits corresponding to `received`. In the case of hard-decision decoding, it is a 1D-array of bits (integers in the set $\\{ 0, 1 \\}$); in the case of of soft-decision decoding, it is a 1D-array of L-values (real numbers, where positive values correspond to bit $0$ and negative values correspond to bit $1$). Its length is equal to the length of `received` multiplied by $m$.
 
         Examples:
-
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> received = [2.17, -0.06, 1.94, -0.61]
 

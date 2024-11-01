@@ -24,7 +24,6 @@ class ManchesterPulse(FormattingPulse):
         Constructor for the class. It expects no parameters.
 
         Examples:
-
             >>> pulse = komm.ManchesterPulse()
         """
 

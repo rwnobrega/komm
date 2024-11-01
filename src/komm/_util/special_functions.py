@@ -11,16 +11,14 @@ def qfunc(x):
     $$
         \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
     $$
-    Parameters:
 
+    Parameters:
         x (float | ArrayND[float]): The input to the function. May be any float or array of floats.
 
     Returns:
-
         y (SameAsInput): The value $y = \mathrm{Q}(x)$.
 
     Examples:
-
         >>> komm.qfunc(0.0)
         np.float64(0.5)
 
@@ -35,15 +33,12 @@ def qfuncinv(y):
     Computes the inverse Gaussian Q-function.
 
     Parameters:
-
         y (float | ArrayND[float]): The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
 
     Returns:
-
         x (SameAsInput): The value $x = \mathrm{Q^{-1}}(y)$.
 
     Examples:
-
         >>> komm.qfuncinv(0.5)
         np.float64(0.0)
 

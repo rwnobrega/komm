@@ -15,13 +15,11 @@ class SystematicBlockCode(BlockCode):
     The constructor expects the parity submatrix the information set.
 
     Parameters:
-
         parity_submatrix (Array2D[int]): The parity submatrix $P$ the code, which is a $k \times m$ binary matrix.
 
         information_set (Optional[Array1D[int] | str]): Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
 
     Examples:
-
         >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
         >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)

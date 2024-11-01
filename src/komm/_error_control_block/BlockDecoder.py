@@ -12,14 +12,12 @@ class BlockDecoder:
     Decoder for [linear block codes](/ref/BlockCode).
 
     Attributes:
-
         code: The [block code](/ref/BlockCode) to be considered.
         method: The identifier of the method to be used for decoding. The default corresponds to `code.default_decoder`.
         decoder_kwargs: Additional keyword arguments to be passed to the decoder.
 
-    Note:
-
-        To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders()`.
+    Notes:
+        - To see the default decoding method for a given code, use `code.default_decoder`; to see the available decoding methods for a given code, use `code.supported_decoders()`.
 
     ??? info "Available decoding methods"
 
@@ -107,16 +105,13 @@ class BlockDecoder:
         - Target: message
         - Supported by: [`ReedMullerCode`](/ref/ReedMullerCode).
 
-    Parameters: Input
-
+    Parameters: Input:
         in0 (Array1D[int] | Array1D[float]): The (hard or soft) bit sequence to be decoded. Its length must be a multiple of the code's block length $n$.
 
     Parameters: Output:
-
         out0 (Array1D[int]): The decoded bit sequence. Its length is a multiple of the code's dimension $k$.
 
     Examples:
-
         >>> code = komm.HammingCode(3)
         >>> code.default_decoder
         'syndrome_table'

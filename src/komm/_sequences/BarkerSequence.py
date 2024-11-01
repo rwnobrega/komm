@@ -16,7 +16,6 @@ class BarkerSequence(BinarySequence):
     | $13$       | $0000011001010$        |
 
     References:
-
         1. https://en.wikipedia.org/wiki/Barker_code
     """
 
@@ -25,11 +24,9 @@ class BarkerSequence(BinarySequence):
         Constructor for the class.
 
         Parameters:
-
             length (int): Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
 
         Examples:
-
             >>> barker = komm.BarkerSequence(length=13)
             >>> barker.polar_sequence
             array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])

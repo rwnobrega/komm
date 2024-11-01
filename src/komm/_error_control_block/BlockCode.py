@@ -17,12 +17,10 @@ class BlockCode:
     The constructor expects either the generator matrix or the check matrix.
 
     Parameters:
-
         generator_matrix (Array2D[int]): The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.
         check_matrix (Array2D[int]): The check matrix $H$ of the code, which is a $m \times n$ binary matrix.
 
     Examples:
-
         >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
         >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)
@@ -115,7 +113,6 @@ class BlockCode:
         The rate $R = k/n$ of the code.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.rate
             0.5
@@ -127,7 +124,6 @@ class BlockCode:
         The encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This is a function that takes a message $u \in \mathbb{B}^k$ and returns the corresponding codeword $v \in \mathbb{B}^n$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> enc_mapping = code.enc_mapping
             >>> enc_mapping([1, 0, 1])
@@ -141,7 +137,6 @@ class BlockCode:
         The inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes a codeword $v \in \mathbb{B}^n$ and returns the corresponding message $u \in \mathbb{B}^k$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> inv_enc_mapping = code.inv_enc_mapping
             >>> inv_enc_mapping([1, 0, 1, 1, 0, 1])
@@ -162,7 +157,6 @@ class BlockCode:
         The codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (MSB in the right) is $i$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.codewords
             array([[0, 0, 0, 0, 0, 0],
@@ -184,7 +178,6 @@ class BlockCode:
         The codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.codeword_weight_distribution
             array([1, 0, 0, 4, 3, 0, 0])
@@ -196,7 +189,6 @@ class BlockCode:
         The check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes a received word $r \in \mathbb{B}^n$ and returns the corresponding syndrome $s \in \mathbb{B}^m$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> chk_mapping = code.chk_mapping
             >>> chk_mapping([1, 0, 1, 1, 0, 1])
@@ -211,7 +203,6 @@ class BlockCode:
         The coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (MSB in the right) is $i$, and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.coset_leaders
             array([[0, 0, 0, 0, 0, 0],
@@ -245,7 +236,6 @@ class BlockCode:
         The coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.coset_leader_weight_distribution
             array([1, 6, 1, 0, 0, 0, 0])
@@ -260,7 +250,6 @@ class BlockCode:
         The minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.minimum_distance
             3
@@ -273,7 +262,6 @@ class BlockCode:
         The packing radius of the code. This is also called the *error-correcting capability* of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.packing_radius
             1
@@ -286,7 +274,6 @@ class BlockCode:
         The covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.
 
         Examples:
-
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
             >>> code.covering_radius
             2

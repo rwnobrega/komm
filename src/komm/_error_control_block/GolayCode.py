@@ -34,17 +34,14 @@ class GolayCode(SystematicBlockCode):
     - Minimum distance: $7$
 
     Notes:
-
         - The binary Golay code is a perfect code.
 
     Attributes:
-
         extended: If `True`, constructs the code in extended version. The default value is `False`.
 
     This function returns the code in systematic form, with the information set on the left.
 
     Examples:
-
         >>> code = komm.GolayCode()
         >>> (code.length, code.dimension, code.redundancy)
         (23, 12, 11)

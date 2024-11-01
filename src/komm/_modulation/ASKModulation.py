@@ -23,7 +23,6 @@ class ASKModulation(Modulation):
         Constructor for the class.
 
         Parameters:
-
             order (int): The order $M$ of the modulation. It must be a power of $2$.
 
             base_amplitude (Optional[float]): The base amplitude $A$ of the constellation. The default value is `1.0`.
@@ -33,7 +32,6 @@ class ASKModulation(Modulation):
             labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
 
         Examples:
-
             The ASK modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
 
             <figure markdown>

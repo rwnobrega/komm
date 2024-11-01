@@ -13,7 +13,6 @@ class FixedToVariableCode:
     Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an injective *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
 
     Attributes:
-
         source_cardinality: The source cardinality $S$.
 
         target_cardinality: The target cardinality $T$.
@@ -50,11 +49,9 @@ class FixedToVariableCode:
         Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.
 
         Parameters:
-
             enc_mapping: The encoding mapping $\Enc$. See the corresponding attribute for more details.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_enc_mapping({(0,): (0,), (1,): (1,0), (2,): (1,1)})
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
@@ -85,13 +82,11 @@ class FixedToVariableCode:
         Constructs a fixed-to-variable length code from the source cardinality $S$ and a list of codewords.
 
         Parameters:
-
             source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
 
             codewords: The codewords of the code. See the [corresponding property](./#codewords) for more details.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
@@ -121,7 +116,6 @@ class FixedToVariableCode:
         The codewords of the code. It is a list of length $S^k$ containing tuples of integers in $[0:T)$. The tuple in position $i$ of `codewords` is equal to $\Enc(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $[0:S)^k$.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_enc_mapping({(0,): (0,), (1,): (1,0), (2,): (1,1)})
             >>> code.codewords
             [(0,), (1, 0), (1, 1)]
@@ -134,7 +128,6 @@ class FixedToVariableCode:
         The inverse encoding mapping $\Enc^{-1}$ of the code. It is a dictionary of length $S^k$ whose keys are all the codewords of the code and whose values are the corresponding source words.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
             >>> code.inv_enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0,): (0,),
@@ -151,7 +144,6 @@ class FixedToVariableCode:
         $$
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
             >>> code.is_uniquely_decodable()
             True
@@ -171,7 +163,6 @@ class FixedToVariableCode:
         Returns whether the code is prefix-free or not. A code is *prefix-free* if no codeword is a prefix of any other codeword.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
             >>> code.is_prefix_free()
             True
@@ -196,15 +187,12 @@ class FixedToVariableCode:
         where $\bar{n}$ is the expected codeword length, assuming iid source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.
 
         Parameters:
-
             pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be considered.
 
         Returns:
-
             rate: The expected rate $R$ of the code.
 
         Examples:
-
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
             >>> code.rate([0.5, 0.25, 0.25])
             np.float64(1.5)

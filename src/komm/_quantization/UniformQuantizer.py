@@ -13,7 +13,6 @@ class UniformQuantizer(ScalarQuantizer):
         Constructor for the class.
 
         Parameters:
-
             num_levels (int): The number of quantization levels $L$.
 
             input_peak (Optional[float]): The peak of the input signal $x_\mathrm{p}$. The default value is `1.0`.
@@ -21,7 +20,6 @@ class UniformQuantizer(ScalarQuantizer):
             choice (Optional[str]): The choice for the uniform quantizer. Must be one of `'unsigned'` | `'mid-riser'` | `'mid-tread'`. The default value is `'mid-riser'`.
 
         Examples:
-
             >>> quantizer = komm.UniformQuantizer(num_levels=8)
             >>> quantizer.levels
             array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])

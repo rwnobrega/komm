@@ -51,7 +51,6 @@ class WalshHadamardSequence(BinarySequence):
     The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.
 
     References:
-
         1. https://en.wikipedia.org/wiki/Hadamard_matrix
         2. https://en.wikipedia.org/wiki/Walsh_matrix
     """
@@ -61,7 +60,6 @@ class WalshHadamardSequence(BinarySequence):
         Constructor for the class.
 
         Parameters:
-
             length (int): Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.
 
             ordering (Optional[str]): Ordering to be assumed. Should be one of `'natural'`, `'sequency'`, or `'dyadic'`. The default value is `'natural'`.
@@ -69,7 +67,6 @@ class WalshHadamardSequence(BinarySequence):
             index (Optional[int]): Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
 
         Examples:
-
             >>> walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering='sequency', index=60)
             >>> walsh_hadamard.polar_sequence[:16]
             array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])

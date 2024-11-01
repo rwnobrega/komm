@@ -13,7 +13,6 @@ class FiniteBifield:
     To construct *elements* of the finite field, call the finite field object. For example, `field(0b1101)` will construct the element whose polynomial representation is $X^3 + X^2 + 1$.
 
     Examples:
-
         >>> field = komm.FiniteBifield(4)
         >>> x = field(0b1011)
         >>> y = field(0b1100)
@@ -30,7 +29,6 @@ class FiniteBifield:
         Constructor for the class.
 
         Parameters:
-
             degree (int): Degree $k$ of the finite field. Must be a positive integer.
 
             modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite>LC04, p.42</cite>.
@@ -47,7 +45,6 @@ class FiniteBifield:
                 | $8$        | `0b100011101`  | $16$       | `0b10001000000001011` |
 
         Examples:
-
             >>> field = komm.FiniteBifield(4)
             >>> field
             FiniteBifield(4)
@@ -108,7 +105,6 @@ class FiniteBifield:
         A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field.
 
         Examples:
-
             >>> field1 = komm.FiniteBifield(3, modulus=0b1011)
             >>> alpha1 = field1.primitive_element
             >>> [alpha1**i for i in range(7)]

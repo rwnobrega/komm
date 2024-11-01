@@ -12,7 +12,6 @@ class RationalPolynomial:
     Rational polynomial. A *rational polynomial* is a polynomial whose coefficients are all rational numbers. This class supports addition, subtraction, multiplication, division, and exponentiation.
 
     Examples:
-
         >>> poly1 = komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
         >>> poly1
         RationalPolynomial(['1/2', '0', '3'])
@@ -30,11 +29,9 @@ class RationalPolynomial:
         Constructor for the class.
 
         Parameters:
-
             coefficients (Array1D[int | str | Fraction]): The coefficients of the rational polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `['1/2', '0', '3']` represents the rational polynomial $1/2 + 3 X^2$.
 
         Examples:
-
             >>> komm.RationalPolynomial(['1/2', '0', '3'])  # 1/2 + 3 X^2
             RationalPolynomial(['1/2', '0', '3'])
         """
@@ -54,13 +51,11 @@ class RationalPolynomial:
         Constructs a monomial. This is an polynomial of the form $cX^d$.
 
         Parameters:
-
             degree (int): The degree $d$ of the monomial.
 
             coefficient (Optional[int]): The coefficient $c$ of the monomial. The default value is $1$.
 
         Examples:
-
             >>> komm.RationalPolynomial.monomial(4, 2)  # 2 X^4
             RationalPolynomial(['0', '0', '0', '0', '2'])
         """
@@ -71,15 +66,12 @@ class RationalPolynomial:
         Returns the coefficients of the polynomial.
 
         Parameters:
-
             width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
-
             coefficients (Array1D[int]): Coefficients of the polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
-
             >>> poly = komm.RationalPolynomial(['0', '1/3', '2/3'])  # (1/3) X + (2/3) X^2
             >>> poly.coefficients()
             array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)
@@ -100,7 +92,6 @@ class RationalPolynomial:
         The degree of the polynomial.
 
         Examples:
-
             >>> poly = komm.RationalPolynomial([1, 0, 3])  # 1 + 3 X^2
             >>> poly.degree
             2
@@ -180,15 +171,12 @@ class RationalPolynomial:
         Evaluates the polynomial at a given point. Uses Horner's method.
 
         Parameters:
-
             point (RingElement): Any Python object supporting the operations of addition, subtraction, and multiplication.
 
         Returns:
-
             result (RingElement): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
 
         Examples:
-
             >>> poly = komm.RationalPolynomial([0, 1, 0, -1, 2])  # X - X^3 + 2 X^4
             >>> poly.evaluate(7)  # same as 7 - 7**3 + 2 * 7**4
             Fraction(4466, 1)

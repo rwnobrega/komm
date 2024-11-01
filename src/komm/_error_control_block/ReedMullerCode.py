@@ -20,21 +20,18 @@ class ReedMullerCode(BlockCode):
     For more details, see <cite>LC04, Sec. 4.3</cite>.
 
     Notes:
-
         - For $\rho = 0$ it reduces to a [repetition code](/ref/RepetitionCode).
         - For $\rho = 1$ it reduces to a lengthened [simplex code](/ref/SimplexCode).
         - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
         - For $\rho = \mu - 1$ it reduces to a [single parity check code](/ref/SingleParityCheckCode).
 
     Attributes:
-
         rho: The parameter $\rho$ of the code.
         mu: The parameter $\mu$ of the code.
 
     The parameters must satisfy $0 \leq \rho < \mu$.
 
     Examples:
-
         >>> code = komm.ReedMullerCode(1, 5)
         >>> (code.length, code.dimension, code.redundancy)
         (32, 6, 26)
@@ -97,7 +94,6 @@ class ReedMullerCode(BlockCode):
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
         Examples:
-
             >>> code = komm.ReedMullerCode(2, 4)
             >>> code.reed_partitions[1]
             array([[ 0,  1,  4,  5],

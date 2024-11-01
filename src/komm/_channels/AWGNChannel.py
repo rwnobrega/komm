@@ -20,13 +20,11 @@ class AWGNChannel:
         r"""Constructor for the class.
 
         Parameters:
-
             signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
             snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
         Examples:
-
             >>> np.random.seed(1)
             >>> awgn = komm.AWGNChannel(snr=200.0, signal_power=5.0)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
@@ -73,7 +71,6 @@ class AWGNChannel:
         Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.
 
         Examples:
-
             >>> awgn = komm.AWGNChannel(signal_power=1.0, snr=63.0)
             >>> awgn.capacity()
             np.float64(3.0)

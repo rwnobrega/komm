@@ -15,13 +15,11 @@ def TunstallCode(pmf, target_block_size=None):
     Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function.
 
     Parameters:
-
         pmf (Array1D[float]): The probability mass function of the source.
 
         target_block_size (Optional[int]): The target block size $n$. Must satisfy $2^n \geq S$, where $S$ is the cardinality of the source alphabet, given by `len(pmf)`. The default value is $n = \lceil \log_2 S \rceil$.
 
     Examples:
-
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.TunstallCode(pmf)

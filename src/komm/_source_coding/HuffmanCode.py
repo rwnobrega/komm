@@ -18,7 +18,6 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
     Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function.
 
     Parameters:
-
         pmf (Array1D[float]): The probability mass function of the source.
 
         source_block_size (Optional[int]): The source block size $k$. The default value is $k = 1$.
@@ -26,7 +25,6 @@ def HuffmanCode(pmf, source_block_size=1, policy="high"):
         policy (Optional[str]): The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
 
     Examples:
-
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.HuffmanCode(pmf)

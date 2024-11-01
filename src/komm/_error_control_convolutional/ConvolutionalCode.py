@@ -78,13 +78,11 @@ class ConvolutionalCode:
         Constructor for the class.
 
         Parameters:
-
             feedforward_polynomials (Array2D[BinaryPolynomial, int]): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
             feedback_polynomials (Optional[Array1D[BinaryPolynomial, int]]): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
         Examples:
-
             The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
             $$
                 G(D) =

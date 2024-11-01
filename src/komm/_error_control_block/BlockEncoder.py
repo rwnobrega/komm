@@ -11,19 +11,15 @@ class BlockEncoder:
     Encoder for [linear block codes](/ref/BlockCode).
 
     Attributes:
-
         code: The [block code](/ref/BlockCode) to be considered.
 
-    Parameters: Input
-
+    Parameters: Input:
         in0 (Array1D[int]): The bit sequence to be encoded. Its length must be a multiple of the code's dimension $k$.
 
     Parameters: Output:
-
         out0 (Array1D[int]): The encoded bit sequence. Its length is a multiple of the code's block length $n$.
 
     Examples:
-
         >>> code = komm.HammingCode(3)
         >>> encoder = komm.BlockEncoder(code)
         >>> encoder([1, 1, 0, 0, 1, 0, 1, 1])

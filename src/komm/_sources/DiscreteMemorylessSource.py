@@ -13,11 +13,9 @@ class DiscreteMemorylessSource:
     To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
 
     Attributes:
-
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
 
     Examples:
-
         >>> np.random.seed(42)
         >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
         >>> dms(10)
@@ -39,11 +37,9 @@ class DiscreteMemorylessSource:
         Returns the source entropy $\mathrm{H}(X)$. See [`komm.entropy`](/ref/entropy) for more details.
 
         Parameters:
-
             base (Optional[float | str]): See [`komm.entropy`](/ref/entropy). The default value is $2.0$.
 
         Examples:
-
             >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
             >>> dms.entropy()
             np.float64(1.75)

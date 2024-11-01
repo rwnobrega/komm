@@ -27,7 +27,6 @@ class LFSRSequence(BinarySequence):
     where $L$ is the length of the sequence.
 
     References:
-
         1. https://en.wikipedia.org/wiki/Linear-feedback_shift_register
         2. https://en.wikipedia.org/wiki/Maximum_length_sequence
     """
@@ -37,13 +36,11 @@ class LFSRSequence(BinarySequence):
         Default constructor for the class.
 
         Parameters:
-
             feedback_polynomial (BinaryPolynomial | int): The feedback polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
             start_state_polynomial (Optional[BinaryPolynomial | int]): The start state polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. The default value is `0b1`.
 
         Examples:
-
             >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
             >>> lfsr.bit_sequence  #doctest: +NORMALIZE_WHITESPACE
             array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
@@ -77,13 +74,11 @@ class LFSRSequence(BinarySequence):
         | $8$        | `0b100011101`              | $16$       | `0b10001000000001011`      |
 
         Parameters:
-
             degree (int): The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.
 
             start_state_polynomial (Optional[BinaryPolynomial | int]): See the corresponding parameter of the default constructor.
 
         Examples:
-
             >>> komm.LFSRSequence.maximum_length_sequence(degree=5)
             LFSRSequence(feedback_polynomial=0b100101)
         """

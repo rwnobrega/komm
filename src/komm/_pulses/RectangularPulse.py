@@ -28,11 +28,9 @@ class RectangularPulse(FormattingPulse):
         Constructor for the class.
 
         Parameters:
-
             width (Optional[float]): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
 
         Examples:
-
             >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
 
             >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse

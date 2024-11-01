@@ -15,11 +15,9 @@ class DiscreteMemorylessChannel:
         Constructor for the class.
 
         Parameters:
-
             transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
 
         Examples:
-
             >>> np.random.seed(1)
             >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
             >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
@@ -66,17 +64,14 @@ class DiscreteMemorylessChannel:
         where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite>CT06, Ch. 2</cite>.
 
         Parameters:
-
             input_pmf (Array1D[float]): The probability mass function $p_X$ of the channel input $X$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
 
             base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Returns:
-
             mutual_information (float): The mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$.
 
         Examples:
-
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
             >>> dmc.mutual_information([1/3, 1/3, 1/3])  # doctest: +NUMBER
             np.float64(0.123811098798)
@@ -90,15 +85,12 @@ class DiscreteMemorylessChannel:
         Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite>CT06, Sec. 10.8</cite>.
 
         Parameters:
-
             base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Returns:
-
             capacity (float): The channel capacity $C$.
 
         Examples:
-
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
             >>> dmc.capacity()  # doctest: +NUMBER
             np.float64(0.1616318610)
