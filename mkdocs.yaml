@@ -6,8 +6,8 @@ docs_dir: site/docs
 site_dir: site/build
 
 watch:
-- src/komm/
-- site/
+  - src/komm/
+  - site/
 
 extra_css:
   - css/katex.css
@@ -30,30 +30,30 @@ validation:
     unrecognized_links: ignore
 
 plugins:
-- search
-- gen-files:
-    scripts:
-      - site/gen_pages.py
-- literate-nav:
-    nav_file: nav.md
-    tab_length: 2
-- include-markdown:
-    opening_tag: "{!"
-    closing_tag: "!}"
-- mkdocstrings:
-    custom_templates: site/templates
-    handlers:
-      python:
-        options:
-          show_bases: false
-          # show_root_heading: true
-          show_root_full_path: false
-          show_root_toc_entry: false
-          show_source: false
-          docstring_section_style: list
-          members_order: source
-          group_by_category: false
-          show_signature: false
+  - search
+  - gen-files:
+      scripts:
+        - site/gen_pages.py
+  - literate-nav:
+      nav_file: nav.md
+      tab_length: 2
+  - include-markdown:
+      opening_tag: "{!"
+      closing_tag: "!}"
+  - mkdocstrings:
+      custom_templates: site/templates
+      handlers:
+        python:
+          options:
+            show_bases: false
+            # show_root_heading: true
+            show_root_full_path: false
+            show_root_toc_entry: false
+            show_source: false
+            docstring_section_style: list
+            members_order: source
+            group_by_category: false
+            show_signature: false
 
 theme:
   name: material
@@ -77,7 +77,7 @@ theme:
     - navigation.footer
     # - toc.integrate
     - hide:
-      - navigation
+        - navigation
 
 markdown_extensions:
   - abbr

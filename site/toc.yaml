@@ -1,36 +1,36 @@
 Algebra:
-- BinaryPolynomial
-- BinaryPolynomialFraction
-- FiniteBifield
-- RationalPolynomial
-- RationalPolynomialFraction
+  - BinaryPolynomial
+  - BinaryPolynomialFraction
+  - FiniteBifield
+  - RationalPolynomial
+  - RationalPolynomialFraction
 Channels:
-- AWGNChannel
-- DiscreteMemorylessChannel
-- BinarySymmetricChannel
-- BinaryErasureChannel
+  - AWGNChannel
+  - DiscreteMemorylessChannel
+  - BinarySymmetricChannel
+  - BinaryErasureChannel
 Error control:
   Block coding:
-  - BlockCode
-  - SystematicBlockCode
-  - CyclicCode
-  - HammingCode
-  - SimplexCode
-  - GolayCode
-  - RepetitionCode
-  - SingleParityCheckCode
-  - CordaroWagnerCode
-  - ReedMullerCode
-  - BCHCode
-  - BlockEncoder
-  - BlockDecoder
+    - BlockCode
+    - SystematicBlockCode
+    - CyclicCode
+    - HammingCode
+    - SimplexCode
+    - GolayCode
+    - RepetitionCode
+    - SingleParityCheckCode
+    - CordaroWagnerCode
+    - ReedMullerCode
+    - BCHCode
+    - BlockEncoder
+    - BlockDecoder
   Convolutional coding:
-  - ConvolutionalCode
-  - ConvolutionalStreamEncoder
-  - ConvolutionalStreamDecoder
-  - TerminatedConvolutionalCode
+    - ConvolutionalCode
+    - ConvolutionalStreamEncoder
+    - ConvolutionalStreamDecoder
+    - TerminatedConvolutionalCode
 Finite-state machines:
-- FiniteStateMachine
+  - FiniteStateMachine
 Modulation:
   - Modulation
   - PAModulation
@@ -40,49 +40,49 @@ Modulation:
   - APSKModulation
 Pulse formatting:
   Pulses:
-  - RectangularPulse
-  - ManchesterPulse
-  - SincPulse
-  - RaisedCosinePulse
-  - RootRaisedCosinePulse
-  - GaussianPulse
+    - RectangularPulse
+    - ManchesterPulse
+    - SincPulse
+    - RaisedCosinePulse
+    - RootRaisedCosinePulse
+    - GaussianPulse
   Filtering:
-  - TransmitFilter
-  - ReceiveFilter
+    - TransmitFilter
+    - ReceiveFilter
 Quantization:
-- ScalarQuantizer
-- LloydMaxQuantizer
-- UniformQuantizer
+  - ScalarQuantizer
+  - LloydMaxQuantizer
+  - UniformQuantizer
 Sequences:
   Binary sequences:
-  - BinarySequence
-  - BarkerSequence
-  - WalshHadamardSequence
-  - LFSRSequence
-  - GoldSequence
-  - KasamiSequence
+    - BinarySequence
+    - BarkerSequence
+    - WalshHadamardSequence
+    - LFSRSequence
+    - GoldSequence
+    - KasamiSequence
   Complex sequences:
-  - ComplexSequence
-  - ZadoffChuSequence
+    - ComplexSequence
+    - ZadoffChuSequence
 Source coding:
   Sources:
-  - DiscreteMemorylessSource
+    - DiscreteMemorylessSource
   Lossless coding:
-  - FixedToVariableCode
-  - HuffmanCode
-  - FixedToVariableEncoder
-  - FixedToVariableDecoder
-  - VariableToFixedCode
-  - TunstallCode
-  - VariableToFixedEncoder
-  - VariableToFixedDecoder
+    - FixedToVariableCode
+    - HuffmanCode
+    - FixedToVariableEncoder
+    - FixedToVariableDecoder
+    - VariableToFixedCode
+    - TunstallCode
+    - VariableToFixedEncoder
+    - VariableToFixedDecoder
 Utilities:
-- binlist2int
-- int2binlist
-- pack
-- unpack
-- qfunc
-- qfuncinv
-- acorr
-- cyclic_acorr
-- entropy
+  - binlist2int
+  - int2binlist
+  - pack
+  - unpack
+  - qfunc
+  - qfuncinv
+  - acorr
+  - cyclic_acorr
+  - entropy
