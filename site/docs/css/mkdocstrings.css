@@ -1,23 +1,23 @@
 /* Indentation. */
 div.doc-contents:not(.first) {
-    padding-left: 25px;
-    border-left: .05rem solid var(--md-typeset-table-color);
+  padding-left: 25px;
+  border-left: 0.05rem solid var(--md-typeset-table-color);
 }
 
 .doc-param-annotation {
-    font-size: 0.9em;
+  font-size: 0.9em;
 }
 
 .doc-param-annotation code {
-    font-style: italic;
-    color: var(--md-code-hl-constant-color);
-    background-color: var(--md-code-hl-background-color);
+  font-style: italic;
+  color: var(--md-code-hl-constant-color);
+  background-color: var(--md-code-hl-background-color);
 }
 
 .doc cite::before {
-    content: "[";
+  content: "[";
 }
 
 .doc cite::after {
-    content: "]";
+  content: "]";
 }
