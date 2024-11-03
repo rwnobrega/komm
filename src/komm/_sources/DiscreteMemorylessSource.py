@@ -1,16 +1,16 @@
 import numpy as np
-from attrs import field, mutable
+from attrs import field, frozen
 
 from .._util import _entropy
 from .._validation import is_log_base, is_pmf, validate_call
 
 
-@mutable
+@frozen
 class DiscreteMemorylessSource:
     r"""
     Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
-    To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example in the constructor below).
+    To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example below).
 
     Attributes:
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
