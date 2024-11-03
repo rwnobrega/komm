@@ -1,58 +1,42 @@
 import numpy as np
+from attrs import field, frozen
 
 from .._util.information_theory import _arimoto_blahut, _mutual_information
 
 
+@frozen
 class DiscreteMemorylessChannel:
     r"""
     Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
+    To invoke the channel, call the object giving the input signal as parameter (see example below).
+
+    Parameters:
+        transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
+
+    Examples:
+        >>> np.random.seed(1)
+        >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
+        >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
+        >>> y = dmc(x); y
+        array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
     """
 
-    def __init__(self, transition_matrix):
-        r"""
-        Constructor for the class.
-
-        Parameters:
-            transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
-
-        Examples:
-            >>> np.random.seed(1)
-            >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-            >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
-            >>> y = dmc(x); y
-            array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
-        """
-        self.transition_matrix = transition_matrix
-
-    @property
-    def transition_matrix(self):
-        r"""
-        The channel transition probability matrix $p_{Y \mid X}$.
-        """
-        return self._transition_matrix
-
-    @transition_matrix.setter
-    def transition_matrix(self, value):
-        self._transition_matrix = np.array(value, dtype=float)
-        self._input_cardinality, self._output_cardinality = (
-            self._transition_matrix.shape
-        )
+    transition_matrix: np.ndarray = field(converter=np.asarray)
 
     @property
     def input_cardinality(self):
         r"""
         The channel input cardinality $|\mathcal{X}|$.
         """
-        return self._input_cardinality
+        return self.transition_matrix.shape[0]
 
     @property
     def output_cardinality(self):
         r"""
         The channel output cardinality $|\mathcal{Y}|$.
         """
-        return self._output_cardinality
+        return self.transition_matrix.shape[1]
 
     def mutual_information(self, input_pmf, base=2.0):
         r"""
@@ -77,7 +61,7 @@ class DiscreteMemorylessChannel:
             >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)  # doctest: +NUMBER
             np.float64(0.078116106054)
         """
-        return _mutual_information(input_pmf, self._transition_matrix, base)
+        return _mutual_information(input_pmf, self.transition_matrix, base)
 
     def capacity(self, base=2.0, arimoto_blahut_kwargs=None):
         r"""
@@ -99,24 +83,18 @@ class DiscreteMemorylessChannel:
         if arimoto_blahut_kwargs is None:
             arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
         initial_guess = (
-            np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
+            np.ones(self.input_cardinality, dtype=float) / self.input_cardinality
         )
         optimal_input_pmf = _arimoto_blahut(
-            self._transition_matrix, initial_guess, **arimoto_blahut_kwargs
+            self.transition_matrix, initial_guess, **arimoto_blahut_kwargs
         )
-        return _mutual_information(
-            optimal_input_pmf, self._transition_matrix, base=base
-        )
+        return _mutual_information(optimal_input_pmf, self.transition_matrix, base=base)
 
     def __call__(self, input_sequence):
         output_sequence = [
             np.random.choice(
-                self._output_cardinality, p=self._transition_matrix[input_symbol]
+                self.output_cardinality, p=self.transition_matrix[input_symbol]
             )
             for input_symbol in input_sequence
         ]
         return np.array(output_sequence)
-
-    def __repr__(self):
-        args = "transition_matrix={}".format(self._transition_matrix.tolist())
-        return "{}({})".format(self.__class__.__name__, args)
