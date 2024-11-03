@@ -19,7 +19,7 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Parameters:
+    Attributes:
         erasure_probability (Optional[float]): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
 
     Examples:

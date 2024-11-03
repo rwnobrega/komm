@@ -19,7 +19,7 @@ class AWGNChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Parameters:
+    Attributes:
         signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
         snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.

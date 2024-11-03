@@ -11,7 +11,7 @@ class DiscreteMemorylessChannel:
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Parameters:
+    Attributes:
         transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
 
     Examples:

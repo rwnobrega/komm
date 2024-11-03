@@ -20,7 +20,7 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
 
     To invoke the channel, call the object giving the input signal as parameter (see example below).
 
-    Parameters:
+    Attributes:
         crossover_probability (Optional[float]): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
 
     Examples:
