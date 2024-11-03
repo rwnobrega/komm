@@ -47,9 +47,15 @@ class BlockCode:
     """
 
     _generator_matrix: npt.ArrayLike = field(
-        default=None, repr=False, alias="generator_matrix"
+        default=None,
+        repr=False,
+        alias="generator_matrix",
     )
-    _check_matrix: npt.ArrayLike = field(default=None, repr=False, alias="check_matrix")
+    _check_matrix: npt.ArrayLike = field(
+        default=None,
+        repr=False,
+        alias="check_matrix",
+    )
 
     def __repr__(self) -> str:
         args = {}
@@ -76,12 +82,11 @@ class BlockCode:
         r"""
         The length $n$ of the code.
         """
-        try:
+        if self._generator_matrix is not None:
             return self.generator_matrix.shape[1]
-        except AttributeError:
+        if self._check_matrix is not None:
             return self.check_matrix.shape[1]
-        finally:
-            return self.dimension + self.redundancy
+        return self.dimension + self.redundancy
 
     @property
     def dimension(self) -> int:
