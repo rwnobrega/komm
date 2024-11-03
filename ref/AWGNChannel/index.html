@@ -169,15 +169,6 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#snr" class="md-nav__link"><span class="md-ellipsis">snr</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#signal_power" class="md-nav__link"><span class="md-ellipsis">signal_power</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
                                       <a href="#noise_power" class="md-nav__link"><span class="md-ellipsis">noise_power</span></a>
                                     </li>
                                     <li class="md-nav__item">
@@ -524,15 +515,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#snr" class="md-nav__link"><span class="md-ellipsis">snr</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#signal_power" class="md-nav__link"><span class="md-ellipsis">signal_power</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#noise_power" class="md-nav__link"><span class="md-ellipsis">noise_power</span></a>
                   </li>
                   <li class="md-nav__item">
@@ -549,50 +531,32 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Additive white Gaussian noise (<abbr title="additive white Gaussian noise">AWGN</abbr>) channel. It is defined by $$ Y_n = X_n + Z_n, $$ where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by $$ \snr = \frac{P}{N}, $$ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 9</cite>.</p>
-                <p>To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>signal_power</code></b> <span class="doc-param-annotation">(<code>float | str</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The input signal power $P$. If equal to the string <code>'measured'</code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>snr</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>signal_power</code></b> <span class="doc-param-annotation">(<code>float | str</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The input signal power $P$. If equal to the string <code>'measured'</code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>snr</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">snr</span><span class="o">=</span><span class="mf">200.0</span><span class="p">,</span> <span class="n">signal_power</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">awgn</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="snr" class="doc doc-heading"><code class="highlight language-python"><span class="n">snr</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-writable"><code>writable</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The signal-to-noise ratio $\snr$ (linear, not decibel) of the channel.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="signal_power" class="doc doc-heading"><code class="highlight language-python"><span class="n">signal_power</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small> <small class="doc doc-label doc-label-writable"><code>writable</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The input signal power $P$.</p>
-                    </div>
-                  </div>
+                </div>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
                     <h2 id="noise_power" class="doc doc-heading"><code class="highlight language-python"><span class="n">noise_power</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
