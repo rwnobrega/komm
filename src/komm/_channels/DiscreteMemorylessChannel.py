@@ -1,6 +1,6 @@
 import numpy as np
 
-from .._util import _mutual_information
+from .._util.information_theory import _arimoto_blahut, _mutual_information
 
 
 class DiscreteMemorylessChannel:
@@ -25,7 +25,6 @@ class DiscreteMemorylessChannel:
             array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
         """
         self.transition_matrix = transition_matrix
-        self._arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
 
     @property
     def transition_matrix(self):
@@ -80,7 +79,7 @@ class DiscreteMemorylessChannel:
         """
         return _mutual_information(input_pmf, self._transition_matrix, base)
 
-    def capacity(self, base=2.0):
+    def capacity(self, base=2.0, arimoto_blahut_kwargs=None):
         r"""
         Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite>CT06, Sec. 10.8</cite>.
 
@@ -97,11 +96,13 @@ class DiscreteMemorylessChannel:
             >>> dmc.capacity(base=3)  # doctest: +NUMBER
             np.float64(0.1019783502)
         """
+        if arimoto_blahut_kwargs is None:
+            arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
         initial_guess = (
             np.ones(self._input_cardinality, dtype=float) / self._input_cardinality
         )
-        optimal_input_pmf = self._arimoto_blahut(
-            self._transition_matrix, initial_guess, **self._arimoto_blahut_kwargs
+        optimal_input_pmf = _arimoto_blahut(
+            self._transition_matrix, initial_guess, **arimoto_blahut_kwargs
         )
         return _mutual_information(
             optimal_input_pmf, self._transition_matrix, base=base
@@ -119,21 +120,3 @@ class DiscreteMemorylessChannel:
     def __repr__(self):
         args = "transition_matrix={}".format(self._transition_matrix.tolist())
         return "{}({})".format(self.__class__.__name__, args)
-
-    @staticmethod
-    def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
-        r"""
-        Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
-        """
-        p = transition_matrix
-        r = initial_guess
-        last_r = np.full_like(r, fill_value=np.inf)
-        iters = 0
-        while iters < max_iters and np.amax(np.abs(r - last_r)) > error_tolerance:
-            last_r = r
-            q = r[np.newaxis].T * p
-            q /= np.sum(q, axis=0)
-            r = np.prod(q**p, axis=1)
-            r /= np.sum(r, axis=0)
-            iters += 1
-        return r

@@ -56,3 +56,21 @@ def _mutual_information(input_pmf, transition_probabilities, base=2.0):
         input_pmf, np.apply_along_axis(entropy_base, 1, transition_probabilities)
     )
     return entropy_output_prior - entropy_output_posterior
+
+
+def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
+    r"""
+    Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
+    """
+    p = transition_matrix
+    r = initial_guess
+    last_r = np.full_like(r, fill_value=np.inf)
+    iters = 0
+    while iters < max_iters and np.amax(np.abs(r - last_r)) > error_tolerance:
+        last_r = r
+        q = r[np.newaxis].T * p
+        q /= np.sum(q, axis=0)
+        r = np.prod(q**p, axis=1)
+        r /= np.sum(r, axis=0)
+        iters += 1
+    return r
