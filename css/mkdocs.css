@@ -1,19 +1,19 @@
 .md-typeset h1 {
-    word-break: break-word;
+  word-break: break-word;
 }
 
 .md-typeset__table {
-    width: auto !important;
-    margin-left: auto;
-    margin-right: auto;
+  width: auto !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .md-nav__item a {
-    color: var(--md-primary-fg-color);
-    font-size: 1.1em;
+  color: var(--md-primary-fg-color);
+  font-size: 1.1em;
 }
 
 .md-nav__item li li a {
-    color: var(--md-secondary-fg-color);
-    font-size: 0.9em;
+  color: var(--md-secondary-fg-color);
+  font-size: 0.9em;
 }
