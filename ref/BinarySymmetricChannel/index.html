@@ -526,7 +526,7 @@
               <div class="doc doc-contents first">
                 <p>Binary symmetric channel (<abbr title="binary symmetric channel">BSC</abbr>). It is a <a href="/ref/DiscreteMemorylessChannel">discrete memoryless channel</a> with input and output alphabets given by $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$, and transition probability matrix given by $$ p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix}, $$ where the parameter $p$ is called the <em>crossover probability</em> of the channel. Equivalently, a <abbr title="binary symmetric channel">BSC</abbr> with crossover probability $p$ may be defined by $$ Y_n = X_n + Z_n, $$ where $Z_n$ are <abbr title="independent and identically distributed">iid</abbr> Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 7.1.4</cite>.</p>
                 <p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
-                <p><strong>Parameters:</strong></p>
+                <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
                     <b><code>crossover_probability</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –

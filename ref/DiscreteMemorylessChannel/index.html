@@ -544,7 +544,7 @@
               <div class="doc doc-contents first">
                 <p>Discrete memoryless channel (<abbr title="discrete memoryless channel">DMC</abbr>). It is defined by an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, and a <em>transition probability matrix</em> $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$ and $\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 7</cite>.</p>
                 <p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
-                <p><strong>Parameters:</strong></p>
+                <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
                     <b><code>transition_matrix</code></b> <span class="doc-param-annotation">(<code>Array2D[float]</code>)</span> –
