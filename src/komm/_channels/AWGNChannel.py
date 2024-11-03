@@ -1,6 +1,10 @@
+from typing import Literal
+
 import numpy as np
+from attrs import frozen
 
 
+@frozen
 class AWGNChannel:
     r"""
     Additive white Gaussian noise (AWGN) channel. It is defined by
@@ -13,58 +17,34 @@ class AWGNChannel:
     $$
     where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite>CT06, Ch. 9</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example in the constructor below).
+    To invoke the channel, call the object giving the input signal as parameter (see example below).
+
+    Parameters:
+        signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
+
+        snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
+
+    Examples:
+        >>> np.random.seed(1)
+        >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
+        >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
+        >>> y = awgn(x); np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
+        array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
     """
 
-    def __init__(self, signal_power, snr=np.inf):
-        r"""Constructor for the class.
-
-        Parameters:
-            signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
-
-            snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
-
-        Examples:
-            >>> np.random.seed(1)
-            >>> awgn = komm.AWGNChannel(snr=200.0, signal_power=5.0)
-            >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-            >>> y = awgn(x); np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
-            array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
-        """
-        self.snr = snr
-        self.signal_power = signal_power
-
-    @property
-    def snr(self):
-        r"""
-        The signal-to-noise ratio $\snr$ (linear, not decibel) of the channel.
-        """
-        return self._snr
-
-    @snr.setter
-    def snr(self, value):
-        self._snr = float(value)
-
-    @property
-    def signal_power(self):
-        r"""
-        The input signal power $P$.
-        """
-        return self._signal_power
-
-    @signal_power.setter
-    def signal_power(self, value):
-        if value == "measured":
-            self._signal_power = value
-        else:
-            self._signal_power = float(value)
+    signal_power: float | Literal["measured"]
+    snr: float = np.inf
 
     @property
     def noise_power(self):
         r"""
         The noise power $N$.
         """
-        return self._signal_power / self._snr
+        if self.signal_power == "measured":
+            raise ValueError(
+                "The noise power cannot be calculated when the signal power is measured."
+            )
+        return self.signal_power / self.snr
 
     def capacity(self):
         r"""
@@ -75,18 +55,18 @@ class AWGNChannel:
             >>> awgn.capacity()
             np.float64(3.0)
         """
-        return 0.5 * np.log1p(self._snr) / np.log(2.0)
+        return 0.5 * np.log1p(self.snr) / np.log(2.0)
 
     def __call__(self, input_signal):
         input_signal = np.array(input_signal)
         size = input_signal.size
 
-        if self._signal_power == "measured":
+        if self.signal_power == "measured":
             signal_power = np.linalg.norm(input_signal) ** 2 / size
         else:
-            signal_power = self._signal_power
+            signal_power = self.signal_power
 
-        noise_power = signal_power / self._snr
+        noise_power = signal_power / self.snr
 
         if input_signal.dtype == complex:
             noise = np.sqrt(noise_power / 2) * (
@@ -96,7 +76,3 @@ class AWGNChannel:
             noise = np.sqrt(noise_power) * np.random.normal(size=size)
 
         return input_signal + noise
-
-    def __repr__(self):
-        args = "snr={}, signal_power={}".format(self._snr, self._signal_power)
-        return "{}({})".format(self.__class__.__name__, args)
