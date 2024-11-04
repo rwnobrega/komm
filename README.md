@@ -70,3 +70,11 @@ The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Mat
 ```bash
 mkdocs serve
 ```
+
+### Run demos
+
+There are some demos available in the `demo` directory. They are written using [Streamlit](https://streamlit.io/). To run them, execute:
+
+```bash
+streamlit run demo/index.py
+```

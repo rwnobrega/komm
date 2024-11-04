@@ -48,3 +48,9 @@ debug = [
     "ipykernel>=6.28.0",
     "matplotlib>=3.8.2",
 ]
+
+[dependency-groups]
+demo = [
+    "streamlit==1.39.0",
+    "matplotlib==3.9.2"
+]
