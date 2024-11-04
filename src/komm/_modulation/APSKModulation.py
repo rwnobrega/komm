@@ -46,14 +46,14 @@ class APSKModulation(Modulation):
 
         Examples:
             >>> apsk = komm.APSKModulation(orders=(8, 8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-            >>> np.around(apsk.constellation, decimals=4)
+            >>> apsk.constellation.round(4)
             array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
                    -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
                     1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
                    -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])
 
             >>> apsk = komm.APSKModulation(orders=(4, 12), amplitudes=(np.sqrt(2), 3.0), phase_offsets=(np.pi/4, 0.0))
-            >>> np.around(apsk.constellation, decimals=4)
+            >>> apsk.constellation.round(4)
             array([ 1.    +1.j    , -1.    +1.j    , -1.    -1.j    ,  1.    -1.j    ,
                     3.    +0.j    ,  2.5981+1.5j   ,  1.5   +2.5981j,  0.    +3.j    ,
                    -1.5   +2.5981j, -2.5981+1.5j   , -3.    +0.j    , -2.5981-1.5j   ,

@@ -45,9 +45,9 @@ class ZadoffChuSequence(ComplexSequence):
 
         Examples:
             >>> zadoff_chu = ZadoffChuSequence(5, root_index=1)
-            >>> np.around(zadoff_chu.sequence, decimals=6)  #doctest: +NORMALIZE_WHITESPACE
+            >>> zadoff_chu.sequence.round(6)  #doctest: +NORMALIZE_WHITESPACE
             array([ 1.      +0.j      ,  0.309017-0.951057j, -0.809017+0.587785j,  0.309017-0.951057j,  1.      +0.j      ])
-            >>> np.around(zadoff_chu.cyclic_autocorrelation(normalized=True), decimals=6)
+            >>> zadoff_chu.cyclic_autocorrelation(normalized=True).round(6)
             array([ 1.+0.j, -0.-0.j, -0.-0.j,  0.+0.j, -0.+0.j])
         """
         if length % 2 == 0:

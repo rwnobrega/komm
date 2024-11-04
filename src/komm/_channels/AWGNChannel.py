@@ -32,8 +32,7 @@ class AWGNChannel:
         >>> np.random.seed(1)
         >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
         >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-        >>> y = awgn(x)
-        >>> np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
+        >>> awgn(x).round(2)  # doctest: +NORMALIZE_WHITESPACE
         array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
     """
 
