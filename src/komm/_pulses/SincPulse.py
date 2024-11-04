@@ -31,7 +31,10 @@ class SincPulse(FormattingPulse):
         def impulse_response(t):
             return np.sinc(t)
 
-        super().__init__(impulse_response, interval=(-L / 2, L / 2))
+        def frequency_response(f):
+            return 1.0 * (abs(f) < 0.5)
+
+        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
 
     @property
     def length_in_symbols(self):
