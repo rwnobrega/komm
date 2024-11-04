@@ -9,16 +9,21 @@ class DiscreteMemorylessChannel:
     r"""
     Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example below).
-
     Attributes:
         transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
+
+    Parameters: Input:
+        in0 (Array1D[int]): The input sequence.
+
+    Parameters: Output:
+        out0 (Array1D[int]): The output sequence.
 
     Examples:
         >>> np.random.seed(1)
         >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
         >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
-        >>> y = dmc(x); y
+        >>> y = dmc(x)
+        >>> y
         array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
     """
 

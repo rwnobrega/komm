@@ -17,10 +17,14 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
     $$
     where the parameter $\epsilon$ is called the *erasure probability* of the channel. For more details, see <cite>CT06, Sec. 7.1.5</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example below).
-
     Attributes:
         erasure_probability (Optional[float]): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
+
+    Parameters: Input:
+        in0 (Array1D[int]): The input sequence.
+
+    Parameters: Output:
+        out0 (Array1D[int]): The output sequence.
 
     Examples:
         >>> np.random.seed(1)
@@ -29,7 +33,8 @@ class BinaryErasureChannel(DiscreteMemorylessChannel):
         array([[0.9, 0. , 0.1],
                [0. , 0.9, 0.1]])
         >>> x = [1, 1, 1, 0, 0, 0, 1, 0, 1, 0]
-        >>> y = bec(x); y
+        >>> y = bec(x)
+        >>> y
         array([1, 1, 2, 0, 0, 2, 1, 0, 1, 0])
     """
 

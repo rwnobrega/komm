@@ -17,18 +17,23 @@ class AWGNChannel:
     $$
     where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite>CT06, Ch. 9</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example below).
-
     Attributes:
         signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
         snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
+    Parameters: Input:
+        in0 (Array1D[float]): The input signal $X_n$.
+
+    Parameters: Output:
+        out0 (Array1D[float]): The output signal $Y_n$.
+
     Examples:
         >>> np.random.seed(1)
         >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
         >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-        >>> y = awgn(x); np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
+        >>> y = awgn(x)
+        >>> np.around(y, decimals=2)  # doctest: +NORMALIZE_WHITESPACE
         array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
     """
 

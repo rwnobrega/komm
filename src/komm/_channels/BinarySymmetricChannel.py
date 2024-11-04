@@ -18,10 +18,14 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
     $$
     where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite>CT06, Sec. 7.1.4</cite>.
 
-    To invoke the channel, call the object giving the input signal as parameter (see example below).
-
     Attributes:
         crossover_probability (Optional[float]): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
+
+    Parameters: Input:
+        in0 (Array1D[int]): The input sequence.
+
+    Parameters: Output:
+        out0 (Array1D[int]): The output sequence.
 
     Examples:
         >>> np.random.seed(1)
@@ -30,7 +34,8 @@ class BinarySymmetricChannel(DiscreteMemorylessChannel):
         array([[0.9, 0.1],
                [0.1, 0.9]])
         >>> x = [0, 1, 1, 1, 0, 0, 0, 0, 0, 1]
-        >>> y = bsc(x); y
+        >>> y = bsc(x)
+        >>> y
         array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
     """
 
