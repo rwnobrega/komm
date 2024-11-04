@@ -543,7 +543,6 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Discrete memoryless channel (<abbr title="discrete memoryless channel">DMC</abbr>). It is defined by an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, and a <em>transition probability matrix</em> $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$ and $\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 7</cite>.</p>
-                <p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -553,12 +552,31 @@
                     </div>
                   </li>
                 </ul>
+                <p><strong>Input:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>in0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The input sequence.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Output:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>out0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The output sequence.</p>
+                    </div>
+                  </li>
+                </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">dmc</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">dmc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
 <span class="go">array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])</span>
 </code></pre>
                 </div>

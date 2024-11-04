@@ -525,13 +525,30 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Binary symmetric channel (<abbr title="binary symmetric channel">BSC</abbr>). It is a <a href="/ref/DiscreteMemorylessChannel">discrete memoryless channel</a> with input and output alphabets given by $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$, and transition probability matrix given by $$ p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix}, $$ where the parameter $p$ is called the <em>crossover probability</em> of the channel. Equivalently, a <abbr title="binary symmetric channel">BSC</abbr> with crossover probability $p$ may be defined by $$ Y_n = X_n + Z_n, $$ where $Z_n$ are <abbr title="independent and identically distributed">iid</abbr> Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 7.1.4</cite>.</p>
-                <p>To invoke the channel, call the object giving the input signal as parameter (see example below).</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
                     <b><code>crossover_probability</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
                     <div class="doc-md-description">
                       <p>The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is <code>0.0</code>, which corresponds to a noiseless channel.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Input:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>in0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The input sequence.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Output:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>out0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The output sequence.</p>
                     </div>
                   </li>
                 </ul>
@@ -543,7 +560,8 @@
 <span class="go">array([[0.9, 0.1],</span>
 <span class="go">       [0.1, 0.9]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">bsc</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">bsc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
 <span class="go">array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])</span>
 </code></pre>
                 </div>
