@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 
 # Local import
-from utils import show_about, show_code
+from utils import show_about, show_code, show_documentation
 
 import komm
 
@@ -78,15 +78,12 @@ def plot_qam(order, base_amplitude, phase_offset, labeling, noise_power_db):
     return plot_constellation(qam_modulation, noise_power_db, xlim=lim, ylim=lim)
 
 
-st.sidebar.title("Constellation type")
-constellation_type = st.sidebar.radio(
-    "Select constellation type:",
-    ["PSK", "QAM"],
-    label_visibility="collapsed",
+tab1, tab2 = st.tabs(
+    ["Phase-shift keying (PSK)", "Quadrature amplitude modulation (QAM)"]
 )
 
-if constellation_type == "PSK":
-    st.title("Phase-shift keying (PSK)")
+with tab1:
+    show_documentation("Phase-shift keying", "PSKModulation")
 
     col1, col2 = st.columns([3, 5])
     with col1:
@@ -126,11 +123,11 @@ if constellation_type == "PSK":
     with col2:
         st.pyplot(plot_psk(order, amplitude, phase_offset, labeling, noise_power_db))
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_psk), language="python")
+    show_code(plot_psk)
 
-else:  # QAM
-    st.title("Quadrature amplitude modulation (QAM)")
+
+with tab2:
+    show_documentation("Quadrature amplitude modulation", "QAModulation")
 
     col1, col2 = st.columns([3, 5])
     with col1:
@@ -174,8 +171,6 @@ else:  # QAM
             plot_qam(order, base_amplitude, phase_offset, labeling, noise_power_db)
         )
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_qam), language="python")
+    show_code(plot_qam)
 
-st.sidebar.divider()
 show_about()

@@ -24,4 +24,14 @@ def show_code(func):
         if line.startswith("def "):
             source = "\n".join(lines[i:])
             break
-    return source
+
+    st.write("")
+    with st.expander("Show code"):
+        st.code(source, language="python")
+
+
+def show_documentation(title, stub):
+    st.markdown(
+        f"### {title} <a href='https://komm.dev/ref/{stub}' style='text-decoration: none;'><span style='font-size: 0.7em; margin-left: 0.1em'>🌐</span></a>",
+        unsafe_allow_html=True,
+    )

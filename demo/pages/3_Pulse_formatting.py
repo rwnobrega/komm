@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 
 # Local import
-from utils import show_about, show_code
+from utils import show_about, show_code, show_documentation
 
 import komm
 
@@ -103,24 +103,15 @@ def plot_gaussian(half_power_bandwidth):
     return fig
 
 
-st.sidebar.title("Pulse type")
-pulse_type = st.sidebar.radio(
-    "Select pulse type:",
-    ["Sinc", "Raised cosine", "Gaussian"],
-    label_visibility="collapsed",
-)
+tab1, tab2, tab3 = st.tabs(["Sinc", "Raised cosine", "Gaussian"])
 
-if pulse_type == "Sinc":
-    st.title("Sinc pulse")
-
+with tab1:
+    show_documentation("Sinc pulse", "SincPulse")
     st.pyplot(plot_sinc())
+    show_code(plot_sinc)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_sinc), language="python")
-
-elif pulse_type == "Raised cosine":
-    st.title("Raised cosine pulse")
-
+with tab2:
+    show_documentation("Raised cosine pulse", "RaisedCosinePulse")
     rolloff = st.slider(
         label="Roll-off factor",
         min_value=0.0,
@@ -128,15 +119,11 @@ elif pulse_type == "Raised cosine":
         value=0.5,
         step=0.01,
     )
-
     st.pyplot(plot_raised_cosine(rolloff))
+    show_code(plot_raised_cosine)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_raised_cosine), language="python")
-
-else:  # Gaussian
-    st.title("Gaussian pulse")
-
+with tab3:
+    show_documentation("Gaussian pulse", "GaussianPulse")
     half_power_bandwidth = st.slider(
         label="Half-power bandwidth",
         min_value=0.05,
@@ -144,11 +131,7 @@ else:  # Gaussian
         value=0.5,
         step=0.01,
     )
-
     st.pyplot(plot_gaussian(half_power_bandwidth))
+    show_code(plot_gaussian)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_gaussian), language="python")
-
-st.sidebar.divider()
 show_about()

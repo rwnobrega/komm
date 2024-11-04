@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 
 # Local import
-from utils import show_about, show_code
+from utils import show_about, show_code, show_documentation
 
 import komm
 
@@ -17,7 +17,7 @@ def plot_barker(length):
     fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
 
     ax0.stem(np.arange(length), barker.polar_sequence)
-    ax0.set_title(repr(barker))
+    ax0.set_title("Sequence")
     ax0.set_xlabel("$n$")
     ax0.set_ylabel("$a[n]$")
     ax0.set_xticks(np.arange(length))
@@ -30,7 +30,7 @@ def plot_barker(length):
     ax1.set_xticks([-length, 0, length])
     ax1.set_yticks(np.arange(-1, length + 1))
 
-    return fig
+    return barker, fig
 
 
 def plot_walsh_hadamard(length, ordering, index):
@@ -40,15 +40,20 @@ def plot_walsh_hadamard(length, ordering, index):
         index=index,
     )
 
-    fig, ax = plt.subplots(figsize=(12, 4))
-    ax.stem(np.arange(length), walsh_hadamard.polar_sequence)
-    ax.set_title(repr(walsh_hadamard))
-    ax.set_xlabel("$n$")
-    ax.set_ylabel("$a[n]$")
-    ax.set_yticks([-1, 0, 1])
-    ax.set_ylim((-1.2, 1.2))
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
+    ax0.stem(np.arange(length), walsh_hadamard.polar_sequence)
+    ax0.set_title("Sequence")
+    ax0.set_xlabel("$n$")
+    ax0.set_ylabel("$a[n]$")
+    ax0.set_yticks([-1, 0, 1])
+    ax0.set_ylim((-1.2, 1.2))
 
-    return fig
+    ax1.stem(np.arange(length), walsh_hadamard.autocorrelation(normalized=True))
+    ax1.set_title("Autocorrelation (normalized)")
+    ax1.set_xlabel("$\\ell$")
+    ax1.set_ylabel("$R[\\ell]$")
+
+    return walsh_hadamard, fig
 
 
 def plot_lfsr(degree):
@@ -59,7 +64,7 @@ def plot_lfsr(degree):
     fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
 
     ax0.stem(np.arange(length), lfsr.polar_sequence)
-    ax0.set_title(repr(lfsr))
+    ax0.set_title("Sequence")
     ax0.set_xlabel("$n$")
     ax0.set_ylabel("$a[n]$")
     ax0.set_yticks([-1, 0, 1])
@@ -71,18 +76,20 @@ def plot_lfsr(degree):
     ax1.set_xticks([-length, 0, length])
     ax1.set_ylim((-0.5, 1.1))
 
-    return fig
+    return lfsr, fig
 
 
-st.sidebar.title("Sequence type")
-sequence_type = st.sidebar.radio(
-    "Select sequence type:",
-    ["Barker", "Walsh–Hadamard", "LFSR"],
-    label_visibility="collapsed",
+tab1, tab2, tab3 = st.tabs(
+    [
+        "Barker",
+        "Walsh–Hadamard",
+        "Linear-feedback shift register (LFSR)",
+    ]
 )
 
-if sequence_type == "Barker":
-    st.title("Barker sequence")
+
+with tab1:
+    show_documentation("Barker sequence", "BarkerSequence")
 
     length = st.select_slider(
         label="Length",
@@ -90,13 +97,14 @@ if sequence_type == "Barker":
         value=2,
     )
 
-    st.pyplot(plot_barker(length))
+    barker, fig = plot_barker(length)
+    col1, col2 = st.columns(2)
+    st.write(repr(barker))
+    st.pyplot(fig)
+    show_code(plot_barker)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_barker), language="python")
-
-elif sequence_type == "Walsh–Hadamard":
-    st.title("Walsh–Hadamard sequence")
+with tab2:
+    show_documentation("Walsh–Hadamard sequence", "WalshHadamardSequence")
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -119,14 +127,13 @@ elif sequence_type == "Walsh–Hadamard":
             value=0,
         )
 
-    st.pyplot(plot_walsh_hadamard(length, ordering, index))
+    walsh_hadamard, fig = plot_walsh_hadamard(length, ordering, index)
+    st.write(repr(walsh_hadamard))
+    st.pyplot(fig)
+    show_code(plot_walsh_hadamard)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_walsh_hadamard), language="python")
-
-else:  # LFSR Sequence
-    st.title("Linear-feedback shift register (LFSR) sequence")
-    st.header("Maximum-length sequence (MLS)")
+with tab3:
+    show_documentation("Linear-feedback shift register", "LFSRSequence")
 
     degree = st.slider(
         label="Degree",
@@ -135,10 +142,9 @@ else:  # LFSR Sequence
         value=4,
     )
 
-    st.pyplot(plot_lfsr(degree))
+    lfsr, fig = plot_lfsr(degree)
+    st.write(repr(lfsr))
+    st.pyplot(fig)
+    show_code(plot_lfsr)
 
-    with st.expander("Source code"):
-        st.code(show_code(plot_lfsr), language="python")
-
-st.sidebar.divider()
 show_about()
