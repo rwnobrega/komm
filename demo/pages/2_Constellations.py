@@ -10,72 +10,67 @@ import komm
 st.set_page_config(page_title="Komm Demo: Constellations", layout="wide")
 
 
-def plot_constellation(modulation, noise_power_db, xlim, ylim):
-    """Base function for plotting constellation diagrams."""
-    signal_power = modulation.energy_per_symbol
-    noise_power = 10 ** (noise_power_db / 10)
-    snr = signal_power / noise_power
-    awgn = komm.AWGNChannel(signal_power=signal_power, snr=snr)
+def plot_psk(order, amplitude, phase_offset, labeling):
+    psk_modulation = komm.PSKModulation(order, amplitude, phase_offset, labeling)
 
-    num_symbols = 10000
-    num_bits = modulation.bits_per_symbol * num_symbols
-    bits = np.random.randint(2, size=num_bits)
-    sentword = modulation.modulate(bits)
-    recvword = awgn(sentword)
-
-    fig, ax = plt.subplots(figsize=(16, 10))
+    fig, ax = plt.subplots(figsize=(8, 8))
     ax.grid(linestyle="--")
 
-    ax.scatter(recvword.real, recvword.imag, color="xkcd:light blue", s=1)
     ax.scatter(
-        modulation.constellation.real,
-        modulation.constellation.imag,
-        color="xkcd:blue",
+        psk_modulation.constellation.real,
+        psk_modulation.constellation.imag,
         s=8**2,
     )
 
-    for i, point in enumerate(modulation.constellation):
-        label = "".join(str(b) for b in modulation.labeling[i])
+    for i, point in enumerate(psk_modulation.constellation):
+        label = "".join(str(b) for b in psk_modulation.labeling[i])
         ax.text(
             point.real,
-            point.imag + 0.075 * xlim[0],
+            point.imag + 0.075 * -3.0,
             label,
             horizontalalignment="center",
         )
 
-    ax.set_title(repr(modulation))
+    ax.set_title(repr(psk_modulation))
     ax.set_xlabel("Re")
     ax.set_ylabel("Im")
     ax.axis("square")
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
-
-    info_text = f"SNR = {10*np.log10(awgn.snr):.1f} dB\n"
-    info_text += f"Eb/N0 = {10*np.log10(awgn.snr / modulation.bits_per_symbol):.1f} dB"
-    ax.text(
-        1.125 * xlim[1],
-        0.0,
-        info_text,
-        horizontalalignment="left",
-        verticalalignment="center",
-    )
+    ax.set_xlim((-2.2, 2.2))
+    ax.set_ylim((-2.2, 2.2))
 
     return fig
 
 
-def plot_psk(order, amplitude, phase_offset, labeling, noise_power_db):
-    """Plot PSK constellation."""
-    psk_modulation = komm.PSKModulation(order, amplitude, phase_offset, labeling)
-    return plot_constellation(
-        psk_modulation, noise_power_db, xlim=[-3.0, 3.0], ylim=[-3.0, 3.0]
+def plot_qam(order, base_amplitude, phase_offset, labeling):
+    qam_modulation = komm.QAModulation(order, base_amplitude, phase_offset, labeling)
+    lim = (-2.125 * np.sqrt(order), 2.125 * np.sqrt(order))
+
+    fig, ax = plt.subplots(figsize=(8, 8))
+    ax.grid(linestyle="--")
+
+    ax.scatter(
+        qam_modulation.constellation.real,
+        qam_modulation.constellation.imag,
+        s=8**2,
     )
 
+    for i, point in enumerate(qam_modulation.constellation):
+        label = "".join(str(b) for b in qam_modulation.labeling[i])
+        ax.text(
+            point.real,
+            point.imag + 0.075 * lim[0],
+            label,
+            horizontalalignment="center",
+        )
 
-def plot_qam(order, base_amplitude, phase_offset, labeling, noise_power_db):
-    """Plot QAM constellation."""
-    qam_modulation = komm.QAModulation(order, base_amplitude, phase_offset, labeling)
-    lim = [-2.125 * np.sqrt(order), 2.125 * np.sqrt(order)]
-    return plot_constellation(qam_modulation, noise_power_db, xlim=lim, ylim=lim)
+    ax.set_title(repr(qam_modulation))
+    ax.set_xlabel("Re")
+    ax.set_ylabel("Im")
+    ax.axis("square")
+    ax.set_xlim(lim)
+    ax.set_ylim(lim)
+
+    return fig
 
 
 tab1, tab2 = st.tabs(
@@ -112,16 +107,8 @@ with tab1:
             format_func=lambda x: "Natural" if x == "natural" else "Reflected (Gray)",
             index=1,
         )
-        noise_power_db = st.slider(
-            label="Noise power (dB)",
-            min_value=-40,
-            max_value=10,
-            value=-40,
-            step=1,
-        )
-
     with col2:
-        st.pyplot(plot_psk(order, amplitude, phase_offset, labeling, noise_power_db))
+        st.pyplot(plot_psk(order, amplitude, phase_offset, labeling))
 
     show_code(plot_psk)
 
@@ -152,24 +139,14 @@ with tab2:
         ) * (2 * np.pi)
         labeling = st.selectbox(
             label="Labeling",
-            options=["natural", "reflected_2d"],
+            options=["natural_2d", "reflected_2d"],
             format_func=lambda x: (
-                "Natural" if x == "natural" else "Reflected 2D (Gray)"
+                "Natural 2D" if x == "natural_2d" else "Reflected 2D (Gray)"
             ),
             index=1,
         )
-        noise_power_db = st.slider(
-            label="Noise power (dB)",
-            min_value=-40.0,
-            max_value=10.0,
-            value=-40.0,
-            step=1.0,
-        )
-
     with col2:
-        st.pyplot(
-            plot_qam(order, base_amplitude, phase_offset, labeling, noise_power_db)
-        )
+        st.pyplot(plot_qam(order, base_amplitude, phase_offset, labeling))
 
     show_code(plot_qam)
 
