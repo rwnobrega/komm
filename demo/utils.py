@@ -31,7 +31,13 @@ def show_code(func):
 
 
 def show_documentation(title, stub):
-    st.markdown(
-        f"### {title} <a href='https://komm.dev/ref/{stub}' style='text-decoration: none;'><span style='font-size: 0.7em; margin-left: 0.1em'>🌐</span></a>",
-        unsafe_allow_html=True,
+    st.html(
+        f"""
+        <h3>
+            {title}
+            <a href='https://komm.dev/ref/{stub}' style='text-decoration: none;'>
+                <span style='font-size: 0.7em; margin-left: 0.1em'>🌐</span>
+            </a>
+        </h3>
+        """
     )
