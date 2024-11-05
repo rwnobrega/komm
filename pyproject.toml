@@ -30,9 +30,9 @@ lint = [
     "isort>=5.13.2",
 ]
 test = [
-    "pytest>=7.4.4",
-    "pytest-benchmark>=4.0.0",
-    "pytest-cov>=4.1.0",
+    "pytest==8.3.3",
+    "pytest-benchmark==5.1.0",
+    "pytest-cov==6.0.0",
 ]
 doc = [
     "griffe==1.5.1",
