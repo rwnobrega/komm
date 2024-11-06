@@ -75,7 +75,7 @@ class RationalPolynomial:
             >>> poly = komm.RationalPolynomial(['0', '1/3', '2/3'])  # (1/3) X + (2/3) X^2
             >>> poly.coefficients()
             array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3)], dtype=object)
-            >>> poly.coefficients(width=5)  #doctest: +NORMALIZE_WHITESPACE
+            >>> poly.coefficients(width=5)  # doctest: +NORMALIZE_WHITESPACE
             array([Fraction(0, 1), Fraction(1, 3), Fraction(2, 3), Fraction(0, 1), Fraction(0, 1)], dtype=object)
         """
         if width is None:

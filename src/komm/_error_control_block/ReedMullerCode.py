@@ -37,7 +37,7 @@ class ReedMullerCode(BlockCode):
         (32, 6, 26)
         >>> code.minimum_distance
         16
-        >>> code.generator_matrix  #doctest: +NORMALIZE_WHITESPACE
+        >>> code.generator_matrix  # doctest: +NORMALIZE_WHITESPACE
         array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
                [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],

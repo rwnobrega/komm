@@ -27,7 +27,7 @@ class UniformQuantizer(ScalarQuantizer):
             array([-0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75])
             >>> x = np.linspace(-0.5, 0.5, num=11)
             >>> y = quantizer(x)
-            >>> np.vstack([x, y])  #doctest: +NORMALIZE_WHITESPACE
+            >>> np.vstack([x, y])  # doctest: +NORMALIZE_WHITESPACE
             array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],
                    [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])
 
