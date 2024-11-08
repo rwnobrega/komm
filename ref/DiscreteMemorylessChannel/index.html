@@ -318,6 +318,9 @@
                                   <label class="md-nav__title" for="__nav_2_7_1"><span class="md-nav__icon md-icon"></span> Pulses</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
+                                      <a href="../Pulse/" class="md-nav__link"><span class="md-ellipsis">Pulse</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../RectangularPulse/" class="md-nav__link"><span class="md-ellipsis">RectangularPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
@@ -542,7 +545,7 @@
             <h1 id="kommdiscretememorylesschannel">komm.DiscreteMemorylessChannel</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Discrete memoryless channel (<abbr title="discrete memoryless channel">DMC</abbr>). It is defined by an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, and a <em>transition probability matrix</em> $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$ and $\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 7</cite>.</p>
+                <p>General discrete memoryless channel (<abbr title="discrete memoryless channel">DMC</abbr>). It is defined by an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, and a <em>transition probability matrix</em> $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$ and $\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 7</cite>.</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -582,13 +585,13 @@
                 </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="input_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_cardinality</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="input_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The channel input cardinality $|\mathcal{X}|$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="output_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">output_cardinality</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="output_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">output_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The channel output cardinality $|\mathcal{Y}|$.</p>
                     </div>
@@ -645,6 +648,7 @@
                           </div>
                         </li>
                       </ul>
+                      <p>Additional keyword arguments (Arimoto–Blahut algorithm): max_iters (Optional[int]): The maximum number of iterations. The default value is <code>1000</code>. error_tolerance (Optional[float]): The error tolerance. The default value is <code>1e-12</code>.</p>
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">

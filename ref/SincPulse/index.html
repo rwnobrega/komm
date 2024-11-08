@@ -301,24 +301,16 @@
                                   <label class="md-nav__title" for="__nav_2_7_1"><span class="md-nav__icon md-icon"></span> Pulses</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
+                                      <a href="../Pulse/" class="md-nav__link"><span class="md-ellipsis">Pulse</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../RectangularPulse/" class="md-nav__link"><span class="md-ellipsis">RectangularPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../ManchesterPulse/" class="md-nav__link"><span class="md-ellipsis">ManchesterPulse</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">SincPulse</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">SincPulse</span></a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#length_in_symbols" class="md-nav__link"><span class="md-ellipsis">length_in_symbols</span></a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">SincPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../RaisedCosinePulse/" class="md-nav__link"><span class="md-ellipsis">RaisedCosinePulse</span></a>
@@ -511,17 +503,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#length_in_symbols" class="md-nav__link"><span class="md-ellipsis">length_in_symbols</span></a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -530,38 +512,24 @@
             <h1 id="kommsincpulse">komm.SincPulse</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Sinc pulse. It is a formatting pulse with impulse response given by $$ h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}. $$ The sinc pulse is depicted below.</p>
+                <p>Sinc pulse. It is a <a href="/ref/Pulse">pulse</a> with waveform given by $$ h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}, $$ and spectrum given by $$ \hat{h}(f) = \begin{cases} 1, & |f| &lt; \frac{1}{2}, \\ 0, & \text{otherwise}. \end{cases} $$</p>
+                <p>The sinc pulse is depicted below.</p>
                 <figure>
                   <p><img alt="Sinc pulse." src="/figures/pulse_sinc.svg"></p>
                 </figure>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>length_in_symbols</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The length (span) of the truncated impulse response, in symbols.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">(</span><span class="n">length_in_symbols</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+                <p>For more details, see <cite><abbr title="John G. Proakis and Masoud Salehi. Digital Communications. McGraw-Hill, 5th edition, 2008. ISBN 978-0072957167.">PS08</abbr>, Sec. 9.2-1</cite>.</p>
+                <p><strong>Attributes:</strong></p>
+                <p><span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span></p>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">waveform</span><span class="p">([</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">spectrum</span><span class="p">([</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">])</span>
+<span class="go">array([0., 0., 1., 1., 1., 0., 0.])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="length_in_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">length_in_symbols</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The length (span) of the truncated impulse response.</p>
-                    </div>
-                  </div>
                 </div>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>

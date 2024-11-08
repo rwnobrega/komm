@@ -301,18 +301,13 @@
                                   <label class="md-nav__title" for="__nav_2_7_1"><span class="md-nav__icon md-icon"></span> Pulses</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
+                                      <a href="../Pulse/" class="md-nav__link"><span class="md-ellipsis">Pulse</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../RectangularPulse/" class="md-nav__link"><span class="md-ellipsis">RectangularPulse</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">ManchesterPulse</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ManchesterPulse</span></a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ManchesterPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../SincPulse/" class="md-nav__link"><span class="md-ellipsis">SincPulse</span></a>
@@ -508,14 +503,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -524,23 +512,23 @@
             <h1 id="kommmanchesterpulse">komm.ManchesterPulse</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Manchester pulse. It is a formatting pulse with impulse response given by $$ h(t) = \begin{cases} -1, & 0 \leq t &lt; 1/2, \\ 1, & 1/2 \leq t &lt; 1, \\ 0, & \text{otherwise}. \end{cases} $$ The Manchester pulse is depicted below.</p>
+                <p>Manchester pulse. It is a <a href="/ref/Pulse">pulse</a> with waveform given by $$ h(t) = \begin{cases} -1, & 0 \leq t &lt; 1/2, \\ 1, & 1/2 \leq t &lt; 1, \\ 0, & \text{otherwise}, \end{cases} $$ and spectrum given by $$ \hat{h}(f) = \operatorname{sinc}^2 \left( \frac{f}{2} \right) \, \sin^2 \left( \frac{\pi f}{2} \right). $$</p>
+                <p>The Manchester pulse is depicted below.</p>
                 <figure>
                   <p><img alt="Manchester pulse." src="/figures/pulse_manchester.svg"></p>
                 </figure>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class. It expects no parameters.</p>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ManchesterPulse</span><span class="p">()</span>
+                <p><strong>Attributes:</strong></p>
+                <p><span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span></p>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ManchesterPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">waveform</span><span class="p">([</span><span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">,</span>  <span class="mf">1.00</span><span class="p">])</span>
+<span class="go">array([ 0.,  0., -1., -1.,  1.,  1.,  0.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">spectrum</span><span class="p">([</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([0.5249, 0.4053, 0.1391, 0.    , 0.1391, 0.4053, 0.5249])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>
