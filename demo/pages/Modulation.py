@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 
-# Local import
+# local import
 from utils import show_about, show_code, show_documentation
 
 import komm
