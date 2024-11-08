@@ -1,48 +1,53 @@
 import numpy as np
+import numpy.typing as npt
+from attrs import frozen
 
-from .FormattingPulse import FormattingPulse
+from .AbstractPulse import AbstractPulse
 
 
-class SincPulse(FormattingPulse):
+@frozen
+class SincPulse(AbstractPulse):
     r"""
-    Sinc pulse. It is a formatting pulse with impulse response given by
+    Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t}.
+        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t},
     $$
+    and spectrum given by
+    $$
+        \hat{h}(f) = \begin{cases}
+            1, & |f| < \frac{1}{2}, \\\\
+            0, & \text{otherwise}.
+        \end{cases}
+    $$
+
     The sinc pulse is depicted below.
 
     <figure markdown>
       ![Sinc pulse.](/figures/pulse_sinc.svg)
     </figure>
+
+    For more details, see <cite>PS08, Sec. 9.2-1</cite>.
+
+    **Attributes:**
+
+    <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span>
+
+    Examples:
+        >>> pulse = komm.SincPulse()
+        >>> pulse.waveform([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75])
+        array([0., 0., 1., 1., 1., 0., 0.])
     """
 
-    def __init__(self, length_in_symbols):
-        r"""
-        Constructor for the class.
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        t = np.asarray(t)
+        return np.sinc(t)
 
-        Parameters:
-            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
-
-        Examples:
-            >>> pulse = komm.SincPulse(length_in_symbols=64)
-        """
-        L = self._length_in_symbols = int(length_in_symbols)
-
-        def impulse_response(t):
-            return np.sinc(t)
-
-        def frequency_response(f):
-            return 1.0 * (abs(f) < 0.5)
-
-        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        f = np.asarray(f)
+        return 1.0 * (abs(f) < 0.5)
 
     @property
-    def length_in_symbols(self):
-        r"""
-        The length (span) of the truncated impulse response.
-        """
-        return self._length_in_symbols
-
-    def __repr__(self):
-        args = "length_in_symbols={}".format(self._length_in_symbols)
-        return "{}({})".format(self.__class__.__name__, args)
+    def support(self) -> tuple[float, float]:
+        return (-np.inf, np.inf)

@@ -6,6 +6,7 @@
 *[BSC]: binary symmetric channel
 *[DMC]: discrete memoryless channel
 *[DMS]: discrete memoryless source
+*[FIR]: finite impulse response
 *[iid]: independent and identically distributed
 *[LFSR]: linear-feedback shift register
 *[LSB]: least significant bit

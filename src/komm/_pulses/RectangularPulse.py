@@ -1,17 +1,28 @@
-from .FormattingPulse import FormattingPulse
+import numpy as np
+import numpy.typing as npt
+from attrs import frozen
+
+from .AbstractPulse import AbstractPulse
 
 
-class RectangularPulse(FormattingPulse):
+@frozen
+class RectangularPulse(AbstractPulse):
     r"""
-    Rectangular pulse. It is a formatting pulse with impulse response given by
+    Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
         h(t) =
         \begin{cases}
             1, & 0 \leq t < w, \\\\
             0, & \text{otherwise}.
-        \end{cases},
+        \end{cases}
+        = \mathrm{rect}\left(\frac{t}{w}\right),
     $$
-    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. The rectangular pulse is depicted below for $w = 1$ (called the NRZ pulse), and for $w = 0.5$ (called the halfway RZ pulse).
+    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. Its spectrum is given by
+    $$
+        \hat{h}(f) = w \, \operatorname{sinc}(w f).
+    $$
+
+    The rectangular pulse is depicted below for $w = 1$, and for $w = 0.5$.
 
     <div class="centered" markdown>
       <span>
@@ -21,34 +32,38 @@ class RectangularPulse(FormattingPulse):
         ![Rectangular RZ pulse.](/figures/pulse_rectangular_rz.svg)
       </span>
     </div>
+
+    Notes:
+        - For $w = 1$ it is also called the _NRZ pulse_.
+        - For $w = 0.5$ it is also called the _halfway RZ pulse_.
+
+    Attributes:
+        width (Optional[float]): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
+
+    Examples:
+        >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
+        >>> pulse.waveform([-0.50, -0.25,  0.00,  0.25,  0.50,  0.75,  1.00])
+        array([0., 0., 1., 1., 1., 1., 0.])
+        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+
+        >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
+        >>> pulse.waveform([-0.50, -0.25,  0.00,  0.25,  0.50,  0.75,  1.00])
+        array([0., 0., 1., 1., 0., 0., 0.])
+        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.3921, 0.4502, 0.4872, 0.5   , 0.4872, 0.4502, 0.3921])
     """
 
-    def __init__(self, width=1.0):
-        r"""
-        Constructor for the class.
+    width: float = 1.0
 
-        Parameters:
-            width (Optional[float]): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        t = np.asarray(t)
+        return 1.0 * (0.0 <= t) * (t < self.width)
 
-        Examples:
-            >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
-
-            >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
-        """
-        w = self._width = float(width)
-
-        def impulse_response(t):
-            return 1.0 * (0 <= t < w)
-
-        super().__init__(impulse_response, interval=(0.0, 1.0))
-
-    def __repr__(self):
-        args = "width={}".format(self._width)
-        return "{}({})".format(self.__class__.__name__, args)
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        f = np.asarray(f)
+        return self.width * np.sinc(self.width * f)
 
     @property
-    def width(self):
-        r"""
-        The width $w$ of the pulse.
-        """
-        return self._width
+    def support(self) -> tuple[float, float]:
+        return (0.0, self.width)

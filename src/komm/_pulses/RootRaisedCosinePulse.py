@@ -1,15 +1,21 @@
 import numpy as np
+import numpy.typing as npt
+from attrs import frozen
 
-from .FormattingPulse import FormattingPulse
+from .AbstractPulse import AbstractPulse
+from .RaisedCosinePulse import RaisedCosinePulse
 
 
-class RootRaisedCosinePulse(FormattingPulse):
+@frozen
+class RootRaisedCosinePulse(AbstractPulse):
     r"""
-    Root raised cosine pulse. It is a formatting pulse with impulse response given by
+    Root raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \frac{\sin[\pi (1 - \alpha) t] + 4 \alpha t \cos[\pi (1 + \alpha) t]}{\pi t [1 - (4 \alpha t)^2]},
+        h(t) = \frac{\sin \( 2 \pi f_1 t \) + 4 \alpha t \cos \( 2 \pi f_2 t \)}{\pi t \( 1 - (4 \alpha t)^2 \)},
     $$
-    where $\alpha$ is the *roll-off factor*. The root raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
+    where $\alpha$ is the *roll-off factor* (which must satisfy $0 \leq \alpha \leq 1$), $f_1 = (1 - \alpha) / 2$, and $f_2 = (1 + \alpha) / 2$. Its spectrum is given by the square root of the spectrum of the [raised cosine pulse](/ref/RaisedCosinePulse).
+
+    The root raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
     <div class="centered" markdown>
       <span>
@@ -19,60 +25,34 @@ class RootRaisedCosinePulse(FormattingPulse):
         ![Root raised cosine pulse with roll-off factor 0.75.](/figures/pulse_root_raised_cosine_75.svg)
       </span>
     </div>
+
+    Attributes:
+        rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `0.0`.
+
+    Examples:
+        >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+        >>> pulse.waveform([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.2379, 0.6218, 0.9432, 1.0683, 0.9432, 0.6218, 0.2379])
+        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.    , 0.7071, 1.    , 1.    , 1.    , 0.7071, 0.    ])
     """
 
-    def __init__(self, rolloff, length_in_symbols):
-        r"""
-        Constructor for the class.
+    rolloff: float = 0.0
 
-        Parameters:
-            rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        a = self.rolloff
+        t = np.asarray(t) + 1e-8  # TODO: Improve this workaround
+        f1 = (1 - a) / 2
+        f2 = (1 + a) / 2
+        num = np.sin(2 * np.pi * f1 * t) + 4 * a * t * np.cos(2 * np.pi * f2 * t)
+        den = np.pi * t * (1 - (4 * a * t) ** 2)
+        return num / den
 
-            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
-
-        Examples:
-            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
-
-            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
-        """
-        a = self._rolloff = float(rolloff)
-        L = self._length_in_symbols = int(length_in_symbols)
-
-        def impulse_response(t):
-            t += 1e-8
-            return (
-                np.sin(np.pi * (1 - a) * t) + 4 * a * t * np.cos(np.pi * (1 + a) * t)
-            ) / (np.pi * t * (1 - (4 * a * t) ** 2))
-
-        def frequency_response(f):
-            f1 = (1 - a) / 2
-            f2 = (1 + a) / 2
-            H = 1.0 * (abs(f) < f1)
-            if a > 0:
-                H += np.sqrt(
-                    (f1 < abs(f) < f2)
-                    * (0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1)))
-                )
-            return H
-
-        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        a = self.rolloff
+        hf_rc = RaisedCosinePulse(rolloff=a).spectrum
+        return np.sqrt(hf_rc(f))
 
     @property
-    def rolloff(self):
-        r"""
-        The roll-off factor $\alpha$ of the pulse.
-        """
-        return self._rolloff
-
-    @property
-    def length_in_symbols(self):
-        r"""
-        The length (span) of the truncated impulse response.
-        """
-        return self._length_in_symbols
-
-    def __repr__(self):
-        args = "rolloff={}, length_in_symbols={}".format(
-            self._rolloff, self._length_in_symbols
-        )
-        return "{}({})".format(self.__class__.__name__, args)
+    def support(self) -> tuple[float, float]:
+        return (-np.inf, np.inf)

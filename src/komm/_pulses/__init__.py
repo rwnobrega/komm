@@ -1,5 +1,6 @@
 from .GaussianPulse import GaussianPulse
 from .ManchesterPulse import ManchesterPulse
+from .Pulse import Pulse
 from .RaisedCosinePulse import RaisedCosinePulse
 from .ReceiveFilter import ReceiveFilter
 from .RectangularPulse import RectangularPulse

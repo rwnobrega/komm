@@ -1,15 +1,28 @@
 import numpy as np
+import numpy.typing as npt
+from attrs import frozen
 
-from .FormattingPulse import FormattingPulse
+from .AbstractPulse import AbstractPulse
 
 
-class RaisedCosinePulse(FormattingPulse):
+@frozen
+class RaisedCosinePulse(AbstractPulse):
     r"""
-    Raised cosine pulse. It is a formatting pulse with impulse response given by
+    Raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
         h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
     $$
-    where $\alpha$ is the *roll-off factor*. The raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
+    where $\alpha$ is the *roll-off factor*, which must satisfy $0 \leq \alpha \leq 1$. Its spectrum is given by
+    $$
+        \hat{h}(f) = \begin{cases}
+            1, & |f| \leq f_1, \\\\[1ex]
+            \dfrac{1}{2} \left( 1 + \cos \left( \pi \dfrac{|f| - f_1}{f_2 - f_1}\right) \right), & f_1 \leq |f| \leq f_2, \\\\[1ex]
+            0, & \text{otherwise}.
+        \end{cases}
+    $$
+    where $f_1 = (1 - \alpha) / 2$ and $f_2 = (1 + \alpha) / 2$.
+
+    The raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
     <div class="centered" markdown>
       <span>
@@ -20,58 +33,41 @@ class RaisedCosinePulse(FormattingPulse):
       </span>
     </div>
 
-    For  $\alpha = 0$, the raised cosine pulse reduces to the [sinc pulse](/ref/SincPulse).
+    For more details, see <cite>PS08, Sec. 9.2-1</cite>.
+
+    Notes:
+        - For $\alpha = 0$ it reduces to the [sinc pulse](/ref/SincPulse).
+        - For $\alpha = 1$ it becomes what is known as the _full cosine roll-off pulse_.
+
+    Attributes:
+        rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `1.0`.
+
+    Examples:
+        >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
+        >>> pulse.waveform([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
+        array([0.2904, 0.6274, 0.897 , 1.    , 0.897 , 0.6274, 0.2904])
+        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75])
+        array([0. , 0.5, 1. , 1. , 1. , 0.5, 0. ])
     """
 
-    def __init__(self, rolloff, length_in_symbols):
-        r"""
-        Constructor for the class.
+    rolloff: float = 1.0
 
-        Parameters:
-            rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$.
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        a = self.rolloff
+        t = np.asarray(t) + 1e-8  # TODO: Improve this workaround
+        return np.sinc(t) * np.cos(np.pi * a * t) / (1 - (2 * a * t) ** 2)
 
-            length_in_symbols (int): The length (span) of the truncated impulse response, in symbols.
-
-        Examples:
-            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25, length_in_symbols=16)
-
-            >>> pulse = komm.RaisedCosinePulse(rolloff=0.75, length_in_symbols=16)
-        """
-        a = self._rolloff = float(rolloff)
-        L = self._length_in_symbols = int(length_in_symbols)
-
-        def impulse_response(t):
-            t += 1e-8
-            return np.sinc(t) * np.cos(np.pi * a * t) / (1 - (2 * a * t) ** 2)
-
-        def frequency_response(f):
-            f1 = (1 - a) / 2
-            f2 = (1 + a) / 2
-            H = 1.0 * (abs(f) < f1)
-            if a > 0:
-                H += (f1 < abs(f) < f2) * (
-                    0.5 + 0.5 * np.cos((np.pi * (abs(f) - f1)) / (f2 - f1))
-                )
-            return H
-
-        super().__init__(impulse_response, frequency_response, interval=(-L / 2, L / 2))
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+        a = self.rolloff
+        f = np.asarray(f)
+        if a == 0:
+            return 1.0 * (abs(f) < 0.5)
+        f1 = (1 - a) / 2
+        f2 = (1 + a) / 2
+        band1 = abs(f) < f1
+        band2 = (f1 < abs(f)) * (abs(f) < f2)
+        return 1.0 * band1 + (0.5 * (1 + np.cos(np.pi * (abs(f) - f1) / a))) * band2
 
     @property
-    def rolloff(self):
-        r"""
-        The roll-off factor $\alpha$ of the pulse.
-        """
-        return self._rolloff
-
-    @property
-    def length_in_symbols(self):
-        r"""
-        The length (span) of the truncated impulse response.
-        """
-        return self._length_in_symbols
-
-    def __repr__(self):
-        args = "rolloff={}, length_in_symbols={}".format(
-            self._rolloff, self._length_in_symbols
-        )
-        return "{}({})".format(self.__class__.__name__, args)
+    def support(self) -> tuple[float, float]:
+        return (-np.inf, np.inf)
