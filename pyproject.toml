@@ -17,6 +17,11 @@ urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/
 requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.pyright]
+include = ["src", "tests"]
+typeCheckingMode = "basic"
+strict = ["src/**"]
+
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
 python_files = ["test_*.py", "bench_*.py"]
