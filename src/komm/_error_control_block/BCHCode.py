@@ -58,7 +58,7 @@ class BCHCode(CyclicCode):
         >>> komm.BCHCode(mu=7, delta=32)
         Traceback (most recent call last):
         ...
-        ValueError: 'delta' must be a Bose distance (the next one is 43).
+        ValueError: 'delta' must be a Bose distance (the next one is 43)
 
         >>> komm.BCHCode(mu=7, delta=43)
         BCHCode(mu=7, delta=43)
@@ -69,15 +69,15 @@ class BCHCode(CyclicCode):
 
     def __attrs_post_init__(self) -> None:
         if self.mu < 2:
-            raise ValueError("'mu' must satisfy mu >= 2.")
+            raise ValueError("'mu' must satisfy mu >= 2")
         if not 2 <= self.delta <= 2**self.mu - 1:
-            raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1.")
+            raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
         if self.phi(self.delta) in self.lcm_set:
             bose_distance = self.delta
             while self.phi(bose_distance) in self.lcm_set:
                 bose_distance += 1
             raise ValueError(
-                f"'delta' must be a Bose distance (the next one is {bose_distance})."
+                f"'delta' must be a Bose distance (the next one is {bose_distance})"
             )
 
     @cached_property

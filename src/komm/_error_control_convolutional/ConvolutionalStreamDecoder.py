@@ -63,7 +63,7 @@ class ConvolutionalStreamDecoder:
             return np.count_nonzero(self.cache_bit[y] != z)
         elif self.input_type == "soft":
             return np.dot(self.cache_bit[y], z)
-        raise ValueError(f"Input type '{self.input_type}' is not supported.")
+        raise ValueError(f"input type '{self.input_type}' is not supported")
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
         n, k, fsm = (

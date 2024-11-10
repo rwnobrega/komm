@@ -133,12 +133,12 @@ class BlockDecoder:
 
     def __attrs_post_init__(self) -> None:
         method = self.method or self.code.default_decoder
-        help_message = f"To see the available decoding methods for a given code, use `code.supported_decoders`"
+        help_message = f"(to see the available decoding methods for a given code, use `code.supported_decoders()`)"
         if not RegistryBlockDecoder.is_registered(method):
-            raise ValueError(f"Method '{method}' is unknown. {help_message}")
+            raise ValueError(f"method '{method}' is unknown {help_message}")
         if method not in self.code.supported_decoders():
             raise ValueError(
-                f"Method '{method}' is not supported by the code. {help_message}"
+                f"method '{method}' is not supported by the code {help_message}"
             )
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
@@ -147,11 +147,11 @@ class BlockDecoder:
         if decoder_data["type_in"] == "hard" and not np.issubdtype(
             np.asarray(in0).dtype, np.integer
         ):
-            raise TypeError(f"Input type must be 'int' for method '{method}'")
+            raise TypeError(f"input type must be 'int' for method '{method}'")
         if decoder_data["type_in"] == "soft" and not np.issubdtype(
             np.asarray(in0).dtype, np.floating
         ):
-            raise TypeError(f"Input type must be 'float' for method '{method}'")
+            raise TypeError(f"input type must be 'float' for method '{method}'")
         r = np.reshape(in0, (-1, self.code.length))
         decoder = lambda r: decoder_data["decoder"](self.code, r, **self.decoder_kwargs)
         decoded = np.apply_along_axis(decoder, 1, r)

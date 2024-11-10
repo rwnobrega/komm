@@ -76,10 +76,10 @@ class WalshHadamardSequence(BinarySequence):
             array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])
         """
         if length & (length - 1):
-            raise ValueError("The length of sequence must be a power of two")
+            raise ValueError("parameter 'length' must be a power of two")
 
         if not 0 <= index < length:
-            raise ValueError("Parameter 'index' must be in [0, ..., length)")
+            raise ValueError("parameter 'index' must be in [0 : length)")
 
         if ordering == "natural":
             natural_index = index
@@ -91,7 +91,7 @@ class WalshHadamardSequence(BinarySequence):
             raise NotImplementedError
         else:
             raise ValueError(
-                "Parameter 'ordering' must be 'natural', 'sequency' or 'dyadic'"
+                "parameter 'ordering' must be in {'natural', 'sequency', 'dyadic'}"
             )
 
         self._index = index

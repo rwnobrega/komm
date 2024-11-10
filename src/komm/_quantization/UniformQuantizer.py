@@ -71,7 +71,7 @@ class UniformQuantizer(ScalarQuantizer):
             )
         else:
             raise ValueError(
-                "Parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}"
+                "parameter 'choice' must be in {'unsigned', 'mid-riser', 'mid-tread'}"
             )
 
         thresholds = (levels + delta / 2)[:-1]

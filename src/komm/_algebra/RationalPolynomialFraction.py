@@ -19,7 +19,7 @@ class RationalPolynomialFraction:
         self._numerator = RationalPolynomial(numerator)
         self._denominator = RationalPolynomial(denominator)
         if self._denominator.degree == -1:
-            raise ZeroDivisionError("Denominator cannot be zero")
+            raise ZeroDivisionError("denominator cannot be zero")
         self._reduce_to_lowest_terms()
         self._reduce_to_integer_coefficients()
 

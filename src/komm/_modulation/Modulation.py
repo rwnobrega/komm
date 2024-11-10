@@ -84,20 +84,20 @@ class Modulation:
             self._constellation = np.array(constellation, dtype=complex)
         self._order = self._constellation.size
         if self._order & (self._order - 1):
-            raise ValueError("The length of `constellation` must be a power of two")
+            raise ValueError("length of 'constellation' must be a power of two")
         self._bits_per_symbol = (self._order - 1).bit_length()
 
         self._labeling = np.array(labeling, dtype=int)
         if self._labeling.shape != (self._order, self._bits_per_symbol):
             raise ValueError(
-                "The shape of `labeling` must be ({}, {})".format(
+                "shape of 'labeling' must be ({}, {})".format(
                     self._order, self._bits_per_symbol
                 )
             )
         if np.any(self._labeling < 0) or np.any(self._labeling > 1):
-            raise ValueError("The elements of `labeling` must be either 0 or 1")
+            raise ValueError("elements of 'labeling' must be either 0 or 1")
         if len(set(tuple(row) for row in self._labeling)) != self._order:
-            raise ValueError("The rows of `labeling` must be distinct")
+            raise ValueError("rows of 'labeling' must be distinct")
 
         self._inverse_labeling = dict(
             zip(map(tuple, self._labeling), range(self._order))
@@ -261,7 +261,7 @@ class Modulation:
         n_symbols = len(bits) // m
         if len(bits) != n_symbols * m:
             raise ValueError(
-                "The length of `bits` must be a multiple of the number of bits per symbol."
+                "length of 'bits' must be a multiple of the number of bits per symbol"
             )
         symbols = np.empty(n_symbols, dtype=self._constellation.dtype)
         for i, bit_sequence in enumerate(np.reshape(bits, shape=(n_symbols, m))):
@@ -334,6 +334,6 @@ class Modulation:
             demodulate = getattr(self, "_demodulate_" + decision_method)
         else:
             raise ValueError(
-                "Parameter `decision_method` should be either 'hard' or 'soft'"
+                "parameter 'decision_method' should be either 'hard' or 'soft'"
             )
         return demodulate(np.asarray(received), **kwargs)

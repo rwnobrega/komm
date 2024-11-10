@@ -51,9 +51,9 @@ class ZadoffChuSequence(ComplexSequence):
             array([ 1.+0.j, -0.-0.j, -0.-0.j,  0.+0.j, -0.+0.j])
         """
         if length % 2 == 0:
-            raise ValueError("The length must be an odd integer.")
+            raise ValueError("parameter 'length' must be an odd integer")
         if not 1 <= root_index < length:
-            raise ValueError("The root index must satisfy 1 <= root_index < length.")
+            raise ValueError("parameter 'root_index' must be in [1 : length)")
         self._length = length
         self._root = root_index
         super().__init__(self._zadoff_chu_sequence(length, root_index))

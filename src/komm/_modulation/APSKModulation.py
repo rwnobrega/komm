@@ -72,7 +72,7 @@ class APSKModulation(Modulation):
             labeling = labelings[labeling](sum(orders))
         elif isinstance(labeling, str):
             raise ValueError(
-                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+                f"only {allowed_labelings} or 2D-arrays are allowed for the labeling"
             )
 
         super().__init__(

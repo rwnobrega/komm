@@ -126,7 +126,7 @@ class LFSRSequence(BinarySequence):
     @staticmethod
     def _default_primitive_polynomial(degree):
         if degree < 1 or degree > 16:
-            raise ValueError("Only degrees in the range [1 : 16] are implemented.")
+            raise ValueError("only degrees in the range [1 : 16] are implemented")
         return {
             1: 0b11,
             2: 0b111,

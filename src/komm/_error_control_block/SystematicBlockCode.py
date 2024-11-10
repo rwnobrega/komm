@@ -115,9 +115,9 @@ class SystematicBlockCode(BlockCode):
     def inv_enc_mapping(self, v: npt.ArrayLike) -> np.ndarray:
         v = np.asarray(v)
         if v.size != self.length:
-            raise ValueError("The length of 'v' must be equal to the code length")
+            raise ValueError("length of 'v' must be equal to the code length")
         s = self.chk_mapping(v)
         if not np.all(s == 0):
-            raise ValueError("The input 'v' is not a valid codeword")
+            raise ValueError("input 'v' is not a valid codeword")
         u = np.take(v, self.information_set)
         return u

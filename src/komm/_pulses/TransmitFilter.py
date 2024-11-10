@@ -60,7 +60,7 @@ class TransmitFilter:
         >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
         Traceback (most recent call last):
         ...
-        ValueError: Parameter 'truncation' is only applicable to pulses with infinite support.
+        ValueError: parameter 'truncation' is only applicable to pulses with infinite support
     """
 
     pulse: AbstractPulse
@@ -79,19 +79,19 @@ class TransmitFilter:
     def __attrs_post_init__(self) -> None:
         if self._pulse_support_kind() == "semi-infinite":
             raise ValueError(
-                "Pulses with semi-infinite support are not supported.",
+                "pulses with semi-infinite support are not supported",
             )
         elif self._pulse_support_kind() == "finite":
             if self.truncation is not None:
                 raise ValueError(
-                    "Parameter 'truncation' is only applicable to pulses with infinite support.",
+                    "parameter 'truncation' is only applicable to pulses with infinite support",
                 )
         elif self._pulse_support_kind() == "infinite":
             if self.truncation is None:
                 object.__setattr__(self, "truncation", 32)
             elif self.truncation <= 0 or self.truncation % 2 != 0:
                 raise ValueError(
-                    "Parameter 'truncation' must be an even positive integer.",
+                    "parameter 'truncation' must be an even positive integer",
                 )
 
     @property

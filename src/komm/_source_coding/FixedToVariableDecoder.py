@@ -30,14 +30,14 @@ class FixedToVariableDecoder:
         >>> decoder = komm.FixedToVariableDecoder(code)
         Traceback (most recent call last):
         ...
-        ValueError: The code is not prefix-free.
+        ValueError: code is not prefix-free
     """
 
     code: FixedToVariableCode
 
     def __attrs_post_init__(self):
         if not self.code.is_prefix_free():
-            raise ValueError("The code is not prefix-free.")
+            raise ValueError("code is not prefix-free")
 
     def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
         out0 = np.array(parse_prefix_free(in0, self.code.inv_enc_mapping))

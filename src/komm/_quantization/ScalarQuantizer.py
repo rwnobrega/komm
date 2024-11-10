@@ -49,14 +49,14 @@ class ScalarQuantizer:
         self._num_levels = self._levels.size
 
         if self._thresholds.size != self._num_levels - 1:
-            raise ValueError("The length of 'thresholds' must be 'num_levels - 1'")
+            raise ValueError("length of 'thresholds' must be 'num_levels - 1'")
 
         interleaved = np.empty(2 * self._num_levels - 1, dtype=float)
         interleaved[0::2] = self._levels
         interleaved[1::2] = self._thresholds
 
         if not np.array_equal(np.unique(interleaved), interleaved):
-            raise ValueError("Invalid values for 'levels' and 'thresholds'")
+            raise ValueError("invalid values for 'levels' and 'thresholds'")
 
     @property
     def levels(self):

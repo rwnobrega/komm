@@ -39,7 +39,7 @@ class BinarySequence:
             self._bit_sequence = 1 * (self._polar_sequence < 0)
             self._constructed_from = "polar_sequence"
         else:
-            raise ValueError("Either specify 'bit_sequence' or 'polar_sequence'")
+            raise ValueError("either specify 'bit_sequence' or 'polar_sequence'")
         self._length = self._bit_sequence.size
 
     def __repr__(self):

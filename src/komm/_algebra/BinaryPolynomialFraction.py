@@ -15,7 +15,7 @@ class BinaryPolynomialFraction:
         self._numerator = BinaryPolynomial(numerator)
         self._denominator = BinaryPolynomial(denominator)
         if denominator == 0:
-            raise ZeroDivisionError("Denominator cannot be zero")
+            raise ZeroDivisionError("denominator cannot be zero")
         self._reduce_to_lowest_terms()
 
     def _reduce_to_lowest_terms(self):

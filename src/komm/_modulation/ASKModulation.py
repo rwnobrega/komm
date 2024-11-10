@@ -64,7 +64,7 @@ class ASKModulation(Modulation):
             labeling = labelings[labeling](order)
         elif isinstance(labeling, str):
             raise ValueError(
-                f"Only {allowed_labelings} or 2D-arrays are allowed for the labeling."
+                f"only {allowed_labelings} or 2D-arrays are allowed for the labeling"
             )
 
         super().__init__(

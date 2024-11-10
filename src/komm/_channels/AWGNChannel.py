@@ -46,7 +46,7 @@ class AWGNChannel:
         """
         if self.signal_power == "measured":
             raise ValueError(
-                "The noise power cannot be calculated when the signal power is measured."
+                "noise power cannot be calculated when 'signal_power' is 'measured'"
             )
         return self.signal_power / self.snr
 

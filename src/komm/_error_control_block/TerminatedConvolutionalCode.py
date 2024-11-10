@@ -72,7 +72,7 @@ class TerminatedConvolutionalCode(BlockCode):
                 self.zs_multiplier
             except:
                 raise ValueError(
-                    "This convolutional code does not support tail-biting for this number of blocks"
+                    "this convolutional code does not support tail-biting for this number of blocks"
                 )
 
     @property
@@ -140,7 +140,7 @@ class TerminatedConvolutionalCode(BlockCode):
     def tail_projector(self) -> np.ndarray:
         if self.mode != "zero-termination":
             raise ValueError(
-                "This property is only defined for mode='zero-termination'"
+                "this property is only defined for mode='zero-termination'"
             )
         h = self.num_blocks
         mu = self.convolutional_code.memory_order
@@ -161,7 +161,7 @@ class TerminatedConvolutionalCode(BlockCode):
     def zs_multiplier(self) -> np.ndarray:
         # See [WBR01, eq. (4)].
         if self.mode != "tail-biting":
-            raise ValueError("This property is only defined for mode='tail-biting'")
+            raise ValueError("this property is only defined for mode='tail-biting'")
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
         A_mat = self.convolutional_code.state_matrix

@@ -129,9 +129,7 @@ class FiniteBifield:
         if d._integer == 1:
             return self(s)
         else:
-            raise ZeroDivisionError(
-                "This element does not have a multiplicative inverse"
-            )
+            raise ZeroDivisionError("element does not have a multiplicative inverse")
 
     # ~@functools.lru_cache(maxsize=None)
     def logarithm(self, x, base=None):
