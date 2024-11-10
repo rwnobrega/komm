@@ -12,10 +12,10 @@ def test_bsc_protocol():
     assert isinstance(channel, AbstractDiscreteMemorylessChannel)
 
 
-@pytest.mark.parametrize("epsilon", [-0.1, 1.1])
-def test_bsc_invalid_crossover_probability(epsilon):
+@pytest.mark.parametrize("p", [-0.1, 1.1])
+def test_bsc_invalid_crossover_probability(p):
     with pytest.raises(ValueError):
-        komm.BinarySymmetricChannel(epsilon)
+        komm.BinarySymmetricChannel(p)
 
 
 def test_bsc_noiseless():

@@ -12,10 +12,10 @@ def test_bec_protocol():
     assert isinstance(channel, AbstractDiscreteMemorylessChannel)
 
 
-@pytest.mark.parametrize("epsilon", [-0.1, 1.1])
-def test_bec_invalid_erasure_probability(epsilon):
+@pytest.mark.parametrize("eps", [-0.1, 1.1])
+def test_bec_invalid_erasure_probability(eps):
     with pytest.raises(ValueError):
-        komm.BinaryErasureChannel(epsilon)
+        komm.BinaryErasureChannel(eps)
 
 
 def test_bec_noiseless():
