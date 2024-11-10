@@ -87,7 +87,11 @@ class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
 
     def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
         r"""
-        Returns the channel capacity $C$. It is given by $C = 1 - \Hb(p)$, in bits, where $\Hb$ is the [binary entropy function](/ref/binary_entropy).
+        Returns the channel capacity $C$. It is given by
+        $$
+            C = 1 - \Hb(p),
+        $$
+        in bits, where $\Hb$ is the [binary entropy function](/ref/binary_entropy).
 
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.1)

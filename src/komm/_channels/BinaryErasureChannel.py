@@ -88,7 +88,11 @@ class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
 
     def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
         r"""
-        Returns the channel capacity $C$. It is given by $C = 1 - \epsilon$, in bits.
+        Returns the channel capacity $C$. It is given by
+        $$
+            C = 1 - \epsilon,
+        $$
+        in bits.
 
         Examples:
             >>> bec = komm.BinaryErasureChannel(0.1)
