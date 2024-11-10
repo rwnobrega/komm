@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../../css/markdown.css">
   <link rel="stylesheet" href="../../css/mkdocs.css">
   <link rel="stylesheet" href="../../css/mkdocstrings.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script>
   __md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}
   </script>
@@ -174,6 +174,12 @@
                                 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                                    </li>
                                     <li class="md-nav__item">
                                       <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
                                     </li>
@@ -497,6 +503,9 @@
                               <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
                               </li>
+                              <li class="md-nav__item">
+                                <a href="../binary_entropy/" class="md-nav__link"><span class="md-ellipsis">binary_entropy</span></a>
+                              </li>
                             </ul>
                           </nav>
                         </li>
@@ -515,6 +524,12 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
+                    <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
                   </li>
                 </ul>
@@ -527,7 +542,7 @@
             <h1 id="kommbinarysymmetricchannel">komm.BinarySymmetricChannel</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Binary symmetric channel (<abbr title="binary symmetric channel">BSC</abbr>). It is a <a href="/ref/DiscreteMemorylessChannel">discrete memoryless channel</a> with input and output alphabets given by $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$, and transition probability matrix given by $$ p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix}, $$ where the parameter $p$ is called the <em>crossover probability</em> of the channel. Equivalently, a <abbr title="binary symmetric channel">BSC</abbr> with crossover probability $p$ may be defined by $$ Y_n = X_n + Z_n, $$ where $Z_n$ are <abbr title="independent and identically distributed">iid</abbr> Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 7.1.4</cite>.</p>
+                <p>Binary symmetric channel (<abbr title="binary symmetric channel">BSC</abbr>). It is a <a href="/ref/DiscreteMemorylessChannel">discrete memoryless channel</a> with input and output alphabets $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$. The channel is characterized by a parameter $p$, called the <em>crossover probability</em>. With probability $1 - p$, the output symbol is identical to the input symbol, and with probability $p$, the output symbol is flipped. Equivalently, the channel can be modeled as $$ Y_n = X_n + Z_n, $$ where $Z_n$ are <abbr title="independent and identically distributed">iid</abbr> Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 7.1.4</cite>.</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -540,7 +555,7 @@
                 <p><strong>Input:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>in0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <b><code>input_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
                     <div class="doc-md-description">
                       <p>The input sequence.</p>
                     </div>
@@ -549,7 +564,7 @@
                 <p><strong>Output:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>out0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <b><code>output_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
                     <div class="doc-md-description">
                       <p>The output sequence.</p>
                     </div>
@@ -559,25 +574,49 @@
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="o">.</span><span class="n">transition_matrix</span>
-<span class="go">array([[0.9, 0.1],</span>
-<span class="go">       [0.1, 0.9]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">bsc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])</span>
 </code></pre>
                 </div>
                 <div class="doc doc-children">
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="transition_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">transition_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The transition probability matrix of the channel. It is given by $$ p_{Y \mid X} = \begin{bmatrix} 1-p & p \\ p & 1-p \end{bmatrix}. $$</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="o">.</span><span class="n">transition_matrix</span>
+<span class="go">array([[0.9, 0.1],</span>
+<span class="go">       [0.1, 0.9]])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by $$ \mathrm{I}(X ; Y) = \Hb(p + \pi - 2 p \pi) - \Hb(p), $$ in bits, where $\pi = \Pr[X = 1]$, and $\Hb$ is the <a href="/ref/binary_entropy">binary entropy function</a>.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <p>Same as the <a href="/ref/DiscreteMemorylessChannel/#mutual_information">corresponding method</a> of the general class.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">])</span>
+<span class="go">np.float64(0.5263828452309445)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
                   <div class="doc doc-object doc-function">
                     <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the channel capacity $C$. It is given by $C = 1 - \mathcal{H}(p)$. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 7.1.4</cite>.</p>
+                      <p>Returns the channel capacity $C$. It is given by $C = 1 - \Hb(p)$, in bits, where $\Hb$ is the <a href="/ref/binary_entropy">binary entropy function</a>.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
-<span class="go">np.float64(0.18872187554086717)</span>
+<span class="go">np.float64(0.5310044064107188)</span>
 </code></pre>
                       </div>
                     </div>
@@ -633,7 +672,7 @@
   </script> 
   <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script> 
   <script src="../../javascripts/katex.js"></script> 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js"></script> 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 </body>
 </html>

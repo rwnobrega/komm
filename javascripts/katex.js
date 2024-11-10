@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "\\snr": "\\mathrm{SNR}",
       "\\Enc": "\\mathrm{Enc}",
       "\\Dec": "\\mathrm{Dec}",
+      "\\Hb": "\\mathrm{H}_\\mathrm{b}",
     },
     throwOnError: false,
   });
