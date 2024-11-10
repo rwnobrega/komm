@@ -1,51 +1,59 @@
+from typing import Any
+
 import numpy as np
+import numpy.typing as npt
 from attrs import field, frozen
 
-from .._util.information_theory import _arimoto_blahut, _mutual_information
+from .._util.information_theory import LogBase, arimoto_blahut, mutual_information
+from .._validation import is_transition_matrix
+from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
 @frozen
-class DiscreteMemorylessChannel:
+class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
     r"""
-    Discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
+    General discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$ and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
 
     Attributes:
         transition_matrix (Array2D[float]): The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
 
     Parameters: Input:
-        in0 (Array1D[int]): The input sequence.
+        input_sequence (Array1D[int]): The input sequence.
 
     Parameters: Output:
-        out0 (Array1D[int]): The output sequence.
+        output_sequence (Array1D[int]): The output sequence.
 
     Examples:
         >>> np.random.seed(1)
         >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-        >>> x = [0, 1, 0, 1, 1, 1, 0, 0, 0, 1]
-        >>> y = dmc(x)
-        >>> y
+        >>> dmc([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
         array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
+
     """
 
-    transition_matrix: np.ndarray = field(converter=np.asarray)
+    transition_matrix: npt.NDArray[np.float64] = field(
+        converter=np.asarray, validator=is_transition_matrix
+    )
 
     @property
-    def input_cardinality(self):
+    def input_cardinality(self) -> int:
         r"""
         The channel input cardinality $|\mathcal{X}|$.
         """
         return self.transition_matrix.shape[0]
 
     @property
-    def output_cardinality(self):
+    def output_cardinality(self) -> int:
         r"""
         The channel output cardinality $|\mathcal{Y}|$.
         """
         return self.transition_matrix.shape[1]
 
-    def mutual_information(self, input_pmf, base=2.0):
+    def mutual_information(
+        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+    ) -> float:
         r"""
-        Computes the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by
+        Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by
         $$
             \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
         $$
@@ -61,45 +69,50 @@ class DiscreteMemorylessChannel:
 
         Examples:
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
-            >>> dmc.mutual_information([1/3, 1/3, 1/3])  # doctest: +NUMBER
-            np.float64(0.123811098798)
-            >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)  # doctest: +NUMBER
-            np.float64(0.078116106054)
+            >>> dmc.mutual_information([1/3, 1/3, 1/3]).round(6)
+            np.float64(0.123811)
+            >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3).round(6)
+            np.float64(0.078116)
+            >>> dmc.mutual_information([1/3, 1/3, 1/3], base='e').round(6)
+            np.float64(0.085819)
         """
-        return _mutual_information(input_pmf, self.transition_matrix, base)
+        return mutual_information(input_pmf, self.transition_matrix, base)
 
-    def capacity(self, base=2.0, arimoto_blahut_kwargs=None):
+    def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
         r"""
         Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite>CT06, Sec. 10.8</cite>.
 
         Parameters:
             base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
+        Parameters: Additional keyword arguments for the Arimoto–Blahut algorithm:
+            max_iters (Optional[int]): The maximum number of iterations. The default value is `1000`.
+            error_tolerance (Optional[float]): The error tolerance. The default value is `1e-12`.
+
         Returns:
             capacity (float): The channel capacity $C$.
 
         Examples:
             >>> dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2], [0.5, 0.05, 0.45]])
-            >>> dmc.capacity()  # doctest: +NUMBER
-            np.float64(0.1616318610)
-            >>> dmc.capacity(base=3)  # doctest: +NUMBER
-            np.float64(0.1019783502)
+            >>> dmc.capacity().round(6)
+            np.float64(0.161632)
+            >>> dmc.capacity(base=3).round(6)
+            np.float64(0.101978)
+            >>> dmc.capacity(base='e').round(6)
+            np.float64(0.112035)
         """
-        if arimoto_blahut_kwargs is None:
-            arimoto_blahut_kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
-        initial_guess = (
-            np.ones(self.input_cardinality, dtype=float) / self.input_cardinality
+        if not kwargs:
+            kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
+        initial_guess = np.ones(self.input_cardinality) / self.input_cardinality
+        optimal_input_pmf = arimoto_blahut(
+            self.transition_matrix, initial_guess, **kwargs
         )
-        optimal_input_pmf = _arimoto_blahut(
-            self.transition_matrix, initial_guess, **arimoto_blahut_kwargs
-        )
-        return _mutual_information(optimal_input_pmf, self.transition_matrix, base=base)
+        return mutual_information(optimal_input_pmf, self.transition_matrix, base=base)
 
-    def __call__(self, input_sequence):
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int64]:
+        input_sequence = np.asarray(input_sequence)
         output_sequence = [
-            np.random.choice(
-                self.output_cardinality, p=self.transition_matrix[input_symbol]
-            )
-            for input_symbol in input_sequence
+            np.random.choice(self.output_cardinality, p=self.transition_matrix[x])
+            for x in input_sequence
         ]
         return np.array(output_sequence)

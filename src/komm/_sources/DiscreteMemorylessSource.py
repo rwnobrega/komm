@@ -1,8 +1,9 @@
 import numpy as np
+import numpy.typing as npt
 from attrs import field, frozen
 
-from .._util import _entropy
-from .._validation import is_log_base, is_pmf, validate_call
+from .._util.information_theory import LogBase, entropy
+from .._validation import is_pmf
 
 
 @frozen
@@ -22,17 +23,16 @@ class DiscreteMemorylessSource:
         array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
     """
 
-    pmf: np.ndarray = field(converter=np.asarray, validator=is_pmf)
+    pmf: npt.NDArray[np.float64] = field(converter=np.asarray, validator=is_pmf)
 
     @property
-    def cardinality(self):
+    def cardinality(self) -> int:
         r"""
         The cardinality $|\mathcal{X}|$ of the source alphabet.
         """
         return self.pmf.size
 
-    @validate_call(base=field(validator=is_log_base))
-    def entropy(self, base=2.0):
+    def entropy(self, base: LogBase = 2.0) -> float:
         r"""
         Returns the source entropy $\mathrm{H}(X)$. See [`komm.entropy`](/ref/entropy) for more details.
 
@@ -46,7 +46,7 @@ class DiscreteMemorylessSource:
             >>> dms.entropy(base=4)
             np.float64(0.875)
         """
-        return _entropy(self.pmf, base)
+        return entropy(self.pmf, base)
 
-    def __call__(self, size):
+    def __call__(self, size: int) -> npt.NDArray[np.int64]:
         return np.random.choice(self.pmf.size, p=self.pmf, size=size)

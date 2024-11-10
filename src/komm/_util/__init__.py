@@ -23,12 +23,13 @@ from .bit_operations import (
     unpack,
 )
 from .correlation import acorr, cyclic_acorr
-from .information_theory import _entropy, _mutual_information, entropy
+from .information_theory import binary_entropy, entropy
 from .matrices import cartesian_product
 from .special_functions import qfunc, qfuncinv
 
 __all__ = [
     "acorr",
+    "binary_entropy",
     "binlist2int",
     "cyclic_acorr",
     "entropy",

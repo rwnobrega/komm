@@ -87,3 +87,4 @@ Utilities:
   - acorr
   - cyclic_acorr
   - entropy
+  - binary_entropy

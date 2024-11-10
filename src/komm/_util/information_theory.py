@@ -1,28 +1,30 @@
+import math
+from functools import partial
+from typing import Literal, cast
+
 import numpy as np
+import numpy.typing as npt
 from attrs import field
 
-from .._validation import is_log_base, is_pmf, validate_call
+from .._validation import (
+    is_log_base,
+    is_pmf,
+    is_probability,
+    is_transition_matrix,
+    validate_call,
+)
 
-
-def _entropy(pmf, base):
-    # Assumptions:
-    # - pmf is a valid pmf.
-    def _entropy_base_e(pmf):
-        return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
-
-    if base == "e":
-        return _entropy_base_e(pmf)
-    elif base == 2.0:
-        return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
-    else:
-        return _entropy_base_e(pmf) / np.log(base)
+LogBase = float | Literal["e"]
 
 
 @validate_call(
     pmf=field(converter=np.asarray, validator=is_pmf),
     base=field(validator=is_log_base),
 )
-def entropy(pmf, base: float | str = 2.0):
+def entropy(
+    pmf: npt.ArrayLike,
+    base: LogBase = 2.0,
+) -> float:
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
@@ -42,23 +44,74 @@ def entropy(pmf, base: float | str = 2.0):
         >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
         np.float64(2.0)
 
-        >>> komm.entropy(base=3.0, pmf=[1/3, 1/3, 1/3])  # doctest: +NUMBER
+        >>> komm.entropy(pmf=[1/3, 1/3, 1/3], base=3.0)  # doctest: +NUMBER
         np.float64(1.0)
+
+        >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +NUMBER
+        np.float64(0.6931471805599453)
     """
-    return _entropy(pmf, base)
+    pmf = cast(npt.NDArray[np.float64], pmf)
+    if base == "e":
+        return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
+    elif base == 2.0:
+        return -np.dot(pmf, np.log2(pmf, where=(pmf > 0)))
+    else:
+        return -np.dot(pmf, np.log(pmf, where=(pmf > 0))) / np.log(base)
 
 
-def _mutual_information(input_pmf, transition_probabilities, base=2.0):
-    output_pmf = np.dot(input_pmf, transition_probabilities)
-    entropy_output_prior = _entropy(output_pmf, base=base)
-    entropy_base = lambda pmf: _entropy(pmf, base=base)
+@validate_call(p=field(validator=is_probability))
+def binary_entropy(p: float) -> float:
+    r"""
+    Computes the binary entropy function. For a given probability $p$, it is defined as
+    $$
+        \Hb(p) = p \log_2 \frac{1}{p} + (1 - p) \log_2 \frac{1}{1 - p},
+    $$
+    and corresponds to the [entropy](/ref/entropy) of a Bernoulli random variable with parameter $p$.
+
+    Parameters:
+        p (float): A probability value. It must satisfy $0 \leq p \leq 1$.
+
+    Returns:
+        entropy (float): The value of the binary entropy function $\Hb(p)$.
+
+    Examples:
+        >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +NUMBER
+        [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
+    """
+    if p in {0.0, 1.0}:
+        return 0.0
+    return -p * math.log2(p) - (1 - p) * math.log2(1 - p)
+
+
+@validate_call(
+    input_pmf=field(converter=np.asarray, validator=is_pmf),
+    transition_matrix=field(converter=np.asarray, validator=is_transition_matrix),
+    base=field(validator=is_log_base),
+)
+def mutual_information(
+    input_pmf: npt.ArrayLike,
+    transition_matrix: npt.ArrayLike,
+    base: LogBase = 2.0,
+) -> float:
+    output_pmf = np.dot(input_pmf, transition_matrix)
+    entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(
-        input_pmf, np.apply_along_axis(entropy_base, 1, transition_probabilities)
+        input_pmf,
+        np.apply_along_axis(
+            func1d=partial(entropy, base=base),
+            axis=1,
+            arr=transition_matrix,
+        ),
     )
     return entropy_output_prior - entropy_output_posterior
 
 
-def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance):
+def arimoto_blahut(
+    transition_matrix: npt.NDArray[np.float64],
+    initial_guess: npt.NDArray[np.float64],
+    max_iters: int,
+    error_tolerance: float,
+) -> npt.NDArray[np.float64]:
     r"""
     Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
     """
@@ -69,7 +122,12 @@ def _arimoto_blahut(transition_matrix, initial_guess, max_iters, error_tolerance
     while iters < max_iters and np.amax(np.abs(r - last_r)) > error_tolerance:
         last_r = r
         q = r[np.newaxis].T * p
-        q /= np.sum(q, axis=0)
+        qsum = np.sum(q, axis=0)
+        zero_indices = qsum == 0
+        qsum_copy = qsum.copy()
+        qsum_copy[zero_indices] = 1
+        q /= qsum_copy
+        q[:, zero_indices] = 0
         r = np.prod(q**p, axis=1)
         r /= np.sum(r, axis=0)
         iters += 1
