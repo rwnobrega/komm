@@ -5,7 +5,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 
 from .._util.information_theory import LogBase, binary_entropy
-from .._validation import is_probability
+from .._validation import is_pmf, is_probability, validate_call
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
@@ -61,6 +61,7 @@ class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
         p = self.crossover_probability
         return np.array([[1 - p, p], [p, 1 - p]])
 
+    @validate_call(input_pmf=field(converter=np.asarray, validator=is_pmf))
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
