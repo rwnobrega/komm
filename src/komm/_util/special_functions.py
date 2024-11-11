@@ -1,11 +1,12 @@
 import numpy as np
+import numpy.typing as npt
 from scipy import stats
 
 _qfunc = stats.norm.sf
 _qfuncinv = stats.norm.isf
 
 
-def qfunc(x):
+def qfunc(x: npt.ArrayLike) -> npt.NDArray[np.float64]:
     r"""
     Computes the Gaussian Q-function. It is given by
     $$
@@ -22,13 +23,15 @@ def qfunc(x):
         >>> komm.qfunc(0.0)
         np.float64(0.5)
 
-        >>> komm.qfunc([-1.0, 0.0, 1.0])
-        array([0.84134475, 0.5       , 0.15865525])
+        >>> komm.qfunc([[-1.0], [0.0], [1.0]])
+        array([[0.84134475],
+               [0.5       ],
+               [0.15865525]])
     """
     return _qfunc(x)
 
 
-def qfuncinv(y):
+def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64]:
     r"""
     Computes the inverse Gaussian Q-function.
 
@@ -42,7 +45,9 @@ def qfuncinv(y):
         >>> komm.qfuncinv(0.5)
         np.float64(0.0)
 
-        >>> komm.qfuncinv([0.841344746, 0.5, 0.158655254])
-        array([-1.,  0.,  1.])
+        >>> komm.qfuncinv([[0.841344746], [0.5], [0.158655254]])
+        array([[-1.],
+               [ 0.],
+               [ 1.]])
     """
-    return _qfuncinv(np.array(y))
+    return _qfuncinv(np.asarray(y))
