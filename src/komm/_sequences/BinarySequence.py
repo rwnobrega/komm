@@ -1,6 +1,6 @@
 import numpy as np
 
-from .._util import acorr, cyclic_acorr
+from .._util.correlation import acorr, cyclic_acorr
 
 
 class BinarySequence:

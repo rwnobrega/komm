@@ -3,6 +3,9 @@ from typing import Iterable, Optional
 import numpy as np
 import numpy.typing as npt
 
+# TODO: Rename binlist2int and int2binlist to something better.
+# TODO: Vectorize those functions (e.g., axis=1).
+
 
 def binlist2int(binlist: Iterable[int]) -> int:
     r"""

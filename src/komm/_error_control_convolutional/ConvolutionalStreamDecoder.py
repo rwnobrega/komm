@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, mutable
 
-from .._util import int2binlist, unpack
+from .._util.bit_operations import int2binlist, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
 

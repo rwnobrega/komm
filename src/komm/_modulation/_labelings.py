@@ -1,6 +1,7 @@
 import numpy as np
 
-from .._util import cartesian_product, int2binlist
+from komm._util.bit_operations import int2binlist
+from komm._util.matrices import cartesian_product
 
 
 def labeling_natural(order):

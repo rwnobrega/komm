@@ -2,7 +2,7 @@ import numpy as np
 
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import FiniteStateMachine
-from .._util import binlist2int, int2binlist
+from .._util.bit_operations import binlist2int, int2binlist
 
 
 class ConvolutionalCode:

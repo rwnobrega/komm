@@ -1,6 +1,6 @@
 import numpy as np
 
-from .._util import binlist2int, int2binlist
+from .._util.bit_operations import binlist2int, int2binlist
 from .BinarySequence import BinarySequence
 
 

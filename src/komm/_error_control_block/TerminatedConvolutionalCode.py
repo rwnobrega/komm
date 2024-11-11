@@ -8,7 +8,7 @@ from numpy.linalg import matrix_power
 
 from .._algebra._util import right_inverse
 from .._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
-from .._util import binlist2int, int2binlist, pack, unpack
+from .._util.bit_operations import binlist2int, int2binlist, pack, unpack
 from .BlockCode import BlockCode
 
 

@@ -2,8 +2,6 @@ import itertools as it
 
 import numpy as np
 
-from .._util import cartesian_product, int2binlist
-
 
 class Modulation:
     r"""

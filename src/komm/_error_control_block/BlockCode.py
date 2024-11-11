@@ -6,7 +6,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 
 from .._algebra._util import null_matrix, right_inverse, rref
-from .._util import binlist2int, int2binlist
+from .._util.bit_operations import binlist2int, int2binlist
 
 
 @frozen(kw_only=True)
