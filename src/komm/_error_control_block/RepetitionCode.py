@@ -1,8 +1,8 @@
+import math
 from functools import cached_property
 
 import numpy as np
 from attrs import frozen
-from scipy import special
 
 from .BlockCode import BlockCode
 
@@ -60,11 +60,9 @@ class RepetitionCode(BlockCode):
         n = self.n
         coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range((n + 1) // 2):
-            coset_leader_weight_distribution[w] = special.comb(n, w, exact=True)
+            coset_leader_weight_distribution[w] = math.comb(n, w)
         if n % 2 == 0:
-            coset_leader_weight_distribution[n // 2] = (
-                special.comb(n, n // 2, exact=True) // 2
-            )
+            coset_leader_weight_distribution[n // 2] = math.comb(n, n // 2) // 2
         return coset_leader_weight_distribution
 
     @property

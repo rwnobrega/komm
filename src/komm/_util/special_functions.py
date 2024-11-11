@@ -1,12 +1,20 @@
+from statistics import NormalDist
+
 import numpy as np
 import numpy.typing as npt
-from scipy import stats
 
-_qfunc = stats.norm.sf
-_qfuncinv = stats.norm.isf
+norm = NormalDist()
 
 
-def qfunc(x: npt.ArrayLike) -> npt.NDArray[np.float64]:
+def _qfunc(x: float) -> float:
+    return norm.cdf(-x)
+
+
+def _qfuncinv(y: float) -> float:
+    return -norm.inv_cdf(y) + 0.0  # + 0.0 to avoid -0.0
+
+
+def qfunc(x: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
     r"""
     Computes the Gaussian Q-function. It is given by
     $$
@@ -28,10 +36,11 @@ def qfunc(x: npt.ArrayLike) -> npt.NDArray[np.float64]:
                [0.5       ],
                [0.15865525]])
     """
-    return _qfunc(x)
+    result = np.vectorize(_qfunc)(x)
+    return np.float64(result) if np.isscalar(x) else result
 
 
-def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64]:
+def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
     r"""
     Computes the inverse Gaussian Q-function.
 
@@ -50,4 +59,5 @@ def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64]:
                [ 0.],
                [ 1.]])
     """
-    return _qfuncinv(np.asarray(y))
+    result = np.vectorize(_qfuncinv)(y)
+    return np.float64(result) if np.isscalar(y) else result

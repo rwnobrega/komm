@@ -1,8 +1,8 @@
+import math
 from functools import cached_property
 
 import numpy as np
 from attrs import frozen
-from scipy import special
 
 from .BlockCode import BlockCode
 
@@ -60,7 +60,7 @@ class SingleParityCheckCode(BlockCode):
         n = self.n
         codeword_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range(0, n + 1, 2):
-            codeword_weight_distribution[w] = special.comb(n, w, exact=True)
+            codeword_weight_distribution[w] = math.comb(n, w)
         return codeword_weight_distribution
 
     @classmethod
