@@ -1,7 +1,14 @@
+from typing import Any
+
 import numpy as np
+import numpy.typing as npt
+
+DType = np.number[Any]
 
 
-def _cartesian_product_2d(A, B):
+def _cartesian_product_2d(
+    A: npt.NDArray[DType], B: npt.NDArray[DType]
+) -> npt.NDArray[DType]:
     rA, cA = A.shape
     rB, cB = B.shape
     C = np.empty((rA * rB, cA + cB), dtype=np.result_type(A, B))
@@ -11,7 +18,9 @@ def _cartesian_product_2d(A, B):
     return C
 
 
-def cartesian_product(A, B):
+def cartesian_product(
+    A: npt.NDArray[DType], B: npt.NDArray[DType]
+) -> npt.NDArray[DType]:
     r"""
     Computes the Cartesian product of two vectors/matrices.
     See SA15, eq. (2.2), where it is called the 'ordered direct product' and uses a different convention.
