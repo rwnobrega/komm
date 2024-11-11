@@ -8,7 +8,7 @@ from .FixedToVariableCode import FixedToVariableCode
 @frozen
 class FixedToVariableEncoder:
     r"""
-    Encoder for [fixed-to-variable length code](/ref/FixedToVariableCode).
+    Encoder for [fixed-to-variable length codes](/ref/FixedToVariableCode).
 
     Attributes:
         code: The code to be considered.

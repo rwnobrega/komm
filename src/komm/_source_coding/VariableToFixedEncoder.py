@@ -9,7 +9,7 @@ from .VariableToFixedCode import VariableToFixedCode
 @frozen
 class VariableToFixedEncoder:
     r"""
-    Prefix-free encoder for [variable-to-fixed length code](/ref/VariableToFixedCode).
+    Encoder for prefix-free [variable-to-fixed length codes](/ref/VariableToFixedCode).
 
     Attributes:
         code: The code to be considered.

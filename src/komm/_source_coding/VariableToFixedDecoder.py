@@ -8,7 +8,7 @@ from .VariableToFixedCode import VariableToFixedCode
 @frozen
 class VariableToFixedDecoder:
     r"""
-    Decoder for [variable-to-fixed length code](/ref/VariableToFixedCode).
+    Decoder for [variable-to-fixed length codes](/ref/VariableToFixedCode).
 
     Attributes:
         code: The code to be considered.

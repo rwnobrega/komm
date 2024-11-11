@@ -9,7 +9,7 @@ from .FixedToVariableCode import FixedToVariableCode
 @frozen
 class FixedToVariableDecoder:
     r"""
-    Prefix-free decoder for [fixed-to-variable length code](/ref/FixedToVariableCode).
+    Decoder for prefix-free [fixed-to-variable length codes](/ref/FixedToVariableCode).
 
     Attributes:
         code: The code to be considered, which must be a prefix-free code (that is, no codeword is a prefix of another codeword).
