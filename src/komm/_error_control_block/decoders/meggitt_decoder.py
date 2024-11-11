@@ -16,7 +16,7 @@ def decode_meggitt(code: CyclicCode, r: npt.ArrayLike) -> np.ndarray:
     e_poly_hat = BinaryPolynomial(0)
     for j in range(code.length):
         if s_poly in meggitt_table:
-            e_poly_hat = meggitt_table[s_poly] // (1 << j)
+            e_poly_hat = meggitt_table[s_poly] // BinaryPolynomial(1 << j)
             break
         s_poly = (s_poly << 1) % code.generator_polynomial
     return (r_poly + e_poly_hat).coefficients(code.length)
