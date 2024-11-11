@@ -9,6 +9,7 @@ Channels:
   - DiscreteMemorylessChannel
   - BinarySymmetricChannel
   - BinaryErasureChannel
+  - ZChannel
 Error control:
   Block coding:
     - BlockCode
