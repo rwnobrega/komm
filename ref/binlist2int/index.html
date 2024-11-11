@@ -518,11 +518,11 @@
             <h1 id="kommbinlist2int">komm.binlist2int</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p>Converts a bit array to its integer representation.</p>
+                <p>Converts a bit array to its integer representation (<abbr title="least significant bit">LSB</abbr> first).</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>binlist</code></b> <span class="doc-param-annotation">(<code>List[int] | Array1D[int]</code>)</span> –
+                    <b><code>binlist</code></b> <span class="doc-param-annotation">(<code><span title="typing.Iterable">Iterable</span>[int]</code>)</span> –
                     <div class="doc-md-description">
                       <p>A list or array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the output integer.</p>
                     </div>
@@ -538,6 +538,11 @@
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">binlist2int</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">16</span>
+</code></pre>
+                </div>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">binlist2int</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">26</span>
