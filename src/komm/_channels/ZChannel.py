@@ -12,7 +12,7 @@ from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 @frozen
 class ZChannel(AbstractDiscreteMemorylessChannel):
     r"""
-    Z-Channel. It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *decay probability*. Bit $0$ is always received correctly, but bit $1$ turns into $0$ with probability $p$. Equivalently, the channel can be modeled as
+    Z-channel. It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *decay probability*. Bit $0$ is always received correctly, but bit $1$ turns into $0$ with probability $p$. Equivalently, the channel can be modeled as
     $$
         Y_n = A_n X_n,
     $$
