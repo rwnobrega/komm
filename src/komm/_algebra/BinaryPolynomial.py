@@ -3,7 +3,8 @@ import operator
 
 import numpy as np
 
-from .._util import _binlist2int, _int2binlist
+from komm._util.bit_operations import binlist2int, int2binlist
+
 from ._util import binary_horner, gcd, power, xgcd
 
 
@@ -49,7 +50,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
-        return cls(_binlist2int(coefficients))
+        return cls(binlist2int(coefficients))
 
     @classmethod
     def from_exponents(cls, exponents):
@@ -63,7 +64,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
-        return cls(_binlist2int(np.bincount(exponents)))
+        return cls(binlist2int(np.bincount(exponents)))
 
     @property
     def degree(self):
@@ -94,7 +95,7 @@ class BinaryPolynomial:
             >>> poly.coefficients(width=8)
             array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return np.array(_int2binlist(self._integer, width=width), dtype=int)
+        return np.array(int2binlist(self._integer, width=width), dtype=int)
 
     def exponents(self):
         r"""
