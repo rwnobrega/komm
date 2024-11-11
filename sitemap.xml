@@ -2,302 +2,306 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://komm.dev/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/nav/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/APSKModulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ASKModulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/AWGNChannel/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BCHCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BarkerSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BinaryErasureChannel/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BinaryPolynomial/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BinaryPolynomialFraction/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BinarySequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BinarySymmetricChannel/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BlockCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BlockDecoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/BlockEncoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ComplexSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ConvolutionalCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ConvolutionalStreamDecoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ConvolutionalStreamEncoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/CordaroWagnerCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/CyclicCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/DiscreteMemorylessChannel/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/DiscreteMemorylessSource/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/FiniteBifield/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/FiniteStateMachine/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/FixedToVariableCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/FixedToVariableDecoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/FixedToVariableEncoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/GaussianPulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/GolayCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/GoldSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/HammingCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/HuffmanCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/KasamiSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/LFSRSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/LloydMaxQuantizer/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ManchesterPulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/Modulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/PAModulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/PSKModulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/Pulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/QAModulation/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RaisedCosinePulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RationalPolynomial/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RationalPolynomialFraction/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ReceiveFilter/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RectangularPulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ReedMullerCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RepetitionCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/RootRaisedCosinePulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ScalarQuantizer/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/SimplexCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/SincPulse/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/SingleParityCheckCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/SystematicBlockCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/TerminatedConvolutionalCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/TransmitFilter/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/TunstallCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/UniformQuantizer/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/VariableToFixedCode/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/VariableToFixedDecoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/VariableToFixedEncoder/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/WalshHadamardSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
+    </url>
+    <url>
+         <loc>https://komm.dev/ref/ZChannel/</loc>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/ZadoffChuSequence/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/acorr/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/binary_entropy/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/binlist2int/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/cyclic_acorr/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/entropy/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/int2binlist/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/pack/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/qfunc/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/qfuncinv/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
     <url>
          <loc>https://komm.dev/ref/unpack/</loc>
-         <lastmod>2024-11-10</lastmod>
+         <lastmod>2024-11-11</lastmod>
     </url>
 </urlset>

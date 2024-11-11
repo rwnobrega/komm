@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/int2binlist/">
-  <link rel="prev" href="../binlist2int/">
-  <link rel="next" href="../pack/">
+  <link rel="canonical" href="https://komm.dev/ref/ZChannel/">
+  <link rel="prev" href="../BinaryErasureChannel/">
+  <link rel="next" href="../BlockCode/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>int2binlist - Komm</title>
+  <title>ZChannel - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommint2binlist" class="md-skip">Skip to content</a>
+    <a href="#kommzchannel" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">int2binlist</span>
+            <span class="md-ellipsis">ZChannel</span>
           </div>
         </div>
       </div>
@@ -158,9 +158,9 @@
                             </ul>
                           </nav>
                         </li>
-                        <li class="md-nav__item md-nav__item--nested">
-                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_3"> <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0"><span class="md-ellipsis">Channels</span> <span class="md-nav__icon md-icon"></span></label>
-                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+                        <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_3" checked> <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0"><span class="md-ellipsis">Channels</span> <span class="md-nav__icon md-icon"></span></label>
+                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
                             <label class="md-nav__title" for="__nav_2_3"><span class="md-nav__icon md-icon"></span> Channels</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
@@ -175,8 +175,22 @@
                               <li class="md-nav__item">
                                 <a href="../BinaryErasureChannel/" class="md-nav__link"><span class="md-ellipsis">BinaryErasureChannel</span></a>
                               </li>
-                              <li class="md-nav__item">
-                                <a href="../ZChannel/" class="md-nav__link"><span class="md-ellipsis">ZChannel</span></a>
+                              <li class="md-nav__item md-nav__item--active">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">ZChannel</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ZChannel</span></a>
+                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                                    </li>
+                                  </ul>
+                                </nav>
                               </li>
                             </ul>
                           </nav>
@@ -460,16 +474,16 @@
                             </ul>
                           </nav>
                         </li>
-                        <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_11" checked> <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0"><span class="md-ellipsis">Utilities</span> <span class="md-nav__icon md-icon"></span></label>
-                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="true">
+                        <li class="md-nav__item md-nav__item--nested">
+                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_11"> <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0"><span class="md-ellipsis">Utilities</span> <span class="md-nav__icon md-icon"></span></label>
+                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
                             <label class="md-nav__title" for="__nav_2_11"><span class="md-nav__icon md-icon"></span> Utilities</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
                                 <a href="../binlist2int/" class="md-nav__link"><span class="md-ellipsis">binlist2int</span></a>
                               </li>
-                              <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">int2binlist</span></a>
+                              <li class="md-nav__item">
+                                <a href="../int2binlist/" class="md-nav__link"><span class="md-ellipsis">int2binlist</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
@@ -509,50 +523,107 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommint2binlist">komm.int2binlist</h1>
-            <div class="doc doc-object doc-function">
+            <h1 id="kommzchannel">komm.ZChannel</h1>
+            <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Converts an integer to its bit array representation.</p>
-                <p><strong>Parameters:</strong></p>
+                <p>Z-Channel. It is a <a href="/ref/DiscreteMemorylessChannel">discrete memoryless channel</a> with input and output alphabets $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$. The channel is characterized by a parameter $p$, called the <em>decay probability</em>. Bit $0$ is always received correctly, but bit $1$ turns into $0$ with probability $p$. Equivalently, the channel can be modeled as $$ Y_n = A_n X_n, $$ where $A_n$ are <abbr title="independent and identically distributed">iid</abbr> Bernoulli random variables with $\Pr[A_n = 0] = p$.</p>
+                <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>integer</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <b><code>decay_probability</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
                     <div class="doc-md-description">
-                      <p>The input integer. May be any nonnegative integer.</p>
-                    </div>
-                  </li>
-                  <li class="field-body">
-                    <b><code>width</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
-                    <div class="doc-md-description">
-                      <p>If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.</p>
+                      <p>The channel decay probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is <code>0.0</code>, which corresponds to a noiseless channel.</p>
                     </div>
                   </li>
                 </ul>
-                <p><strong>Returns:</strong></p>
+                <p><strong>Input:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>binlist</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <b><code>input_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
                     <div class="doc-md-description">
-                      <p>An array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.</p>
+                      <p>The input sequence.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Output:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>output_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The output sequence.</p>
                     </div>
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span>
-<span class="go">array([0, 1, 0, 1, 1])</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ZChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([0, 1, 0, 1, 0, 0, 0, 0, 0, 1])</span>
 </code></pre>
                 </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="go">array([0, 1, 0, 1, 1, 0, 0, 0])</span>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="transition_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">transition_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The transition probability matrix of the channel. It is given by $$ p_{Y \mid X} = \begin{bmatrix} 1 & 0 \\ p & 1-p \end{bmatrix}. $$</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ZChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span><span class="o">.</span><span class="n">transition_matrix</span>
+<span class="go">array([[1. , 0. ],</span>
+<span class="go">       [0.1, 0.9]])</span>
 </code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by $$ \mathrm{I}(X ; Y) = \Hb ( \pi (1-p) ) - \pi \Hb(p), $$ in bits, where $\pi = \Pr[X = 1]$, and $\Hb$ is the <a href="/ref/binary_entropy">binary entropy function</a>.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <p>Same as the <a href="/ref/DiscreteMemorylessChannel/#mutual_information">corresponding method</a> of the general class.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ZChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="go">np.float64(0.7582766571931676)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns the channel capacity $C$. It is given by $$ C = \log_2 ( 1 + (1-p) p^{p / (1-p)} ), $$ in bits.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ZChannel</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zc</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
+<span class="go">np.float64(0.7628482520105094)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -565,7 +636,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../binlist2int/" class="md-footer__link md-footer__link--prev" aria-label="Previous: binlist2int">
+        <a href="../BinaryErasureChannel/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BinaryErasureChannel">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -573,13 +644,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            binlist2int
+            BinaryErasureChannel
           </div>
-        </div></a> <a href="../pack/" class="md-footer__link md-footer__link--next" aria-label="Next: pack">
+        </div></a> <a href="../BlockCode/" class="md-footer__link md-footer__link--next" aria-label="Next: BlockCode">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            pack
+            BlockCode
           </div>
         </div>
         <div class="md-footer__button md-icon">
