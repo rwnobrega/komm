@@ -1,7 +1,16 @@
+from typing import Any, Iterable, TypeVar, Union
+
 import numpy as np
+import numpy.typing as npt
+
+DType = TypeVar("DType", bound=Union[np.floating[Any], np.complexfloating[Any, Any]])
 
 
-def acorr(seq, shifts=None, normalized=False):
+def acorr(
+    seq: npt.NDArray[DType],
+    shifts: Iterable[int] | None = None,
+    normalized: bool = False,
+) -> npt.NDArray[DType]:
     r"""
     Computes the autocorrelation $R[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
@@ -10,7 +19,7 @@ def acorr(seq, shifts=None, normalized=False):
     where $x^\*\_\ell[n] = x^\*[n - \ell]$ is the complex conjugate of $x[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.
 
     Parameters:
-        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
+        seq (Array1D[float | complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
 
         shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is `range(len(seq))`, that is, $[0 : L)$.
 
@@ -38,7 +47,11 @@ def acorr(seq, shifts=None, normalized=False):
     return acorr / energy if normalized else acorr
 
 
-def cyclic_acorr(seq, shifts=None, normalized=False):
+def cyclic_acorr(
+    seq: npt.NDArray[DType],
+    shifts: Iterable[int] | None = None,
+    normalized: bool = False,
+) -> npt.NDArray[DType]:
     r"""
     Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
@@ -47,7 +60,7 @@ def cyclic_acorr(seq, shifts=None, normalized=False):
     where $\tilde{x}^\*\_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.
 
     Parameters:
-        seq (Array1D[float] | Array1D[complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
+        seq (Array1D[float | complex]): A 1D-array containing the sequence $x[n]$, of length $L$.
 
         shifts (Optional[Array1D[int]]): A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is `range(len(seq))`, that is, $[0 : L)$.
 
