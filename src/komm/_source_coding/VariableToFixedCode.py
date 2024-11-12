@@ -1,6 +1,8 @@
 import itertools as it
+from typing import Self, cast
 
 import numpy as np
+import numpy.typing as npt
 from attrs import field, frozen, validators
 
 from .._validation import is_pmf, validate_call
@@ -14,11 +16,8 @@ class VariableToFixedCode:
 
     Attributes:
         target_cardinality: The target cardinality $T$.
-
         source_cardinality: The source cardinality $S$.
-
         target_block_size: The target block size $n$.
-
         dec_mapping: The decoding mapping $\mathrm{Dec}$ of the code. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.
     """
 
@@ -27,7 +26,7 @@ class VariableToFixedCode:
     target_block_size: int = field(validator=validators.ge(1))
     dec_mapping: dict[Word, Word] = field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
         T, S, n = (
             self.target_cardinality,
@@ -44,7 +43,7 @@ class VariableToFixedCode:
             raise ValueError(f"'dec_mapping': non-injective mapping")
 
     @classmethod
-    def from_dec_mapping(cls, dec_mapping: dict[Word, Word]):
+    def from_dec_mapping(cls, dec_mapping: dict[Word, Word]) -> Self:
         r"""
         Constructs a variable-to-fixed code from the decoding map $\Dec$.
 
@@ -81,13 +80,12 @@ class VariableToFixedCode:
 
     @classmethod
     @validate_call(target_cardinality=field(validator=validators.ge(2)))
-    def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]):
+    def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]) -> Self:
         r"""
         Constructs a variable-to-fixed code from the target cardinality $T$ and a list of sourcewords.
 
         Parameters:
             target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$.
-
             sourcewords: The sourcewords of the code. See the [corresponding property](./#sourcewords) for more details.
 
         Examples:
@@ -155,7 +153,7 @@ class VariableToFixedCode:
         return is_prefix_free(self.sourcewords)
 
     @validate_call(pmf=field(converter=np.asarray, validator=is_pmf))
-    def rate(self, pmf) -> float:
+    def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
         $$
@@ -174,6 +172,7 @@ class VariableToFixedCode:
             >>> code.rate([2/3, 1/3])
             np.float64(0.9473684210526315)
         """
+        pmf = cast(npt.NDArray[np.float64], pmf)
         probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
         lengths = [len(word) for word in self.sourcewords]
         return self.target_block_size / np.dot(lengths, probabilities)

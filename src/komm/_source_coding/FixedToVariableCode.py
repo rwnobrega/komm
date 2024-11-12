@@ -1,6 +1,8 @@
 import itertools as it
+from typing import Self, cast
 
 import numpy as np
+import numpy.typing as npt
 from attrs import field, frozen, validators
 
 from .._validation import is_pmf, validate_call
@@ -14,11 +16,8 @@ class FixedToVariableCode:
 
     Attributes:
         source_cardinality: The source cardinality $S$.
-
         target_cardinality: The target cardinality $T$.
-
         source_block_size: The source block size $k$.
-
         enc_mapping: The encoding mapping $\Enc$ of the code. Must be a dictionary of length $S^k$ whose keys are $k$-tuples of integers in $[0:S)$ and whose values are distinct non-empty tuples of integers in $[0:T)$.
     """
 
@@ -27,7 +26,7 @@ class FixedToVariableCode:
     source_block_size: int = field(validator=validators.ge(1))
     enc_mapping: dict[Word, Word] = field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
         S, T, k = (
             self.source_cardinality,
@@ -44,7 +43,7 @@ class FixedToVariableCode:
             raise ValueError(f"'enc_mapping': non-injective mapping")
 
     @classmethod
-    def from_enc_mapping(cls, enc_mapping: dict[Word, Word]):
+    def from_enc_mapping(cls, enc_mapping: dict[Word, Word]) -> Self:
         r"""
         Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.
 
@@ -77,13 +76,12 @@ class FixedToVariableCode:
 
     @classmethod
     @validate_call(source_cardinality=field(validator=validators.ge(2)))
-    def from_codewords(cls, source_cardinality: int, codewords: list[Word]):
+    def from_codewords(cls, source_cardinality: int, codewords: list[Word]) -> Self:
         r"""
         Constructs a fixed-to-variable length code from the source cardinality $S$ and a list of codewords.
 
         Parameters:
             source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
-
             codewords: The codewords of the code. See the [corresponding property](./#codewords) for more details.
 
         Examples:
@@ -178,7 +176,7 @@ class FixedToVariableCode:
         return is_prefix_free(self.codewords)
 
     @validate_call(pmf=field(converter=np.asarray, validator=is_pmf))
-    def rate(self, pmf) -> float:
+    def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
         $$
@@ -187,7 +185,7 @@ class FixedToVariableCode:
         where $\bar{n}$ is the expected codeword length, assuming iid source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.
 
         Parameters:
-            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be considered.
+            pmf: The (first-order) probability mass function $p_X$ to be considered.
 
         Returns:
             rate: The expected rate $R$ of the code.
@@ -197,8 +195,8 @@ class FixedToVariableCode:
             >>> code.rate([0.5, 0.25, 0.25])
             np.float64(1.5)
         """
-        probabilities = [
-            np.prod(ps) for ps in it.product(pmf, repeat=self.source_block_size)
-        ]
+        pmf = cast(npt.NDArray[np.float64], pmf)
+        k = self.source_block_size
+        probabilities = [np.prod(ps) for ps in it.product(pmf, repeat=k)]
         lengths = [len(word) for word in self.codewords]
-        return np.dot(lengths, probabilities) / self.source_block_size
+        return np.dot(lengths, probabilities) / k

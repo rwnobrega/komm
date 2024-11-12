@@ -28,7 +28,7 @@ class FixedToVariableEncoder:
 
     code: FixedToVariableCode
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         k, enc = self.code.source_block_size, self.code.enc_mapping
         out0 = np.concatenate([enc[tuple(s)] for s in np.reshape(in0, shape=(-1, k))])
         return out0

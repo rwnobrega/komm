@@ -35,10 +35,11 @@ class VariableToFixedEncoder:
 
     code: VariableToFixedCode
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         if not self.code.is_prefix_free():
             raise ValueError("code is not prefix-free")
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
-        out0 = np.array(parse_prefix_free(in0, self.code.inv_dec_mapping))
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
+        in0 = np.asarray(in0)
+        out0 = parse_prefix_free(in0, self.code.inv_dec_mapping)
         return out0
