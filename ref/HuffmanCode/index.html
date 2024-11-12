@@ -522,19 +522,19 @@
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The probability mass function of the source.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>source_block_size</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
+                    <b><code>source_block_size</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                     <div class="doc-md-description">
                       <p>The source block size $k$. The default value is $k = 1$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>policy</code></b> <span class="doc-param-annotation">(<code>Optional[str]</code>)</span> –
+                    <b><code>policy</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['high', 'low']</code>)</span> –
                     <div class="doc-md-description">
                       <p>The policy to be used when constructing the code. It must be either <code>'high'</code> (move combined symbols as high as possible) or <code>'low'</code> (move combined symbols as low as possible). The default value is <code>'high'</code>.</p>
                     </div>
