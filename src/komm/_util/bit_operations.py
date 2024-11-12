@@ -56,12 +56,12 @@ def int2binlist(integer: int, width: Optional[int] = None) -> npt.NDArray[np.int
     return np.array([(integer >> i) & 1 for i in range(width)], dtype=int)
 
 
-def pack(list_: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
+def pack(bit_array: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
     r"""
     Packs a given bit array. Splits the bit array into groups of `width` bits and converts each group to its integer value.
 
     Parameters:
-        list_: The input bit array.
+        bit_array: The input bit array.
         width: The width of each group.
 
     Returns:
@@ -74,15 +74,15 @@ def pack(list_: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
         >>> komm.pack([0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0], width=8)
         array([16, 26])
     """
-    return np.apply_along_axis(binlist2int, 1, np.reshape(list_, shape=(-1, width)))
+    return np.apply_along_axis(binlist2int, 1, np.reshape(bit_array, shape=(-1, width)))
 
 
-def unpack(list_: Iterable[int], width: int) -> npt.NDArray[np.int_]:
+def unpack(bit_array: Iterable[int], width: int) -> npt.NDArray[np.int_]:
     r"""
     Unpacks a given integer array. Unpacks a given integer array by converting each integer to its bit array representation, using the specified `width` for each group, and concatenating the results.
 
     Parameters:
-        list_: The input integer array.
+        bit_array: The input integer array.
         width: The width of each group.
 
     Returns:
@@ -95,4 +95,4 @@ def unpack(list_: Iterable[int], width: int) -> npt.NDArray[np.int_]:
         >>> komm.unpack([16, 26], width=8)
         array([0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0])
     """
-    return np.ravel([int2binlist(i, width=width) for i in list_])
+    return np.ravel([int2binlist(i, width=width) for i in bit_array])
