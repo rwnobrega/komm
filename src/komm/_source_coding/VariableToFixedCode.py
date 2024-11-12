@@ -1,9 +1,10 @@
 import itertools as it
-from typing import Self, cast
+from typing import cast
 
 import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen, validators
+from typing_extensions import Self
 
 from .._validation import is_pmf, validate_call
 from ._util import Word, is_prefix_free

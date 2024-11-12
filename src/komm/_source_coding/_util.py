@@ -1,10 +1,11 @@
 import heapq
 import itertools as it
 import math
-from typing import Literal, Self
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
+from typing_extensions import Self
 
 Word = tuple[int, ...]
 
