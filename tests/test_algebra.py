@@ -75,20 +75,10 @@ def test_conjugates():
     alpha = field.primitive_element
     assert set(field(0).conjugates()) == {field(0)}
     assert set(field(1).conjugates()) == {field(1)}
-    assert set(field(alpha).conjugates()) == {alpha, alpha**2, alpha**4, alpha**8}
-    assert set(field(alpha**3).conjugates()) == {
-        alpha**3,
-        alpha**6,
-        alpha**9,
-        alpha**12,
-    }
-    assert set(field(alpha**5).conjugates()) == {alpha**5, alpha**10}
-    assert set(field(alpha**7).conjugates()) == {
-        alpha**7,
-        alpha**11,
-        alpha**13,
-        alpha**14,
-    }
+    assert set(alpha.conjugates()) == {alpha, alpha**2, alpha**4, alpha**8}
+    assert set((alpha**3).conjugates()) == {alpha**3, alpha**6, alpha**9, alpha**12}
+    assert set((alpha**5).conjugates()) == {alpha**5, alpha**10}
+    assert set((alpha**7).conjugates()) == {alpha**7, alpha**11, alpha**13, alpha**14}
 
 
 def test_minimal_polynomial():
@@ -99,10 +89,10 @@ def test_minimal_polynomial():
     alpha = field.primitive_element
     assert field(0).minimal_polynomial() == komm.BinaryPolynomial(0b10)
     assert field(1).minimal_polynomial() == komm.BinaryPolynomial(0b11)
-    assert field(alpha).minimal_polynomial() == komm.BinaryPolynomial(0b10011)
-    assert field(alpha**3).minimal_polynomial() == komm.BinaryPolynomial(0b11111)
-    assert field(alpha**5).minimal_polynomial() == komm.BinaryPolynomial(0b111)
-    assert field(alpha**7).minimal_polynomial() == komm.BinaryPolynomial(0b11001)
+    assert alpha.minimal_polynomial() == komm.BinaryPolynomial(0b10011)
+    assert (alpha**3).minimal_polynomial() == komm.BinaryPolynomial(0b11111)
+    assert (alpha**5).minimal_polynomial() == komm.BinaryPolynomial(0b111)
+    assert (alpha**7).minimal_polynomial() == komm.BinaryPolynomial(0b11001)
 
 
 @pytest.mark.parametrize("m", list(range(2, 8)))
