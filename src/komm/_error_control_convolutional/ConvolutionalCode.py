@@ -46,7 +46,7 @@ class ConvolutionalCode:
 
     <h2>Tables of convolutional codes</h2>
 
-    The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$.
+    The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.
 
     | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
     | :----------------------: | ------------------------------- |
