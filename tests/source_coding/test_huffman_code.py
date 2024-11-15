@@ -78,4 +78,4 @@ def test_huffman_code_invalid_call():
     with pytest.raises(ValueError):
         komm.HuffmanCode([0.5, 0.5], source_block_size=0)
     with pytest.raises(ValueError):
-        komm.HuffmanCode([0.5, 0.5], policy="unknown")
+        komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore

@@ -40,4 +40,4 @@ def test_entropy_invalid_base():
     with pytest.raises(ValueError):
         komm.entropy([0.5, 0.5], base=-1.0)
     with pytest.raises(ValueError):
-        komm.entropy([0.5, 0.5], base="f")
+        komm.entropy([0.5, 0.5], base="f")  # type: ignore
