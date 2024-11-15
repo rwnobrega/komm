@@ -1,6 +1,7 @@
 from typing import Literal
 
 import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 
@@ -40,7 +41,7 @@ class AWGNChannel:
     snr: float = np.inf
 
     @property
-    def noise_power(self):
+    def noise_power(self) -> float:
         r"""
         The noise power $N$.
         """
@@ -50,7 +51,7 @@ class AWGNChannel:
             )
         return self.signal_power / self.snr
 
-    def capacity(self):
+    def capacity(self) -> float:
         r"""
         Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.
 
@@ -61,7 +62,7 @@ class AWGNChannel:
         """
         return 0.5 * np.log1p(self.snr) / np.log(2.0)
 
-    def __call__(self, input_signal):
+    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.float64]:
         input_signal = np.array(input_signal)
         size = input_signal.size
 
