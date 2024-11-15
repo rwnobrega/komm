@@ -13,4 +13,19 @@ from .SingleParityCheckCode import SingleParityCheckCode
 from .SystematicBlockCode import SystematicBlockCode
 from .TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
-from .decoders import *
+__all__ = [
+    "BCHCode",
+    "BlockCode",
+    "BlockDecoder",
+    "BlockEncoder",
+    "CordaroWagnerCode",
+    "CyclicCode",
+    "GolayCode",
+    "HammingCode",
+    "ReedMullerCode",
+    "RepetitionCode",
+    "SimplexCode",
+    "SingleParityCheckCode",
+    "SystematicBlockCode",
+    "TerminatedConvolutionalCode",
+]
