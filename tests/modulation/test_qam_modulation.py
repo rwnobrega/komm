@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import komm
-from komm._util.matrices import cartesian_product
+from komm._modulation.labelings import cartesian_product
 
 
 def test_qam_modulation_1():
@@ -71,7 +71,9 @@ def test_qam_modulation_2(orders, base_amplitudes):
 
     pam_I = komm.PAModulation(M_I, base_amplitude=A_I)
     pam_Q = komm.PAModulation(M_Q, base_amplitude=A_Q)
-    qam_real_2d = cartesian_product(pam_I.constellation, pam_Q.constellation)
+    qam_real_2d = cartesian_product(
+        pam_I.constellation.reshape(-1, 1), pam_Q.constellation.reshape(-1, 1)
+    )
     qam_complex_1d = qam_real_2d[:, 0] + 1j * qam_real_2d[:, 1]
     assert np.allclose(qam_complex_1d, qam.constellation)
 

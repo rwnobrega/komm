@@ -2,8 +2,8 @@ import numpy as np
 from attrs import field, frozen
 from numpy import typing as npt
 
-from ._registry import RegistryBlockDecoder
 from .BlockCode import BlockCode
+from .registry import RegistryBlockDecoder
 
 
 @frozen

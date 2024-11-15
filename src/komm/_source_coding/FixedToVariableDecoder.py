@@ -2,8 +2,8 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
-from ._util import parse_prefix_free
 from .FixedToVariableCode import FixedToVariableCode
+from .util import parse_prefix_free
 
 
 @frozen

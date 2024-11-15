@@ -1,8 +1,8 @@
 import numpy as np
 import numpy.typing as npt
 
-from .._registry import RegistryBlockDecoder
 from ..BlockCode import BlockCode
+from ..registry import RegistryBlockDecoder
 
 
 def decode_exhaustive_search_soft(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:

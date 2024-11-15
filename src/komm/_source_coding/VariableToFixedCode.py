@@ -7,7 +7,7 @@ from attrs import field, frozen, validators
 from typing_extensions import Self
 
 from .._validation import is_pmf, validate_call
-from ._util import Word, is_prefix_free
+from .util import Word, is_prefix_free
 
 
 @frozen

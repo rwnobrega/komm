@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .._algebra._util import null_matrix, right_inverse, rref
+from .._algebra.util import null_matrix, right_inverse, rref
 from .._util.bit_operations import binlist2int, int2binlist
 
 

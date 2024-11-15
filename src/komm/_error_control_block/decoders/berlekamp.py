@@ -2,8 +2,8 @@ import numpy as np
 import numpy.typing as npt
 
 from ..._algebra import BinaryPolynomial, FiniteBifield, FiniteBifieldElement
-from .._registry import RegistryBlockDecoder
 from ..BCHCode import BCHCode
+from ..registry import RegistryBlockDecoder
 
 # def bch_general_decoder(field: FiniteBifield, r, syndrome_computer, key_equation_solver, root_finder):
 #     # General BCH decoder. See [LC04, p. 205–209].

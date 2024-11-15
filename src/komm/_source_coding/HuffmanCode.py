@@ -5,8 +5,8 @@ import numpy.typing as npt
 from attrs import field, validators
 
 from .._validation import is_pmf, validate_call
-from ._util import huffman_algorithm
 from .FixedToVariableCode import FixedToVariableCode
+from .util import huffman_algorithm
 
 
 @validate_call(

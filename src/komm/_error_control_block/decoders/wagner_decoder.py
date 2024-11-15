@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 
-from .._registry import RegistryBlockDecoder
+from ..registry import RegistryBlockDecoder
 from ..SingleParityCheckCode import SingleParityCheckCode
 
 

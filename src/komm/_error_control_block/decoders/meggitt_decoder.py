@@ -2,8 +2,8 @@ import numpy as np
 import numpy.typing as npt
 
 from ..._algebra import BinaryPolynomial
-from .._registry import RegistryBlockDecoder
 from ..CyclicCode import CyclicCode
+from ..registry import RegistryBlockDecoder
 
 
 def decode_meggitt(code: CyclicCode, r: npt.ArrayLike) -> np.ndarray:

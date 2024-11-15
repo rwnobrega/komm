@@ -1,7 +1,7 @@
 import numpy as np
 
-from ._constellations import constellation_pam
-from ._labelings import labelings
+from .constellations import constellation_pam
+from .labelings import labelings
 from .Modulation import Modulation
 
 

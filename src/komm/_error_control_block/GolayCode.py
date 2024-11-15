@@ -2,7 +2,7 @@ from functools import cached_property
 
 from attrs import frozen
 
-from ._matrices import golay_parity_submatrix
+from .matrices import golay_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 

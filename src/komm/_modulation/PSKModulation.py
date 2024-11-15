@@ -1,5 +1,5 @@
-from ._constellations import constellation_psk
-from ._labelings import labelings
+from .constellations import constellation_psk
+from .labelings import labelings
 from .Modulation import Modulation
 
 
