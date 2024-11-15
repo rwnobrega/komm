@@ -1,8 +1,9 @@
 from typing import Callable, Literal, TypedDict
 
 import numpy as np
+import numpy.typing as npt
 
-Decoder = Callable[..., np.ndarray]  # TODO: improve typing
+Decoder = Callable[..., npt.NDArray[np.int_]]
 
 
 class BlockDecoderData(TypedDict):
@@ -14,7 +15,7 @@ class BlockDecoderData(TypedDict):
 
 
 class RegistryBlockDecoder:
-    _registry = {}
+    _registry: dict[str, BlockDecoderData] = {}
 
     @classmethod
     def register(cls, method: str, data: BlockDecoderData) -> None:
