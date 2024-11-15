@@ -152,40 +152,13 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
                                       <a href="#characteristic" class="md-nav__link"><span class="md-ellipsis">characteristic</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#degree" class="md-nav__link"><span class="md-ellipsis">degree</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#modulus" class="md-nav__link"><span class="md-ellipsis">modulus</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#order" class="md-nav__link"><span class="md-ellipsis">order</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#primitive_element" class="md-nav__link"><span class="md-ellipsis">primitive_element</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#inverse" class="md-nav__link"><span class="md-ellipsis">inverse()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#logarithm" class="md-nav__link"><span class="md-ellipsis">logarithm()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#power" class="md-nav__link"><span class="md-ellipsis">power()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#conjugates" class="md-nav__link"><span class="md-ellipsis">conjugates()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#minimal_polynomial" class="md-nav__link"><span class="md-ellipsis">minimal_polynomial()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -554,40 +527,13 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#characteristic" class="md-nav__link"><span class="md-ellipsis">characteristic</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#degree" class="md-nav__link"><span class="md-ellipsis">degree</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#modulus" class="md-nav__link"><span class="md-ellipsis">modulus</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#order" class="md-nav__link"><span class="md-ellipsis">order</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#primitive_element" class="md-nav__link"><span class="md-ellipsis">primitive_element</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#inverse" class="md-nav__link"><span class="md-ellipsis">inverse()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#logarithm" class="md-nav__link"><span class="md-ellipsis">logarithm()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#power" class="md-nav__link"><span class="md-ellipsis">power()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#conjugates" class="md-nav__link"><span class="md-ellipsis">conjugates()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#minimal_polynomial" class="md-nav__link"><span class="md-ellipsis">minimal_polynomial()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
                   </li>
                 </ul>
               </nav>
@@ -600,103 +546,84 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Finite field with binary characteristic. Objects of this class represent a <em>finite field</em> $\mathrm{GF}(2^k)$ (also known as <em>Galois field</em>), with <em>characteristic</em> $2$ and <em>degree</em> $k$.</p>
-                <p>To construct <em>elements</em> of the finite field, call the finite field object. For example, <code>field(0b1101)</code> will construct the element whose polynomial representation is $X^3 + X^2 + 1$.</p>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>degree</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>Degree $k$ of the finite field. Must be a positive integer.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>modulus</code></b> <span class="doc-param-annotation">(<code><span title="git.Optional">Optional</span>[<span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>Modulus (primitive polynomial) $p(X)$ of the field, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, p.42</cite>.</p>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th style="text-align: center;">Degree $k$</th>
+                            <th>Modulus $p(X)$</th>
+                            <th style="text-align: center;">Degree $k$</th>
+                            <th>Modulus $p(X)$</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="text-align: center;">$1$</td>
+                            <td><code>0b11</code></td>
+                            <td style="text-align: center;">$9$</td>
+                            <td><code>0b1000010001</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$2$</td>
+                            <td><code>0b111</code></td>
+                            <td style="text-align: center;">$10$</td>
+                            <td><code>0b10000001001</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$3$</td>
+                            <td><code>0b1011</code></td>
+                            <td style="text-align: center;">$11$</td>
+                            <td><code>0b100000000101</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$4$</td>
+                            <td><code>0b10011</code></td>
+                            <td style="text-align: center;">$12$</td>
+                            <td><code>0b1000001010011</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$5$</td>
+                            <td><code>0b100101</code></td>
+                            <td style="text-align: center;">$13$</td>
+                            <td><code>0b10000000011011</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$6$</td>
+                            <td><code>0b1000011</code></td>
+                            <td style="text-align: center;">$14$</td>
+                            <td><code>0b100010001000011</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$7$</td>
+                            <td><code>0b10001001</code></td>
+                            <td style="text-align: center;">$15$</td>
+                            <td><code>0b1000000000000011</code></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align: center;">$8$</td>
+                            <td><code>0b100011101</code></td>
+                            <td style="text-align: center;">$16$</td>
+                            <td><code>0b10001000000001011</code></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-<span class="go">0b111</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
-<span class="go">0b1101</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
-<span class="go">0b10</span>
-</code></pre>
-                </div>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>degree</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Degree $k$ of the finite field. Must be a positive integer.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>modulus</code></b> <span class="doc-param-annotation">(<code>Optional[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Modulus (primitive polynomial) $p(X)$ of the field, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, p.42</cite>.</p>
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th style="text-align: center;">Degree $k$</th>
-                                  <th>Modulus $p(X)$</th>
-                                  <th style="text-align: center;">Degree $k$</th>
-                                  <th>Modulus $p(X)$</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td style="text-align: center;">$1$</td>
-                                  <td><code>0b11</code></td>
-                                  <td style="text-align: center;">$9$</td>
-                                  <td><code>0b1000010001</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$2$</td>
-                                  <td><code>0b111</code></td>
-                                  <td style="text-align: center;">$10$</td>
-                                  <td><code>0b10000001001</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$3$</td>
-                                  <td><code>0b1011</code></td>
-                                  <td style="text-align: center;">$11$</td>
-                                  <td><code>0b100000000101</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$4$</td>
-                                  <td><code>0b10011</code></td>
-                                  <td style="text-align: center;">$12$</td>
-                                  <td><code>0b1000001010011</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$5$</td>
-                                  <td><code>0b100101</code></td>
-                                  <td style="text-align: center;">$13$</td>
-                                  <td><code>0b10000000011011</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$6$</td>
-                                  <td><code>0b1000011</code></td>
-                                  <td style="text-align: center;">$14$</td>
-                                  <td><code>0b100010001000011</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$7$</td>
-                                  <td><code>0b10001001</code></td>
-                                  <td style="text-align: center;">$15$</td>
-                                  <td><code>0b1000000000000011</code></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: center;">$8$</td>
-                                  <td><code>0b100011101</code></td>
-                                  <td style="text-align: center;">$16$</td>
-                                  <td><code>0b10001000000001011</code></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span>
 <span class="go">FiniteBifield(4)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">characteristic</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
@@ -704,9 +631,9 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">modulus</span>
 <span class="go">BinaryPolynomial(0b10011)</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="mb">0b11001</span><span class="p">)</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="mb">0b11001</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span>
 <span class="go">FiniteBifield(4, modulus=0b11001)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">characteristic</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
@@ -714,35 +641,64 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">modulus</span>
 <span class="go">BinaryPolynomial(0b11001)</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+                <h2>Construction of elements</h2>
+                <p>To construct <em>elements</em> of the finite field, call the finite field object. For example, <code>field(0b1101)</code> will construct the element whose polynomial representation is $X^3 + X^2 + 1$.</p>
+                <h2>Algebraic structure</h2>
+                <p>The following operations are supported: addition (<code>+</code>), subtraction (<code>-</code>), multiplication (<code>*</code>), division (<code>/</code>), and exponentiation (<code>**</code>).</p>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="go">0b111</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+<span class="go">0b111</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="go">0b1101</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+<span class="go">0b10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="go">0b1001</span>
+</code></pre>
+                </div>
+                <h2>Further methods on elements</h2>
+                <p>The following methods are available on elements of the finite field:</p>
+                <ul>
+                  <li><code>logarithm(base)</code>: Returns the logarithm of the element, with respect to a given base.</li>
+                  <li><code>conjugates()</code>: Returns the conjugates of the element.</li>
+                  <li><code>minimal_polynomial()</code>: Returns the minimal polynomial of the element.</li>
+                </ul>
+                <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 2.5</cite>.</p>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="mb">0b10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">logarithm</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">conjugates</span><span class="p">()</span>
+<span class="go">[0b1011, 0b1001, 0b1101, 0b1110]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">minimal_polynomial</span><span class="p">()</span>
+<span class="go">BinaryPolynomial(0b11001)</span>
+</code></pre>
+                </div>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="characteristic" class="doc doc-heading"><code class="highlight language-python"><span class="n">characteristic</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="characteristic" class="doc doc-heading"><code class="highlight language-python"><span class="n">characteristic</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The characteristic $2$ of the finite field.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="degree" class="doc doc-heading"><code class="highlight language-python"><span class="n">degree</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The degree $k$ of the finite field.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="modulus" class="doc doc-heading"><code class="highlight language-python"><span class="n">modulus</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The modulus (primitive polynomial) $p(X)$ of the finite field.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="order" class="doc doc-heading"><code class="highlight language-python"><span class="n">order</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="order" class="doc doc-heading"><code class="highlight language-python"><span class="n">order</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The order (number of elements) of the finite field. It is given by $2^k$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="primitive_element" class="doc doc-heading"><code class="highlight language-python"><span class="n">primitive_element</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="primitive_element" class="doc doc-heading"><code class="highlight language-python"><span class="n">primitive_element</span><span class="p">:</span> <span class="n">FiniteBifieldElement</span><span class="p">[</span><span class="n">Self</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
@@ -757,42 +713,6 @@
 <span class="go">[0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]</span>
 </code></pre>
                       </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="inverse" class="doc doc-heading"><code class="highlight language-python"><span class="n">inverse</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns the multiplicative inverse of a given element.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="logarithm" class="doc doc-heading"><code class="highlight language-python"><span class="n">logarithm</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns the logarithm of a given element, with respect to a given base. If no base is given, the primitive element is used as the base.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="power" class="doc doc-heading"><code class="highlight language-python"><span class="n">power</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns a given power of a given element.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="conjugates" class="doc doc-heading"><code class="highlight language-python"><span class="n">conjugates</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns the conjugates of a given element. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 2.5</cite>.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="minimal_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimal_polynomial</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns the minimal polynomial of a given element. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 2.5</cite>.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructs elements of the finite field.</p>
                     </div>
                   </div>
                 </div>

@@ -620,7 +620,7 @@
                 <h2>Space-state representation</h2>
                 <p>A convolutional code may also be described via the <em>space-state representation</em>. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then, $$ \begin{aligned} \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\ \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D, \end{aligned} $$ where $A$ is the $\nu \times \nu$ <em>state matrix</em>, $B$ is the $k \times \nu$ <em>control matrix</em>, $C$ is the $\nu \times n$ <em>observation matrix</em>, and $D$ is the $k \times n$ <em>transition matrix</em>.</p>
                 <h2>Tables of convolutional codes</h2>
-                <p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, for small values of the overall constraint length $\nu$.</p>
+                <p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.</p>
                 <table>
                   <thead>
                     <tr>

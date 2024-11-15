@@ -144,21 +144,7 @@
                                 <a href="../BinaryPolynomial/" class="md-nav__link"><span class="md-ellipsis">BinaryPolynomial</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">BinaryPolynomialFraction</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">BinaryPolynomialFraction</span></a>
-                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                    <li class="md-nav__item">
-                                      <a href="#numerator" class="md-nav__link"><span class="md-ellipsis">numerator</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#denominator" class="md-nav__link"><span class="md-ellipsis">denominator</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#inverse" class="md-nav__link"><span class="md-ellipsis">inverse()</span></a>
-                                    </li>
-                                  </ul>
-                                </nav>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">BinaryPolynomialFraction</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../FiniteBifield/" class="md-nav__link"><span class="md-ellipsis">FiniteBifield</span></a>
@@ -523,20 +509,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#numerator" class="md-nav__link"><span class="md-ellipsis">numerator</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#denominator" class="md-nav__link"><span class="md-ellipsis">denominator</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#inverse" class="md-nav__link"><span class="md-ellipsis">inverse()</span></a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -546,26 +519,30 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Binary polynomial fraction. A <em>binary polynomial fraction</em> is a ratio of two <a href="/ref/BinaryPolynomial">binary polynomials</a>.</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="numerator" class="doc doc-heading"><code class="highlight language-python"><span class="n">numerator</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The numerator of the polynomial fraction.</p>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>numerator</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The numerator of the fraction.</p>
                     </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="denominator" class="doc doc-heading"><code class="highlight language-python"><span class="n">denominator</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The denominator of the polynomial fraction.</p>
+                  </li>
+                  <li class="field-body">
+                    <b><code>denominator</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The denominator of the fraction.</p>
                     </div>
-                  </div>
-                  <div class="doc doc-object doc-function">
-                    <h2 id="inverse" class="doc doc-heading"><code class="highlight language-python"><span class="n">inverse</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Returns the multiplicative inverse the polynomial fraction.</p>
-                    </div>
-                  </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomialFraction</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">)</span>  <span class="c1"># (X^4 + X^3 + X) / (X^2 + 1)</span>
+<span class="go">BinaryPolynomialFraction(0b11010, 0b101)</span>
+</code></pre>
                 </div>
+                <h2>Algebraic structure</h2>
+                <p>The binary polynomial fractions form a <em>field</em>. The following operations are supported: addition (<code>+</code>), subtraction (<code>-</code>), multiplication (<code>*</code>), division (<code>/</code>), and exponentiation (<code>**</code>).</p>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>
