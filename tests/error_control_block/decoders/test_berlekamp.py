@@ -37,7 +37,7 @@ def test_bch_berlekamp_step_by_step():
     assert roots == {alpha**3, alpha**10, alpha**12}
     inv_roots = {root.inverse() for root in roots}
     assert inv_roots == {alpha**12, alpha**5, alpha**3}
-    e_loc = {root.logarithm() for root in inv_roots}
+    e_loc = {root.logarithm(alpha) for root in inv_roots}
     assert e_loc == {3, 5, 12}
 
 

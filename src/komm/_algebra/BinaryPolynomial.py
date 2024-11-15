@@ -1,45 +1,58 @@
 import functools
 import operator
+from typing import Iterable, Optional, TypeVar
 
 import numpy as np
+import numpy.typing as npt
+from attrs import field, frozen
+from typing_extensions import Self
 
 from komm._util.bit_operations import binlist2int, int2binlist
 
-from ._util import binary_horner, gcd, power, xgcd
+from . import domain, ring
+
+T = TypeVar("T", bound=ring.RingElement)
 
 
+@frozen
 class BinaryPolynomial:
     r"""
-    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \\{ 0, 1 \\}$. This class supports addition, multiplication, division, and exponentiation.
+    Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \\{ 0, 1 \\}$.
+
+    The default constructor of the class expects the following:
+
+    Attributes:
+        value (int): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
 
     Examples:
-        >>> poly1 = komm.BinaryPolynomial(0b10100)  # X^4 + X^2
-        >>> poly2 = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-        >>> poly1 + poly2  # X^3 + X^2 + X
-        BinaryPolynomial(0b1110)
-        >>> poly1 * poly2  # X^8 + X^7 + X^6 + X^3
-        BinaryPolynomial(0b111001000)
-        >>> poly1**2  # X^8 + X^4
-        BinaryPolynomial(0b100010000)
+        >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+        BinaryPolynomial(0b11010)
+
+    See also the class methods [`from_coefficients`](./#from_coefficients) and [`from_exponents`](./#from_exponents) for alternative ways to construct a binary polynomial.
+
+    <h2>Algebraic structure</h2>
+
+    The binary polynomials form a *domain*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), euclidean division (`//`), modulo (`%`), and exponentiation (`**`).
+
+    Examples:
+        >>> poly1 = komm.BinaryPolynomial(0b10111)  # X^4 + X^2 + X + 1
+        >>> poly2 = komm.BinaryPolynomial(0b101)  # X^2 + 1
+        >>> poly1 + poly2  # X^4 + X
+        BinaryPolynomial(0b10010)
+        >>> poly1 - poly2  # X^4 + X
+        BinaryPolynomial(0b10010)
+        >>> poly1 * poly2  # X^6 + X^3 + X + 1
+        BinaryPolynomial(0b1001011)
+        >>> poly1 // poly2  # X^2
+        BinaryPolynomial(0b100)
+        >>> poly1 % poly2  # X + 1
+        BinaryPolynomial(0b11)
+        >>> poly1 ** 2  # X^8 + X^4 + X^2 + 1
+        BinaryPolynomial(0b100010101)
     """
 
-    def __init__(self, integer):
-        r"""
-        Default constructor for the class.
-
-        Parameters:
-            integer (int): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
-
-        Examples:
-            >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-            BinaryPolynomial(0b11010)
-
-        See also the class methods [`from_coefficients`](./#from_coefficients) and [`from_exponents`](./#from_exponents) for alternative ways to construct a binary polynomial.
-        """
-        self._integer = int(integer)
-
     @classmethod
-    def from_coefficients(cls, coefficients):
+    def from_coefficients(cls, coefficients: Iterable[int]) -> Self:
         r"""
         Constructs a binary polynomial from its coefficients.
 
@@ -53,7 +66,7 @@ class BinaryPolynomial:
         return cls(binlist2int(coefficients))
 
     @classmethod
-    def from_exponents(cls, exponents):
+    def from_exponents(cls, exponents: npt.ArrayLike) -> Self:
         r"""
         Constructs a binary polynomial from its exponents.
 
@@ -66,8 +79,72 @@ class BinaryPolynomial:
         """
         return cls(binlist2int(np.bincount(exponents)))
 
+    value: int = field(converter=int)
+
     @property
-    def degree(self):
+    def ambient(self):
+        return BinaryPolynomials()
+
+    def __int__(self) -> int:
+        return self.value
+
+    def __hash__(self) -> int:
+        return self.value
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, int):
+            return self.value == other
+        if isinstance(other, self.__class__):
+            return self.value == other.value
+        return NotImplemented
+
+    def __lshift__(self, n: int) -> Self:
+        return self.__class__(self.value << n)
+
+    def __rshift__(self, n: int) -> Self:
+        return self.__class__(self.value >> n)
+
+    def __add__(self, other: Self) -> Self:
+        return self.__class__(self.value ^ other.value)
+
+    def __sub__(self, other: Self) -> Self:
+        return self.__class__(self.value ^ other.value)
+
+    def __neg__(self) -> Self:
+        return self
+
+    def __mul__(self, other: Self) -> Self:
+        coeffs = np.convolve(self.coefficients(), other.coefficients()) % 2
+        return self.__class__(binlist2int(coeffs))
+
+    def __rmul__(self, other: int) -> Self:
+        if other % 2 == 0:
+            return self.__class__(0)
+        else:
+            return self
+
+    def __pow__(self, exponent: int) -> Self:
+        return ring.power(self, exponent)
+
+    def __divmod__(self, den: Self) -> tuple[Self, Self]:
+        if den.value == 0:
+            raise ZeroDivisionError("division by zero polynomial")
+        div, mod = 0, self.value
+        d = mod.bit_length() - den.value.bit_length()
+        while d >= 0:
+            div ^= 1 << d
+            mod ^= den.value << d
+            d = mod.bit_length() - den.value.bit_length()
+        return self.__class__(div), self.__class__(mod)
+
+    def __floordiv__(self, other: Self) -> Self:
+        return self.__divmod__(other)[0]
+
+    def __mod__(self, other: Self) -> Self:
+        return self.__divmod__(other)[1]
+
+    @property
+    def degree(self) -> int:
         r"""
         The degree of the polynomial.
 
@@ -76,9 +153,9 @@ class BinaryPolynomial:
             >>> poly.degree
             4
         """
-        return self._integer.bit_length() - 1
+        return self.value.bit_length() - 1
 
-    def coefficients(self, width=None):
+    def coefficients(self, width: Optional[int] = None) -> npt.NDArray[np.int_]:
         r"""
         Returns the coefficients of the binary polynomial.
 
@@ -95,9 +172,9 @@ class BinaryPolynomial:
             >>> poly.coefficients(width=8)
             array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return np.array(int2binlist(self._integer, width=width), dtype=int)
+        return int2binlist(self.value, width=width)
 
-    def exponents(self):
+    def exponents(self) -> npt.NDArray[np.int_]:
         r"""
         Returns the exponents of the binary polynomial.
 
@@ -111,51 +188,7 @@ class BinaryPolynomial:
         """
         return np.flatnonzero(self.coefficients())
 
-    def __int__(self):
-        return self._integer
-
-    def __hash__(self):
-        return self._integer
-
-    def __eq__(self, other):
-        return int(self) == int(other)
-
-    def __lshift__(self, n):
-        return self.__class__(self._integer.__lshift__(n))
-
-    def __rshift__(self, n):
-        return self.__class__(self._integer.__rshift__(n))
-
-    def __add__(self, other):
-        return self.__class__(self._integer.__xor__(other._integer))
-
-    def __sub__(self, other):
-        return self.__class__(self._integer.__xor__(other._integer))
-
-    def __mul__(self, other):
-        return self.from_coefficients(
-            np.convolve(self.coefficients(), other.coefficients()) % 2
-        )
-
-    def __pow__(self, exponent):
-        return power(self, exponent, self.__class__)
-
-    def __divmod__(self, den):
-        div, mod, den = 0, self._integer, den._integer
-        d = mod.bit_length() - den.bit_length()
-        while d >= 0:
-            div ^= 1 << d
-            mod ^= den << d
-            d = mod.bit_length() - den.bit_length()
-        return self.__class__(div), self.__class__(mod)
-
-    def __floordiv__(self, other):
-        return self.__divmod__(other)[0]
-
-    def __mod__(self, other):
-        return self.__divmod__(other)[1]
-
-    def evaluate(self, point):
+    def evaluate(self, point: T) -> T:
         r"""
         Evaluates the polynomial at a given point. Uses Horner's method.
 
@@ -167,39 +200,48 @@ class BinaryPolynomial:
 
         Examples:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
-            >>> poly.evaluate(7)  # same as 7**4 + 7**3 + 7
-            np.int64(2751)
-            >>> point = np.array([[1, 2], [3, 4]])
-            >>> poly.evaluate(point)  # same as point**4 + point**3 + point
-            array([[  3,  26],
-                   [111, 324]])
+            >>> poly.evaluate(komm.Integer(7))  # same as 7**4 + 7**3 + 7
+            Integer(value=2751)
         """
-        return binary_horner(self, point)
+        return ring.binary_horner(self.coefficients().tolist(), point)
 
-    def __repr__(self):
-        args = "{}".format(bin(self._integer))
-        return "{}({})".format(self.__class__.__name__, args)
+    def __repr__(self) -> str:
+        return f"BinaryPolynomial({self.value:#b})"
 
-    def __str__(self):
-        return bin(self._integer)
+    def __str__(self) -> str:
+        return bin(self.value)
 
     @classmethod
-    def xgcd(cls, poly1, poly2):
+    def xgcd(cls, poly1: Self, poly2: Self) -> tuple[Self, Self, Self]:
         r"""
         Performs the extended Euclidean algorithm on two given binary polynomials.
         """
-        return xgcd(poly1, poly2, cls)
+        return domain.xgcd(poly1, poly2)
 
     @classmethod
-    def gcd(cls, *poly_list):
+    def gcd(cls, *poly_list: Self) -> Self:
         r"""
         Computes the greatest common divisor (gcd) of the arguments.
         """
-        return functools.reduce(functools.partial(gcd, ring=cls), poly_list)
+        return functools.reduce(domain.gcd, poly_list)
 
     @classmethod
-    def lcm(cls, *poly_list):
+    def lcm(cls, *poly_list: Self) -> Self:
         r"""
         Computes the least common multiple (lcm) of the arguments.
         """
         return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
+
+
+@frozen
+class BinaryPolynomials:
+    def __call__(self, value: int) -> BinaryPolynomial:
+        return BinaryPolynomial(value)
+
+    @property
+    def zero(self) -> BinaryPolynomial:
+        return BinaryPolynomial(0)
+
+    @property
+    def one(self) -> BinaryPolynomial:
+        return BinaryPolynomial(1)

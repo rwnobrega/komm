@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 
-from ..._algebra import BinaryPolynomial, FiniteBifield
+from ..._algebra import BinaryPolynomial, FiniteBifield, FiniteBifieldElement
 from .._registry import RegistryBlockDecoder
 from ..BCHCode import BCHCode
 
@@ -28,7 +28,7 @@ def bch_syndrome_vector(code: BCHCode, r_poly: BinaryPolynomial):
     return s_vec
 
 
-def find_roots(field: FiniteBifield, coefficients) -> list[FiniteBifield._Element]:
+def find_roots(field: FiniteBifield, coefficients) -> list[FiniteBifieldElement]:
     # Exhaustive search.
     roots = []
     for i in range(field.order):
@@ -82,6 +82,7 @@ def berlekamp_algorithm(field: FiniteBifield, delta: int, syndrome_polynomial):
 
 
 def decode_berlekamp(code: BCHCode, r: npt.ArrayLike) -> np.ndarray:
+    alpha = code.field.primitive_element
     r = np.asarray(r)
     r_poly = BinaryPolynomial.from_coefficients(r)
     s_poly = bch_syndrome_vector(code, r_poly)
@@ -89,7 +90,7 @@ def decode_berlekamp(code: BCHCode, r: npt.ArrayLike) -> np.ndarray:
         return r
     sigma_poly = berlekamp_algorithm(code.field, code.delta, s_poly)
     roots = find_roots(code.field, sigma_poly)
-    e_loc = [e.inverse().logarithm() for e in roots]
+    e_loc = [e.inverse().logarithm(alpha) for e in roots]
     e_hat = np.bincount(e_loc, minlength=code.length)
     v_hat = np.bitwise_xor(r, e_hat)
     return v_hat

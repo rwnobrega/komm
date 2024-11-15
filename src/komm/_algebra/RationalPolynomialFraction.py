@@ -2,8 +2,8 @@ from fractions import Fraction
 
 import numpy as np
 
-from . import RationalPolynomial
-from ._util import power
+from .field import power
+from .RationalPolynomial import RationalPolynomial
 
 
 class RationalPolynomialFraction:
@@ -53,16 +53,10 @@ class RationalPolynomialFraction:
 
     @property
     def numerator(self):
-        r"""
-        The numerator of the fraction.
-        """
         return self._numerator
 
     @property
     def denominator(self):
-        r"""
-        The denominator of the fraction.
-        """
         return self._denominator
 
     def __add__(self, other):
@@ -101,7 +95,4 @@ class RationalPolynomialFraction:
         )
 
     def inverse(self):
-        r"""
-        Returns the multiplicative inverse the fraction.
-        """
         return self.__class__(self._denominator, self._numerator)

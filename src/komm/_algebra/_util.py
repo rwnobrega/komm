@@ -11,43 +11,6 @@ def gcd(x, y, ring):
         return gcd(y, x % y, ring)
 
 
-def xgcd(x, y, ring):
-    r"""
-    Performs the `extended Euclidean algorithm<https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_ with `x` and `y`.
-    """
-    if x == ring(0):
-        return y, ring(0), ring(1)
-    else:
-        d, s, t = xgcd(y % x, x, ring)
-        return d, t - s * (y // x), s
-
-
-def power(x, n, ring):
-    r"""
-    Returns `x**n` using the `exponentiation by squaring<https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_ algorithm.
-    """
-    if n == 0:
-        return ring(1)
-    elif n == 1:
-        return x
-    elif n % 2 == 0:
-        return power(x * x, n // 2, ring)
-    else:
-        return x * power(x * x, n // 2, ring)
-
-
-def binary_horner(poly, x):
-    r"""
-    Returns the binary polynomial `poly` evaluated at point `x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
-    """
-    result = x - x  # zero
-    for coefficient in reversed(poly.coefficients()):
-        result *= x
-        if coefficient:
-            result += coefficient
-    return result
-
-
 def horner(poly, x):
     r"""
     Returns the polynomial `poly` evaluated at point `x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.

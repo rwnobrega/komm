@@ -4,7 +4,8 @@ from fractions import Fraction
 
 import numpy as np
 
-from ._util import gcd, horner, power
+from ._util import gcd, horner
+from .ring import power
 
 
 class RationalPolynomial:
