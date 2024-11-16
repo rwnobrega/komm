@@ -361,16 +361,13 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
+                                      <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#input_peak" class="md-nav__link"><span class="md-ellipsis">input_peak</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#choice" class="md-nav__link"><span class="md-ellipsis">choice</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -530,16 +527,13 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
+                    <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#input_peak" class="md-nav__link"><span class="md-ellipsis">input_peak</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#choice" class="md-nav__link"><span class="md-ellipsis">choice</span></a>
                   </li>
                 </ul>
               </nav>
@@ -552,35 +546,30 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Uniform scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels.</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>num_levels</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The number of quantization levels $L$.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>input_peak</code></b> <span class="doc-param-annotation">(<code>Optional[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The peak of the input signal $x_\mathrm{p}$. The default value is <code>1.0</code>.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>choice</code></b> <span class="doc-param-annotation">(<code>Optional[str]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The choice for the uniform quantizer. Must be one of <code>'unsigned'</code> | <code>'mid-riser'</code> | <code>'mid-tread'</code>. The default value is <code>'mid-riser'</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>num_levels</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The number of quantization levels $L$. It must be greater than $1$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>input_peak</code></b> <span class="doc-param-annotation">(<code>float</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The peak of the input signal $x_\mathrm{p}$. The default value is <code>1.0</code>.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>choice</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['unsigned', 'mid-riser', 'mid-tread']</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The choice for the uniform quantizer. Must be one of <code>'unsigned'</code> | <code>'mid-riser'</code> | <code>'mid-tread'</code>. The default value is <code>'mid-riser'</code>.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-0.875, -0.625, -0.375, -0.125,  0.125,  0.375,  0.625,  0.875])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
@@ -591,49 +580,48 @@
 <span class="go">array([[-0.5  , -0.4  , -0.3  , -0.2  , -0.1  ,  0.   ,  0.1  ,  0.2  ,  0.3  ,  0.4  ,  0.5  ],</span>
 <span class="go">       [-0.375, -0.375, -0.375, -0.125, -0.125,  0.125,  0.125,  0.125,  0.375,  0.375,  0.625]])</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'unsigned'</span><span class="p">)</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'unsigned'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([0.  , 0.25, 0.5 , 0.75])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([0.125, 0.375, 0.625])</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'mid-riser'</span><span class="p">)</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'mid-riser'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-0.75, -0.25,  0.25,  0.75])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.5,  0. ,  0.5])</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'mid-tread'</span><span class="p">)</span>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_peak</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="s1">'mid-tread'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-1. , -0.5,  0. ,  0.5])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.75, -0.25,  0.25])</span>
 </code></pre>
-                      </div>
+                </div>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">levels</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="quantization_step" class="doc doc-heading"><code class="highlight language-python"><span class="n">quantization_step</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="thresholds" class="doc doc-heading"><code class="highlight language-python"><span class="n">thresholds</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="quantization_step" class="doc doc-heading"><code class="highlight language-python"><span class="n">quantization_step</span><span class="p">:</span> <span class="nb">float</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The quantization step $\Delta$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="input_peak" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_peak</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The peak of the input signal $x_\mathrm{p}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="choice" class="doc doc-heading"><code class="highlight language-python"><span class="n">choice</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The choice for the uniform quantizer (<code>'unsigned'</code> | <code>'mid-riser'</code> | <code>'mid-tread'</code>).</p>
                     </div>
                   </div>
                 </div>

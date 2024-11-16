@@ -355,15 +355,6 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
                                       <a href="#num_levels" class="md-nav__link"><span class="md-ellipsis">num_levels</span></a>
                                     </li>
                                   </ul>
@@ -530,15 +521,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#num_levels" class="md-nav__link"><span class="md-ellipsis">num_levels</span></a>
                   </li>
                 </ul>
@@ -552,58 +534,40 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>General scalar quantizer. It is defined by a list of <em>levels</em>, $v_0, v_1, \ldots, v_{L-1}$, and a list of <em>thresholds</em>, $t_0, t_1, \ldots, t_L$, satisfying $$ -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty. $$ Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x &lt; t_{i+1}$, where $i \in [0:L)$.</p>
-                <p>To invoke the quantizer, call the object giving the input signal as parameter (see example in the constructor below).</p>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>levels</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>thresholds</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The finite quantizer thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$. Moreover, they must satisfy $v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1}$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <p>The following example considers the $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.</p>
-                      <figure>
-                        <p><img alt="Scalar quantizer example." src="/figures/scalar_quantizer_5.svg"></p>
-                      </figure>
-                      <p>The levels are $$ v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2, $$ and the thresholds are $$ t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty. $$</p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+                <p>To invoke the quantizer, call the object giving the input signal as parameter (see example below).</p>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>levels</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>thresholds</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <p>The following example considers the $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.</p>
+                <figure>
+                  <p><img alt="Scalar quantizer example." src="/figures/scalar_quantizer_5.svg"></p>
+                </figure>
+                <p>The levels are $$ v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2, $$ and the thresholds are $$ t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty. $$</p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">quantizer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
 <span class="go">array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],</span>
 <span class="go">       [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])</span>
 </code></pre>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">levels</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="thresholds" class="doc doc-heading"><code class="highlight language-python"><span class="n">thresholds</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The finite quantizer thresholds $t_1, t_2, \ldots, t_{L-1}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="num_levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_levels</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="num_levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_levels</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The number of quantization levels $L$.</p>
                     </div>
