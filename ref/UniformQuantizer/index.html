@@ -361,13 +361,13 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
+                                      <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -527,13 +527,13 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
+                    <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#quantization_step" class="md-nav__link"><span class="md-ellipsis">quantization_step</span></a>
                   </li>
                 </ul>
               </nav>
@@ -607,6 +607,12 @@
                 </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
+                    <h2 id="quantization_step" class="doc doc-heading"><code class="highlight language-python"><span class="n">quantization_step</span><span class="p">:</span> <span class="nb">float</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The quantization step $\Delta$.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
                     <h2 id="levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">levels</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.</p>
@@ -616,12 +622,6 @@
                     <h2 id="thresholds" class="doc doc-heading"><code class="highlight language-python"><span class="n">thresholds</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="quantization_step" class="doc doc-heading"><code class="highlight language-python"><span class="n">quantization_step</span><span class="p">:</span> <span class="nb">float</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The quantization step $\Delta$.</p>
                     </div>
                   </div>
                 </div>
