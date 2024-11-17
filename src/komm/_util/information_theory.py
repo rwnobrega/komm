@@ -109,8 +109,8 @@ def mutual_information(
 def arimoto_blahut(
     transition_matrix: npt.NDArray[np.float64],
     initial_guess: npt.NDArray[np.float64],
-    max_iters: int,
-    error_tolerance: float,
+    max_iter: int,
+    tol: float,
 ) -> npt.NDArray[np.float64]:
     r"""
     Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
@@ -119,7 +119,7 @@ def arimoto_blahut(
     r = initial_guess
     last_r = np.full_like(r, fill_value=np.inf)
     iters = 0
-    while iters < max_iters and np.amax(np.abs(r - last_r)) > error_tolerance:
+    while iters < max_iter and np.amax(np.abs(r - last_r)) > tol:
         last_r = r
         q = r[np.newaxis].T * p
         qsum = np.sum(q, axis=0)

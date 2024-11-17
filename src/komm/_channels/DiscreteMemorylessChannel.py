@@ -86,8 +86,8 @@ class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
             base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Parameters: Additional keyword arguments for the Arimoto–Blahut algorithm:
-            max_iters (Optional[int]): The maximum number of iterations. The default value is `1000`.
-            error_tolerance (Optional[float]): The error tolerance. The default value is `1e-12`.
+            max_iter (Optional[int]): The maximum number of iterations. The default value is `1000`.
+            tol (Optional[float]): The error tolerance. The default value is `1e-12`.
 
         Returns:
             capacity (float): The channel capacity $C$.
@@ -102,7 +102,7 @@ class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
             np.float64(0.112035)
         """
         if not kwargs:
-            kwargs = {"max_iters": 1000, "error_tolerance": 1e-12}
+            kwargs = {"max_iter": 1000, "tol": 1e-12}
         initial_guess = np.ones(self.input_cardinality) / self.input_cardinality
         optimal_input_pmf = arimoto_blahut(
             self.transition_matrix, initial_guess, **kwargs
