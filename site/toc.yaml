@@ -51,10 +51,6 @@ Pulse formatting:
   Filtering:
     - TransmitFilter
     - ReceiveFilter
-Quantization:
-  - ScalarQuantizer
-  - LloydMaxQuantizer
-  - UniformQuantizer
 Sequences:
   Binary sequences:
     - BinarySequence
@@ -67,8 +63,6 @@ Sequences:
     - ComplexSequence
     - ZadoffChuSequence
 Source coding:
-  Sources:
-    - DiscreteMemorylessSource
   Lossless coding:
     - FixedToVariableCode
     - HuffmanCode
@@ -78,6 +72,12 @@ Source coding:
     - TunstallCode
     - VariableToFixedEncoder
     - VariableToFixedDecoder
+  Quantization:
+    - ScalarQuantizer
+    - LloydMaxQuantizer
+    - UniformQuantizer
+Sources:
+  - DiscreteMemorylessSource
 Utilities:
   - binlist2int
   - int2binlist
