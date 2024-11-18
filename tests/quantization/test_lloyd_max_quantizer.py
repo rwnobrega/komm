@@ -21,7 +21,7 @@ def test_lloyd_max_quantizer_uniform(num_levels, peak):
     )
     quantizer2 = komm.UniformQuantizer(
         num_levels=num_levels,
-        input_peak=peak,
+        input_range=(-peak, peak),
         choice="mid-riser" if num_levels % 2 == 0 else "mid-tread",
     )
     assert np.allclose(quantizer1.levels, quantizer2.levels, atol=1e-5)
