@@ -54,18 +54,18 @@ class ConvolutionalStreamDecoder:
         )
 
     @cached_property
-    def cache_bit(self) -> np.ndarray:
+    def cache_bit(self) -> npt.NDArray[np.int_]:
         n = self.convolutional_code.num_output_bits
         return np.array([int2binlist(y, width=n) for y in range(2**n)])
 
-    def metric_function(self, y: int, z: np.ndarray) -> float:
+    def metric_function(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":
             return np.count_nonzero(self.cache_bit[y] != z)
         elif self.input_type == "soft":
             return np.dot(self.cache_bit[y], z)
         raise ValueError(f"input type '{self.input_type}' is not supported")
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         n, k, fsm = (
             self.convolutional_code.num_output_bits,
             self.convolutional_code.num_input_bits,

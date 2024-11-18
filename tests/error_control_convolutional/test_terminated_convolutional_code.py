@@ -101,7 +101,7 @@ def test_terminated_convolutional_code_zero_termination(
         message = komm.int2binlist(message_int, width=code.dimension)
         tail = np.dot(message, code.tail_projector) % 2
         input_sequence = komm.pack(
-            np.concatenate([message, tail]), width=convolutional_code._num_input_bits
+            np.concatenate([message, tail]), width=convolutional_code.num_input_bits
         )
         _, fs = convolutional_code._finite_state_machine.process(
             input_sequence, initial_state=0

@@ -37,7 +37,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
         >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
         >>> (code.length, code.dimension, code.minimum_distance)
-        (np.int64(8), 3, np.int64(3))
+        (8, 3, np.int64(3))
         >>> code.generator_matrix
         array([[1, 1, 0, 1, 0, 0, 0, 0],
                [0, 0, 1, 1, 0, 1, 0, 0],

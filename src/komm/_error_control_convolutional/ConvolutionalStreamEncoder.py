@@ -33,7 +33,7 @@ class ConvolutionalStreamEncoder:
     convolutional_code: ConvolutionalCode
     state: int = field(default=0)
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         n, k, fsm = (
             self.convolutional_code.num_output_bits,
             self.convolutional_code.num_input_bits,
