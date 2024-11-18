@@ -533,7 +533,7 @@
             <h1 id="kommscalarquantizer">komm.ScalarQuantizer</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>General scalar quantizer. It is defined by a list of <em>levels</em>, $v_0, v_1, \ldots, v_{L-1}$, and a list of <em>thresholds</em>, $t_0, t_1, \ldots, t_L$, satisfying $$ -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty. $$ Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x &lt; t_{i+1}$, where $i \in [0:L)$.</p>
+                <p>General scalar quantizer. It is defined by a list of <em>levels</em>, $v_0, v_1, \ldots, v_{L-1}$, and a list of <em>thresholds</em>, $t_0, t_1, \ldots, t_L$, satisfying $$ -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty. $$ Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x &lt; t_{i+1}$, where $i \in [0:L)$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Ch. 9</cite>.</p>
                 <p>To invoke the quantizer, call the object giving the input signal as parameter (see example below).</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
