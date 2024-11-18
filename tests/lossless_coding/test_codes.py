@@ -1,6 +1,6 @@
 import pytest
 
-from komm._source_coding.util import is_prefix_free, is_uniquely_decodable
+from komm._lossless_coding.util import is_prefix_free, is_uniquely_decodable
 
 test_cases = [
     {

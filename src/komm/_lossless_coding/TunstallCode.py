@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field
 
-from komm._source_coding.util import tunstall_algorithm
+from komm._lossless_coding.util import tunstall_algorithm
 
 from .._validation import is_pmf, validate_call
 from .VariableToFixedCode import VariableToFixedCode
