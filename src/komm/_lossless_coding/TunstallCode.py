@@ -18,7 +18,7 @@ def TunstallCode(
     target_block_size: Optional[int] = None,
 ) -> VariableToFixedCode:
     r"""
-    Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function.
+    Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.7</cite>.
 
     Parameters:
         pmf: The probability mass function of the source.

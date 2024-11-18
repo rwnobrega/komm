@@ -20,7 +20,7 @@ def HuffmanCode(
     policy: Literal["high", "low"] = "high",
 ) -> FixedToVariableCode:
     r"""
-    Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function.
+    Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.2</cite>.
 
     Parameters:
         pmf: The probability mass function of the source.
