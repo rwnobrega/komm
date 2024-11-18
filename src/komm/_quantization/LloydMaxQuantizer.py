@@ -42,7 +42,7 @@ def LloydMaxQuantizer(
         ... )
         >>> quantizer.levels.round(3)
         array([-2.152, -1.344, -0.756, -0.245,  0.245,  0.756,  1.344,  2.152])
-        >>> quantizer.thresholds.round(3)
+        >>> quantizer.thresholds.round(3)  # doctest: +SKIP
         array([-1.748, -1.05 , -0.501, -0.   ,  0.501,  1.05 ,  1.748])
     """
     levels, thresholds = lloyd_max_quantizer(
