@@ -11,7 +11,7 @@ from .AbstractScalarQuantizer import AbstractScalarQuantizer
 @frozen
 class UniformQuantizer(AbstractScalarQuantizer):
     r"""
-    Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels.
+    Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels. For more details, see <cite>Say06, Sec. 9.4</cite>.
 
     Attributes:
         num_levels: The number of quantization levels $L$. It must be greater than $1$.
