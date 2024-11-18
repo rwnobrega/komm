@@ -12,7 +12,7 @@ def mean_squared_quantization_error(
     input_range: Tuple[float, float],
     points_per_interval: int,
 ) -> np.float64:
-    # See <cite>Say06, Eq. (9.3)</cite>.
+    # See [Say06, eq. (9.3)].
     x_min, x_max = input_range
     thresholds = np.concatenate(([x_min], quantizer.thresholds, [x_max]))
     mse = np.float64(0.0)
@@ -33,7 +33,7 @@ def lloyd_max_quantizer(
     points_per_interval: int,
     max_iter: int,
 ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
-    # See <cite>Say06, Eqs. (9.27) and (9.28)</cite>.
+    # See [Say06, eqs. (9.27) and (9.28)].
     x_min, x_max = input_range
     delta = (x_max - x_min) / num_levels
 
