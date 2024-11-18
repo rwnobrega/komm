@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._quantization.util import mean_squared_quantization_error
 
 
 def test_uniform_quantizer_choices():
@@ -33,3 +34,18 @@ def test_uniform_quantizer_invalid_constructions():
         komm.UniformQuantizer(num_levels=1)
     with pytest.raises(ValueError):
         komm.UniformQuantizer(num_levels=8, choice="invalid")  # type: ignore
+
+
+@pytest.mark.parametrize("n_bits", [2, 3, 4, 5])
+@pytest.mark.parametrize("input_peak", [0.5, 1.0, 1.5, 2.0])
+def test_uniform_quantizer_snr(n_bits, input_peak):
+    quantizer = komm.UniformQuantizer(num_levels=2**n_bits, input_peak=input_peak)
+    signal_power = (2 * input_peak) ** 2 / 12
+    noise_power = mean_squared_quantization_error(
+        quantizer,
+        input_pdf=lambda x: 1 / (2 * input_peak) * (np.abs(x) <= input_peak),
+        input_range=(-input_peak, input_peak),
+        points_per_interval=1000,
+    )
+    snr_db = 10 * np.log10(signal_power / noise_power)
+    assert np.isclose(snr_db, 6.02 * n_bits, atol=0.05)
