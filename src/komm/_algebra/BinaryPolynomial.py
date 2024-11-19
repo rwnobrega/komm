@@ -51,6 +51,12 @@ class BinaryPolynomial:
         BinaryPolynomial(0b100010101)
     """
 
+    value: int = field(converter=int)
+
+    @property
+    def ambient(self):
+        return BinaryPolynomials()
+
     @classmethod
     def from_coefficients(cls, coefficients: Iterable[int]) -> Self:
         r"""
@@ -78,12 +84,6 @@ class BinaryPolynomial:
             BinaryPolynomial(0b11010)
         """
         return cls(binlist2int(np.bincount(exponents)))
-
-    value: int = field(converter=int)
-
-    @property
-    def ambient(self):
-        return BinaryPolynomials()
 
     def __int__(self) -> int:
         return self.value
