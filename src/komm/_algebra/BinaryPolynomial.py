@@ -32,7 +32,7 @@ class BinaryPolynomial:
 
     <h2>Algebraic structure</h2>
 
-    The binary polynomials form a *domain*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), euclidean division (`//`), modulo (`%`), and exponentiation (`**`).
+    The binary polynomials form an *Euclidean domain*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), euclidean division (`//`), modulo (`%`), and exponentiation (`**`).
 
     Examples:
         >>> poly1 = komm.BinaryPolynomial(0b10111)  # X^4 + X^2 + X + 1
@@ -193,7 +193,7 @@ class BinaryPolynomial:
         Evaluates the polynomial at a given point. Uses Horner's method.
 
         Parameters:
-            point (RingElement): Any Python object supporting the operations of addition, subtraction, and multiplication.
+            point (RingElement): The point at which the polynomial is evaluated. It must be an element of a ring in which multiplication by integers is defined.
 
         Returns:
             result (RingElement): The result of evaluating the binary polynomial at `point`. It has the same type as `point`.
