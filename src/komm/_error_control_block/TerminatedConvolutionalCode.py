@@ -165,7 +165,7 @@ class TerminatedConvolutionalCode(BlockCode):
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
         A_mat = self.convolutional_code.state_matrix
-        return right_inverse(matrix_power(A_mat, h) + np.eye(nu, dtype=int) % 2)
+        return right_inverse((matrix_power(A_mat, h) + np.eye(nu, dtype=int)) % 2)
 
     @cached_property
     def cache_bit(self) -> np.ndarray:
