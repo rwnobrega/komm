@@ -1,26 +1,6 @@
 import numpy as np
 
 
-def gcd(x, y, ring):
-    r"""
-    Performs the `Euclidean algorithm<https://en.wikipedia.org/wiki/Euclidean_algorithm>`_ with `x` and `y`.
-    """
-    if y == ring(0):
-        return x
-    else:
-        return gcd(y, x % y, ring)
-
-
-def horner(poly, x):
-    r"""
-    Returns the polynomial `poly` evaluated at point `x`, using `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_.  Any Python object supporting the operations of addition, subtraction, and multiplication may serve as the input point.
-    """
-    result = x - x  # zero
-    for coefficient in reversed(poly.coefficients()):
-        result = result * x + coefficient
-    return result
-
-
 def rref(M):
     r"""
     Computes the row-reduced echelon form of the matrix M modulo 2.

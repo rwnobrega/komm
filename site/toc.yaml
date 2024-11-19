@@ -2,8 +2,6 @@ Algebra:
   - BinaryPolynomial
   - BinaryPolynomialFraction
   - FiniteBifield
-  - RationalPolynomial
-  - RationalPolynomialFraction
 Channels:
   - AWGNChannel
   - DiscreteMemorylessChannel
