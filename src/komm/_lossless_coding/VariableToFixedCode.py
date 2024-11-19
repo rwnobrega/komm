@@ -101,7 +101,7 @@ class VariableToFixedCode:
         """
         T = target_cardinality
         S = max(max(word) for word in sourcewords) + 1
-        n = next(n for n in it.count(1) if T ** n >= len(sourcewords))
+        n = next(n for n in it.count(1) if T**n >= len(sourcewords))
         dec_mapping = dict(zip(it.product(range(T), repeat=n), sourcewords))
         return cls(T, S, n, dec_mapping)
 

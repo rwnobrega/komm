@@ -48,9 +48,7 @@ def constellation_apsk(
     amplitudes: tuple[float, float],
     phase_offsets: tuple[float, float],
 ):
-    return np.concatenate(
-        [
-            constellation_psk(M_k, A_k, phi_k)
-            for M_k, A_k, phi_k in zip(orders, amplitudes, phase_offsets)
-        ]
-    )
+    return np.concatenate([
+        constellation_psk(M_k, A_k, phi_k)
+        for M_k, A_k, phi_k in zip(orders, amplitudes, phase_offsets)
+    ])

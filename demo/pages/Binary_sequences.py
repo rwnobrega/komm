@@ -79,13 +79,11 @@ def plot_lfsr(degree):
     return lfsr, fig
 
 
-tab1, tab2, tab3 = st.tabs(
-    [
-        "Barker",
-        "Walsh–Hadamard",
-        "Linear-feedback shift register (LFSR)",
-    ]
-)
+tab1, tab2, tab3 = st.tabs([
+    "Barker",
+    "Walsh–Hadamard",
+    "Linear-feedback shift register (LFSR)",
+])
 
 
 with tab1:

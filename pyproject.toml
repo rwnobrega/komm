@@ -13,6 +13,9 @@ urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/
 requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.black]
+unstable = true
+
 [tool.pyright]
 include = ["src", "tests"]
 typeCheckingMode = "basic"

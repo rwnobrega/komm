@@ -105,7 +105,7 @@ class FixedToVariableCode:
         """
         S = source_cardinality
         T = max(max(codeword) for codeword in codewords) + 1
-        k = next(k for k in it.count(1) if S ** k >= len(codewords))
+        k = next(k for k in it.count(1) if S**k >= len(codewords))
         enc_mapping = dict(zip(it.product(range(S), repeat=k), codewords))
         return cls(S, T, k, enc_mapping)
 

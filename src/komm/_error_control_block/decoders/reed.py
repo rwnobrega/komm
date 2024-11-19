@@ -19,7 +19,10 @@ def decode_reed(code: ReedMullerCode, r: npt.ArrayLike) -> np.ndarray:
 RegistryBlockDecoder.register(
     "reed",
     {
-        "description": "Reed decoding algorithm for Reed–Muller codes. It's a majority-logic decoding algorithm.",
+        "description": (
+            "Reed decoding algorithm for Reed–Muller codes. It's a majority-logic"
+            " decoding algorithm."
+        ),
         "decoder": decode_reed,
         "type_in": "hard",
         "type_out": "hard",

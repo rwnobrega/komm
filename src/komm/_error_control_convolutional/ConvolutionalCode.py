@@ -183,12 +183,10 @@ class ConvolutionalCode:
 
         feedforward_taps: list[npt.NDArray[np.object_]] = []
         for j in range(n):
-            taps = np.concatenate(
-                [
-                    self.feedforward_polynomials[i, j].exponents() + x_indices[i]
-                    for i in range(k)
-                ]
-            )
+            taps = np.concatenate([
+                self.feedforward_polynomials[i, j].exponents() + x_indices[i]
+                for i in range(k)
+            ])
             feedforward_taps.append(taps)
 
         feedback_taps: list[npt.NDArray[np.object_]] = []

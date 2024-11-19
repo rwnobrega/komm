@@ -5,7 +5,8 @@ import komm
 
 
 @pytest.mark.parametrize(
-    "order, bits_per_symbol, constellation, energy_per_symbol, energy_per_bit, symbol_mean",
+    "order, bits_per_symbol, constellation, energy_per_symbol, energy_per_bit,"
+    " symbol_mean",
     [
         (2, 1, [0.0, 1.0], 0.5, 0.5, 0.5),
         (4, 2, [0.0, 1.0, 2.0, 3.0], 3.5, 1.75, 1.5),

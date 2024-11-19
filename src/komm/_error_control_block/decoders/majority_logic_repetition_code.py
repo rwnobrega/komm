@@ -15,7 +15,9 @@ def decode_majority_logic_repetition_code(
 RegistryBlockDecoder.register(
     "majority_logic_repetition_code",
     {
-        "description": "Majority-logic decoder. A hard-decision decoder for Repetition codes only.",
+        "description": (
+            "Majority-logic decoder. A hard-decision decoder for Repetition codes only."
+        ),
         "decoder": decode_majority_logic_repetition_code,
         "type_in": "hard",
         "type_out": "hard",

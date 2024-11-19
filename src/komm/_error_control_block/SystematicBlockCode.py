@@ -45,7 +45,9 @@ class SystematicBlockCode(BlockCode):
         args["parity_submatrix"] = self.parity_submatrix.tolist()
         if self._information_set != "left":
             args["information_set"] = self.information_set.tolist()
-        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        return (
+            f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        )
 
     @cached_property
     def parity_submatrix(self) -> np.ndarray:
@@ -64,7 +66,8 @@ class SystematicBlockCode(BlockCode):
             information_set = np.asarray(information_set)
         except TypeError:
             raise ValueError(
-                "'information_set' must be either 'left', 'right' or an array of indices"
+                "'information_set' must be either 'left', 'right' or an array of"
+                " indices"
             )
         if (
             information_set.size != k

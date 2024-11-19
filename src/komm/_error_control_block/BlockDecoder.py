@@ -133,7 +133,10 @@ class BlockDecoder:
 
     def __attrs_post_init__(self) -> None:
         method = self.method or self.code.default_decoder
-        help_message = f"(to see the available decoding methods for a given code, use `code.supported_decoders()`)"
+        help_message = (
+            f"(to see the available decoding methods for a given code, use"
+            f" `code.supported_decoders()`)"
+        )
         if not RegistryBlockDecoder.is_registered(method):
             raise ValueError(f"method '{method}' is unknown {help_message}")
         if method not in self.code.supported_decoders():

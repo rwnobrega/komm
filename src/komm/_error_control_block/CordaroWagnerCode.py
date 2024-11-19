@@ -38,13 +38,11 @@ class CordaroWagnerCode(BlockCode):
     def generator_matrix(self):
         n, d = self.n, self.minimum_distance
         q = (n + 1) // 3
-        return np.hstack(
-            (
-                np.repeat([[1], [0]], repeats=d - q, axis=1),
-                np.repeat([[0], [1]], repeats=q, axis=1),
-                np.repeat([[1], [1]], repeats=n - d, axis=1),
-            )
-        )
+        return np.hstack((
+            np.repeat([[1], [0]], repeats=d - q, axis=1),
+            np.repeat([[0], [1]], repeats=q, axis=1),
+            np.repeat([[1], [1]], repeats=n - d, axis=1),
+        ))
 
     @property
     def minimum_distance(self) -> int:

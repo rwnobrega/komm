@@ -17,15 +17,13 @@ tab_configs = [
         "pulse_class": komm.RectangularPulse,
         "t_axis": (-0.1, 1.1, -0.1, 1.1),
         "f_axis": (-15.0, 15.0, -0.3, 1.1),
-        "params": [
-            {
-                "name": "width",
-                "min": 0.01,
-                "max": 1.0,
-                "default": 1.0,
-                "step": 0.01,
-            }
-        ],
+        "params": [{
+            "name": "width",
+            "min": 0.01,
+            "max": 1.0,
+            "default": 1.0,
+            "step": 0.01,
+        }],
     },
     {
         "name": "Manchester",
@@ -52,15 +50,13 @@ tab_configs = [
         "pulse_class": komm.RaisedCosinePulse,
         "t_axis": (-8.0, 8.0, -0.3, 1.1),
         "f_axis": (-1.1, 1.1, -0.1, 1.1),
-        "params": [
-            {
-                "name": "rolloff",
-                "min": 0.0,
-                "max": 1.0,
-                "default": 1.0,
-                "step": 0.01,
-            }
-        ],
+        "params": [{
+            "name": "rolloff",
+            "min": 0.0,
+            "max": 1.0,
+            "default": 1.0,
+            "step": 0.01,
+        }],
     },
     {
         "name": "Root raised cosine",
@@ -69,15 +65,13 @@ tab_configs = [
         "pulse_class": komm.RootRaisedCosinePulse,
         "t_axis": (-8.0, 8.0, -0.3, 1.3),
         "f_axis": (-1.1, 1.1, -0.1, 1.1),
-        "params": [
-            {
-                "name": "rolloff",
-                "min": 0.0,
-                "max": 1.0,
-                "default": 1.0,
-                "step": 0.01,
-            }
-        ],
+        "params": [{
+            "name": "rolloff",
+            "min": 0.0,
+            "max": 1.0,
+            "default": 1.0,
+            "step": 0.01,
+        }],
     },
     {
         "name": "Gaussian",
@@ -86,15 +80,13 @@ tab_configs = [
         "pulse_class": komm.GaussianPulse,
         "t_axis": (-1.5, 1.5, -0.1, 1.1),
         "f_axis": (-4.0, 4.0, -0.1, 0.7),
-        "params": [
-            {
-                "name": "half_power_bandwidth",
-                "min": 0.5,
-                "max": 2.0,
-                "default": 1.0,
-                "step": 0.01,
-            }
-        ],
+        "params": [{
+            "name": "half_power_bandwidth",
+            "min": 0.5,
+            "max": 2.0,
+            "default": 1.0,
+            "step": 0.01,
+        }],
     },
 ]
 

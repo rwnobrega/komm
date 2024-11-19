@@ -63,7 +63,9 @@ class BlockCode:
             args["generator_matrix"] = self.generator_matrix.tolist()
         if self._check_matrix is not None:
             args["check_matrix"] = self.check_matrix.tolist()
-        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        return (
+            f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        )
 
     @cached_property
     def generator_matrix(self) -> np.ndarray:

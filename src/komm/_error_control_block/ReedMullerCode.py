@@ -59,12 +59,10 @@ class ReedMullerCode(BlockCode):
         rho, mu = self.rho, self.mu
         v = np.empty((mu, 2**mu), dtype=int)
         for i in range(mu):
-            block = np.hstack(
-                (
-                    np.zeros(2 ** (mu - i - 1), dtype=int),
-                    np.ones(2 ** (mu - i - 1), dtype=int),
-                )
-            )
+            block = np.hstack((
+                np.zeros(2 ** (mu - i - 1), dtype=int),
+                np.ones(2 ** (mu - i - 1), dtype=int),
+            ))
             v[mu - i - 1] = np.tile(block, 2**i)
 
         G_list = []

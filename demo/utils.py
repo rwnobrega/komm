@@ -4,8 +4,7 @@ import streamlit as st
 
 
 def show_about():
-    st.sidebar.markdown(
-        """
+    st.sidebar.markdown("""
         ### About Komm
 
         Komm is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems.
@@ -13,8 +12,7 @@ def show_about():
         [![PyPI page](https://badge.fury.io/py/komm.svg)](https://pypi.org/project/komm/)
         [![Documentation](https://img.shields.io/badge/docs-komm.dev-blue)](https://komm.dev/)
         [![GitHub](https://img.shields.io/badge/github-rwnobrega%2Fkomm-black)](https://github.com/rwnobrega/komm)
-        """
-    )
+        """)
 
 
 def show_code(func):
@@ -31,13 +29,11 @@ def show_code(func):
 
 
 def show_documentation(title, stub):
-    st.html(
-        f"""
+    st.html(f"""
         <h3>
             {title}
             <a href='https://komm.dev/ref/{stub}' style='text-decoration: none;'>
                 <span style='font-size: 0.7em; margin-left: 0.1em'>🌐</span>
             </a>
         </h3>
-        """
-    )
+        """)

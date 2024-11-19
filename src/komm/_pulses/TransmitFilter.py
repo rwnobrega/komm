@@ -84,7 +84,8 @@ class TransmitFilter:
         elif self._pulse_support_kind() == "finite":
             if self.truncation is not None:
                 raise ValueError(
-                    "parameter 'truncation' is only applicable to pulses with infinite support",
+                    "parameter 'truncation' is only applicable to pulses with infinite"
+                    " support",
                 )
         elif self._pulse_support_kind() == "infinite":
             if self.truncation is None:

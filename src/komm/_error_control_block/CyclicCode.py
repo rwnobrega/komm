@@ -80,7 +80,9 @@ class CyclicCode(BlockCode):
             args["check_polynomial"] = self.check_polynomial
         if self._systematic is not True:
             args["systematic"] = self.systematic
-        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        return (
+            f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        )
 
     @property
     def length(self) -> int:

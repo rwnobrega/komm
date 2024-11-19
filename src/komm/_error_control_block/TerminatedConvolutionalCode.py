@@ -72,7 +72,8 @@ class TerminatedConvolutionalCode(BlockCode):
                 self.zs_multiplier
             except:
                 raise ValueError(
-                    "this convolutional code does not support tail-biting for this number of blocks"
+                    "this convolutional code does not support tail-biting for this"
+                    " number of blocks"
                 )
 
     @property
@@ -146,12 +147,10 @@ class TerminatedConvolutionalCode(BlockCode):
         mu = self.convolutional_code.memory_order
         A_mat = self.convolutional_code.state_matrix
         B_mat = self.convolutional_code.control_matrix
-        AnB_message = np.vstack(
-            [
-                np.dot(B_mat, matrix_power(A_mat, j)) % 2
-                for j in range(mu + h - 1, mu - 1, -1)
-            ]
-        )
+        AnB_message = np.vstack([
+            np.dot(B_mat, matrix_power(A_mat, j)) % 2
+            for j in range(mu + h - 1, mu - 1, -1)
+        ])
         AnB_tail = np.vstack(
             [np.dot(B_mat, matrix_power(A_mat, j)) % 2 for j in range(mu - 1, -1, -1)]
         )

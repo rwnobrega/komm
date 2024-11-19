@@ -18,7 +18,9 @@ def decode_wagner(code: SingleParityCheckCode, r: npt.ArrayLike) -> np.ndarray:
 RegistryBlockDecoder.register(
     "wagner",
     {
-        "description": "Wagner decoder. A soft-decision decoder for SingleParityCheck codes only.",
+        "description": (
+            "Wagner decoder. A soft-decision decoder for SingleParityCheck codes only."
+        ),
         "decoder": decode_wagner,
         "type_in": "soft",
         "type_out": "hard",

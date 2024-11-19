@@ -75,5 +75,8 @@ class ASKModulation(Modulation):
         order, base_amplitude, phase_offset, labeling = (
             self._constructor_kwargs.values()
         )
-        args = f"{order}, base_amplitude={base_amplitude}, phase_offset={phase_offset}, labeling={labeling}"
+        args = (
+            f"{order}, base_amplitude={base_amplitude}, phase_offset={phase_offset},"
+            f" labeling={labeling}"
+        )
         return f"{self.__class__.__name__}({args})"

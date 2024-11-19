@@ -15,7 +15,9 @@ def decode_exhaustive_search_hard(code: BlockCode, r: npt.ArrayLike) -> np.ndarr
 RegistryBlockDecoder.register(
     "exhaustive_search_hard",
     {
-        "description": "Exhaustive search (hard-decision). Minimum Hamming distance decoder",
+        "description": (
+            "Exhaustive search (hard-decision). Minimum Hamming distance decoder"
+        ),
         "decoder": decode_exhaustive_search_hard,
         "type_in": "hard",
         "type_out": "hard",
