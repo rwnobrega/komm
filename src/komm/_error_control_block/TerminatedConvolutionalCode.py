@@ -6,9 +6,9 @@ import numpy.typing as npt
 from attrs import frozen
 from numpy.linalg import matrix_power
 
-from .._algebra.util import right_inverse
 from .._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
 from .._util.bit_operations import binlist2int, int2binlist, pack, unpack
+from .._util.matrices import pseudo_inverse
 from .BlockCode import BlockCode
 
 
@@ -155,7 +155,7 @@ class TerminatedConvolutionalCode(BlockCode):
         AnB_tail = np.vstack(
             [np.dot(B_mat, matrix_power(A_mat, j)) % 2 for j in range(mu - 1, -1, -1)]
         )
-        return np.dot(AnB_message, right_inverse(AnB_tail)) % 2
+        return np.dot(AnB_message, pseudo_inverse(AnB_tail)) % 2
 
     @cached_property
     def zs_multiplier(self) -> np.ndarray:
@@ -165,7 +165,7 @@ class TerminatedConvolutionalCode(BlockCode):
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
         A_mat = self.convolutional_code.state_matrix
-        return right_inverse((matrix_power(A_mat, h) + np.eye(nu, dtype=int)) % 2)
+        return pseudo_inverse((matrix_power(A_mat, h) + np.eye(nu, dtype=int)) % 2)
 
     @cached_property
     def cache_bit(self) -> np.ndarray:

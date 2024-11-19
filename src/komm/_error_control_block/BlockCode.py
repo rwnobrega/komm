@@ -5,8 +5,8 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .._algebra.util import null_matrix, right_inverse, rref
 from .._util.bit_operations import binlist2int, int2binlist
+from .._util.matrices import null_matrix, pseudo_inverse, rref
 
 
 @frozen(kw_only=True)
@@ -110,7 +110,7 @@ class BlockCode:
 
     @cached_property
     def generator_matrix_right_inverse(self) -> np.ndarray:
-        return right_inverse(self.generator_matrix)
+        return pseudo_inverse(self.generator_matrix)
 
     @property
     def rate(self) -> float:
