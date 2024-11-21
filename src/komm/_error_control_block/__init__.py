@@ -29,3 +29,5 @@ __all__ = [
     "SystematicBlockCode",
     "TerminatedConvolutionalCode",
 ]
+
+from .decoders import *
