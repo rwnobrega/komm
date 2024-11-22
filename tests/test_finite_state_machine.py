@@ -4,7 +4,7 @@ import pytest
 import komm
 
 
-def test_fsm_viterbi():
+def test_fsm_viterbi_sklar():
     # Sklar.01, p. 401-405.
     def metric_function(y, z):
         s = komm.int2binlist(y, width=len(z))
@@ -25,6 +25,8 @@ def test_fsm_viterbi():
         [[1, 1, 0, 0, 0], [1, 1, 0, 0, 1], [1, 1, 1, 1, 0], [1, 1, 0, 1, 1]],
     )
 
+
+def test_fsm_viterbi_ryan_lin():
     # Ryan.Lin.09, p. 176-177
     def metric_function(y, z):
         y = (-1) ** komm.int2binlist(y, width=len(z))
@@ -45,7 +47,7 @@ def test_fsm_viterbi():
     )
 
 
-def test_fsm_forward_backward():
+def test_fsm_forward_backward_lin_costello():
     # Lin.Costello.04, p. 572-575.
     fsm = komm.FiniteStateMachine(
         next_states=[[0, 1], [1, 0]], outputs=[[0, 3], [2, 1]]
@@ -63,6 +65,8 @@ def test_fsm_forward_backward():
         llr = np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
     assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
 
+
+def test_fsm_forward_backward_abrantes():
     # Abrantes.10, p.434-437
     fsm = komm.FiniteStateMachine(
         next_states=[[0, 2], [0, 2], [1, 3], [1, 3]],
