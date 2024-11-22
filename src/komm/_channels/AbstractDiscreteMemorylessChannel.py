@@ -34,5 +34,5 @@ class AbstractDiscreteMemorylessChannel(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int64]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
         pass

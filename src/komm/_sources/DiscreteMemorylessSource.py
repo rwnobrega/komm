@@ -48,5 +48,5 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
-    def __call__(self, size: int) -> npt.NDArray[np.int64]:
+    def __call__(self, size: int) -> npt.NDArray[np.int_]:
         return np.random.choice(self.pmf.size, p=self.pmf, size=size)

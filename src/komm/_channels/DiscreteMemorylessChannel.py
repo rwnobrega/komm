@@ -109,7 +109,7 @@ class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
         )
         return mutual_information(optimal_input_pmf, self.transition_matrix, base=base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int64]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
         input_sequence = np.asarray(input_sequence)
         output_sequence = [
             np.random.choice(self.output_cardinality, p=self.transition_matrix[x])

@@ -103,7 +103,7 @@ class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
         """
         return (1.0 - self.erasure_probability) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int64]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
         epsilon = self.erasure_probability
         erasure_pattern = np.random.rand(np.size(input_sequence)) < epsilon
         output_sequence = np.copy(input_sequence)

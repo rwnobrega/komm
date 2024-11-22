@@ -1,9 +1,9 @@
-from typing import Any, Iterable, TypeVar, Union
+from typing import Iterable, TypeVar, Union
 
 import numpy as np
 import numpy.typing as npt
 
-DType = TypeVar("DType", bound=Union[np.floating[Any], np.complexfloating[Any, Any]])
+DType = TypeVar("DType", bound=Union[np.float64, np.complex128])
 
 
 def acorr(
