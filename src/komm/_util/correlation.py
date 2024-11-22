@@ -1,4 +1,4 @@
-from typing import Iterable, TypeVar, Union
+from typing import Iterable, Optional, TypeVar, Union
 
 import numpy as np
 import numpy.typing as npt
@@ -7,8 +7,8 @@ DType = TypeVar("DType", bound=Union[np.float64, np.complex128])
 
 
 def acorr(
-    seq: npt.NDArray[DType],
-    shifts: Iterable[int] | None = None,
+    seq: npt.ArrayLike,
+    shifts: Optional[Iterable[int]] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -48,8 +48,8 @@ def acorr(
 
 
 def cyclic_acorr(
-    seq: npt.NDArray[DType],
-    shifts: Iterable[int] | None = None,
+    seq: npt.ArrayLike,
+    shifts: Optional[Iterable[int]] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -73,7 +73,8 @@ def cyclic_acorr(
         >>> komm.cyclic_acorr([1.0, 2.0, 3.0, 4.0], shifts=[-2, -1, 0, 1, 2])
         array([22., 24., 30., 24., 22.])
     """
-    shifts = np.arange(len(seq)) if shifts is None else shifts
+    seq = np.asarray(seq)
+    shifts = np.arange(seq.size) if shifts is None else shifts
     conj_seq = np.conj(seq)
     acorr = np.array([np.dot(seq, np.roll(seq, ell).conj()) for ell in shifts])
     energy = np.dot(seq, conj_seq)
