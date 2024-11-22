@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Callable, Optional, Sequence, TypedDict
+from typing import Callable, Optional, Sequence, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -11,7 +11,8 @@ class MetricMemory(TypedDict):
     metrics: npt.NDArray[np.float64]
 
 
-MetricFunction = Callable[[int, int], float]
+Z = TypeVar("Z")
+MetricFunction = Callable[[int, Z], float]
 
 
 @frozen
@@ -119,7 +120,7 @@ class FiniteStateMachine:
 
     def process(
         self,
-        input_sequence: Sequence[int],
+        input_sequence: npt.ArrayLike,
         initial_state: int,
     ) -> tuple[npt.NDArray[np.int_], int]:
         r"""
@@ -155,8 +156,8 @@ class FiniteStateMachine:
 
     def viterbi(
         self,
-        observed_sequence: Sequence[int],
-        metric_function: MetricFunction,
+        observed_sequence: Sequence[Z],
+        metric_function: MetricFunction[Z],
         initial_metrics: Optional[npt.ArrayLike] = None,
     ) -> tuple[npt.NDArray[np.int_], npt.NDArray[np.float64]]:
         r"""
@@ -202,8 +203,8 @@ class FiniteStateMachine:
 
     def viterbi_streaming(
         self,
-        observed_sequence: Sequence[int],
-        metric_function: MetricFunction,
+        observed_sequence: Sequence[Z],
+        metric_function: MetricFunction[Z],
         memory: MetricMemory,
     ) -> npt.NDArray[np.int_]:
         r"""
@@ -248,8 +249,8 @@ class FiniteStateMachine:
 
     def forward_backward(
         self,
-        observed_sequence: Sequence[int],
-        metric_function: MetricFunction,
+        observed_sequence: Sequence[Z],
+        metric_function: MetricFunction[Z],
         input_priors: Optional[npt.ArrayLike] = None,
         initial_state_distribution: Optional[npt.ArrayLike] = None,
         final_state_distribution: Optional[npt.ArrayLike] = None,
