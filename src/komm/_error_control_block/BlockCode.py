@@ -246,7 +246,7 @@ class BlockCode(AbstractBlockCode):
             >>> code.minimum_distance
             3
         """
-        return np.flatnonzero(self.codeword_weight_distribution)[1]
+        return int(np.flatnonzero(self.codeword_weight_distribution)[1])
 
     @cached_property
     def packing_radius(self) -> int:

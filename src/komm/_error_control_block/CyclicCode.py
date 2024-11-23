@@ -41,13 +41,13 @@ class CyclicCode(BlockCode):
         >>> (code.length, code.dimension, code.redundancy)
         (23, 12, 11)
         >>> code.minimum_distance
-        np.int64(7)
+        7
 
         >>> code = komm.CyclicCode(length=23, check_polynomial=0b1010010011111)  # Golay (23, 12)
         >>> (code.length, code.dimension, code.redundancy)
         (23, 12, 11)
         >>> code.minimum_distance
-        np.int64(7)
+        7
     """
 
     _length: int = field(default=None, repr=False, alias="length")
