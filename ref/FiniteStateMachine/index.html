@@ -219,6 +219,9 @@
                                       <a href="../BCHCode/" class="md-nav__link"><span class="md-ellipsis">BCHCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SlepianArray/" class="md-nav__link"><span class="md-ellipsis">SlepianArray</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../BlockEncoder/" class="md-nav__link"><span class="md-ellipsis">BlockEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
@@ -261,9 +264,6 @@
                                   <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                   <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
                                       <a href="#num_states" class="md-nav__link"><span class="md-ellipsis">num_states</span></a>
                                     </li>
                                     <li class="md-nav__item">
@@ -271,12 +271,6 @@
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#num_output_symbols" class="md-nav__link"><span class="md-ellipsis">num_output_symbols</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#next_states" class="md-nav__link"><span class="md-ellipsis">next_states</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#outputs" class="md-nav__link"><span class="md-ellipsis">outputs</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#input_edges" class="md-nav__link"><span class="md-ellipsis">input_edges</span></a>
@@ -548,9 +542,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#num_states" class="md-nav__link"><span class="md-ellipsis">num_states</span></a>
                   </li>
                   <li class="md-nav__item">
@@ -558,12 +549,6 @@
                   </li>
                   <li class="md-nav__item">
                     <a href="#num_output_symbols" class="md-nav__link"><span class="md-ellipsis">num_output_symbols</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#next_states" class="md-nav__link"><span class="md-ellipsis">next_states</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#outputs" class="md-nav__link"><span class="md-ellipsis">outputs</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#input_edges" class="md-nav__link"><span class="md-ellipsis">input_edges</span></a>
@@ -659,65 +644,47 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>next_states</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>outputs</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-</code></pre>
-                      </div>
+                <p><strong>Attributes:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>next_states</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
                     </div>
-                  </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>outputs</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+</code></pre>
+                </div>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="num_states" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_states</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="num_states" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_states</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The number of states of the machine.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="num_input_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_input_symbols</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="num_input_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_input_symbols</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The size (cardinality) of the input alphabet $\mathcal{X}$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="num_output_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_output_symbols</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="num_output_symbols" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_output_symbols</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The size (cardinality) of the output alphabet $\mathcal{Y}$.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="next_states" class="doc doc-heading"><code class="highlight language-python"><span class="n">next_states</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The matrix of next states of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="outputs" class="doc doc-heading"><code class="highlight language-python"><span class="n">outputs</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The matrix of outputs of the machine. It has shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ is the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="input_edges" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_edges</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="input_edges" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_edges</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
@@ -733,7 +700,7 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
-                    <h2 id="output_edges" class="doc doc-heading"><code class="highlight language-python"><span class="n">output_edges</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <h2 id="output_edges" class="doc doc-heading"><code class="highlight language-python"><span class="n">output_edges</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
@@ -814,7 +781,7 @@
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>initial_metrics</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>initial_metrics</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[float]]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is <code>0.0</code> for all states.</p>
                           </div>
@@ -892,19 +859,19 @@
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>input_priors</code></b> <span class="doc-param-annotation">(<code>Optional[Array2D[float]]</code>)</span> –
+                          <b><code>input_priors</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array2D[float]]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The prior <abbr title="probability mass function">pmf</abbr> of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value yields uniform priors.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>initial_state_distribution</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>initial_state_distribution</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[float]]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The <abbr title="probability mass function">pmf</abbr> of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>final_state_distribution</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>final_state_distribution</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[float]]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The <abbr title="probability mass function">pmf</abbr> of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.</p>
                           </div>

@@ -219,6 +219,9 @@
                                       <a href="../BCHCode/" class="md-nav__link"><span class="md-ellipsis">BCHCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="../SlepianArray/" class="md-nav__link"><span class="md-ellipsis">SlepianArray</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="../BlockEncoder/" class="md-nav__link"><span class="md-ellipsis">BlockEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
@@ -522,13 +525,13 @@
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[int]]</code>)</span> –
+                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[int]]</code>)</span> –
                     <div class="doc-md-description">
                       <p>A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is <code>range(len(seq))</code>, that is, $[0 : L)$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>Optional[bool]</code>)</span> –
+                    <b><code>normalized</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[bool]</code>)</span> –
                     <div class="doc-md-description">
                       <p>If <code>True</code>, returns the autocorrelation divided by the sequence energy, so that $R[0] = 1$. The default value is <code>False</code>.</p>
                     </div>
