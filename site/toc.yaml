@@ -21,6 +21,7 @@ Error control:
     - CordaroWagnerCode
     - ReedMullerCode
     - BCHCode
+    - SlepianArray
     - BlockEncoder
     - BlockDecoder
   Convolutional coding:

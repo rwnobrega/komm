@@ -1,16 +1,17 @@
-import itertools as it
 from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .._util.bit_operations import binlist2int, int2binlist
+from .._util.bit_operations import int2binlist
 from .._util.matrices import null_matrix, pseudo_inverse, rref
+from .AbstractBlockCode import AbstractBlockCode
+from .SlepianArray import SlepianArray
 
 
 @frozen(kw_only=True)
-class BlockCode:
+class BlockCode(AbstractBlockCode):
     r"""
     General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
 
@@ -58,23 +59,20 @@ class BlockCode:
     )
 
     def __repr__(self) -> str:
-        args = {}
         if self._generator_matrix is not None:
-            args["generator_matrix"] = self.generator_matrix.tolist()
-        if self._check_matrix is not None:
-            args["check_matrix"] = self.check_matrix.tolist()
-        return (
-            f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
-        )
+            args_str = f"generator_matrix={self.generator_matrix.tolist()}"
+        else:  # self._check_matrix is not None
+            args_str = f"check_matrix={self.check_matrix.tolist()}"
+        return f"{self.__class__.__name__}({args_str})"
 
     @cached_property
-    def generator_matrix(self) -> np.ndarray:
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         if self._generator_matrix is not None:
             return np.asarray(self._generator_matrix)
         return rref(null_matrix(self.check_matrix))
 
     @cached_property
-    def check_matrix(self) -> np.ndarray:
+    def check_matrix(self) -> npt.NDArray[np.int_]:
         if self._check_matrix is not None:
             return np.asarray(self._check_matrix)
         return null_matrix(self.generator_matrix)
@@ -111,7 +109,7 @@ class BlockCode:
             return self.length - self.dimension
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> np.ndarray:
+    def _generator_matrix_pseudo_inverse(self) -> npt.NDArray[np.int_]:
         return pseudo_inverse(self.generator_matrix)
 
     @property
@@ -126,7 +124,7 @@ class BlockCode:
         """
         return self.dimension / self.length
 
-    def enc_mapping(self, u: npt.ArrayLike) -> np.ndarray:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This is a function that takes a message $u \in \mathbb{B}^k$ and returns the corresponding codeword $v \in \mathbb{B}^n$.
 
@@ -139,7 +137,7 @@ class BlockCode:
         v = np.dot(u, self.generator_matrix) % 2
         return v
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> np.ndarray:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes a codeword $v \in \mathbb{B}^n$ and returns the corresponding message $u \in \mathbb{B}^k$.
 
@@ -155,11 +153,11 @@ class BlockCode:
         s = self.chk_mapping(v)
         if not np.all(s == 0):
             raise ValueError("input 'v' is not a valid codeword")
-        u = np.dot(v, self.generator_matrix_right_inverse) % 2
+        u = np.dot(v, self._generator_matrix_pseudo_inverse) % 2
         return u
 
     @cached_property
-    def codewords(self) -> np.ndarray:
+    def codewords(self) -> npt.NDArray[np.int_]:
         r"""
         The codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message whose binary representation (MSB in the right) is $i$.
 
@@ -180,7 +178,7 @@ class BlockCode:
         return np.dot(messages, self.generator_matrix) % 2
 
     @cached_property
-    def codeword_weight_distribution(self) -> np.ndarray:
+    def codeword_weight_distribution(self) -> npt.NDArray[np.int_]:
         r"""
         The codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
 
@@ -191,7 +189,7 @@ class BlockCode:
         """
         return np.bincount(np.sum(self.codewords, axis=1), minlength=self.length + 1)
 
-    def chk_mapping(self, r: npt.ArrayLike) -> np.ndarray:
+    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes a received word $r \in \mathbb{B}^n$ and returns the corresponding syndrome $s \in \mathbb{B}^m$.
 
@@ -205,7 +203,7 @@ class BlockCode:
         return s
 
     @cached_property
-    def coset_leaders(self) -> np.ndarray:
+    def coset_leaders(self) -> npt.NDArray[np.int_]:
         r"""
         The coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome whose binary representation (MSB in the right) is $i$, and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
 
@@ -221,24 +219,11 @@ class BlockCode:
                    [1, 0, 0, 0, 0, 0],
                    [1, 0, 0, 1, 0, 0]])
         """
-        m, n = self.redundancy, self.length
-        coset_leaders = np.empty([2**m, n], dtype=int)
-        taken = []
-        for w in range(n + 1):
-            for idx in it.combinations(range(n), w):
-                e = np.zeros(n, dtype=int)
-                e[list(idx)] = 1
-                s = np.dot(e, self.check_matrix.T) % 2
-                s_int = binlist2int(s)
-                if s_int not in taken:
-                    coset_leaders[s_int] = e
-                    taken.append(s_int)
-                if len(taken) == 2**m:
-                    break
-        return coset_leaders
+        sa = SlepianArray(self)
+        return sa.col(0)
 
-    @cached_property
-    def coset_leader_weight_distribution(self) -> np.ndarray:
+    @property
+    def coset_leader_weight_distribution(self) -> npt.NDArray[np.int_]:
         r"""
         The coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
 
@@ -285,7 +270,7 @@ class BlockCode:
             >>> code.covering_radius
             2
         """
-        return np.flatnonzero(self.coset_leader_weight_distribution)[-1]
+        return int(np.flatnonzero(self.coset_leader_weight_distribution)[-1])
 
     @property
     def default_decoder(self) -> str:
