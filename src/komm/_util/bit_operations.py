@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Optional, Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -6,8 +6,10 @@ import numpy.typing as npt
 # TODO: Rename binlist2int and int2binlist to something better.
 # TODO: Vectorize those functions (e.g., axis=1).
 
+ArrayIntLike = Sequence[int] | npt.NDArray[np.int_]
 
-def binlist2int(binlist: Iterable[int]) -> int:
+
+def binlist2int(binlist: ArrayIntLike) -> int:
     r"""
     Converts a bit array to its integer representation (LSB first).
 
@@ -56,7 +58,7 @@ def int2binlist(integer: int, width: Optional[int] = None) -> npt.NDArray[np.int
     return np.array([(integer >> i) & 1 for i in range(width)], dtype=int)
 
 
-def pack(bit_array: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
+def pack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
     r"""
     Packs a given bit array. Splits the bit array into groups of `width` bits and converts each group to its integer value.
 
@@ -77,7 +79,7 @@ def pack(bit_array: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
     return np.apply_along_axis(binlist2int, 1, np.reshape(bit_array, shape=(-1, width)))
 
 
-def unpack(bit_array: Iterable[int], width: int) -> npt.NDArray[np.int_]:
+def unpack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
     r"""
     Unpacks a given integer array. Unpacks a given integer array by converting each integer to its bit array representation, using the specified `width` for each group, and concatenating the results.
 
