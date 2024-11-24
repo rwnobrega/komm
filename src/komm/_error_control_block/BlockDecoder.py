@@ -1,6 +1,7 @@
 import numpy as np
 from attrs import field, frozen
 from numpy import typing as npt
+from typing import Literal
 
 from .BlockCode import BlockCode
 from .registry import RegistryBlockDecoder
@@ -35,21 +36,21 @@ class BlockDecoder:
         - Target: codeword
         - Supported by: [`BCHCode`](/ref/BCHCode).
 
-        **`exhaustive_search_hard`**: Exhaustive search (hard-decision). Minimum Hamming distance decoder
+        **`exhaustive-search-hard`**: Exhaustive search (hard-decision). Minimum Hamming distance decoder
 
         - Input type: hard
         - Output type: hard
         - Target: codeword
         - Supported by: All codes.
 
-        **`exhaustive_search_soft`**: Exhaustive search (soft-decision). Minimum Euclidean distance decoder
+        **`exhaustive-search-soft`**: Exhaustive search (soft-decision). Minimum Euclidean distance decoder
 
         - Input type: soft
         - Output type: hard
         - Target: codeword
         - Supported by: All codes.
 
-        **`majority_logic_repetition_code`**: Majority-logic decoder. A hard-decision decoder for Repetition codes only.
+        **`majority-logic-repetition-code`**: Majority-logic decoder. A hard-decision decoder for Repetition codes only.
 
         - Input type: hard
         - Output type: hard
@@ -70,21 +71,21 @@ class BlockDecoder:
         - Target: message
         - Supported by: [`ReedMullerCode`](/ref/ReedMullerCode).
 
-        **`syndrome_table`**: Syndrome table decoder
+        **`syndrome-table`**: Syndrome table decoder
 
         - Input type: hard
         - Output type: hard
         - Target: codeword
         - Supported by: All codes.
 
-        **`viterbi_hard`**: Viterbi (hard-decision)
+        **`viterbi-hard`**: Viterbi (hard-decision)
 
         - Input type: hard
         - Output type: hard
         - Target: message
         - Supported by: [`TerminatedConvolutionalCode`](/ref/TerminatedConvolutionalCode).
 
-        **`viterbi_soft`**: Viterbi (soft-decision)
+        **`viterbi-soft`**: Viterbi (soft-decision)
 
         - Input type: soft
         - Output type: hard
@@ -98,7 +99,7 @@ class BlockDecoder:
         - Target: codeword
         - Supported by: [`SingleParityCheckCode`](/ref/SingleParityCheckCode).
 
-        **`weighted_reed`**: Weighted Reed decoding algorithm for Reed–Muller codes.
+        **`weighted-reed`**: Weighted Reed decoding algorithm for Reed–Muller codes.
 
         - Input type: soft
         - Output type: hard
@@ -114,21 +115,37 @@ class BlockDecoder:
     Examples:
         >>> code = komm.HammingCode(3)
         >>> code.default_decoder
-        'syndrome_table'
+        'syndrome-table'
         >>> code.supported_decoders()
-        ['exhaustive_search_hard', 'exhaustive_search_soft', 'syndrome_table']
+        ['exhaustive-search-hard', 'exhaustive-search-soft', 'syndrome-table']
 
         >>> decoder = komm.BlockDecoder(code)
         >>> decoder([1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0])
         array([1, 1, 0, 0, 1, 0, 1, 1])
 
-        >>> decoder = komm.BlockDecoder(code, method='exhaustive_search_soft')
+        >>> decoder = komm.BlockDecoder(code, method='exhaustive-search-soft')
         >>> decoder([-0.98, -0.85, 1.07, -0.78, 1.11, -0.95, -1.16, -0.87, 1.11, -0.83, -0.95, 0.94, 1.07, 0.91])
         array([1, 1, 0, 0, 1, 0, 1, 1])
     """
 
     code: BlockCode
-    method: str | None = None
+    method: (
+        Literal[
+            "bcjr",
+            "berlekamp",
+            "exhaustive-search-hard",
+            "exhaustive-search-soft",
+            "majority-logic-repetition-code",
+            "meggitt",
+            "reed",
+            "syndrome-table",
+            "viterbi-hard",
+            "viterbi-soft",
+            "wagner",
+            "weighted-reed",
+        ]
+        | None
+    ) = None
     decoder_kwargs: dict = field(factory=dict)
 
     def __attrs_post_init__(self) -> None:

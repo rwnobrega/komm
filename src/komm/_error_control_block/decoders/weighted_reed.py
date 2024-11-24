@@ -20,7 +20,7 @@ def decode_weighted_reed(code: ReedMullerCode, r: npt.ArrayLike) -> np.ndarray:
 
 
 RegistryBlockDecoder.register(
-    "weighted_reed",
+    "weighted-reed",
     {
         "description": "Weighted Reed decoding algorithm for Reed–Muller codes.",
         "decoder": decode_weighted_reed,
