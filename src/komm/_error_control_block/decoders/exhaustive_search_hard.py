@@ -6,7 +6,7 @@ from ..registry import RegistryBlockDecoder
 
 
 def decode_exhaustive_search_hard(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:
-    codewords = code.codewords
+    codewords = code.codewords()
     metrics = np.count_nonzero(r != codewords, axis=1)
     v_hat = codewords[np.argmin(metrics)]
     return v_hat

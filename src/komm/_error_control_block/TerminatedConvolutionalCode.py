@@ -36,28 +36,34 @@ class TerminatedConvolutionalCode(BlockCode):
         >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
 
         >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (8, 3, 3)
+        >>> (code.length, code.dimension, code.redundancy)
+        (8, 3, 5)
         >>> code.generator_matrix
         array([[1, 1, 0, 1, 0, 0, 0, 0],
                [0, 0, 1, 1, 0, 1, 0, 0],
                [0, 0, 0, 0, 1, 1, 0, 1]])
+        >>> code.minimum_distance()
+        3
 
         >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='direct-truncation')
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (6, 3, 2)
+        >>> (code.length, code.dimension, code.redundancy)
+        (6, 3, 3)
         >>> code.generator_matrix
         array([[1, 1, 0, 1, 0, 0],
                [0, 0, 1, 1, 0, 1],
                [0, 0, 0, 0, 1, 1]])
+        >>> code.minimum_distance()
+        2
 
         >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail-biting')
-        >>> (code.length, code.dimension, code.minimum_distance)
+        >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)
         >>> code.generator_matrix
         array([[1, 1, 0, 1, 0, 0],
                [0, 0, 1, 1, 0, 1],
                [0, 1, 0, 0, 1, 1]])
+        >>> code.minimum_distance()
+        3
     """
 
     convolutional_code: ConvolutionalCode

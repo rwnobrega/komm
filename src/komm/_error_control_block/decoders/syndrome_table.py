@@ -7,7 +7,7 @@ from ..registry import RegistryBlockDecoder
 
 
 def decode_syndrome_table(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:
-    coset_leaders = code.coset_leaders
+    coset_leaders = code.coset_leaders()
     s = np.dot(r, code.check_matrix.T) % 2
     e_hat = coset_leaders[binlist2int(s)]
     v_hat = np.bitwise_xor(r, e_hat)

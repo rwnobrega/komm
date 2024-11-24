@@ -7,12 +7,13 @@ class TestGolayCode:
     code = komm.GolayCode()
 
     def test_parameters(self):
-        n, k, d = self.code.length, self.code.dimension, self.code.minimum_distance
-        assert (n, k, d) == (23, 12, 7)
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        assert (n, k, m) == (23, 12, 11)
+        assert self.code.minimum_distance() == 7
 
     def test_codeword_weight_distribution(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution,
+            self.code.codeword_weight_distribution(),
             [
                 1,
                 0,
@@ -43,7 +44,7 @@ class TestGolayCode:
 
     def test_coset_leader_weight_distribution(self):
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution,
+            self.code.coset_leader_weight_distribution(),
             [
                 1,
                 23,
@@ -80,7 +81,7 @@ class TestGolayCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords
+        codewords = self.code.codewords()
         assert codewords.shape == (2**k, n)
 
     def test_decoder(self):
@@ -97,12 +98,13 @@ class TestExtendedGolayCode:
     code = komm.GolayCode(extended=True)
 
     def test_parameters(self):
-        n, k, d = self.code.length, self.code.dimension, self.code.minimum_distance
-        assert (n, k, d) == (24, 12, 8)
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        assert (n, k, m) == (24, 12, 12)
+        assert self.code.minimum_distance() == 8
 
     def test_codeword_weight_distribution(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution,
+            self.code.codeword_weight_distribution(),
             [
                 1,
                 0,
@@ -134,7 +136,7 @@ class TestExtendedGolayCode:
 
     def test_coset_leader_weight_distribution(self):
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution,
+            self.code.coset_leader_weight_distribution(),
             [
                 1,
                 24,
@@ -172,5 +174,5 @@ class TestExtendedGolayCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords
+        codewords = self.code.codewords()
         assert codewords.shape == (2**k, n)

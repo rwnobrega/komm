@@ -5,25 +5,27 @@ import komm
 
 
 @pytest.mark.parametrize(
-    "mode, parameters, generator_matrix",
+    "mode, parameters, generator_matrix, minimum_distance",
     [
         (
             "zero-termination",
-            (8, 3, 3),
+            (8, 3, 5),
             [
                 [1, 1, 0, 1, 0, 0, 0, 0],
                 [0, 0, 1, 1, 0, 1, 0, 0],
                 [0, 0, 0, 0, 1, 1, 0, 1],
             ],
+            3,
         ),
         (
             "direct-truncation",
-            (6, 3, 2),
+            (6, 3, 3),
             [
                 [1, 1, 0, 1, 0, 0],
                 [0, 0, 1, 1, 0, 1],
                 [0, 0, 0, 0, 1, 1],
             ],
+            2,
         ),
         (
             "tail-biting",
@@ -33,17 +35,21 @@ import komm
                 [0, 0, 1, 1, 0, 1],
                 [0, 1, 0, 0, 1, 1],
             ],
+            3,
         ),
     ],
 )
-def test_terminated_convolutional_code_1(mode, parameters, generator_matrix):
+def test_terminated_convolutional_code_1(
+    mode, parameters, generator_matrix, minimum_distance
+):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
-    (n, k, d) = (code.length, code.dimension, code.minimum_distance)
+    (n, k, m) = (code.length, code.dimension, code.redundancy)
     (G, H) = code.generator_matrix, code.check_matrix
-    assert (n, k, d) == parameters
+    assert (n, k, m) == parameters
     assert np.array_equal(G, generator_matrix)
     assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, n - k), dtype=int))
+    assert code.minimum_distance() == minimum_distance
 
 
 def test_terminated_convolutional_code_tail_biting_1():
@@ -54,11 +60,12 @@ def test_terminated_convolutional_code_tail_biting_1():
     code = komm.TerminatedConvolutionalCode(
         convolutional_code, num_blocks=6, mode="tail-biting"
     )
-    assert (code.length, code.dimension, code.minimum_distance) == (12, 6, 3)
+    assert (code.length, code.dimension, code.redundancy) == (12, 6, 6)
     assert np.array_equal(
         code.generator_matrix[0, :],
         [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0],
     )
+    assert code.minimum_distance() == 3
 
 
 def test_terminated_convolutional_code_tail_biting_2():
@@ -69,7 +76,7 @@ def test_terminated_convolutional_code_tail_biting_2():
     code = komm.TerminatedConvolutionalCode(
         convolutional_code, num_blocks=5, mode="tail-biting"
     )
-    assert (code.length, code.dimension, code.minimum_distance) == (10, 5, 3)
+    assert (code.length, code.dimension, code.redundancy) == (10, 5, 5)
     gen_mat = [
         [1, 0, 0, 0, 0, 1, 0, 1, 0, 0],
         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
@@ -78,6 +85,7 @@ def test_terminated_convolutional_code_tail_biting_2():
         [0, 0, 0, 1, 0, 1, 0, 0, 1, 0],
     ]
     assert np.array_equal(code.generator_matrix, gen_mat)
+    assert code.minimum_distance() == 3
 
 
 @pytest.mark.parametrize(
@@ -144,4 +152,5 @@ def test_terminated_convolutional_golay():
     code = komm.TerminatedConvolutionalCode(
         convolutional_code, num_blocks=3, mode="tail-biting"
     )
-    assert (code.length, code.dimension, code.minimum_distance) == (24, 12, 8)
+    assert (code.length, code.dimension, code.redundancy) == (24, 12, 12)
+    assert code.minimum_distance() == 8

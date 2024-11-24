@@ -1,5 +1,5 @@
 import math
-from functools import cached_property
+from functools import cache, cached_property
 
 import numpy as np
 from attrs import frozen
@@ -27,8 +27,6 @@ class RepetitionCode(BlockCode):
         >>> code = komm.RepetitionCode(5)
         >>> (code.length, code.dimension, code.redundancy)
         (5, 1, 4)
-        >>> code.minimum_distance
-        5
         >>> code.generator_matrix
         array([[1, 1, 1, 1, 1]])
         >>> code.check_matrix
@@ -36,11 +34,13 @@ class RepetitionCode(BlockCode):
                [1, 0, 1, 0, 0],
                [1, 0, 0, 1, 0],
                [1, 0, 0, 0, 1]])
+        >>> code.minimum_distance()
+        5
 
         >>> code = komm.RepetitionCode(16)
-        >>> code.codeword_weight_distribution
+        >>> code.codeword_weight_distribution()
         array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
-        >>> code.coset_leader_weight_distribution
+        >>> code.coset_leader_weight_distribution()
         array([    1,    16,   120,   560,  1820,  4368,  8008, 11440,  6435,
                    0,     0,     0,     0,     0,     0,     0,     0])
     """
@@ -51,11 +51,11 @@ class RepetitionCode(BlockCode):
     def generator_matrix(self):
         return np.ones((1, self.n), dtype=int)
 
-    @property
+    @cache
     def minimum_distance(self):
         return self.n
 
-    @cached_property
+    @cache
     def coset_leader_weight_distribution(self):
         n = self.n
         coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)

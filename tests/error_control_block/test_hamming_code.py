@@ -8,8 +8,9 @@ class TestHammingCode:
     code = komm.HammingCode(3)
 
     def test_parameters(self):
-        n, k, d = self.code.length, self.code.dimension, self.code.minimum_distance
-        assert (n, k, d) == (7, 4, 3)
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        assert (n, k, m) == (7, 4, 3)
+        assert self.code.minimum_distance() == 3
 
     def test_generator_matrix(self):
         G = self.code.generator_matrix
@@ -36,10 +37,10 @@ class TestHammingCode:
 
     def test_weight_distributions(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution, [1, 0, 0, 7, 7, 0, 0, 1]
+            self.code.codeword_weight_distribution(), [1, 0, 0, 7, 7, 0, 0, 1]
         )
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution, [1, 7, 0, 0, 0, 0, 0, 0]
+            self.code.coset_leader_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0]
         )
 
     def test_GH_orthogonality(self):
@@ -62,7 +63,7 @@ class TestHammingCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords
+        codewords = self.code.codewords()
         assert codewords.shape == (2**k, n)
 
     def test_encoder(self):
@@ -84,8 +85,9 @@ class TestExtendedHammingCode:
     code = komm.HammingCode(3, extended=True)
 
     def test_parameters(self):
-        n, k, d = self.code.length, self.code.dimension, self.code.minimum_distance
-        assert (n, k, d) == (8, 4, 4)
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        assert (n, k, m) == (8, 4, 4)
+        assert self.code.minimum_distance() == 4
 
     def test_generator_matrix(self):
         G = self.code.generator_matrix
@@ -113,10 +115,10 @@ class TestExtendedHammingCode:
 
     def test_weight_distributions(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution, [1, 0, 0, 0, 14, 0, 0, 0, 1]
+            self.code.codeword_weight_distribution(), [1, 0, 0, 0, 14, 0, 0, 0, 1]
         )
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution, [1, 8, 7, 0, 0, 0, 0, 0, 0]
+            self.code.coset_leader_weight_distribution(), [1, 8, 7, 0, 0, 0, 0, 0, 0]
         )
 
     def test_GH_orthogonality(self):
@@ -139,7 +141,7 @@ class TestExtendedHammingCode:
 
     def test_codewords(self):
         n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords
+        codewords = self.code.codewords()
         assert codewords.shape == (2**k, n)
 
     def test_encoder(self):

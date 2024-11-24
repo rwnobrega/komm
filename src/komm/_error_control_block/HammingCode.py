@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 
 from attrs import frozen
 
@@ -40,8 +40,6 @@ class HammingCode(SystematicBlockCode):
         >>> code = komm.HammingCode(3)
         >>> (code.length, code.dimension, code.redundancy)
         (7, 4, 3)
-        >>> code.minimum_distance
-        3
         >>> code.generator_matrix
         array([[1, 0, 0, 0, 1, 1, 0],
                [0, 1, 0, 0, 1, 0, 1],
@@ -51,12 +49,12 @@ class HammingCode(SystematicBlockCode):
         array([[1, 1, 0, 1, 1, 0, 0],
                [1, 0, 1, 1, 0, 1, 0],
                [0, 1, 1, 1, 0, 0, 1]])
+        >>> code.minimum_distance()
+        3
 
         >>> code = komm.HammingCode(3, extended=True)
         >>> (code.length, code.dimension, code.redundancy)
         (8, 4, 4)
-        >>> code.minimum_distance
-        4
         >>> code.generator_matrix
         array([[1, 0, 0, 0, 1, 1, 0, 1],
                [0, 1, 0, 0, 1, 0, 1, 1],
@@ -67,6 +65,8 @@ class HammingCode(SystematicBlockCode):
                [1, 0, 1, 1, 0, 1, 0, 0],
                [0, 1, 1, 1, 0, 0, 1, 0],
                [1, 1, 1, 0, 0, 0, 0, 1]])
+        >>> code.minimum_distance()
+        4
     """
 
     mu: int
@@ -76,6 +76,6 @@ class HammingCode(SystematicBlockCode):
     def parity_submatrix(self):
         return hamming_parity_submatrix(self.mu, self.extended)
 
-    @property
+    @cache
     def minimum_distance(self):
         return 4 if self.extended else 3

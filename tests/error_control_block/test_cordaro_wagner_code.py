@@ -16,4 +16,4 @@ def test_minimum_distance(n):
         (h, i, j) = (r, r, r + 1)
     code = komm.CordaroWagnerCode(n)
     expected_minimum_distance = h + i
-    assert code.minimum_distance == expected_minimum_distance
+    assert code.minimum_distance() == expected_minimum_distance

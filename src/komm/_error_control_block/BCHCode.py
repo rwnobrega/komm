@@ -47,10 +47,12 @@ class BCHCode(CyclicCode):
 
     Examples:
         >>> code = komm.BCHCode(mu=5, delta=7)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (31, 16, 7)
+        >>> (code.length, code.dimension, code.redundancy)
+        (31, 16, 15)
         >>> code.generator_polynomial
         BinaryPolynomial(0b1000111110101111)
+        >>> code.minimum_distance()
+        7
 
         >>> komm.BCHCode(mu=7, delta=31)
         BCHCode(mu=7, delta=31)

@@ -1,5 +1,5 @@
 import itertools as it
-from functools import cached_property, reduce
+from functools import cache, cached_property, reduce
 
 import numpy as np
 from attrs import frozen
@@ -35,8 +35,6 @@ class ReedMullerCode(BlockCode):
         >>> code = komm.ReedMullerCode(1, 5)
         >>> (code.length, code.dimension, code.redundancy)
         (32, 6, 26)
-        >>> code.minimum_distance
-        16
         >>> code.generator_matrix  # doctest: +NORMALIZE_WHITESPACE
         array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
@@ -44,6 +42,8 @@ class ReedMullerCode(BlockCode):
                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+        >>> code.minimum_distance()
+        16
     """
 
     rho: int
@@ -74,7 +74,7 @@ class ReedMullerCode(BlockCode):
 
         return np.array(G_list, dtype=int)
 
-    @property
+    @cache
     def minimum_distance(self):
         return 2 ** (self.mu - self.rho)
 

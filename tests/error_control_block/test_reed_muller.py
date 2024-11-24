@@ -7,8 +7,9 @@ class TestReedMuller:
     code = komm.ReedMullerCode(2, 4)
 
     def test_parameters(self):
-        n, k, d = self.code.length, self.code.dimension, self.code.minimum_distance
-        assert (n, k, d) == (16, 11, 4)
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        assert (n, k, m) == (16, 11, 5)
+        assert self.code.minimum_distance() == 4
 
     def test_generator_matrix(self):
         assert np.array_equal(
@@ -33,11 +34,11 @@ class TestReedMuller:
 
     def test_weight_distributions(self):
         assert np.array_equal(
-            self.code.codeword_weight_distribution,
+            self.code.codeword_weight_distribution(),
             [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1],
         )
         assert np.array_equal(
-            self.code.coset_leader_weight_distribution,
+            self.code.coset_leader_weight_distribution(),
             [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         )
 

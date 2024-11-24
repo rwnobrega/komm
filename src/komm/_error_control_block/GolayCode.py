@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 
 from attrs import frozen
 
@@ -45,13 +45,13 @@ class GolayCode(SystematicBlockCode):
         >>> code = komm.GolayCode()
         >>> (code.length, code.dimension, code.redundancy)
         (23, 12, 11)
-        >>> code.minimum_distance
+        >>> code.minimum_distance()
         7
 
         >>> code = komm.GolayCode(extended=True)
         >>> (code.length, code.dimension, code.redundancy)
         (24, 12, 12)
-        >>> code.minimum_distance
+        >>> code.minimum_distance()
         8
     """
 
@@ -61,6 +61,6 @@ class GolayCode(SystematicBlockCode):
     def parity_submatrix(self):
         return golay_parity_submatrix(self.extended)
 
-    @property
+    @cache
     def minimum_distance(self):
         return 8 if self.extended else 7

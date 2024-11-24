@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 
 import numpy as np
 from attrs import frozen
@@ -21,14 +21,16 @@ class CordaroWagnerCode(BlockCode):
 
     Examples:
         >>> code = komm.CordaroWagnerCode(11)
-        >>> (code.length, code.dimension, code.minimum_distance)
-        (11, 2, 7)
+        >>> (code.length, code.dimension, code.redundancy)
+        (11, 2, 9)
         >>> code.generator_matrix
         array([[1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
                [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]])
-        >>> code.codeword_weight_distribution
+        >>> code.minimum_distance()
+        7
+        >>> code.codeword_weight_distribution()
         array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])
-        >>> code.coset_leader_weight_distribution
+        >>> code.coset_leader_weight_distribution()
         array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
     """
 
@@ -36,7 +38,8 @@ class CordaroWagnerCode(BlockCode):
 
     @cached_property
     def generator_matrix(self):
-        n, d = self.n, self.minimum_distance
+        n = self.n
+        d = self.minimum_distance()
         q = (n + 1) // 3
         return np.hstack((
             np.repeat([[1], [0]], repeats=d - q, axis=1),
@@ -44,7 +47,7 @@ class CordaroWagnerCode(BlockCode):
             np.repeat([[1], [1]], repeats=n - d, axis=1),
         ))
 
-    @property
+    @cache
     def minimum_distance(self) -> int:
         return int(np.ceil(2 * self.n / 3)) - 1
 

@@ -1,5 +1,5 @@
 import math
-from functools import cached_property
+from functools import cache, cached_property
 
 import numpy as np
 from attrs import frozen
@@ -27,8 +27,6 @@ class SingleParityCheckCode(BlockCode):
         >>> code = komm.SingleParityCheckCode(5)
         >>> (code.length, code.dimension, code.redundancy)
         (5, 4, 1)
-        >>> code.minimum_distance
-        2
         >>> code.generator_matrix
         array([[1, 0, 0, 0, 1],
                [0, 1, 0, 0, 1],
@@ -36,12 +34,14 @@ class SingleParityCheckCode(BlockCode):
                [0, 0, 0, 1, 1]])
         >>> code.check_matrix
         array([[1, 1, 1, 1, 1]])
+        >>> code.minimum_distance()
+        2
 
         >>> code = komm.SingleParityCheckCode(16)
-        >>> code.codeword_weight_distribution
+        >>> code.codeword_weight_distribution()
         array([    1,     0,   120,     0,  1820,     0,  8008,     0, 12870,
                    0,  8008,     0,  1820,     0,   120,     0,     1])
-        >>> code.coset_leader_weight_distribution
+        >>> code.coset_leader_weight_distribution()
         array([1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     """
 
@@ -51,11 +51,11 @@ class SingleParityCheckCode(BlockCode):
     def check_matrix(self):
         return np.ones((1, self.n), dtype=int)
 
-    @property
+    @cache
     def minimum_distance(self):
         return 2
 
-    @cached_property
+    @cache
     def codeword_weight_distribution(self):
         n = self.n
         codeword_weight_distribution = np.zeros(n + 1, dtype=int)

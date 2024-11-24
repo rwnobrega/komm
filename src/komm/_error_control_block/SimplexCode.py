@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 
 from attrs import frozen
 
@@ -38,8 +38,6 @@ class SimplexCode(SystematicBlockCode):
         >>> code = komm.SimplexCode(3)
         >>> (code.length, code.dimension, code.redundancy)
         (7, 3, 4)
-        >>> code.minimum_distance
-        4
         >>> code.generator_matrix
         array([[1, 0, 0, 1, 1, 0, 1],
                [0, 1, 0, 1, 0, 1, 1],
@@ -49,12 +47,12 @@ class SimplexCode(SystematicBlockCode):
                [1, 0, 1, 0, 1, 0, 0],
                [0, 1, 1, 0, 0, 1, 0],
                [1, 1, 1, 0, 0, 0, 1]])
+        >>> code.minimum_distance()
+        4
 
         >>> code = komm.SimplexCode(3, extended=True)
         >>> (code.length, code.dimension, code.redundancy)
         (8, 4, 4)
-        >>> code.minimum_distance
-        4
         >>> code.generator_matrix
         array([[1, 0, 0, 0, 1, 1, 0, 1],
                [0, 1, 0, 0, 1, 0, 1, 1],
@@ -65,6 +63,8 @@ class SimplexCode(SystematicBlockCode):
                [1, 0, 1, 1, 0, 1, 0, 0],
                [0, 1, 1, 1, 0, 0, 1, 0],
                [1, 1, 1, 0, 0, 0, 0, 1]])
+        >>> code.minimum_distance()
+        4
     """
 
     kappa: int
@@ -74,6 +74,6 @@ class SimplexCode(SystematicBlockCode):
     def parity_submatrix(self):
         return hamming_parity_submatrix(self.kappa, self.extended).T
 
-    @property
+    @cache
     def minimum_distance(self):
         return 2 ** (self.kappa - 1)
