@@ -20,11 +20,11 @@ class SlepianArray:
 
     In this implementation:
 
-    - The index $i \in (0 : 2^m]$ of a row corresponds to the binary representation of the syndrome of any element in that row.
+    - A row's index $i$ corresponds to the $m$-bit syndrome obtained by expressing $i$ in binary (MSB on the right).
 
-    - The index $j \in (0 : 2^k]$ of a column corresponds to the binary representation of the message that generates the codeword in that column.
+    - A column's index $j$ corresponds to the $k$-bit message obtained by expressing $j$ in binary (MSB on the right).
 
-    In both cases, the MSB is on the right. For more details, see <cite>LC04, Sec. 3.5</cite>.
+    For more details, see <cite>LC04, Sec. 3.5</cite>.
 
     Attributes:
         code: The linear block code for which the Slepian array is generated.
