@@ -82,7 +82,7 @@ class BCHCode(CyclicCode):
                 f"'delta' must be a Bose distance (the next one is {bose_distance})"
             )
 
-    @cached_property
+    @property
     def length(self) -> int:
         return 2**self.mu - 1
 
