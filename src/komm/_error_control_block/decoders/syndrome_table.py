@@ -15,7 +15,7 @@ def decode_syndrome_table(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:
 
 
 RegistryBlockDecoder.register(
-    "syndrome_table",
+    "syndrome-table",
     {
         "description": "Syndrome table decoder",
         "decoder": decode_syndrome_table,

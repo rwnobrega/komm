@@ -53,4 +53,4 @@ class CordaroWagnerCode(BlockCode):
 
     @property
     def default_decoder(self):
-        return "exhaustive_search_hard"
+        return "exhaustive-search-hard"

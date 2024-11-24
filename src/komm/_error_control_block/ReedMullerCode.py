@@ -84,7 +84,7 @@ class ReedMullerCode(BlockCode):
 
     @classmethod
     def supported_decoders(cls):
-        return cls.__base__.supported_decoders() + ["reed", "weighted_reed"]  # type: ignore
+        return cls.__base__.supported_decoders() + ["reed", "weighted-reed"]  # type: ignore
 
     @property
     def reed_partitions(self):

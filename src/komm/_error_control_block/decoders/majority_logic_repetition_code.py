@@ -13,7 +13,7 @@ def decode_majority_logic_repetition_code(
 
 
 RegistryBlockDecoder.register(
-    "majority_logic_repetition_code",
+    "majority-logic-repetition-code",
     {
         "description": (
             "Majority-logic decoder. A hard-decision decoder for Repetition codes only."

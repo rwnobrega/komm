@@ -13,7 +13,7 @@ def decode_exhaustive_search_soft(code: BlockCode, r: npt.ArrayLike) -> np.ndarr
 
 
 RegistryBlockDecoder.register(
-    "exhaustive_search_soft",
+    "exhaustive-search-soft",
     {
         "description": (
             "Exhaustive search (soft-decision). Minimum Euclidean distance decoder"

@@ -45,7 +45,7 @@ def decode_viterbi_hard(
 
 
 RegistryBlockDecoder.register(
-    "viterbi_hard",
+    "viterbi-hard",
     {
         "description": "Viterbi (hard-decision)",
         "decoder": decode_viterbi_hard,
@@ -64,7 +64,7 @@ def decode_viterbi_soft(
 
 
 RegistryBlockDecoder.register(
-    "viterbi_soft",
+    "viterbi-soft",
     {
         "description": "Viterbi (soft-decision)",
         "decoder": decode_viterbi_soft,
