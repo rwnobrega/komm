@@ -36,7 +36,7 @@ def is_transition_matrix(
         raise ValueError(f"Rows of '{attr.name}' must sum to 1.0")
 
 
-def is_log_base(inst: object, attr: Attr, value: float | str):
+def is_log_base(inst: object, attr: Attr, value: float | str) -> None:
     if (isinstance(value, str) and value != "e") or (
         isinstance(value, float) and value <= 0.0
     ):
