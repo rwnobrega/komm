@@ -4,158 +4,180 @@ import pytest
 import komm
 
 
-class TestHammingCode:
+def test_hamming_code_parameters():
     code = komm.HammingCode(3)
+    assert (code.length, code.dimension, code.redundancy) == (7, 4, 3)
+    assert code.minimum_distance() == 3
 
-    def test_parameters(self):
-        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
-        assert (n, k, m) == (7, 4, 3)
-        assert self.code.minimum_distance() == 3
 
-    def test_generator_matrix(self):
-        G = self.code.generator_matrix
-        assert np.array_equal(
-            G,
-            [
-                [1, 0, 0, 0, 1, 1, 0],
-                [0, 1, 0, 0, 1, 0, 1],
-                [0, 0, 1, 0, 0, 1, 1],
-                [0, 0, 0, 1, 1, 1, 1],
-            ],
-        )
-
-    def test_parity_check_matrix(self):
-        H = self.code.check_matrix
-        assert np.array_equal(
-            H,
-            [
-                [1, 1, 0, 1, 1, 0, 0],
-                [1, 0, 1, 1, 0, 1, 0],
-                [0, 1, 1, 1, 0, 0, 1],
-            ],
-        )
-
-    def test_weight_distributions(self):
-        assert np.array_equal(
-            self.code.codeword_weight_distribution(), [1, 0, 0, 7, 7, 0, 0, 1]
-        )
-        assert np.array_equal(
-            self.code.coset_leader_weight_distribution(), [1, 7, 0, 0, 0, 0, 0, 0]
-        )
-
-    def test_GH_orthogonality(self):
-        k, m = self.code.dimension, self.code.redundancy
-        G = self.code.generator_matrix
-        H = self.code.check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
-
-    @pytest.mark.parametrize(
-        "u, v",
+def test_hamming_code_generator_matrix():
+    code = komm.HammingCode(3)
+    np.testing.assert_array_equal(
+        code.generator_matrix,
         [
-            ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1]),
-            ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0]),
-            ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]),
+            [1, 0, 0, 0, 1, 1, 0],
+            [0, 1, 0, 0, 1, 0, 1],
+            [0, 0, 1, 0, 0, 1, 1],
+            [0, 0, 0, 1, 1, 1, 1],
         ],
     )
-    def test_enc_mapping(self, u, v):
-        assert np.array_equal(self.code.enc_mapping(u), v)
-        assert np.array_equal(self.code.inv_enc_mapping(v), u)
-
-    def test_codewords(self):
-        n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords()
-        assert codewords.shape == (2**k, n)
-
-    def test_encoder(self):
-        encoder = komm.BlockEncoder(self.code)
-        assert np.array_equal(
-            encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
-            [1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-        )
-
-    def test_decoder(self):
-        decoder = komm.BlockDecoder(self.code)
-        assert np.array_equal(
-            decoder([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]),
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
-        )
 
 
-class TestExtendedHammingCode:
+def test_hamming_code_parity_check_matrix():
+    code = komm.HammingCode(3)
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 1, 0, 1, 1, 0, 0],
+            [1, 0, 1, 1, 0, 1, 0],
+            [0, 1, 1, 1, 0, 0, 1],
+        ],
+    )
+
+
+def test_hamming_code_weight_distributions():
+    code = komm.HammingCode(3)
+    np.testing.assert_array_equal(
+        code.codeword_weight_distribution(),
+        [1, 0, 0, 7, 7, 0, 0, 1],
+    )
+    np.testing.assert_array_equal(
+        code.coset_leader_weight_distribution(),
+        [1, 7, 0, 0, 0, 0, 0, 0],
+    )
+
+
+def test_hamming_code_GH_orthogonality():
+    code = komm.HammingCode(3)
+    np.testing.assert_array_equal(
+        np.dot(code.generator_matrix, code.check_matrix.T) % 2,
+        np.zeros((code.dimension, code.redundancy), dtype=int),
+    )
+
+
+@pytest.mark.parametrize(
+    "u, v",
+    [
+        ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1]),
+        ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0]),
+        ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]),
+    ],
+)
+def test_hamming_code_enc_mapping(u, v):
+    code = komm.HammingCode(3)
+    np.testing.assert_array_equal(code.enc_mapping(u), v)
+    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
+
+
+def test_hamming_code_codewords():
+    code = komm.HammingCode(3)
+    assert code.codewords().shape == (16, 7)
+
+
+def test_hamming_code_encoder():
+    code = komm.HammingCode(3)
+    encoder = komm.BlockEncoder(code)
+    np.testing.assert_array_equal(
+        encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
+        [1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+    )
+
+
+def test_hamming_code_decoder():
+    code = komm.HammingCode(3)
+    decoder = komm.BlockDecoder(code)
+    np.testing.assert_array_equal(
+        decoder([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]),
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+    )
+
+
+def test_extended_hamming_code_parameters():
     code = komm.HammingCode(3, extended=True)
+    assert (code.length, code.dimension, code.redundancy) == (8, 4, 4)
+    assert code.minimum_distance() == 4
 
-    def test_parameters(self):
-        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
-        assert (n, k, m) == (8, 4, 4)
-        assert self.code.minimum_distance() == 4
 
-    def test_generator_matrix(self):
-        G = self.code.generator_matrix
-        assert np.array_equal(
-            G,
-            [
-                [1, 0, 0, 0, 1, 1, 0, 1],
-                [0, 1, 0, 0, 1, 0, 1, 1],
-                [0, 0, 1, 0, 0, 1, 1, 1],
-                [0, 0, 0, 1, 1, 1, 1, 0],
-            ],
-        )
-
-    def test_parity_check_matrix(self):
-        H = self.code.check_matrix
-        assert np.array_equal(
-            H,
-            [
-                [1, 1, 0, 1, 1, 0, 0, 0],
-                [1, 0, 1, 1, 0, 1, 0, 0],
-                [0, 1, 1, 1, 0, 0, 1, 0],
-                [1, 1, 1, 0, 0, 0, 0, 1],
-            ],
-        )
-
-    def test_weight_distributions(self):
-        assert np.array_equal(
-            self.code.codeword_weight_distribution(), [1, 0, 0, 0, 14, 0, 0, 0, 1]
-        )
-        assert np.array_equal(
-            self.code.coset_leader_weight_distribution(), [1, 8, 7, 0, 0, 0, 0, 0, 0]
-        )
-
-    def test_GH_orthogonality(self):
-        k, m = self.code.dimension, self.code.redundancy
-        G = self.code.generator_matrix
-        H = self.code.check_matrix
-        assert np.array_equal(np.dot(G, H.T) % 2, np.zeros((k, m), dtype=int))
-
-    @pytest.mark.parametrize(
-        "u, v",
+def test_extended_hamming_code_generator_matrix():
+    code = komm.HammingCode(3, extended=True)
+    np.testing.assert_array_equal(
+        code.generator_matrix,
         [
-            ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1, 1]),
-            ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0, 0]),
-            ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]),
+            [1, 0, 0, 0, 1, 1, 0, 1],
+            [0, 1, 0, 0, 1, 0, 1, 1],
+            [0, 0, 1, 0, 0, 1, 1, 1],
+            [0, 0, 0, 1, 1, 1, 1, 0],
         ],
     )
-    def test_enc_mapping(self, u, v):
-        assert np.array_equal(self.code.enc_mapping(u), v)
-        assert np.array_equal(self.code.inv_enc_mapping(v), u)
 
-    def test_codewords(self):
-        n, k = self.code.length, self.code.dimension
-        codewords = self.code.codewords()
-        assert codewords.shape == (2**k, n)
 
-    def test_encoder(self):
-        encoder = komm.BlockEncoder(self.code)
-        assert np.array_equal(
-            encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
-            [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-        )
+def test_extended_hamming_code_parity_check_matrix():
+    code = komm.HammingCode(3, extended=True)
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 1, 0, 1, 1, 0, 0, 0],
+            [1, 0, 1, 1, 0, 1, 0, 0],
+            [0, 1, 1, 1, 0, 0, 1, 0],
+            [1, 1, 1, 0, 0, 0, 0, 1],
+        ],
+    )
 
-    def test_decoder(self):
-        decoder = komm.BlockDecoder(self.code)
-        assert np.array_equal(
-            decoder(
-                [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]
-            ),
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
-        )
+
+def test_extended_hamming_code_weight_distributions():
+    code = komm.HammingCode(3, extended=True)
+    np.testing.assert_array_equal(
+        code.codeword_weight_distribution(),
+        [1, 0, 0, 0, 14, 0, 0, 0, 1],
+    )
+    np.testing.assert_array_equal(
+        code.coset_leader_weight_distribution(),
+        [1, 8, 7, 0, 0, 0, 0, 0, 0],
+    )
+
+
+def test_extended_hamming_code_GH_orthogonality():
+    code = komm.HammingCode(3, extended=True)
+    np.testing.assert_array_equal(
+        np.dot(code.generator_matrix, code.check_matrix.T) % 2,
+        np.zeros((code.dimension, code.redundancy), dtype=int),
+    )
+
+
+@pytest.mark.parametrize(
+    "u, v",
+    [
+        ([1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1, 1]),
+        ([1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0, 0]),
+        ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]),
+    ],
+)
+def test_extended_hamming_code_enc_mapping(u, v):
+    code = komm.HammingCode(3, extended=True)
+    np.testing.assert_array_equal(code.enc_mapping(u), v)
+    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
+
+
+def test_extended_hamming_code_codewords():
+    code = komm.HammingCode(3, extended=True)
+    assert code.codewords().shape == (16, 8)
+
+
+def test_extended_hamming_code_encoder():
+    code = komm.HammingCode(3, extended=True)
+    encoder = komm.BlockEncoder(code)
+    np.testing.assert_array_equal(
+        encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
+        [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+    )
+
+
+def test_extended_hamming_code_decoder():
+    code = komm.HammingCode(3, extended=True)
+    decoder = komm.BlockDecoder(code)
+    np.testing.assert_array_equal(
+        decoder(
+            [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]
+        ),
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+    )

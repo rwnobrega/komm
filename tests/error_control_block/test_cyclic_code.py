@@ -23,8 +23,8 @@ def test_non_systematic_enc_mapping():
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=False)
     u = [1, 0, 1, 0]
     v = [1, 1, 1, 0, 0, 1, 0]
-    assert np.array_equal(code.enc_mapping(u), v)
-    assert np.array_equal(code.inv_enc_mapping(v), u)
+    np.testing.assert_array_equal(code.enc_mapping(u), v)
+    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
 
 
 def test_systematic_enc_mapping():
@@ -32,8 +32,8 @@ def test_systematic_enc_mapping():
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=True)
     u = [1, 0, 0, 1]
     v = [0, 1, 1, 1, 0, 0, 1]
-    assert np.array_equal(code.enc_mapping(u), v)
-    assert np.array_equal(code.inv_enc_mapping(v), u)
+    np.testing.assert_array_equal(code.enc_mapping(u), v)
+    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
 
 
 def test_non_systematic_generator_matrix():
@@ -45,7 +45,7 @@ def test_non_systematic_generator_matrix():
         [0, 0, 1, 1, 0, 1, 0],
         [0, 0, 0, 1, 1, 0, 1],
     ]
-    assert np.array_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
 
 
 def test_systematic_generator_matrix():
@@ -57,7 +57,7 @@ def test_systematic_generator_matrix():
         [1, 1, 1, 0, 0, 1, 0],
         [1, 0, 1, 0, 0, 0, 1],
     ]
-    assert np.array_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
 
 
 def test_chk_mapping():
@@ -65,16 +65,16 @@ def test_chk_mapping():
     code = komm.CyclicCode(length=7, check_polynomial=0b10111, systematic=True)
     r = [0, 0, 1, 0, 1, 1, 0]
     s = [1, 0, 1]
-    assert np.array_equal(code.chk_mapping(r), s)
+    np.testing.assert_array_equal(code.chk_mapping(r), s)
 
 
 def test_syndrome():
     # [LC04, Example 5.9]
     code = komm.CyclicCode(length=7, check_polynomial=0b10111, systematic=True)
-    assert np.array_equal(code.chk_mapping([0, 0, 0, 0, 0, 0, 1]), [1, 0, 1])
-    assert np.array_equal(code.chk_mapping([0, 0, 0, 0, 0, 1, 0]), [1, 1, 1])
-    assert np.array_equal(code.chk_mapping([0, 0, 0, 0, 1, 0, 0]), [0, 1, 1])
-    assert np.array_equal(code.chk_mapping([0, 0, 0, 1, 0, 0, 0]), [1, 1, 0])
-    assert np.array_equal(code.chk_mapping([0, 0, 1, 0, 0, 0, 0]), [0, 0, 1])
-    assert np.array_equal(code.chk_mapping([0, 1, 0, 0, 0, 0, 0]), [0, 1, 0])
-    assert np.array_equal(code.chk_mapping([1, 0, 0, 0, 0, 0, 0]), [1, 0, 0])
+    np.testing.assert_array_equal(code.chk_mapping([0, 0, 0, 0, 0, 0, 1]), [1, 0, 1])
+    np.testing.assert_array_equal(code.chk_mapping([0, 0, 0, 0, 0, 1, 0]), [1, 1, 1])
+    np.testing.assert_array_equal(code.chk_mapping([0, 0, 0, 0, 1, 0, 0]), [0, 1, 1])
+    np.testing.assert_array_equal(code.chk_mapping([0, 0, 0, 1, 0, 0, 0]), [1, 1, 0])
+    np.testing.assert_array_equal(code.chk_mapping([0, 0, 1, 0, 0, 0, 0]), [0, 0, 1])
+    np.testing.assert_array_equal(code.chk_mapping([0, 1, 0, 0, 0, 0, 0]), [0, 1, 0])
+    np.testing.assert_array_equal(code.chk_mapping([1, 0, 0, 0, 0, 0, 0]), [1, 0, 0])

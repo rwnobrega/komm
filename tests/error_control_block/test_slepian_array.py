@@ -4,6 +4,7 @@ import komm
 
 
 def test_standard_array_mws():
+    # [McWS, p. 16]
     code = komm.BlockCode(generator_matrix=[[1, 0, 1, 1], [0, 1, 0, 1]])
     sa = komm.SlepianArray(code)
     codewords = sa.row(0)
