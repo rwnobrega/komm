@@ -47,7 +47,7 @@ def test_reed_muller_code_2_4_GH_orthogonality():
 
 def test_reed_muller_code_2_4_reed_partitions():
     code = komm.ReedMullerCode(2, 4)
-    reed_partitions = code.reed_partitions
+    reed_partitions = code.reed_partitions()
     np.testing.assert_array_equal(
         reed_partitions[0],
         [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]],

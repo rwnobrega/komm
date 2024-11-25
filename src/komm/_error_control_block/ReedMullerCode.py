@@ -87,19 +87,20 @@ class ReedMullerCode(BlockCode):
     def supported_decoders(cls) -> list[str]:
         return cls.__base__.supported_decoders() + ["reed", "weighted-reed"]  # type: ignore
 
-    @property
+    @cache
     def reed_partitions(self) -> list[npt.NDArray[np.int_]]:
         r"""
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
         Examples:
             >>> code = komm.ReedMullerCode(2, 4)
-            >>> code.reed_partitions[1]
+            >>> reed_partitions = code.reed_partitions()
+            >>> reed_partitions[1]
             array([[ 0,  1,  4,  5],
                    [ 2,  3,  6,  7],
                    [ 8,  9, 12, 13],
                    [10, 11, 14, 15]])
-            >>> code.reed_partitions[8]
+            >>> reed_partitions[8]
             array([[ 0,  4],
                    [ 1,  5],
                    [ 2,  6],
@@ -111,17 +112,15 @@ class ReedMullerCode(BlockCode):
         """
         rho, mu = self.rho, self.mu
         reed_partitions: list[npt.NDArray[np.int_]] = []
+        binary_vectors = [
+            np.fliplr(np.array(list(it.product([0, 1], repeat=ell)), dtype=int))
+            for ell in range(mu + 1)
+        ]
         for ell in range(rho, -1, -1):
-            binary_vectors_I = np.fliplr(
-                np.array(list(it.product([0, 1], repeat=ell)), dtype=int)
-            )
-            binary_vectors_J = np.fliplr(
-                np.array(list(it.product([0, 1], repeat=mu - ell)), dtype=int)
-            )
-            for I in it.combinations(range(mu), ell):
-                I = np.array(I, dtype=int)
-                E = np.setdiff1d(np.arange(mu), I, assume_unique=True)
-                S = np.dot(binary_vectors_I, 2**I)
-                Q = np.dot(binary_vectors_J, 2**E)
-                reed_partitions.append(S[np.newaxis] + Q[np.newaxis].T)
+            for indices in it.combinations(range(mu), ell):
+                setI = np.array(indices, dtype=int)
+                setE = np.setdiff1d(np.arange(mu), indices, assume_unique=True)
+                setS = np.dot(binary_vectors[ell], 2**setI)
+                setQ = np.dot(binary_vectors[mu - ell], 2**setE)
+                reed_partitions.append(setS[np.newaxis] + setQ[np.newaxis].T)
         return reed_partitions

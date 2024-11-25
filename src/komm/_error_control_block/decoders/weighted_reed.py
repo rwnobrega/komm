@@ -10,7 +10,7 @@ def decode_weighted_reed(code: ReedMullerCode, r: npt.ArrayLike) -> np.ndarray:
     r = np.asarray(r)
     u_hat = np.empty(code.dimension, dtype=int)
     bx = (r < 0).astype(int)
-    for i, partition in enumerate(code.reed_partitions):
+    for i, partition in enumerate(code.reed_partitions()):
         checksums = np.count_nonzero(bx[partition], axis=1) % 2
         min_reliability = np.min(np.abs(r[partition]), axis=1)
         decision_var = np.dot(1 - 2 * checksums, min_reliability)
