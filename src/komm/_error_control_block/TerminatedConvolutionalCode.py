@@ -7,6 +7,7 @@ from attrs import frozen
 from numpy.linalg import matrix_power
 
 from .._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
+from .._types import ArrayIntLike
 from .._util.bit_operations import binlist2int, int2binlist, pack, unpack
 from .._util.matrices import pseudo_inverse
 from .BlockCode import BlockCode
@@ -72,7 +73,7 @@ class TerminatedConvolutionalCode(BlockCode):
         "zero-termination"
     )
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         if self.mode == "tail-biting":
             try:
                 self.zs_multiplier
@@ -83,18 +84,18 @@ class TerminatedConvolutionalCode(BlockCode):
                 )
 
     @property
-    def length(self):
+    def length(self) -> int:
         total_num_blocks = self.num_blocks
         if self.mode == "zero-termination":
             total_num_blocks += self.convolutional_code.memory_order
         return total_num_blocks * self.convolutional_code.num_output_bits
 
     @property
-    def dimension(self):
+    def dimension(self) -> int:
         return self.num_blocks * self.convolutional_code.num_input_bits
 
     @cached_property
-    def generator_matrix(self):
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         convolutional_code = self.convolutional_code
         k0, n0 = convolutional_code.num_input_bits, convolutional_code.num_output_bits
         k, n = self.dimension, self.length
@@ -108,7 +109,7 @@ class TerminatedConvolutionalCode(BlockCode):
                 generator_matrix[k0 * t : k0 * (t + 1), : n0 * t] = 0
         return generator_matrix
 
-    def enc_mapping(self, u: npt.ArrayLike) -> np.ndarray:
+    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
         convolutional_code = self.convolutional_code
         k0, n0, nu, fsm = (
             convolutional_code.num_input_bits,
@@ -136,15 +137,15 @@ class TerminatedConvolutionalCode(BlockCode):
         return v
 
     @property
-    def default_decoder(self):
+    def default_decoder(self) -> str:
         return "viterbi-hard"
 
     @classmethod
-    def supported_decoders(cls):
+    def supported_decoders(cls) -> list[str]:
         return cls.__base__.supported_decoders() + ["viterbi-hard", "viterbi-soft", "bcjr"]  # type: ignore
 
     @cached_property
-    def tail_projector(self) -> np.ndarray:
+    def tail_projector(self) -> npt.NDArray[np.int_]:
         if self.mode != "zero-termination":
             raise ValueError(
                 "this property is only defined for mode='zero-termination'"
@@ -163,7 +164,7 @@ class TerminatedConvolutionalCode(BlockCode):
         return np.dot(AnB_message, pseudo_inverse(AnB_tail)) % 2
 
     @cached_property
-    def zs_multiplier(self) -> np.ndarray:
+    def zs_multiplier(self) -> npt.NDArray[np.int_]:
         # See [WBR01, eq. (4)].
         if self.mode != "tail-biting":
             raise ValueError("this property is only defined for mode='tail-biting'")
@@ -173,10 +174,10 @@ class TerminatedConvolutionalCode(BlockCode):
         return pseudo_inverse((matrix_power(A_mat, h) + np.eye(nu, dtype=int)) % 2)
 
     @cached_property
-    def cache_bit(self) -> np.ndarray:
+    def cache_bit(self) -> npt.NDArray[np.int_]:
         n0 = self.convolutional_code.num_output_bits
         return np.array([int2binlist(y, width=n0) for y in range(2**n0)])
 
     @cached_property
-    def cache_polar(self) -> np.ndarray:
+    def cache_polar(self) -> npt.NDArray[np.int_]:
         return (-1) ** self.cache_bit
