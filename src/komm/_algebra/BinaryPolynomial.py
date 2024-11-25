@@ -7,8 +7,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 from typing_extensions import Self
 
-from komm._util.bit_operations import binlist2int, int2binlist
-
+from .._util.bit_operations import binlist2int, int2binlist
 from . import domain, ring
 
 T = TypeVar("T", bound=ring.RingElement)

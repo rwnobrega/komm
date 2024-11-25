@@ -4,7 +4,7 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from komm._util.information_theory import LogBase
+from .._util.information_theory import LogBase
 
 
 class AbstractDiscreteMemorylessChannel(ABC):

@@ -5,9 +5,8 @@ import numpy.typing as npt
 from attr import field
 from attrs import field, frozen
 
-from komm._util.information_theory import LogBase, binary_entropy
-from komm._validation import is_pmf, is_probability, validate_call
-
+from .._util.information_theory import LogBase, binary_entropy
+from .._validation import is_pmf, is_probability, validate_call
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
