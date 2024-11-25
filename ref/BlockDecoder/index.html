@@ -525,7 +525,7 @@
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>method</code></b> <span class="doc-param-annotation">(<code>str | None</code>)</span> –
+                    <b><code>method</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['bcjr', 'berlekamp', 'exhaustive-search-hard', 'exhaustive-search-soft', 'majority-logic-repetition-code', 'meggitt', 'reed', 'syndrome-table', 'viterbi-hard', 'viterbi-soft', 'wagner', 'weighted-reed'] | None</code>)</span> –
                     <div class="doc-md-description">
                       <p>The identifier of the method to be used for decoding. The default corresponds to <code>code.default_decoder</code>.</p>
                     </div>
@@ -565,21 +565,21 @@
                     <li>Supported by: <a href="/ref/BCHCode"><code>BCHCode</code></a>.
                     </li>
                   </ul>
-                  <p><strong><code>exhaustive_search_hard</code></strong>: Exhaustive search (hard-decision). Minimum Hamming distance decoder</p>
+                  <p><strong><code>exhaustive-search-hard</code></strong>: Exhaustive search (hard-decision). Minimum Hamming distance decoder</p>
                   <ul>
                     <li>Input type: hard</li>
                     <li>Output type: hard</li>
                     <li>Target: codeword</li>
                     <li>Supported by: All codes.</li>
                   </ul>
-                  <p><strong><code>exhaustive_search_soft</code></strong>: Exhaustive search (soft-decision). Minimum Euclidean distance decoder</p>
+                  <p><strong><code>exhaustive-search-soft</code></strong>: Exhaustive search (soft-decision). Minimum Euclidean distance decoder</p>
                   <ul>
                     <li>Input type: soft</li>
                     <li>Output type: hard</li>
                     <li>Target: codeword</li>
                     <li>Supported by: All codes.</li>
                   </ul>
-                  <p><strong><code>majority_logic_repetition_code</code></strong>: Majority-logic decoder. A hard-decision decoder for Repetition codes only.</p>
+                  <p><strong><code>majority-logic-repetition-code</code></strong>: Majority-logic decoder. A hard-decision decoder for Repetition codes only.</p>
                   <ul>
                     <li>Input type: hard</li>
                     <li>Output type: hard</li>
@@ -603,14 +603,14 @@
                     <li>Supported by: <a href="/ref/ReedMullerCode"><code>ReedMullerCode</code></a>.
                     </li>
                   </ul>
-                  <p><strong><code>syndrome_table</code></strong>: Syndrome table decoder</p>
+                  <p><strong><code>syndrome-table</code></strong>: Syndrome table decoder</p>
                   <ul>
                     <li>Input type: hard</li>
                     <li>Output type: hard</li>
                     <li>Target: codeword</li>
                     <li>Supported by: All codes.</li>
                   </ul>
-                  <p><strong><code>viterbi_hard</code></strong>: Viterbi (hard-decision)</p>
+                  <p><strong><code>viterbi-hard</code></strong>: Viterbi (hard-decision)</p>
                   <ul>
                     <li>Input type: hard</li>
                     <li>Output type: hard</li>
@@ -618,7 +618,7 @@
                     <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
                     </li>
                   </ul>
-                  <p><strong><code>viterbi_soft</code></strong>: Viterbi (soft-decision)</p>
+                  <p><strong><code>viterbi-soft</code></strong>: Viterbi (soft-decision)</p>
                   <ul>
                     <li>Input type: soft</li>
                     <li>Output type: hard</li>
@@ -634,7 +634,7 @@
                     <li>Supported by: <a href="/ref/SingleParityCheckCode"><code>SingleParityCheckCode</code></a>.
                     </li>
                   </ul>
-                  <p><strong><code>weighted_reed</code></strong>: Weighted Reed decoding algorithm for Reed–Muller codes.</p>
+                  <p><strong><code>weighted-reed</code></strong>: Weighted Reed decoding algorithm for Reed–Muller codes.</p>
                   <ul>
                     <li>Input type: soft</li>
                     <li>Output type: hard</li>
@@ -665,9 +665,9 @@
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">default_decoder</span>
-<span class="go">'syndrome_table'</span>
+<span class="go">'syndrome-table'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">supported_decoders</span><span class="p">()</span>
-<span class="go">['exhaustive_search_hard', 'exhaustive_search_soft', 'syndrome_table']</span>
+<span class="go">['exhaustive-search-hard', 'exhaustive-search-soft', 'syndrome-table']</span>
 </code></pre>
                 </div>
                 <div class="highlight">
@@ -677,7 +677,7 @@
 </code></pre>
                 </div>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'exhaustive_search_soft'</span><span class="p">)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'exhaustive-search-soft'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="o">-</span><span class="mf">0.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">1.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.16</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.87</span><span class="p">,</span> <span class="mf">1.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.83</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">])</span>
 <span class="go">array([1, 1, 0, 0, 1, 0, 1, 1])</span>
 </code></pre>
