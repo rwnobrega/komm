@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Callable, Optional, Sequence, TypedDict, TypeVar
+from typing import Any, Callable, Optional, Sequence, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -156,7 +156,7 @@ class FiniteStateMachine:
 
     def viterbi(
         self,
-        observed_sequence: Sequence[Z],
+        observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         initial_metrics: Optional[npt.ArrayLike] = None,
     ) -> tuple[npt.NDArray[np.int_], npt.NDArray[np.float64]]:
@@ -203,7 +203,7 @@ class FiniteStateMachine:
 
     def viterbi_streaming(
         self,
-        observed_sequence: Sequence[Z],
+        observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         memory: MetricMemory,
     ) -> npt.NDArray[np.int_]:
@@ -249,7 +249,7 @@ class FiniteStateMachine:
 
     def forward_backward(
         self,
-        observed_sequence: Sequence[Z],
+        observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         input_priors: Optional[npt.ArrayLike] = None,
         initial_state_distribution: Optional[npt.ArrayLike] = None,
