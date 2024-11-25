@@ -77,8 +77,8 @@ class FiniteBifieldElement(Generic[F]):
     def minimal_polynomial(self) -> BinaryPolynomial:
         one = self.ambient.one
         monomials = [np.array([y, one], dtype=object) for y in self.conjugates()]
-        coefficients = functools.reduce(np.convolve, monomials)
-        return BinaryPolynomial.from_coefficients(c.value for c in coefficients)
+        coefficients: list[Self] = list(functools.reduce(np.convolve, monomials))
+        return BinaryPolynomial.from_coefficients([c.value.value for c in coefficients])
 
     def __repr__(self):
         return bin(self.value.value)

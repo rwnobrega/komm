@@ -1,14 +1,16 @@
-from typing import Iterable, Optional, TypeVar, Union
+from typing import Optional, TypeVar, Union
 
 import numpy as np
 import numpy.typing as npt
 
 DType = TypeVar("DType", bound=Union[np.float64, np.complex128])
 
+from .._types import ArrayIntLike
+
 
 def acorr(
     seq: npt.ArrayLike,
-    shifts: Optional[Iterable[int]] = None,
+    shifts: Optional[ArrayIntLike] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -49,7 +51,7 @@ def acorr(
 
 def cyclic_acorr(
     seq: npt.ArrayLike,
-    shifts: Optional[Iterable[int]] = None,
+    shifts: Optional[ArrayIntLike] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""

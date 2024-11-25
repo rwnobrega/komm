@@ -1,12 +1,12 @@
-from typing import Optional, Sequence
+from typing import Optional
 
 import numpy as np
 import numpy.typing as npt
 
+from .._types import ArrayIntLike
+
 # TODO: Rename binlist2int and int2binlist to something better.
 # TODO: Vectorize those functions (e.g., axis=1).
-
-ArrayIntLike = Sequence[int] | npt.NDArray[np.int_]
 
 
 def binlist2int(binlist: ArrayIntLike) -> int:

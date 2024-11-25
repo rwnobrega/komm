@@ -1,12 +1,13 @@
 import functools
 import operator
-from typing import Iterable, Optional, TypeVar
+from typing import Optional, TypeVar
 
 import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 from typing_extensions import Self
 
+from .._types import ArrayIntLike
 from .._util.bit_operations import binlist2int, int2binlist
 from . import domain, ring
 
@@ -57,7 +58,7 @@ class BinaryPolynomial:
         return BinaryPolynomials()
 
     @classmethod
-    def from_coefficients(cls, coefficients: Iterable[int]) -> Self:
+    def from_coefficients(cls, coefficients: ArrayIntLike) -> Self:
         r"""
         Constructs a binary polynomial from its coefficients.
 
@@ -71,7 +72,7 @@ class BinaryPolynomial:
         return cls(binlist2int(coefficients))
 
     @classmethod
-    def from_exponents(cls, exponents: npt.ArrayLike) -> Self:
+    def from_exponents(cls, exponents: ArrayIntLike) -> Self:
         r"""
         Constructs a binary polynomial from its exponents.
 
