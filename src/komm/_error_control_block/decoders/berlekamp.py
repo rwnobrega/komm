@@ -1,7 +1,8 @@
 import numpy as np
 import numpy.typing as npt
 
-from ..._algebra import BinaryPolynomial, FiniteBifield, FiniteBifieldElement
+from ..._algebra.BinaryPolynomial import BinaryPolynomial
+from ..._algebra.FiniteBifield import F, FiniteBifield, FiniteBifieldElement
 from ..BCHCode import BCHCode
 from ..registry import RegistryBlockDecoder
 
@@ -18,7 +19,10 @@ from ..registry import RegistryBlockDecoder
 #     return v_hat
 
 
-def bch_syndrome_vector(code: BCHCode, r_poly: BinaryPolynomial):
+def bch_syndrome_vector(
+    code: BCHCode,
+    r_poly: BinaryPolynomial,
+) -> npt.NDArray[np.int_]:
     # BCH syndrome computation. See [LC04, p. 205–209].
     alpha = code.field.primitive_element
     s_vec = np.array(
@@ -28,9 +32,13 @@ def bch_syndrome_vector(code: BCHCode, r_poly: BinaryPolynomial):
     return s_vec
 
 
-def find_roots(field: FiniteBifield, coefficients) -> list[FiniteBifieldElement]:
+def find_roots(
+    field: F,
+    coefficients: npt.ArrayLike,
+) -> list[FiniteBifieldElement[F]]:
     # Exhaustive search.
-    roots = []
+    coefficients = np.asarray(coefficients)
+    roots: list[FiniteBifieldElement[F]] = []
     for i in range(field.order):
         x = field(i)
         evaluated = field(0)
@@ -43,7 +51,11 @@ def find_roots(field: FiniteBifield, coefficients) -> list[FiniteBifieldElement]
     return roots
 
 
-def berlekamp_algorithm(field: FiniteBifield, delta: int, syndrome_polynomial):
+def berlekamp_algorithm(
+    field: FiniteBifield,
+    delta: int,
+    syndrome_polynomial: npt.NDArray[np.int_],
+) -> npt.NDArray[np.int_]:
     # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
     # See [LC04, p. 209–212] and [RL09, p. 114–121].
     sigma = {
@@ -81,7 +93,10 @@ def berlekamp_algorithm(field: FiniteBifield, delta: int, syndrome_polynomial):
     return sigma[delta - 1]
 
 
-def decode_berlekamp(code: BCHCode, r: npt.ArrayLike) -> np.ndarray:
+def decode_berlekamp(
+    code: BCHCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
     alpha = code.field.primitive_element
     r = np.asarray(r)
     r_poly = BinaryPolynomial.from_coefficients(r)

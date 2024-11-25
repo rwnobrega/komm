@@ -6,8 +6,9 @@ from ..RepetitionCode import RepetitionCode
 
 
 def decode_majority_logic_repetition_code(
-    code: RepetitionCode, r: npt.ArrayLike
-) -> np.ndarray:
+    code: RepetitionCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
     u_hat = np.array([np.argmax(np.bincount(r))])
     return u_hat
 

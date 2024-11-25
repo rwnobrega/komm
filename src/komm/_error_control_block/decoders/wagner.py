@@ -5,10 +5,13 @@ from ..registry import RegistryBlockDecoder
 from ..SingleParityCheckCode import SingleParityCheckCode
 
 
-def decode_wagner(code: SingleParityCheckCode, r: npt.ArrayLike) -> np.ndarray:
+def decode_wagner(
+    code: SingleParityCheckCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
     # See Costello, Forney: Channel Coding: The Road to Channel Capacity.
     r = np.asarray(r)
-    v_hat = r < 0
+    v_hat = (r < 0).astype(int)
     if np.count_nonzero(v_hat) % 2 != 0:
         i = np.argmin(np.abs(r))
         v_hat[i] ^= 1

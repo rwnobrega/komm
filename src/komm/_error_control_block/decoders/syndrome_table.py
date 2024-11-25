@@ -6,7 +6,10 @@ from ..BlockCode import BlockCode
 from ..registry import RegistryBlockDecoder
 
 
-def decode_syndrome_table(code: BlockCode, r: npt.ArrayLike) -> np.ndarray:
+def decode_syndrome_table(
+    code: BlockCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
     coset_leaders = code.coset_leaders()
     s = np.dot(r, code.check_matrix.T) % 2
     e_hat = coset_leaders[binlist2int(s)]

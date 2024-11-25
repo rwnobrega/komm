@@ -6,12 +6,17 @@ from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 
 def decode_bcjr(
-    code: TerminatedConvolutionalCode, r: npt.ArrayLike, *, snr: float
-) -> np.ndarray:
+    code: TerminatedConvolutionalCode,
+    r: npt.ArrayLike,
+    *,
+    snr: float,
+) -> npt.NDArray[np.float64]:
     if code.mode == "tail-biting":
         raise NotImplementedError("BCJR algorithm not implemented for 'tail-biting'")
 
-    metric_function = lambda y, z: 2.0 * snr * np.dot(code.cache_polar[y], z)
+    def metric_function(y: int, z: float) -> float:
+        return 2.0 * snr * np.dot(code.cache_polar[y], z)
+
     n0, mu, fsm = (
         code.convolutional_code.num_output_bits,
         code.convolutional_code.memory_order,
@@ -25,9 +30,8 @@ def decode_bcjr(
         initial_state_distribution = np.eye(1, fsm.num_states, 0)
         final_state_distribution = np.eye(1, fsm.num_states, 0)
 
-    z = np.reshape(r, shape=(-1, n0))
     input_posteriors = fsm.forward_backward(
-        z,
+        observed_sequence=np.reshape(r, shape=(-1, n0)),
         metric_function=metric_function,
         initial_state_distribution=initial_state_distribution,
         final_state_distribution=final_state_distribution,

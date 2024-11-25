@@ -1,14 +1,19 @@
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
+from ..._finite_state_machine.FiniteStateMachine import MetricFunction
 from ..._util import unpack
 from ..registry import RegistryBlockDecoder
 from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 
 def decode_viterbi(
-    code: TerminatedConvolutionalCode, r: npt.ArrayLike, metric_function
-) -> np.ndarray:
+    code: TerminatedConvolutionalCode,
+    r: npt.ArrayLike,
+    metric_function: MetricFunction[Any],
+) -> npt.NDArray[np.int_]:
     if code.mode == "tail-biting":
         raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
@@ -22,9 +27,10 @@ def decode_viterbi(
     initial_metrics = np.full(fsm.num_states, fill_value=np.inf)
     initial_metrics[0] = 0.0
 
-    z = np.reshape(r, shape=(-1, n0))
     xs_hat, final_metrics = fsm.viterbi(
-        z, metric_function=metric_function, initial_metrics=initial_metrics
+        observed_sequence=np.reshape(r, shape=(-1, n0)),
+        metric_function=metric_function,
+        initial_metrics=initial_metrics,
     )
 
     if code.mode == "direct-truncation":
@@ -38,9 +44,12 @@ def decode_viterbi(
 
 
 def decode_viterbi_hard(
-    code: TerminatedConvolutionalCode, r: npt.ArrayLike
-) -> np.ndarray:
-    metric_function = lambda y, z: np.count_nonzero(code.cache_bit[y] != z)
+    code: TerminatedConvolutionalCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
+    def metric_function(y: int, z: float) -> float:
+        return np.count_nonzero(code.cache_bit[y] != z)
+
     return decode_viterbi(code, r, metric_function)
 
 
@@ -57,9 +66,12 @@ RegistryBlockDecoder.register(
 
 
 def decode_viterbi_soft(
-    code: TerminatedConvolutionalCode, r: npt.ArrayLike
-) -> np.ndarray:
-    metric_function = lambda y, z: np.dot(code.cache_bit[y], z)
+    code: TerminatedConvolutionalCode,
+    r: npt.ArrayLike,
+) -> npt.NDArray[np.int_]:
+    def metric_function(y: int, z: int) -> float:
+        return np.dot(code.cache_bit[y], z)
+
     return decode_viterbi(code, r, metric_function)
 
 

@@ -3,7 +3,7 @@ from typing import Callable, Literal, TypedDict
 import numpy as np
 import numpy.typing as npt
 
-Decoder = Callable[..., npt.NDArray[np.int_]]
+Decoder = Callable[..., npt.NDArray[np.int_] | npt.NDArray[np.float64]]
 
 
 class BlockDecoderData(TypedDict):
