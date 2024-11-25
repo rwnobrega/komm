@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
+from .._types import ArrayIntLike
 from .BlockCode import BlockCode
 
 
@@ -116,13 +117,13 @@ class SystematicBlockCode(BlockCode):
         check_matrix[:, self.parity_set] = np.eye(m, dtype=int)
         return check_matrix
 
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
         v = np.empty(self.length, dtype=int)
         v[self.information_set] = u
         v[self.parity_set] = np.dot(u, self.parity_submatrix) % 2
         return v
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
         v = np.asarray(v)
         if v.size != self.length:
             raise ValueError("length of 'v' must be equal to the code length")
