@@ -1,6 +1,7 @@
 from functools import cache, cached_property
 
 import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
@@ -37,7 +38,7 @@ class CordaroWagnerCode(BlockCode):
     n: int
 
     @cached_property
-    def generator_matrix(self):
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         n = self.n
         d = self.minimum_distance()
         q = (n + 1) // 3
@@ -52,5 +53,5 @@ class CordaroWagnerCode(BlockCode):
         return int(np.ceil(2 * self.n / 3)) - 1
 
     @property
-    def default_decoder(self):
+    def default_decoder(self) -> str:
         return "exhaustive-search-hard"

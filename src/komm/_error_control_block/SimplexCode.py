@@ -1,5 +1,7 @@
 from functools import cache, cached_property
 
+import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .matrices import hamming_parity_submatrix
@@ -71,9 +73,9 @@ class SimplexCode(SystematicBlockCode):
     extended: bool = False
 
     @cached_property
-    def parity_submatrix(self):
+    def parity_submatrix(self) -> npt.NDArray[np.int_]:
         return hamming_parity_submatrix(self.kappa, self.extended).T
 
     @cache
-    def minimum_distance(self):
+    def minimum_distance(self) -> int:
         return 2 ** (self.kappa - 1)

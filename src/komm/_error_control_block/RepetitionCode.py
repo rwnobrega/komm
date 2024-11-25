@@ -2,6 +2,7 @@ import math
 from functools import cache, cached_property
 
 import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
@@ -48,15 +49,15 @@ class RepetitionCode(BlockCode):
     n: int
 
     @cached_property
-    def generator_matrix(self):
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         return np.ones((1, self.n), dtype=int)
 
     @cache
-    def minimum_distance(self):
+    def minimum_distance(self) -> int:
         return self.n
 
     @cache
-    def coset_leader_weight_distribution(self):
+    def coset_leader_weight_distribution(self) -> npt.NDArray[np.int_]:
         n = self.n
         coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range((n + 1) // 2):
@@ -66,9 +67,9 @@ class RepetitionCode(BlockCode):
         return coset_leader_weight_distribution
 
     @property
-    def default_decoder(self):
+    def default_decoder(self) -> str:
         return "majority-logic-repetition-code"
 
     @classmethod
-    def supported_decoders(cls):
+    def supported_decoders(cls) -> list[str]:
         return cls.__base__.supported_decoders() + ["majority-logic-repetition-code"]  # type: ignore

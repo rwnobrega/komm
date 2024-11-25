@@ -1,5 +1,7 @@
 from functools import cache, cached_property
 
+import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .matrices import golay_parity_submatrix
@@ -58,9 +60,9 @@ class GolayCode(SystematicBlockCode):
     extended: bool = False
 
     @cached_property
-    def parity_submatrix(self):
+    def parity_submatrix(self) -> npt.NDArray[np.int_]:
         return golay_parity_submatrix(self.extended)
 
     @cache
-    def minimum_distance(self):
+    def minimum_distance(self) -> int:
         return 8 if self.extended else 7

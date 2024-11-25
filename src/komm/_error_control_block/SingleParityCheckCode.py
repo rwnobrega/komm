@@ -2,6 +2,7 @@ import math
 from functools import cache, cached_property
 
 import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
@@ -48,15 +49,15 @@ class SingleParityCheckCode(BlockCode):
     n: int
 
     @cached_property
-    def check_matrix(self):
+    def check_matrix(self) -> npt.NDArray[np.int_]:
         return np.ones((1, self.n), dtype=int)
 
     @cache
-    def minimum_distance(self):
+    def minimum_distance(self) -> int:
         return 2
 
     @cache
-    def codeword_weight_distribution(self):
+    def codeword_weight_distribution(self) -> npt.NDArray[np.int_]:
         n = self.n
         codeword_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range(0, n + 1, 2):
@@ -64,5 +65,5 @@ class SingleParityCheckCode(BlockCode):
         return codeword_weight_distribution
 
     @classmethod
-    def supported_decoders(cls):
+    def supported_decoders(cls) -> list[str]:
         return cls.__base__.supported_decoders() + ["wagner"]  # type: ignore

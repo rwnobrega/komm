@@ -2,6 +2,7 @@ import itertools as it
 from functools import cache, cached_property, reduce
 
 import numpy as np
+import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
@@ -49,12 +50,12 @@ class ReedMullerCode(BlockCode):
     rho: int
     mu: int
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         if not 0 <= self.rho < self.mu:
             raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
 
     @cached_property
-    def generator_matrix(self):
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         # See [LC04, p. 105–114]. Assumes 0 <= rho < mu.
         rho, mu = self.rho, self.mu
         v = np.empty((mu, 2**mu), dtype=int)
@@ -65,7 +66,7 @@ class ReedMullerCode(BlockCode):
             ))
             v[mu - i - 1] = np.tile(block, 2**i)
 
-        G_list = []
+        G_list: list[npt.NDArray[np.int_]] = []
         for ell in range(rho, 0, -1):
             for I in it.combinations(range(mu), ell):
                 row = reduce(np.multiply, v[I, :])
@@ -75,19 +76,19 @@ class ReedMullerCode(BlockCode):
         return np.array(G_list, dtype=int)
 
     @cache
-    def minimum_distance(self):
+    def minimum_distance(self) -> int:
         return 2 ** (self.mu - self.rho)
 
     @property
-    def default_decoder(self):
+    def default_decoder(self) -> str:
         return "reed"
 
     @classmethod
-    def supported_decoders(cls):
+    def supported_decoders(cls) -> list[str]:
         return cls.__base__.supported_decoders() + ["reed", "weighted-reed"]  # type: ignore
 
     @property
-    def reed_partitions(self):
+    def reed_partitions(self) -> list[npt.NDArray[np.int_]]:
         r"""
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
@@ -109,7 +110,7 @@ class ReedMullerCode(BlockCode):
                    [11, 15]])
         """
         rho, mu = self.rho, self.mu
-        reed_partitions = []
+        reed_partitions: list[npt.NDArray[np.int_]] = []
         for ell in range(rho, -1, -1):
             binary_vectors_I = np.fliplr(
                 np.array(list(it.product([0, 1], repeat=ell)), dtype=int)
