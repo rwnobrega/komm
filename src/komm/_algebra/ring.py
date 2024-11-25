@@ -68,7 +68,7 @@ def binary_horner(coefficients: Sequence[int], x: T_co) -> T_co:
     return result
 
 
-def horner(coefficients: list[int], x: T_co) -> T_co:
+def horner(coefficients: Sequence[int], x: T_co) -> T_co:
     r"""
     Evaluates a polynomial at a point using Horner's method.
 
