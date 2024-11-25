@@ -6,6 +6,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 
 from .._algebra import BinaryPolynomial
+from .._types import ArrayIntLike
 from .BlockCode import BlockCode
 
 
@@ -59,7 +60,7 @@ class CyclicCode(BlockCode):
     )
     _systematic: bool = field(default=True, repr=False, alias="systematic")
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         if (
             self._generator_polynomial is not None
             and self.modulus % self.generator_polynomial != 0b0
@@ -71,18 +72,14 @@ class CyclicCode(BlockCode):
         ):
             raise ValueError("'check_polynomial' must be a factor of X^n + 1")
 
-    def __repr__(self):
-        args = {}
-        args["length"] = self.length
+    def __repr__(self) -> str:
+        s = f"{self.__class__.__name__}(length={self.length}"
         if self._generator_polynomial is not None:
-            args["generator_polynomial"] = self.generator_polynomial
+            s += f", generator_polynomial={self.generator_polynomial}"
         if self._check_polynomial is not None:
-            args["check_polynomial"] = self.check_polynomial
-        if self._systematic is not True:
-            args["systematic"] = self.systematic
-        return (
-            f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in args.items())})"
-        )
+            s += f", check_polynomial={self.check_polynomial}"
+        s += f", systematic={self.systematic})"
+        return s
 
     @property
     def length(self) -> int:
@@ -105,7 +102,7 @@ class CyclicCode(BlockCode):
         return self._systematic
 
     @cached_property
-    def modulus(self):
+    def modulus(self) -> BinaryPolynomial:
         return BinaryPolynomial.from_exponents([0, self.length])
 
     @property
@@ -117,7 +114,7 @@ class CyclicCode(BlockCode):
         return self.generator_polynomial.degree
 
     @cached_property
-    def generator_matrix(self) -> np.ndarray:
+    def generator_matrix(self) -> npt.NDArray[np.int_]:
         # See [LC04, Sec. 5.2].
         n, k, m = self.length, self.dimension, self.redundancy
         generator_matrix = np.empty((k, n), dtype=int)
@@ -136,7 +133,7 @@ class CyclicCode(BlockCode):
         return generator_matrix
 
     @cached_property
-    def check_matrix(self) -> np.ndarray:
+    def check_matrix(self) -> npt.NDArray[np.int_]:
         # See [LC04, Sec. 5.2].
         if not self.systematic:
             n, m = self.length, self.redundancy
@@ -148,7 +145,7 @@ class CyclicCode(BlockCode):
         else:
             raise NotImplementedError
 
-    def enc_mapping(self, u: npt.ArrayLike) -> np.ndarray:
+    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
         u_poly = BinaryPolynomial.from_coefficients(u)
         if not self.systematic:
             v_poly = u_poly * self.generator_polynomial
@@ -158,7 +155,7 @@ class CyclicCode(BlockCode):
             v_poly = u_poly_shifted + b_poly
         return v_poly.coefficients(width=self.length)
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> np.ndarray:
+    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
         if not self.systematic:
             v_poly = BinaryPolynomial.from_coefficients(v)
             u_poly = v_poly // self.generator_polynomial
@@ -167,7 +164,7 @@ class CyclicCode(BlockCode):
             u = np.take(v, range(self.redundancy, self.length))
         return u
 
-    def chk_mapping(self, r: npt.ArrayLike) -> np.ndarray:
+    def chk_mapping(self, r: ArrayIntLike) -> npt.NDArray[np.int_]:
         r_poly = BinaryPolynomial.from_coefficients(r)
         s_poly = r_poly % self.generator_polynomial
         s = s_poly.coefficients(width=self.redundancy)
@@ -186,8 +183,8 @@ class CyclicCode(BlockCode):
         r"""
         The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See <cite>XiD03, Sec. 3.4</cite>.
         """
-        meggitt_table = {}
-        for w in range(self.packing_radius + 1):
+        meggitt_table: dict[BinaryPolynomial, BinaryPolynomial] = {}
+        for w in range(self.packing_radius() + 1):
             for idx in it.combinations(range(self.length - 1), w):
                 e_poly = BinaryPolynomial.from_exponents(list(idx) + [self.length - 1])
                 s_poly = e_poly % self.generator_polynomial
