@@ -1,7 +1,9 @@
+from functools import partial
+from typing import Any, Literal
+
 import numpy as np
 from attrs import field, frozen
 from numpy import typing as npt
-from typing import Literal
 
 from .BlockCode import BlockCode
 from .registry import RegistryBlockDecoder
@@ -146,7 +148,7 @@ class BlockDecoder:
         ]
         | None
     ) = None
-    decoder_kwargs: dict = field(factory=dict)
+    decoder_kwargs: dict[str, Any] = field(factory=dict)
 
     def __attrs_post_init__(self) -> None:
         method = self.method or self.code.default_decoder
@@ -161,9 +163,10 @@ class BlockDecoder:
                 f"method '{method}' is not supported by the code {help_message}"
             )
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         method = self.method or self.code.default_decoder
         decoder_data = RegistryBlockDecoder.get(method)
+
         if decoder_data["type_in"] == "hard" and not np.issubdtype(
             np.asarray(in0).dtype, np.integer
         ):
@@ -172,12 +175,17 @@ class BlockDecoder:
             np.asarray(in0).dtype, np.floating
         ):
             raise TypeError(f"input type must be 'float' for method '{method}'")
-        r = np.reshape(in0, (-1, self.code.length))
-        decoder = lambda r: decoder_data["decoder"](self.code, r, **self.decoder_kwargs)
-        decoded = np.apply_along_axis(decoder, 1, r)
+
+        decoded = np.apply_along_axis(
+            func1d=partial(decoder_data["decoder"], self.code, **self.decoder_kwargs),
+            axis=1,
+            arr=np.reshape(in0, (-1, self.code.length)),
+        )
+
         if decoder_data["target"] == "codeword":
             u_hat = np.apply_along_axis(self.code.inv_enc_mapping, 1, decoded)
         else:
             u_hat = decoded
+
         out0 = np.reshape(u_hat, (-1,))
         return out0

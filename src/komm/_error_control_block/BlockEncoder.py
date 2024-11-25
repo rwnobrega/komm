@@ -28,7 +28,7 @@ class BlockEncoder:
 
     code: BlockCode
 
-    def __call__(self, in0: npt.ArrayLike) -> np.ndarray:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         u = np.reshape(in0, (-1, self.code.dimension))
         v = np.apply_along_axis(self.code.enc_mapping, 1, u)
         out0 = np.reshape(v, (-1,))
