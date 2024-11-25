@@ -152,16 +152,16 @@ class BlockDecoder:
 
     def __attrs_post_init__(self) -> None:
         method = self.method or self.code.default_decoder
-        help_message = (
-            f"(to see the available decoding methods for a given code, use"
-            f" `code.supported_decoders()`)"
+        supported_methods_info = (
+            f"supported methods for {self.code.__class__.__name__}:"
+            f" {self.code.supported_decoders()}"
         )
         if not RegistryBlockDecoder.is_registered(method):
-            raise ValueError(f"method '{method}' is unknown {help_message}")
+            error_message = f"method '{method}' is unknown"
+            raise ValueError(f"{error_message}\n{supported_methods_info}")
         if method not in self.code.supported_decoders():
-            raise ValueError(
-                f"method '{method}' is not supported by the code {help_message}"
-            )
+            error_message = f"method '{method}' is not supported for this code"
+            raise ValueError(f"{error_message}\n{supported_methods_info}")
 
     def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
         method = self.method or self.code.default_decoder
