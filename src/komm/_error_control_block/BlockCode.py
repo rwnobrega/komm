@@ -3,8 +3,8 @@ from functools import cache, cached_property
 import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
+from tqdm import tqdm
 
-from .._util.bit_operations import int2binlist
 from .._util.matrices import null_matrix, pseudo_inverse, rref
 from .AbstractBlockCode import AbstractBlockCode
 from .SlepianArray import SlepianArray
@@ -170,7 +170,7 @@ class BlockCode(AbstractBlockCode):
         return s
 
     @cache
-    def codewords(self) -> npt.NDArray[np.int_]:
+    def codewords(self, _batch_size: int = 1024) -> npt.NDArray[np.int_]:
         r"""
         Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (MSB in the right).
 
@@ -186,9 +186,16 @@ class BlockCode(AbstractBlockCode):
                    [0, 1, 1, 0, 1, 1],
                    [1, 1, 1, 0, 0, 0]])
         """
-        k = self.dimension
-        messages = np.array([int2binlist(i, width=k) for i in range(2**k)], dtype=int)
-        return np.dot(messages, self.generator_matrix) % 2
+        k, n = self.dimension, self.length
+        codewords = np.empty((2**k, n), dtype=int)
+        for i in tqdm(
+            range(0, 2**k, _batch_size), desc="Generating codewords", delay=2.5
+        ):
+            batch_end = min(i + _batch_size, 2**k)
+            js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
+            messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
+            codewords[i:batch_end] = np.dot(messages_batch, self.generator_matrix) % 2
+        return codewords
 
     @cache
     def codeword_weight_distribution(self) -> npt.NDArray[np.int_]:
