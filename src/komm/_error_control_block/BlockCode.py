@@ -48,15 +48,11 @@ class BlockCode(AbstractBlockCode):
                [1, 1, 0, 0, 0, 1]])
     """
 
-    _generator_matrix: npt.ArrayLike = field(
-        default=None,
-        repr=False,
-        alias="generator_matrix",
+    _generator_matrix: npt.ArrayLike | None = field(
+        default=None, repr=False, alias="generator_matrix"
     )
-    _check_matrix: npt.ArrayLike = field(
-        default=None,
-        repr=False,
-        alias="check_matrix",
+    _check_matrix: npt.ArrayLike | None = field(
+        default=None, repr=False, alias="check_matrix"
     )
 
     def __repr__(self) -> str:
