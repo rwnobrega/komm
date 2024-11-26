@@ -1,8 +1,8 @@
 from typing_extensions import Self
 
-from .._algebra import BinaryPolynomial
+from .._algebra.BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
 from .BinarySequence import BinarySequence
-from .sequences import default_primitive_polynomial, lfsr_sequence
+from .sequences import lfsr_sequence
 
 
 class LFSRSequence(BinarySequence):

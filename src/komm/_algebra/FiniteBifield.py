@@ -7,7 +7,7 @@ from attrs import frozen
 from typing_extensions import Self
 
 from . import field
-from .BinaryPolynomial import BinaryPolynomial
+from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
 
 F = TypeVar("F", bound="FiniteBifield")
 
@@ -87,33 +87,13 @@ class FiniteBifieldElement(Generic[F]):
         return bin(self.value.value)
 
 
-def default_modulus(degree: int) -> BinaryPolynomial:
-    return {
-        1: BinaryPolynomial(0b11),
-        2: BinaryPolynomial(0b111),
-        3: BinaryPolynomial(0b1011),
-        4: BinaryPolynomial(0b10011),
-        5: BinaryPolynomial(0b100101),
-        6: BinaryPolynomial(0b1000011),
-        7: BinaryPolynomial(0b10001001),
-        8: BinaryPolynomial(0b100011101),
-        9: BinaryPolynomial(0b1000010001),
-        10: BinaryPolynomial(0b10000001001),
-        11: BinaryPolynomial(0b100000000101),
-        12: BinaryPolynomial(0b1000001010011),
-        13: BinaryPolynomial(0b10000000011011),
-        14: BinaryPolynomial(0b100010001000011),
-        15: BinaryPolynomial(0b1000000000000011),
-        16: BinaryPolynomial(0b10000000010000011),
-    }[degree]
-
-
 class FiniteBifield:
     r"""
     Finite field with binary characteristic. Objects of this class represent a *finite field* $\mathrm{GF}(2^k)$ (also known as *Galois field*), with *characteristic* $2$ and *degree* $k$.
 
     Attributes:
         degree (int): Degree $k$ of the finite field. Must be a positive integer.
+
         modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite>LC04, p.42</cite>.
 
             | Degree $k$ | Modulus $p(X)$ | Degree $k$ | Modulus $p(X)$        |
@@ -194,7 +174,7 @@ class FiniteBifield:
         if degree < 1:
             raise ValueError("degree must be a positive integer")
         if modulus is None:
-            self._modulus = default_modulus(degree)
+            self._modulus = default_primitive_polynomial(degree)
         elif isinstance(modulus, int):
             self._modulus = BinaryPolynomial(modulus)
         else:
@@ -251,7 +231,7 @@ class FiniteBifield:
         return self(2)
 
     def __repr__(self) -> str:
-        if self.modulus.value == default_modulus(self.degree):
+        if self.modulus.value == default_primitive_polynomial(self.degree):
             args = f"{self.degree}"
         else:
             args = f"{self.degree}, modulus={self.modulus}"
