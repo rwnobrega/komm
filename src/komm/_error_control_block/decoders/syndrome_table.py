@@ -11,7 +11,7 @@ def decode_syndrome_table(
     r: npt.ArrayLike,
 ) -> npt.NDArray[np.int_]:
     coset_leaders = code.coset_leaders()
-    s = np.dot(r, code.check_matrix.T) % 2
+    s = np.dot(code.check_matrix, r) % 2
     e_hat = coset_leaders[binlist2int(s)]
     v_hat = np.bitwise_xor(r, e_hat)
     return v_hat

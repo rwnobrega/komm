@@ -34,7 +34,7 @@ def decode_exhaustive_search_soft(
     r: npt.ArrayLike,
 ) -> npt.NDArray[np.int_]:
     codewords = code.codewords()
-    metrics = np.dot(r, codewords.T)
+    metrics = np.dot(codewords, r)
     v_hat = codewords[np.argmin(metrics)]
     return v_hat
 
