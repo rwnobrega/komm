@@ -13,7 +13,7 @@ class SystematicBlockCode(BlockCode):
     r"""
     Systematic linear block code. A *systematic linear block code* is a [linear block code](/ref/BlockCode) in which the information bits can be found in predefined positions in the codeword, called the *information set* $\mathcal{K}$, which is a $k$-sublist of $[0 : n)$; the remaining positions are called the *parity set* $\mathcal{M}$, which is a $m$-sublist of $[0 : n)$. In this case, the generator matrix then has the property that the columns indexed by $\mathcal{K}$ are equal to $I_k$, and the columns indexed by $\mathcal{M}$ are equal to $P$. The check matrix has the property that the columns indexed by $\mathcal{M}$ are equal to $I_m$, and the columns indexed by $\mathcal{K}$ are equal to $P^\transpose$. The matrix $P \in \mathbb{B}^{k \times m}$ is called the *parity submatrix* of the code.
 
-    The constructor expects the parity submatrix the information set.
+    The constructor expects the parity submatrix and the information set.
 
     Parameters:
         parity_submatrix (Array2D[int]): The parity submatrix $P$ the code, which is a $k \times m$ binary matrix.
