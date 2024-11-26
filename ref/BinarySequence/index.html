@@ -547,16 +547,16 @@
               <div class="doc doc-contents first">
                 <p>General binary sequence. It may be represented either in <em>bit format</em>, denoted by $b[n]$, with elements in the set $\{ 0, 1 \}$, or in <em>polar format</em>, denoted by $x[n]$, with elements in the set $\{ \pm 1 \}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.</p>
                 <p>The constructor expects either the bit sequence or the polar sequence.</p>
-                <p><strong>Attributes:</strong></p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>bit_sequence</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.int_">int_</span>]</code>)</span> –
+                    <b><code>bit_sequence</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="komm._types.ArrayIntLike">ArrayIntLike</span>]</code>)</span> –
                     <div class="doc-md-description">
                       <p>The binary sequence in bit format, $b[n] \in \{ 0, 1 \}$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>polar_sequence</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.int_">int_</span>]</code>)</span> –
+                    <b><code>polar_sequence</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="komm._types.ArrayIntLike">ArrayIntLike</span>]</code>)</span> –
                     <div class="doc-md-description">
                       <p>The binary sequence in polar format, $x[n] \in \{ \pm 1 \}$.</p>
                     </div>
