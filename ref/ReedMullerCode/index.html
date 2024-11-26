@@ -218,7 +218,7 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#reed_partitions" class="md-nav__link"><span class="md-ellipsis">reed_partitions</span></a>
+                                            <a href="#reed_partitions" class="md-nav__link"><span class="md-ellipsis">reed_partitions()</span></a>
                                           </li>
                                         </ul>
                                       </nav>
@@ -518,7 +518,7 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#reed_partitions" class="md-nav__link"><span class="md-ellipsis">reed_partitions</span></a>
+                    <a href="#reed_partitions" class="md-nav__link"><span class="md-ellipsis">reed_partitions()</span></a>
                   </li>
                 </ul>
               </nav>
@@ -586,19 +586,20 @@
 </code></pre>
                 </div>
                 <div class="doc doc-children">
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="reed_partitions" class="doc doc-heading"><code class="highlight language-python"><span class="n">reed_partitions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">]]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="reed_partitions" class="doc doc-heading"><code class="highlight language-python"><span class="n">reed_partitions</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The Reed partitions of the code. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 4.3</cite>.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ReedMullerCode</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reed_partitions</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">reed_partitions</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="go">array([[ 0,  1,  4,  5],</span>
 <span class="go">       [ 2,  3,  6,  7],</span>
 <span class="go">       [ 8,  9, 12, 13],</span>
 <span class="go">       [10, 11, 14, 15]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reed_partitions</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
 <span class="go">array([[ 0,  4],</span>
 <span class="go">       [ 1,  5],</span>
 <span class="go">       [ 2,  6],</span>
