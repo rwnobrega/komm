@@ -3,7 +3,8 @@ from functools import cache, cached_property, reduce
 
 from attrs import frozen
 
-from .._algebra import BinaryPolynomial, FiniteBifield
+from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .._algebra.FiniteBifield import FiniteBifield
 from .CyclicCode import CyclicCode
 
 
@@ -91,7 +92,7 @@ class BCHCode(CyclicCode):
         return reduce(operator.mul, self.lcm_set)
 
     @property
-    def default_decoder(self):
+    def default_decoder(self) -> str:
         return "berlekamp"
 
     @classmethod
@@ -99,7 +100,7 @@ class BCHCode(CyclicCode):
         return cls.__base__.supported_decoders() + ["berlekamp"]  # type: ignore
 
     @cached_property
-    def field(self):
+    def field(self) -> FiniteBifield:
         return FiniteBifield(self.mu)
 
     @cached_property

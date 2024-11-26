@@ -1,3 +1,5 @@
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
@@ -6,45 +8,28 @@ from ..._algebra.FiniteBifield import F, FiniteBifield, FiniteBifieldElement
 from ..BCHCode import BCHCode
 from ..registry import RegistryBlockDecoder
 
-# def bch_general_decoder(field: FiniteBifield, r, syndrome_computer, key_equation_solver, root_finder):
-#     # General BCH decoder. See [LC04, p. 205–209].
-#     r_poly = BinaryPolynomial.from_coefficients(r)
-#     s_poly = syndrome_computer(r_poly)
-#     if np.all([x == field(0) for x in s_poly]):
-#         return r
-#     error_location_polynomial = key_equation_solver(s_poly)
-#     error_locations = [e.inverse().logarithm() for e in root_finder(error_location_polynomial)]
-#     e_hat = np.bincount(error_locations, minlength=r.size)
-#     v_hat = np.bitwise_xor(r, e_hat)
-#     return v_hat
 
-
-def bch_syndrome_vector(
+def bch_syndrome(
     code: BCHCode,
     r_poly: BinaryPolynomial,
-) -> npt.NDArray[np.int_]:
+) -> list[FiniteBifieldElement[FiniteBifield]]:
     # BCH syndrome computation. See [LC04, p. 205–209].
     alpha = code.field.primitive_element
-    s_vec = np.array(
-        [(r_poly % code.phi(i)).evaluate(alpha**i) for i in range(1, code.delta)],
-        dtype=object,
-    )
-    return s_vec
+    return [(r_poly % code.phi(i)).evaluate(alpha**i) for i in range(1, code.delta)]
 
 
 def find_roots(
     field: F,
-    coefficients: npt.ArrayLike,
+    coefficients: list[FiniteBifieldElement[F]],
 ) -> list[FiniteBifieldElement[F]]:
     # Exhaustive search.
-    coefficients = np.asarray(coefficients)
     roots: list[FiniteBifieldElement[F]] = []
     for i in range(field.order):
         x = field(i)
-        evaluated = field(0)
+        evaluated = field.zero
         for coefficient in reversed(coefficients):  # Horner's method
             evaluated = evaluated * x + coefficient
-        if evaluated == field(0):
+        if evaluated == field.zero:
             roots.append(x)
             if len(roots) >= len(coefficients) - 1:
                 break
@@ -52,43 +37,38 @@ def find_roots(
 
 
 def berlekamp_algorithm(
-    field: FiniteBifield,
+    field: F,
     delta: int,
-    syndrome_polynomial: npt.NDArray[np.int_],
-) -> npt.NDArray[np.int_]:
+    syndrome: list[Any],
+) -> list[FiniteBifieldElement[F]]:
     # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
     # See [LC04, p. 209–212] and [RL09, p. 114–121].
-    sigma = {
-        -1: np.array([field(1)], dtype=object),
-        0: np.array([field(1)], dtype=object),
-    }
-    discrepancy = {-1: field(1), 0: syndrome_polynomial[0]}
+    sigma = {-1: [field.one], 0: [field.one]}
+    discrepancy = {-1: field.one, 0: syndrome[0]}
     degree = {-1: 0, 0: 0}
 
     for j in range(delta - 1):
-        if discrepancy[j] == field(0):
+        if discrepancy[j] == field.zero:
             degree[j + 1] = degree[j]
             sigma[j + 1] = sigma[j]
         else:
             rho, max_so_far = -1, -1
             for i in range(-1, j):
-                if discrepancy[i] != field(0) and i - degree[i] > max_so_far:
+                if discrepancy[i] != field.zero and i - degree[i] > max_so_far:
                     rho, max_so_far = i, i - degree[i]
             degree[j + 1] = max(degree[j], degree[rho] + j - rho)
-            sigma[j + 1] = np.array([field(0)] * (degree[j + 1] + 1), dtype=object)
-            first_guy = np.array([field(0)] * (degree[j + 1] + 1), dtype=object)
-            first_guy[: degree[j] + 1] = sigma[j]
-            second_guy = np.array([field(0)] * (degree[j + 1] + 1), dtype=object)
-            second_guy[j - rho : degree[rho] + j - rho + 1] = sigma[rho]
-            e = discrepancy[j] / discrepancy[rho]
-            second_guy = np.array([e * x for x in second_guy], dtype=object)
-            sigma[j + 1] = first_guy + second_guy
+            sigma[j + 1] = [field.zero] * (degree[j + 1] + 1)
+            first = np.array([field.zero] * (degree[j + 1] + 1), dtype=object)
+            first[: degree[j] + 1] = sigma[j]
+            second = np.array([field.zero] * (degree[j + 1] + 1), dtype=object)
+            second[j - rho : degree[rho] + j - rho + 1] = sigma[rho]
+            # [LC04, Eq. (6.25)]
+            result = first + second * (discrepancy[j] / discrepancy[rho])
+            sigma[j + 1] = result.tolist()
         if j < delta - 2:
-            discrepancy[j + 1] = syndrome_polynomial[j + 1]
-            for idx in range(1, degree[j + 1] + 1):
-                discrepancy[j + 1] += (
-                    sigma[j + 1][idx] * syndrome_polynomial[j + 1 - idx]
-                )
+            discrepancy[j + 1] = syndrome[j + 1]
+            for i in range(degree[j + 1]):
+                discrepancy[j + 1] += sigma[j + 1][i + 1] * syndrome[j - i]
 
     return sigma[delta - 1]
 
@@ -100,14 +80,14 @@ def decode_berlekamp(
     alpha = code.field.primitive_element
     r = np.asarray(r)
     r_poly = BinaryPolynomial.from_coefficients(r)
-    s_poly = bch_syndrome_vector(code, r_poly)
-    if np.all([x == code.field(0) for x in s_poly]):
+    syndrome = bch_syndrome(code, r_poly)
+    if all(x == code.field.zero for x in syndrome):
         return r
-    sigma_poly = berlekamp_algorithm(code.field, code.delta, s_poly)
+    sigma_poly = berlekamp_algorithm(code.field, code.delta, syndrome)
     roots = find_roots(code.field, sigma_poly)
     e_loc = [e.inverse().logarithm(alpha) for e in roots]
     e_hat = np.bincount(e_loc, minlength=code.length)
-    v_hat = np.bitwise_xor(r, e_hat)
+    v_hat = (r + e_hat) % 2
     return v_hat
 
 
