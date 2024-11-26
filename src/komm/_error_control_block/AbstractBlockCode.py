@@ -27,5 +27,9 @@ class AbstractBlockCode(ABC):
         pass
 
     @abstractmethod
+    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
+        pass
+
+    @abstractmethod
     def chk_mapping(self, r: ArrayIntLike) -> npt.NDArray[np.int_]:
         pass
