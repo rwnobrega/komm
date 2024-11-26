@@ -13,7 +13,7 @@ class BinarySequence:
 
     The constructor expects either the bit sequence or the polar sequence.
 
-    Attributes:
+    Parameters:
         bit_sequence: The binary sequence in bit format, $b[n] \in \\{ 0, 1 \\}$.
         polar_sequence: The binary sequence in polar format, $x[n] \in \\{ \pm 1 \\}$.
 
@@ -37,32 +37,24 @@ class BinarySequence:
         polar_sequence: Optional[ArrayIntLike] = None,
     ) -> None:
         if bit_sequence is not None and polar_sequence is None:
-            self._bit_sequence = np.asarray(bit_sequence, dtype=int)
-            self._polar_sequence = (-1) ** self._bit_sequence
+            self.bit_sequence = np.asarray(bit_sequence, dtype=int)
+            self.polar_sequence = (-1) ** self.bit_sequence
         elif polar_sequence is not None and bit_sequence is None:
-            self._polar_sequence = np.asarray(polar_sequence, dtype=int)
-            self._bit_sequence = 1 * (self._polar_sequence < 0)
+            self.polar_sequence = np.asarray(polar_sequence, dtype=int)
+            self.bit_sequence = 1 * (self.polar_sequence < 0)
         else:
             raise ValueError("either specify 'bit_sequence' or 'polar_sequence'")
 
-    def __repr__(self):
-        args = "bit_sequence={}".format(self._bit_sequence.tolist())
-        return "{}({})".format(self.__class__.__name__, args)
-
-    @property
-    def bit_sequence(self) -> npt.NDArray[np.int_]:
-        return self._bit_sequence
-
-    @property
-    def polar_sequence(self) -> npt.NDArray[np.int_]:
-        return self._polar_sequence
+    def __repr__(self) -> str:
+        args = f"bit_sequence={self.bit_sequence.tolist()}"
+        return f"{self.__class__.__name__}({args})"
 
     @property
     def length(self) -> int:
         r"""
         The length (or period) $L$ of the binary sequence.
         """
-        return self._polar_sequence.size
+        return self.bit_sequence.size
 
     def autocorrelation(
         self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
@@ -82,7 +74,7 @@ class BinarySequence:
             >>> seq.autocorrelation()
             array([ 4, -1, -2,  1])
         """
-        return acorr(self._polar_sequence, shifts=shifts, normalized=normalized)
+        return acorr(self.polar_sequence, shifts=shifts, normalized=normalized)
 
     def cyclic_autocorrelation(
         self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
@@ -102,4 +94,4 @@ class BinarySequence:
             >>> seq.cyclic_autocorrelation()
             array([ 4,  0, -4,  0])
         """
-        return cyclic_acorr(self._polar_sequence, shifts=shifts, normalized=normalized)
+        return cyclic_acorr(self.polar_sequence, shifts=shifts, normalized=normalized)
