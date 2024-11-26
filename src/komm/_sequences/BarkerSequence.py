@@ -1,9 +1,10 @@
 from .BinarySequence import BinarySequence
+from .sequences import barker_sequence
 
 
 class BarkerSequence(BinarySequence):
     r"""
-    Barker sequence. A Barker sequence is a [binary sequence](/ref/BinarySequence) with autocorrelation $R[\ell]$ satisfying $|R[\ell]| \leq 1$, for $\ell \neq 0$. The only known Barker sequences (up to negation and reversion) are shown in the table below.
+    Barker sequence. A Barker sequence is a [binary sequence](/ref/BinarySequence) with autocorrelation $R[\ell]$ satisfying $|R[\ell]| \leq 1$, for $\ell \neq 0$. The only known Barker sequences (up to negation and reversion) are shown in the table below. For more details, see [Wikipedia: Barker code](https://en.wikipedia.org/wiki/Barker_code).
 
     | Length $L$ | Barker sequence $b[n]$ |
     | :--------: | ---------------------- |
@@ -15,38 +16,22 @@ class BarkerSequence(BinarySequence):
     | $11$       | $00011101101$          |
     | $13$       | $0000011001010$        |
 
-    References:
-        1. https://en.wikipedia.org/wiki/Barker_code
+    Parameters:
+        length: Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
+
+    Examples:
+        >>> barker = komm.BarkerSequence(length=13)
+        >>> barker.polar_sequence
+        array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])
+        >>> barker.autocorrelation()
+        array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])
     """
 
-    def __init__(self, length):
-        r"""
-        Constructor for the class.
+    def __init__(self, length: int) -> None:
+        allowed_lengths = {2, 3, 4, 5, 7, 11, 13}
+        if length not in allowed_lengths:
+            raise ValueError(f"'length' must be in {allowed_lengths}")
+        super().__init__(bit_sequence=barker_sequence(length))
 
-        Parameters:
-            length (int): Length of the Barker sequence. Must be in the set $\\{ 2, 3, 4, 5, 7, 11, 13 \\}$.
-
-        Examples:
-            >>> barker = komm.BarkerSequence(length=13)
-            >>> barker.polar_sequence
-            array([ 1,  1,  1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1])
-            >>> barker.autocorrelation()
-            array([13,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1])
-        """
-        super().__init__(bit_sequence=self._barker_sequence(length))
-
-    def __repr__(self):
-        args = "length={}".format(self.length)
-        return "{}({})".format(self.__class__.__name__, args)
-
-    @staticmethod
-    def _barker_sequence(length):
-        return {
-            2: [0, 1],
-            3: [0, 0, 1],
-            4: [0, 0, 1, 0],
-            5: [0, 0, 0, 1, 0],
-            7: [0, 0, 0, 1, 1, 0, 1],
-            11: [0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1],
-            13: [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0],
-        }[length]
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(length={self.length})"
