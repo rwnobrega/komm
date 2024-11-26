@@ -9,7 +9,8 @@ from ._lossless_coding import *
 from ._modulation import *
 from ._pulses import *
 from ._quantization import *
-from ._sequences import *
+from ._sequences_binary import *
+from ._sequences_complex import *
 from ._sources import *
 from ._util import *
 
