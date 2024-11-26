@@ -131,8 +131,7 @@ class BlockCode(AbstractBlockCode):
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> enc_mapping = code.enc_mapping
-            >>> enc_mapping([1, 0, 1])
+            >>> code.enc_mapping([1, 0, 1])
             array([1, 0, 1, 1, 0, 1])
         """
         v = np.dot(u, self.generator_matrix) % 2
@@ -144,8 +143,7 @@ class BlockCode(AbstractBlockCode):
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> inv_enc_mapping = code.inv_enc_mapping
-            >>> inv_enc_mapping([1, 0, 1, 1, 0, 1])
+            >>> code.inv_enc_mapping([1, 0, 1, 1, 0, 1])
             array([1, 0, 1])
         """
         v = np.asarray(v)
@@ -163,11 +161,13 @@ class BlockCode(AbstractBlockCode):
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> chk_mapping = code.chk_mapping
-            >>> chk_mapping([1, 0, 1, 1, 0, 1])
+            >>> code.chk_mapping([1, 0, 1, 1, 0, 1])
             array([0, 0, 0])
         """
-        s = np.dot(r, self.check_matrix.T) % 2
+        r = np.asarray(r)
+        if r.size != self.length:
+            raise ValueError("length of 'r' must be equal to the code length")
+        s = np.dot(self.check_matrix, r) % 2
         return s
 
     @cache
