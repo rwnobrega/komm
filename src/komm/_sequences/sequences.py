@@ -14,3 +14,11 @@ def barker_sequence(length: int) -> npt.NDArray[np.int_]:
             13: [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0],
         }[length]
     )
+
+
+def hadamard_matrix(length: int) -> npt.NDArray[np.int_]:
+    h = np.array([[1]])
+    g = np.array([[1, 1], [1, -1]])
+    for _ in range(length.bit_length() - 1):
+        h = np.kron(h, g).astype(int)
+    return h

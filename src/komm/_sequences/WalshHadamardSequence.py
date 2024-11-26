@@ -1,7 +1,8 @@
-import numpy as np
+from typing import Literal
 
 from .._util.bit_operations import binlist2int, int2binlist
 from .BinarySequence import BinarySequence
+from .sequences import hadamard_matrix
 
 
 class WalshHadamardSequence(BinarySequence):
@@ -48,80 +49,57 @@ class WalshHadamardSequence(BinarySequence):
     $$
     The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ sign changes.
 
-    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.
+    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering. Fore more details, see [Wikipedia: Hadamard matrix](https://en.wikipedia.org/wiki/Hadamard_matrix) and [Wikipedia: Walsh matrix](https://en.wikipedia.org/wiki/Walsh_matrix).
 
-    References:
-        1. https://en.wikipedia.org/wiki/Hadamard_matrix
-        2. https://en.wikipedia.org/wiki/Walsh_matrix
+    Parameters:
+        length: Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.
+
+        ordering: Ordering to be assumed. Should be one of `'natural'`, `'sequency'`, or `'dyadic'`. The default value is `'natural'`.
+
+        index: Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
+
+    Examples:
+        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='natural', index=5)
+        >>> walsh_hadamard.polar_sequence
+        array([ 1, -1,  1, -1, -1,  1, -1,  1])
+
+
+        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='sequency', index=5)
+        >>> walsh_hadamard.polar_sequence
+        array([ 1, -1, -1,  1, -1,  1,  1, -1])
+
+        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='dyadic', index=5)
+        Traceback (most recent call last):
+        ...
+        NotImplementedError
     """
 
-    def __init__(self, length, ordering="natural", index=0):
-        r"""
-        Constructor for the class.
-
-        Parameters:
-            length (int): Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.
-
-            ordering (Optional[str]): Ordering to be assumed. Should be one of `'natural'`, `'sequency'`, or `'dyadic'`. The default value is `'natural'`.
-
-            index (Optional[int]): Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
-
-        Examples:
-            >>> walsh_hadamard = komm.WalshHadamardSequence(length=64, ordering='sequency', index=60)
-            >>> walsh_hadamard.polar_sequence[:16]
-            array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])
-
-            >>> walsh_hadamard = komm.WalshHadamardSequence(length=128, ordering='natural', index=60)
-            >>> walsh_hadamard.polar_sequence[:16]
-            array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])
-        """
+    def __init__(
+        self,
+        length: int,
+        ordering: Literal["natural", "sequency", "dyadic"] = "natural",
+        index: int = 0,
+    ) -> None:
         if length & (length - 1):
-            raise ValueError("parameter 'length' must be a power of two")
-
+            raise ValueError("'length' must be a power of two")
         if not 0 <= index < length:
-            raise ValueError("parameter 'index' must be in [0 : length)")
+            raise ValueError("'index' must be in [0 : length)")
+        if ordering not in {"natural", "sequency", "dyadic"}:
+            raise ValueError("'ordering' must be in {'natural', 'sequency', 'dyadic'}")
 
         if ordering == "natural":
             natural_index = index
         elif ordering == "sequency":
             width = (length - 1).bit_length()
             index_gray = index ^ (index >> 1)
-            natural_index = binlist2int(reversed(int2binlist(index_gray, width)))
+            natural_index = binlist2int((int2binlist(index_gray, width))[::-1])
         elif ordering == "dyadic":
             raise NotImplementedError
-        else:
-            raise ValueError(
-                "parameter 'ordering' must be in {'natural', 'sequency', 'dyadic'}"
-            )
 
-        self._index = index
-        self._ordering = ordering
-        super().__init__(polar_sequence=self._hadamard_matrix(length)[natural_index])
+        self.index = index
+        self.ordering = ordering
+        super().__init__(polar_sequence=hadamard_matrix(length)[natural_index])
 
-    def __repr__(self):
-        args = "length={}, ordering='{}', index={}".format(
-            self._length, self._ordering, self._index
-        )
-        return "{}({})".format(self.__class__.__name__, args)
-
-    @property
-    def index(self):
-        r"""
-        The index of the Walsh–Hadamard sequence, with respect to the ordering assumed.
-        """
-        return self._index
-
-    @property
-    def ordering(self):
-        r"""
-        The ordering assumed.
-        """
-        return self._ordering
-
-    @staticmethod
-    def _hadamard_matrix(length):
-        h = np.array([[1]])
-        g = np.array([[1, 1], [1, -1]])
-        for _ in range(length.bit_length() - 1):
-            h = np.kron(h, g)
-        return h
+    def __repr__(self) -> str:
+        args = f"length={self.length}, ordering='{self.ordering}', index={self.index}"
+        return f"{self.__class__.__name__}({args})"
