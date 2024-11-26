@@ -32,12 +32,4 @@ __all__ = [
     "TerminatedConvolutionalCode",
 ]
 
-from .decoders.bcjr import *
-from .decoders.berlekamp import *
-from .decoders.exhaustive_search import *
-from .decoders.majority_logic_repetition_code import *
-from .decoders.meggitt import *
-from .decoders.reed import *
-from .decoders.syndrome_table import *
-from .decoders.viterbi import *
-from .decoders.wagner import *
+from .decoders import *
