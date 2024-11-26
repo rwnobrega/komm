@@ -5,10 +5,9 @@ import numpy.typing as npt
 
 from .._types import ArrayIntLike
 from .._util.correlation import acorr, cyclic_acorr
-from .AbstractBinarySequence import AbstractBinarySequence
 
 
-class BinarySequence(AbstractBinarySequence):
+class BinarySequence:
     r"""
     General binary sequence. It may be represented either in *bit format*, denoted by $b[n]$, with elements in the set $\\{ 0, 1 \\}$, or in *polar format*, denoted by $x[n]$, with elements in the set $\\{ \pm 1 \\}$. The correspondences $0 \mapsto +1$ and $1 \mapsto -1$ from bit format to polar format is assumed.
 
