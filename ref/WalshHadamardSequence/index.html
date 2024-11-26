@@ -361,21 +361,7 @@
                                       <a href="../BarkerSequence/" class="md-nav__link"><span class="md-ellipsis">BarkerSequence</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">WalshHadamardSequence</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">WalshHadamardSequence</span></a>
-                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                          <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#index" class="md-nav__link"><span class="md-ellipsis">index</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#ordering" class="md-nav__link"><span class="md-ellipsis">ordering</span></a>
-                                          </li>
-                                        </ul>
-                                      </nav>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">WalshHadamardSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../LFSRSequence/" class="md-nav__link"><span class="md-ellipsis">LFSRSequence</span></a>
@@ -523,20 +509,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#index" class="md-nav__link"><span class="md-ellipsis">index</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#ordering" class="md-nav__link"><span class="md-ellipsis">ordering</span></a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -546,70 +519,49 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Walsh–Hadamard sequence. Consider the following recursive matrix construction: $$ H_1 = \begin{bmatrix} +1 \end{bmatrix}, \qquad H_{2^n} = \begin{bmatrix} H_{2^{n-1}} & H_{2^{n-1}} \\ H_{2^{n-1}} & -H_{2^{n-1}} \end{bmatrix}, $$ for $n = 1, 2, \ldots$. For example, for $n = 3$, $$ H_8 = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>natural ordering</em>. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained: $$ H_8^{\mathrm{s}} = \begin{bmatrix} +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\ +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\ +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\ +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\ +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\ +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\ +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\ \end{bmatrix} $$ The above matrix is said to be in <em>sequency ordering</em>. It has the property that row $i$ has exactly $i$ sign changes.</p>
-                <p>The Walsh–Hadamard sequence of <em>length</em> $L$ and <em>index</em> $i \in [0 : L)$ is a <a href="/ref/BinarySequence">binary sequence</a> whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering.</p>
-                <details class="references" open>
-                  <summary>
-                    References
-                  </summary>
-                  <ol>
-                    <li>https://en.wikipedia.org/wiki/Hadamard_matrix</li>
-                    <li>https://en.wikipedia.org/wiki/Walsh_matrix</li>
-                  </ol>
-                </details>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>ordering</code></b> <span class="doc-param-annotation">(<code>Optional[str]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Ordering to be assumed. Should be one of <code>'natural'</code>, <code>'sequency'</code>, or <code>'dyadic'</code>. The default value is <code>'natural'</code>.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>index</code></b> <span class="doc-param-annotation">(<code>Optional[int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is <code>0</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">WalshHadamardSequence</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s1">'sequency'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span><span class="o">.</span><span class="n">polar_sequence</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span>
-<span class="go">array([ 1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1])</span>
+                <p>The Walsh–Hadamard sequence of <em>length</em> $L$ and <em>index</em> $i \in [0 : L)$ is a <a href="/ref/BinarySequence">binary sequence</a> whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering. Fore more details, see <a href="https://en.wikipedia.org/wiki/Hadamard_matrix">Wikipedia: Hadamard matrix</a> and <a href="https://en.wikipedia.org/wiki/Walsh_matrix">Wikipedia: Walsh matrix</a>.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>length</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>ordering</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['natural', 'sequency', 'dyadic']</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>Ordering to be assumed. Should be one of <code>'natural'</code>, <code>'sequency'</code>, or <code>'dyadic'</code>. The default value is <code>'natural'</code>.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>index</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is <code>0</code>.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">WalshHadamardSequence</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s1">'natural'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span><span class="o">.</span><span class="n">polar_sequence</span>
+<span class="go">array([ 1, -1,  1, -1, -1,  1, -1,  1])</span>
 </code></pre>
-                      </div>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">WalshHadamardSequence</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s1">'natural'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span><span class="o">.</span><span class="n">polar_sequence</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span>
-<span class="go">array([ 1,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1,  1,  1])</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="index" class="doc doc-heading"><code class="highlight language-python"><span class="n">index</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The index of the Walsh–Hadamard sequence, with respect to the ordering assumed.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="ordering" class="doc doc-heading"><code class="highlight language-python"><span class="n">ordering</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The ordering assumed.</p>
-                    </div>
-                  </div>
                 </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">WalshHadamardSequence</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s1">'sequency'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span><span class="o">.</span><span class="n">polar_sequence</span>
+<span class="go">array([ 1, -1, -1,  1, -1,  1,  1, -1])</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">walsh_hadamard</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">WalshHadamardSequence</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="s1">'dyadic'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">NotImplementedError</span>
+</code></pre>
+                </div>
+                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>

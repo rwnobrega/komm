@@ -369,16 +369,7 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
                                             <a href="#maximum_length_sequence" class="md-nav__link"><span class="md-ellipsis">maximum_length_sequence()</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#feedback_polynomial" class="md-nav__link"><span class="md-ellipsis">feedback_polynomial</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
-                                            <a href="#start_state_polynomial" class="md-nav__link"><span class="md-ellipsis">start_state_polynomial</span></a>
                                           </li>
                                         </ul>
                                       </nav>
@@ -530,16 +521,7 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#maximum_length_sequence" class="md-nav__link"><span class="md-ellipsis">maximum_length_sequence()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#feedback_polynomial" class="md-nav__link"><span class="md-ellipsis">feedback_polynomial</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#start_state_polynomial" class="md-nav__link"><span class="md-ellipsis">start_state_polynomial</span></a>
                   </li>
                 </ul>
               </nav>
@@ -551,58 +533,43 @@
             <h1 id="kommlfsrsequence">komm.LFSRSequence</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Linear-feedback shift register (<abbr title="linear-feedback shift register">LFSR</abbr>) sequence. It is a <a href="/ref/BinarySequence">binary sequence</a> obtained from the output of a <abbr title="linear-feedback shift register">LFSR</abbr>. The <abbr title="linear-feedback shift register">LFSR</abbr> feedback taps are specified as a binary polynomial $p(X)$ of degree $n$, called the <em>feedback polynomial</em>. More specifically: if bit $i$ of the <abbr title="linear-feedback shift register">LFSR</abbr> is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the <abbr title="linear-feedback shift register">LFSR</abbr> in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is <code>0b100101</code>.</p>
+                <p>Linear-feedback shift register (<abbr title="linear-feedback shift register">LFSR</abbr>) sequence. It is a <a href="/ref/BinarySequence">binary sequence</a> obtained from the output of a <abbr title="linear-feedback shift register">LFSR</abbr>. The <abbr title="linear-feedback shift register">LFSR</abbr> feedback taps are specified as a <a href="/ref/BinaryPolynomial">binary polynomial</a> $p(X)$ of degree $n$, called the <em>feedback polynomial</em>. More specifically: if bit $i$ of the <abbr title="linear-feedback shift register">LFSR</abbr> is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the <abbr title="linear-feedback shift register">LFSR</abbr> in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is <code>0b100101</code>.</p>
                 <figure>
                   <p><img alt="Linear-feedback shift register example." src="/figures/lfsr_5_2.svg"></p>
                 </figure>
-                <p>The start state of the machine is specified by the so called <em>start state polynomial</em>. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the <abbr title="linear-feedback shift register">LFSR</abbr>.</p>
-                <h2>Maximum-length sequences</h2>
-                <p>If the feedback polynomial $p(X)$ is primitive, then the corresponding <abbr title="linear-feedback shift register">LFSR</abbr> sequence will be a <em>maximum-length sequence</em> (MLS). Such sequences have the following cyclic autocorrelation: $$ \tilde{R}[\ell] = \begin{cases} L, & \ell = 0, \, \pm L, \, \pm 2L, \ldots, \\ -1, & \text{otherwise}, \end{cases} $$ where $L$ is the length of the sequence.</p>
-                <details class="references" open>
-                  <summary>
-                    References
-                  </summary>
-                  <ol>
-                    <li>https://en.wikipedia.org/wiki/Linear-feedback_shift_register</li>
-                    <li>https://en.wikipedia.org/wiki/Maximum_length_sequence</li>
-                  </ol>
-                </details>
-                <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Default constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>feedback_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The feedback polynomial of the <abbr title="linear-feedback shift register">LFSR</abbr>, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>start_state_polynomial</code></b> <span class="doc-param-annotation">(<code>Optional[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The start state polynomial of the <abbr title="linear-feedback shift register">LFSR</abbr>, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former. The default value is <code>0b1</code>.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="p">(</span><span class="n">feedback_polynomial</span><span class="o">=</span><span class="mb">0b100101</span><span class="p">)</span>
+                <p>The start state of the machine is specified by the so called <em>start state polynomial</em>. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the <abbr title="linear-feedback shift register">LFSR</abbr>. For more details, see <a href="https://en.wikipedia.org/wiki/Linear-feedback_shift_register">Wikipedia: Linear-feedback shift register</a> and <a href="https://en.wikipedia.org/wiki/Maximum_length_sequence">Wikipedia: Maximum-length sequence</a>.</p>
+                <p>The default constructor of this takes the following parameters:</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>feedback_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The feedback polynomial $p(X)$ of the <abbr title="linear-feedback shift register">LFSR</abbr>, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>start_state_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The start state polynomial of the <abbr title="linear-feedback shift register">LFSR</abbr>, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former. The default value is <code>0b1</code>.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="p">(</span><span class="n">feedback_polynomial</span><span class="o">=</span><span class="mb">0b100101</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span><span class="o">.</span><span class="n">bit_sequence</span>
 <span class="go">array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lfsr</span><span class="o">.</span><span class="n">cyclic_autocorrelation</span><span class="p">()</span>
 <span class="go">array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])</span>
 </code></pre>
-                      </div>
-                      <p>See also the class method <a href="./#maximum_length_sequence"><code>maximum_length_sequence</code></a> for a more convenient way to construct a maximum-length sequence.</p>
-                    </div>
-                  </div>
+                </div>
+                <h2>Maximum-length sequences</h2>
+                <p>If the feedback polynomial $p(X)$ is primitive, then the corresponding <abbr title="linear-feedback shift register">LFSR</abbr> sequence will be a <em>maximum-length sequence</em>. Such sequences have the following cyclic autocorrelation: $$ \tilde{R}[\ell] = \begin{cases} L, & \ell = 0, \, \pm L, \, \pm 2L, \ldots, \\ -1, & \text{otherwise}, \end{cases} $$ where $L$ is the length of the sequence. See the class method <a href="./#maximum_length_sequence"><code>maximum_length_sequence</code></a> for a convenient way to construct a maximum-length sequence.</p>
+                <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="maximum_length_sequence" class="doc doc-heading"><code class="highlight language-python"><span class="n">maximum_length_sequence</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Constructs a maximum-length sequences (MLS) of a given degree. The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.</p>
+                      <p>Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.</p>
                       <table>
                         <thead>
                           <tr>
@@ -668,11 +635,11 @@
                         <li class="field-body">
                           <b><code>degree</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The degree $n$ of the MLS. Only degrees in the range $[1 : 16]$ are implemented.</p>
+                            <p>The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 16]$ are implemented.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>start_state_polynomial</code></b> <span class="doc-param-annotation">(<code>Optional[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span> | int]</code>)</span> –
+                          <b><code>start_state_polynomial</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int</code>)</span> –
                           <div class="doc-md-description">
                             <p>See the corresponding parameter of the default constructor.</p>
                           </div>
@@ -681,21 +648,9 @@
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">LFSRSequence</span><span class="o">.</span><span class="n">maximum_length_sequence</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">LFSRSequence(feedback_polynomial=0b100101)</span>
+<span class="go">LFSRSequence(feedback_polynomial=0b100101, start_state_polynomial=0b1)</span>
 </code></pre>
                       </div>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="feedback_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">feedback_polynomial</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The feedback polynomial $p(X)$ of the <abbr title="linear-feedback shift register">LFSR</abbr>.</p>
-                    </div>
-                  </div>
-                  <div class="doc doc-object doc-attribute">
-                    <h2 id="start_state_polynomial" class="doc doc-heading"><code class="highlight language-python"><span class="n">start_state_polynomial</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
-                    <div class="doc doc-contents">
-                      <p>The start state polynomial of the <abbr title="linear-feedback shift register">LFSR</abbr>.</p>
                     </div>
                   </div>
                 </div>
