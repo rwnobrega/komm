@@ -43,8 +43,8 @@ class BCHCode(CyclicCode):
         - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode).
 
     Attributes:
-        mu (int): The parameter $\mu$ of the BCH code.
-        delta (int): The Bose distance $\delta$ of the BCH code.
+        mu: The parameter $\mu$ of the BCH code.
+        delta: The Bose distance $\delta$ of the BCH code.
 
     Examples:
         >>> code = komm.BCHCode(mu=5, delta=7)
