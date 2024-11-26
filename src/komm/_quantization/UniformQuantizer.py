@@ -40,17 +40,19 @@ class UniformQuantizer(AbstractScalarQuantizer):
         array([0.125, 0.375, 0.625])
     """
 
-    num_levels: int  # TODO: Fix type error
+    _num_levels: int = field(alias="num_levels")
     input_range: tuple[float, float] = field(default=(-1.0, 1.0))
     choice: Literal["mid-riser", "mid-tread"] = field(default="mid-riser")
 
     def __attrs_post_init__(self) -> None:
         if self.num_levels < 2:
-            raise ValueError("number of levels must be greater than 1")
+            raise ValueError("'num_levels' must be greater than 1")
         if self.choice not in ["mid-riser", "mid-tread"]:
-            raise ValueError(
-                "parameter 'choice' must be either 'mid-riser' or 'mid-tread'"
-            )
+            raise ValueError("'choice' must be either 'mid-riser' or 'mid-tread'")
+
+    @property
+    def num_levels(self) -> int:
+        return self._num_levels
 
     @property
     @cache
