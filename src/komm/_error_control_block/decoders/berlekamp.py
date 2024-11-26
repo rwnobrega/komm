@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from ..._algebra.BinaryPolynomial import BinaryPolynomial
-from ..._algebra.FiniteBifield import F, FiniteBifield, FiniteBifieldElement
+from ..._algebra.FiniteBifield import F, FiniteBifield, FiniteBifieldElement, find_roots
 from ..BCHCode import BCHCode
 from ..registry import RegistryBlockDecoder
 
@@ -16,24 +16,6 @@ def bch_syndrome(
     # BCH syndrome computation. See [LC04, p. 205–209].
     alpha = code.field.primitive_element
     return [(r_poly % code.phi(i)).evaluate(alpha**i) for i in range(1, code.delta)]
-
-
-def find_roots(
-    field: F,
-    coefficients: list[FiniteBifieldElement[F]],
-) -> list[FiniteBifieldElement[F]]:
-    # Exhaustive search.
-    roots: list[FiniteBifieldElement[F]] = []
-    for i in range(field.order):
-        x = field(i)
-        evaluated = field.zero
-        for coefficient in reversed(coefficients):  # Horner's method
-            evaluated = evaluated * x + coefficient
-        if evaluated == field.zero:
-            roots.append(x)
-            if len(roots) >= len(coefficients) - 1:
-                break
-    return roots
 
 
 def berlekamp_algorithm(

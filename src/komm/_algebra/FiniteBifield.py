@@ -1,5 +1,5 @@
 import functools
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, Sequence, TypeVar
 
 import numpy as np
 from attrs import field as attrs_field
@@ -256,3 +256,39 @@ class FiniteBifield:
         else:
             args = f"{self.degree}, modulus={self.modulus}"
         return f"{self.__class__.__name__}({args})"
+
+
+def find_roots(
+    field: F,
+    coefficients: Sequence[FiniteBifieldElement[F]],
+) -> list[FiniteBifieldElement[F]]:
+    r"""
+    Returns the roots of a polynomial with coefficients in a finite field. This function uses exhaustive search to find the roots.
+
+    Parameters:
+        field: Finite field.
+        coefficients: Coefficients of the polynomial, in increasing order of degree.
+
+    Returns:
+        List of roots of the polynomial.
+
+    Examples:
+        >>> field = komm.FiniteBifield(4)
+        >>> alpha = field.primitive_element
+        >>> coefficients = [field.one, field.one, field.zero, alpha**5]  # 1 + X + alpha^5 X^3
+        >>> find_roots(field, coefficients)
+        [0b111, 0b1000, 0b1111]
+        >>> [alpha**10, alpha**3, alpha**12]
+        [0b111, 0b1000, 0b1111]
+    """
+    roots: list[FiniteBifieldElement[F]] = []
+    for i in range(field.order):
+        x = field(i)
+        evaluated = field.zero
+        for coefficient in reversed(coefficients):  # Horner's method
+            evaluated = evaluated * x + coefficient
+        if evaluated == field.zero:
+            roots.append(x)
+            if len(roots) >= len(coefficients) - 1:
+                break
+    return roots
