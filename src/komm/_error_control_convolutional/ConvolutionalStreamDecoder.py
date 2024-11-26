@@ -1,10 +1,10 @@
 from functools import cached_property
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 from attrs import field, mutable
 
+from .._finite_state_machine.FiniteStateMachine import MetricMemory
 from .._util.bit_operations import int2binlist, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
@@ -40,18 +40,16 @@ class ConvolutionalStreamDecoder:
     traceback_length: int
     state: int = field(default=0)
     input_type: str = field(default="hard")
-    memory: dict[str, Any] = field(init=False)
+    memory: MetricMemory = field(init=False)
 
     def __attrs_post_init__(self):
         fsm = self.convolutional_code.finite_state_machine
-        self.memory = {}
-        self.memory["metrics"] = np.full(
-            (fsm.num_states, self.traceback_length + 1), fill_value=np.inf
-        )
+        num_states, traceback_length = fsm.num_states, self.traceback_length
+        self.memory = {
+            "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
+            "metrics": np.full((num_states, traceback_length + 1), fill_value=np.inf),
+        }
         self.memory["metrics"][self.state, -1] = 0.0
-        self.memory["paths"] = np.zeros(
-            (fsm.num_states, self.traceback_length + 1), dtype=int
-        )
 
     @cached_property
     def cache_bit(self) -> npt.NDArray[np.int_]:
@@ -76,6 +74,5 @@ class ConvolutionalStreamDecoder:
             metric_function=self.metric_function,
             memory=self.memory,
         )
-
         out0 = unpack(input_sequence_hat, width=k)
         return out0

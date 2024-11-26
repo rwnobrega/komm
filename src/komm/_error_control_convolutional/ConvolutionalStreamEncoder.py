@@ -2,6 +2,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, mutable
 
+from .._types import ArrayIntLike
 from .._util.bit_operations import pack, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
@@ -33,15 +34,15 @@ class ConvolutionalStreamEncoder:
     convolutional_code: ConvolutionalCode
     state: int = field(default=0)
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, in0: ArrayIntLike) -> npt.NDArray[np.int_]:
         n, k, fsm = (
             self.convolutional_code.num_output_bits,
             self.convolutional_code.num_input_bits,
             self.convolutional_code.finite_state_machine,
         )
         output_sequence, self.state = fsm.process(
-            input_sequence=pack(in0, width=k), initial_state=self.state
+            input_sequence=pack(in0, width=k),
+            initial_state=self.state,
         )
-
         out0 = unpack(output_sequence, width=n)
         return out0
