@@ -5,6 +5,7 @@ import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
+from .matrices import cordaro_wagner_generator_matrix
 
 
 @frozen
@@ -39,14 +40,7 @@ class CordaroWagnerCode(BlockCode):
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.int_]:
-        n = self.n
-        d = self.minimum_distance()
-        q = (n + 1) // 3
-        return np.hstack((
-            np.repeat([[1], [0]], repeats=d - q, axis=1),
-            np.repeat([[0], [1]], repeats=q, axis=1),
-            np.repeat([[1], [1]], repeats=n - d, axis=1),
-        ))
+        return cordaro_wagner_generator_matrix(self.n)
 
     @cache
     def minimum_distance(self) -> int:

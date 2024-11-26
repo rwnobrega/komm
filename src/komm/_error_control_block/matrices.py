@@ -63,3 +63,14 @@ def reed_muller_generator_matrix(rho: int, mu: int) -> BinaryMatrix:
     G_list.append(np.ones(2**mu, dtype=int))
 
     return np.array(G_list, dtype=int)
+
+
+def cordaro_wagner_generator_matrix(n: int) -> BinaryMatrix:
+    # See [CW67].
+    d = int(np.ceil(2 * n / 3)) - 1
+    q = (n + 1) // 3
+    return np.hstack((
+        np.repeat([[1], [0]], repeats=d - q, axis=1),
+        np.repeat([[0], [1]], repeats=q, axis=1),
+        np.repeat([[1], [1]], repeats=n - d, axis=1),
+    ))
