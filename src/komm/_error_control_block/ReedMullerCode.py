@@ -1,11 +1,12 @@
 import itertools as it
-from functools import cache, cached_property, reduce
+from functools import cache, cached_property
 
 import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
 from .BlockCode import BlockCode
+from .matrices import reed_muller_generator_matrix
 
 
 @frozen
@@ -56,24 +57,7 @@ class ReedMullerCode(BlockCode):
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.int_]:
-        # See [LC04, p. 105–114]. Assumes 0 <= rho < mu.
-        rho, mu = self.rho, self.mu
-        v = np.empty((mu, 2**mu), dtype=int)
-        for i in range(mu):
-            block = np.hstack((
-                np.zeros(2 ** (mu - i - 1), dtype=int),
-                np.ones(2 ** (mu - i - 1), dtype=int),
-            ))
-            v[mu - i - 1] = np.tile(block, 2**i)
-
-        G_list: list[npt.NDArray[np.int_]] = []
-        for ell in range(rho, 0, -1):
-            for I in it.combinations(range(mu), ell):
-                row = reduce(np.multiply, v[I, :])
-                G_list.append(row)
-        G_list.append(np.ones(2**mu, dtype=int))
-
-        return np.array(G_list, dtype=int)
+        return reed_muller_generator_matrix(self.rho, self.mu)
 
     @cache
     def minimum_distance(self) -> int:

@@ -1,4 +1,5 @@
-import itertools as it
+from functools import reduce
+from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
@@ -16,7 +17,7 @@ def hamming_parity_submatrix(m: int, extended: bool = False) -> BinaryMatrix:
     parity_submatrix = np.zeros((2**m - m - 1, m), dtype=int)
     i = 0
     for w in range(2, m + 1):
-        for idx in it.combinations(range(m), w):
+        for idx in combinations(range(m), w):
             parity_submatrix[i, list(idx)] = 1
             i += 1
     if extended:
@@ -42,3 +43,23 @@ def golay_parity_submatrix(extended: bool = False) -> BinaryMatrix:
     if extended:
         parity_submatrix = extended_parity_submatrix(parity_submatrix)
     return parity_submatrix
+
+
+def reed_muller_generator_matrix(rho: int, mu: int) -> BinaryMatrix:
+    # See [LC04, p. 105–114]. Assumes 0 <= rho < mu.
+    v = np.empty((mu, 2**mu), dtype=int)
+    for i in range(mu):
+        block = np.hstack((
+            np.zeros(2 ** (mu - i - 1), dtype=int),
+            np.ones(2 ** (mu - i - 1), dtype=int),
+        ))
+        v[mu - i - 1] = np.tile(block, 2**i)
+
+    G_list: list[npt.NDArray[np.int_]] = []
+    for ell in range(rho, 0, -1):
+        for indices in combinations(range(mu), ell):
+            row = reduce(np.multiply, v[indices, :])
+            G_list.append(row)
+    G_list.append(np.ones(2**mu, dtype=int))
+
+    return np.array(G_list, dtype=int)
