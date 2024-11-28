@@ -91,3 +91,4 @@ Utilities:
   - cyclic_acorr
   - entropy
   - binary_entropy
+  - relative_entropy

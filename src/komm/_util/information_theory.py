@@ -30,7 +30,7 @@ def entropy(
     $$
         \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)}.
     $$
-    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Ch. 2</cite>.
+    By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Sec. 2.1</cite>.
 
     Parameters:
         pmf (Array1D[float]): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
@@ -81,6 +81,57 @@ def binary_entropy(p: float) -> float:
     if p in {0.0, 1.0}:
         return 0.0
     return -p * math.log2(p) - (1 - p) * math.log2(1 - p)
+
+
+@validate_call(
+    pmf=field(converter=np.asarray, validator=is_pmf),
+    qmf=field(converter=np.asarray, validator=is_pmf),
+    base=field(validator=is_log_base),
+)
+def relative_entropy(
+    pmf: npt.ArrayLike,
+    qmf: npt.ArrayLike,
+    base: LogBase = 2.0,
+) -> float:
+    r"""
+    Computes the relative entropy (Kullback–Leibler divergence) between two <span>pmf</span>s. Let $p$ and $q$ be two <span>pmf</span>s over the same alphabet $\mathcal{X}$. The relative entropy of $p$ with respect to $q$ is defined as
+    $$
+        \mathrm{D}(p || q) = \sum_{x \in \mathcal{X}} p(x) \log \frac{p(x)}{q(x)}.
+    $$
+    Note that, in general, $\mathrm{D}(p || q) \neq \mathrm{D}(q || p)$. For more details, see <cite>CT06, Sec. 2.3</cite>.
+
+    Parameters:
+        pmf: The probability mass function $p$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+
+        qmf: The probability mass function $q$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+
+        base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+
+    Returns:
+        The relative entropy $\mathrm{D}(p || q)$ between the two <span>pmf</span>s.
+
+    Examples:
+        >>> komm.relative_entropy([1/2, 1/2], [1/2, 1/2])  # doctest: +NUMBER
+        np.float64(0.0)
+
+        >>> komm.relative_entropy([1/2, 1/2], [3/4, 1/4])  # doctest: +NUMBER
+        np.float64(0.20751874963942185)
+
+        >>> komm.relative_entropy([3/4, 1/4], [1/2, 1/2])  # doctest: +NUMBER
+        np.float64(0.18872187554086717)
+
+        >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +NUMBER
+        np.float64(inf)
+    """
+    pmf = cast(npt.NDArray[np.float64], pmf)
+    qmf = cast(npt.NDArray[np.float64], qmf)
+    with np.errstate(divide="ignore"):
+        if base == "e":
+            return np.dot(pmf, np.log(pmf / qmf))
+        elif base == 2.0:
+            return np.dot(pmf, np.log2(pmf / qmf))
+        else:
+            return np.dot(pmf, np.log(pmf / qmf)) / np.log(base)
 
 
 @validate_call(
