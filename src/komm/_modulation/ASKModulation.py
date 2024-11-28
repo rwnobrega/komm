@@ -55,7 +55,7 @@ class ASKModulation(Modulation):
         labeling: Literal["natural", "reflected"] | npt.ArrayLike = "reflected",
     ) -> None:
         super().__init__(
-            constellation_ask(order, base_amplitude, phase_offset),
+            constellation=constellation_ask(order, base_amplitude, phase_offset),
             labeling=get_labeling(labeling, ("natural", "reflected"), order),
         )
         self.base_amplitude = base_amplitude
