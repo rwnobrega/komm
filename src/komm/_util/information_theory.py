@@ -33,12 +33,12 @@ def entropy(
     By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Sec. 2.1</cite>.
 
     Parameters:
-        pmf (Array1D[float]): The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+        pmf: The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
 
-        base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+        base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
     Returns:
-        entropy (float): The entropy $\mathrm{H}(X)$ of the random variable.
+        The entropy $\mathrm{H}(X)$ of the random variable.
 
     Examples:
         >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
@@ -69,10 +69,10 @@ def binary_entropy(p: float) -> float:
     and corresponds to the [entropy](/ref/entropy) of a Bernoulli random variable with parameter $p$.
 
     Parameters:
-        p (float): A probability value. It must satisfy $0 \leq p \leq 1$.
+        p: A probability value. It must satisfy $0 \leq p \leq 1$.
 
     Returns:
-        entropy (float): The value of the binary entropy function $\Hb(p)$.
+        The value of the binary entropy function $\Hb(p)$.
 
     Examples:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +NUMBER
