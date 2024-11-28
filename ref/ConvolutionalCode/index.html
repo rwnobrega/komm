@@ -244,9 +244,6 @@
                                         <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                                         <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                                           <li class="md-nav__item">
-                                            <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                                          </li>
-                                          <li class="md-nav__item">
                                             <a href="#num_input_bits" class="md-nav__link"><span class="md-ellipsis">num_input_bits</span></a>
                                           </li>
                                           <li class="md-nav__item">
@@ -568,9 +565,6 @@
                 <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
                 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
                   <li class="md-nav__item">
-                    <a href="#__init__" class="md-nav__link"><span class="md-ellipsis">__init__()</span></a>
-                  </li>
-                  <li class="md-nav__item">
                     <a href="#num_input_bits" class="md-nav__link"><span class="md-ellipsis">num_input_bits</span></a>
                   </li>
                   <li class="md-nav__item">
@@ -613,15 +607,60 @@
             <h1 id="kommconvolutionalcode">komm.ConvolutionalCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> $P(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are <a href="/ref/BinaryPolynomial">binary polynomials</a> in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.</p>
+                <p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> $P(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are <a href="/ref/BinaryPolynomial">binary polynomials</a> in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. For more details, see <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite> and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
                 <h2>Transfer function matrix</h2>
                 <p>The <em>transfer function matrix</em> (also known as <em>transform-domain generator matrix</em>) $G(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by $$ g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)}, $$ for $i \in [0 : k)$ and $j \in [0 : n)$.</p>
                 <h2>Constraint lengths and related parameters</h2>
                 <p>The <em>constraint lengths</em> of the code are defined by $$ \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \}, $$ for $i \in [0 : k)$.</p>
                 <p>The <em>overall constraint length</em> of the code is defined by $$ \nu = \sum_{0 \leq i &lt; k} \nu_i. $$</p>
                 <p>The <em>memory order</em> of the code is defined by $$ \mu = \max_{0 \leq i &lt; k} \nu_i. $$</p>
-                <h2>Space-state representation</h2>
-                <p>A convolutional code may also be described via the <em>space-state representation</em>. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then, $$ \begin{aligned} \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\ \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D, \end{aligned} $$ where $A$ is the $\nu \times \nu$ <em>state matrix</em>, $B$ is the $k \times \nu$ <em>control matrix</em>, $C$ is the $\nu \times n$ <em>observation matrix</em>, and $D$ is the $k \times n$ <em>transition matrix</em>.</p>
+                <h2>Constructor and examples</h2>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>feedforward_polynomials</code></b> <span class="doc-param-annotation">(<code>Array2D[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span>, int]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>feedback_polynomials</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span>, int]]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} D^6 + D^3 + D^2 + D + 1 & D^6 + D^5 + D^3 + D^2 + 1 \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]</code>.</p>
+                <figure>
+                  <p><img alt="Convolutional encoder for (2, 1, 6) code." src="/figures/cc_2_1_6.svg"></p>
+                </figure>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(2, 1, 6)</span>
+</code></pre>
+                </div>
+                <p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} D^4 + D^3 + 1 & D^4 + D^2 + D + 1 & 0 \\ 0 & D^3 + D & D^3 + D^2 + 1 \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]</code>.</p>
+                <figure>
+                  <p><img alt="Convolutional encoder for (3, 2, 7) code." src="/figures/cc_3_2_7.svg"></p>
+                </figure>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(3, 2, 7)</span>
+</code></pre>
+                </div>
+                <p>The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} 1 & \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1} \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]</code> and <code>feedback_polynomials = [0b10111] = [0o27] = [23]</code>.</p>
+                <figure>
+                  <p><img alt="Convolutional encoder for (2, 1, 4) feedback code." src="/figures/cc_2_1_4_fb.svg"></p>
+                </figure>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o31</span><span class="p">]],</span> <span class="n">feedback_polynomials</span><span class="o">=</span><span class="p">[</span><span class="mo">0o27</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
+<span class="go">(2, 1, 4)</span>
+</code></pre>
+                </div>
                 <h2>Tables of convolutional codes</h2>
                 <p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.</p>
                 <table>
@@ -708,60 +747,9 @@
                     </tr>
                   </tbody>
                 </table>
-                <p>For more details, see <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite> and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
+                <h2>Space-state representation</h2>
+                <p>A convolutional code may also be described via the <em>space-state representation</em>. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then, $$ \begin{aligned} \mathbf{s}_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\ \mathbf{v}_{t} & = \mathbf{s}_t C + \mathbf{u}_t D, \end{aligned} $$ where $A$ is the $\nu \times \nu$ <em>state matrix</em>, $B$ is the $k \times \nu$ <em>control matrix</em>, $C$ is the $\nu \times n$ <em>observation matrix</em>, and $D$ is the $k \times n$ <em>transition matrix</em>.</p>
                 <div class="doc doc-children">
-                  <div class="doc doc-object doc-function">
-                    <h2 id="__init__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__init__</span></code></h2>
-                    <div class="doc doc-contents">
-                      <p>Constructor for the class.</p>
-                      <p><strong>Parameters:</strong></p>
-                      <ul>
-                        <li class="field-body">
-                          <b><code>feedforward_polynomials</code></b> <span class="doc-param-annotation">(<code>Array2D[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span>, int]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former.</p>
-                          </div>
-                        </li>
-                        <li class="field-body">
-                          <b><code>feedback_polynomials</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[<span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span>, int]]</code>)</span> –
-                          <div class="doc-md-description">
-                            <p>The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.</p>
-                          </div>
-                        </li>
-                      </ul>
-                      <p><span class="doc-section-title">Examples:</span></p>
-                      <p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} D^6 + D^3 + D^2 + D + 1 & D^6 + D^5 + D^3 + D^2 + 1 \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]</code>.</p>
-                      <figure>
-                        <p><img alt="Convolutional encoder for (2, 1, 6) code." src="/figures/cc_2_1_6.svg"></p>
-                      </figure>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
-<span class="go">(2, 1, 6)</span>
-</code></pre>
-                      </div>
-                      <p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} D^4 + D^3 + 1 & D^4 + D^2 + D + 1 & 0 \\ 0 & D^3 + D & D^3 + D^2 + 1 \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]</code>.</p>
-                      <figure>
-                        <p><img alt="Convolutional encoder for (3, 2, 7) code." src="/figures/cc_3_2_7.svg"></p>
-                      </figure>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
-<span class="go">(3, 2, 7)</span>
-</code></pre>
-                      </div>
-                      <p>The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by $$ G(D) = \begin{bmatrix} 1 & \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1} \end{bmatrix}, $$ yielding <code>feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]</code> and <code>feedback_polynomials = [0o27]</code>.</p>
-                      <figure>
-                        <p><img alt="Convolutional encoder for (2, 1, 4) feedback code." src="/figures/cc_2_1_4_fb.svg"></p>
-                      </figure>
-                      <div class="highlight">
-                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o31</span><span class="p">]],</span> <span class="n">feedback_polynomials</span><span class="o">=</span><span class="p">[</span><span class="mo">0o27</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span><span class="p">)</span>
-<span class="go">(2, 1, 4)</span>
-</code></pre>
-                      </div>
-                    </div>
-                  </div>
                   <div class="doc doc-object doc-attribute">
                     <h2 id="num_input_bits" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_input_bits</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
