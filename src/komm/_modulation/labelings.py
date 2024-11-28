@@ -1,4 +1,4 @@
-from typing import Any, TypeVar, cast
+from typing import Any, Literal, TypeVar, cast
 
 import numpy as np
 import numpy.typing as npt
@@ -67,3 +67,18 @@ labelings = {
     "natural_2d": labeling_natural_2d,
     "reflected_2d": labeling_reflected_2d,
 }
+
+LabelingStr = Literal["natural", "reflected", "natural_2d", "reflected_2d"]
+
+
+def get_labeling(
+    labeling: LabelingStr | npt.ArrayLike,
+    allowed_labelings: tuple[LabelingStr, ...],
+    *args: Any,
+    **kwargs: Any,
+) -> npt.NDArray[np.int_]:
+    if isinstance(labeling, str):
+        if labeling not in allowed_labelings:
+            raise ValueError(f"if string, 'labeling' must be in {allowed_labelings}")
+        return labelings[labeling](*args, **kwargs)
+    return np.asarray(labeling, dtype=int)
