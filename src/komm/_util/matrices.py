@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 ArrayInt = npt.NDArray[np.int_]
 
@@ -30,7 +31,7 @@ def rref(matrix: npt.ArrayLike) -> ArrayInt:
     """
     reduced = np.asarray(matrix, dtype=int)
     n_rows, n_cols = reduced.shape
-    for r in range(n_rows):
+    for r in tqdm(range(n_rows), desc="Row-reducing matrix", unit="row", delay=2.5):
         # Choose the pivot
         possible_pivots = [_pivot(row) for row in reduced[r:]]
         p = np.argmin(possible_pivots) + r
