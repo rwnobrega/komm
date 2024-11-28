@@ -28,13 +28,13 @@ class PSKModulation(Modulation):
 
         labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
 
-    The PSK modulation with order $M = 4$, base amplitude $A = 1$, phase offset $\phi = \pi/4$, and Gray labeling is depicted below.
-
-    <figure markdown>
-      ![4-PSK modulation with Gray labeling.](/figures/psk_4_gray.svg)
-    </figure>
-
     Examples:
+        The PSK modulation with order $M = 4$, base amplitude $A = 1$, phase offset $\phi = \pi/4$, and Gray labeling is depicted below.
+
+        <figure markdown>
+          ![4-PSK modulation with Gray labeling.](/figures/psk_4_gray.svg)
+        </figure>
+
         >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4.0)
         >>> psk.constellation  # doctest: +NORMALIZE_WHITESPACE
         array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])

@@ -27,7 +27,7 @@ class PAModulation(Modulation):
 
         base_amplitude: The base amplitude $A$ of the constellation. The default value is `1.0`.
 
-        labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
+        labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
 
     Examples:
         The PAM modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
@@ -44,6 +44,8 @@ class PAModulation(Modulation):
                [1, 0],
                [1, 1],
                [0, 1]])
+        >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
+        array([-3.,  1., -3., -1., -1.])
     """
 
     def __init__(
