@@ -15,6 +15,10 @@ jobs:
       - name: Install komm
         run: |
           pip install -e .
+      - name: Check code style
+        run: |
+          pip install black
+          black --check .
       - name: Test with pytest
         run: |
           pip install pytest pytest-cov
