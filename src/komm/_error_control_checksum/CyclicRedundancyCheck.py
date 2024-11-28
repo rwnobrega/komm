@@ -1,3 +1,6 @@
 class CyclicRedundancyCheck:
-    def __init__(self, polynomial):
-        self.polynomial = polynomial
+    r"""
+    Cyclic redundancy check (CRC) [Not implemented yet].
+    """
+
+    pass

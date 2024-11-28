@@ -30,6 +30,8 @@ Error control:
     - ConvolutionalStreamEncoder
     - ConvolutionalStreamDecoder
     - TerminatedConvolutionalCode
+  Checksum:
+    - CyclicRedundancyCheck
 Finite-state machines:
   - FiniteStateMachine
 Modulation:

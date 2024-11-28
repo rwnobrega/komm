@@ -3,6 +3,7 @@ from importlib import metadata as _metadata
 from ._algebra import *
 from ._channels import *
 from ._error_control_block import *
+from ._error_control_checksum import *
 from ._error_control_convolutional import *
 from ._finite_state_machine import *
 from ._lossless_coding import *
