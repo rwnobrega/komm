@@ -61,7 +61,7 @@ def test_ask_modulation_3(order, labeling):
     ask = komm.PAModulation(order, labeling=labeling)
     m = ask.bits_per_symbol
     bits = np.random.randint(0, 2, size=100 * m, dtype=int)
-    assert np.allclose(ask.demodulate(ask.modulate(bits)), bits)
+    assert np.allclose(ask.demodulate_hard(ask.modulate(bits)), bits)
 
 
 @pytest.mark.parametrize(
@@ -75,4 +75,4 @@ def test_ask_modulation_3(order, labeling):
 def test_ask_modulation_4(order, demodulated):
     ask = komm.ASKModulation(order)
     y = [-0.5, 0.25, 0.4, 0.65, 2.1, 10.0]
-    assert np.allclose(ask.demodulate(y), demodulated)
+    assert np.allclose(ask.demodulate_hard(y), demodulated)

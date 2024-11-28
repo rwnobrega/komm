@@ -1,7 +1,12 @@
-import numpy as np
+from typing import Literal
 
+import numpy as np
+import numpy.typing as npt
+from typing_extensions import override
+
+from .._util.special_functions import logcosh
 from .constellations import constellation_pam
-from .labelings import labelings
+from .labelings import labeling_natural, labeling_reflected
 from .Modulation import Modulation
 
 
@@ -16,98 +21,106 @@ class PAModulation(Modulation):
     <figure markdown>
       ![8-PAM constellation.](/figures/pam_8.svg)
     </figure>
+
+    Parameters:
+        order: The order $M$ of the modulation. It must be a power of $2$.
+
+        base_amplitude: The base amplitude $A$ of the constellation. The default value is `1.0`.
+
+        labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
+
+    Examples:
+        The PAM modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
+
+        <figure markdown>
+          ![4-PAM modulation with Gray labeling.](/figures/pam_4_gray.svg)
+        </figure>
+
+        >>> pam = komm.PAModulation(4)
+        >>> pam.constellation
+        array([-3., -1.,  1.,  3.])
+        >>> pam.labeling
+        array([[0, 0],
+               [1, 0],
+               [1, 1],
+               [0, 1]])
     """
 
-    def __init__(self, order, base_amplitude=1.0, labeling="reflected"):
-        r"""
-        Constructor for the class.
-
-        Parameters:
-            order (int): The order $M$ of the modulation. It must be a power of $2$.
-
-            base_amplitude (Optional[float]): The base amplitude $A$ of the constellation. The default value is `1.0`.
-
-            labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
-
-        Examples:
-            The PAM modulation with order $M = 4$, base amplitude $A = 1$, and Gray labeling is depicted below.
-
-            <figure markdown>
-              ![4-PAM modulation with Gray labeling.](/figures/pam_4_gray.svg)
-            </figure>
-
-            >>> pam = komm.PAModulation(4)
-            >>> pam.constellation
-            array([-3., -1.,  1.,  3.])
-            >>> pam.labeling
-            array([[0, 0],
-                   [1, 0],
-                   [1, 1],
-                   [0, 1]])
-            >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-            array([-3.,  1., -3., -1., -1.])
-        """
-        self._constructor_kwargs = {
-            "order": order,
-            "base_amplitude": base_amplitude,
-            "labeling": labeling,
-        }
-
-        self._base_amplitude = float(base_amplitude)
-
-        allowed_labelings = ["natural", "reflected"]
-        if labeling in allowed_labelings:
-            labeling = labelings[labeling](order)
+    def __init__(
+        self,
+        order: int,
+        base_amplitude: float = 1.0,
+        labeling: Literal["natural", "reflected"] | npt.ArrayLike = "reflected",
+    ) -> None:
+        if labeling == "natural":
+            _labeling = labeling_natural(order)
+        elif labeling == "reflected":
+            _labeling = labeling_reflected(order)
         elif isinstance(labeling, str):
-            raise ValueError(
-                f"only {allowed_labelings} or 2D-arrays are allowed for the labeling"
-            )
-
+            raise ValueError(f"if string, 'labeling' must be 'natural' or 'reflected'")
+        else:
+            _labeling = np.asarray(labeling)
         super().__init__(
-            constellation=constellation_pam(order, self._base_amplitude),
-            labeling=labeling,
+            constellation=constellation_pam(order, base_amplitude),
+            labeling=_labeling,
         )
+        self.base_amplitude = base_amplitude
+        self.labeling_parameter = labeling
 
-    def __repr__(self):
-        order, base_amplitude, labeling = self._constructor_kwargs.values()
-        args = f"{order}, base_amplitude={base_amplitude}, labeling='{labeling}'"
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"order={self.order}",
+            f"base_amplitude={self.base_amplitude}",
+            f"labeling='{self.labeling_parameter}'",
+        ])
         return f"{self.__class__.__name__}({args})"
 
-    def _demodulate_hard(self, received):
+    @property
+    @override
+    def energy_per_symbol(self) -> float:
+        return (self.base_amplitude**2) * (self.order**2 - 1) / 3
+
+    @property
+    @override
+    def symbol_mean(self) -> float:
+        return 0.0
+
+    @property
+    @override
+    def minimum_distance(self) -> float:
+        return 2.0 * self.base_amplitude
+
+    @override
+    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.int_]:
+        received = np.asarray(received)
         indices = np.clip(
-            np.around((received + self._order - 1) / 2),
-            0,
-            self._order - 1,
+            np.around((received + self.order - 1) / 2), 0, self.order - 1
         ).astype(int)
-        return np.reshape(self._labeling[indices], shape=-1)
+        hard_bits = np.reshape(self.labeling[indices], shape=-1)
+        return hard_bits
 
-    @staticmethod
-    def _demodulate_soft_pam2(y, gamma):
-        # SA15, eq. (3.65).
-        return -4.0 * gamma * y
+    @override
+    def demodulate_soft(
+        self, received: npt.ArrayLike, snr: float = 1.0
+    ) -> npt.NDArray[np.float64]:
+        print(self.order, self.labeling_parameter)
+        if self.order == 2:
+            y = np.asarray(received) / self.base_amplitude
+            return -4 * snr * y  # [SA15, eq. (3.65)]
+        elif self.order == 4 and self.labeling_parameter == "reflected":
+            y = np.asarray(received) / self.base_amplitude
+            return self._demodulate_pam4_soft_reflected(y, snr / 5.0)
+        # Fall back to general implementation
+        return super().demodulate_soft(received, snr)
 
-    @staticmethod
-    def _demodulate_soft_pam4_reflected(y, gamma):
+    def _demodulate_pam4_soft_reflected(
+        self, y: npt.NDArray[np.float64], gamma: float
+    ) -> npt.NDArray[np.float64]:
         soft_bits = np.empty(2 * y.size, dtype=float)
-        # For bit_0: SA15, eq. (5.15)
-        soft_bits[0::2] = -8.0 * gamma + np.log(
-            np.cosh(6.0 * gamma * y) / np.cosh(2.0 * gamma * y),
+        soft_bits[0::2] = (  # For bit_0: [SA15, eq. (5.15)]
+            -8 * gamma + logcosh(6 * gamma * y) - logcosh(2 * gamma * y)
         )
-        # For bit_1: SA15, eq. (5.6)
-        soft_bits[1::2] = -8.0 * gamma * y + np.log(
-            np.cosh(2.0 * gamma * (y + 2.0)) / np.cosh(2.0 * gamma * (y - 2.0)),
+        soft_bits[1::2] = (  # For bit_1: [SA15, eq. (5.6)]
+            -8 * gamma * y + logcosh(2 * gamma * (y + 2)) - logcosh(2 * gamma * (y - 2))
         )
         return soft_bits
-
-    def _demodulate_soft(self, received, channel_snr=1.0):
-        if self._order == 2 and self._constructor_kwargs["labeling"] == "reflected":
-            return self._demodulate_soft_pam2(
-                y=received / self._base_amplitude,
-                gamma=channel_snr,
-            )
-        elif self._order == 4 and self._constructor_kwargs["labeling"] == "reflected":
-            return self._demodulate_soft_pam4_reflected(
-                y=received / self._base_amplitude,
-                gamma=channel_snr / 5.0,
-            )
-        return super()._demodulate_soft(received, channel_snr)

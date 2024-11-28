@@ -61,3 +61,10 @@ def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
     """
     result = np.vectorize(_qfuncinv)(y)
     return np.float64(result) if np.isscalar(y) else result
+
+
+def logcosh(x: npt.ArrayLike) -> np.float64:
+    # https://stackoverflow.com/a/57786270/
+    s = np.sign(x) * x
+    p = np.exp(-2 * s)
+    return s + np.log1p(p) - np.log(2)
