@@ -6,7 +6,7 @@ from typing_extensions import override
 
 from .._util.special_functions import logcosh
 from .constellations import constellation_pam
-from .labelings import labeling_natural, labeling_reflected
+from .labelings import get_labeling
 from .Modulation import Modulation
 
 
@@ -52,17 +52,9 @@ class PAModulation(Modulation):
         base_amplitude: float = 1.0,
         labeling: Literal["natural", "reflected"] | npt.ArrayLike = "reflected",
     ) -> None:
-        if labeling == "natural":
-            _labeling = labeling_natural(order)
-        elif labeling == "reflected":
-            _labeling = labeling_reflected(order)
-        elif isinstance(labeling, str):
-            raise ValueError(f"if string, 'labeling' must be 'natural' or 'reflected'")
-        else:
-            _labeling = np.asarray(labeling)
         super().__init__(
             constellation=constellation_pam(order, base_amplitude),
-            labeling=_labeling,
+            labeling=get_labeling(labeling, ("natural", "reflected"), order),
         )
         self.base_amplitude = base_amplitude
         self.labeling_parameter = labeling
