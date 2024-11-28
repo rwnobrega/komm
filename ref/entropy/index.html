@@ -506,6 +506,9 @@
                               <li class="md-nav__item">
                                 <a href="../binary_entropy/" class="md-nav__link"><span class="md-ellipsis">binary_entropy</span></a>
                               </li>
+                              <li class="md-nav__item">
+                                <a href="../relative_entropy/" class="md-nav__link"><span class="md-ellipsis">relative_entropy</span></a>
+                              </li>
                             </ul>
                           </nav>
                         </li>
@@ -529,17 +532,17 @@
             <h1 id="kommentropy">komm.entropy</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p>Computes the entropy of a random variable with a given <abbr title="probability mass function">pmf</abbr>. Let $X$ be a random variable with <abbr title="probability mass function">pmf</abbr> $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by $$ \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)}. $$ By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 2</cite>.</p>
+                <p>Computes the entropy of a random variable with a given <abbr title="probability mass function">pmf</abbr>. Let $X$ be a random variable with <abbr title="probability mass function">pmf</abbr> $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by $$ \mathrm{H}(X) = \sum_{x \in \mathcal{X}} p_X(x) \log \frac{1}{p_X(x)}. $$ By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 2.1</cite>.</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The probability mass function $p_X$ of the random variable. It must be a valid <abbr title="probability mass function">pmf</abbr>, that is, all of its values must be non-negative and sum up to $1$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>base</code></b> <span class="doc-param-annotation">(<code>Optional[float | str]</code>)</span> –
+                    <b><code>base</code></b> <span class="doc-param-annotation">(<code><span title="komm._util.information_theory.LogBase">LogBase</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The base of the logarithm to be used. It must be a positive float or the string <code>'e'</code>. The default value is <code>2.0</code>.</p>
                     </div>
@@ -548,7 +551,7 @@
                 <p><strong>Returns:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>entropy</code></b> <span class="doc-param-annotation">(<code>float</code>)</span> –
+                    <span class="doc-param-annotation"><code>float</code></span> –
                     <div class="doc-md-description">
                       <p>The entropy $\mathrm{H}(X)$ of the random variable.</p>
                     </div>
