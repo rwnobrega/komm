@@ -1,5 +1,9 @@
+from typing import Literal
+
+import numpy.typing as npt
+
 from .constellations import constellation_apsk
-from .labelings import labelings
+from .labelings import get_labeling
 from .Modulation import Modulation
 
 
@@ -29,61 +33,58 @@ class APSKModulation(Modulation):
         ![(4,12)-APSK constellation.](/figures/apsk_4_12.svg)
       </span>
     </div>
+
+    Parameters:
+        orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. The sum $M_0 + M_1 + \cdots + M_{K-1}$ must be a power of $2$.
+
+        amplitudes: A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
+
+        phase_offsets: A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
+
+        labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be equal to `'natural'`. The default value is `'natural'`.
+
+    Examples:
+        >>> apsk = komm.APSKModulation(orders=(8, 8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
+        >>> apsk.constellation.round(4)
+        array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
+               -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
+                1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
+               -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])
+
+        >>> apsk = komm.APSKModulation(orders=(4, 12), amplitudes=(np.sqrt(2), 3.0), phase_offsets=(np.pi/4, 0.0))
+        >>> apsk.constellation.round(4)
+        array([ 1.    +1.j    , -1.    +1.j    , -1.    -1.j    ,  1.    -1.j    ,
+                3.    +0.j    ,  2.5981+1.5j   ,  1.5   +2.5981j,  0.    +3.j    ,
+               -1.5   +2.5981j, -2.5981+1.5j   , -3.    +0.j    , -2.5981-1.5j   ,
+               -1.5   -2.5981j, -0.    -3.j    ,  1.5   -2.5981j,  2.5981-1.5j   ])
     """
 
-    def __init__(self, orders, amplitudes, phase_offsets=0.0, labeling="natural"):
-        r"""
-        Constructor for the class.
-
-        Parameters:
-            orders (tuple[int, ...]): A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. The sum $M_0 + M_1 + \cdots + M_{K-1}$ must be a power of $2$.
-
-            amplitudes (tuple[float, ...]): A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
-
-            phase_offsets (Optional[tuple[float, ...] | float]): A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
-
-            labeling (Optional[Array1D[int] | str]): The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be equal to `'natural'`. The default value is `'natural'`.
-
-        Examples:
-            >>> apsk = komm.APSKModulation(orders=(8, 8), amplitudes=(1.0, 2.0), phase_offsets=(0.0, np.pi/8))
-            >>> apsk.constellation.round(4)
-            array([ 1.    +0.j    ,  0.7071+0.7071j,  0.    +1.j    , -0.7071+0.7071j,
-                   -1.    +0.j    , -0.7071-0.7071j, -0.    -1.j    ,  0.7071-0.7071j,
-                    1.8478+0.7654j,  0.7654+1.8478j, -0.7654+1.8478j, -1.8478+0.7654j,
-                   -1.8478-0.7654j, -0.7654-1.8478j,  0.7654-1.8478j,  1.8478-0.7654j])
-
-            >>> apsk = komm.APSKModulation(orders=(4, 12), amplitudes=(np.sqrt(2), 3.0), phase_offsets=(np.pi/4, 0.0))
-            >>> apsk.constellation.round(4)
-            array([ 1.    +1.j    , -1.    +1.j    , -1.    -1.j    ,  1.    -1.j    ,
-                    3.    +0.j    ,  2.5981+1.5j   ,  1.5   +2.5981j,  0.    +3.j    ,
-                   -1.5   +2.5981j, -2.5981+1.5j   , -3.    +0.j    , -2.5981-1.5j   ,
-                   -1.5   -2.5981j, -0.    -3.j    ,  1.5   -2.5981j,  2.5981-1.5j   ])
-        """
-        self._orders = tuple(int(M_k) for M_k in orders)
-        self._amplitudes = tuple(float(A_k) for A_k in amplitudes)
-
-        if isinstance(phase_offsets, (tuple, list)):
-            self._phase_offsets = tuple(float(phi_k) for phi_k in phase_offsets)
-        else:
-            self._phase_offsets = (float(phase_offsets),) * len(orders)
-
-        allowed_labelings = ["natural"]
-        if labeling in allowed_labelings:
-            labeling = labelings[labeling](sum(orders))
-        elif isinstance(labeling, str):
-            raise ValueError(
-                f"only {allowed_labelings} or 2D-arrays are allowed for the labeling"
-            )
-
+    def __init__(
+        self,
+        orders: tuple[int, ...],
+        amplitudes: tuple[float, ...],
+        phase_offsets: float | tuple[float, ...] = 0.0,
+        labeling: Literal["natural"] | npt.ArrayLike = "natural",
+    ) -> None:
+        _phase_offsets = (
+            phase_offsets
+            if isinstance(phase_offsets, tuple)
+            else (phase_offsets,) * len(orders)
+        )
         super().__init__(
-            constellation=constellation_apsk(
-                self._orders, self._amplitudes, phase_offsets
-            ),
-            labeling=labeling,
+            constellation=constellation_apsk(orders, amplitudes, _phase_offsets),
+            labeling=get_labeling(labeling, ("natural",), sum(orders)),
         )
+        self.orders = orders
+        self.amplitudes = amplitudes
+        self.phase_offsets = phase_offsets
+        self.labeling_parameter = labeling
 
-    def __repr__(self):
-        args = "{}, amplitudes={}, phase_offsets={}".format(
-            self._orders, self._amplitudes, self._phase_offsets
-        )
-        return "{}({})".format(self.__class__.__name__, args)
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"orders={self.orders}",
+            f"amplitudes={self.amplitudes}",
+            f"phase_offsets={self.phase_offsets}",
+            f"labeling='{self.labeling_parameter}'",
+        ])
+        return f"{self.__class__.__name__}({args})"

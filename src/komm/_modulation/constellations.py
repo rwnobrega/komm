@@ -44,11 +44,11 @@ def constellation_psk(
 
 
 def constellation_apsk(
-    orders: tuple[int, int],
-    amplitudes: tuple[float, float],
-    phase_offsets: tuple[float, float],
-):
+    orders: tuple[int, ...],
+    amplitudes: tuple[float, ...],
+    phase_offsets: tuple[float, ...],
+) -> npt.NDArray[np.complex128]:
     return np.concatenate([
-        constellation_psk(M_k, A_k, phi_k)
-        for M_k, A_k, phi_k in zip(orders, amplitudes, phase_offsets)
+        constellation_psk(order, amplitude, phase_offset)
+        for order, amplitude, phase_offset in zip(orders, amplitudes, phase_offsets)
     ])
