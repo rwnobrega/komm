@@ -99,7 +99,7 @@ def test_binary_polynomial_fraction_string_representation():
     assert str(fraction) == "0b1011/0b1101"
 
     fraction = komm.BinaryPolynomialFraction(0b1011, 0b1)
-    assert str(fraction) == "0b1011"
+    assert str(fraction) == "0b1011/0b1"
 
     fraction = komm.BinaryPolynomialFraction(0b1011, 0b1101)
     assert repr(fraction) == "BinaryPolynomialFraction(0b1011, 0b1101)"
