@@ -76,14 +76,10 @@ class BinaryPolynomialFraction:
         return self.__class__(self.denominator, self.numerator)
 
     def __repr__(self) -> str:
-        args = "{}, {}".format(self.numerator, self.denominator)
-        return "{}({})".format(self.__class__.__name__, args)
+        return f"{self.__class__.__name__}({self.numerator}, {self.denominator})"
 
     def __str__(self) -> str:
-        if self.denominator == 0b1:
-            return str(self.numerator)
-        else:
-            return str(self.numerator) + "/" + str(self.denominator)
+        return str(self.numerator) + "/" + str(self.denominator)
 
 
 @frozen
