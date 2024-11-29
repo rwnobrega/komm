@@ -27,9 +27,9 @@ Error control:
     - BlockDecoder
   Convolutional coding:
     - ConvolutionalCode
+    - TerminatedConvolutionalCode
     - ConvolutionalStreamEncoder
     - ConvolutionalStreamDecoder
-    - TerminatedConvolutionalCode
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:

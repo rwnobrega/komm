@@ -13,7 +13,6 @@ from .SimplexCode import SimplexCode
 from .SingleParityCheckCode import SingleParityCheckCode
 from .SlepianArray import SlepianArray
 from .SystematicBlockCode import SystematicBlockCode
-from .TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 __all__ = [
     "BCHCode",
@@ -31,7 +30,6 @@ __all__ = [
     "SingleParityCheckCode",
     "SlepianArray",
     "SystematicBlockCode",
-    "TerminatedConvolutionalCode",
 ]
 
 from .decoders import *

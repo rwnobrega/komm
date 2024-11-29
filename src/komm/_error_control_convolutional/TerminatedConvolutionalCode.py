@@ -6,11 +6,11 @@ import numpy.typing as npt
 from attrs import frozen
 from numpy.linalg import matrix_power
 
-from .._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
+from .._error_control_block.BlockCode import BlockCode
 from .._types import ArrayIntLike
 from .._util.bit_operations import binlist2int, int2binlist, pack, unpack
 from .._util.matrices import pseudo_inverse
-from .BlockCode import BlockCode
+from .ConvolutionalCode import ConvolutionalCode
 
 
 @frozen

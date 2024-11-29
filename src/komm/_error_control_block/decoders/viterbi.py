@@ -3,10 +3,12 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from ..._error_control_convolutional.TerminatedConvolutionalCode import (
+    TerminatedConvolutionalCode,
+)
 from ..._finite_state_machine.FiniteStateMachine import MetricFunction
 from ..._util import unpack
 from ..registry import RegistryBlockDecoder
-from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 
 def decode_viterbi(

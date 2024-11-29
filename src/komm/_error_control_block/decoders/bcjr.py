@@ -1,8 +1,10 @@
 import numpy as np
 import numpy.typing as npt
 
+from ..._error_control_convolutional.TerminatedConvolutionalCode import (
+    TerminatedConvolutionalCode,
+)
 from ..registry import RegistryBlockDecoder
-from ..TerminatedConvolutionalCode import TerminatedConvolutionalCode
 
 
 def decode_bcjr(
