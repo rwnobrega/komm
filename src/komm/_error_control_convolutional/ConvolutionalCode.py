@@ -138,20 +138,16 @@ class ConvolutionalCode:
         feedforward_polynomials: npt.ArrayLike,
         feedback_polynomials: Optional[npt.ArrayLike] = None,
     ) -> None:
-        self.feedforward_polynomials: npt.NDArray[np.object_]
-        self.feedback_polynomials: npt.NDArray[np.object_]
         vecBinaryPolynomial = np.vectorize(BinaryPolynomial)
 
         self.feedforward_polynomials = vecBinaryPolynomial(feedforward_polynomials)
 
         if feedback_polynomials is None:
-            k = self.feedforward_polynomials.shape[0]
-            self.feedback_polynomials = vecBinaryPolynomial([0b1] * k)
-            self._constructed_from = "no_feedback_polynomials"
+            self.feedback_polynomials = vecBinaryPolynomial([0b1] * self.num_input_bits)
         else:
             self.feedback_polynomials = vecBinaryPolynomial(feedback_polynomials)
-            self._constructed_from = "feedback_polynomials"
 
+        self._feedback_polynomials_parameters = feedback_polynomials
         self._setup_finite_state_machine_direct_form()
         self._setup_space_state_representation()
 
@@ -160,9 +156,9 @@ class ConvolutionalCode:
             return str(np.vectorize(str)(arr).tolist()).replace("'", "")
 
         args = f"feedforward_polynomials={vec_str(self.feedforward_polynomials)}"
-        if self._constructed_from == "feedback_polynomials":
+        if self._feedback_polynomials_parameters is not None:
             args += f", feedback_polynomials={vec_str(self.feedback_polynomials)}"
-        return "{}({})".format(self.__class__.__name__, args)
+        return f"{self.__class__.__name__}({args})"
 
     def _setup_finite_state_machine_direct_form(self) -> None:
         n, k, nu = (
@@ -208,9 +204,7 @@ class ConvolutionalCode:
             next_states[s, x] = binlist2int(next_state_bits)
             outputs[s, x] = binlist2int(output_bits)
 
-        self._finite_state_machine = FiniteStateMachine(
-            next_states=next_states, outputs=outputs
-        )
+        self._finite_state_machine = FiniteStateMachine(next_states, outputs)
 
     def _setup_space_state_representation(self) -> None:
         k, n, nu = (
