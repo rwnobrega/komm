@@ -78,3 +78,7 @@ There are some demos available in the `demo` directory. They are written using [
 ```bash
 streamlit run demo/index.py
 ```
+
+## Changelog
+
+See the [CHANGELOG.md](CHANGELOG.md).
