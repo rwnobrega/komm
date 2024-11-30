@@ -25,3 +25,4 @@
 - Converted the classes `BinaryErasureChannel`, `BinarySymmetricChannel`, `DiscreteMemorylessChannel`, `AWGNChannel`, `FixedToVariableEncoder`, `FixedToVariableDecoder`, `VariableToFixedEncoder`, `VariableToFixedDecoder`, and `DiscreteMemorylessSource` from mutable to immutable.
 - Removed `RationalPolynomial` and `RationalPolynomialFraction` classes.
 - Refactored _algebra_ and _pulse_ modules. See documentation for new usage.
+- Adjusted string literals in `BlockDecoder` to kebab-case. For example, `method="exhaustive_search_hard"` should become `method="exhaustive-search-hard"`
