@@ -1,7 +1,6 @@
 from functools import cached_property
 from typing import Literal
 
-import attrs
 import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
@@ -77,10 +76,14 @@ class TerminatedConvolutionalCode(BlockCode):
 
     convolutional_code: ConvolutionalCode
     num_blocks: int
-    mode: TerminationMode = field(
-        default="zero-termination",
-        validator=attrs.validators.in_(TerminationMode.__args__),
-    )
+    mode: TerminationMode = field(default="zero-termination")
+
+    def __attrs_post_init__(self):
+        if self.mode not in TerminationMode.__args__:
+            raise ValueError(
+                f"mode '{self.mode}' is unknown\n"
+                f"supported termination modes: {set(TerminationMode.__args__)}"
+            )
 
     @cached_property
     def _strategy(self) -> TerminationStrategy:
