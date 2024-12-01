@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "\\Enc": "\\mathrm{Enc}",
       "\\Dec": "\\mathrm{Dec}",
       "\\Hb": "\\mathrm{H}_\\mathrm{b}",
+      "\\dH": "\\mathrm{d}_\\mathrm{H}",
+      "\\wH": "\\mathrm{w}_\\mathrm{H}",
     },
     throwOnError: false,
   });
