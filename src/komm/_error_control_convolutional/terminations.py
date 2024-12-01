@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
@@ -74,7 +75,7 @@ class ZeroTermination(TerminationStrategy):
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
         n = self.convolutional_code.num_input_bits
-        tail = input_bits @ self._tail_projector() % 2
+        tail = input_bits @ self._tail_projector % 2
         return pack(np.concatenate([input_bits, tail]), width=n)
 
     def codeword_length(self) -> int:
@@ -86,6 +87,7 @@ class ZeroTermination(TerminationStrategy):
     def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
+    @cached_property
     def _tail_projector(self) -> npt.NDArray[np.int_]:
         h = self.num_blocks
         mu = self.convolutional_code.memory_order
@@ -107,7 +109,7 @@ class TailBiting(TerminationStrategy):
         nu = self.convolutional_code.overall_constraint_length
         _, zs_response = fsm.process(input_bits, initial_state=0)
         zs_response = int2binlist(zs_response, width=nu)
-        return binlist2int(zs_response @ self._zs_multiplier() % 2)
+        return binlist2int(zs_response @ self._zs_multiplier % 2)
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
         n = self.convolutional_code.num_input_bits
@@ -121,6 +123,7 @@ class TailBiting(TerminationStrategy):
     def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
+    @cached_property
     def _zs_multiplier(self) -> npt.NDArray[np.int_]:
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
