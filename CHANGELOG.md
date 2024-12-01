@@ -3,6 +3,27 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.11.0 (2024-12-01)
+
+### BREAKING CHANGE
+
+- The property `finite_state_machine` of `ConvolutionalCode` was converted to method.
+- The properties `state_matrix`, `control_matrix`, `observation_matrix`, and `transition_matrix` were removed from `ConvolutionalCode`. The new usage is `state_matrix, control_matrix, observation_matrix, transition_matrix = convolutional_code.state_space_representation()`.
+
+### Fix
+
+- improve error reporting in `BlockDecoder` and `TerminatedConvolutionalCode`
+
+### Refactor
+
+- convert `finite_state_machine` property of `ConvolutionalCode` into method
+- replace state-space representation properties with a single method returning all matrices
+
+### Perf
+
+- add `cache` decorator to state space representation method
+- add `cached_property` decorator to `_tail_projector` and `_zs_multiplier` methods in termination strategies
+
 ## v0.10.0 (2024-11-29)
 
 ### Added
