@@ -33,6 +33,14 @@ python_functions = ["test_*", "bench_*"]
 pythonpath = "."
 testpaths = ["src/komm", "tests"]
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "pep440"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
+
 [tool.pdm.dev-dependencies]
 lint = [
     "black>=24.10.0",
