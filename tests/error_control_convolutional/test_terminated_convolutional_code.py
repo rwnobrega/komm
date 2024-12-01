@@ -111,7 +111,7 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
     for message_int in range(2**code.dimension):
         message = komm.int2binlist(message_int, width=code.dimension)
         assert isinstance(code._strategy, ZeroTermination)
-        tail = message @ code._strategy._tail_projector() % 2
+        tail = message @ code._strategy._tail_projector % 2
         input_sequence = komm.pack(np.concatenate([message, tail]), width=k)
         _, fs = convolutional_code._finite_state_machine.process(input_sequence, 0)
         assert fs == 0
