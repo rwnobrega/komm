@@ -120,17 +120,6 @@ class ConvolutionalCode:
     | $(3, 1, 6)$              | `[[0o117, 0o127, 0o155]]`       |
     | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`       |
     | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`       |
-
-    <h2>Space-state representation</h2>
-
-    A convolutional code may also be described via the *space-state representation*. Let $\mathbf{u}_t = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)})$ be the input block, $\mathbf{v}_t = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)})$ be the output block, and $\mathbf{s}_t = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)})$ be the state, all defined at time instant $t$. Then,
-    $$
-    \begin{aligned}
-        \mathbf{s}\_{t+1} & = \mathbf{s}_t A + \mathbf{u}_t B, \\\\
-        \mathbf{v}\_{t} & = \mathbf{s}_t C + \mathbf{u}\_t D,
-    \end{aligned}
-    $$
-    where $A$ is the $\nu \times \nu$ *state matrix*, $B$ is the $k \times \nu$ *control matrix*, $C$ is the $\nu \times n$ *observation matrix*, and $D$ is the $k \times n$ *transition matrix*. For more details, see <cite>WBR01</cite>.
     """
 
     def __init__(
@@ -149,7 +138,6 @@ class ConvolutionalCode:
 
         self._feedback_polynomials_parameters = feedback_polynomials
         self._setup_finite_state_machine_direct_form()
-        self._setup_space_state_representation()
 
     def __repr__(self) -> str:
         def vec_str(arr: npt.NDArray[np.object_]) -> str:
@@ -205,31 +193,6 @@ class ConvolutionalCode:
             outputs[s, x] = binlist2int(output_bits)
 
         self._finite_state_machine = FiniteStateMachine(next_states, outputs)
-
-    def _setup_space_state_representation(self) -> None:
-        k, n, nu = (
-            self.num_input_bits,
-            self.num_output_bits,
-            self.overall_constraint_length,
-        )
-
-        self._state_matrix = np.empty((nu, nu), dtype=int)
-        self._observation_matrix = np.empty((nu, n), dtype=int)
-        for i in range(nu):
-            s0 = 2**i
-            s1 = self._finite_state_machine.next_states[s0, 0]
-            y = self._finite_state_machine.outputs[s0, 0]
-            self._state_matrix[i, :] = int2binlist(s1, width=nu)
-            self._observation_matrix[i, :] = int2binlist(y, width=n)
-
-        self._control_matrix = np.empty((k, nu), dtype=int)
-        self._transition_matrix = np.empty((k, n), dtype=int)
-        for i in range(k):
-            x = 2**i
-            s1 = self._finite_state_machine.next_states[0, x]
-            y = self._finite_state_machine.outputs[0, x]
-            self._control_matrix[i, :] = int2binlist(s1, width=nu)
-            self._transition_matrix[i, :] = int2binlist(y, width=n)
 
     @property
     def num_input_bits(self) -> int:
@@ -290,30 +253,66 @@ class ConvolutionalCode:
         """
         return self._finite_state_machine
 
-    @property
-    def state_matrix(self) -> npt.NDArray[np.int_]:
+    def state_space_representation(
+        self,
+    ) -> tuple[
+        npt.NDArray[np.int_],
+        npt.NDArray[np.int_],
+        npt.NDArray[np.int_],
+        npt.NDArray[np.int_],
+    ]:
         r"""
-        The state matrix $A$ of the state-space representation. This is a $\nu \times \nu$ array of integers in $\\{ 0, 1 \\}$.
-        """
-        return self._state_matrix
+        Returns the *state-space representation* of the code. Let
+        $$
+        \begin{aligned}
+            \mathbf{u}_t & = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\\\
+            \mathbf{v}_t & = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)}), \\\\
+            \mathbf{s}_t & = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)}),
+        \end{aligned}
+        $$
+        be the input block, output block, and state, respectively, all defined at time instant $t$. Then,
+        $$
+        \begin{aligned}
+            \mathbf{s}\_{t+1} & = \mathbf{s}_t \mathbf{A} + \mathbf{u}_t \mathbf{B}, \\\\
+            \mathbf{v}\_{t} & = \mathbf{s}_t \mathbf{C} + \mathbf{u}\_t \mathbf{D},
+        \end{aligned}
+        $$
+        where $\mathbf{A}$ is the $\nu \times \nu$ *state matrix*, $\mathbf{B}$ is the $k \times \nu$ *control matrix*, $\mathbf{C}$ is the $\nu \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
 
-    @property
-    def control_matrix(self) -> npt.NDArray[np.int_]:
-        r"""
-        The control matrix $B$ of the state-space representation. This is a $k \times \nu$ array of integers in $\\{ 0, 1 \\}$.
-        """
-        return self._control_matrix
+        Returns:
+            The state matrix $\mathbf{A}$, control matrix $\mathbf{B}$, observation matrix $\mathbf{C}$, and transition matrix $\mathbf{D}$ of the code.
 
-    @property
-    def observation_matrix(self) -> npt.NDArray[np.int_]:
-        r"""
-        The observation matrix $C$ of the state-space representation. This is a $\nu \times n$ array of integers in $\\{ 0, 1 \\}$.
+        Examples:
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
+            >>> state_matrix, control_matrix, observation_matrix, transition_matrix = code.state_space_representation()
+            >>> state_matrix
+            array([[0, 1],
+                   [0, 0]])
+            >>> control_matrix
+            array([[1, 0]])
+            >>> observation_matrix
+            array([[0, 1],
+                   [1, 1]])
+            >>> transition_matrix
+            array([[1, 1]])
         """
-        return self._observation_matrix
+        k = self.num_input_bits
+        n = self.num_output_bits
+        nu = self.overall_constraint_length
+        fsm = self.finite_state_machine
 
-    @property
-    def transition_matrix(self) -> npt.NDArray[np.int_]:
-        r"""
-        The transition matrix $D$ of the state-space representation. This is a $k \times n$ array of integers in $\\{ 0, 1 \\}$.
-        """
-        return self._transition_matrix
+        state_matrix = np.empty((nu, nu), dtype=int)
+        observation_matrix = np.empty((nu, n), dtype=int)
+        for i in range(nu):
+            s0 = 2**i
+            state_matrix[i, :] = int2binlist(fsm.next_states[s0, 0], width=nu)
+            observation_matrix[i, :] = int2binlist(fsm.outputs[s0, 0], width=n)
+
+        control_matrix = np.empty((k, nu), dtype=int)
+        transition_matrix = np.empty((k, n), dtype=int)
+        for i in range(k):
+            x = 2**i
+            control_matrix[i, :] = int2binlist(fsm.next_states[0, x], width=nu)
+            transition_matrix[i, :] = int2binlist(fsm.outputs[0, x], width=n)
+
+        return state_matrix, control_matrix, observation_matrix, transition_matrix
