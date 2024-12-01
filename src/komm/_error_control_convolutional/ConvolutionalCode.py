@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 from typing import Optional
 
 import numpy as np
@@ -251,6 +251,7 @@ class ConvolutionalCode:
         """
         return self._finite_state_machine
 
+    @cache
     def state_space_representation(
         self,
     ) -> tuple[
