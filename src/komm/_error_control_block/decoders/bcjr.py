@@ -19,11 +19,9 @@ def decode_bcjr(
     def metric_function(y: int, z: float) -> float:
         return 2.0 * snr * np.dot(code.cache_polar[y], z)
 
-    n0, mu, fsm = (
-        code.convolutional_code.num_output_bits,
-        code.convolutional_code.memory_order,
-        code.convolutional_code.finite_state_machine,
-    )
+    n0 = code.convolutional_code.num_output_bits
+    mu = code.convolutional_code.memory_order
+    fsm = code.convolutional_code.finite_state_machine()
 
     if code.mode == "direct-truncation":
         initial_state_distribution = np.eye(1, fsm.num_states, 0)

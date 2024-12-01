@@ -19,12 +19,10 @@ def decode_viterbi(
     if code.mode == "tail-biting":
         raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
-    k0, n0, mu, fsm = (
-        code.convolutional_code.num_input_bits,
-        code.convolutional_code.num_output_bits,
-        code.convolutional_code.memory_order,
-        code.convolutional_code.finite_state_machine,
-    )
+    k0 = code.convolutional_code.num_input_bits
+    n0 = code.convolutional_code.num_output_bits
+    mu = code.convolutional_code.memory_order
+    fsm = code.convolutional_code.finite_state_machine()
 
     initial_metrics = np.full(fsm.num_states, fill_value=np.inf)
     initial_metrics[0] = 0.0

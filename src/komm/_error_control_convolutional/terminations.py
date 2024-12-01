@@ -104,7 +104,7 @@ class ZeroTermination(TerminationStrategy):
 @frozen
 class TailBiting(TerminationStrategy):
     def initial_state(self, input_bits: ArrayIntLike) -> int:
-        fsm = self.convolutional_code.finite_state_machine
+        fsm = self.convolutional_code.finite_state_machine()
         nu = self.convolutional_code.overall_constraint_length
         _, zs_response = fsm.process(input_bits, initial_state=0)
         zs_response = int2binlist(zs_response, width=nu)

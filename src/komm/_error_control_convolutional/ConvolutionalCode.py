@@ -135,7 +135,6 @@ class ConvolutionalCode:
             self.feedback_polynomials = vecBinaryPolynomial(feedback_polynomials)
 
         self._feedback_polynomials_parameters = feedback_polynomials
-        self._setup_finite_state_machine_direct_form()
 
     def __repr__(self) -> str:
         def vec_str(arr: npt.NDArray[np.object_]) -> str:
@@ -145,52 +144,6 @@ class ConvolutionalCode:
         if self._feedback_polynomials_parameters is not None:
             args += f", feedback_polynomials={vec_str(self.feedback_polynomials)}"
         return f"{self.__class__.__name__}({args})"
-
-    def _setup_finite_state_machine_direct_form(self) -> None:
-        n, k, nu = (
-            self.num_output_bits,
-            self.num_input_bits,
-            self.overall_constraint_length,
-        )
-
-        x_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
-        s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), x_indices)
-
-        feedforward_taps: list[npt.NDArray[np.object_]] = []
-        for j in range(n):
-            taps = np.concatenate([
-                self.feedforward_polynomials[i, j].exponents() + x_indices[i]
-                for i in range(k)
-            ])
-            feedforward_taps.append(taps)
-
-        feedback_taps: list[npt.NDArray[np.object_]] = []
-        for i in range(k):
-            taps = (
-                BinaryPolynomial(0b1) + self.feedback_polynomials[i]
-            ).exponents() + x_indices[i]
-            feedback_taps.append(taps)
-
-        bits = np.empty(k + nu, dtype=int)
-        next_states = np.empty((2**nu, 2**k), dtype=int)
-        outputs = np.empty((2**nu, 2**k), dtype=int)
-
-        for s, x in np.ndindex(2**nu, 2**k):
-            bits[s_indices] = int2binlist(s, width=nu)
-            bits[x_indices] = int2binlist(x, width=k)
-            bits[x_indices] ^= [
-                np.count_nonzero(bits[feedback_taps[i]]) % 2 for i in range(k)
-            ]
-
-            next_state_bits = bits[s_indices - 1]
-            output_bits = [
-                np.count_nonzero(bits[feedforward_taps[j]]) % 2 for j in range(n)
-            ]
-
-            next_states[s, x] = binlist2int(next_state_bits)
-            outputs[s, x] = binlist2int(output_bits)
-
-        self._finite_state_machine = FiniteStateMachine(next_states, outputs)
 
     @property
     def num_input_bits(self) -> int:
@@ -244,12 +197,57 @@ class ConvolutionalCode:
         """
         return int(np.max(self.constraint_lengths))
 
-    @property
+    @cache
     def finite_state_machine(self) -> FiniteStateMachine:
         r"""
-        The finite-state machine of the code.
+        Returns the [finite-state machine](/ref/FiniteStateMachine) of the code, in direct form.
+
+        Returns:
+            The finite-state machine of the code.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
+            >>> code.finite_state_machine()
+            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
         """
-        return self._finite_state_machine
+        n = self.num_output_bits
+        k = self.num_input_bits
+        nu = self.overall_constraint_length
+
+        x_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
+        s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), x_indices)
+
+        ff_taps: list[npt.NDArray[np.object_]] = []
+        for j in range(n):
+            taps = np.concatenate([
+                self.feedforward_polynomials[i, j].exponents() + x_indices[i]
+                for i in range(k)
+            ])
+            ff_taps.append(taps)
+
+        fb_taps: list[npt.NDArray[np.object_]] = []
+        for i in range(k):
+            taps = (
+                BinaryPolynomial(0b1) + self.feedback_polynomials[i]
+            ).exponents() + x_indices[i]
+            fb_taps.append(taps)
+
+        bits = np.empty(k + nu, dtype=int)
+        next_states = np.empty((2**nu, 2**k), dtype=int)
+        outputs = np.empty((2**nu, 2**k), dtype=int)
+
+        for s, x in np.ndindex(2**nu, 2**k):
+            bits[s_indices] = int2binlist(s, width=nu)
+            bits[x_indices] = int2binlist(x, width=k)
+            bits[x_indices] ^= [np.sum(bits[fb_taps[i]]) % 2 for i in range(k)]
+
+            next_state_bits = bits[s_indices - 1]
+            output_bits = [np.sum(bits[ff_taps[j]]) % 2 for j in range(n)]
+
+            next_states[s, x] = binlist2int(next_state_bits)
+            outputs[s, x] = binlist2int(output_bits)
+
+        return FiniteStateMachine(next_states, outputs)
 
     @cache
     def state_space_representation(
@@ -298,7 +296,7 @@ class ConvolutionalCode:
         k = self.num_input_bits
         n = self.num_output_bits
         nu = self.overall_constraint_length
-        fsm = self.finite_state_machine
+        fsm = self.finite_state_machine()
 
         state_matrix = np.empty((nu, nu), dtype=int)
         observation_matrix = np.empty((nu, n), dtype=int)

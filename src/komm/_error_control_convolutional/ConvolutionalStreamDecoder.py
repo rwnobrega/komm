@@ -43,7 +43,7 @@ class ConvolutionalStreamDecoder:
     memory: MetricMemory = field(init=False)
 
     def __attrs_post_init__(self):
-        fsm = self.convolutional_code.finite_state_machine
+        fsm = self.convolutional_code.finite_state_machine()
         num_states, traceback_length = fsm.num_states, self.traceback_length
         self.memory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
@@ -64,11 +64,9 @@ class ConvolutionalStreamDecoder:
         raise ValueError(f"input type '{self.input_type}' is not supported")
 
     def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
-        n, k, fsm = (
-            self.convolutional_code.num_output_bits,
-            self.convolutional_code.num_input_bits,
-            self.convolutional_code.finite_state_machine,
-        )
+        n = self.convolutional_code.num_output_bits
+        k = self.convolutional_code.num_input_bits
+        fsm = self.convolutional_code.finite_state_machine()
         input_sequence_hat = fsm.viterbi_streaming(
             observed_sequence=np.reshape(in0, shape=(-1, n)),
             metric_function=self.metric_function,
