@@ -35,11 +35,9 @@ class ConvolutionalStreamEncoder:
     state: int = field(default=0)
 
     def __call__(self, in0: ArrayIntLike) -> npt.NDArray[np.int_]:
-        n, k, fsm = (
-            self.convolutional_code.num_output_bits,
-            self.convolutional_code.num_input_bits,
-            self.convolutional_code.finite_state_machine,
-        )
+        n = self.convolutional_code.num_output_bits
+        k = self.convolutional_code.num_input_bits
+        fsm = self.convolutional_code.finite_state_machine()
         output_sequence, self.state = fsm.process(
             input_sequence=pack(in0, width=k),
             initial_state=self.state,

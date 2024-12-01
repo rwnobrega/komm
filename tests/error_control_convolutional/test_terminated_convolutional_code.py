@@ -106,6 +106,7 @@ def test_terminated_convolutional_code_tail_biting_lin_costello(
 def test_terminated_convolutional_code_zero_termination(convolutional_args):
     convolutional_code = komm.ConvolutionalCode(*convolutional_args)
     k = convolutional_code.num_input_bits
+    fsm = convolutional_code.finite_state_machine()
     code = komm.TerminatedConvolutionalCode(convolutional_code, 5, "zero-termination")
     # Assert that the final state is always 0.
     for message_int in range(2**code.dimension):
@@ -113,7 +114,7 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
         assert isinstance(code._strategy, ZeroTermination)
         tail = message @ code._strategy._tail_projector % 2
         input_sequence = komm.pack(np.concatenate([message, tail]), width=k)
-        _, fs = convolutional_code._finite_state_machine.process(input_sequence, 0)
+        _, fs = fsm.process(input_sequence, 0)
         assert fs == 0
 
 

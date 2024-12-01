@@ -111,7 +111,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @override
     def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
         n0 = self.convolutional_code.num_output_bits
-        fsm = self.convolutional_code.finite_state_machine
+        fsm = self.convolutional_code.finite_state_machine()
         input_bits = self._strategy.pre_process_input(u)
         initial_state = self._strategy.initial_state(input_bits)
         output_sequence, _ = fsm.process(input_bits, initial_state)
