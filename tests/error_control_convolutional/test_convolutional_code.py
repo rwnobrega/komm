@@ -43,19 +43,21 @@ def test_convolutional_code_basic():
     np.testing.assert_array_equal(code.overall_constraint_length, 2)
 
 
-def test_convolutional_code_space_state_representation():
+def test_convolutional_code_state_space_representation():
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0o7, 0o5]])
-    np.testing.assert_array_equal(code.state_matrix, [[0, 1], [0, 0]])
-    np.testing.assert_array_equal(code.control_matrix, [[1, 0]])
-    np.testing.assert_array_equal(code.observation_matrix, [[1, 0], [1, 1]])
-    np.testing.assert_array_equal(code.transition_matrix, [[1, 1]])
+    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
+    np.testing.assert_array_equal(A_mat, [[0, 1], [0, 0]])
+    np.testing.assert_array_equal(B_mat, [[1, 0]])
+    np.testing.assert_array_equal(C_mat, [[1, 0], [1, 1]])
+    np.testing.assert_array_equal(D_mat, [[1, 1]])
 
     # Heide Gluesing-Luerssen: On the Weight Distribution of Convolutional Codes, p. 9.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1111, 0b1101]])
-    np.testing.assert_array_equal(code.state_matrix, [[0, 1, 0], [0, 0, 1], [0, 0, 0]])
-    np.testing.assert_array_equal(code.control_matrix, [[1, 0, 0]])
-    np.testing.assert_array_equal(code.observation_matrix, [[1, 0], [1, 1], [1, 1]])
-    np.testing.assert_array_equal(code.transition_matrix, [[1, 1]])
+    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
+    np.testing.assert_array_equal(A_mat, [[0, 1, 0], [0, 0, 1], [0, 0, 0]])
+    np.testing.assert_array_equal(B_mat, [[1, 0, 0]])
+    np.testing.assert_array_equal(C_mat, [[1, 0], [1, 1], [1, 1]])
+    np.testing.assert_array_equal(D_mat, [[1, 1]])
 
 
 @pytest.mark.parametrize(
@@ -67,16 +69,13 @@ def test_convolutional_code_space_state_representation():
         ([[0o27, 0o31]], [0o27]),
     ],
 )
-def test_convolutional_space_state_representation_2(
+def test_convolutional_state_space_representation_2(
     feedforward_polynomials, feedback_polynomials
 ):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     n, k, nu = code.num_output_bits, code.num_input_bits, code.overall_constraint_length
 
-    A = code.state_matrix
-    B = code.control_matrix
-    C = code.observation_matrix
-    D = code.transition_matrix
+    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
 
     input_bits = np.random.randint(2, size=100 * k)
     output_bits = np.empty(n * input_bits.size // k, dtype=int)
@@ -84,7 +83,7 @@ def test_convolutional_space_state_representation_2(
     s = np.zeros(nu, dtype=int)
 
     for t, u in enumerate(np.reshape(input_bits, shape=(-1, k))):
-        s, v = (np.dot(s, A) + np.dot(u, B)) % 2, (np.dot(s, C) + np.dot(u, D)) % 2
+        s, v = (s @ A_mat + u @ B_mat) % 2, (s @ C_mat + u @ D_mat) % 2
         output_bits[t * n : (t + 1) * n] = v
 
     convolutional_encoder = komm.ConvolutionalStreamEncoder(code)

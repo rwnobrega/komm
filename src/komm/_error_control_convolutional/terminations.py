@@ -91,8 +91,7 @@ class ZeroTermination(TerminationStrategy):
     def _tail_projector(self) -> npt.NDArray[np.int_]:
         h = self.num_blocks
         mu = self.convolutional_code.memory_order
-        A_mat = self.convolutional_code.state_matrix
-        B_mat = self.convolutional_code.control_matrix
+        A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
         AnB_message = np.vstack(
             [B_mat @ matrix_power(A_mat, j) % 2 for j in range(mu + h - 1, mu - 1, -1)]
         )
@@ -127,5 +126,5 @@ class TailBiting(TerminationStrategy):
     def _zs_multiplier(self) -> npt.NDArray[np.int_]:
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
-        A_mat = self.convolutional_code.state_matrix
+        A_mat, _, _, _ = self.convolutional_code.state_space_representation()
         return pseudo_inverse(matrix_power(A_mat, h) + np.eye(nu, dtype=int) % 2)
