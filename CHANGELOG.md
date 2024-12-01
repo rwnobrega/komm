@@ -3,7 +3,7 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
-## v0.10.0
+## v0.10.0 (2024-11-29)
 
 ### Added
 
