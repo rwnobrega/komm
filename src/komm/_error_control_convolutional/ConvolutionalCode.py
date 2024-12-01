@@ -11,9 +11,9 @@ from .._util.bit_operations import binlist2int, int2binlist
 
 class ConvolutionalCode:
     r"""
-    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The element in row $i$ and column $j$ of $P(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $q(D)$ is denoted by $q_i(D)$; they are [binary polynomials](/ref/BinaryPolynomial) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
+    Binary convolutional code. It is characterized by a *matrix of feedforward polynomials* $\mathbf{P}(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $\mathbf{q}(D)$, of length $k$. The element in row $i$ and column $j$ of $\mathbf{P}(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $\mathbf{q}(D)$ is denoted by $q_i(D)$; they are [binary polynomials](/ref/BinaryPolynomial) in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.
 
-    The *transfer function matrix* (also known as *transform-domain generator matrix*) $G(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
+    The *transfer function matrix* (also known as *transform-domain generator matrix*) $\mathbf{G}(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
     $$
         g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
     $$
@@ -38,14 +38,14 @@ class ConvolutionalCode:
     For more details, see <cite>JZ15</cite> and <cite>LC04, Chs. 11, 12</cite>.
 
     Parameters:
-        feedforward_polynomials (Array2D[BinaryPolynomial, int]): The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        feedforward_polynomials: The matrix of feedforward polynomials $\mathbf{P}(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
-        feedback_polynomials (Optional[Array1D[BinaryPolynomial, int]]): The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
+        feedback_polynomials: The vector of feedback polynomials $\mathbf{q}(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
     Examples:
         The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
         $$
-            G(D) =
+            \mathbf{G}(D) =
             \begin{bmatrix}
                 D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
             \end{bmatrix},
@@ -62,7 +62,7 @@ class ConvolutionalCode:
 
         The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
         $$
-            G(D) =
+            \mathbf{G}(D) =
             \begin{bmatrix}
                 D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
                 0  &  D^3 + D  &  D^3 + D^2 + 1
@@ -80,7 +80,7 @@ class ConvolutionalCode:
 
         The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
         $$
-            G(D) =
+            \mathbf{G}(D) =
             \begin{bmatrix}
                 1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
             \end{bmatrix},
@@ -95,31 +95,29 @@ class ConvolutionalCode:
         >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
         (2, 1, 4)
 
-    <h2>Tables of convolutional codes</h2>
-
     The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.
 
-    | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
-    | :----------------------: | ------------------------------- |
-    | $(2, 1, 1)$              | `[[0o1, 0o3]]`                  |
-    | $(2, 1, 2)$              | `[[0o5, 0o7]]`                  |
-    | $(2, 1, 3)$              | `[[0o13, 0o17]]`                |
-    | $(2, 1, 4)$              | `[[0o27, 0o31]]`                |
-    | $(2, 1, 5)$              | `[[0o53, 0o75]]`                |
-    | $(2, 1, 6)$              | `[[0o117, 0o155]]`              |
-    | $(2, 1, 7)$              | `[[0o247, 0o371]]`              |
-    | $(2, 1, 8)$              | `[[0o561, 0o753]]`              |
+    | Parameters $(n, k, \nu)$ | Transfer function matrix $\mathbf{G}(D)$ |
+    | :----------------------: | ---------------------------------------- |
+    | $(2, 1, 1)$              | `[[0o1, 0o3]]`                           |
+    | $(2, 1, 2)$              | `[[0o5, 0o7]]`                           |
+    | $(2, 1, 3)$              | `[[0o13, 0o17]]`                         |
+    | $(2, 1, 4)$              | `[[0o27, 0o31]]`                         |
+    | $(2, 1, 5)$              | `[[0o53, 0o75]]`                         |
+    | $(2, 1, 6)$              | `[[0o117, 0o155]]`                       |
+    | $(2, 1, 7)$              | `[[0o247, 0o371]]`                       |
+    | $(2, 1, 8)$              | `[[0o561, 0o753]]`                       |
 
-    | Parameters $(n, k, \nu)$ | Transfer function matrix $G(D)$ |
-    | :----------------------: | ------------------------------- |
-    | $(3, 1, 1)$              | `[[0o1, 0o3, 0o3]]`             |
-    | $(3, 1, 2)$              | `[[0o5, 0o7, 0o7]]`             |
-    | $(3, 1, 3)$              | `[[0o13, 0o15, 0o17]]`          |
-    | $(3, 1, 4)$              | `[[0o25, 0o33, 0o37]]`          |
-    | $(3, 1, 5)$              | `[[0o47, 0o53, 0o75]]`          |
-    | $(3, 1, 6)$              | `[[0o117, 0o127, 0o155]]`       |
-    | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`       |
-    | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`       |
+    | Parameters $(n, k, \nu)$ | Transfer function matrix $\mathbf{G}(D)$ |
+    | :----------------------: | ---------------------------------------- |
+    | $(3, 1, 1)$              | `[[0o1, 0o3, 0o3]]`                      |
+    | $(3, 1, 2)$              | `[[0o5, 0o7, 0o7]]`                      |
+    | $(3, 1, 3)$              | `[[0o13, 0o15, 0o17]]`                   |
+    | $(3, 1, 4)$              | `[[0o25, 0o33, 0o37]]`                   |
+    | $(3, 1, 5)$              | `[[0o47, 0o53, 0o75]]`                   |
+    | $(3, 1, 6)$              | `[[0o117, 0o127, 0o155]]`                |
+    | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`                |
+    | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`                |
     """
 
     def __init__(
@@ -211,7 +209,7 @@ class ConvolutionalCode:
     @cached_property
     def transfer_function_matrix(self) -> npt.NDArray[np.object_]:
         r"""
-        The transfer function matrix $G(D)$ of the code. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
+        The transfer function matrix $\mathbf{G}(D)$ of the code. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """
         transfer_function_matrix = np.empty_like(self.feedforward_polynomials)
         for i, j in np.ndindex(self.feedforward_polynomials.shape):
