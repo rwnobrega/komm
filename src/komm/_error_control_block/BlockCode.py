@@ -57,10 +57,10 @@ class BlockCode(AbstractBlockCode):
 
     def __repr__(self) -> str:
         if self._generator_matrix is not None:
-            args_str = f"generator_matrix={self.generator_matrix.tolist()}"
+            args = f"generator_matrix={self.generator_matrix.tolist()}"
         else:  # self._check_matrix is not None
-            args_str = f"check_matrix={self.check_matrix.tolist()}"
-        return f"{self.__class__.__name__}({args_str})"
+            args = f"check_matrix={self.check_matrix.tolist()}"
+        return f"{self.__class__.__name__}({args})"
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.int_]:
