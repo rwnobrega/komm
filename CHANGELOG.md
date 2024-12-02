@@ -7,8 +7,8 @@
 
 ### Breaking changes
 
-- The property `finite_state_machine` of `ConvolutionalCode` was converted to method.
-- The properties `state_matrix`, `control_matrix`, `observation_matrix`, and `transition_matrix` were removed from `ConvolutionalCode`. The new usage is `state_matrix, control_matrix, observation_matrix, transition_matrix = convolutional_code.state_space_representation()`.
+- Converted property `finite_state_machine` of `ConvolutionalCode` to a method.
+- Removed properties `state_matrix`, `control_matrix`, `observation_matrix`, `transition_matrix` from `ConvolutionalCode`, and replaced them with the method `state_space_representation()`. The new usage is `state_matrix, control_matrix, observation_matrix, transition_matrix = convolutional_code.state_space_representation()`.
 
 ## v0.10.0 (2024-11-29)
 
