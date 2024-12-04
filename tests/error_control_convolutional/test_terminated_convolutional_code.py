@@ -110,7 +110,7 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
     code = komm.TerminatedConvolutionalCode(convolutional_code, 5, "zero-termination")
     # Assert that the final state is always 0.
     for message_int in range(2**code.dimension):
-        message = komm.int2binlist(message_int, width=code.dimension)
+        message = komm.int_to_bits(message_int, width=code.dimension)
         assert isinstance(code._strategy, ZeroTermination)
         tail = message @ code._strategy._tail_projector % 2
         input_sequence = komm.pack(np.concatenate([message, tail]), width=k)
@@ -134,7 +134,7 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
     for i in range(2**code.dimension):
-        message = komm.int2binlist(i, width=code.dimension)
+        message = komm.int_to_bits(i, width=code.dimension)
         enc_mapping_1 = code.enc_mapping
         enc_mapping_2 = lambda u: komm.BlockCode.enc_mapping(code, u)
         np.testing.assert_array_equal(enc_mapping_1(message), enc_mapping_2(message))

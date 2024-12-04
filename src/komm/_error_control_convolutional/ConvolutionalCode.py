@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import FiniteStateMachine
-from .._util.bit_operations import binlist2int, int2binlist
+from .._util.bit_operations import bits_to_int, int_to_bits
 
 
 class ConvolutionalCode:
@@ -237,15 +237,15 @@ class ConvolutionalCode:
         outputs = np.empty((2**nu, 2**k), dtype=int)
 
         for s, x in np.ndindex(2**nu, 2**k):
-            bits[s_indices] = int2binlist(s, width=nu)
-            bits[x_indices] = int2binlist(x, width=k)
+            bits[s_indices] = int_to_bits(s, width=nu)
+            bits[x_indices] = int_to_bits(x, width=k)
             bits[x_indices] ^= [np.sum(bits[fb_taps[i]]) % 2 for i in range(k)]
 
             next_state_bits = bits[s_indices - 1]
             output_bits = [np.sum(bits[ff_taps[j]]) % 2 for j in range(n)]
 
-            next_states[s, x] = binlist2int(next_state_bits)
-            outputs[s, x] = binlist2int(output_bits)
+            next_states[s, x] = bits_to_int(next_state_bits)
+            outputs[s, x] = bits_to_int(output_bits)
 
         return FiniteStateMachine(next_states, outputs)
 
@@ -302,14 +302,14 @@ class ConvolutionalCode:
         observation_matrix = np.empty((nu, n), dtype=int)
         for i in range(nu):
             s0 = 2**i
-            state_matrix[i, :] = int2binlist(fsm.next_states[s0, 0], width=nu)
-            observation_matrix[i, :] = int2binlist(fsm.outputs[s0, 0], width=n)
+            state_matrix[i, :] = int_to_bits(fsm.next_states[s0, 0], width=nu)
+            observation_matrix[i, :] = int_to_bits(fsm.outputs[s0, 0], width=n)
 
         control_matrix = np.empty((k, nu), dtype=int)
         transition_matrix = np.empty((k, n), dtype=int)
         for i in range(k):
             x = 2**i
-            control_matrix[i, :] = int2binlist(fsm.next_states[0, x], width=nu)
-            transition_matrix[i, :] = int2binlist(fsm.outputs[0, x], width=n)
+            control_matrix[i, :] = int_to_bits(fsm.next_states[0, x], width=nu)
+            transition_matrix[i, :] = int_to_bits(fsm.outputs[0, x], width=n)
 
         return state_matrix, control_matrix, observation_matrix, transition_matrix

@@ -8,7 +8,7 @@ from numpy.linalg import matrix_power
 
 from .._error_control_block import BlockCode
 from .._types import ArrayIntLike
-from .._util.bit_operations import binlist2int, int2binlist, pack
+from .._util.bit_operations import bits_to_int, int_to_bits, pack
 from .._util.matrices import pseudo_inverse
 from .ConvolutionalCode import ConvolutionalCode
 
@@ -107,8 +107,10 @@ class TailBiting(TerminationStrategy):
         fsm = self.convolutional_code.finite_state_machine()
         nu = self.convolutional_code.overall_constraint_length
         _, zs_response = fsm.process(input_bits, initial_state=0)
-        zs_response = int2binlist(zs_response, width=nu)
-        return binlist2int(zs_response @ self._zs_multiplier % 2)
+        zs_response = int_to_bits(zs_response, width=nu)
+        initial_state = bits_to_int(zs_response @ self._zs_multiplier % 2)
+        assert isinstance(initial_state, int)
+        return initial_state
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
         n = self.convolutional_code.num_input_bits

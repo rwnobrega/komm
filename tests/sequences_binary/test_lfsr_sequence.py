@@ -17,7 +17,7 @@ def test_lfsr_sequence():
     lfsr = komm.LFSRSequence(feedback_polynomial=0b10000001001)
     np.testing.assert_array_equal(
         lfsr.bit_sequence[:200],
-        komm.int2binlist(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
+        komm.int_to_bits(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
     )
 
 

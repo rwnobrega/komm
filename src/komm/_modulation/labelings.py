@@ -3,7 +3,7 @@ from typing import Any, Literal, TypeVar, cast
 import numpy as np
 import numpy.typing as npt
 
-from .._util.bit_operations import int2binlist
+from .._util.bit_operations import int_to_bits
 
 T = TypeVar("T", bound=npt.NDArray[np.number[Any]])
 
@@ -33,7 +33,7 @@ def labeling_natural(order: int) -> npt.NDArray[np.int_]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
-        labeling[i, :] = int2binlist(i, m)
+        labeling[i, :] = int_to_bits(i, m)
     return labeling
 
 
@@ -41,7 +41,7 @@ def labeling_reflected(order: int) -> npt.NDArray[np.int_]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
-        labeling[i, :] = int2binlist(i ^ (i >> 1), m)
+        labeling[i, :] = int_to_bits(i ^ (i >> 1), m)
     return labeling
 
 

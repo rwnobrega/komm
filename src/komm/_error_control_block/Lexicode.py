@@ -6,7 +6,7 @@ from attrs import field, frozen
 from tqdm import tqdm
 
 from komm._error_control_block import BlockCode
-from komm._util.bit_operations import int2binlist
+from komm._util.bit_operations import int_to_bits
 
 
 @frozen(eq=False)
@@ -65,5 +65,5 @@ class Lexicode(BlockCode):
         k = len(codewords).bit_length() - 1
         generator_matrix = np.empty((k, n), dtype=int)
         for i in range(k):
-            generator_matrix[i] = list(reversed(int2binlist(codewords[1 << i], n)))
+            generator_matrix[i] = list(reversed(int_to_bits(codewords[1 << i], n)))
         return generator_matrix

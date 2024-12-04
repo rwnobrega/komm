@@ -1,6 +1,6 @@
 from typing import Literal
 
-from .._util.bit_operations import binlist2int, int2binlist
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .BinarySequence import BinarySequence
 from .sequences import hadamard_matrix
 
@@ -92,7 +92,7 @@ class WalshHadamardSequence(BinarySequence):
         elif ordering == "sequency":
             width = (length - 1).bit_length()
             index_gray = index ^ (index >> 1)
-            natural_index = binlist2int((int2binlist(index_gray, width))[::-1])
+            natural_index = bits_to_int((int_to_bits(index_gray, width))[::-1])
         elif ordering == "dyadic":
             raise NotImplementedError
 

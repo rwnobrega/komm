@@ -8,7 +8,7 @@ from typing_extensions import override
 
 from .._error_control_block.BlockCode import BlockCode
 from .._types import ArrayIntLike
-from .._util.bit_operations import int2binlist, unpack
+from .._util.bit_operations import int_to_bits, unpack
 from .ConvolutionalCode import ConvolutionalCode
 from .terminations import (
     DirectTruncation,
@@ -131,7 +131,7 @@ class TerminatedConvolutionalCode(BlockCode):
     @cached_property
     def cache_bit(self) -> npt.NDArray[np.int_]:
         n0 = self.convolutional_code.num_output_bits
-        return np.array([int2binlist(y, width=n0) for y in range(2**n0)])
+        return np.array([int_to_bits(y, width=n0) for y in range(2**n0)])
 
     @cached_property
     def cache_polar(self) -> npt.NDArray[np.int_]:

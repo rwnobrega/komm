@@ -5,7 +5,7 @@ import numpy.typing as npt
 from attrs import field, mutable
 
 from .._finite_state_machine.FiniteStateMachine import MetricMemory
-from .._util.bit_operations import int2binlist, unpack
+from .._util.bit_operations import int_to_bits, unpack
 from .ConvolutionalCode import ConvolutionalCode
 
 
@@ -54,7 +54,7 @@ class ConvolutionalStreamDecoder:
     @cached_property
     def cache_bit(self) -> npt.NDArray[np.int_]:
         n = self.convolutional_code.num_output_bits
-        return np.array([int2binlist(y, width=n) for y in range(2**n)])
+        return np.array([int_to_bits(y, width=n) for y in range(2**n)])
 
     def metric_function(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":

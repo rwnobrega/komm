@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 
-from ..._util import binlist2int
+from ..._util import bits_to_int
 from ..BlockCode import BlockCode
 from ..registry import RegistryBlockDecoder
 
@@ -12,7 +12,7 @@ def decode_syndrome_table(
 ) -> npt.NDArray[np.int_]:
     coset_leaders = code.coset_leaders()
     s = np.dot(code.check_matrix, r) % 2
-    e_hat = coset_leaders[binlist2int(s)]
+    e_hat = coset_leaders[bits_to_int(s)]
     v_hat = np.bitwise_xor(r, e_hat)
     return v_hat
 

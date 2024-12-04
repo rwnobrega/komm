@@ -8,7 +8,7 @@ from attrs import field, frozen
 from typing_extensions import Self
 
 from .._types import ArrayIntLike
-from .._util.bit_operations import binlist2int, int2binlist
+from .._util.bit_operations import bits_to_int, int_to_bits
 from . import domain, ring
 
 T = TypeVar("T", bound=ring.RingElement)
@@ -69,7 +69,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
-        return cls(binlist2int(coefficients))
+        return cls(bits_to_int(coefficients))
 
     @classmethod
     def from_exponents(cls, exponents: ArrayIntLike) -> Self:
@@ -83,7 +83,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
-        return cls(binlist2int(np.bincount(exponents)))
+        return cls(bits_to_int(np.bincount(exponents)))
 
     def __int__(self) -> int:
         return self.value
@@ -115,7 +115,7 @@ class BinaryPolynomial:
 
     def __mul__(self, other: Self) -> Self:
         coeffs = np.convolve(self.coefficients(), other.coefficients()) % 2
-        return self.__class__(binlist2int(coeffs))
+        return self.__class__(bits_to_int(coeffs))
 
     def __rmul__(self, other: int) -> Self:
         if other % 2 == 0:
@@ -172,7 +172,7 @@ class BinaryPolynomial:
             >>> poly.coefficients(width=8)
             array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return int2binlist(self.value, width=width)
+        return int_to_bits(self.value, width=width or max(self.degree + 1, 1))
 
     def exponents(self) -> npt.NDArray[np.int_]:
         r"""

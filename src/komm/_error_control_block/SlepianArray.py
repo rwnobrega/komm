@@ -5,7 +5,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 from tqdm import tqdm
 
-from .._util.bit_operations import binlist2int, int2binlist
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .AbstractBlockCode import AbstractBlockCode
 
 
@@ -46,12 +46,12 @@ class SlepianArray:
                     leader = np.zeros(n, dtype=int)
                     leader[list(idx)] = 1
                     syndrome = self.code.chk_mapping(leader)
-                    i = binlist2int(syndrome)
+                    i = bits_to_int(syndrome)
                     if leaders[i] != -1:
                         continue
                     taken += 1
                     pbar.update(1)
-                    leaders[i] = binlist2int(leader)
+                    leaders[i] = bits_to_int(leader)
                     if taken == 2**m:
                         return leaders
 
@@ -82,8 +82,8 @@ class SlepianArray:
             100100 000111 110001 010010 101010 001001 111111 011100
         """
         n, k = self.code.length, self.code.dimension
-        leader = int2binlist(self._leaders[i], n)
-        message = int2binlist(j, k)
+        leader = int_to_bits(self._leaders[i], n)
+        message = int_to_bits(j, k)
         codeword = self.code.enc_mapping(message)
         return np.array(leader + codeword) % 2
 

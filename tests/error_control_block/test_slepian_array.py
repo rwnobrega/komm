@@ -17,9 +17,9 @@ def test_standard_array_mws():
     )
     messages = [[0, 0], [1, 0], [0, 1], [1, 1]]
     for j, (message, codeword) in enumerate(zip(messages, codewords)):
-        np.testing.assert_array_equal(komm.int2binlist(j, 2), message)
+        np.testing.assert_array_equal(komm.int_to_bits(j, 2), message)
         np.testing.assert_array_equal(code.enc_mapping(message), codeword)
     syndromes = [[0, 0], [1, 0], [0, 1], [1, 1]]
     for i, (syndrome, leader) in enumerate(zip(syndromes, leaders)):
-        np.testing.assert_array_equal(komm.int2binlist(i, 2), syndrome)
+        np.testing.assert_array_equal(komm.int_to_bits(i, 2), syndrome)
         np.testing.assert_array_equal(code.chk_mapping(leader), syndrome)

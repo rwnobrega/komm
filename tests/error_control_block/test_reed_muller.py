@@ -17,7 +17,7 @@ def test_reed_muller_code_2_4_generator_matrix():
     np.testing.assert_array_equal(
         code.generator_matrix,
         [
-            komm.int2binlist(i)
+            komm.int_to_bits(i, width=16)
             # fmt: off
             for i in [0x8888, 0xA0A0, 0xAA00, 0xC0C0, 0xCC00, 0xF000, 0xAAAA, 0xCCCC, 0xF0F0, 0xFF00, 0xFFFF]
             # fmt: on

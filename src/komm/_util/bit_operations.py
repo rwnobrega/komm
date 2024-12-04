@@ -1,61 +1,88 @@
-from typing import Optional
+from typing import cast
 
 import numpy as np
 import numpy.typing as npt
 
 from .._types import ArrayIntLike
 
-# TODO: Rename binlist2int and int2binlist to something better.
-# TODO: Vectorize those functions (e.g., axis=1).
 
-
-def binlist2int(binlist: ArrayIntLike) -> int:
+def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.int_]:
     r"""
     Converts a bit array to its integer representation (LSB first).
 
     Parameters:
-        binlist: A list or array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the output integer.
+        input: An $N$-dimensional array of $0$s and $1$s. The least significant bit (LSB) is the first element in the last dimension.
 
     Returns:
-        integer: The integer representation of the input bit array.
+        An integer or an $(N-1)$-dimensional array of integers. The last dimension of the input is collapsed into an integer representation while all preceding dimensions are preserved.
 
     Examples:
-        >>> komm.binlist2int([0, 0, 0, 0, 1])
+        >>> komm.bits_to_int([0, 0, 0, 0, 1])
         16
 
-        >>> komm.binlist2int([0, 1, 0, 1, 1])
+        >>> komm.bits_to_int([0, 1, 0, 1, 1])
         26
 
-        >>> komm.binlist2int([0, 1, 0, 1, 1, 0, 0, 0])
+        >>> komm.bits_to_int([0, 1, 0, 1, 1, 0, 0, 0])
         26
+
+        >>> komm.bits_to_int([[0, 0], [1, 0], [0, 1], [1, 1]])  # Each row is independently converted to an integer
+        array([0, 1, 2, 3])
     """
-    return sum(1 << i for (i, b) in enumerate(binlist) if b != 0)
+    if np.ndim(input) > 1:
+        return np.apply_along_axis(bits_to_int, -1, input)
+    input = np.asarray(input, dtype=np.uint8)
+    packed = np.packbits(input, bitorder="little")
+    return int.from_bytes(packed, byteorder="little")
 
 
-def int2binlist(integer: int, width: Optional[int] = None) -> npt.NDArray[np.int_]:
+def int_to_bits(input: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
     r"""
-    Converts an integer to its bit array representation (LSB first).
+    Converts an integer, or array of integers, to their bit representations (LSB first).
 
     Parameters:
-        integer: The input integer. May be any nonnegative integer.
-        width: If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
+        input: An integer or an $N$-dimensional array of integers.
+
+        width: The width of the bit representation.
 
     Returns:
-        binlist (Array1D[int]): An array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.
+        An $(N+1)$-dimensional array of $0$s and $1$s, where the last dimension contains the bit representation of the input, with the least significant bit (LSB) as the first element.
 
     Examples:
-        >>> komm.int2binlist(16)
+        >>> komm.int_to_bits(16, width=5)
         array([0, 0, 0, 0, 1])
 
-        >>> komm.int2binlist(26)
+        >>> komm.int_to_bits(26, width=5)
         array([0, 1, 0, 1, 1])
 
-        >>> komm.int2binlist(26, width=8)
+        >>> komm.int_to_bits(26, width=8)
         array([0, 1, 0, 1, 1, 0, 0, 0])
+
+        >>> komm.int_to_bits([0, 1, 2, 3], width=2)
+        array([[0, 0],
+               [1, 0],
+               [0, 1],
+               [1, 1]])
+
+        >>> komm.int_to_bits([0, 1, 2, 3], width=4)
+        array([[0, 0, 0, 0],
+               [1, 0, 0, 0],
+               [0, 1, 0, 0],
+               [1, 1, 0, 0]])
+
+        >>> komm.int_to_bits([[0, 1], [2, 3]], width=2)
+        array([[[0, 0],
+                [1, 0]],
+        <BLANKLINE>
+               [[0, 1],
+                [1, 1]]])
     """
-    if width is None:
-        width = max(integer.bit_length(), 1)
-    return np.array([(integer >> i) & 1 for i in range(width)], dtype=int)
+    if np.ndim(input) > 0:
+        input = np.asarray(input, dtype=object)
+        bits = np.array([int_to_bits(x, width) for x in input.flat])
+        return bits.reshape(input.shape + (width,))
+    input = cast(int, input)
+    return np.array([(input >> i) & 1 for i in range(width)])
 
 
 def pack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
@@ -76,7 +103,7 @@ def pack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
         >>> komm.pack([0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0], width=8)
         array([16, 26])
     """
-    return np.apply_along_axis(binlist2int, 1, np.reshape(bit_array, shape=(-1, width)))
+    return np.apply_along_axis(bits_to_int, 1, np.reshape(bit_array, shape=(-1, width)))
 
 
 def unpack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
@@ -97,4 +124,4 @@ def unpack(bit_array: ArrayIntLike, width: int) -> npt.NDArray[np.int_]:
         >>> komm.unpack([16, 26], width=8)
         array([0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0])
     """
-    return np.ravel([int2binlist(i, width=width) for i in bit_array])
+    return np.ravel([int_to_bits(i, width=width) for i in bit_array])
