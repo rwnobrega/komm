@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/int2binlist/">
-  <link rel="prev" href="../binlist2int/">
+  <link rel="canonical" href="https://komm.dev/ref/int_to_bits/">
+  <link rel="prev" href="../bits_to_int/">
   <link rel="next" href="../pack/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>int2binlist - Komm</title>
+  <title>int_to_bits - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommint2binlist" class="md-skip">Skip to content</a>
+    <a href="#kommint_to_bits" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">int2binlist</span>
+            <span class="md-ellipsis">int_to_bits</span>
           </div>
         </div>
       </div>
@@ -477,10 +477,10 @@
                             <label class="md-nav__title" for="__nav_2_11"><span class="md-nav__icon md-icon"></span> Utilities</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="../binlist2int/" class="md-nav__link"><span class="md-ellipsis">binlist2int</span></a>
+                                <a href="../bits_to_int/" class="md-nav__link"><span class="md-ellipsis">bits_to_int</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">int2binlist</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">int_to_bits</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
@@ -529,48 +529,73 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommint2binlist">komm.int2binlist</h1>
+            <h1 id="kommint_to_bits">komm.int_to_bits</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p>Converts an integer to its bit array representation (<abbr title="least significant bit">LSB</abbr> first).</p>
+                <p>Converts an integer, or array of integers, to their bit representations (<abbr title="least significant bit">LSB</abbr> first).</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>integer</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
-                      <p>The input integer. May be any nonnegative integer.</p>
+                      <p>An integer or an $N$-dimensional array of integers.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>width</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[int]</code>)</span> –
+                    <b><code>width</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                     <div class="doc-md-description">
-                      <p>If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.</p>
+                      <p>The width of the bit representation.</p>
                     </div>
                   </li>
                 </ul>
                 <p><strong>Returns:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>binlist</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                    <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.int_">int_</span>]</code></span> –
                     <div class="doc-md-description">
-                      <p>An array of $0$'s and $1$'s whose $i$-th element stands for the coefficient of $2^i$ in the binary representation of the input integer.</p>
+                      <p>An $(N+1)$-dimensional array of $0$s and $1$s, where the last dimension contains the bit representation of the input, with the least significant bit (<abbr title="least significant bit">LSB</abbr>) as the first element.</p>
                     </div>
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">array([0, 0, 0, 0, 1])</span>
 </code></pre>
                 </div>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">array([0, 1, 0, 1, 1])</span>
 </code></pre>
                 </div>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int2binlist</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="go">array([0, 1, 0, 1, 1, 0, 0, 0])</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">array([[0, 0],</span>
+<span class="go">       [1, 0],</span>
+<span class="go">       [0, 1],</span>
+<span class="go">       [1, 1]])</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 0],</span>
+<span class="go">       [0, 1, 0, 0],</span>
+<span class="go">       [1, 1, 0, 0]])</span>
+</code></pre>
+                </div>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">int_to_bits</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">array([[[0, 0],</span>
+<span class="go">        [1, 0]],</span>
+
+<span class="go">       [[0, 1],</span>
+<span class="go">        [1, 1]]])</span>
 </code></pre>
                 </div>
               </div>
@@ -584,7 +609,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../binlist2int/" class="md-footer__link md-footer__link--prev" aria-label="Previous: binlist2int">
+        <a href="../bits_to_int/" class="md-footer__link md-footer__link--prev" aria-label="Previous: bits_to_int">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -592,7 +617,7 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            binlist2int
+            bits_to_int
           </div>
         </div></a> <a href="../pack/" class="md-footer__link md-footer__link--next" aria-label="Next: pack">
         <div class="md-footer__title">
