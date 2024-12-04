@@ -50,13 +50,13 @@ class DirectTruncation(TerminationStrategy):
         return 0
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
-        n = self.convolutional_code.num_input_bits
-        return pack(input_bits, width=n)
+        k0 = self.convolutional_code.num_input_bits
+        return pack(input_bits, width=k0)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
-        n = self.convolutional_code.num_output_bits
-        return h * n
+        n0 = self.convolutional_code.num_output_bits
+        return h * n0
 
     def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
         h = self.num_blocks
@@ -74,15 +74,15 @@ class ZeroTermination(TerminationStrategy):
         return 0
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
-        n = self.convolutional_code.num_input_bits
+        k0 = self.convolutional_code.num_input_bits
         tail = input_bits @ self._tail_projector % 2
-        return pack(np.concatenate([input_bits, tail]), width=n)
+        return pack(np.concatenate([input_bits, tail]), width=k0)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
-        n = self.convolutional_code.num_output_bits
+        n0 = self.convolutional_code.num_output_bits
         m = self.convolutional_code.memory_order
-        return (h + m) * n
+        return (h + m) * n0
 
     def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
@@ -113,13 +113,13 @@ class TailBiting(TerminationStrategy):
         return initial_state
 
     def pre_process_input(self, input_bits: ArrayIntLike) -> npt.NDArray[np.int_]:
-        n = self.convolutional_code.num_input_bits
-        return pack(input_bits, width=n)
+        k0 = self.convolutional_code.num_input_bits
+        return pack(input_bits, width=k0)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
-        n = self.convolutional_code.num_output_bits
-        return h * n
+        n0 = self.convolutional_code.num_output_bits
+        return h * n0
 
     def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
