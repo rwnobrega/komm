@@ -4,8 +4,12 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .._util.information_theory import LogBase, arimoto_blahut, mutual_information
-from .._validation import is_transition_matrix
+from .._util.information_theory import (
+    LogBase,
+    TransitionMatrix,
+    arimoto_blahut,
+    mutual_information,
+)
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
@@ -31,9 +35,7 @@ class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
 
     """
 
-    transition_matrix: npt.NDArray[np.float64] = field(
-        converter=np.asarray, validator=is_transition_matrix
-    )
+    transition_matrix: npt.NDArray[np.float64] = field(converter=TransitionMatrix)
 
     @property
     def input_cardinality(self) -> int:

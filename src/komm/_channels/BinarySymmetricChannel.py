@@ -2,10 +2,14 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
+from attrs import frozen
 
-from .._util.information_theory import LogBase, binary_entropy
-from .._validation import is_pmf, is_probability, validate_call
+from .._util.information_theory import (
+    PMF,
+    LogBase,
+    assert_is_probability,
+    binary_entropy,
+)
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
@@ -34,7 +38,10 @@ class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
         array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
     """
 
-    crossover_probability: float = field(default=0.0, validator=is_probability)
+    crossover_probability: float = 0.0
+
+    def __attrs_post_init__(self) -> None:
+        assert_is_probability(self.crossover_probability)
 
     @property
     def input_cardinality(self) -> int:
@@ -61,7 +68,6 @@ class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
         p = self.crossover_probability
         return np.array([[1 - p, p], [p, 1 - p]])
 
-    @validate_call(input_pmf=field(converter=np.asarray, validator=is_pmf))
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
@@ -81,7 +87,7 @@ class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
             >>> bsc.mutual_information([0.45, 0.55])
             np.float64(0.5263828452309445)
         """
-        input_pmf = np.array(input_pmf)
+        input_pmf = PMF(input_pmf)
         p = self.crossover_probability
         pi = input_pmf[1]
         return (binary_entropy(p + pi - 2 * p * pi) - binary_entropy(p)) / np.log2(base)

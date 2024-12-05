@@ -1,12 +1,11 @@
 import itertools as it
-from typing import cast
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen, validators
+from attrs import frozen
 from typing_extensions import Self
 
-from .._validation import is_pmf, validate_call
+from .._util.information_theory import PMF
 from .util import Word, is_prefix_free
 
 
@@ -22,18 +21,22 @@ class VariableToFixedCode:
         dec_mapping: The decoding mapping $\mathrm{Dec}$ of the code. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.
     """
 
-    target_cardinality: int = field(validator=validators.ge(2))
-    source_cardinality: int = field(validator=validators.ge(2))
-    target_block_size: int = field(validator=validators.ge(1))
-    dec_mapping: dict[Word, Word] = field()
+    target_cardinality: int
+    source_cardinality: int
+    target_block_size: int
+    dec_mapping: dict[Word, Word]
 
     def __attrs_post_init__(self) -> None:
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
-        T, S, n = (
-            self.target_cardinality,
-            self.source_cardinality,
-            self.target_block_size,
-        )
+        T = self.target_cardinality
+        S = self.source_cardinality
+        n = self.target_block_size
+        if not T >= 2:
+            raise ValueError("'target_cardinality': must be at least 2")
+        if not S >= 2:
+            raise ValueError("'source_cardinality': must be at least 2")
+        if not n >= 1:
+            raise ValueError("'target_block_size': must be at least 1")
         if not set(domain) <= set(it.product(range(T), repeat=n)):
             raise ValueError(f"'dec_mapping': invalid domain")
         if not all(
@@ -80,7 +83,6 @@ class VariableToFixedCode:
         return cls(T, S, n, dec_mapping)
 
     @classmethod
-    @validate_call(target_cardinality=field(validator=validators.ge(2)))
     def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]) -> Self:
         r"""
         Constructs a variable-to-fixed code from the target cardinality $T$ and a list of sourcewords.
@@ -153,7 +155,6 @@ class VariableToFixedCode:
         """
         return is_prefix_free(self.sourcewords)
 
-    @validate_call(pmf=field(converter=np.asarray, validator=is_pmf))
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
@@ -173,7 +174,7 @@ class VariableToFixedCode:
             >>> code.rate([2/3, 1/3])
             np.float64(0.9473684210526315)
         """
-        pmf = cast(npt.NDArray[np.float64], pmf)
+        pmf = PMF(pmf)
         probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
         lengths = [len(word) for word in self.sourcewords]
         return self.target_block_size / np.dot(lengths, probabilities)

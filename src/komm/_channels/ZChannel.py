@@ -2,10 +2,14 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
+from attrs import frozen
 
-from .._util.information_theory import LogBase, binary_entropy
-from .._validation import is_pmf, is_probability, validate_call
+from .._util.information_theory import (
+    PMF,
+    LogBase,
+    assert_is_probability,
+    binary_entropy,
+)
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
@@ -34,7 +38,10 @@ class ZChannel(AbstractDiscreteMemorylessChannel):
         array([0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
     """
 
-    decay_probability: float = field(default=0.0, validator=is_probability)
+    decay_probability: float = 0.0
+
+    def __attrs_post_init__(self) -> None:
+        assert_is_probability(self.decay_probability)
 
     @property
     def input_cardinality(self) -> int:
@@ -61,7 +68,6 @@ class ZChannel(AbstractDiscreteMemorylessChannel):
         p = self.decay_probability
         return np.array([[1, 0], [p, 1 - p]])
 
-    @validate_call(input_pmf=field(converter=np.asarray, validator=is_pmf))
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
@@ -81,7 +87,7 @@ class ZChannel(AbstractDiscreteMemorylessChannel):
             >>> zc.mutual_information([0.5, 0.5])  # doctest: +NUMBER
             np.float64(0.7582766571931676)
         """
-        input_pmf = np.array(input_pmf)
+        input_pmf = PMF(input_pmf)
         p = self.decay_probability
         pi = input_pmf[1]
         return (binary_entropy(pi * (1 - p)) - pi * binary_entropy(p)) / np.log2(base)

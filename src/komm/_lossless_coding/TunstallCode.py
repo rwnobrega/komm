@@ -1,17 +1,13 @@
-from typing import Optional, cast
+from typing import Optional
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field
 
-from .._validation import is_pmf, validate_call
+from .._util.information_theory import PMF
 from .util import tunstall_algorithm
 from .VariableToFixedCode import VariableToFixedCode
 
 
-@validate_call(
-    pmf=field(converter=np.asarray, validator=is_pmf),
-)
 def TunstallCode(
     pmf: npt.ArrayLike,
     target_block_size: Optional[int] = None,
@@ -46,7 +42,7 @@ def TunstallCode(
         >>> code.rate(pmf)  # doctest: +NUMBER
         np.float64(1.3698630137)
     """
-    pmf = cast(npt.NDArray[np.float64], pmf)
+    pmf = PMF(pmf)
     if target_block_size is None:
         target_block_size = int(np.ceil(np.log2(pmf.size)))
     elif 2**target_block_size < pmf.size:

@@ -1,12 +1,15 @@
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attr import field
-from attrs import field, frozen
+from attrs import frozen
 
-from .._util.information_theory import LogBase, binary_entropy
-from .._validation import is_pmf, is_probability, validate_call
+from .._util.information_theory import (
+    PMF,
+    LogBase,
+    assert_is_probability,
+    binary_entropy,
+)
 from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
@@ -31,7 +34,10 @@ class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
         array([1, 1, 2, 0, 0, 2, 1, 0, 1, 0])
     """
 
-    erasure_probability: float = field(default=0.0, validator=is_probability)
+    erasure_probability: float = 0.0
+
+    def __attrs_post_init__(self) -> None:
+        assert_is_probability(self.erasure_probability)
 
     @property
     def input_cardinality(self) -> int:
@@ -62,7 +68,6 @@ class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
         epsilon = self.erasure_probability
         return np.array([[1 - epsilon, 0, epsilon], [0, 1 - epsilon, epsilon]])
 
-    @validate_call(input_pmf=field(converter=np.asarray, validator=is_pmf))
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
@@ -82,7 +87,7 @@ class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
             >>> bec.mutual_information([0.45, 0.55]) # doctest: +NUMBER
             np.float64(0.8934970085890275)
         """
-        input_pmf = cast(npt.NDArray[np.float64], input_pmf)
+        input_pmf = PMF(input_pmf)
         epsilon = self.erasure_probability
         pi = input_pmf[1]
         return (1.0 - epsilon) * binary_entropy(pi) / np.log2(base)

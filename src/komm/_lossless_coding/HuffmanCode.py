@@ -1,19 +1,12 @@
-from typing import Literal, cast
+from typing import Literal
 
-import numpy as np
 import numpy.typing as npt
-from attrs import field, validators
 
-from .._validation import is_pmf, validate_call
+from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
 from .util import huffman_algorithm
 
 
-@validate_call(
-    pmf=field(converter=np.asarray, validator=is_pmf),
-    source_block_size=field(validator=validators.ge(1)),
-    policy=field(validator=validators.in_(["high", "low"])),
-)
 def HuffmanCode(
     pmf: npt.ArrayLike,
     source_block_size: int = 1,
@@ -52,7 +45,9 @@ def HuffmanCode(
         >>> code.rate(pmf)  # doctest: +NUMBER
         np.float64(1.1975)
     """
-    pmf = cast(npt.NDArray[np.float64], pmf)
+    pmf = PMF(pmf)
+    if not policy in {"high", "low"}:
+        raise ValueError("'policy': must be in {'high', 'low'}")
     return FixedToVariableCode.from_codewords(
         source_cardinality=pmf.size,
         codewords=huffman_algorithm(pmf, source_block_size, policy),

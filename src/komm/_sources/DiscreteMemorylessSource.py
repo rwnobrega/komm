@@ -2,8 +2,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .._util.information_theory import LogBase, entropy
-from .._validation import is_pmf
+from .._util.information_theory import PMF, LogBase, entropy
 
 
 @frozen
@@ -23,7 +22,7 @@ class DiscreteMemorylessSource:
         array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
     """
 
-    pmf: npt.NDArray[np.float64] = field(converter=np.asarray, validator=is_pmf)
+    pmf: npt.NDArray[np.float64] = field(converter=PMF)
 
     @property
     def cardinality(self) -> int:

@@ -1,30 +1,60 @@
 import math
 from functools import partial
-from typing import Literal, cast
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field
-
-from .._validation import (
-    is_log_base,
-    is_pmf,
-    is_probability,
-    is_transition_matrix,
-    validate_call,
-)
 
 LogBase = float | Literal["e"]
 
 
-@validate_call(
-    pmf=field(converter=np.asarray, validator=is_pmf),
-    base=field(validator=is_log_base),
-)
-def entropy(
-    pmf: npt.ArrayLike,
-    base: LogBase = 2.0,
-) -> float:
+def assert_is_log_base(value: float | str) -> None:
+    if (isinstance(value, str) and value != "e") or (
+        isinstance(value, float) and value <= 0.0
+    ):
+        raise ValueError("log base must be 'e' or a positive float")
+
+
+def assert_is_probability(value: float) -> None:
+    if not 0 <= value <= 1:
+        raise ValueError("probability must be between 0 and 1")
+
+
+class PMF(npt.NDArray[np.float64]):
+    def __new__(cls, values: npt.ArrayLike):
+        arr = np.asarray(values, dtype=np.float64)
+        if arr.ndim != 1:
+            raise ValueError("PMF must be a 1D array")
+        if not np.all(arr >= 0.0):
+            raise ValueError("PMF must be non-negative")
+        if not np.isclose(arr.sum(), 1.0):
+            raise ValueError("PMF must sum to 1.0")
+        obj = arr.view(cls)
+        return obj
+
+    def __array_finalize__(self, obj: npt.NDArray[np.float64] | None) -> None:
+        if obj is None:
+            return
+
+
+class TransitionMatrix(npt.NDArray[np.float64]):
+    def __new__(cls, values: npt.ArrayLike):
+        arr = np.asarray(values, dtype=np.float64)
+        if arr.ndim != 2:
+            raise ValueError("Transition matrix must be a 2D array")
+        if not np.all(arr >= 0.0):
+            raise ValueError("Transition matrix must be non-negative")
+        if not np.allclose(arr.sum(axis=1), 1.0):
+            raise ValueError("Rows of transition matrix must sum to 1.0")
+        obj = arr.view(cls)
+        return obj
+
+    def __array_finalize__(self, obj: npt.NDArray[np.float64] | None) -> None:
+        if obj is None:
+            return
+
+
+def entropy(pmf: npt.ArrayLike, base: LogBase = 2.0) -> float:
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
@@ -50,7 +80,8 @@ def entropy(
         >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +NUMBER
         np.float64(0.6931471805599453)
     """
-    pmf = cast(npt.NDArray[np.float64], pmf)
+    pmf = PMF(pmf)
+    assert_is_log_base(base)
     if base == "e":
         return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
     elif base == 2.0:
@@ -59,7 +90,6 @@ def entropy(
         return -np.dot(pmf, np.log(pmf, where=(pmf > 0))) / np.log(base)
 
 
-@validate_call(p=field(validator=is_probability))
 def binary_entropy(p: float) -> float:
     r"""
     Computes the binary entropy function. For a given probability $p$, it is defined as
@@ -78,16 +108,12 @@ def binary_entropy(p: float) -> float:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +NUMBER
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
+    assert_is_probability(p)
     if p in {0.0, 1.0}:
         return 0.0
     return -p * math.log2(p) - (1 - p) * math.log2(1 - p)
 
 
-@validate_call(
-    pmf=field(converter=np.asarray, validator=is_pmf),
-    qmf=field(converter=np.asarray, validator=is_pmf),
-    base=field(validator=is_log_base),
-)
 def relative_entropy(
     pmf: npt.ArrayLike,
     qmf: npt.ArrayLike,
@@ -123,8 +149,9 @@ def relative_entropy(
         >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +NUMBER
         np.float64(inf)
     """
-    pmf = cast(npt.NDArray[np.float64], pmf)
-    qmf = cast(npt.NDArray[np.float64], qmf)
+    pmf = PMF(pmf)
+    qmf = PMF(qmf)
+    assert_is_log_base(base)
     with np.errstate(divide="ignore"):
         if base == "e":
             return np.dot(pmf, np.log(pmf / qmf))
@@ -134,16 +161,14 @@ def relative_entropy(
             return np.dot(pmf, np.log(pmf / qmf)) / np.log(base)
 
 
-@validate_call(
-    input_pmf=field(converter=np.asarray, validator=is_pmf),
-    transition_matrix=field(converter=np.asarray, validator=is_transition_matrix),
-    base=field(validator=is_log_base),
-)
 def mutual_information(
     input_pmf: npt.ArrayLike,
     transition_matrix: npt.ArrayLike,
     base: LogBase = 2.0,
 ) -> float:
+    input_pmf = PMF(input_pmf)
+    assert_is_log_base(base)
+    transition_matrix = TransitionMatrix(transition_matrix)
     output_pmf = np.dot(input_pmf, transition_matrix)
     entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(
