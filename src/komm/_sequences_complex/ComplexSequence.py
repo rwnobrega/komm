@@ -3,7 +3,6 @@ from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from .._types import ArrayIntLike
 from .._util.correlation import acorr, cyclic_acorr
 
 
@@ -35,7 +34,7 @@ class ComplexSequence:
         return self.sequence.size
 
     def autocorrelation(
-        self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
+        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.acorr`](/ref/acorr) for more details.
@@ -55,7 +54,7 @@ class ComplexSequence:
         return acorr(self.sequence, shifts, normalized)
 
     def cyclic_autocorrelation(
-        self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
+        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_acorr`](/ref/cyclic_acorr) for more details.

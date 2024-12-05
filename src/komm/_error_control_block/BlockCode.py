@@ -5,7 +5,6 @@ import numpy.typing as npt
 from attrs import field, frozen
 from tqdm import tqdm
 
-from .._types import ArrayIntLike
 from .._util.matrices import null_matrix, pseudo_inverse, rref
 from .AbstractBlockCode import AbstractBlockCode
 from .SlepianArray import SlepianArray
@@ -121,7 +120,7 @@ class BlockCode(AbstractBlockCode):
         """
         return self.dimension / self.length
 
-    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This is a function that takes a message $u \in \mathbb{B}^k$ and returns the corresponding codeword $v \in \mathbb{B}^n$.
 
@@ -133,7 +132,7 @@ class BlockCode(AbstractBlockCode):
         v = np.dot(u, self.generator_matrix) % 2
         return v
 
-    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes a codeword $v \in \mathbb{B}^n$ and returns the corresponding message $u \in \mathbb{B}^k$.
 
@@ -151,7 +150,7 @@ class BlockCode(AbstractBlockCode):
         u = np.dot(v, self._generator_matrix_pseudo_inverse) % 2
         return u
 
-    def chk_mapping(self, r: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r"""
         The check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes a received word $r \in \mathbb{B}^n$ and returns the corresponding syndrome $s \in \mathbb{B}^m$.
 

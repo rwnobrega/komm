@@ -5,12 +5,10 @@ import numpy.typing as npt
 
 DType = TypeVar("DType", bound=Union[np.float64, np.complex128])
 
-from .._types import ArrayIntLike
-
 
 def acorr(
     seq: npt.ArrayLike,
-    shifts: Optional[ArrayIntLike] = None,
+    shifts: Optional[npt.ArrayLike] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -36,7 +34,7 @@ def acorr(
     """
     seq = np.asarray(seq)
     seq_conj = np.conj(seq)
-    shifts = np.arange(seq.size) if shifts is None else shifts
+    shifts = np.arange(seq.size) if shifts is None else np.asarray(shifts)
     acorr = np.empty_like(shifts, dtype=seq.dtype)
     for i, ell in enumerate(shifts):
         if ell < 0:
@@ -51,7 +49,7 @@ def acorr(
 
 def cyclic_acorr(
     seq: npt.ArrayLike,
-    shifts: Optional[ArrayIntLike] = None,
+    shifts: Optional[npt.ArrayLike] = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -76,7 +74,7 @@ def cyclic_acorr(
         array([22., 24., 30., 24., 22.])
     """
     seq = np.asarray(seq)
-    shifts = np.arange(seq.size) if shifts is None else shifts
+    shifts = np.arange(seq.size) if shifts is None else np.asarray(shifts)
     conj_seq = np.conj(seq)
     acorr = np.array([np.dot(seq, np.roll(seq, ell).conj()) for ell in shifts])
     energy = np.dot(seq, conj_seq)

@@ -3,8 +3,6 @@ from abc import ABC, abstractmethod
 import numpy as np
 import numpy.typing as npt
 
-from .._types import ArrayIntLike
-
 
 class AbstractBlockCode(ABC):
     @property
@@ -23,13 +21,13 @@ class AbstractBlockCode(ABC):
         pass
 
     @abstractmethod
-    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
         pass
 
     @abstractmethod
-    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
         pass
 
     @abstractmethod
-    def chk_mapping(self, r: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.int_]:
         pass

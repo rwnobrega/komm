@@ -3,7 +3,6 @@ from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from .._types import ArrayIntLike
 from .._util.correlation import acorr, cyclic_acorr
 
 
@@ -33,8 +32,8 @@ class BinarySequence:
 
     def __init__(
         self,
-        bit_sequence: Optional[ArrayIntLike] = None,
-        polar_sequence: Optional[ArrayIntLike] = None,
+        bit_sequence: Optional[npt.ArrayLike] = None,
+        polar_sequence: Optional[npt.ArrayLike] = None,
     ) -> None:
         if bit_sequence is not None and polar_sequence is None:
             self.bit_sequence = np.asarray(bit_sequence, dtype=int)
@@ -57,7 +56,7 @@ class BinarySequence:
         return self.bit_sequence.size
 
     def autocorrelation(
-        self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
+        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.float64]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the binary sequence in polar format. See [`komm.acorr`](/ref/acorr) for more details.
@@ -77,7 +76,7 @@ class BinarySequence:
         return acorr(self.polar_sequence, shifts=shifts, normalized=normalized)
 
     def cyclic_autocorrelation(
-        self, shifts: Optional[ArrayIntLike] = None, normalized: bool = False
+        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.float64]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence in polar format. See [`komm.cyclic_acorr`](/ref/cyclic_acorr) for more details.

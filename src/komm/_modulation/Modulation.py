@@ -4,8 +4,6 @@ import numpy as np
 import numpy.typing as npt
 from attrs import define, field
 
-from .._types import ArrayIntLike
-
 
 @define
 class Modulation:
@@ -219,7 +217,7 @@ class Modulation:
             [np.abs(s1 - s2) for s1, s2 in combinations(self.constellation, 2)]
         )
 
-    def modulate(self, bits: ArrayIntLike) -> npt.NDArray[np.float64 | np.complex128]:
+    def modulate(self, bits: npt.ArrayLike) -> npt.NDArray[np.float64 | np.complex128]:
         r"""
         Modulates a sequence of bits to its corresponding constellation symbols.
 

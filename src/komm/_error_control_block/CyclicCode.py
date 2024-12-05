@@ -6,7 +6,6 @@ import numpy.typing as npt
 from attrs import field, frozen
 
 from .._algebra import BinaryPolynomial
-from .._types import ArrayIntLike
 from .BlockCode import BlockCode
 
 
@@ -145,7 +144,7 @@ class CyclicCode(BlockCode):
         else:
             raise NotImplementedError
 
-    def enc_mapping(self, u: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
         u_poly = BinaryPolynomial.from_coefficients(u)
         if not self.systematic:
             v_poly = u_poly * self.generator_polynomial
@@ -155,7 +154,7 @@ class CyclicCode(BlockCode):
             v_poly = u_poly_shifted + b_poly
         return v_poly.coefficients(width=self.length)
 
-    def inv_enc_mapping(self, v: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
         if not self.systematic:
             v_poly = BinaryPolynomial.from_coefficients(v)
             u_poly = v_poly // self.generator_polynomial
@@ -164,7 +163,7 @@ class CyclicCode(BlockCode):
             u = np.take(v, range(self.redundancy, self.length))
         return u
 
-    def chk_mapping(self, r: ArrayIntLike) -> npt.NDArray[np.int_]:
+    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.int_]:
         r_poly = BinaryPolynomial.from_coefficients(r)
         s_poly = r_poly % self.generator_polynomial
         s = s_poly.coefficients(width=self.redundancy)

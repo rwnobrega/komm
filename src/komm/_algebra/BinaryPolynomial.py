@@ -7,7 +7,6 @@ import numpy.typing as npt
 from attrs import field, frozen
 from typing_extensions import Self
 
-from .._types import ArrayIntLike
 from .._util.bit_operations import bits_to_int, int_to_bits
 from . import domain, ring
 
@@ -58,7 +57,7 @@ class BinaryPolynomial:
         return BinaryPolynomials()
 
     @classmethod
-    def from_coefficients(cls, coefficients: ArrayIntLike) -> Self:
+    def from_coefficients(cls, coefficients: npt.ArrayLike) -> Self:
         r"""
         Constructs a binary polynomial from its coefficients.
 
@@ -72,7 +71,7 @@ class BinaryPolynomial:
         return cls(bits_to_int(coefficients))
 
     @classmethod
-    def from_exponents(cls, exponents: ArrayIntLike) -> Self:
+    def from_exponents(cls, exponents: npt.ArrayLike) -> Self:
         r"""
         Constructs a binary polynomial from its exponents.
 
