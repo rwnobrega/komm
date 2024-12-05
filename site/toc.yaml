@@ -88,8 +88,8 @@ Utilities:
   - gaussian_q
   - gaussian_q_inv
   - marcum_q
-  - acorr
-  - cyclic_acorr
+  - autocorrelation
+  - cyclic_autocorrelation
   - entropy
   - binary_entropy
   - relative_entropy

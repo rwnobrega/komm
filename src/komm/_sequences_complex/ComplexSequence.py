@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from .._util.correlation import acorr, cyclic_acorr
+from .._util.correlation import autocorrelation, cyclic_autocorrelation
 
 
 class ComplexSequence:
@@ -37,11 +37,11 @@ class ComplexSequence:
         self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
-        Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.acorr`](/ref/acorr) for more details.
+        Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
 
         Parameters:
-            shifts: See the corresponding parameter in [`komm.acorr`](/ref/acorr).
-            normalized: See the corresponding parameter in [`komm.acorr`](/ref/acorr).
+            shifts: See the corresponding parameter in [`komm.autocorrelation`](/ref/autocorrelation).
+            normalized: See the corresponding parameter in [`komm.autocorrelation`](/ref/autocorrelation).
 
         Returns:
             The autocorrelation $R[\ell]$ of the complex sequence.
@@ -51,17 +51,17 @@ class ComplexSequence:
             >>> seq.autocorrelation(shifts=[-2, -1, 0, 1, 2])
             array([-2.+0.j,  0.-3.j,  4.+0.j,  0.+3.j, -2.+0.j])
         """
-        return acorr(self.sequence, shifts, normalized)
+        return autocorrelation(self.sequence, shifts, normalized)
 
     def cyclic_autocorrelation(
         self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
-        Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_acorr`](/ref/cyclic_acorr) for more details.
+        Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.
 
         Parameters:
-            shifts: See the corresponding parameter in [`komm.cyclic_acorr`](/ref/cyclic_acorr).
-            normalized: See the corresponding parameter in [`komm.cyclic_acorr`](/ref/cyclic_acorr).
+            shifts: See the corresponding parameter in [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation).
+            normalized: See the corresponding parameter in [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation).
 
         Returns:
             The cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence.
@@ -71,4 +71,4 @@ class ComplexSequence:
             >>> seq.cyclic_autocorrelation(shifts=[-2, -1, 0, 1, 2])
             array([-4.+0.j,  0.-4.j,  4.+0.j,  0.+4.j, -4.+0.j])
         """
-        return cyclic_acorr(self.sequence, shifts, normalized)
+        return cyclic_autocorrelation(self.sequence, shifts, normalized)
