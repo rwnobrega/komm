@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/cyclic_acorr/">
-  <link rel="prev" href="../acorr/">
+  <link rel="canonical" href="https://komm.dev/ref/cyclic_autocorrelation/">
+  <link rel="prev" href="../autocorrelation/">
   <link rel="next" href="../entropy/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>cyclic_acorr - Komm</title>
+  <title>cyclic_autocorrelation - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommcyclic_acorr" class="md-skip">Skip to content</a>
+    <a href="#kommcyclic_autocorrelation" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">cyclic_acorr</span>
+            <span class="md-ellipsis">cyclic_autocorrelation</span>
           </div>
         </div>
       </div>
@@ -489,16 +489,19 @@
                                 <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfunc/" class="md-nav__link"><span class="md-ellipsis">qfunc</span></a>
+                                <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfuncinv/" class="md-nav__link"><span class="md-ellipsis">qfuncinv</span></a>
+                                <a href="../gaussian_q_inv/" class="md-nav__link"><span class="md-ellipsis">gaussian_q_inv</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../acorr/" class="md-nav__link"><span class="md-ellipsis">acorr</span></a>
+                                <a href="../marcum_q/" class="md-nav__link"><span class="md-ellipsis">marcum_q</span></a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../autocorrelation/" class="md-nav__link"><span class="md-ellipsis">autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">cyclic_acorr</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
@@ -529,26 +532,26 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommcyclic_acorr">komm.cyclic_acorr</h1>
+            <h1 id="kommcyclic_autocorrelation">komm.cyclic_autocorrelation</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
                 <p>Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $x[n]$. This is defined as $$ \tilde{R}[\ell] = \sum_{n \in [0:L)} x[n] \tilde{x}^*_\ell[n], $$ where $\tilde{x}^*_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>seq</code></b> <span class="doc-param-annotation">(<code>Array1D[float | complex]</code>)</span> –
+                    <b><code>seq</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>A 1D-array containing the sequence $x[n]$, of length $L$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[Array1D[int]]</code>)</span> –
+                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="numpy.typing.ArrayLike">ArrayLike</span>]</code>)</span> –
                     <div class="doc-md-description">
                       <p>A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is <code>range(len(seq))</code>, that is, $[0 : L)$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>normalized</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[bool]</code>)</span> –
+                    <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
                     <div class="doc-md-description">
                       <p>If <code>True</code>, returns the cyclic autocorrelation divided by the sequence energy, so that $R[0] = 1$. The default value is <code>False</code>.</p>
                     </div>
@@ -557,7 +560,7 @@
                 <p><strong>Returns:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>cyclic_acorr</code></b> <span class="doc-param-annotation">(<code>SameAsInput</code>)</span> –
+                    <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="komm._util.correlation.DType">DType</span>]</code></span> –
                     <div class="doc-md-description">
                       <p>The cyclic autocorrelation $\tilde{R}[\ell]$ of the sequence.</p>
                     </div>
@@ -565,7 +568,7 @@
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">cyclic_acorr</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="n">shifts</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">cyclic_autocorrelation</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="n">shifts</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="go">array([22., 24., 30., 24., 22.])</span>
 </code></pre>
                 </div>
@@ -580,7 +583,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../acorr/" class="md-footer__link md-footer__link--prev" aria-label="Previous: acorr">
+        <a href="../autocorrelation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: autocorrelation">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -588,7 +591,7 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            acorr
+            autocorrelation
           </div>
         </div></a> <a href="../entropy/" class="md-footer__link md-footer__link--next" aria-label="Next: entropy">
         <div class="md-footer__title">

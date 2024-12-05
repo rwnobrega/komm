@@ -3,37 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/">
-  <link rel="next" href="ref/">
-  <link rel="icon" href="assets/images/favicon.png">
+  <link rel="canonical" href="https://komm.dev/ref/autocorrelation/">
+  <link rel="prev" href="../marcum_q/">
+  <link rel="next" href="../cyclic_autocorrelation/">
+  <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>Komm</title>
-  <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
-  <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+  <title>autocorrelation - Komm</title>
+  <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+  <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
   <style>
   :root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}
   </style>
-  <link rel="stylesheet" href="assets/_mkdocstrings.css">
-  <link rel="stylesheet" href="css/katex.css">
-  <link rel="stylesheet" href="css/markdown.css">
-  <link rel="stylesheet" href="css/mkdocs.css">
-  <link rel="stylesheet" href="css/mkdocstrings.css">
+  <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+  <link rel="stylesheet" href="../../css/katex.css">
+  <link rel="stylesheet" href="../../css/markdown.css">
+  <link rel="stylesheet" href="../../css/mkdocs.css">
+  <link rel="stylesheet" href="../../css/mkdocstrings.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script>
-  __md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}
+  __md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}
   </script>
 </head>
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#home" class="md-skip">Skip to content</a>
+    <a href="#kommautocorrelation" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
     <nav class="md-header__inner md-grid" aria-label="Header">
-      <a href="." title="Komm" class="md-header__button md-logo" aria-label="Komm" data-md-component="logo"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+      <a href="../.." title="Komm" class="md-header__button md-logo" aria-label="Komm" data-md-component="logo"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
       <path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg></a> <label class="md-header__button md-icon" for="__drawer"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
       <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg></label>
       <div class="md-header__title" data-md-component="header-title">
@@ -42,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">Home</span>
+            <span class="md-ellipsis">autocorrelation</span>
           </div>
         </div>
       </div>
@@ -95,11 +96,11 @@
     <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
       <div class="md-grid">
         <ul class="md-tabs__list">
-          <li class="md-tabs__item md-tabs__item--active">
-            <a href="." class="md-tabs__link">Home</a>
-          </li>
           <li class="md-tabs__item">
-            <a href="ref/" class="md-tabs__link">Library reference</a>
+            <a href="../.." class="md-tabs__link">Home</a>
+          </li>
+          <li class="md-tabs__item md-tabs__item--active">
+            <a href="../" class="md-tabs__link">Library reference</a>
           </li>
         </ul>
       </div>
@@ -110,7 +111,7 @@
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
               <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
-                <label class="md-nav__title" for="__drawer"><a href="." title="Komm" class="md-nav__button md-logo" aria-label="Komm" data-md-component="logo"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+                <label class="md-nav__title" for="__drawer"><a href="../.." title="Komm" class="md-nav__button md-logo" aria-label="Komm" data-md-component="logo"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
                 <path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg></a> Komm</label>
                 <div class="md-nav__source">
                   <a href="https://github.com/rwnobrega/komm/" title="Go to repository" class="md-source" data-md-component="source">
@@ -123,15 +124,15 @@
                   </div></a>
                 </div>
                 <ul class="md-nav__list" data-md-scrollfix="">
-                  <li class="md-nav__item md-nav__item--active">
-                    <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="." class="md-nav__link md-nav__link--active"><span class="md-ellipsis">Home</span></a>
+                  <li class="md-nav__item">
+                    <a href="../.." class="md-nav__link"><span class="md-ellipsis">Home</span></a>
                   </li>
-                  <li class="md-nav__item md-nav__item--nested">
-                    <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2">
+                  <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+                    <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" checked>
                     <div class="md-nav__link md-nav__container">
-                      <a href="ref/" class="md-nav__link"><span class="md-ellipsis">Library reference</span></a> <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0"><span class="md-nav__icon md-icon"></span></label>
+                      <a href="../" class="md-nav__link"><span class="md-ellipsis">Library reference</span></a> <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex=""><span class="md-nav__icon md-icon"></span></label>
                     </div>
-                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
                       <label class="md-nav__title" for="__nav_2"><span class="md-nav__icon md-icon"></span> Library reference</label>
                       <ul class="md-nav__list" data-md-scrollfix="">
                         <li class="md-nav__item md-nav__item--nested">
@@ -140,13 +141,13 @@
                             <label class="md-nav__title" for="__nav_2_2"><span class="md-nav__icon md-icon"></span> Algebra</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/BinaryPolynomial/" class="md-nav__link"><span class="md-ellipsis">BinaryPolynomial</span></a>
+                                <a href="../BinaryPolynomial/" class="md-nav__link"><span class="md-ellipsis">BinaryPolynomial</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/BinaryPolynomialFraction/" class="md-nav__link"><span class="md-ellipsis">BinaryPolynomialFraction</span></a>
+                                <a href="../BinaryPolynomialFraction/" class="md-nav__link"><span class="md-ellipsis">BinaryPolynomialFraction</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/FiniteBifield/" class="md-nav__link"><span class="md-ellipsis">FiniteBifield</span></a>
+                                <a href="../FiniteBifield/" class="md-nav__link"><span class="md-ellipsis">FiniteBifield</span></a>
                               </li>
                             </ul>
                           </nav>
@@ -157,19 +158,19 @@
                             <label class="md-nav__title" for="__nav_2_3"><span class="md-nav__icon md-icon"></span> Channels</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/AWGNChannel/" class="md-nav__link"><span class="md-ellipsis">AWGNChannel</span></a>
+                                <a href="../AWGNChannel/" class="md-nav__link"><span class="md-ellipsis">AWGNChannel</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/DiscreteMemorylessChannel/" class="md-nav__link"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
+                                <a href="../DiscreteMemorylessChannel/" class="md-nav__link"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/BinarySymmetricChannel/" class="md-nav__link"><span class="md-ellipsis">BinarySymmetricChannel</span></a>
+                                <a href="../BinarySymmetricChannel/" class="md-nav__link"><span class="md-ellipsis">BinarySymmetricChannel</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/BinaryErasureChannel/" class="md-nav__link"><span class="md-ellipsis">BinaryErasureChannel</span></a>
+                                <a href="../BinaryErasureChannel/" class="md-nav__link"><span class="md-ellipsis">BinaryErasureChannel</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/ZChannel/" class="md-nav__link"><span class="md-ellipsis">ZChannel</span></a>
+                                <a href="../ZChannel/" class="md-nav__link"><span class="md-ellipsis">ZChannel</span></a>
                               </li>
                             </ul>
                           </nav>
@@ -185,49 +186,49 @@
                                   <label class="md-nav__title" for="__nav_2_4_1"><span class="md-nav__icon md-icon"></span> Block coding</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/BlockCode/" class="md-nav__link"><span class="md-ellipsis">BlockCode</span></a>
+                                      <a href="../BlockCode/" class="md-nav__link"><span class="md-ellipsis">BlockCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/SystematicBlockCode/" class="md-nav__link"><span class="md-ellipsis">SystematicBlockCode</span></a>
+                                      <a href="../SystematicBlockCode/" class="md-nav__link"><span class="md-ellipsis">SystematicBlockCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/CyclicCode/" class="md-nav__link"><span class="md-ellipsis">CyclicCode</span></a>
+                                      <a href="../CyclicCode/" class="md-nav__link"><span class="md-ellipsis">CyclicCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/HammingCode/" class="md-nav__link"><span class="md-ellipsis">HammingCode</span></a>
+                                      <a href="../HammingCode/" class="md-nav__link"><span class="md-ellipsis">HammingCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/SimplexCode/" class="md-nav__link"><span class="md-ellipsis">SimplexCode</span></a>
+                                      <a href="../SimplexCode/" class="md-nav__link"><span class="md-ellipsis">SimplexCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/GolayCode/" class="md-nav__link"><span class="md-ellipsis">GolayCode</span></a>
+                                      <a href="../GolayCode/" class="md-nav__link"><span class="md-ellipsis">GolayCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/RepetitionCode/" class="md-nav__link"><span class="md-ellipsis">RepetitionCode</span></a>
+                                      <a href="../RepetitionCode/" class="md-nav__link"><span class="md-ellipsis">RepetitionCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/SingleParityCheckCode/" class="md-nav__link"><span class="md-ellipsis">SingleParityCheckCode</span></a>
+                                      <a href="../SingleParityCheckCode/" class="md-nav__link"><span class="md-ellipsis">SingleParityCheckCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/CordaroWagnerCode/" class="md-nav__link"><span class="md-ellipsis">CordaroWagnerCode</span></a>
+                                      <a href="../CordaroWagnerCode/" class="md-nav__link"><span class="md-ellipsis">CordaroWagnerCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ReedMullerCode/" class="md-nav__link"><span class="md-ellipsis">ReedMullerCode</span></a>
+                                      <a href="../ReedMullerCode/" class="md-nav__link"><span class="md-ellipsis">ReedMullerCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/BCHCode/" class="md-nav__link"><span class="md-ellipsis">BCHCode</span></a>
+                                      <a href="../BCHCode/" class="md-nav__link"><span class="md-ellipsis">BCHCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/Lexicode/" class="md-nav__link"><span class="md-ellipsis">Lexicode</span></a>
+                                      <a href="../Lexicode/" class="md-nav__link"><span class="md-ellipsis">Lexicode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/SlepianArray/" class="md-nav__link"><span class="md-ellipsis">SlepianArray</span></a>
+                                      <a href="../SlepianArray/" class="md-nav__link"><span class="md-ellipsis">SlepianArray</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/BlockEncoder/" class="md-nav__link"><span class="md-ellipsis">BlockEncoder</span></a>
+                                      <a href="../BlockEncoder/" class="md-nav__link"><span class="md-ellipsis">BlockEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/BlockDecoder/" class="md-nav__link"><span class="md-ellipsis">BlockDecoder</span></a>
+                                      <a href="../BlockDecoder/" class="md-nav__link"><span class="md-ellipsis">BlockDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -238,16 +239,16 @@
                                   <label class="md-nav__title" for="__nav_2_4_2"><span class="md-nav__icon md-icon"></span> Convolutional coding</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/ConvolutionalCode/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalCode</span></a>
+                                      <a href="../ConvolutionalCode/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/TerminatedConvolutionalCode/" class="md-nav__link"><span class="md-ellipsis">TerminatedConvolutionalCode</span></a>
+                                      <a href="../TerminatedConvolutionalCode/" class="md-nav__link"><span class="md-ellipsis">TerminatedConvolutionalCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ConvolutionalStreamEncoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamEncoder</span></a>
+                                      <a href="../ConvolutionalStreamEncoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ConvolutionalStreamDecoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamDecoder</span></a>
+                                      <a href="../ConvolutionalStreamDecoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -258,7 +259,7 @@
                                   <label class="md-nav__title" for="__nav_2_4_3"><span class="md-nav__icon md-icon"></span> Checksum</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/CyclicRedundancyCheck/" class="md-nav__link"><span class="md-ellipsis">CyclicRedundancyCheck</span></a>
+                                      <a href="../CyclicRedundancyCheck/" class="md-nav__link"><span class="md-ellipsis">CyclicRedundancyCheck</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -272,7 +273,7 @@
                             <label class="md-nav__title" for="__nav_2_5"><span class="md-nav__icon md-icon"></span> Finite-state machines</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/FiniteStateMachine/" class="md-nav__link"><span class="md-ellipsis">FiniteStateMachine</span></a>
+                                <a href="../FiniteStateMachine/" class="md-nav__link"><span class="md-ellipsis">FiniteStateMachine</span></a>
                               </li>
                             </ul>
                           </nav>
@@ -283,22 +284,22 @@
                             <label class="md-nav__title" for="__nav_2_6"><span class="md-nav__icon md-icon"></span> Modulation</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/Modulation/" class="md-nav__link"><span class="md-ellipsis">Modulation</span></a>
+                                <a href="../Modulation/" class="md-nav__link"><span class="md-ellipsis">Modulation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/PAModulation/" class="md-nav__link"><span class="md-ellipsis">PAModulation</span></a>
+                                <a href="../PAModulation/" class="md-nav__link"><span class="md-ellipsis">PAModulation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/QAModulation/" class="md-nav__link"><span class="md-ellipsis">QAModulation</span></a>
+                                <a href="../QAModulation/" class="md-nav__link"><span class="md-ellipsis">QAModulation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/ASKModulation/" class="md-nav__link"><span class="md-ellipsis">ASKModulation</span></a>
+                                <a href="../ASKModulation/" class="md-nav__link"><span class="md-ellipsis">ASKModulation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/PSKModulation/" class="md-nav__link"><span class="md-ellipsis">PSKModulation</span></a>
+                                <a href="../PSKModulation/" class="md-nav__link"><span class="md-ellipsis">PSKModulation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/APSKModulation/" class="md-nav__link"><span class="md-ellipsis">APSKModulation</span></a>
+                                <a href="../APSKModulation/" class="md-nav__link"><span class="md-ellipsis">APSKModulation</span></a>
                               </li>
                             </ul>
                           </nav>
@@ -314,25 +315,25 @@
                                   <label class="md-nav__title" for="__nav_2_7_1"><span class="md-nav__icon md-icon"></span> Pulses</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/Pulse/" class="md-nav__link"><span class="md-ellipsis">Pulse</span></a>
+                                      <a href="../Pulse/" class="md-nav__link"><span class="md-ellipsis">Pulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/RectangularPulse/" class="md-nav__link"><span class="md-ellipsis">RectangularPulse</span></a>
+                                      <a href="../RectangularPulse/" class="md-nav__link"><span class="md-ellipsis">RectangularPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ManchesterPulse/" class="md-nav__link"><span class="md-ellipsis">ManchesterPulse</span></a>
+                                      <a href="../ManchesterPulse/" class="md-nav__link"><span class="md-ellipsis">ManchesterPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/SincPulse/" class="md-nav__link"><span class="md-ellipsis">SincPulse</span></a>
+                                      <a href="../SincPulse/" class="md-nav__link"><span class="md-ellipsis">SincPulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/RaisedCosinePulse/" class="md-nav__link"><span class="md-ellipsis">RaisedCosinePulse</span></a>
+                                      <a href="../RaisedCosinePulse/" class="md-nav__link"><span class="md-ellipsis">RaisedCosinePulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/RootRaisedCosinePulse/" class="md-nav__link"><span class="md-ellipsis">RootRaisedCosinePulse</span></a>
+                                      <a href="../RootRaisedCosinePulse/" class="md-nav__link"><span class="md-ellipsis">RootRaisedCosinePulse</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/GaussianPulse/" class="md-nav__link"><span class="md-ellipsis">GaussianPulse</span></a>
+                                      <a href="../GaussianPulse/" class="md-nav__link"><span class="md-ellipsis">GaussianPulse</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -343,10 +344,10 @@
                                   <label class="md-nav__title" for="__nav_2_7_2"><span class="md-nav__icon md-icon"></span> Filtering</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/TransmitFilter/" class="md-nav__link"><span class="md-ellipsis">TransmitFilter</span></a>
+                                      <a href="../TransmitFilter/" class="md-nav__link"><span class="md-ellipsis">TransmitFilter</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ReceiveFilter/" class="md-nav__link"><span class="md-ellipsis">ReceiveFilter</span></a>
+                                      <a href="../ReceiveFilter/" class="md-nav__link"><span class="md-ellipsis">ReceiveFilter</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -365,22 +366,22 @@
                                   <label class="md-nav__title" for="__nav_2_8_1"><span class="md-nav__icon md-icon"></span> Binary sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/BinarySequence/" class="md-nav__link"><span class="md-ellipsis">BinarySequence</span></a>
+                                      <a href="../BinarySequence/" class="md-nav__link"><span class="md-ellipsis">BinarySequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/BarkerSequence/" class="md-nav__link"><span class="md-ellipsis">BarkerSequence</span></a>
+                                      <a href="../BarkerSequence/" class="md-nav__link"><span class="md-ellipsis">BarkerSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/WalshHadamardSequence/" class="md-nav__link"><span class="md-ellipsis">WalshHadamardSequence</span></a>
+                                      <a href="../WalshHadamardSequence/" class="md-nav__link"><span class="md-ellipsis">WalshHadamardSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/LFSRSequence/" class="md-nav__link"><span class="md-ellipsis">LFSRSequence</span></a>
+                                      <a href="../LFSRSequence/" class="md-nav__link"><span class="md-ellipsis">LFSRSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/GoldSequence/" class="md-nav__link"><span class="md-ellipsis">GoldSequence</span></a>
+                                      <a href="../GoldSequence/" class="md-nav__link"><span class="md-ellipsis">GoldSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/KasamiSequence/" class="md-nav__link"><span class="md-ellipsis">KasamiSequence</span></a>
+                                      <a href="../KasamiSequence/" class="md-nav__link"><span class="md-ellipsis">KasamiSequence</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -391,10 +392,10 @@
                                   <label class="md-nav__title" for="__nav_2_8_2"><span class="md-nav__icon md-icon"></span> Complex sequences</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/ComplexSequence/" class="md-nav__link"><span class="md-ellipsis">ComplexSequence</span></a>
+                                      <a href="../ComplexSequence/" class="md-nav__link"><span class="md-ellipsis">ComplexSequence</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/ZadoffChuSequence/" class="md-nav__link"><span class="md-ellipsis">ZadoffChuSequence</span></a>
+                                      <a href="../ZadoffChuSequence/" class="md-nav__link"><span class="md-ellipsis">ZadoffChuSequence</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -413,28 +414,28 @@
                                   <label class="md-nav__title" for="__nav_2_9_1"><span class="md-nav__icon md-icon"></span> Lossless coding</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/FixedToVariableCode/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableCode</span></a>
+                                      <a href="../FixedToVariableCode/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/HuffmanCode/" class="md-nav__link"><span class="md-ellipsis">HuffmanCode</span></a>
+                                      <a href="../HuffmanCode/" class="md-nav__link"><span class="md-ellipsis">HuffmanCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/FixedToVariableEncoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableEncoder</span></a>
+                                      <a href="../FixedToVariableEncoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/FixedToVariableDecoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableDecoder</span></a>
+                                      <a href="../FixedToVariableDecoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableDecoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/VariableToFixedCode/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedCode</span></a>
+                                      <a href="../VariableToFixedCode/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/TunstallCode/" class="md-nav__link"><span class="md-ellipsis">TunstallCode</span></a>
+                                      <a href="../TunstallCode/" class="md-nav__link"><span class="md-ellipsis">TunstallCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/VariableToFixedEncoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedEncoder</span></a>
+                                      <a href="../VariableToFixedEncoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/VariableToFixedDecoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedDecoder</span></a>
+                                      <a href="../VariableToFixedDecoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -445,13 +446,13 @@
                                   <label class="md-nav__title" for="__nav_2_9_2"><span class="md-nav__icon md-icon"></span> Quantization</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="ref/ScalarQuantizer/" class="md-nav__link"><span class="md-ellipsis">ScalarQuantizer</span></a>
+                                      <a href="../ScalarQuantizer/" class="md-nav__link"><span class="md-ellipsis">ScalarQuantizer</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/LloydMaxQuantizer/" class="md-nav__link"><span class="md-ellipsis">LloydMaxQuantizer</span></a>
+                                      <a href="../LloydMaxQuantizer/" class="md-nav__link"><span class="md-ellipsis">LloydMaxQuantizer</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="ref/UniformQuantizer/" class="md-nav__link"><span class="md-ellipsis">UniformQuantizer</span></a>
+                                      <a href="../UniformQuantizer/" class="md-nav__link"><span class="md-ellipsis">UniformQuantizer</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -465,51 +466,51 @@
                             <label class="md-nav__title" for="__nav_2_10"><span class="md-nav__icon md-icon"></span> Sources</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/DiscreteMemorylessSource/" class="md-nav__link"><span class="md-ellipsis">DiscreteMemorylessSource</span></a>
+                                <a href="../DiscreteMemorylessSource/" class="md-nav__link"><span class="md-ellipsis">DiscreteMemorylessSource</span></a>
                               </li>
                             </ul>
                           </nav>
                         </li>
-                        <li class="md-nav__item md-nav__item--nested">
-                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_11"> <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0"><span class="md-ellipsis">Utilities</span> <span class="md-nav__icon md-icon"></span></label>
-                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+                        <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+                          <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_11" checked> <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0"><span class="md-ellipsis">Utilities</span> <span class="md-nav__icon md-icon"></span></label>
+                          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="true">
                             <label class="md-nav__title" for="__nav_2_11"><span class="md-nav__icon md-icon"></span> Utilities</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
                               <li class="md-nav__item">
-                                <a href="ref/bits_to_int/" class="md-nav__link"><span class="md-ellipsis">bits_to_int</span></a>
+                                <a href="../bits_to_int/" class="md-nav__link"><span class="md-ellipsis">bits_to_int</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/int_to_bits/" class="md-nav__link"><span class="md-ellipsis">int_to_bits</span></a>
+                                <a href="../int_to_bits/" class="md-nav__link"><span class="md-ellipsis">int_to_bits</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
+                                <a href="../pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
+                                <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
+                                <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/gaussian_q_inv/" class="md-nav__link"><span class="md-ellipsis">gaussian_q_inv</span></a>
+                                <a href="../gaussian_q_inv/" class="md-nav__link"><span class="md-ellipsis">gaussian_q_inv</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/marcum_q/" class="md-nav__link"><span class="md-ellipsis">marcum_q</span></a>
+                                <a href="../marcum_q/" class="md-nav__link"><span class="md-ellipsis">marcum_q</span></a>
+                              </li>
+                              <li class="md-nav__item md-nav__item--active">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/autocorrelation/" class="md-nav__link"><span class="md-ellipsis">autocorrelation</span></a>
+                                <a href="../cyclic_autocorrelation/" class="md-nav__link"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/cyclic_autocorrelation/" class="md-nav__link"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
+                                <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
+                                <a href="../binary_entropy/" class="md-nav__link"><span class="md-ellipsis">binary_entropy</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="ref/binary_entropy/" class="md-nav__link"><span class="md-ellipsis">binary_entropy</span></a>
-                              </li>
-                              <li class="md-nav__item">
-                                <a href="ref/relative_entropy/" class="md-nav__link"><span class="md-ellipsis">relative_entropy</span></a>
+                                <a href="../relative_entropy/" class="md-nav__link"><span class="md-ellipsis">relative_entropy</span></a>
                               </li>
                             </ul>
                           </nav>
@@ -522,7 +523,7 @@
             </div>
           </div>
         </div>
-        <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden="">
+        <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
               <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
@@ -531,13 +532,48 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="home">Home</h1>
-            <p>Welcome to <strong>Komm</strong>!</p><!-- BEGIN INCLUDE ../../README.md '&lt;!--intro-start--&gt;' '&lt;!--intro-end--&gt;' -->
-            <p><strong>Komm</strong> is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems. This project is inspired by—but is not meant to be compatible with—the MATLAB® <a href="https://www.mathworks.com/help/comm/">Communications System Toolbox™</a>. Other sources of inspiration include <a href="https://gnuradio.org/">GNU Radio</a>, <a href="http://veeresht.info/CommPy/">CommPy</a>, and <a href="https://www.sagemath.org/">SageMath</a>. <strong>Komm</strong> is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>.</p><!-- END INCLUDE -->
-            <p>For installation instructions and source code, please check the <a href="https://github.com/rwnobrega/komm">project's development page</a>.</p><!-- BEGIN INCLUDE ../../README.md '&lt;!--notes-start--&gt;' '&lt;!--notes-end--&gt;' -->
-            <blockquote>
-              <p>[!WARNING] Please be advised that this project is currently under development. As such, there may be changes to the project's codebase, including the API.</p>
-            </blockquote><!-- END INCLUDE -->
+            <h1 id="kommautocorrelation">komm.autocorrelation</h1>
+            <div class="doc doc-object doc-function">
+              <div class="doc doc-contents first">
+                <p>Computes the autocorrelation $R[\ell]$ of a real or complex sequence $x[n]$. This is defined as $$ R[\ell] = \sum_{n \in \mathbb{Z}} x[n] x^*_\ell[n], $$ where $x^*_\ell[n] = x^*[n - \ell]$ is the complex conjugate of $x[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <b><code>seq</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>A 1D-array containing the sequence $x[n]$, of length $L$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="numpy.typing.ArrayLike">ArrayLike</span>]</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is <code>range(len(seq))</code>, that is, $[0 : L)$.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
+                    <div class="doc-md-description">
+                      <p>If <code>True</code>, returns the autocorrelation divided by the sequence energy, so that $R[0] = 1$. The default value is <code>False</code>.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><strong>Returns:</strong></p>
+                <ul>
+                  <li class="field-body">
+                    <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="komm._util.correlation.DType">DType</span>]</code></span> –
+                    <div class="doc-md-description">
+                      <p>The autocorrelation $R[\ell]$ of the sequence.</p>
+                    </div>
+                  </li>
+                </ul>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">autocorrelation</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="n">shifts</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">array([11., 20., 30., 20., 11.])</span>
+</code></pre>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
         <script>
@@ -547,11 +583,21 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="ref/" class="md-footer__link md-footer__link--next" aria-label="Next: Library reference">
+        <a href="../marcum_q/" class="md-footer__link md-footer__link--prev" aria-label="Previous: marcum_q">
+        <div class="md-footer__button md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+          <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+        </div>
+        <div class="md-footer__title">
+          <span class="md-footer__direction">Previous</span>
+          <div class="md-ellipsis">
+            marcum_q
+          </div>
+        </div></a> <a href="../cyclic_autocorrelation/" class="md-footer__link md-footer__link--next" aria-label="Next: cyclic_autocorrelation">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            Library reference
+            cyclic_autocorrelation
           </div>
         </div>
         <div class="md-footer__button md-icon">
@@ -572,10 +618,10 @@
     <div class="md-dialog__inner md-typeset"></div>
   </div>
   <script id="__config" type="application/json">
-  {"base": ".", "features": ["navigation.tabs", "navigation.indexes", "navigation.footer", {"hide": ["navigation"]}], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}
+  {"base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.footer", {"hide": ["navigation"]}], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}
   </script> 
-  <script src="assets/javascripts/bundle.83f73b43.min.js"></script> 
-  <script src="javascripts/katex.js"></script> 
+  <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script> 
+  <script src="../../javascripts/katex.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 </body>

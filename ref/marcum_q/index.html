@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/qfuncinv/">
-  <link rel="prev" href="../qfunc/">
-  <link rel="next" href="../acorr/">
+  <link rel="canonical" href="https://komm.dev/ref/marcum_q/">
+  <link rel="prev" href="../gaussian_q_inv/">
+  <link rel="next" href="../autocorrelation/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>qfuncinv - Komm</title>
+  <title>marcum_q - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommqfuncinv" class="md-skip">Skip to content</a>
+    <a href="#kommmarcum_q" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">qfuncinv</span>
+            <span class="md-ellipsis">marcum_q</span>
           </div>
         </div>
       </div>
@@ -489,16 +489,19 @@
                                 <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfunc/" class="md-nav__link"><span class="md-ellipsis">qfunc</span></a>
+                                <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../gaussian_q_inv/" class="md-nav__link"><span class="md-ellipsis">gaussian_q_inv</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">qfuncinv</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">marcum_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../acorr/" class="md-nav__link"><span class="md-ellipsis">acorr</span></a>
+                                <a href="../autocorrelation/" class="md-nav__link"><span class="md-ellipsis">autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../cyclic_acorr/" class="md-nav__link"><span class="md-ellipsis">cyclic_acorr</span></a>
+                                <a href="../cyclic_autocorrelation/" class="md-nav__link"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
@@ -529,39 +532,49 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommqfuncinv">komm.qfuncinv</h1>
+            <h1 id="kommmarcum_q">komm.marcum_q</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p>Computes the inverse Gaussian Q-function.</p>
+                <p>Computes the Marcum Q-function. It is given by $$ \mathrm{Q}_m(a; x) = \int_x^\infty u \left( \frac{u}{a} \right)^{m-1} I_{m-1}(a x) \exp \left( -\frac{u^2 + a^2}{2} \right) \mathrm{d}u, $$ where $I_{m-1}$ is the modified Bessel function of the first kind. This corresponds to the complementary cumulative distribution function of the non-central chi distribution with $2m$ degrees of freedom and non-centrality parameter $a$. For more details, see <a href="https://en.wikipedia.org/wiki/Marcum_Q-function">Wikipedia: Marcum Q-function</a>.</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>y</code></b> <span class="doc-param-annotation">(<code>float | ArrayND[float]</code>)</span> –
+                    <b><code>m</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                     <div class="doc-md-description">
-                      <p>The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.</p>
+                      <p>The order of the Marcum Q-function. Should be a positive integer.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>a</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The value of $a$. Should be a float or array of floats.</p>
+                    </div>
+                  </li>
+                  <li class="field-body">
+                    <b><code>x</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                    <div class="doc-md-description">
+                      <p>The input to the function. Should be a float or array of floats.</p>
                     </div>
                   </li>
                 </ul>
                 <p><strong>Returns:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>x</code></b> <span class="doc-param-annotation">(<code>SameAsInput</code>)</span> –
+                    <b><code>y</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.float64">float64</span>] | <span title="numpy.float64">float64</span></code>)</span> –
                     <div class="doc-md-description">
-                      <p>The value $x = \mathrm{Q^{-1}}(y)$.</p>
+                      <p>The value $y = \mathrm{Q}_m(a; x)$.</p>
                     </div>
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">qfuncinv</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="go">np.float64(0.0)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">marcum_q</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">np.float64(0.7328798037968204)</span>
 </code></pre>
                 </div>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">qfuncinv</span><span class="p">([[</span><span class="mf">0.841344746</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.158655254</span><span class="p">]])</span>
-<span class="go">array([[-1.],</span>
-<span class="go">       [ 0.],</span>
-<span class="go">       [ 1.]])</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">marcum_q</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">])</span>
+<span class="go">array([0.85225816, 0.76472056, 0.66139663])</span>
 </code></pre>
                 </div>
               </div>
@@ -575,7 +588,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../qfunc/" class="md-footer__link md-footer__link--prev" aria-label="Previous: qfunc">
+        <a href="../gaussian_q_inv/" class="md-footer__link md-footer__link--prev" aria-label="Previous: gaussian_q_inv">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -583,13 +596,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            qfunc
+            gaussian_q_inv
           </div>
-        </div></a> <a href="../acorr/" class="md-footer__link md-footer__link--next" aria-label="Next: acorr">
+        </div></a> <a href="../autocorrelation/" class="md-footer__link md-footer__link--next" aria-label="Next: autocorrelation">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            acorr
+            autocorrelation
           </div>
         </div>
         <div class="md-footer__button md-icon">

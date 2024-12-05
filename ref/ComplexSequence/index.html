@@ -503,16 +503,19 @@
                                 <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfunc/" class="md-nav__link"><span class="md-ellipsis">qfunc</span></a>
+                                <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfuncinv/" class="md-nav__link"><span class="md-ellipsis">qfuncinv</span></a>
+                                <a href="../gaussian_q_inv/" class="md-nav__link"><span class="md-ellipsis">gaussian_q_inv</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../acorr/" class="md-nav__link"><span class="md-ellipsis">acorr</span></a>
+                                <a href="../marcum_q/" class="md-nav__link"><span class="md-ellipsis">marcum_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../cyclic_acorr/" class="md-nav__link"><span class="md-ellipsis">cyclic_acorr</span></a>
+                                <a href="../autocorrelation/" class="md-nav__link"><span class="md-ellipsis">autocorrelation</span></a>
+                              </li>
+                              <li class="md-nav__item">
+                                <a href="../cyclic_autocorrelation/" class="md-nav__link"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
@@ -586,19 +589,19 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="autocorrelation" class="doc doc-heading"><code class="highlight language-python"><span class="n">autocorrelation</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the autocorrelation $R[\ell]$ of the complex sequence. See <a href="/ref/acorr"><code>komm.acorr</code></a> for more details.</p>
+                      <p>Returns the autocorrelation $R[\ell]$ of the complex sequence. See <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a> for more details.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="komm._types.ArrayIntLike">ArrayIntLike</span>]</code>)</span> –
+                          <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="numpy.typing.ArrayLike">ArrayLike</span>]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>See the corresponding parameter in <a href="/ref/acorr"><code>komm.acorr</code></a>.</p>
+                            <p>See the corresponding parameter in <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a>.</p>
                           </div>
                         </li>
                         <li class="field-body">
                           <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
                           <div class="doc-md-description">
-                            <p>See the corresponding parameter in <a href="/ref/acorr"><code>komm.acorr</code></a>.</p>
+                            <p>See the corresponding parameter in <a href="/ref/autocorrelation"><code>komm.autocorrelation</code></a>.</p>
                           </div>
                         </li>
                       </ul>
@@ -623,19 +626,19 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="cyclic_autocorrelation" class="doc doc-heading"><code class="highlight language-python"><span class="n">cyclic_autocorrelation</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See <a href="/ref/cyclic_acorr"><code>komm.cyclic_acorr</code></a> for more details.</p>
+                      <p>Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a> for more details.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="komm._types.ArrayIntLike">ArrayIntLike</span>]</code>)</span> –
+                          <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="numpy.typing.ArrayLike">ArrayLike</span>]</code>)</span> –
                           <div class="doc-md-description">
-                            <p>See the corresponding parameter in <a href="/ref/cyclic_acorr"><code>komm.cyclic_acorr</code></a>.</p>
+                            <p>See the corresponding parameter in <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a>.</p>
                           </div>
                         </li>
                         <li class="field-body">
                           <b><code>normalized</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
                           <div class="doc-md-description">
-                            <p>See the corresponding parameter in <a href="/ref/cyclic_acorr"><code>komm.cyclic_acorr</code></a>.</p>
+                            <p>See the corresponding parameter in <a href="/ref/cyclic_autocorrelation"><code>komm.cyclic_autocorrelation</code></a>.</p>
                           </div>
                         </li>
                       </ul>

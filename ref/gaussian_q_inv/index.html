@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/qfunc/">
-  <link rel="prev" href="../unpack/">
-  <link rel="next" href="../qfuncinv/">
+  <link rel="canonical" href="https://komm.dev/ref/gaussian_q_inv/">
+  <link rel="prev" href="../gaussian_q/">
+  <link rel="next" href="../marcum_q/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>qfunc - Komm</title>
+  <title>gaussian_q_inv - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommqfunc" class="md-skip">Skip to content</a>
+    <a href="#kommgaussian_q_inv" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">qfunc</span>
+            <span class="md-ellipsis">gaussian_q_inv</span>
           </div>
         </div>
       </div>
@@ -488,17 +488,20 @@
                               <li class="md-nav__item">
                                 <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
                               </li>
+                              <li class="md-nav__item">
+                                <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
+                              </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">qfunc</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">gaussian_q_inv</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../qfuncinv/" class="md-nav__link"><span class="md-ellipsis">qfuncinv</span></a>
+                                <a href="../marcum_q/" class="md-nav__link"><span class="md-ellipsis">marcum_q</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../acorr/" class="md-nav__link"><span class="md-ellipsis">acorr</span></a>
+                                <a href="../autocorrelation/" class="md-nav__link"><span class="md-ellipsis">autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../cyclic_acorr/" class="md-nav__link"><span class="md-ellipsis">cyclic_acorr</span></a>
+                                <a href="../cyclic_autocorrelation/" class="md-nav__link"><span class="md-ellipsis">cyclic_autocorrelation</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../entropy/" class="md-nav__link"><span class="md-ellipsis">entropy</span></a>
@@ -529,39 +532,39 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommqfunc">komm.qfunc</h1>
+            <h1 id="kommgaussian_q_inv">komm.gaussian_q_inv</h1>
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
-                <p>Computes the Gaussian Q-function. It is given by $$ \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u. $$</p>
+                <p>Computes the inverse Gaussian Q-function.</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>x</code></b> <span class="doc-param-annotation">(<code>float | ArrayND[float]</code>)</span> –
+                    <b><code>y</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
-                      <p>The input to the function. May be any float or array of floats.</p>
+                      <p>The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.</p>
                     </div>
                   </li>
                 </ul>
                 <p><strong>Returns:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>y</code></b> <span class="doc-param-annotation">(<code>SameAsInput</code>)</span> –
+                    <b><code>x</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.float64">float64</span>] | <span title="numpy.float64">float64</span></code>)</span> –
                     <div class="doc-md-description">
-                      <p>The value $y = \mathrm{Q}(x)$.</p>
+                      <p>The value $x = \mathrm{Q^{-1}}(y)$.</p>
                     </div>
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">qfunc</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="go">np.float64(0.5)</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">gaussian_q_inv</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">np.float64(0.0)</span>
 </code></pre>
                 </div>
                 <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">qfunc</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]])</span>
-<span class="go">array([[0.84134475],</span>
-<span class="go">       [0.5       ],</span>
-<span class="go">       [0.15865525]])</span>
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">gaussian_q_inv</span><span class="p">([[</span><span class="mf">0.841344746</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.158655254</span><span class="p">]])</span>
+<span class="go">array([[-1.],</span>
+<span class="go">       [ 0.],</span>
+<span class="go">       [ 1.]])</span>
 </code></pre>
                 </div>
               </div>
@@ -575,7 +578,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../unpack/" class="md-footer__link md-footer__link--prev" aria-label="Previous: unpack">
+        <a href="../gaussian_q/" class="md-footer__link md-footer__link--prev" aria-label="Previous: gaussian_q">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -583,13 +586,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            unpack
+            gaussian_q
           </div>
-        </div></a> <a href="../qfuncinv/" class="md-footer__link md-footer__link--next" aria-label="Next: qfuncinv">
+        </div></a> <a href="../marcum_q/" class="md-footer__link md-footer__link--next" aria-label="Next: marcum_q">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            qfuncinv
+            marcum_q
           </div>
         </div>
         <div class="md-footer__button md-icon">
