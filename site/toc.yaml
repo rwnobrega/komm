@@ -87,6 +87,7 @@ Utilities:
   - unpack
   - gaussian_q
   - gaussian_q_inv
+  - marcum_q
   - acorr
   - cyclic_acorr
   - entropy
