@@ -85,8 +85,8 @@ Utilities:
   - int_to_bits
   - pack
   - unpack
-  - qfunc
-  - qfuncinv
+  - gaussian_q
+  - gaussian_q_inv
   - acorr
   - cyclic_acorr
   - entropy

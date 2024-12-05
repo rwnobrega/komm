@@ -6,61 +6,66 @@ import numpy.typing as npt
 norm = NormalDist()
 
 
-def _qfunc(x: float) -> float:
+def _gaussian_q(x: float) -> float:
     return norm.cdf(-x)
 
 
-def _qfuncinv(y: float) -> float:
-    return -norm.inv_cdf(y) + 0.0  # + 0.0 to avoid -0.0
-
-
-def qfunc(x: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
+def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
     r"""
     Computes the Gaussian Q-function. It is given by
     $$
         \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
     $$
+    This corresponds to the complementary cumulative distribution function of the standard gaussian distribution. For more details, see [Wikipedia: Q-function](https://en.wikipedia.org/wiki/Q-function).
 
     Parameters:
-        x (float | ArrayND[float]): The input to the function. May be any float or array of floats.
+        x: The input to the function. Should be a float or array of floats.
 
     Returns:
-        y (SameAsInput): The value $y = \mathrm{Q}(x)$.
+        y: The value $y = \mathrm{Q}(x)$.
 
     Examples:
-        >>> komm.qfunc(0.0)
+        >>> komm.gaussian_q(0.0)
         np.float64(0.5)
 
-        >>> komm.qfunc([[-1.0], [0.0], [1.0]])
+        >>> komm.gaussian_q([[-1.0], [0.0], [1.0]])
         array([[0.84134475],
                [0.5       ],
                [0.15865525]])
     """
-    result = np.vectorize(_qfunc)(x)
-    return np.float64(result) if np.isscalar(x) else result
+    result = np.vectorize(_gaussian_q)(x)
+    return np.float64(result) if np.ndim(result) == 0 else result
 
 
-def qfuncinv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
+def _gaussian_q_inv(y: float) -> float:
+    if y == 0:
+        return np.inf
+    if y == 1:
+        return -np.inf
+    return -norm.inv_cdf(y)
+
+
+def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
     r"""
     Computes the inverse Gaussian Q-function.
 
     Parameters:
-        y (float | ArrayND[float]): The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
+        y: The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
 
     Returns:
-        x (SameAsInput): The value $x = \mathrm{Q^{-1}}(y)$.
+        x: The value $x = \mathrm{Q^{-1}}(y)$.
 
     Examples:
-        >>> komm.qfuncinv(0.5)
+        >>> komm.gaussian_q_inv(0.5)
         np.float64(0.0)
 
-        >>> komm.qfuncinv([[0.841344746], [0.5], [0.158655254]])
+        >>> komm.gaussian_q_inv([[0.841344746], [0.5], [0.158655254]])
         array([[-1.],
                [ 0.],
                [ 1.]])
     """
-    result = np.vectorize(_qfuncinv)(y)
-    return np.float64(result) if np.isscalar(y) else result
+    result = np.vectorize(_gaussian_q_inv)(y) + 0.0  # + 0.0 to avoid -0.0
+    return np.float64(result) if np.ndim(result) == 0 else result
 
 
 def logcosh(x: npt.ArrayLike) -> np.float64:
