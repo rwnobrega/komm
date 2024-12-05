@@ -92,7 +92,7 @@ class WalshHadamardSequence(BinarySequence):
         elif ordering == "sequency":
             width = (length - 1).bit_length()
             index_gray = index ^ (index >> 1)
-            natural_index = bits_to_int((int_to_bits(index_gray, width))[::-1])
+            natural_index = bits_to_int(int_to_bits(index_gray, width)[::-1])
         elif ordering == "dyadic":
             raise NotImplementedError
 
