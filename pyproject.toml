@@ -24,6 +24,7 @@ unstable = true
 [tool.pyright]
 include = ["src", "tests"]
 typeCheckingMode = "basic"
+reportUnnecessaryTypeIgnoreComment = "error"
 strict = ["src/**"]
 
 [tool.pytest.ini_options]

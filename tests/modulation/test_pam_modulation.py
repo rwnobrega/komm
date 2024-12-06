@@ -53,7 +53,7 @@ def test_pam_invalid():
     with pytest.raises(ValueError):  # Invalid order
         komm.PAModulation(3)
     with pytest.raises(ValueError):  # Invalid labeling
-        komm.PAModulation(4, labeling="invalid")  # type: ignore
+        komm.PAModulation(4, labeling="invalid")
     with pytest.raises(ValueError):  # Invalid labeling
         komm.PAModulation(4, labeling=[[0, 0], [1, 0], [1, 1]])
 
