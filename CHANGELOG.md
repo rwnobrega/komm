@@ -3,6 +3,17 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.12.0 (2024-12-05)
+
+### Added
+
+- Implemented [Marcum Q-function](https://komm.dev/ref/marcum_q).
+
+### Breaking changes
+
+- Renamed `int2binlist` to `int_to_bits`, `binlist2int` to `bits_to_int`, `qfunc` to `gaussian_q`, `qfuncinv` to `gaussian_q_inv`, `acorr` to `autocorrelation`, and `cyclic_acorr` to `cyclic_autocorrelation`, for consistency with other functions.
+- Removed `pack` and `unpack` functions from `komm` module. Instead of `komm.pack(arr, width)`, use `komm.bits_to_int(arr.reshape(-1, width))`; and instead of `komm.unpack(arr, width)`, use `komm.int_to_bits(arr, width).ravel()`.
+
 ## v0.11.0 (2024-12-01)
 
 ### Breaking changes
