@@ -1,14 +1,14 @@
-from typing import Optional, TypeVar, Union
+from typing import TypeVar
 
 import numpy as np
 import numpy.typing as npt
 
-DType = TypeVar("DType", bound=Union[np.float64, np.complex128])
+DType = TypeVar("DType", bound=np.float64 | np.complex128)
 
 
 def autocorrelation(
     seq: npt.ArrayLike,
-    shifts: Optional[npt.ArrayLike] = None,
+    shifts: npt.ArrayLike | None = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""
@@ -49,7 +49,7 @@ def autocorrelation(
 
 def cyclic_autocorrelation(
     seq: npt.ArrayLike,
-    shifts: Optional[npt.ArrayLike] = None,
+    shifts: npt.ArrayLike | None = None,
     normalized: bool = False,
 ) -> npt.NDArray[DType]:
     r"""

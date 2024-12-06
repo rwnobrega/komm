@@ -1,5 +1,6 @@
+from collections.abc import Callable, Sequence
 from functools import cached_property
-from typing import Any, Callable, Optional, Sequence, TypedDict, TypeVar
+from typing import Any, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -158,7 +159,7 @@ class FiniteStateMachine:
         self,
         observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
-        initial_metrics: Optional[npt.ArrayLike] = None,
+        initial_metrics: npt.ArrayLike | None = None,
     ) -> tuple[npt.NDArray[np.int_], npt.NDArray[np.float64]]:
         r"""
         Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
@@ -251,9 +252,9 @@ class FiniteStateMachine:
         self,
         observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
-        input_priors: Optional[npt.ArrayLike] = None,
-        initial_state_distribution: Optional[npt.ArrayLike] = None,
-        final_state_distribution: Optional[npt.ArrayLike] = None,
+        input_priors: npt.ArrayLike | None = None,
+        initial_state_distribution: npt.ArrayLike | None = None,
+        final_state_distribution: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.float64]:
         r"""
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.

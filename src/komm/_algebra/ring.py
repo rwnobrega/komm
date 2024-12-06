@@ -1,4 +1,5 @@
-from typing import Any, Protocol, Sequence, TypeVar, runtime_checkable
+from collections.abc import Sequence
+from typing import Any, Protocol, TypeVar, runtime_checkable
 
 from typing_extensions import Self
 

@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import numpy.typing as npt
 
@@ -32,8 +30,8 @@ class BinarySequence:
 
     def __init__(
         self,
-        bit_sequence: Optional[npt.ArrayLike] = None,
-        polar_sequence: Optional[npt.ArrayLike] = None,
+        bit_sequence: npt.ArrayLike | None = None,
+        polar_sequence: npt.ArrayLike | None = None,
     ) -> None:
         if bit_sequence is not None and polar_sequence is None:
             self.bit_sequence = np.asarray(bit_sequence, dtype=int)
@@ -56,7 +54,7 @@ class BinarySequence:
         return self.bit_sequence.size
 
     def autocorrelation(
-        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
+        self, shifts: npt.ArrayLike | None = None, normalized: bool = False
     ) -> npt.NDArray[np.float64]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the binary sequence in polar format. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
@@ -78,7 +76,7 @@ class BinarySequence:
         )
 
     def cyclic_autocorrelation(
-        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
+        self, shifts: npt.ArrayLike | None = None, normalized: bool = False
     ) -> npt.NDArray[np.float64]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the binary sequence in polar format. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.

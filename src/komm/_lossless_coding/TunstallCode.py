@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import numpy.typing as npt
 
@@ -10,7 +8,7 @@ from .VariableToFixedCode import VariableToFixedCode
 
 def TunstallCode(
     pmf: npt.ArrayLike,
-    target_block_size: Optional[int] = None,
+    target_block_size: int | None = None,
 ) -> VariableToFixedCode:
     r"""
     Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.7</cite>.

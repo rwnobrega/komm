@@ -88,7 +88,7 @@ class DiscreteMemorylessChannel(AbstractDiscreteMemorylessChannel):
             base (Optional[float | str]): The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
         Parameters: Additional keyword arguments for the Arimoto–Blahut algorithm:
-            max_iter (Optional[int]): The maximum number of iterations. The default value is `1000`.
+            max_iter (int | None): The maximum number of iterations. The default value is `1000`.
             tol (Optional[float]): The error tolerance. The default value is `1e-12`.
 
         Returns:

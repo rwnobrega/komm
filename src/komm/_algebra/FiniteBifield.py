@@ -1,5 +1,6 @@
 import functools
-from typing import Generic, Optional, Sequence, TypeVar
+from collections.abc import Sequence
+from typing import Generic, TypeVar
 
 import numpy as np
 from attrs import field as attrs_field
@@ -169,7 +170,7 @@ class FiniteBifield:
         BinaryPolynomial(0b11001)
     """
 
-    def __init__(self, degree: int, modulus: Optional[BinaryPolynomial | int] = None):
+    def __init__(self, degree: int, modulus: BinaryPolynomial | int | None = None):
         self.degree = degree
         if degree < 1:
             raise ValueError("degree must be a positive integer")

@@ -1,5 +1,6 @@
 import math
-from typing import Iterable, Literal
+from collections.abc import Iterable
+from typing import Literal
 
 import numpy.typing as npt
 

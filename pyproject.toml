@@ -25,6 +25,7 @@ unstable = true
 include = ["src", "tests"]
 typeCheckingMode = "basic"
 reportUnnecessaryTypeIgnoreComment = "error"
+deprecateTypingAliases = true
 strict = ["src/**"]
 
 [tool.pytest.ini_options]

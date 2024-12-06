@@ -1,4 +1,4 @@
-from typing import Callable, Tuple
+from collections.abc import Callable
 
 import numpy as np
 import numpy.typing as npt
@@ -9,7 +9,7 @@ from .AbstractScalarQuantizer import AbstractScalarQuantizer
 def mean_squared_quantization_error(
     quantizer: AbstractScalarQuantizer,
     input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
-    input_range: Tuple[float, float],
+    input_range: tuple[float, float],
     points_per_interval: int,
 ) -> np.float64:
     # See [Say06, eq. (9.3)].
@@ -29,10 +29,10 @@ def mean_squared_quantization_error(
 def lloyd_max_quantizer(
     input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
     num_levels: int,
-    input_range: Tuple[float, float],
+    input_range: tuple[float, float],
     points_per_interval: int,
     max_iter: int,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     # See [Say06, eqs. (9.27) and (9.28)].
     x_min, x_max = input_range
     delta = (x_max - x_min) / num_levels

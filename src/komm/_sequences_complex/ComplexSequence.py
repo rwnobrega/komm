@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import numpy.typing as npt
 
@@ -34,7 +32,7 @@ class ComplexSequence:
         return self.sequence.size
 
     def autocorrelation(
-        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
+        self, shifts: npt.ArrayLike | None = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
@@ -54,7 +52,7 @@ class ComplexSequence:
         return autocorrelation(self.sequence, shifts, normalized)
 
     def cyclic_autocorrelation(
-        self, shifts: Optional[npt.ArrayLike] = None, normalized: bool = False
+        self, shifts: npt.ArrayLike | None = None, normalized: bool = False
     ) -> npt.NDArray[np.complex128]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.

@@ -1,6 +1,6 @@
 import functools
 import operator
-from typing import Optional, TypeVar
+from typing import TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -154,12 +154,12 @@ class BinaryPolynomial:
         """
         return self.value.bit_length() - 1
 
-    def coefficients(self, width: Optional[int] = None) -> npt.NDArray[np.int_]:
+    def coefficients(self, width: int | None = None) -> npt.NDArray[np.int_]:
         r"""
         Returns the coefficients of the binary polynomial.
 
         Parameters:
-            width (Optional[int]): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width (int | None): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
             coefficients (Array1D[int]): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.

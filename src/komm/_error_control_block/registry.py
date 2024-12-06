@@ -1,4 +1,5 @@
-from typing import Callable, Literal, TypedDict
+from collections.abc import Callable
+from typing import Literal, TypedDict
 
 import numpy as np
 import numpy.typing as npt

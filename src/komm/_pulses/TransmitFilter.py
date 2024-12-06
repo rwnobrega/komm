@@ -26,7 +26,7 @@ class TransmitFilter:
     Attributes:
         pulse (Pulse): The pulse whose waveform is $h(t)$.
         samples_per_symbol (int): The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
-        truncation (Optional[int]): The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
+        truncation (int | None): The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
 
     Parameters: Input:
         symbols (Array1D[float] | Array1D[complex]): The input symbols $x[n]$, of length $N$.

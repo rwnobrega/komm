@@ -1,5 +1,4 @@
 from functools import cache, cached_property
-from typing import Optional
 
 import numpy as np
 import numpy.typing as npt
@@ -123,7 +122,7 @@ class ConvolutionalCode:
     def __init__(
         self,
         feedforward_polynomials: npt.ArrayLike,
-        feedback_polynomials: Optional[npt.ArrayLike] = None,
+        feedback_polynomials: npt.ArrayLike | None = None,
     ) -> None:
         vecBinaryPolynomial = np.vectorize(BinaryPolynomial)
 
