@@ -7,7 +7,7 @@ from attrs import frozen
 from numpy.linalg import matrix_power
 
 from .._error_control_block import BlockCode
-from .._util.bit_operations import bits_to_int, int_to_bits, pack
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import pseudo_inverse
 from .ConvolutionalCode import ConvolutionalCode
 
@@ -18,7 +18,7 @@ class TerminationStrategy(ABC):
     num_blocks: int
 
     @abstractmethod
-    def initial_state(self, input_bits: npt.ArrayLike) -> int: ...
+    def initial_state(self, input_sequence: npt.ArrayLike) -> int: ...
 
     @abstractmethod
     def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]: ...
@@ -45,12 +45,11 @@ def _base_generator_matrix(
 
 @frozen
 class DirectTruncation(TerminationStrategy):
-    def initial_state(self, input_bits: npt.ArrayLike) -> int:
+    def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
 
     def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
-        k0 = self.convolutional_code.num_input_bits
-        return pack(input_bits, width=k0)
+        return np.asarray(input_bits)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
@@ -69,14 +68,13 @@ class DirectTruncation(TerminationStrategy):
 
 @frozen
 class ZeroTermination(TerminationStrategy):
-    def initial_state(self, input_bits: npt.ArrayLike) -> int:
+    def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
 
     def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
         input_bits = np.asarray(input_bits)
-        k0 = self.convolutional_code.num_input_bits
         tail = input_bits @ self._tail_projector % 2
-        return pack(np.concatenate([input_bits, tail]), width=k0)
+        return np.concatenate([input_bits, tail])
 
     def codeword_length(self) -> int:
         h = self.num_blocks
@@ -103,18 +101,17 @@ class ZeroTermination(TerminationStrategy):
 
 @frozen
 class TailBiting(TerminationStrategy):
-    def initial_state(self, input_bits: npt.ArrayLike) -> int:
+    def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         fsm = self.convolutional_code.finite_state_machine()
         nu = self.convolutional_code.overall_constraint_length
-        _, zs_response = fsm.process(input_bits, initial_state=0)
+        _, zs_response = fsm.process(input_sequence, initial_state=0)
         zs_response = int_to_bits(zs_response, width=nu)
         initial_state = bits_to_int(zs_response @ self._zs_multiplier % 2)
         assert isinstance(initial_state, int)
         return initial_state
 
     def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
-        k0 = self.convolutional_code.num_input_bits
-        return pack(input_bits, width=k0)
+        return np.asarray(input_bits)
 
     def codeword_length(self) -> int:
         h = self.num_blocks

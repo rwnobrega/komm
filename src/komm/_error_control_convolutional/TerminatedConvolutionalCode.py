@@ -7,7 +7,7 @@ from attrs import field, frozen
 from typing_extensions import override
 
 from .._error_control_block.BlockCode import BlockCode
-from .._util.bit_operations import int_to_bits, unpack
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .ConvolutionalCode import ConvolutionalCode
 from .terminations import (
     DirectTruncation,
@@ -109,12 +109,14 @@ class TerminatedConvolutionalCode(BlockCode):
 
     @override
     def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
+        k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
         fsm = self.convolutional_code.finite_state_machine()
-        input_bits = self._strategy.pre_process_input(u)
-        initial_state = self._strategy.initial_state(input_bits)
-        output_sequence, _ = fsm.process(input_bits, initial_state)
-        v = unpack(output_sequence, width=n0)
+        u = self._strategy.pre_process_input(u)
+        input_sequence = bits_to_int(u.reshape(-1, k0))
+        initial_state = self._strategy.initial_state(input_sequence)
+        output_sequence, _ = fsm.process(input_sequence, initial_state)
+        v = int_to_bits(output_sequence, width=n0).ravel()
         return v
 
     @property

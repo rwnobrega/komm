@@ -5,7 +5,7 @@ import numpy.typing as npt
 from attrs import field, mutable
 
 from .._finite_state_machine.FiniteStateMachine import MetricMemory
-from .._util.bit_operations import int_to_bits, unpack
+from .._util.bit_operations import int_to_bits
 from .ConvolutionalCode import ConvolutionalCode
 
 
@@ -72,5 +72,5 @@ class ConvolutionalStreamDecoder:
             metric_function=self.metric_function,
             memory=self.memory,
         )
-        out0 = unpack(input_sequence_hat, width=k)
+        out0 = int_to_bits(input_sequence_hat, width=k).ravel()
         return out0

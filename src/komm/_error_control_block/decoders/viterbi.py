@@ -7,7 +7,7 @@ from ..._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
 from ..._finite_state_machine.FiniteStateMachine import MetricFunction
-from ..._util import unpack
+from ..._util import int_to_bits
 from ..registry import RegistryBlockDecoder
 
 
@@ -39,7 +39,7 @@ def decode_viterbi(
     else:  # code.mode == "zero-termination"
         x_hat = xs_hat[:, 0][:-mu]
 
-    u_hat = unpack(x_hat, width=k0)
+    u_hat = int_to_bits(x_hat, width=k0).ravel()
     return u_hat
 
 
