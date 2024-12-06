@@ -483,12 +483,6 @@
                                 <a href="../int_to_bits/" class="md-nav__link"><span class="md-ellipsis">int_to_bits</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
-                              </li>
-                              <li class="md-nav__item">
-                                <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
-                              </li>
-                              <li class="md-nav__item">
                                 <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
                               </li>
                               <li class="md-nav__item">
@@ -545,7 +539,7 @@
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>target_block_size</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[int]</code>)</span> –
+                    <b><code>target_block_size</code></b> <span class="doc-param-annotation">(<code>int | None</code>)</span> –
                     <div class="doc-md-description">
                       <p>The target block size $n$. Must satisfy $2^n \geq S$, where $S$ is the cardinality of the source alphabet, given by <code>len(<abbr title="probability mass function">pmf</abbr>)</code>. The default value is $n = \lceil \log_2 S \rceil$.</p>
                     </div>

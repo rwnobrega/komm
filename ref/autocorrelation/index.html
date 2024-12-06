@@ -483,12 +483,6 @@
                                 <a href="../int_to_bits/" class="md-nav__link"><span class="md-ellipsis">int_to_bits</span></a>
                               </li>
                               <li class="md-nav__item">
-                                <a href="../pack/" class="md-nav__link"><span class="md-ellipsis">pack</span></a>
-                              </li>
-                              <li class="md-nav__item">
-                                <a href="../unpack/" class="md-nav__link"><span class="md-ellipsis">unpack</span></a>
-                              </li>
-                              <li class="md-nav__item">
                                 <a href="../gaussian_q/" class="md-nav__link"><span class="md-ellipsis">gaussian_q</span></a>
                               </li>
                               <li class="md-nav__item">
@@ -545,7 +539,7 @@
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="typing.Optional">Optional</span>[<span title="numpy.typing.ArrayLike">ArrayLike</span>]</code>)</span> –
+                    <b><code>shifts</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span> –
                     <div class="doc-md-description">
                       <p>A 1D-array containing the values of $\ell$ for which the autocorrelation will be computed. The default value is <code>range(len(seq))</code>, that is, $[0 : L)$.</p>
                     </div>
