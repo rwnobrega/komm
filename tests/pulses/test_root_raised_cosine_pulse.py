@@ -1,7 +1,7 @@
 import komm
-from komm._pulses.AbstractPulse import AbstractPulse
+import komm.abc
 
 
 def test_root_raised_cosine_pulse_protocol():
-    pulse: AbstractPulse = komm.RootRaisedCosinePulse()
-    assert isinstance(pulse, AbstractPulse)
+    pulse: komm.abc.Pulse = komm.RootRaisedCosinePulse()
+    assert isinstance(pulse, komm.abc.Pulse)

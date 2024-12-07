@@ -2,11 +2,11 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .AbstractScalarQuantizer import AbstractScalarQuantizer
+from .. import abc
 
 
 @frozen
-class ScalarQuantizer(AbstractScalarQuantizer):
+class ScalarQuantizer(abc.ScalarQuantizer):
     r"""
     General scalar quantizer. It is defined by a list of *levels*, $v_0, v_1, \ldots, v_{L-1}$, and a list of *thresholds*, $t_0, t_1, \ldots, t_L$, satisfying
     $$

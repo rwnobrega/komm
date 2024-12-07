@@ -4,17 +4,17 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
+from .. import abc
 from .._util.information_theory import (
     PMF,
     LogBase,
     assert_is_probability,
     binary_entropy,
 )
-from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
 @frozen
-class BinarySymmetricChannel(AbstractDiscreteMemorylessChannel):
+class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     r"""
     Binary symmetric channel (BSC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *crossover probability*. With probability $1 - p$, the output symbol is identical to the input symbol, and with probability $p$, the output symbol is flipped. Equivalently, the channel can be modeled as
     $$

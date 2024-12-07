@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
-from .AbstractPulse import AbstractPulse
+from .. import abc
 
 
 @frozen
@@ -63,7 +63,7 @@ class TransmitFilter:
         ValueError: parameter 'truncation' is only applicable to pulses with infinite support
     """
 
-    pulse: AbstractPulse
+    pulse: abc.Pulse
     samples_per_symbol: int
     truncation: int | None = None
 

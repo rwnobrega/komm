@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-class AbstractPulse(ABC):
+class Pulse(ABC):
     @abstractmethod
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
         pass

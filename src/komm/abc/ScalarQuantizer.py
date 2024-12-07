@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-class AbstractScalarQuantizer(ABC):
+class ScalarQuantizer(ABC):
     @property
     @abstractmethod
     def levels(self) -> npt.NDArray[np.float64]:

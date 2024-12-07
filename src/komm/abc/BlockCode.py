@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-class AbstractBlockCode(ABC):
+class BlockCode(ABC):
     @property
     @abstractmethod
     def length(self) -> int:

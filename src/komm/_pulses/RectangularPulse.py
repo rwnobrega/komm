@@ -2,11 +2,11 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
-from .AbstractPulse import AbstractPulse
+from .. import abc
 
 
 @frozen
-class RectangularPulse(AbstractPulse):
+class RectangularPulse(abc.Pulse):
     r"""
     Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

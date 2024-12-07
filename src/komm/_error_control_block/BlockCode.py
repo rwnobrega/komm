@@ -5,13 +5,13 @@ import numpy.typing as npt
 from attrs import field, frozen
 from tqdm import tqdm
 
+from .. import abc
 from .._util.matrices import null_matrix, pseudo_inverse, rref
-from .AbstractBlockCode import AbstractBlockCode
 from .SlepianArray import SlepianArray
 
 
 @frozen(kw_only=True, eq=False)
-class BlockCode(AbstractBlockCode):
+class BlockCode(abc.BlockCode):
     r"""
     General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
 

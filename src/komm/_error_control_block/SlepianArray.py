@@ -5,8 +5,8 @@ import numpy.typing as npt
 from attrs import field, frozen
 from tqdm import tqdm
 
+from .. import abc
 from .._util.bit_operations import bits_to_int, int_to_bits
-from .AbstractBlockCode import AbstractBlockCode
 
 
 @frozen
@@ -30,7 +30,7 @@ class SlepianArray:
         code: The linear block code for which the Slepian array is generated.
     """
 
-    code: AbstractBlockCode
+    code: abc.BlockCode
     _leaders: npt.NDArray[np.int_] = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:

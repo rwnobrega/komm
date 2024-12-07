@@ -1,7 +1,7 @@
 import komm
-from komm._pulses.AbstractPulse import AbstractPulse
+import komm.abc
 
 
 def test_manchester_pulse_protocol():
-    pulse: AbstractPulse = komm.ManchesterPulse()
-    assert isinstance(pulse, AbstractPulse)
+    pulse: komm.abc.Pulse = komm.ManchesterPulse()
+    assert isinstance(pulse, komm.abc.Pulse)

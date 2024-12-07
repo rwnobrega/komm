@@ -5,11 +5,11 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .AbstractScalarQuantizer import AbstractScalarQuantizer
+from .. import abc
 
 
 @frozen
-class UniformQuantizer(AbstractScalarQuantizer):
+class UniformQuantizer(abc.ScalarQuantizer):
     r"""
     Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels. For more details, see <cite>Say06, Sec. 9.4</cite>.
 

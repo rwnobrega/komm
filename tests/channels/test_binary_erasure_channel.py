@@ -2,14 +2,12 @@ import numpy as np
 import pytest
 
 import komm
-from komm._channels.AbstractDiscreteMemorylessChannel import (
-    AbstractDiscreteMemorylessChannel,
-)
+import komm.abc
 
 
 def test_bec_protocol():
-    channel: AbstractDiscreteMemorylessChannel = komm.BinaryErasureChannel(0.5)
-    assert isinstance(channel, AbstractDiscreteMemorylessChannel)
+    channel: komm.abc.DiscreteMemorylessChannel = komm.BinaryErasureChannel(0.5)
+    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
 
 
 @pytest.mark.parametrize("eps", [-0.1, 1.1])

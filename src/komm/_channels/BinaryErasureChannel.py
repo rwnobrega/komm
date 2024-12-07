@@ -4,17 +4,17 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
+from .. import abc
 from .._util.information_theory import (
     PMF,
     LogBase,
     assert_is_probability,
     binary_entropy,
 )
-from .AbstractDiscreteMemorylessChannel import AbstractDiscreteMemorylessChannel
 
 
 @frozen
-class BinaryErasureChannel(AbstractDiscreteMemorylessChannel):
+class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
     r"""
     Binary erasure channel (BEC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$ and output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$. The channel is characterized by a parameter $\epsilon$, called the *erasure probability*. With probability $1 - \epsilon$, the output symbol is identical to the input symbol, and with probability $\epsilon$, the output symbol is replaced by an erasure symbol (denoted by $2$). For more details, see <cite>CT06, Sec. 7.1.5</cite>.
 

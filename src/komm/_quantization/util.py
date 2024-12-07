@@ -3,11 +3,11 @@ from collections.abc import Callable
 import numpy as np
 import numpy.typing as npt
 
-from .AbstractScalarQuantizer import AbstractScalarQuantizer
+from .. import abc
 
 
 def mean_squared_quantization_error(
-    quantizer: AbstractScalarQuantizer,
+    quantizer: abc.ScalarQuantizer,
     input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
     input_range: tuple[float, float],
     points_per_interval: int,

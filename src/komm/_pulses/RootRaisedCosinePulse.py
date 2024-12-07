@@ -2,12 +2,12 @@ import numpy as np
 import numpy.typing as npt
 from attrs import frozen
 
-from .AbstractPulse import AbstractPulse
+from .. import abc
 from .RaisedCosinePulse import RaisedCosinePulse
 
 
 @frozen
-class RootRaisedCosinePulse(AbstractPulse):
+class RootRaisedCosinePulse(abc.Pulse):
     r"""
     Root raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

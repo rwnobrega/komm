@@ -2,16 +2,14 @@ import numpy as np
 import pytest
 
 import komm
-from komm._channels.AbstractDiscreteMemorylessChannel import (
-    AbstractDiscreteMemorylessChannel,
-)
+import komm.abc
 
 
 def test_dmc_protocol():
-    channel: komm.DiscreteMemorylessChannel = komm.DiscreteMemorylessChannel(
+    channel: komm.abc.DiscreteMemorylessChannel = komm.DiscreteMemorylessChannel(
         [[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]]
     )
-    assert isinstance(channel, AbstractDiscreteMemorylessChannel)
+    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
 
 
 @pytest.mark.parametrize(

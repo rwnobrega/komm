@@ -7,7 +7,7 @@ import numpy.typing as npt
 from .._util.information_theory import LogBase
 
 
-class AbstractDiscreteMemorylessChannel(ABC):
+class DiscreteMemorylessChannel(ABC):
     @property
     @abstractmethod
     def transition_matrix(self) -> npt.NDArray[np.float64]:
