@@ -102,6 +102,11 @@ class TerminatedConvolutionalCode(BlockCode):
     def dimension(self) -> int:
         return self.num_blocks * self.convolutional_code.num_input_bits
 
+    @property
+    @override
+    def redundancy(self) -> int:
+        return self.length - self.dimension
+
     @cached_property
     @override
     def generator_matrix(self) -> npt.NDArray[np.int_]:
