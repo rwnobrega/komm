@@ -144,30 +144,40 @@ class CyclicCode(BlockCode):
         else:
             raise NotImplementedError
 
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        u_poly = BinaryPolynomial.from_coefficients(u)
-        if not self.systematic:
-            v_poly = u_poly * self.generator_polynomial
-        else:
-            u_poly_shifted = u_poly << self.redundancy
-            b_poly = u_poly_shifted % self.generator_polynomial
-            v_poly = u_poly_shifted + b_poly
-        return v_poly.coefficients(width=self.length)
+    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        def func1d(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            u_poly = BinaryPolynomial.from_coefficients(u)
+            if not self.systematic:
+                v_poly = u_poly * self.generator_polynomial
+            else:
+                u_poly_shifted = u_poly << self.redundancy
+                b_poly = u_poly_shifted % self.generator_polynomial
+                v_poly = u_poly_shifted + b_poly
+            v = v_poly.coefficients(width=self.length)
+            return v
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        if not self.systematic:
+        return np.apply_along_axis(func1d, -1, u)
+
+    def _inv_enc_mapping(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        def func1d(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v_poly = BinaryPolynomial.from_coefficients(v)
-            u_poly = v_poly // self.generator_polynomial
+            if not self.systematic:
+                u_poly = v_poly // self.generator_polynomial
+            else:
+                u_poly = v_poly >> self.redundancy
             u = u_poly.coefficients(width=self.dimension)
-        else:
-            u = np.take(v, range(self.redundancy, self.length))
-        return u
+            return u
 
-    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        r_poly = BinaryPolynomial.from_coefficients(r)
-        s_poly = r_poly % self.generator_polynomial
-        s = s_poly.coefficients(width=self.redundancy)
-        return s
+        return np.apply_along_axis(func1d, -1, v)
+
+    def _chk_mapping(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        def func1d(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            r_poly = BinaryPolynomial.from_coefficients(r)
+            s_poly = r_poly % self.generator_polynomial
+            s = s_poly.coefficients(width=self.redundancy)
+            return s
+
+        return np.apply_along_axis(func1d, -1, r)
 
     @property
     def default_decoder(self) -> str:

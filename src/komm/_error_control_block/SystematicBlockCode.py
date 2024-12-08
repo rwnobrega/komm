@@ -116,18 +116,18 @@ class SystematicBlockCode(BlockCode):
         check_matrix[:, self.parity_set] = np.eye(m, dtype=int)
         return check_matrix
 
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        v = np.empty(self.length, dtype=int)
-        v[self.information_set] = u
-        v[self.parity_set] = np.dot(u, self.parity_submatrix) % 2
+    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        v = np.empty(u.shape[:-1] + (self.length,), dtype=int)
+        v[..., self.information_set] = u
+        v[..., self.parity_set] = u @ self.parity_submatrix % 2
         return v
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        v = np.asarray(v)
-        if v.size != self.length:
-            raise ValueError("length of 'v' must be equal to the code length")
-        s = self.chk_mapping(v)
-        if not np.all(s == 0):
-            raise ValueError("input 'v' is not a valid codeword")
-        u = np.take(v, self.information_set)
+    def _inv_enc_mapping(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        u = v[..., self.information_set]
         return u
+
+    def _chk_mapping(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        r_inf = r[..., self.information_set]
+        r_par = r[..., self.parity_set]
+        s = (r_inf @ self.parity_submatrix + r_par) % 2
+        return s

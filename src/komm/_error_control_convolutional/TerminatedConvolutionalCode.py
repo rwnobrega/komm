@@ -113,16 +113,20 @@ class TerminatedConvolutionalCode(BlockCode):
         return self._strategy.generator_matrix(self)
 
     @override
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
         fsm = self.convolutional_code.finite_state_machine()
-        u = self._strategy.pre_process_input(u)
-        input_sequence = bits_to_int(u.reshape(-1, k0))
-        initial_state = self._strategy.initial_state(input_sequence)
-        output_sequence, _ = fsm.process(input_sequence, initial_state)
-        v = int_to_bits(output_sequence, width=n0).ravel()
-        return v
+
+        def func1d(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            u = self._strategy.pre_process_input(u)
+            input_sequence = bits_to_int(u.reshape(-1, k0))
+            initial_state = self._strategy.initial_state(input_sequence)
+            output_sequence, _ = fsm.process(input_sequence, initial_state)
+            v = int_to_bits(output_sequence, width=n0).ravel()
+            return v
+
+        return np.apply_along_axis(func1d, -1, u)
 
     @property
     @override

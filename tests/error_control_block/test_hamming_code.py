@@ -63,7 +63,7 @@ def test_hamming_code_GH_orthogonality():
         ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]),
     ],
 )
-def test_hamming_code_enc_mapping(u, v):
+def test_hamming_code_encode(u, v):
     code = komm.HammingCode(3)
     np.testing.assert_array_equal(code.enc_mapping(u), v)
     np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
@@ -152,7 +152,7 @@ def test_extended_hamming_code_GH_orthogonality():
         ([1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]),
     ],
 )
-def test_extended_hamming_code_enc_mapping(u, v):
+def test_extended_hamming_code_encode(u, v):
     code = komm.HammingCode(3, extended=True)
     np.testing.assert_array_equal(code.enc_mapping(u), v)
     np.testing.assert_array_equal(code.inv_enc_mapping(v), u)

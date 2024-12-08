@@ -1,4 +1,5 @@
 from functools import cache, cached_property
+from typing import final
 
 import numpy as np
 import numpy.typing as npt
@@ -120,49 +121,91 @@ class BlockCode(abc.BlockCode):
         """
         return self.dimension / self.length
 
+    @final
     def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        The encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This is a function that takes a message $u \in \mathbb{B}^k$ and returns the corresponding codeword $v \in \mathbb{B}^n$.
+        Applies the encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This method takes one or more messages $u \in \mathbb{B}^k$ and returns the corresponding codeword(s) $v \in \mathcal{C}$.
+
+        Parameters:
+            u: The input message(s). Can be a single message of length $k$ or a multidimensional array where the last dimension has length $k$.
+
+        Returns:
+            v: The output codeword(s). Has the same shape as the input, with the last dimension expanded from $k$ to $n$.
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> code.enc_mapping([1, 0, 1])
+            >>> code.enc_mapping([1, 0, 1])  # Single message
             array([1, 0, 1, 1, 0, 1])
+            >>> code.enc_mapping([[1, 0, 1], [0, 1, 0]])  # Multiple messages
+            array([[1, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 1, 0, 1]])
         """
-        v = np.dot(u, self.generator_matrix) % 2
+        u = np.asarray(u)
+        if u.shape[-1] != self.dimension:
+            raise ValueError("last dimension of 'u' should be the code dimension")
+        return self._enc_mapping(u)
+
+    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        v = u @ self.generator_matrix % 2
         return v
 
+    @final
     def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        The inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes a codeword $v \in \mathbb{B}^n$ and returns the corresponding message $u \in \mathbb{B}^k$.
+        Applies the inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This is a function that takes one or more codewords $v \in \mathcal{C}$ and returns the corresponding message(s) $u \in \mathbb{B}^k$.
+
+        Parameters:
+            v: The input codeword(s). Can be a single codeword of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns:
+            u: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> code.inv_enc_mapping([1, 0, 1, 1, 0, 1])
+            >>> code.inv_enc_mapping([1, 0, 1, 1, 0, 1])  # Single codeword
             array([1, 0, 1])
+            >>> code.inv_enc_mapping([[1, 0, 1, 1, 0, 1], [0, 1, 0, 1, 0, 1]])  # Multiple codewords
+            array([[1, 0, 1],
+                   [0, 1, 0]])
         """
         v = np.asarray(v)
-        if v.size != self.length:
-            raise ValueError("length of 'v' must be equal to the code length")
-        s = self.chk_mapping(v)
+        if v.shape[-1] != self.length:
+            raise ValueError("last dimension of 'v' should be the code length")
+        s = self._chk_mapping(v)
         if not np.all(s == 0):
-            raise ValueError("input 'v' is not a valid codeword")
-        u = np.dot(v, self._generator_matrix_pseudo_inverse) % 2
+            raise ValueError("one or more inputs in 'v' are not valid codewords")
+        return self._inv_enc_mapping(v)
+
+    def _inv_enc_mapping(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        u = v @ self._generator_matrix_pseudo_inverse % 2
         return u
 
+    @final
     def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        The check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes a received word $r \in \mathbb{B}^n$ and returns the corresponding syndrome $s \in \mathbb{B}^m$.
+        Applies the check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This is a function that takes one or more received words $r \in \mathbb{B}^n$ and returns the corresponding syndrome(s) $s \in \mathbb{B}^m$.
+
+        Parameters:
+            r: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns:
+            s: The output syndrome(s). Has the same shape as the input, with the last dimension reduced from $n$ to $m$.
 
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]])
-            >>> code.chk_mapping([1, 0, 1, 1, 0, 1])
+            >>> code.chk_mapping([1, 0, 1, 1, 0, 1])  # Single received word
             array([0, 0, 0])
+            >>> code.chk_mapping([[1, 0, 1, 1, 0, 1], [0, 1, 0, 1, 0, 0]])  # Multiple received words
+            array([[0, 0, 0],
+                   [0, 0, 1]])
         """
         r = np.asarray(r)
-        if r.size != self.length:
-            raise ValueError("length of 'r' must be equal to the code length")
-        s = np.dot(self.check_matrix, r) % 2
+        if r.shape[-1] != self.length:
+            raise ValueError("last dimension of 'r' should be the code length")
+        return self._chk_mapping(r)
+
+    def _chk_mapping(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        s = r @ self.check_matrix.T % 2
         return s
 
     @cache
@@ -190,7 +233,7 @@ class BlockCode(abc.BlockCode):
             batch_end = min(i + _batch_size, 2**k)
             js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
             messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
-            codewords[i:batch_end] = np.dot(messages_batch, self.generator_matrix) % 2
+            codewords[i:batch_end] = self.enc_mapping(messages_batch)
         return codewords
 
     @cache

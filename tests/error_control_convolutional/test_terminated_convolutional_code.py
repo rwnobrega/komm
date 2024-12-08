@@ -136,9 +136,9 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
     for i in range(2**code.dimension):
         message = komm.int_to_bits(i, width=code.dimension)
-        enc_mapping_1 = code.enc_mapping
-        enc_mapping_2 = lambda u: komm.BlockCode.enc_mapping(code, u)
-        np.testing.assert_array_equal(enc_mapping_1(message), enc_mapping_2(message))
+        encode1 = code.enc_mapping
+        encode2 = lambda u: komm.BlockCode.enc_mapping(code, u)
+        np.testing.assert_array_equal(encode1(message), encode2(message))
 
 
 def test_terminated_convolutional_golay():
@@ -153,3 +153,42 @@ def test_terminated_convolutional_golay():
     code = komm.TerminatedConvolutionalCode(convolutional_code, 3, "tail-biting")
     assert (code.length, code.dimension, code.redundancy) == (24, 12, 12)
     assert code.minimum_distance() == 8
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials",
+    [[[0o7, 0o5]], [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]]],
+)
+@pytest.mark.parametrize(
+    "mode",
+    ["zero-termination", "direct-truncation", "tail-biting"],
+)
+def test_terminated_convolutional_mappings(feedforward_polynomials, mode):
+    code = komm.TerminatedConvolutionalCode(
+        komm.ConvolutionalCode(feedforward_polynomials), num_blocks=10, mode=mode
+    )
+    k, m = code.dimension, code.redundancy
+    for _ in range(100):
+        u = np.random.randint(0, 2, (3, 4, k))
+        v = code.enc_mapping(u)
+        np.testing.assert_array_equal(
+            code.inv_enc_mapping(v),
+            u,
+        )
+        np.testing.assert_array_equal(
+            code.chk_mapping(v),
+            np.zeros((3, 4, m)),
+        )
+
+
+@pytest.mark.parametrize(
+    "mode", ["zero-termination", "direct-truncation", "tail-biting"]
+)
+def test_terminated_convolutional_unencode_invalid_input(mode):
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
+    r = np.zeros(code.length)
+    code.inv_enc_mapping(r)  # Correct
+    with np.testing.assert_raises(ValueError):
+        r[0] = 1
+        code.inv_enc_mapping(r)  # Incorrect
