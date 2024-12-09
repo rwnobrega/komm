@@ -29,24 +29,26 @@ def berlekamp_algorithm(
     discrepancy = {-1: field.one, 0: syndrome[0]}
     degree = {-1: 0, 0: 0}
 
+    # In [LC04]: μ <-> j and ρ <-> k.
     for j in range(delta - 1):
         if discrepancy[j] == field.zero:
             degree[j + 1] = degree[j]
             sigma[j + 1] = sigma[j]
         else:
-            rho, max_so_far = -1, -1
+            k, max_so_far = -1, -1
             for i in range(-1, j):
                 if discrepancy[i] != field.zero and i - degree[i] > max_so_far:
-                    rho, max_so_far = i, i - degree[i]
-            degree[j + 1] = max(degree[j], degree[rho] + j - rho)
-            sigma[j + 1] = [field.zero] * (degree[j + 1] + 1)
-            first = np.array([field.zero] * (degree[j + 1] + 1), dtype=object)
-            first[: degree[j] + 1] = sigma[j]
-            second = np.array([field.zero] * (degree[j + 1] + 1), dtype=object)
-            second[j - rho : degree[rho] + j - rho + 1] = sigma[rho]
+                    k, max_so_far = i, i - degree[i]
+            degree[j + 1] = max(degree[j], degree[k] + j - k)
+            fst = [field.zero] * (degree[j + 1] + 1)
+            fst[: degree[j] + 1] = sigma[j]
+            snd = [field.zero] * (degree[j + 1] + 1)
+            snd[j - k : degree[k] + j - k + 1] = sigma[k]
             # [LC04, Eq. (6.25)]
-            result = first + second * (discrepancy[j] / discrepancy[rho])
-            sigma[j + 1] = result.tolist()
+            sigma[j + 1] = [
+                fst[i] + snd[i] * discrepancy[j] / discrepancy[k]
+                for i in range(degree[j + 1] + 1)
+            ]
         if j < delta - 2:
             discrepancy[j + 1] = syndrome[j + 1]
             for i in range(degree[j + 1]):
