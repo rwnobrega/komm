@@ -52,7 +52,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         return 2
 
     @property
-    def transition_matrix(self) -> npt.NDArray[np.float64]:
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""
         The transition probability matrix of the channel. It is given by
         $$
@@ -111,8 +111,8 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         q = 1 - p
         return np.log2(1 + q * p ** (p / q)) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike):
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
         p = self.decay_probability
-        input_sequence = np.array(input_sequence)
-        keep_pattern = (np.random.rand(np.size(input_sequence)) > p).astype(int)
-        return input_sequence * keep_pattern
+        input_sequence = np.asarray(input_sequence)
+        keep_pattern = np.random.rand(np.size(input_sequence)) > p
+        return (input_sequence * keep_pattern).astype(int)

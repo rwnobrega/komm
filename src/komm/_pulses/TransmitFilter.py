@@ -128,7 +128,7 @@ class TransmitFilter:
             assert False  # Unreachable
         return t_min_h, t_max_h
 
-    def _time(self, num_symbols: int) -> npt.NDArray[np.float64]:
+    def _time(self, num_symbols: int) -> npt.NDArray[np.floating]:
         # The time axis of the output signal considering 'num_symbols' input symbols.
         t_min_h, t_max_h = self.pulse_time_span
         t_min_x, t_max_x = t_min_h, t_max_h + num_symbols - 1
@@ -138,7 +138,7 @@ class TransmitFilter:
 
     @property
     @cache
-    def taps(self) -> npt.NDArray[np.float64]:
+    def taps(self) -> npt.NDArray[np.floating]:
         r"""
         The FIR filter taps of the transmit filter.
 
@@ -158,7 +158,7 @@ class TransmitFilter:
         """
         return self.pulse.waveform(self._time(1))
 
-    def time(self, symbols: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def time(self, symbols: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Convenience function to generate the time axis of the output signal given the input symbols.
 
@@ -190,7 +190,7 @@ class TransmitFilter:
 
     def __call__(
         self, symbols: npt.ArrayLike
-    ) -> npt.NDArray[np.float64 | np.complex128]:
+    ) -> npt.NDArray[np.floating | np.complexfloating]:
         symbols = np.asarray(symbols)
         beta = self.samples_per_symbol
         symbols_interp = np.zeros((symbols.size - 1) * beta + 1, dtype=symbols.dtype)

@@ -58,11 +58,11 @@ class SystematicBlockCode(BlockCode):
         return f"{self.__class__.__name__}({args_str})"
 
     @cached_property
-    def parity_submatrix(self) -> npt.NDArray[np.int_]:
+    def parity_submatrix(self) -> npt.NDArray[np.integer]:
         return np.asarray(self._parity_submatrix)
 
     @cached_property
-    def information_set(self) -> npt.NDArray[np.int_]:
+    def information_set(self) -> npt.NDArray[np.integer]:
         n, k, m = self.length, self.dimension, self.redundancy
         if self._information_set == "left":
             information_set = range(k)
@@ -85,7 +85,7 @@ class SystematicBlockCode(BlockCode):
         return information_set
 
     @cached_property
-    def parity_set(self) -> npt.NDArray[np.int_]:
+    def parity_set(self) -> npt.NDArray[np.integer]:
         return np.setdiff1d(np.arange(self.length), self.information_set)
 
     @property
@@ -101,7 +101,7 @@ class SystematicBlockCode(BlockCode):
         return self.dimension + self.redundancy
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         k, n = self.dimension, self.length
         generator_matrix = np.empty((k, n), dtype=int)
         generator_matrix[:, self.information_set] = np.eye(k, dtype=int)
@@ -109,20 +109,20 @@ class SystematicBlockCode(BlockCode):
         return generator_matrix
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.int_]:
+    def check_matrix(self) -> npt.NDArray[np.integer]:
         m, n = self.redundancy, self.length
         check_matrix = np.empty((m, n), dtype=int)
         check_matrix[:, self.information_set] = self.parity_submatrix.T
         check_matrix[:, self.parity_set] = np.eye(m, dtype=int)
         return check_matrix
 
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
         v = np.empty(self.length, dtype=int)
         v[self.information_set] = u
         v[self.parity_set] = np.dot(u, self.parity_submatrix) % 2
         return v
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
         v = np.asarray(v)
         if v.size != self.length:
             raise ValueError("length of 'v' must be equal to the code length")

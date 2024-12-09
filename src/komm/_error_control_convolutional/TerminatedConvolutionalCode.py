@@ -109,11 +109,11 @@ class TerminatedConvolutionalCode(BlockCode):
 
     @cached_property
     @override
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         return self._strategy.generator_matrix(self)
 
     @override
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
         fsm = self.convolutional_code.finite_state_machine()
@@ -135,10 +135,10 @@ class TerminatedConvolutionalCode(BlockCode):
         return cls.__base__.supported_decoders() + ["viterbi-hard", "viterbi-soft", "bcjr"]  # type: ignore
 
     @cached_property
-    def cache_bit(self) -> npt.NDArray[np.int_]:
+    def cache_bit(self) -> npt.NDArray[np.integer]:
         n0 = self.convolutional_code.num_output_bits
         return np.array([int_to_bits(y, width=n0) for y in range(2**n0)])
 
     @cached_property
-    def cache_polar(self) -> npt.NDArray[np.int_]:
+    def cache_polar(self) -> npt.NDArray[np.integer]:
         return (-1) ** self.cache_bit

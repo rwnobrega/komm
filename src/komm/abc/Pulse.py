@@ -6,11 +6,11 @@ import numpy.typing as npt
 
 class Pulse(ABC):
     @abstractmethod
-    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         pass
 
     @abstractmethod
-    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         pass
 
     @property

@@ -8,8 +8,8 @@ from attrs import field, frozen
 
 
 class MetricMemory(TypedDict):
-    paths: npt.NDArray[np.int_]
-    metrics: npt.NDArray[np.float64]
+    paths: npt.NDArray[np.integer]
+    metrics: npt.NDArray[np.floating]
 
 
 Z = TypeVar("Z")
@@ -49,14 +49,14 @@ class FiniteStateMachine:
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
     """
 
-    next_states: npt.NDArray[np.int_] = field(
+    next_states: npt.NDArray[np.integer] = field(
         converter=np.asarray, repr=lambda x: x.tolist()
     )
-    outputs: npt.NDArray[np.int_] = field(
+    outputs: npt.NDArray[np.integer] = field(
         converter=np.asarray, repr=lambda x: x.tolist()
     )
-    _input_edges: npt.NDArray[np.int_] = field(init=False, repr=False)
-    _output_edges: npt.NDArray[np.int_] = field(init=False, repr=False)
+    _input_edges: npt.NDArray[np.integer] = field(init=False, repr=False)
+    _output_edges: npt.NDArray[np.integer] = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
@@ -90,7 +90,7 @@ class FiniteStateMachine:
         return int(np.amax(self.outputs))
 
     @property
-    def input_edges(self) -> npt.NDArray[np.int_]:
+    def input_edges(self) -> npt.NDArray[np.integer]:
         r"""
         The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.
 
@@ -105,7 +105,7 @@ class FiniteStateMachine:
         return self._input_edges
 
     @property
-    def output_edges(self) -> npt.NDArray[np.int_]:
+    def output_edges(self) -> npt.NDArray[np.integer]:
         r"""
         The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.
 
@@ -123,7 +123,7 @@ class FiniteStateMachine:
         self,
         input_sequence: npt.ArrayLike,
         initial_state: int,
-    ) -> tuple[npt.NDArray[np.int_], int]:
+    ) -> tuple[npt.NDArray[np.integer], int]:
         r"""
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
 
@@ -160,7 +160,7 @@ class FiniteStateMachine:
         observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         initial_metrics: npt.ArrayLike | None = None,
-    ) -> tuple[npt.NDArray[np.int_], npt.NDArray[np.float64]]:
+    ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.floating]]:
         r"""
         Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
 
@@ -207,7 +207,7 @@ class FiniteStateMachine:
         observed_sequence: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         memory: MetricMemory,
-    ) -> npt.NDArray[np.int_]:
+    ) -> npt.NDArray[np.integer]:
         r"""
         Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
 
@@ -255,7 +255,7 @@ class FiniteStateMachine:
         input_priors: npt.ArrayLike | None = None,
         initial_state_distribution: npt.ArrayLike | None = None,
         final_state_distribution: npt.ArrayLike | None = None,
-    ) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.floating]:
         r"""
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
 

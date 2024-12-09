@@ -39,7 +39,7 @@ class CordaroWagnerCode(BlockCode):
     n: int
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         return cordaro_wagner_generator_matrix(self.n)
 
     @cache

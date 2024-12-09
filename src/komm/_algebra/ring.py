@@ -1,6 +1,7 @@
-from collections.abc import Sequence
 from typing import Any, Protocol, TypeVar, runtime_checkable
 
+import numpy as np
+import numpy.typing as npt
 from typing_extensions import Self
 
 T_co = TypeVar("T_co", bound="RingElement", covariant=True)
@@ -55,10 +56,11 @@ def power(x: T_co, n: int) -> T_co:
     return y
 
 
-def binary_horner(coefficients: Sequence[int], x: T_co) -> T_co:
+def binary_horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     r"""
     Specialized Horner's method for binary polynomials. See :func:`horner` for a more general implementation.
     """
+    coefficients = np.asarray(coefficients)
     zero: T_co = x.ambient.zero
     one: T_co = x.ambient.one
     result = zero
@@ -69,7 +71,7 @@ def binary_horner(coefficients: Sequence[int], x: T_co) -> T_co:
     return result
 
 
-def horner(coefficients: Sequence[int], x: T_co) -> T_co:
+def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     r"""
     Evaluates a polynomial at a point using Horner's method.
 
@@ -83,6 +85,7 @@ def horner(coefficients: Sequence[int], x: T_co) -> T_co:
     References:
         `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_
     """
+    coefficients = np.asarray(coefficients)
     zero: T_co = x.ambient.zero
     one: T_co = x.ambient.one
     result = zero

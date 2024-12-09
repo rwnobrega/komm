@@ -113,7 +113,7 @@ class CyclicCode(BlockCode):
         return self.generator_polynomial.degree
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         # See [LC04, Sec. 5.2].
         n, k, m = self.length, self.dimension, self.redundancy
         generator_matrix = np.empty((k, n), dtype=int)
@@ -132,7 +132,7 @@ class CyclicCode(BlockCode):
         return generator_matrix
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.int_]:
+    def check_matrix(self) -> npt.NDArray[np.integer]:
         # See [LC04, Sec. 5.2].
         if not self.systematic:
             n, m = self.length, self.redundancy
@@ -144,7 +144,7 @@ class CyclicCode(BlockCode):
         else:
             raise NotImplementedError
 
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
         u_poly = BinaryPolynomial.from_coefficients(u)
         if not self.systematic:
             v_poly = u_poly * self.generator_polynomial
@@ -154,7 +154,7 @@ class CyclicCode(BlockCode):
             v_poly = u_poly_shifted + b_poly
         return v_poly.coefficients(width=self.length)
 
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
         if not self.systematic:
             v_poly = BinaryPolynomial.from_coefficients(v)
             u_poly = v_poly // self.generator_polynomial
@@ -163,7 +163,7 @@ class CyclicCode(BlockCode):
             u = np.take(v, range(self.redundancy, self.length))
         return u
 
-    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r_poly = BinaryPolynomial.from_coefficients(r)
         s_poly = r_poly % self.generator_polynomial
         s = s_poly.coefficients(width=self.redundancy)

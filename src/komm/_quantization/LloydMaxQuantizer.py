@@ -8,7 +8,7 @@ from .util import lloyd_max_quantizer
 
 
 def LloydMaxQuantizer(
-    input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+    input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
     input_range: tuple[float, float],
     num_levels: int,
 ) -> ScalarQuantizer:

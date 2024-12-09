@@ -10,7 +10,7 @@ from .._util.information_theory import LogBase
 class DiscreteMemorylessChannel(ABC):
     @property
     @abstractmethod
-    def transition_matrix(self) -> npt.NDArray[np.float64]:
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
         pass
 
     @property
@@ -34,5 +34,5 @@ class DiscreteMemorylessChannel(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass

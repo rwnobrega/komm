@@ -4,7 +4,7 @@ import numpy.typing as npt
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 
 
-def barker_sequence(length: int) -> npt.NDArray[np.int_]:
+def barker_sequence(length: int) -> npt.NDArray[np.integer]:
     return np.array(
         {
             2: [0, 1],
@@ -18,7 +18,7 @@ def barker_sequence(length: int) -> npt.NDArray[np.int_]:
     )
 
 
-def hadamard_matrix(length: int) -> npt.NDArray[np.int_]:
+def hadamard_matrix(length: int) -> npt.NDArray[np.integer]:
     h = np.array([[1]])
     g = np.array([[1, 1], [1, -1]])
     for _ in range(length.bit_length() - 1):
@@ -29,7 +29,7 @@ def hadamard_matrix(length: int) -> npt.NDArray[np.int_]:
 def lfsr_sequence(
     feedback_polynomial: BinaryPolynomial,
     start_state_polynomial: BinaryPolynomial,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     taps = (feedback_polynomial + BinaryPolynomial(1)).exponents()
     length = 2 ** taps[-1] - 1
     state = start_state_polynomial.coefficients(width=feedback_polynomial.degree)

@@ -48,7 +48,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         return 3
 
     @property
-    def transition_matrix(self) -> npt.NDArray[np.float64]:
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""
         The transition probability matrix of the channel, given by
         $$
@@ -107,7 +107,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         """
         return (1.0 - self.erasure_probability) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
         epsilon = self.erasure_probability
         erasure_pattern = np.random.rand(np.size(input_sequence)) < epsilon
         output_sequence = np.copy(input_sequence)

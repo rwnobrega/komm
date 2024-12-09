@@ -59,7 +59,7 @@ class Lexicode(BlockCode):
         return self.d
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         n = self.n
         codewords = self._codewords
         k = len(codewords).bit_length() - 1

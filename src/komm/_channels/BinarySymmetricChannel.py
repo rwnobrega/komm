@@ -52,7 +52,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         return 2
 
     @property
-    def transition_matrix(self) -> npt.NDArray[np.float64]:
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""
         The transition probability matrix of the channel. It is given by
         $$
@@ -111,5 +111,5 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     def __call__(self, input_sequence: npt.ArrayLike):
         p = self.crossover_probability
         input_sequence = np.array(input_sequence)
-        error_pattern = (np.random.rand(np.size(input_sequence)) < p).astype(int)
+        error_pattern = np.random.rand(np.size(input_sequence)) < p
         return (input_sequence + error_pattern) % 2

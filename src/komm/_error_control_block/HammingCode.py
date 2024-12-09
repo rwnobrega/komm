@@ -75,7 +75,7 @@ class HammingCode(SystematicBlockCode):
     extended: bool = False
 
     @cached_property
-    def parity_submatrix(self) -> npt.NDArray[np.int_]:
+    def parity_submatrix(self) -> npt.NDArray[np.integer]:
         return hamming_parity_submatrix(self.mu, self.extended)
 
     @cache

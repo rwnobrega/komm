@@ -45,10 +45,10 @@ class ScalarQuantizer(abc.ScalarQuantizer):
                [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
     """
 
-    levels: npt.NDArray[np.float64] = field(
+    levels: npt.NDArray[np.floating] = field(
         converter=np.asarray, repr=lambda x: x.tolist()
     )
-    thresholds: npt.NDArray[np.float64] = field(
+    thresholds: npt.NDArray[np.floating] = field(
         converter=np.asarray, repr=lambda x: x.tolist()
     )
 
@@ -70,7 +70,7 @@ class ScalarQuantizer(abc.ScalarQuantizer):
         """
         return self.levels.size
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
         tiled = np.tile(input_signal, reps=(self.thresholds.size, 1)).transpose()
         output_signal = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
         return output_signal

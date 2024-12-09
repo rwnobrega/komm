@@ -85,7 +85,7 @@ class PAModulation(Modulation):
         return 2.0 * self.base_amplitude
 
     @override
-    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.integer]:
         received = np.asarray(received)
         indices = np.clip(
             np.around((received + self.order - 1) / 2), 0, self.order - 1
@@ -96,7 +96,7 @@ class PAModulation(Modulation):
     @override
     def demodulate_soft(
         self, received: npt.ArrayLike, snr: float = 1.0
-    ) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.floating]:
         print(self.order, self.labeling_parameter)
         if self.order == 2:
             y = np.asarray(received) / self.base_amplitude
@@ -108,8 +108,8 @@ class PAModulation(Modulation):
         return super().demodulate_soft(received, snr)
 
     def _demodulate_pam4_soft_reflected(
-        self, y: npt.NDArray[np.float64], gamma: float
-    ) -> npt.NDArray[np.float64]:
+        self, y: npt.NDArray[np.floating], gamma: float
+    ) -> npt.NDArray[np.floating]:
         soft_bits = np.empty(2 * y.size, dtype=float)
         soft_bits[0::2] = (  # For bit_0: [SA15, eq. (5.15)]
             -8 * gamma + logcosh(6 * gamma * y) - logcosh(2 * gamma * y)

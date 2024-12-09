@@ -2,7 +2,7 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-ArrayInt = npt.NDArray[np.int_]
+ArrayInt = npt.NDArray[np.integer]
 
 
 def _pivot(row: ArrayInt) -> int:

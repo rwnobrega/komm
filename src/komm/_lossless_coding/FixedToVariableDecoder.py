@@ -39,7 +39,7 @@ class FixedToVariableDecoder:
         if not self.code.is_prefix_free():
             raise ValueError("code is not prefix-free")
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer]:
         in0 = np.asarray(in0)
         out0 = parse_prefix_free(in0, self.code.inv_enc_mapping)
         return out0

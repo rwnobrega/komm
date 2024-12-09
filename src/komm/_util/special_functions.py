@@ -13,7 +13,7 @@ def _gaussian_q(x: float) -> float:
     return norm.cdf(-x)
 
 
-def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
+def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
     r"""
     Computes the Gaussian Q-function. It is given by
     $$
@@ -37,7 +37,7 @@ def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
                [0.15865525]])
     """
     result = np.vectorize(_gaussian_q)(x)
-    return np.float64(result) if np.ndim(result) == 0 else result
+    return result[()] if np.ndim(result) == 0 else result
 
 
 def _gaussian_q_inv(y: float) -> float:
@@ -48,7 +48,7 @@ def _gaussian_q_inv(y: float) -> float:
     return -norm.inv_cdf(y)
 
 
-def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
+def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
     r"""
     Computes the inverse Gaussian Q-function.
 
@@ -68,7 +68,7 @@ def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.float64] | np.float64:
                [ 1.]])
     """
     result = np.vectorize(_gaussian_q_inv)(y) + 0.0  # + 0.0 to avoid -0.0
-    return np.float64(result) if np.ndim(result) == 0 else result
+    return result[()] if np.ndim(result) == 0 else result
 
 
 def _auxiliary_p(
@@ -90,7 +90,7 @@ def _auxiliary_p(
 
 def marcum_q(
     m: int, a: npt.ArrayLike, x: npt.ArrayLike
-) -> npt.NDArray[np.float64] | np.float64:
+) -> npt.NDArray[np.floating] | np.floating:
     r"""
     Computes the Marcum Q-function. It is given by
     $$
@@ -120,10 +120,10 @@ def marcum_q(
     if not np.all(a >= 0) or not np.all(x >= 0):
         raise ValueError("'a' and 'x' must be non-negative")
     result = np.vectorize(_auxiliary_p)(m, a**2 / (2 * m), x**2 / 2)
-    return np.float64(result) if np.ndim(result) == 0 else result
+    return result[()] if np.ndim(result) == 0 else result
 
 
-def logcosh(x: npt.ArrayLike) -> np.float64:
+def logcosh(x: npt.ArrayLike) -> np.floating:
     # https://stackoverflow.com/a/57786270/
     s = np.sign(x) * x
     p = np.exp(-2 * s)

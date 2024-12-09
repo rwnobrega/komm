@@ -60,7 +60,7 @@ def berlekamp_algorithm(
 def decode_berlekamp(
     code: BCHCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     alpha = code.field.primitive_element
     r = np.asarray(r)
     r_poly = BinaryPolynomial.from_coefficients(r)

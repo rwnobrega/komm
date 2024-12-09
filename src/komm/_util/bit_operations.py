@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.int_]:
+def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.integer]:
     r"""
     Converts a bit array to its integer representation (LSB first).
 
@@ -34,7 +34,7 @@ def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.int_]:
     return int.from_bytes(packed, byteorder="little")
 
 
-def int_to_bits(input: npt.ArrayLike, width: int) -> npt.NDArray[np.int_]:
+def int_to_bits(input: npt.ArrayLike, width: int) -> npt.NDArray[np.integer]:
     r"""
     Converts an integer, or array of integers, to their bit representations (LSB first).
 

@@ -29,7 +29,7 @@ def cartesian_product(A: T, B: T) -> T:
     return product
 
 
-def labeling_natural(order: int) -> npt.NDArray[np.int_]:
+def labeling_natural(order: int) -> npt.NDArray[np.integer]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
@@ -37,7 +37,7 @@ def labeling_natural(order: int) -> npt.NDArray[np.int_]:
     return labeling
 
 
-def labeling_reflected(order: int) -> npt.NDArray[np.int_]:
+def labeling_reflected(order: int) -> npt.NDArray[np.integer]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
@@ -45,7 +45,7 @@ def labeling_reflected(order: int) -> npt.NDArray[np.int_]:
     return labeling
 
 
-def labeling_natural_2d(orders: tuple[int, int]) -> npt.NDArray[np.int_]:
+def labeling_natural_2d(orders: tuple[int, int]) -> npt.NDArray[np.integer]:
     order_I, order_Q = orders
     return cartesian_product(
         labeling_natural(order_I),
@@ -53,7 +53,7 @@ def labeling_natural_2d(orders: tuple[int, int]) -> npt.NDArray[np.int_]:
     )
 
 
-def labeling_reflected_2d(orders: tuple[int, int]) -> npt.NDArray[np.int_]:
+def labeling_reflected_2d(orders: tuple[int, int]) -> npt.NDArray[np.integer]:
     order_I, order_Q = orders
     return cartesian_product(
         labeling_reflected(order_I),
@@ -76,7 +76,7 @@ def get_labeling(
     allowed_labelings: tuple[LabelingStr, ...],
     *args: Any,
     **kwargs: Any,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     if isinstance(labeling, str):
         if labeling not in allowed_labelings:
             raise ValueError(f"if string, 'labeling' must be in {allowed_labelings}")

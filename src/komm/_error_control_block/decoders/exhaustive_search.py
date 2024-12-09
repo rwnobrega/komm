@@ -8,7 +8,7 @@ from ..registry import RegistryBlockDecoder
 def decode_exhaustive_search_hard(
     code: BlockCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     codewords = code.codewords()
     metrics = np.count_nonzero(r != codewords, axis=1)
     v_hat = codewords[np.argmin(metrics)]
@@ -32,7 +32,7 @@ RegistryBlockDecoder.register(
 def decode_exhaustive_search_soft(
     code: BlockCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     codewords = code.codewords()
     metrics = np.dot(codewords, r)
     v_hat = codewords[np.argmin(metrics)]

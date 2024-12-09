@@ -60,7 +60,7 @@ class GolayCode(SystematicBlockCode):
     extended: bool = False
 
     @cached_property
-    def parity_submatrix(self) -> npt.NDArray[np.int_]:
+    def parity_submatrix(self) -> npt.NDArray[np.integer]:
         return golay_parity_submatrix(self.extended)
 
     @cache

@@ -22,7 +22,7 @@ class DiscreteMemorylessSource:
         array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
     """
 
-    pmf: npt.NDArray[np.float64] = field(converter=PMF)
+    pmf: npt.NDArray[np.floating] = field(converter=PMF)
 
     @property
     def cardinality(self) -> int:
@@ -47,5 +47,5 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
-    def __call__(self, size: int) -> npt.NDArray[np.int_]:
+    def __call__(self, size: int) -> npt.NDArray[np.integer]:
         return np.random.choice(self.pmf.size, p=self.pmf, size=size)

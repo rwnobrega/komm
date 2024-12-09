@@ -7,12 +7,12 @@ import numpy.typing as npt
 class ScalarQuantizer(ABC):
     @property
     @abstractmethod
-    def levels(self) -> npt.NDArray[np.float64]:
+    def levels(self) -> npt.NDArray[np.floating]:
         pass
 
     @property
     @abstractmethod
-    def thresholds(self) -> npt.NDArray[np.float64]:
+    def thresholds(self) -> npt.NDArray[np.floating]:
         pass
 
     @property
@@ -21,5 +21,5 @@ class ScalarQuantizer(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
         pass

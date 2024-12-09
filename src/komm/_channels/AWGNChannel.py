@@ -62,7 +62,7 @@ class AWGNChannel:
         """
         return 0.5 * np.log1p(self.snr) / np.log(2.0)
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
         input_signal = np.array(input_signal)
         size = input_signal.size
 

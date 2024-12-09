@@ -49,7 +49,7 @@ class RepetitionCode(BlockCode):
     n: int
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         return np.ones((1, self.n), dtype=int)
 
     @cache
@@ -57,7 +57,7 @@ class RepetitionCode(BlockCode):
         return self.n
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.int_]:
+    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
         n = self.n
         coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range((n + 1) // 2):

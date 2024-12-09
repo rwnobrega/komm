@@ -31,12 +31,12 @@ class SlepianArray:
     """
 
     code: abc.BlockCode
-    _leaders: npt.NDArray[np.int_] = field(init=False, repr=False)
+    _leaders: npt.NDArray[np.integer] = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         object.__setattr__(self, "_leaders", self._generate_leaders())
 
-    def _generate_leaders(self) -> npt.NDArray[np.int_] | None:
+    def _generate_leaders(self) -> npt.NDArray[np.integer] | None:
         m, n = self.code.redundancy, self.code.length
         leaders = np.full(2**m, -1)
         taken = 0
@@ -55,7 +55,7 @@ class SlepianArray:
                     if taken == 2**m:
                         return leaders
 
-    def entry(self, i: int, j: int) -> npt.NDArray[np.int_]:
+    def entry(self, i: int, j: int) -> npt.NDArray[np.integer]:
         r"""
         The entry at the $i$-th row and $j$-th column of the Slepian array.
 
@@ -87,7 +87,7 @@ class SlepianArray:
         codeword = self.code.enc_mapping(message)
         return np.array(leader + codeword) % 2
 
-    def row(self, i: int) -> npt.NDArray[np.int_]:
+    def row(self, i: int) -> npt.NDArray[np.integer]:
         r"""
         The $i$-th row of the Slepian array.
 
@@ -110,7 +110,7 @@ class SlepianArray:
         k = self.code.dimension
         return np.array([self.entry(i, j) for j in range(2**k)])
 
-    def col(self, j: int) -> npt.NDArray[np.int_]:
+    def col(self, j: int) -> npt.NDArray[np.integer]:
         r"""
         The $j$-th column of the Slepian array.
 

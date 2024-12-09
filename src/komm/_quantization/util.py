@@ -8,31 +8,31 @@ from .. import abc
 
 def mean_squared_quantization_error(
     quantizer: abc.ScalarQuantizer,
-    input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+    input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
     input_range: tuple[float, float],
     points_per_interval: int,
-) -> np.float64:
+) -> float:
     # See [Say06, eq. (9.3)].
     x_min, x_max = input_range
     thresholds = np.concatenate(([x_min], quantizer.thresholds, [x_max]))
-    mse = np.float64(0.0)
+    mse = 0.0
     for i, level in enumerate(quantizer.levels):
         left, right = thresholds[i], thresholds[i + 1]
-        x = np.linspace(left, right, num=points_per_interval, dtype=np.float64)
+        x = np.linspace(left, right, num=points_per_interval, dtype=float)
         pdf = input_pdf(x)
-        integrand: npt.NDArray[np.float64] = (x - level) ** 2 * pdf
-        integral = np.float64(np.trapezoid(integrand, x))
-        mse += integral
+        integrand: npt.NDArray[np.floating] = (x - level) ** 2 * pdf
+        integral = np.trapezoid(integrand, x)
+        mse += float(integral)
     return mse
 
 
 def lloyd_max_quantizer(
-    input_pdf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+    input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
     num_levels: int,
     input_range: tuple[float, float],
     points_per_interval: int,
     max_iter: int,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
     # See [Say06, eqs. (9.27) and (9.28)].
     x_min, x_max = input_range
     delta = (x_max - x_min) / num_levels
@@ -49,7 +49,7 @@ def lloyd_max_quantizer(
 
         for i in range(num_levels):
             left, right = thresholds[i], thresholds[i + 1]
-            x = np.linspace(left, right, num=points_per_interval, dtype=np.float64)
+            x = np.linspace(left, right, num=points_per_interval, dtype=float)
             pdf = input_pdf(x)
             numerator = np.trapezoid(x * pdf, x)
             denominator = np.trapezoid(pdf, x)

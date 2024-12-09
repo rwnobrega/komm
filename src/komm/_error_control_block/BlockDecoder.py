@@ -163,7 +163,7 @@ class BlockDecoder:
             error_message = f"method '{method}' is not supported for this code"
             raise ValueError(f"{error_message}\n{supported_methods_info}")
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_ | np.float64]:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         method = self.method or self.code.default_decoder
         decoder_data = RegistryBlockDecoder.get(method)
 

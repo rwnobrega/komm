@@ -35,7 +35,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
 
     """
 
-    transition_matrix: npt.NDArray[np.float64] = field(converter=TransitionMatrix)
+    transition_matrix: npt.NDArray[np.floating] = field(converter=TransitionMatrix)
 
     @property
     def input_cardinality(self) -> int:
@@ -111,7 +111,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         )
         return mutual_information(optimal_input_pmf, self.transition_matrix, base=base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
         input_sequence = np.asarray(input_sequence)
         output_sequence = [
             np.random.choice(self.output_cardinality, p=self.transition_matrix[x])

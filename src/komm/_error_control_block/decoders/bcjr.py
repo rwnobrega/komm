@@ -12,7 +12,7 @@ def decode_bcjr(
     r: npt.ArrayLike,
     *,
     snr: float,
-) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.floating]:
     if code.mode == "tail-biting":
         raise NotImplementedError("BCJR algorithm not implemented for 'tail-biting'")
 

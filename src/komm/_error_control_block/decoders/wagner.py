@@ -8,7 +8,7 @@ from ..SingleParityCheckCode import SingleParityCheckCode
 def decode_wagner(
     code: SingleParityCheckCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     # See Costello, Forney: Channel Coding: The Road to Channel Capacity.
     r = np.asarray(r)
     v_hat = (r < 0).astype(int)

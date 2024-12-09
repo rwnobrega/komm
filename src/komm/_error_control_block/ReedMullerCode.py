@@ -56,7 +56,7 @@ class ReedMullerCode(BlockCode):
             raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.int_]:
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
         return reed_muller_generator_matrix(self.rho, self.mu)
 
     @cache
@@ -72,7 +72,7 @@ class ReedMullerCode(BlockCode):
         return cls.__base__.supported_decoders() + ["reed", "weighted-reed"]  # type: ignore
 
     @cache
-    def reed_partitions(self) -> list[npt.NDArray[np.int_]]:
+    def reed_partitions(self) -> list[npt.NDArray[np.integer]]:
         r"""
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
@@ -95,7 +95,7 @@ class ReedMullerCode(BlockCode):
                    [11, 15]])
         """
         rho, mu = self.rho, self.mu
-        reed_partitions: list[npt.NDArray[np.int_]] = []
+        reed_partitions: list[npt.NDArray[np.integer]] = []
         binary_vectors = [
             np.fliplr(np.array(list(it.product([0, 1], repeat=ell)), dtype=int))
             for ell in range(mu + 1)

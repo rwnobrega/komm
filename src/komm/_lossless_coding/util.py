@@ -7,6 +7,8 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import Self
 
+from .._util.information_theory import PMF
+
 Word = tuple[int, ...]
 
 
@@ -33,8 +35,8 @@ def is_uniquely_decodable(words: list[Word]) -> bool:
 
 
 def parse_prefix_free(
-    input_sequence: npt.NDArray[np.int_], dictionary: dict[Word, Word]
-) -> npt.NDArray[np.int_]:
+    input_sequence: npt.NDArray[np.integer], dictionary: dict[Word, Word]
+) -> npt.NDArray[np.integer]:
     output_sequence: list[int] = []
     i = 0
     while i < len(input_sequence):
@@ -51,7 +53,7 @@ def parse_prefix_free(
 
 
 def huffman_algorithm(
-    pmf: npt.NDArray[np.float64], source_block_size: int, policy: Literal["high", "low"]
+    pmf: PMF, source_block_size: int, policy: Literal["high", "low"]
 ) -> list[Word]:
     class Node:
         def __init__(self, index: int, probability: float):
@@ -96,9 +98,7 @@ def huffman_algorithm(
     return codewords
 
 
-def tunstall_algorithm(
-    pmf: npt.NDArray[np.float64], code_block_size: int
-) -> list[Word]:
+def tunstall_algorithm(pmf: PMF, code_block_size: int) -> list[Word]:
     class Node:
         def __init__(self, symbols: Word, probability: float):
             self.symbols = symbols

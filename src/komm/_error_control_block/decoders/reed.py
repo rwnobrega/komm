@@ -8,7 +8,7 @@ from ..registry import RegistryBlockDecoder
 def decode_reed(
     code: ReedMullerCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     # See [LC04, p. 105–114, 439–440].
     u_hat = np.empty(code.dimension, dtype=int)
     bx = np.copy(r)
@@ -37,7 +37,7 @@ RegistryBlockDecoder.register(
 def decode_weighted_reed(
     code: ReedMullerCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     # See [LC04, p. 440–442].
     r = np.asarray(r)
     u_hat = np.empty(code.dimension, dtype=int)

@@ -4,7 +4,7 @@ from itertools import combinations
 import numpy as np
 import numpy.typing as npt
 
-BinaryMatrix = npt.NDArray[np.int_]
+BinaryMatrix = npt.NDArray[np.integer]
 
 
 def extended_parity_submatrix(parity_submatrix: BinaryMatrix) -> BinaryMatrix:
@@ -55,7 +55,7 @@ def reed_muller_generator_matrix(rho: int, mu: int) -> BinaryMatrix:
         ))
         v[mu - i - 1] = np.tile(block, 2**i)
 
-    G_list: list[npt.NDArray[np.int_]] = []
+    G_list: list[npt.NDArray[np.integer]] = []
     for ell in range(rho, 0, -1):
         for indices in combinations(range(mu), ell):
             row = reduce(np.multiply, v[indices, :])

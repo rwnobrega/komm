@@ -9,7 +9,7 @@ from ..registry import RegistryBlockDecoder
 def decode_syndrome_table(
     code: BlockCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     coset_leaders = code.coset_leaders()
     s = np.dot(code.check_matrix, r) % 2
     e_hat = coset_leaders[bits_to_int(s)]

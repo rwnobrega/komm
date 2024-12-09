@@ -33,7 +33,7 @@ class ComplexSequence:
 
     def autocorrelation(
         self, shifts: npt.ArrayLike | None = None, normalized: bool = False
-    ) -> npt.NDArray[np.complex128]:
+    ) -> npt.NDArray[np.complexfloating]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
 
@@ -53,7 +53,7 @@ class ComplexSequence:
 
     def cyclic_autocorrelation(
         self, shifts: npt.ArrayLike | None = None, normalized: bool = False
-    ) -> npt.NDArray[np.complex128]:
+    ) -> npt.NDArray[np.complexfloating]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.
 

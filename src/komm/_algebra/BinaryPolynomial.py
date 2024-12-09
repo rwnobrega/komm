@@ -154,7 +154,7 @@ class BinaryPolynomial:
         """
         return self.value.bit_length() - 1
 
-    def coefficients(self, width: int | None = None) -> npt.NDArray[np.int_]:
+    def coefficients(self, width: int | None = None) -> npt.NDArray[np.integer]:
         r"""
         Returns the coefficients of the binary polynomial.
 
@@ -173,7 +173,7 @@ class BinaryPolynomial:
         """
         return int_to_bits(self.value, width=width or max(self.degree + 1, 1))
 
-    def exponents(self) -> npt.NDArray[np.int_]:
+    def exponents(self) -> npt.NDArray[np.integer]:
         r"""
         Returns the exponents of the binary polynomial.
 
@@ -202,7 +202,7 @@ class BinaryPolynomial:
             >>> poly.evaluate(komm.Integer(7))  # same as 7**4 + 7**3 + 7
             Integer(value=2751)
         """
-        return ring.binary_horner(self.coefficients().tolist(), point)
+        return ring.binary_horner(self.coefficients(), point)
 
     def __repr__(self) -> str:
         return f"BinaryPolynomial({self.value:#b})"

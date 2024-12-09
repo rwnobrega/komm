@@ -28,7 +28,7 @@ class VariableToFixedDecoder:
 
     code: VariableToFixedCode
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer]:
         n, dec = self.code.target_block_size, self.code.dec_mapping
         out0 = np.concatenate([dec[tuple(s)] for s in np.reshape(in0, shape=(-1, n))])
         return out0

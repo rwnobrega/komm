@@ -52,7 +52,7 @@ class ConvolutionalStreamDecoder:
         self.memory["metrics"][self.state, -1] = 0.0
 
     @cached_property
-    def cache_bit(self) -> npt.NDArray[np.int_]:
+    def cache_bit(self) -> npt.NDArray[np.integer]:
         n = self.convolutional_code.num_output_bits
         return np.array([int_to_bits(y, width=n) for y in range(2**n)])
 
@@ -63,7 +63,7 @@ class ConvolutionalStreamDecoder:
             return np.dot(self.cache_bit[y], z)
         raise ValueError(f"input type '{self.input_type}' is not supported")
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer]:
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
         fsm = self.convolutional_code.finite_state_machine()

@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 from attrs import frozen
+from typing_extensions import override
 
 from .. import abc
 
@@ -41,16 +42,19 @@ class GaussianPulse(abc.Pulse):
 
     half_power_bandwidth: float = 1.0
 
-    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    @override
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
         return np.exp(-0.5 * (2 * np.pi * b_bar * t) ** 2)
 
-    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    @override
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
         return 1 / (np.sqrt(2 * np.pi) * b_bar) * np.exp(-0.5 * (f / b_bar) ** 2)
 
     @property
+    @override
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)

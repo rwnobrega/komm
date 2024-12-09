@@ -66,7 +66,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
 
     @property
     @cache
-    def levels(self) -> npt.NDArray[np.float64]:
+    def levels(self) -> npt.NDArray[np.floating]:
         r"""
         The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.
         """
@@ -80,13 +80,13 @@ class UniformQuantizer(abc.ScalarQuantizer):
 
     @property
     @cache
-    def thresholds(self) -> npt.NDArray[np.float64]:
+    def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.
         """
         return (self.levels + self.quantization_step / 2)[:-1]
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
         input_signal = np.array(input_signal, dtype=float, ndmin=1)
         delta = self.quantization_step
         if self.choice == "mid-riser":

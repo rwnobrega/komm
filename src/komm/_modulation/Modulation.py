@@ -85,11 +85,11 @@ class Modulation:
                [1, 1]])
     """
 
-    constellation: npt.NDArray[np.float64 | np.complex128] = field(
+    constellation: npt.NDArray[np.floating | np.complexfloating] = field(
         converter=np.asarray,
         repr=lambda x: x.tolist(),
     )
-    labeling: npt.NDArray[np.int_] = field(
+    labeling: npt.NDArray[np.integer] = field(
         converter=np.asarray,
         repr=lambda x: x.tolist(),
     )
@@ -217,7 +217,9 @@ class Modulation:
             [np.abs(s1 - s2) for s1, s2 in combinations(self.constellation, 2)]
         )
 
-    def modulate(self, bits: npt.ArrayLike) -> npt.NDArray[np.float64 | np.complex128]:
+    def modulate(
+        self, bits: npt.ArrayLike
+    ) -> npt.NDArray[np.floating | np.complexfloating]:
         r"""
         Modulates a sequence of bits to its corresponding constellation symbols.
 
@@ -242,7 +244,7 @@ class Modulation:
             symbols[i] = self.constellation[self.inverse_labeling[tuple(bit_sequence)]]
         return symbols
 
-    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Demodulates a sequence of received points to a sequence of bits using hard-decision decoding.
 
@@ -269,7 +271,7 @@ class Modulation:
 
     def demodulate_soft(
         self, received: npt.ArrayLike, snr: float = 1.0
-    ) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.floating]:
         r"""
         Demodulates a sequence of received points to a sequence of bits using soft-decision decoding.
 

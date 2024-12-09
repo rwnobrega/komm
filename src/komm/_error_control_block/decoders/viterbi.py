@@ -15,7 +15,7 @@ def decode_viterbi(
     code: TerminatedConvolutionalCode,
     r: npt.ArrayLike,
     metric_function: MetricFunction[Any],
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     if code.mode == "tail-biting":
         raise NotImplementedError("Viterbi algorithm not implemented for 'tail-biting'")
 
@@ -46,7 +46,7 @@ def decode_viterbi(
 def decode_viterbi_hard(
     code: TerminatedConvolutionalCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     def metric_function(y: int, z: float) -> float:
         return np.count_nonzero(code.cache_bit[y] != z)
 
@@ -68,7 +68,7 @@ RegistryBlockDecoder.register(
 def decode_viterbi_soft(
     code: TerminatedConvolutionalCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     def metric_function(y: int, z: int) -> float:
         return np.dot(code.cache_bit[y], z)
 

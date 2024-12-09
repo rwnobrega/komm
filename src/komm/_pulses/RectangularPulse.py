@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 from attrs import frozen
+from typing_extensions import override
 
 from .. import abc
 
@@ -56,14 +57,17 @@ class RectangularPulse(abc.Pulse):
 
     width: float = 1.0
 
-    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    @override
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         return 1.0 * (0.0 <= t) * (t < self.width)
 
-    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    @override
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         return self.width * np.sinc(self.width * f)
 
     @property
+    @override
     def support(self) -> tuple[float, float]:
         return (0.0, self.width)

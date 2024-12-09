@@ -171,7 +171,7 @@ class ConvolutionalCode:
         return transfer_function_matrix
 
     @cached_property
-    def constraint_lengths(self) -> npt.NDArray[np.int_]:
+    def constraint_lengths(self) -> npt.NDArray[np.integer]:
         r"""
         The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a $k$-array of integers.
         """
@@ -216,7 +216,7 @@ class ConvolutionalCode:
         x_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
         s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), x_indices)
 
-        ff_taps: list[npt.NDArray[np.object_]] = []
+        ff_taps: list[npt.NDArray[np.integer]] = []
         for j in range(n):
             taps = np.concatenate([
                 self.feedforward_polynomials[i, j].exponents() + x_indices[i]
@@ -224,7 +224,7 @@ class ConvolutionalCode:
             ])
             ff_taps.append(taps)
 
-        fb_taps: list[npt.NDArray[np.object_]] = []
+        fb_taps: list[npt.NDArray[np.integer]] = []
         for i in range(k):
             taps = (
                 BinaryPolynomial(0b1) + self.feedback_polynomials[i]
@@ -252,10 +252,10 @@ class ConvolutionalCode:
     def state_space_representation(
         self,
     ) -> tuple[
-        npt.NDArray[np.int_],
-        npt.NDArray[np.int_],
-        npt.NDArray[np.int_],
-        npt.NDArray[np.int_],
+        npt.NDArray[np.integer],
+        npt.NDArray[np.integer],
+        npt.NDArray[np.integer],
+        npt.NDArray[np.integer],
     ]:
         r"""
         Returns the *state-space representation* of the code. Let

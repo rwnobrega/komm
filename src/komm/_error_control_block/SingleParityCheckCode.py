@@ -49,7 +49,7 @@ class SingleParityCheckCode(BlockCode):
     n: int
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.int_]:
+    def check_matrix(self) -> npt.NDArray[np.integer]:
         return np.ones((1, self.n), dtype=int)
 
     @cache
@@ -57,7 +57,7 @@ class SingleParityCheckCode(BlockCode):
         return 2
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.int_]:
+    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
         n = self.n
         codeword_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range(0, n + 1, 2):

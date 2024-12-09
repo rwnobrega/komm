@@ -21,18 +21,20 @@ class TerminationStrategy(ABC):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int: ...
 
     @abstractmethod
-    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]: ...
+    def pre_process_input(
+        self, input_bits: npt.ArrayLike
+    ) -> npt.NDArray[np.integer]: ...
 
     @abstractmethod
     def codeword_length(self) -> int: ...
 
     @abstractmethod
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]: ...
+    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]: ...
 
 
 def _base_generator_matrix(
     code: BlockCode, convolutional_code: ConvolutionalCode, num_blocks: int
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     k0 = convolutional_code.num_input_bits
     n0 = convolutional_code.num_output_bits
     k, n = code.dimension, code.length
@@ -48,7 +50,7 @@ class DirectTruncation(TerminationStrategy):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
 
-    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return np.asarray(input_bits)
 
     def codeword_length(self) -> int:
@@ -56,7 +58,7 @@ class DirectTruncation(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
+    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
         h = self.num_blocks
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
@@ -71,7 +73,7 @@ class ZeroTermination(TerminationStrategy):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
 
-    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
         input_bits = np.asarray(input_bits)
         tail = input_bits @ self._tail_projector % 2
         return np.concatenate([input_bits, tail])
@@ -82,11 +84,11 @@ class ZeroTermination(TerminationStrategy):
         m = self.convolutional_code.memory_order
         return (h + m) * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
+    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
     @cached_property
-    def _tail_projector(self) -> npt.NDArray[np.int_]:
+    def _tail_projector(self) -> npt.NDArray[np.integer]:
         h = self.num_blocks
         mu = self.convolutional_code.memory_order
         A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
@@ -110,7 +112,7 @@ class TailBiting(TerminationStrategy):
         assert isinstance(initial_state, int)
         return initial_state
 
-    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.int_]:
+    def pre_process_input(self, input_bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return np.asarray(input_bits)
 
     def codeword_length(self) -> int:
@@ -118,11 +120,11 @@ class TailBiting(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.int_]:
+    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
     @cached_property
-    def _zs_multiplier(self) -> npt.NDArray[np.int_]:
+    def _zs_multiplier(self) -> npt.NDArray[np.integer]:
         h = self.num_blocks
         nu = self.convolutional_code.overall_constraint_length
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()

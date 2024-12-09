@@ -9,7 +9,7 @@ from ..registry import RegistryBlockDecoder
 def decode_meggitt(
     code: CyclicCode,
     r: npt.ArrayLike,
-) -> npt.NDArray[np.int_]:
+) -> npt.NDArray[np.integer]:
     # See [XiD03, Sec. 3.4] for more details.
     r = np.asarray(r)
     meggitt_table = code.meggitt_table

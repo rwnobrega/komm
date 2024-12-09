@@ -3,7 +3,7 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
-DType = TypeVar("DType", bound=np.float64 | np.complex128)
+DType = TypeVar("DType", bound=np.floating | np.complexfloating)
 
 
 def autocorrelation(

@@ -20,9 +20,9 @@ def assert_is_probability(value: float) -> None:
         raise ValueError("probability must be between 0 and 1")
 
 
-class PMF(npt.NDArray[np.float64]):
+class PMF(npt.NDArray[np.floating]):
     def __new__(cls, values: npt.ArrayLike):
-        arr = np.asarray(values, dtype=np.float64)
+        arr = np.asarray(values, dtype=float)
         if arr.ndim != 1:
             raise ValueError("PMF must be a 1D array")
         if not np.all(arr >= 0.0):
@@ -32,14 +32,14 @@ class PMF(npt.NDArray[np.float64]):
         obj = arr.view(cls)
         return obj
 
-    def __array_finalize__(self, obj: npt.NDArray[np.float64] | None) -> None:
+    def __array_finalize__(self, obj: npt.NDArray[np.floating] | None) -> None:
         if obj is None:
             return
 
 
-class TransitionMatrix(npt.NDArray[np.float64]):
+class TransitionMatrix(npt.NDArray[np.floating]):
     def __new__(cls, values: npt.ArrayLike):
-        arr = np.asarray(values, dtype=np.float64)
+        arr = np.asarray(values, dtype=float)
         if arr.ndim != 2:
             raise ValueError("Transition matrix must be a 2D array")
         if not np.all(arr >= 0.0):
@@ -49,7 +49,7 @@ class TransitionMatrix(npt.NDArray[np.float64]):
         obj = arr.view(cls)
         return obj
 
-    def __array_finalize__(self, obj: npt.NDArray[np.float64] | None) -> None:
+    def __array_finalize__(self, obj: npt.NDArray[np.floating] | None) -> None:
         if obj is None:
             return
 
@@ -183,11 +183,11 @@ def mutual_information(
 
 
 def arimoto_blahut(
-    transition_matrix: npt.NDArray[np.float64],
-    initial_guess: npt.NDArray[np.float64],
+    transition_matrix: npt.NDArray[np.floating],
+    initial_guess: npt.NDArray[np.floating],
     max_iter: int,
     tol: float,
-) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.floating]:
     r"""
     Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
     """
