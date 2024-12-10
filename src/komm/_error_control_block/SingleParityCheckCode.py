@@ -11,7 +11,7 @@ from .BlockCode import BlockCode
 @frozen
 class SingleParityCheckCode(BlockCode):
     r"""
-    Single parity check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
+    Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
 
     - Length: $n$.
     - Dimension: $k = n - 1$.

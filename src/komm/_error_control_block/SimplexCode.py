@@ -26,7 +26,7 @@ class SimplexCode(SystematicBlockCode):
     - Minimum distance: $d = 2^{\kappa - 1}$
 
     Notes:
-        - For $\kappa = 2$ it reduces to the [single parity check code](/ref/SingleParityCheckCode) of length $3$.
+        - For $\kappa = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
 
