@@ -64,5 +64,7 @@ def test_reed_muller_code_2_4_reed_partitions():
 
 def test_reed_muller_code_2_4_encoder():
     code = komm.ReedMullerCode(1, 5)
-    encoder = komm.BlockEncoder(code)
-    np.testing.assert_array_equal(encoder([0, 0, 0, 0, 0, 1]), np.ones(32, dtype=int))
+    np.testing.assert_array_equal(
+        code.encode([0, 0, 0, 0, 0, 1]),
+        np.ones(32, dtype=int),
+    )

@@ -39,7 +39,7 @@ def _base_generator_matrix(
     n0 = convolutional_code.num_output_bits
     k, n = code.dimension, code.length
     generator_matrix = np.zeros((k, n), dtype=int)
-    top_rows = np.apply_along_axis(code.enc_mapping, 1, np.eye(k0, k, dtype=int))
+    top_rows = np.apply_along_axis(code.encode, 1, np.eye(k0, k, dtype=int))
     for t in range(num_blocks):
         generator_matrix[k0 * t : k0 * (t + 1), :] = np.roll(top_rows, n0 * t, 1)
     return generator_matrix

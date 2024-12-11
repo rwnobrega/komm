@@ -65,22 +65,17 @@ def test_hamming_code_GH_orthogonality():
 )
 def test_hamming_code_encode(u, v):
     code = komm.HammingCode(3)
-    np.testing.assert_array_equal(code.enc_mapping(u), v)
-    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
+    np.testing.assert_array_equal(code.encode(u), v)
+    np.testing.assert_array_equal(code.inverse_encode(v), u)
+    np.testing.assert_array_equal(
+        code.encode([[1, 0, 0, 1], [1, 0, 1, 1], [1, 1, 1, 1]]),
+        [[1, 0, 0, 1, 0, 0, 1], [1, 0, 1, 1, 0, 1, 0], [1, 1, 1, 1, 1, 1, 1]],
+    )
 
 
 def test_hamming_code_codewords():
     code = komm.HammingCode(3)
     assert code.codewords().shape == (16, 7)
-
-
-def test_hamming_code_encoder():
-    code = komm.HammingCode(3)
-    encoder = komm.BlockEncoder(code)
-    np.testing.assert_array_equal(
-        encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
-        [1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-    )
 
 
 def test_extended_hamming_code_parameters():
@@ -145,19 +140,14 @@ def test_extended_hamming_code_GH_orthogonality():
 )
 def test_extended_hamming_code_encode(u, v):
     code = komm.HammingCode(3, extended=True)
-    np.testing.assert_array_equal(code.enc_mapping(u), v)
-    np.testing.assert_array_equal(code.inv_enc_mapping(v), u)
+    np.testing.assert_array_equal(code.encode(u), v)
+    np.testing.assert_array_equal(code.inverse_encode(v), u)
+    np.testing.assert_array_equal(
+        code.encode([[1, 0, 0, 1], [1, 0, 1, 1], [1, 1, 1, 1]]),
+        [[1, 0, 0, 1, 0, 0, 1, 1], [1, 0, 1, 1, 0, 1, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1]],
+    )
 
 
 def test_extended_hamming_code_codewords():
     code = komm.HammingCode(3, extended=True)
     assert code.codewords().shape == (16, 8)
-
-
-def test_extended_hamming_code_encoder():
-    code = komm.HammingCode(3, extended=True)
-    encoder = komm.BlockEncoder(code)
-    np.testing.assert_array_equal(
-        encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
-        [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-    )

@@ -42,5 +42,5 @@ class WagnerDecoder(abc.BlockDecoder[SingleParityCheckCode]):
         if np.count_nonzero(v_hat) % 2 != 0:
             i = np.argmin(np.abs(r))
             v_hat[i] ^= 1
-        u_hat = self.code.inv_enc_mapping(v_hat)
+        u_hat = self.code.inverse_encode(v_hat)
         return u_hat

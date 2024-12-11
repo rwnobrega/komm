@@ -73,13 +73,13 @@ def test_block_code_mappings(execution_number):
     k, m = code.dimension, code.redundancy
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
-        v = code.enc_mapping(u)
+        v = code.encode(u)
         np.testing.assert_array_equal(
-            code.inv_enc_mapping(v),
+            code.inverse_encode(v),
             u,
         )
         np.testing.assert_array_equal(
-            code.chk_mapping(v),
+            code.check(v),
             np.zeros((3, 4, m)),
         )
 
@@ -93,28 +93,28 @@ def test_block_code_mappings_invalid_input():
         ]
     )
 
-    # For 'enc_mapping', last dimension of 'u' should be the code dimension (3)
-    code.enc_mapping(np.zeros((3, 4, 3)))  # Correct
+    # For 'encode', last dimension of 'u' should be the code dimension (3)
+    code.encode(np.zeros((3, 4, 3)))  # Correct
     with np.testing.assert_raises(ValueError):
-        code.enc_mapping(np.zeros((3, 4, 4)))  # Incorrect
+        code.encode(np.zeros((3, 4, 4)))  # Incorrect
 
-    # For 'inv_enc_mapping', last dimension of 'v' should be the code length (6)
-    code.inv_enc_mapping(np.zeros((3, 4, 6)))  # Correct
+    # For 'inverse_encode', last dimension of 'v' should be the code length (6)
+    code.inverse_encode(np.zeros((3, 4, 6)))  # Correct
     with np.testing.assert_raises(ValueError):
-        code.inv_enc_mapping(np.zeros((3, 4, 5)))
+        code.inverse_encode(np.zeros((3, 4, 5)))
 
-    # For 'chk_mapping', last dimension of 'r' should be the code length (6)
-    code.chk_mapping(np.zeros((3, 4, 6)))  # Correct
+    # For 'check', last dimension of 'r' should be the code length (6)
+    code.check(np.zeros((3, 4, 6)))  # Correct
     with np.testing.assert_raises(ValueError):
-        code.chk_mapping(np.zeros((3, 4, 5)))
+        code.check(np.zeros((3, 4, 5)))
 
 
-def test_block_code_inv_enc_mapping_invalid_input():
+def test_block_code_inverse_encode_invalid_input():
     code = komm.BlockCode(
         generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]]
     )
     r = np.zeros(code.length)
-    code.inv_enc_mapping(r)  # Correct
+    code.inverse_encode(r)  # Correct
     with np.testing.assert_raises(ValueError):
         r[0] = 1
-        code.inv_enc_mapping(r)  # Incorrect
+        code.inverse_encode(r)  # Incorrect

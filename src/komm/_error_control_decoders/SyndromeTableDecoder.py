@@ -40,8 +40,8 @@ class SyndromeTableDecoder(abc.BlockDecoder[BlockCode]):
         self.coset_leaders = self.code.coset_leaders()
 
     def _decode(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        s = self.code.chk_mapping(r)
+        s = self.code.check(r)
         e_hat = self.coset_leaders[bits_to_int(s)]
         v_hat = np.bitwise_xor(r, e_hat)
-        u_hat = self.code.inv_enc_mapping(v_hat)
+        u_hat = self.code.inverse_encode(v_hat)
         return u_hat

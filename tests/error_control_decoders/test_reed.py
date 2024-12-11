@@ -14,7 +14,7 @@ def test_reed_decoder(mu):
     for w in range(t + 1):
         for _ in range(100):
             u = np.random.randint(2, size=k)
-            r = code.enc_mapping(u)
+            r = code.encode(u)
             error_locations = np.random.choice(n, w, replace=False)
             r[error_locations] ^= 1
             np.testing.assert_array_equal(decoder(r), u)

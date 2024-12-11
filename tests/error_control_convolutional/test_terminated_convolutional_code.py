@@ -136,8 +136,8 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
     for i in range(2**code.dimension):
         message = komm.int_to_bits(i, width=code.dimension)
-        encode1 = code.enc_mapping
-        encode2 = lambda u: komm.BlockCode.enc_mapping(code, u)
+        encode1 = code.encode
+        encode2 = lambda u: komm.BlockCode.encode(code, u)
         np.testing.assert_array_equal(encode1(message), encode2(message))
 
 
@@ -170,13 +170,13 @@ def test_terminated_convolutional_mappings(feedforward_polynomials, mode):
     k, m = code.dimension, code.redundancy
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
-        v = code.enc_mapping(u)
+        v = code.encode(u)
         np.testing.assert_array_equal(
-            code.inv_enc_mapping(v),
+            code.inverse_encode(v),
             u,
         )
         np.testing.assert_array_equal(
-            code.chk_mapping(v),
+            code.check(v),
             np.zeros((3, 4, m)),
         )
 
@@ -188,7 +188,7 @@ def test_terminated_convolutional_unencode_invalid_input(mode):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
     r = np.zeros(code.length)
-    code.inv_enc_mapping(r)  # Correct
+    code.inverse_encode(r)  # Correct
     with np.testing.assert_raises(ValueError):
         r[0] = 1
-        code.inv_enc_mapping(r)  # Incorrect
+        code.inverse_encode(r)  # Incorrect

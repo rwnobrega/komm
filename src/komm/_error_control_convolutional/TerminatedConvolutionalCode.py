@@ -114,7 +114,7 @@ class TerminatedConvolutionalCode(BlockCode):
         return self._strategy.generator_matrix(self)
 
     @vectorized_method
-    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
         fsm = self.convolutional_code.finite_state_machine()

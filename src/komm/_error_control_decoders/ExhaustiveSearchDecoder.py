@@ -56,5 +56,5 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
             ds = -r[..., np.newaxis, :] * (-1) ** self.codewords
         metrics = np.sum(ds, axis=-1)
         v_hat = self.codewords[np.argmin(metrics, axis=-1)]
-        u_hat = self.code.inv_enc_mapping(v_hat)
+        u_hat = self.code.inverse_encode(v_hat)
         return u_hat

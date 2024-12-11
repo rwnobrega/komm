@@ -21,13 +21,13 @@ class BlockCode(ABC):
         pass
 
     @abstractmethod
-    def enc_mapping(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass
 
     @abstractmethod
-    def inv_enc_mapping(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def inverse_encode(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass
 
     @abstractmethod
-    def chk_mapping(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def check(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass

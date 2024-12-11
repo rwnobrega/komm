@@ -45,7 +45,7 @@ class SlepianArray:
                 for idx in it.combinations(range(n), w):
                     leader = np.zeros(n, dtype=int)
                     leader[list(idx)] = 1
-                    syndrome = self.code.chk_mapping(leader)
+                    syndrome = self.code.check(leader)
                     i = bits_to_int(syndrome)
                     if leaders[i] != -1:
                         continue
@@ -84,7 +84,7 @@ class SlepianArray:
         n, k = self.code.length, self.code.dimension
         leader = int_to_bits(self._leaders[i], n)
         message = int_to_bits(j, k)
-        codeword = self.code.enc_mapping(message)
+        codeword = self.code.encode(message)
         return np.array(leader + codeword) % 2
 
     def row(self, i: int) -> npt.NDArray[np.integer]:

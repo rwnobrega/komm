@@ -116,17 +116,20 @@ class SystematicBlockCode(BlockCode):
         check_matrix[:, self.parity_set] = np.eye(m, dtype=int)
         return check_matrix
 
-    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         v = np.empty(u.shape[:-1] + (self.length,), dtype=int)
         v[..., self.information_set] = u
         v[..., self.parity_set] = u @ self.parity_submatrix % 2
         return v
 
-    def _inv_enc_mapping(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _inverse_encode(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        s = self._check(v)
+        if not np.all(s == 0):
+            raise ValueError("one or more inputs in 'v' are not valid codewords")
         u = v[..., self.information_set]
         return u
 
-    def _chk_mapping(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _check(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         r_inf = r[..., self.information_set]
         r_par = r[..., self.parity_set]
         s = (r_inf @ self.parity_submatrix + r_par) % 2

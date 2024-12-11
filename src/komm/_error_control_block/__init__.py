@@ -1,6 +1,5 @@
 from .BCHCode import BCHCode
 from .BlockCode import BlockCode
-from .BlockEncoder import BlockEncoder
 from .CordaroWagnerCode import CordaroWagnerCode
 from .CyclicCode import CyclicCode
 from .GolayCode import GolayCode
@@ -16,7 +15,6 @@ from .SystematicBlockCode import SystematicBlockCode
 __all__ = [
     "BCHCode",
     "BlockCode",
-    "BlockEncoder",
     "CordaroWagnerCode",
     "CyclicCode",
     "GolayCode",

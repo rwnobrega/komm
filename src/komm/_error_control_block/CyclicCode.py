@@ -145,7 +145,7 @@ class CyclicCode(BlockCode):
             raise NotImplementedError
 
     @vectorized_method
-    def _enc_mapping(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         u_poly = BinaryPolynomial.from_coefficients(u)
         if not self.systematic:
             v_poly = u_poly * self.generator_polynomial
@@ -157,7 +157,10 @@ class CyclicCode(BlockCode):
         return v
 
     @vectorized_method
-    def _inv_enc_mapping(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _inverse_encode(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        s = self._check(v)
+        if not np.all(s == 0):
+            raise ValueError("one or more inputs in 'v' are not valid codewords")
         v_poly = BinaryPolynomial.from_coefficients(v)
         if not self.systematic:
             u_poly = v_poly // self.generator_polynomial
@@ -167,7 +170,7 @@ class CyclicCode(BlockCode):
         return u
 
     @vectorized_method
-    def _chk_mapping(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def _check(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         r_poly = BinaryPolynomial.from_coefficients(r)
         s_poly = r_poly % self.generator_polynomial
         s = s_poly.coefficients(width=self.redundancy)

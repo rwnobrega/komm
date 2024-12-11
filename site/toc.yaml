@@ -23,7 +23,6 @@ Error control:
     - BCHCode
     - Lexicode
     - SlepianArray
-    - BlockEncoder
   Block decoders:
     - BCJRDecoder
     - BerlekampDecoder
