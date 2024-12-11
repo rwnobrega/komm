@@ -43,3 +43,12 @@ def test_bch_generator_polynomial():
             operator.mul,
             [factors.get(i, komm.BinaryPolynomial(0b1)) for i in range(1, tau + 1)],
         )
+
+
+def test_bch_syndrome():
+    # [LC04, Example 6.4]
+    code = komm.BCHCode(mu=4, delta=5)
+    alpha = code.field.primitive_element
+    r = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    r_poly = komm.BinaryPolynomial.from_coefficients(r)
+    assert code.bch_syndrome(r_poly) == [alpha**2, alpha**4, alpha**7, alpha**8]

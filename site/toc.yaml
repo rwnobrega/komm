@@ -24,7 +24,14 @@ Error control:
     - Lexicode
     - SlepianArray
     - BlockEncoder
-    - BlockDecoder
+  Block decoders:
+    - BCJRDecoder
+    - BerlekampDecoder
+    - ExhaustiveSearchDecoder
+    - ReedDecoder
+    - SyndromeTableDecoder
+    - ViterbiDecoder
+    - WagnerDecoder
   Convolutional coding:
     - ConvolutionalCode
     - TerminatedConvolutionalCode

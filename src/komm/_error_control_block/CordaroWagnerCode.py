@@ -45,7 +45,3 @@ class CordaroWagnerCode(BlockCode):
     @cache
     def minimum_distance(self) -> int:
         return int(np.ceil(2 * self.n / 3)) - 1
-
-    @property
-    def default_decoder(self) -> str:
-        return "exhaustive-search-hard"

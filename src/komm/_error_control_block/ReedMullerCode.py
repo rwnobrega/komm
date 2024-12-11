@@ -63,14 +63,6 @@ class ReedMullerCode(BlockCode):
     def minimum_distance(self) -> int:
         return 2 ** (self.mu - self.rho)
 
-    @property
-    def default_decoder(self) -> str:
-        return "reed"
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["reed", "weighted-reed"]  # type: ignore
-
     @cache
     def reed_partitions(self) -> list[npt.NDArray[np.integer]]:
         r"""

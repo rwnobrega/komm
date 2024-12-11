@@ -59,9 +59,8 @@ class ConvolutionalStreamDecoder:
     def metric_function(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":
             return np.count_nonzero(self.cache_bit[y] != z)
-        elif self.input_type == "soft":
+        else:  # self.input_type == "soft"
             return np.dot(self.cache_bit[y], z)
-        raise ValueError(f"input type '{self.input_type}' is not supported")
 
     def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer]:
         n = self.convolutional_code.num_output_bits

@@ -1,6 +1,5 @@
 from .BCHCode import BCHCode
 from .BlockCode import BlockCode
-from .BlockDecoder import BlockDecoder
 from .BlockEncoder import BlockEncoder
 from .CordaroWagnerCode import CordaroWagnerCode
 from .CyclicCode import CyclicCode
@@ -17,7 +16,6 @@ from .SystematicBlockCode import SystematicBlockCode
 __all__ = [
     "BCHCode",
     "BlockCode",
-    "BlockDecoder",
     "BlockEncoder",
     "CordaroWagnerCode",
     "CyclicCode",
@@ -31,5 +29,3 @@ __all__ = [
     "SlepianArray",
     "SystematicBlockCode",
 ]
-
-from .decoders import *

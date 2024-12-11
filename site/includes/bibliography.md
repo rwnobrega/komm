@@ -1,4 +1,5 @@
 *[And22]: Jeffrey G. Andrews. A Primer on Zadoff Chu Sequences. arXiv:2211.05702v2 [cs.IT], 2022.
+*[CF07]: Daniel J. Costello Jr. and G. David Forney Jr. Channel coding: The road to channel capacity. Proceedings of the IEEE, 95(6):1150–1177, 2007.
 *[CT06]: Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.
 *[CW67]: Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.
 *[HP03]: W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.

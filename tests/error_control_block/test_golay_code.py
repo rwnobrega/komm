@@ -42,17 +42,6 @@ def test_golay_code_codewords():
     assert code.codewords().shape == (4096, 23)
 
 
-def test_golay_code_decoder():
-    code = komm.GolayCode()
-    decoder = komm.BlockDecoder(code)
-    r = np.zeros(23, dtype=int)
-    r[[2, 3, 10]] = 1  # Golay code can correct up to 3 errors.
-    np.testing.assert_array_equal(decoder(r), [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    r = np.zeros(23, dtype=int)
-    r[[2, 3, 10, 19]] = 1  # Golay code cannot correct more than 3 errors.
-    np.testing.assert_array_equal(decoder(r), [0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0])
-
-
 def test_extended_golay_code_parameters():
     code = komm.GolayCode(extended=True)
     assert (code.length, code.dimension, code.redundancy) == (24, 12, 12)

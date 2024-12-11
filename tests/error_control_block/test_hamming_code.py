@@ -83,15 +83,6 @@ def test_hamming_code_encoder():
     )
 
 
-def test_hamming_code_decoder():
-    code = komm.HammingCode(3)
-    decoder = komm.BlockDecoder(code)
-    np.testing.assert_array_equal(
-        decoder([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]),
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
-    )
-
-
 def test_extended_hamming_code_parameters():
     code = komm.HammingCode(3, extended=True)
     assert (code.length, code.dimension, code.redundancy) == (8, 4, 4)
@@ -169,15 +160,4 @@ def test_extended_hamming_code_encoder():
     np.testing.assert_array_equal(
         encoder([1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]),
         [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-    )
-
-
-def test_extended_hamming_code_decoder():
-    code = komm.HammingCode(3, extended=True)
-    decoder = komm.BlockDecoder(code)
-    np.testing.assert_array_equal(
-        decoder(
-            [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0]
-        ),
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
     )

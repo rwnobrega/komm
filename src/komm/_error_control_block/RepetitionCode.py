@@ -65,11 +65,3 @@ class RepetitionCode(BlockCode):
         if n % 2 == 0:
             coset_leader_weight_distribution[n // 2] = math.comb(n, n // 2) // 2
         return coset_leader_weight_distribution
-
-    @property
-    def default_decoder(self) -> str:
-        return "majority-logic-repetition-code"
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["majority-logic-repetition-code"]  # type: ignore

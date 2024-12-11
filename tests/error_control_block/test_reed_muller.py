@@ -66,15 +66,3 @@ def test_reed_muller_code_2_4_encoder():
     code = komm.ReedMullerCode(1, 5)
     encoder = komm.BlockEncoder(code)
     np.testing.assert_array_equal(encoder([0, 0, 0, 0, 0, 1]), np.ones(32, dtype=int))
-
-
-@pytest.mark.parametrize("w", range(1, 8))
-def test_reed_muller_code_2_4_decoder(w):
-    # Minimum distance is 16, so it can correct up to 7 errors.
-    code = komm.ReedMullerCode(1, 5)
-    decoder = komm.BlockDecoder(code)
-    for _ in range(100):
-        r = np.ones(32, dtype=int)
-        error_locations = random.sample(range(32), w)
-        r[error_locations] = 0
-        np.testing.assert_array_equal(decoder(r), [0, 0, 0, 0, 0, 1])

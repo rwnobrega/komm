@@ -317,15 +317,3 @@ class BlockCode(abc.BlockCode):
             2
         """
         return int(np.flatnonzero(self.coset_leader_weight_distribution())[-1])
-
-    @property
-    def default_decoder(self) -> str:
-        return (
-            "exhaustive-search-hard"
-            if self.dimension <= self.redundancy
-            else "syndrome-table"
-        )
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return ["exhaustive-search-hard", "exhaustive-search-soft", "syndrome-table"]

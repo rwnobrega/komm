@@ -1,4 +1,3 @@
-import itertools as it
 from functools import cached_property
 
 import numpy as np
@@ -173,24 +172,3 @@ class CyclicCode(BlockCode):
         s_poly = r_poly % self.generator_polynomial
         s = s_poly.coefficients(width=self.redundancy)
         return s
-
-    @property
-    def default_decoder(self) -> str:
-        return "meggitt"
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["meggitt"]  # type: ignore
-
-    @cached_property
-    def meggitt_table(self) -> dict[BinaryPolynomial, BinaryPolynomial]:
-        r"""
-        The Meggitt table for the cyclic code. It is a dictionary where the keys are syndromes and the values are error patterns. See <cite>XiD03, Sec. 3.4</cite>.
-        """
-        meggitt_table: dict[BinaryPolynomial, BinaryPolynomial] = {}
-        for w in range(self.packing_radius() + 1):
-            for idx in it.combinations(range(self.length - 1), w):
-                e_poly = BinaryPolynomial.from_exponents(list(idx) + [self.length - 1])
-                s_poly = e_poly % self.generator_polynomial
-                meggitt_table[s_poly] = e_poly
-        return meggitt_table

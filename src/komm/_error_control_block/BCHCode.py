@@ -4,7 +4,7 @@ from functools import cache, cached_property, reduce
 from attrs import frozen
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .._algebra.FiniteBifield import FiniteBifield
+from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement
 from .CyclicCode import CyclicCode
 
 
@@ -91,14 +91,6 @@ class BCHCode(CyclicCode):
     def generator_polynomial(self) -> BinaryPolynomial:
         return reduce(operator.mul, self.lcm_set)
 
-    @property
-    def default_decoder(self) -> str:
-        return "berlekamp"
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["berlekamp"]  # type: ignore
-
     @cached_property
     def field(self) -> FiniteBifield:
         return FiniteBifield(self.mu)
@@ -111,3 +103,10 @@ class BCHCode(CyclicCode):
     def phi(self, i: int) -> BinaryPolynomial:
         alpha = self.field.primitive_element
         return (alpha**i).minimal_polynomial()
+
+    def bch_syndrome(
+        self, r_poly: BinaryPolynomial
+    ) -> list[FiniteBifieldElement[FiniteBifield]]:
+        # BCH syndrome computation. See [LC04, p. 205–209].
+        alpha = self.field.primitive_element
+        return [(r_poly % self.phi(i)).evaluate(alpha**i) for i in range(1, self.delta)]

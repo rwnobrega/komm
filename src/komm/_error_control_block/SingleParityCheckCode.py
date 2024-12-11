@@ -63,7 +63,3 @@ class SingleParityCheckCode(BlockCode):
         for w in range(0, n + 1, 2):
             codeword_weight_distribution[w] = math.comb(n, w)
         return codeword_weight_distribution
-
-    @classmethod
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["wagner"]  # type: ignore

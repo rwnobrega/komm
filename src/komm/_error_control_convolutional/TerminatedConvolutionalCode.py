@@ -124,22 +124,3 @@ class TerminatedConvolutionalCode(BlockCode):
         output_sequence, _ = fsm.process(input_sequence, initial_state)
         v = int_to_bits(output_sequence, width=n0).ravel()
         return v
-
-    @property
-    @override
-    def default_decoder(self) -> str:
-        return "viterbi-hard"
-
-    @classmethod
-    @override
-    def supported_decoders(cls) -> list[str]:
-        return cls.__base__.supported_decoders() + ["viterbi-hard", "viterbi-soft", "bcjr"]  # type: ignore
-
-    @cached_property
-    def cache_bit(self) -> npt.NDArray[np.integer]:
-        n0 = self.convolutional_code.num_output_bits
-        return np.array([int_to_bits(y, width=n0) for y in range(2**n0)])
-
-    @cached_property
-    def cache_polar(self) -> npt.NDArray[np.integer]:
-        return (-1) ** self.cache_bit
