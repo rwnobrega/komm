@@ -3,6 +3,22 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.13.0 (2024-12-12)
+
+### Breaking changes
+
+- Removed `BlockEncoder` and `BlockDecoder` classes in favor of direct methods and specialized decoder classes.
+
+  - Block code methods are now called directly: `code.encode(u)`, `code.inverse_encode(v)`, and `code.check(r)` (previously `enc_mapping`, `inv_enc_mapping`, and `chk_mapping`). These methods are now vetorized (i.e., support input arrays of any shape). For example, for a code with dimension $k = 2$, instead of `encoder = BlockEncoder(code); encoder([0, 1, 0, 1])`, use `code.encode([[0, 1], [0, 1]])`.
+  - Decoder methods are now individual classes: `BCJRDecoder`, `BerlekampDecoder`, `ExhaustiveSearchDecoder`, `ReedDecoder`, `SyndromeTableDecoder`, `ViterbiDecoder`, and `WagnerDecoder`. For example, instead of `decoder = komm.BlockDecoder(code, method="exhaustive-search-hard")`, use `decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")`. The decoder `__call__` are now vectorized (i.e., support input arrays of any shape). For example, for a code with length $n = 3$, instead of `decoder([0, 1, 0, 1, 1, 0])`, use `decoder([[0, 1, 0], [1, 1, 0]])`.
+  - The decoders `majority-logic-repetition-code` and `meggitt` were removed for now.
+
+- Renamed `ConvolutionalStreamDecoder` to `ViterbiStreamDecoder`.
+
+- Merged lossless source coding encoders/decoders into code classes.
+
+  - Removed `FixedToVariableEncoder`, `FixedToVariableDecoder`, `VariableToFixedEncoder`, `VariableToFixedDecoder`. For example, instead of `encoder = FixedToVariableEncoder(code); output = encoder(input)`, use `output = code.encode(input)`.
+
 ## v0.12.0 (2024-12-05)
 
 ### Added
@@ -39,7 +55,7 @@
   - In `ReedMullerCode`: `reed_partitions`.
 - In `UniformQuantizer`:
   - Replaced `input_peak` with `input_range`.
-  - Removed `'unquant'` choice (use `input_range=(0.0, input_peak)` and `choice="mid-tread"` instead).
+  - Removed `"unquant"` choice (use `input_range=(0.0, input_peak)` and `choice="mid-tread"` instead).
 - Converted the classes `BinaryErasureChannel`, `BinarySymmetricChannel`, `DiscreteMemorylessChannel`, `AWGNChannel`, `FixedToVariableEncoder`, `FixedToVariableDecoder`, `VariableToFixedEncoder`, `VariableToFixedDecoder`, and `DiscreteMemorylessSource` from mutable to immutable.
 - Removed `RationalPolynomial` and `RationalPolynomialFraction` classes.
 - Refactored _algebra_ and _pulse_ modules. See documentation for new usage.
