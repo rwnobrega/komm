@@ -19,19 +19,9 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
     Binary erasure channel (BEC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$ and output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$. The channel is characterized by a parameter $\epsilon$, called the *erasure probability*. With probability $1 - \epsilon$, the output symbol is identical to the input symbol, and with probability $\epsilon$, the output symbol is replaced by an erasure symbol (denoted by $2$). For more details, see <cite>CT06, Sec. 7.1.5</cite>.
 
     Attributes:
-        erasure_probability (Optional[float]): The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
+        erasure_probability: The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
 
-    Parameters: Input:
-        input_sequence (Array1D[int]): The input sequence.
-
-    Parameters: Output:
-        output_sequence (Array1D[int]): The output sequence.
-
-    Examples:
-        >>> np.random.seed(1)
-        >>> bec = komm.BinaryErasureChannel(0.1)
-        >>> bec([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
-        array([1, 1, 2, 0, 0, 2, 1, 0, 1, 0])
+    :::komm.BinaryErasureChannel.BinaryErasureChannel.__call__
     """
 
     erasure_probability: float = 0.0
@@ -107,9 +97,22 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         """
         return (1.0 - self.erasure_probability) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input sequence.
+
+        Returns: Output:
+            output: The output sequence.
+
+        Examples:
+            >>> np.random.seed(1)
+            >>> bec = komm.BinaryErasureChannel(0.1)
+            >>> bec([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            array([1, 1, 2, 0, 0, 2, 1, 0, 1, 0])
+        """
         epsilon = self.erasure_probability
-        erasure_pattern = np.random.rand(np.size(input_sequence)) < epsilon
-        output_sequence = np.copy(input_sequence)
-        output_sequence[erasure_pattern] = 2
-        return output_sequence
+        erasure_pattern = np.random.rand(np.size(input)) < epsilon
+        output = np.copy(input)
+        output[erasure_pattern] = 2
+        return output

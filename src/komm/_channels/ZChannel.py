@@ -23,19 +23,9 @@ class ZChannel(abc.DiscreteMemorylessChannel):
     where $A_n$ are iid Bernoulli random variables with $\Pr[A_n = 0] = p$.
 
     Attributes:
-        decay_probability (Optional[float]): The channel decay probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
+        decay_probability: The channel decay probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
 
-    Parameters: Input:
-        input_sequence (Array1D[int]): The input sequence.
-
-    Parameters: Output:
-        output_sequence (Array1D[int]): The output sequence.
-
-    Examples:
-        >>> np.random.seed(1)
-        >>> zc = komm.ZChannel(0.1)
-        >>> zc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-        array([0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+    :::komm.ZChannel.ZChannel.__call__
     """
 
     decay_probability: float = 0.0
@@ -111,8 +101,21 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         q = 1 - p
         return np.log2(1 + q * p ** (p / q)) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input sequence.
+
+        Returns: Output:
+            output: The output sequence.
+
+        Examples:
+            >>> np.random.seed(1)
+            >>> zc = komm.ZChannel(0.1)
+            >>> zc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
+            array([0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+        """
         p = self.decay_probability
-        input_sequence = np.asarray(input_sequence)
-        keep_pattern = np.random.rand(np.size(input_sequence)) > p
-        return (input_sequence * keep_pattern).astype(int)
+        input = np.asarray(input)
+        keep_pattern = np.random.rand(np.size(input)) > p
+        return (input * keep_pattern).astype(int)

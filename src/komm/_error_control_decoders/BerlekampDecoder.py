@@ -21,21 +21,11 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
     Parameters:
         code: The BCH code to be used for decoding.
 
-    Parameters: Input:
-        r: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-    Parameters: Output:
-        u_hat: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
     Notes:
         - Input type: `hard`.
         - Output type: `hard`.
 
-    Examples:
-        >>> code = komm.BCHCode(4, 7)
-        >>> decoder = komm.BerlekampDecoder(code)
-        >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
-        array([0, 0, 0, 0, 0])
+    :::komm.BerlekampDecoder.BerlekampDecoder._decode
     """
 
     code: BCHCode
@@ -82,15 +72,28 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
         return sigma[delta - 1]
 
     @vectorized_method
-    def _decode(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        r_poly = BinaryPolynomial.from_coefficients(r)
+    def _decode(self, input: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns: Output:
+            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
+
+        Examples:
+            >>> code = komm.BCHCode(4, 7)
+            >>> decoder = komm.BerlekampDecoder(code)
+            >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            array([0, 0, 0, 0, 0])
+        """
+        r_poly = BinaryPolynomial.from_coefficients(input)
         syndrome = self.code.bch_syndrome(r_poly)
         if all(x == self.code.field.zero for x in syndrome):
-            return self.code.inverse_encode(r)
+            return self.code.inverse_encode(input)
         sigma_poly = self.berlekamp_algorithm(syndrome)
         roots = find_roots(self.code.field, sigma_poly)
         e_loc = [e.inverse().logarithm(self.alpha) for e in roots]
         e_hat = np.bincount(e_loc, minlength=self.code.length)
-        v_hat = (r + e_hat) % 2
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+        v_hat = (input + e_hat) % 2
+        output = self.code.inverse_encode(v_hat)
+        return output

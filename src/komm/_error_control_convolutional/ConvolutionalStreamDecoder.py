@@ -20,20 +20,7 @@ class ConvolutionalStreamDecoder:
         state: The current state of the decoder. The default value is `0`.
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
 
-    Parameters: Input:
-        in0 (Array1D[int] | Array1D[float]): The (hard or soft) bit sequence to be decoded.
-
-    Parameters: Output:
-        out0 (Array1D[int]): The decoded bit sequence.
-
-    Examples:
-            >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-            >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
-            >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
-            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            >>> convolutional_decoder(np.zeros(2*10, dtype=int))
-            array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
-
+    :::komm.ConvolutionalStreamDecoder.ConvolutionalStreamDecoder.__call__
     """
 
     convolutional_code: ConvolutionalCode
@@ -62,14 +49,30 @@ class ConvolutionalStreamDecoder:
         else:  # self.input_type == "soft"
             return np.dot(self.cache_bit[y], z)
 
-    def __call__(self, in0: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The (hard or soft) bit sequence to be decoded.
+
+        Returns: Output:
+            output: The decoded bit sequence.
+
+        Examples:
+                >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+                >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
+                >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
+                array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                >>> convolutional_decoder(np.zeros(2*10, dtype=int))
+                array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+        """
+        input = np.asarray(input)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
         fsm = self.convolutional_code.finite_state_machine()
         input_sequence_hat = fsm.viterbi_streaming(
-            observed_sequence=np.reshape(in0, shape=(-1, n)),
+            observed_sequence=input.reshape(-1, n),
             metric_function=self.metric_function,
             memory=self.memory,
         )
-        out0 = int_to_bits(input_sequence_hat, width=k).ravel()
-        return out0
+        output = int_to_bits(input_sequence_hat, width=k).ravel()
+        return output

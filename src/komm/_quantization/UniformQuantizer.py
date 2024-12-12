@@ -86,12 +86,12 @@ class UniformQuantizer(abc.ScalarQuantizer):
         """
         return (self.levels + self.quantization_step / 2)[:-1]
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        input_signal = np.array(input_signal, dtype=float, ndmin=1)
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        input = np.array(input, dtype=float, ndmin=1)
         delta = self.quantization_step
         if self.choice == "mid-riser":
-            quantized = delta * (np.floor(input_signal / delta) + 0.5)
+            quantized = delta * (np.floor(input / delta) + 0.5)
         else:
-            quantized = delta * np.floor(input_signal / delta + 0.5)
-        output_signal = np.clip(quantized, a_min=self.levels[0], a_max=self.levels[-1])
-        return output_signal
+            quantized = delta * np.floor(input / delta + 0.5)
+        output = np.clip(quantized, a_min=self.levels[0], a_max=self.levels[-1])
+        return output

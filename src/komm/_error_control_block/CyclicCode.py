@@ -27,7 +27,7 @@ class CyclicCode(BlockCode):
 
     The constructor expects either the generator polynomial or the check polynomial.
 
-    Parameters:
+    Attributes:
         length: The length $n$ of the code.
 
         generator_polynomial: The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.

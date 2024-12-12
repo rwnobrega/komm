@@ -45,6 +45,7 @@ plugins:
       handlers:
         python:
           options:
+            filters: ["!^_"]
             show_bases: false
             # show_root_heading: true
             show_root_full_path: false

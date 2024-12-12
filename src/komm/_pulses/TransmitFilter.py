@@ -24,15 +24,11 @@ class TransmitFilter:
     - If $h(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the _truncation window length_.
 
     Attributes:
-        pulse (Pulse): The pulse whose waveform is $h(t)$.
-        samples_per_symbol (int): The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
-        truncation (int | None): The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
+        pulse: The pulse whose waveform is $h(t)$.
+        samples_per_symbol: The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
+        truncation: The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
 
-    Parameters: Input:
-        symbols (Array1D[float] | Array1D[complex]): The input symbols $x[n]$, of length $N$.
-
-    Parameters: Output:
-        signal (SameAsInput): The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.
+    :::komm.TransmitFilter.TransmitFilter.__call__
 
     Examples:
         >>> pulse = komm.RectangularPulse(width=1.0)
@@ -60,7 +56,7 @@ class TransmitFilter:
         >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
         Traceback (most recent call last):
         ...
-        ValueError: parameter 'truncation' is only applicable to pulses with infinite support
+        ValueError: 'truncation' only applies to infinite-support pulses
     """
 
     pulse: abc.Pulse
@@ -78,22 +74,15 @@ class TransmitFilter:
 
     def __attrs_post_init__(self) -> None:
         if self._pulse_support_kind() == "semi-infinite":
-            raise ValueError(
-                "pulses with semi-infinite support are not supported",
-            )
+            raise ValueError("pulses with semi-infinite support are not supported")
         elif self._pulse_support_kind() == "finite":
             if self.truncation is not None:
-                raise ValueError(
-                    "parameter 'truncation' is only applicable to pulses with infinite"
-                    " support",
-                )
+                raise ValueError("'truncation' only applies to infinite-support pulses")
         elif self._pulse_support_kind() == "infinite":
             if self.truncation is None:
                 object.__setattr__(self, "truncation", 32)
             elif self.truncation <= 0 or self.truncation % 2 != 0:
-                raise ValueError(
-                    "parameter 'truncation' must be an even positive integer",
-                )
+                raise ValueError("'truncation' must be an even positive integer")
 
     @property
     @cache
@@ -158,15 +147,15 @@ class TransmitFilter:
         """
         return self.pulse.waveform(self._time(1))
 
-    def time(self, symbols: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def time(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Convenience function to generate the time axis of the output signal given the input symbols.
 
         Parameters:
-            symbols (Array1D[float] | Array1D[complex]): The input symbols $x[n]$, of length $N$.
+            input: The input symbols $x[n]$, of length $N$.
 
         Returns:
-            t (Array1D[float]): The time axis of the output signal, of length $(N + n_1 - n_0 - 1) \beta$.
+            t: The time axis of the output signal, of length $(N + n_1 - n_0 - 1) \beta$.
 
         Examples:
             >>> pulse = komm.RectangularPulse()
@@ -185,15 +174,22 @@ class TransmitFilter:
                    [ 3.  ,  3.25,  3.5 ,  3.75],
                    [ 4.  ,  4.25,  4.5 ,  4.75]])
         """
-        symbols = np.asarray(symbols)
-        return self._time(symbols.size)
+        input = np.asarray(input)
+        return self._time(input.size)
 
     def __call__(
-        self, symbols: npt.ArrayLike
+        self, input: npt.ArrayLike
     ) -> npt.NDArray[np.floating | np.complexfloating]:
-        symbols = np.asarray(symbols)
+        r"""
+        Parameters: Input:
+            input: The input symbols $x[n]$, of length $N$.
+
+        Returns: Output:
+            output: The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.
+        """
+        input = np.asarray(input)
         beta = self.samples_per_symbol
-        symbols_interp = np.zeros((symbols.size - 1) * beta + 1, dtype=symbols.dtype)
-        symbols_interp[::beta] = symbols
-        signal = np.convolve(self.taps, symbols_interp)
-        return signal
+        input_interp = np.zeros((input.size - 1) * beta + 1, dtype=input.dtype)
+        input_interp[::beta] = input
+        output = np.convolve(self.taps, input_interp)
+        return output

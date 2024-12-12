@@ -23,19 +23,9 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite>CT06, Sec. 7.1.4</cite>.
 
     Attributes:
-        crossover_probability (Optional[float]): The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
+        crossover_probability: The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
 
-    Parameters: Input:
-        input_sequence (Array1D[int]): The input sequence.
-
-    Parameters: Output:
-        output_sequence (Array1D[int]): The output sequence.
-
-    Examples:
-        >>> np.random.seed(1)
-        >>> bsc = komm.BinarySymmetricChannel(0.1)
-        >>> bsc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-        array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
+    :::komm.BinarySymmetricChannel.BinarySymmetricChannel.__call__
     """
 
     crossover_probability: float = 0.0
@@ -108,8 +98,21 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         p = self.crossover_probability
         return (1.0 - binary_entropy(p)) / np.log2(base)
 
-    def __call__(self, input_sequence: npt.ArrayLike):
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input sequence.
+
+        Returns: Output:
+            output: The output sequence.
+
+        Examples:
+            >>> np.random.seed(1)
+            >>> bsc = komm.BinarySymmetricChannel(0.1)
+            >>> bsc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
+            array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
+        """
         p = self.crossover_probability
-        input_sequence = np.array(input_sequence)
-        error_pattern = np.random.rand(np.size(input_sequence)) < p
-        return (input_sequence + error_pattern) % 2
+        input = np.array(input)
+        error_pattern = np.random.rand(np.size(input)) < p
+        return (input + error_pattern) % 2

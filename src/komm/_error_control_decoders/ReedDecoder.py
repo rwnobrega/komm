@@ -18,27 +18,11 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
         code: The Reed-Muller code to be used for decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
-    Parameters: Input:
-        r: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-    Parameters: Output:
-        u_hat: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
 
-    Examples:
-        >>> code = komm.ReedMullerCode(1, 3)
-        >>> decoder = komm.ReedDecoder(code, input_type="hard")
-        >>> decoder([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
-        array([[0, 0, 0, 0],
-               [0, 0, 0, 1]])
-
-        >>> code = komm.ReedMullerCode(1, 3)
-        >>> decoder = komm.ReedDecoder(code, input_type="soft")
-        >>> decoder([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
-        array([0, 0, 0, 0])
+    :::komm.ReedDecoder.ReedDecoder._decode
     """
 
     code: ReedMullerCode
@@ -48,31 +32,50 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
         self.reed_partitions = self.code.reed_partitions()
 
     @vectorized_method
-    def _decode_hard(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        u_hat = np.empty(self.code.dimension, dtype=int)
-        bx = r.copy()
+    def _decode_hard(self, input: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        output = np.empty(self.code.dimension, dtype=int)
+        bx = input.copy()
         for i, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
-            u_hat[i] = np.count_nonzero(checksums) > len(checksums) // 2
-            bx ^= u_hat[i] * self.code.generator_matrix[i]
-        return u_hat
+            output[i] = np.count_nonzero(checksums) > len(checksums) // 2
+            bx ^= output[i] * self.code.generator_matrix[i]
+        return output
 
     @vectorized_method
-    def _decode_soft(self, r: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
-        u_hat = np.empty(self.code.dimension, dtype=int)
-        bx = (r < 0).astype(int)
+    def _decode_soft(self, input: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
+        output = np.empty(self.code.dimension, dtype=int)
+        bx = (input < 0).astype(int)
         for i, partition in enumerate(self.reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
-            min_reliability = np.min(np.abs(r[partition]), axis=1)
+            min_reliability = np.min(np.abs(input[partition]), axis=1)
             decision_var = (1 - 2 * checksums) @ min_reliability
-            u_hat[i] = decision_var < 0
-            bx ^= u_hat[i] * self.code.generator_matrix[i]
-        return u_hat
+            output[i] = decision_var < 0
+            bx ^= output[i] * self.code.generator_matrix[i]
+        return output
 
     def _decode(
-        self, r: npt.NDArray[np.integer | np.floating]
+        self, input: npt.NDArray[np.integer | np.floating]
     ) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns: Output:
+            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
+
+        Examples:
+            >>> code = komm.ReedMullerCode(1, 3)
+            >>> decoder = komm.ReedDecoder(code, input_type="hard")
+            >>> decoder([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
+            array([[0, 0, 0, 0],
+                   [0, 0, 0, 1]])
+
+            >>> code = komm.ReedMullerCode(1, 3)
+            >>> decoder = komm.ReedDecoder(code, input_type="soft")
+            >>> decoder([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
+            array([0, 0, 0, 0])
+        """
         if self.input_type == "hard":
-            return self._decode_hard(r)
+            return self._decode_hard(input)
         else:  # self.input_type == "soft"
-            return self._decode_soft(r)
+            return self._decode_soft(input)

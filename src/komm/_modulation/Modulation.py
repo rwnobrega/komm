@@ -10,10 +10,10 @@ class Modulation:
     r"""
     General modulation scheme. A *modulation scheme* of *order* $M = 2^m$ is defined by a *constellation* $\mathbf{X}$, which is a real or complex vector of length $M$, and a *binary labeling* $\mathbf{Q}$, which is an $M \times m$ binary matrix whose rows are all distinct. The $i$-th element of $\mathbf{X}$, for $i \in [0:M)$, is denoted by $x_i$ and is called the $i$-th *constellation symbol*. The $i$-th row of $\mathbf{Q}$, for $i \in [0:M)$, is called the *binary representation* of the $i$-th constellation symbol. For more details, see <cite>SA15, Sec. 2.5</cite>.
 
-    Parameters:
-        constellation (Array1D[float] | Array1D[complex]): The constellation $\mathbf{X}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
+    Attributes:
+        constellation: The constellation $\mathbf{X}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
 
-        labeling (Array2D[int]): The binary labeling $\mathbf{Q}$ of the modulation. Must be a 2D-array of shape $(M, m)$ where each row is a distinct binary $m$-tuple.
+        labeling: The binary labeling $\mathbf{Q}$ of the modulation. Must be a 2D-array of shape $(M, m)$ where each row is a distinct binary $m$-tuple.
 
     Examples:
         The real modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.

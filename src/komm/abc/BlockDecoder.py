@@ -15,12 +15,12 @@ class BlockDecoder(ABC, Generic[TCode]):
     code: TCode
 
     @final
-    def __call__(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        r = np.asarray(r)
-        if r.shape[-1] != self.code.length:
-            raise ValueError("last dimension of 'r' should be the code length")
-        return self._decode(r)
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        input = np.asarray(input)
+        if input.shape[-1] != self.code.length:
+            raise ValueError("last dimension of 'input' should be the code length")
+        return self._decode(input)
 
     @abstractmethod
-    def _decode(self, r: npt.NDArray[Any]) -> npt.NDArray[np.integer]:
+    def _decode(self, input: npt.NDArray[Any]) -> npt.NDArray[np.integer]:
         pass

@@ -21,5 +21,5 @@ class ScalarQuantizer(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         pass

@@ -17,28 +17,11 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
         code: The block code to be used for decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
-    Parameters: Input:
-        r: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-    Parameters: Output:
-        u_hat: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
 
-    Examples:
-        >>> code = komm.HammingCode(3)
-        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-        >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
-        array([[1, 1, 0, 0],
-               [1, 0, 1, 1]])
-
-        >>> code = komm.HammingCode(3)
-        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
-        >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
-        array([[1, 1, 0, 0],
-               [1, 0, 1, 1]])
+    :::komm.ExhaustiveSearchDecoder.ExhaustiveSearchDecoder._decode
     """
 
     code: BlockCode
@@ -48,13 +31,33 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
         self.codewords = self.code.codewords()
 
     def _decode(
-        self, r: npt.NDArray[np.float64 | np.integer]
+        self, input: npt.NDArray[np.float64 | np.integer]
     ) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns: Output:
+            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
+
+        Examples:
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+            >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+        """
         if self.input_type == "hard":
-            ds = r[..., np.newaxis, :] != self.codewords
+            ds = input[..., np.newaxis, :] != self.codewords
         else:
-            ds = -r[..., np.newaxis, :] * (-1) ** self.codewords
+            ds = -input[..., np.newaxis, :] * (-1) ** self.codewords
         metrics = np.sum(ds, axis=-1)
         v_hat = self.codewords[np.argmin(metrics, axis=-1)]
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+        output = self.code.inverse_encode(v_hat)
+        return output

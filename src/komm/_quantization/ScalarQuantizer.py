@@ -70,7 +70,7 @@ class ScalarQuantizer(abc.ScalarQuantizer):
         """
         return self.levels.size
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        tiled = np.tile(input_signal, reps=(self.thresholds.size, 1)).transpose()
-        output_signal = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
-        return output_signal
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
+        output = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
+        return output

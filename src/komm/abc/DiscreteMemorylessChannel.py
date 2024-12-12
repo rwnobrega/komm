@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -30,9 +29,9 @@ class DiscreteMemorylessChannel(ABC):
         pass
 
     @abstractmethod
-    def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
+    def capacity(self, base: LogBase = 2.0) -> float:
         pass
 
     @abstractmethod
-    def __call__(self, input_sequence: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass

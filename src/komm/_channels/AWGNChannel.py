@@ -19,22 +19,11 @@ class AWGNChannel:
     where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite>CT06, Ch. 9</cite>.
 
     Attributes:
-        signal_power (float | str): The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
+        signal_power: The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
-        snr (Optional[float]): The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
+        snr: The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
 
-    Parameters: Input:
-        in0 (Array1D[float]): The input signal $X_n$.
-
-    Parameters: Output:
-        out0 (Array1D[float]): The output signal $Y_n$.
-
-    Examples:
-        >>> np.random.seed(1)
-        >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
-        >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-        >>> awgn(x).round(2)  # doctest: +NORMALIZE_WHITESPACE
-        array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
+    :::komm.AWGNChannel.AWGNChannel.__call__
     """
 
     signal_power: float | Literal["measured"]
@@ -62,22 +51,36 @@ class AWGNChannel:
         """
         return 0.5 * np.log1p(self.snr) / np.log(2.0)
 
-    def __call__(self, input_signal: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        input_signal = np.array(input_signal)
-        size = input_signal.size
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        Parameters: Input:
+            input: The input signal $X_n$.
+
+        Returns: Output:
+            output: The output signal $Y_n$.
+
+        Examples:
+            >>> np.random.seed(1)
+            >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
+            >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
+            >>> awgn(x).round(2)  # doctest: +NORMALIZE_WHITESPACE
+            array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
+        """
+        input = np.array(input)
+        size = input.size
 
         if self.signal_power == "measured":
-            signal_power = np.linalg.norm(input_signal) ** 2 / size
+            signal_power = np.linalg.norm(input) ** 2 / size
         else:
             signal_power = self.signal_power
 
         noise_power = signal_power / self.snr
 
-        if input_signal.dtype == complex:
+        if input.dtype == complex:
             noise = np.sqrt(noise_power / 2) * (
                 np.random.normal(size=size) + 1j * np.random.normal(size=size)
             )
         else:
             noise = np.sqrt(noise_power) * np.random.normal(size=size)
 
-        return input_signal + noise
+        return input + noise

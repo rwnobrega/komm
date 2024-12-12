@@ -20,29 +20,11 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         snr: The signal-to-noise ratio (SNR) of the channel (linear, not decibel). Only used for soft-input decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
-    Parameters: Input:
-        r: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-    Parameters: Output:
-        u_hat: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
 
-    Examples:
-        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode="zero-termination")
-        >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-        >>> decoder([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1])
-        array([1, 1, 0, 0, 1])
-
-        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode="direct-truncation")
-        >>> decoder = komm.ViterbiDecoder(code, input_type="soft", snr=10.0)
-        >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
-        array([1, 0, 0, 0])
-
+    :::komm.ViterbiDecoder.ViterbiDecoder._decode
     """
 
     code: TerminatedConvolutionalCode
@@ -74,10 +56,30 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
 
     @vectorized_method
     def _decode(
-        self, r: npt.NDArray[np.float64 | np.integer]
+        self, input: npt.NDArray[np.float64 | np.integer]
     ) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters: Input:
+            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
+
+        Returns: Output:
+            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k.
+
+        Examples:
+            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode="zero-termination")
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1])
+            array([1, 1, 0, 0, 1])
+
+            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode="direct-truncation")
+            >>> decoder = komm.ViterbiDecoder(code, input_type="soft", snr=10.0)
+            >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
+            array([1, 0, 0, 0])
+        """
         xs_hat, final_metrics = self.fsm.viterbi(
-            observed_sequence=r.reshape(-1, self.n),
+            observed_sequence=input.reshape(-1, self.n),
             metric_function=self.metric_function,
             initial_metrics=self.initial_metrics,
         )
@@ -88,5 +90,5 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         else:  # code.mode == "zero-termination"
             x_hat = xs_hat[:, 0][: -self.mu]
 
-        u_hat = int_to_bits(x_hat, width=self.k).ravel()
-        return u_hat
+        output = int_to_bits(x_hat, width=self.k).ravel()
+        return output
