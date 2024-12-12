@@ -106,9 +106,7 @@ def test_encoding_decoding():
     code = komm.VariableToFixedCode.from_sourcewords(
         2, [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
     )
-    encoder = komm.VariableToFixedEncoder(code)
-    decoder = komm.VariableToFixedDecoder(code)
     x = [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]
     y = [0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0]
-    assert np.array_equal(encoder(x), y)
-    assert np.array_equal(decoder(y), x)
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), x)

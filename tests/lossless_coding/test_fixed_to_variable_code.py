@@ -165,7 +165,7 @@ def test_non_injective_enc_mapping():
 def test_decoding_not_prefix_free(source_cardinality, codewords):
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     with pytest.raises(ValueError):
-        komm.FixedToVariableDecoder(code)
+        code.decode([0, 0, 0, 0])
 
 
 @pytest.mark.parametrize(
@@ -228,11 +228,7 @@ def test_rate_invalid_pmf(pmf):
     ],
 )
 def test_encoding_decoding(code_parameters, x, y):
-    source_cardinality, target_cardinality, source_block_size, codewords = (
-        code_parameters.values()
-    )
+    source_cardinality, _, _, codewords = code_parameters.values()
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
-    encoder = komm.FixedToVariableEncoder(code)
-    decoder = komm.FixedToVariableDecoder(code)
-    assert np.array_equal(encoder(x), y)
-    assert np.array_equal(decoder(y), x)
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), x)

@@ -6,7 +6,7 @@ from attrs import frozen
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
-from .util import Word, is_prefix_free
+from .util import Word, is_prefix_free, parse_prefix_free
 
 
 @frozen
@@ -178,3 +178,48 @@ class VariableToFixedCode:
         probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
         lengths = [len(word) for word in self.sourcewords]
         return self.target_block_size / np.dot(lengths, probabilities)
+
+    def encode(self, source_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Encodes a sequence of source symbols using the code.
+
+        Parameters:
+            source_symbols: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+
+        Returns:
+            The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+
+        Examples:
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> code.encode([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
+            array([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
+
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (0,)])
+            >>> code.encode([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not prefix-free
+        """
+        if not self.is_prefix_free():
+            raise ValueError("code is not prefix-free")
+        source_symbols = np.asarray(source_symbols)
+        return parse_prefix_free(source_symbols, self.inv_dec_mapping)
+
+    def decode(self, target_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Decodes a sequence of target symbols using the code.
+
+        Parameters:
+            target_symbols: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+
+        Returns:
+            The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+
+        Examples:
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0,0), (0,0,1), (0,1), (1,)])
+            >>> code.decode([0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0])
+            array([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
+        """
+        target_symbols = np.asarray(target_symbols)
+        n, dec = self.target_block_size, self.dec_mapping
+        return np.concatenate([dec[tuple(s)] for s in target_symbols.reshape(-1, n)])

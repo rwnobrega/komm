@@ -6,7 +6,7 @@ from attrs import frozen
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
-from .util import Word, is_prefix_free, is_uniquely_decodable
+from .util import Word, is_prefix_free, is_uniquely_decodable, parse_prefix_free
 
 
 @frozen
@@ -202,3 +202,48 @@ class FixedToVariableCode:
         probabilities = [np.prod(ps) for ps in it.product(pmf, repeat=k)]
         lengths = [len(word) for word in self.codewords]
         return np.dot(lengths, probabilities) / k
+
+    def encode(self, source_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Encodes a sequence of source symbols using the code.
+
+        Parameters:
+            source_symbols: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+
+        Returns:
+            The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.encode([1, 0, 1, 0, 2, 0])
+            array([1, 0, 0, 1, 0, 0, 1, 1, 0])
+        """
+        source_symbols = np.asarray(source_symbols)
+        k, enc = self.source_block_size, self.enc_mapping
+        return np.concatenate([enc[tuple(s)] for s in source_symbols.reshape(-1, k)])
+
+    def decode(self, target_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Decodes a sequence of target symbols using the code. Only works if the code is prefix-free.
+
+        Parameters:
+            target_symbols: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+
+        Returns:
+            output: The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
+            array([1, 0, 1, 0, 2, 0])
+
+            >>> code = komm.FixedToVariableCode.from_codewords(2, [(0,), (1,0), (1,1), (1,1,0)])
+            >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not prefix-free
+        """
+        if not self.is_prefix_free():
+            raise ValueError("code is not prefix-free")
+        target_symbols = np.asarray(target_symbols)
+        return parse_prefix_free(target_symbols, self.inv_enc_mapping)

@@ -74,12 +74,8 @@ Source coding:
   Lossless coding:
     - FixedToVariableCode
     - HuffmanCode
-    - FixedToVariableEncoder
-    - FixedToVariableDecoder
     - VariableToFixedCode
     - TunstallCode
-    - VariableToFixedEncoder
-    - VariableToFixedDecoder
   Quantization:
     - ScalarQuantizer
     - LloydMaxQuantizer
