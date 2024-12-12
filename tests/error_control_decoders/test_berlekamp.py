@@ -10,12 +10,12 @@ def test_berlekamp_lin_costello():
     code = komm.BCHCode(mu=4, delta=7)
     decoder = komm.BerlekampDecoder(code)
     field = code.field
-    alpha = decoder.alpha
+    alpha = decoder._alpha
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     r_poly = komm.BinaryPolynomial.from_coefficients(r)
     syndrome = code.bch_syndrome(r_poly)
     assert syndrome == [field.one, field.one, alpha**10, field.one, alpha**10, alpha**5]
-    sigma = decoder.berlekamp_algorithm(syndrome)
+    sigma = decoder._berlekamp_algorithm(syndrome)
     assert sigma == [field.one, field.one, field.zero, alpha**5]
     roots = set(find_roots(field, sigma))
     assert roots == {alpha**3, alpha**10, alpha**12}

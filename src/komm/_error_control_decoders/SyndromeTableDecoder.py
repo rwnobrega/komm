@@ -26,7 +26,7 @@ class SyndromeTableDecoder(abc.BlockDecoder[BlockCode]):
     code: BlockCode
 
     def __post_init__(self) -> None:
-        self.coset_leaders = self.code.coset_leaders()
+        self._coset_leaders = self.code.coset_leaders()
 
     def _decode(self, input: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         r"""
@@ -44,7 +44,7 @@ class SyndromeTableDecoder(abc.BlockDecoder[BlockCode]):
                    [1, 0, 1, 1]])
         """
         s = self.code.check(input)
-        e_hat = self.coset_leaders[bits_to_int(s)]
+        e_hat = self._coset_leaders[bits_to_int(s)]
         v_hat = np.bitwise_xor(input, e_hat)
         ouput = self.code.inverse_encode(v_hat)
         return ouput

@@ -29,13 +29,13 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
-        self.reed_partitions = self.code.reed_partitions()
+        self._reed_partitions = self.code.reed_partitions()
 
     @vectorized_method
     def _decode_hard(self, input: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
         output = np.empty(self.code.dimension, dtype=int)
         bx = input.copy()
-        for i, partition in enumerate(self.reed_partitions):
+        for i, partition in enumerate(self._reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
             output[i] = np.count_nonzero(checksums) > len(checksums) // 2
             bx ^= output[i] * self.code.generator_matrix[i]
@@ -45,7 +45,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     def _decode_soft(self, input: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
         output = np.empty(self.code.dimension, dtype=int)
         bx = (input < 0).astype(int)
-        for i, partition in enumerate(self.reed_partitions):
+        for i, partition in enumerate(self._reed_partitions):
             checksums = np.count_nonzero(bx[partition], axis=1) % 2
             min_reliability = np.min(np.abs(input[partition]), axis=1)
             decision_var = (1 - 2 * checksums) @ min_reliability

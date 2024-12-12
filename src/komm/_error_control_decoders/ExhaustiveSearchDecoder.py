@@ -28,7 +28,7 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
-        self.codewords = self.code.codewords()
+        self._codewords = self.code.codewords()
 
     def _decode(
         self, input: npt.NDArray[np.float64 | np.integer]
@@ -54,10 +54,10 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
                    [1, 0, 1, 1]])
         """
         if self.input_type == "hard":
-            ds = input[..., np.newaxis, :] != self.codewords
+            ds = input[..., np.newaxis, :] != self._codewords
         else:
-            ds = -input[..., np.newaxis, :] * (-1) ** self.codewords
+            ds = -input[..., np.newaxis, :] * (-1) ** self._codewords
         metrics = np.sum(ds, axis=-1)
-        v_hat = self.codewords[np.argmin(metrics, axis=-1)]
+        v_hat = self._codewords[np.argmin(metrics, axis=-1)]
         output = self.code.inverse_encode(v_hat)
         return output

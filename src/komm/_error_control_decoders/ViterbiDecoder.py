@@ -35,24 +35,22 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         if self.code.mode == "tail-biting":
             raise NotImplementedError("algorithm not implemented for 'tail-biting'")
         if self.input_type == "hard":
-            self.metric_function = self._metric_function_hard
+            self._metric_function = self._metric_function_hard
         elif self.input_type == "soft":
-            self.metric_function = self._metric_function_soft
+            self._metric_function = self._metric_function_soft
         else:
             raise ValueError("input_type must be 'hard' or 'soft'")
-        self.k = self.code.convolutional_code.num_input_bits
-        self.n = self.code.convolutional_code.num_output_bits
-        self.mu = self.code.convolutional_code.memory_order
-        self.fsm = self.code.convolutional_code.finite_state_machine()
-        self.cache_bit = int_to_bits(range(2**self.n), width=self.n)
-        self.initial_metrics = np.full(self.fsm.num_states, fill_value=np.inf)
-        self.initial_metrics[0] = 0.0
+        self._fsm = self.code.convolutional_code.finite_state_machine()
+        n = self.code.convolutional_code.num_output_bits
+        self._cache_bit = int_to_bits(range(2**n), width=n)
+        self._initial_metrics = np.full(self._fsm.num_states, fill_value=np.inf)
+        self._initial_metrics[0] = 0.0
 
     def _metric_function_hard(self, y: int, z: float) -> float:
-        return np.count_nonzero(self.cache_bit[y] != z)
+        return np.count_nonzero(self._cache_bit[y] != z)
 
     def _metric_function_soft(self, y: int, z: int) -> float:
-        return np.dot(self.cache_bit[y], z)
+        return np.dot(self._cache_bit[y], z)
 
     @vectorized_method
     def _decode(
@@ -78,17 +76,21 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
         """
-        xs_hat, final_metrics = self.fsm.viterbi(
-            observed_sequence=input.reshape(-1, self.n),
-            metric_function=self.metric_function,
-            initial_metrics=self.initial_metrics,
+        k = self.code.convolutional_code.num_input_bits
+        n = self.code.convolutional_code.num_output_bits
+        mu = self.code.convolutional_code.memory_order
+
+        xs_hat, final_metrics = self._fsm.viterbi(
+            observed_sequence=input.reshape(-1, n),
+            metric_function=self._metric_function,
+            initial_metrics=self._initial_metrics,
         )
 
         if self.code.mode == "direct-truncation":
             s_hat = np.argmin(final_metrics)
             x_hat = xs_hat[:, s_hat]
         else:  # code.mode == "zero-termination"
-            x_hat = xs_hat[:, 0][: -self.mu]
+            x_hat = xs_hat[:, 0][:-mu]
 
-        output = int_to_bits(x_hat, width=self.k).ravel()
+        output = int_to_bits(x_hat, width=k).ravel()
         return output

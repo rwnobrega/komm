@@ -31,9 +31,9 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
     code: BCHCode
 
     def __post_init__(self) -> None:
-        self.alpha = self.code.field.primitive_element
+        self._alpha = self.code.field.primitive_element
 
-    def berlekamp_algorithm(
+    def _berlekamp_algorithm(
         self, syndrome: list[Any]
     ) -> list[FiniteBifieldElement[FiniteBifield]]:
         # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
@@ -90,9 +90,9 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
         syndrome = self.code.bch_syndrome(r_poly)
         if all(x == self.code.field.zero for x in syndrome):
             return self.code.inverse_encode(input)
-        sigma_poly = self.berlekamp_algorithm(syndrome)
+        sigma_poly = self._berlekamp_algorithm(syndrome)
         roots = find_roots(self.code.field, sigma_poly)
-        e_loc = [e.inverse().logarithm(self.alpha) for e in roots]
+        e_loc = [e.inverse().logarithm(self._alpha) for e in roots]
         e_hat = np.bincount(e_loc, minlength=self.code.length)
         v_hat = (input + e_hat) % 2
         output = self.code.inverse_encode(v_hat)
