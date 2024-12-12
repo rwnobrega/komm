@@ -35,7 +35,7 @@ Error control:
     - ConvolutionalCode
     - TerminatedConvolutionalCode
     - ConvolutionalStreamEncoder
-    - ConvolutionalStreamDecoder
+    - ViterbiStreamDecoder
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:

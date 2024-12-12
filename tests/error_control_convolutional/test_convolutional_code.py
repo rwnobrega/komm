@@ -86,5 +86,5 @@ def test_convolutional_state_space_representation_2(
         s, v = (s @ A_mat + u @ B_mat) % 2, (s @ C_mat + u @ D_mat) % 2
         output_bits[t * n : (t + 1) * n] = v
 
-    convolutional_encoder = komm.ConvolutionalStreamEncoder(code)
-    np.testing.assert_array_equal(output_bits, convolutional_encoder(input_bits))
+    encoder = komm.ConvolutionalStreamEncoder(code)
+    np.testing.assert_array_equal(output_bits, encoder(input_bits))

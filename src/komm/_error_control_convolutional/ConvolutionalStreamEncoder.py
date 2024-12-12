@@ -31,10 +31,10 @@ class ConvolutionalStreamEncoder:
 
         Examples:
             >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-            >>> convolutional_encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
-            >>> convolutional_encoder([1, 1, 1, 1])
+            >>> encoder = komm.ConvolutionalStreamEncoder(convolutional_code)
+            >>> encoder([1, 1, 1, 1])
             array([1, 1, 0, 1, 1, 0, 1, 0])
-            >>> convolutional_encoder([1, 1, 1, 1])
+            >>> encoder([1, 1, 1, 1])
             array([1, 0, 1, 0, 1, 0, 1, 0])
         """
         input = np.asarray(input)

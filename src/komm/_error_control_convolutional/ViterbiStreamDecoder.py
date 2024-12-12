@@ -10,7 +10,7 @@ from .ConvolutionalCode import ConvolutionalCode
 
 
 @mutable
-class ConvolutionalStreamDecoder:
+class ViterbiStreamDecoder:
     r"""
     Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
 
@@ -20,7 +20,7 @@ class ConvolutionalStreamDecoder:
         state: The current state of the decoder. The default value is `0`.
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
 
-    :::komm.ConvolutionalStreamDecoder.ConvolutionalStreamDecoder.__call__
+    :::komm.ViterbiStreamDecoder.ViterbiStreamDecoder.__call__
     """
 
     convolutional_code: ConvolutionalCode
@@ -59,10 +59,10 @@ class ConvolutionalStreamDecoder:
 
         Examples:
                 >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-                >>> convolutional_decoder = komm.ConvolutionalStreamDecoder(convolutional_code, traceback_length=10)
-                >>> convolutional_decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
+                >>> decoder = komm.ViterbiStreamDecoder(convolutional_code, traceback_length=10)
+                >>> decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
                 array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-                >>> convolutional_decoder(np.zeros(2*10, dtype=int))
+                >>> decoder(np.zeros(2*10, dtype=int))
                 array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
         """
         input = np.asarray(input)
