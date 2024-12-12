@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="canonical" href="https://komm.dev/ref/BlockDecoder/">
-  <link rel="prev" href="../BlockEncoder/">
-  <link rel="next" href="../ConvolutionalCode/">
+  <link rel="canonical" href="https://komm.dev/ref/ExhaustiveSearchDecoder/">
+  <link rel="prev" href="../BerlekampDecoder/">
+  <link rel="next" href="../ReedDecoder/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
-  <title>BlockDecoder - Komm</title>
+  <title>ExhaustiveSearchDecoder - Komm</title>
   <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
   <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -29,7 +29,7 @@
 <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label>
   <div data-md-component="skip">
-    <a href="#kommblockdecoder" class="md-skip">Skip to content</a>
+    <a href="#kommexhaustivesearchdecoder" class="md-skip">Skip to content</a>
   </div>
   <div data-md-component="announce"></div>
   <header class="md-header" data-md-component="header">
@@ -43,7 +43,7 @@
             <span class="md-ellipsis">Komm</span>
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
-            <span class="md-ellipsis">BlockDecoder</span>
+            <span class="md-ellipsis">ExhaustiveSearchDecoder</span>
           </div>
         </div>
       </div>
@@ -180,9 +180,9 @@
                           <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
                             <label class="md-nav__title" for="__nav_2_4"><span class="md-nav__icon md-icon"></span> Error control</label>
                             <ul class="md-nav__list" data-md-scrollfix="">
-                              <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_1" checked> <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0"><span class="md-ellipsis">Block coding</span> <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="true">
+                              <li class="md-nav__item md-nav__item--nested">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_1"> <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0"><span class="md-ellipsis">Block coding</span> <span class="md-nav__icon md-icon"></span></label>
+                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
                                   <label class="md-nav__title" for="__nav_2_4_1"><span class="md-nav__icon md-icon"></span> Block coding</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
@@ -224,19 +224,42 @@
                                     <li class="md-nav__item">
                                       <a href="../SlepianArray/" class="md-nav__link"><span class="md-ellipsis">SlepianArray</span></a>
                                     </li>
+                                  </ul>
+                                </nav>
+                              </li>
+                              <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_2" checked> <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0"><span class="md-ellipsis">Block decoders</span> <span class="md-nav__icon md-icon"></span></label>
+                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="true">
+                                  <label class="md-nav__title" for="__nav_2_4_2"><span class="md-nav__icon md-icon"></span> Block decoders</label>
+                                  <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
-                                      <a href="../BlockEncoder/" class="md-nav__link"><span class="md-ellipsis">BlockEncoder</span></a>
+                                      <a href="../BCJRDecoder/" class="md-nav__link"><span class="md-ellipsis">BCJRDecoder</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../BerlekampDecoder/" class="md-nav__link"><span class="md-ellipsis">BerlekampDecoder</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">BlockDecoder</span></a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ExhaustiveSearchDecoder</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../ReedDecoder/" class="md-nav__link"><span class="md-ellipsis">ReedDecoder</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../SyndromeTableDecoder/" class="md-nav__link"><span class="md-ellipsis">SyndromeTableDecoder</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../ViterbiDecoder/" class="md-nav__link"><span class="md-ellipsis">ViterbiDecoder</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../WagnerDecoder/" class="md-nav__link"><span class="md-ellipsis">WagnerDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_2"> <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0"><span class="md-ellipsis">Convolutional coding</span> <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_4_2"><span class="md-nav__icon md-icon"></span> Convolutional coding</label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_3"> <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0"><span class="md-ellipsis">Convolutional coding</span> <span class="md-nav__icon md-icon"></span></label>
+                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
+                                  <label class="md-nav__title" for="__nav_2_4_3"><span class="md-nav__icon md-icon"></span> Convolutional coding</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
                                       <a href="../ConvolutionalCode/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalCode</span></a>
@@ -248,15 +271,15 @@
                                       <a href="../ConvolutionalStreamEncoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../ConvolutionalStreamDecoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamDecoder</span></a>
+                                      <a href="../ViterbiStreamDecoder/" class="md-nav__link"><span class="md-ellipsis">ViterbiStreamDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
                               </li>
                               <li class="md-nav__item md-nav__item--nested">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_3"> <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0"><span class="md-ellipsis">Checksum</span> <span class="md-nav__icon md-icon"></span></label>
-                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
-                                  <label class="md-nav__title" for="__nav_2_4_3"><span class="md-nav__icon md-icon"></span> Checksum</label>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2_4_4"> <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0"><span class="md-ellipsis">Checksum</span> <span class="md-nav__icon md-icon"></span></label>
+                                <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+                                  <label class="md-nav__title" for="__nav_2_4_4"><span class="md-nav__icon md-icon"></span> Checksum</label>
                                   <ul class="md-nav__list" data-md-scrollfix="">
                                     <li class="md-nav__item">
                                       <a href="../CyclicRedundancyCheck/" class="md-nav__link"><span class="md-ellipsis">CyclicRedundancyCheck</span></a>
@@ -420,22 +443,10 @@
                                       <a href="../HuffmanCode/" class="md-nav__link"><span class="md-ellipsis">HuffmanCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
-                                      <a href="../FixedToVariableEncoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableEncoder</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../FixedToVariableDecoder/" class="md-nav__link"><span class="md-ellipsis">FixedToVariableDecoder</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
                                       <a href="../VariableToFixedCode/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../TunstallCode/" class="md-nav__link"><span class="md-ellipsis">TunstallCode</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../VariableToFixedEncoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedEncoder</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="../VariableToFixedDecoder/" class="md-nav__link"><span class="md-ellipsis">VariableToFixedDecoder</span></a>
                                     </li>
                                   </ul>
                                 </nav>
@@ -526,28 +537,22 @@
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
-            <h1 id="kommblockdecoder">komm.BlockDecoder</h1>
+            <h1 id="kommexhaustivesearchdecoder">komm.ExhaustiveSearchDecoder</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Decoder for <a href="/ref/BlockCode">linear block codes</a>.</p>
-                <p><strong>Attributes:</strong></p>
+                <p>Exhaustive search decoder for general <a href="/ref/BlockCode">block codes</a>. This decoder implements a brute-force search over all possible codewords to find the one that is closest (in terms of Hamming distance, for hard-decision decoding, or Euclidean distance, for soft-decision decoding) to the received word.</p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>code</code></b> <span class="doc-param-annotation">(<code><span title="komm._error_control_block.BlockCode.BlockCode">BlockCode</span></code>)</span> –
+                    <b><code>code</code></b> <span class="doc-param-annotation">(<code><span title="komm._error_control_block.BlockCode">BlockCode</span></code>)</span> –
                     <div class="doc-md-description">
-                      <p>The <a href="/ref/BlockCode">block code</a> to be considered.</p>
+                      <p>The block code to be used for decoding.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>method</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['bcjr', 'berlekamp', 'exhaustive-search-hard', 'exhaustive-search-soft', 'majority-logic-repetition-code', 'meggitt', 'reed', 'syndrome-table', 'viterbi-hard', 'viterbi-soft', 'wagner', 'weighted-reed'] | None</code>)</span> –
+                    <b><code>input_type</code></b> <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>['hard', 'soft']</code>)</span> –
                     <div class="doc-md-description">
-                      <p>The identifier of the method to be used for decoding. The default corresponds to <code>code.default_decoder</code>.</p>
-                    </div>
-                  </li>
-                  <li class="field-body">
-                    <b><code>decoder_kwargs</code></b> <span class="doc-param-annotation">(<code>dict[str, <span title="typing.Any">Any</span>]</code>)</span> –
-                    <div class="doc-md-description">
-                      <p>Additional keyword arguments to be passed to the decoder.</p>
+                      <p>The type of the input. Either <code>'hard'</code> or <code>'soft'</code>. Default is <code>'hard'</code>.</p>
                     </div>
                   </li>
                 </ul>
@@ -556,145 +561,48 @@
                     Notes
                   </summary>
                   <ul>
-                    <li>To see the default decoding method for a given code, use <code>code.default_decoder</code>; to see the available decoding methods for a given code, use <code>code.supported_decoders()</code>.</li>
+                    <li>Input type: <code>hard</code> or <code>soft</code>.</li>
+                    <li>Output type: <code>hard</code>.</li>
                   </ul>
                 </details>
-                <details class="info">
-                  <summary>
-                    Available decoding methods
-                  </summary>
-                  <p><strong><code>bcjr</code></strong>: Bahl–Cocke–Jelinek–Raviv (BCJR)</p>
-                  <ul>
-                    <li>Input type: soft</li>
-                    <li>Output type: soft</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>berlekamp</code></strong>: Berlekamp decoder</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: <a href="/ref/BCHCode"><code>BCHCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>exhaustive-search-hard</code></strong>: Exhaustive search (hard-decision). Minimum Hamming distance decoder</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: All codes.</li>
-                  </ul>
-                  <p><strong><code>exhaustive-search-soft</code></strong>: Exhaustive search (soft-decision). Minimum Euclidean distance decoder</p>
-                  <ul>
-                    <li>Input type: soft</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: All codes.</li>
-                  </ul>
-                  <p><strong><code>majority-logic-repetition-code</code></strong>: Majority-logic decoder. A hard-decision decoder for Repetition codes only.</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/RepetitionCode"><code>RepetitionCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>meggitt</code></strong>: Meggitt decoder</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: <a href="/ref/BCHCode"><code>BCHCode</code></a>, <a href="/ref/CyclicCode"><code>CyclicCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>reed</code></strong>: Reed decoding algorithm for Reed–Muller codes. It's a majority-logic decoding algorithm.</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/ReedMullerCode"><code>ReedMullerCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>syndrome-table</code></strong>: Syndrome table decoder</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: All codes.</li>
-                  </ul>
-                  <p><strong><code>viterbi-hard</code></strong>: Viterbi (hard-decision)</p>
-                  <ul>
-                    <li>Input type: hard</li>
-                    <li>Output type: hard</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>viterbi-soft</code></strong>: Viterbi (soft-decision)</p>
-                  <ul>
-                    <li>Input type: soft</li>
-                    <li>Output type: hard</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/TerminatedConvolutionalCode"><code>TerminatedConvolutionalCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>wagner</code></strong>: Wagner decoder. A soft-decision decoder for SingleParityCheck codes only.</p>
-                  <ul>
-                    <li>Input type: soft</li>
-                    <li>Output type: hard</li>
-                    <li>Target: codeword</li>
-                    <li>Supported by: <a href="/ref/SingleParityCheckCode"><code>SingleParityCheckCode</code></a>.
-                    </li>
-                  </ul>
-                  <p><strong><code>weighted-reed</code></strong>: Weighted Reed decoding algorithm for Reed–Muller codes.</p>
-                  <ul>
-                    <li>Input type: soft</li>
-                    <li>Output type: hard</li>
-                    <li>Target: message</li>
-                    <li>Supported by: <a href="/ref/ReedMullerCode"><code>ReedMullerCode</code></a>.
-                    </li>
-                  </ul>
-                </details>
-                <p><strong>Input:</strong></p>
-                <ul>
-                  <li class="field-body">
-                    <b><code>in0</code></b> <span class="doc-param-annotation">(<code>Array1D[int] | Array1D[float]</code>)</span> –
-                    <div class="doc-md-description">
-                      <p>The (hard or soft) bit sequence to be decoded. Its length must be a multiple of the code's block length $n$.</p>
+                <div class="doc doc-object doc-function">
+                  <div class="doc doc-contents first">
+                    <p><strong>Input:</strong></p>
+                    <ul>
+                      <li class="field-body">
+                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.float64">float64</span> | <span title="numpy.integer">integer</span>]</code>)</span> –
+                        <div class="doc-md-description">
+                          <p>The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.</p>
+                        </div>
+                      </li>
+                    </ul>
+                    <p><strong>Output:</strong></p>
+                    <ul>
+                      <li class="field-body">
+                        <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                        <div class="doc-md-description">
+                          <p>The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.</p>
+                        </div>
+                      </li>
+                    </ul>
+                    <p><span class="doc-section-title">Examples:</span></p>
+                    <div class="highlight">
+                      <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ExhaustiveSearchDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">"hard"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">array([[1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 1]])</span>
+</code></pre>
                     </div>
-                  </li>
-                </ul>
-                <p><strong>Output:</strong></p>
-                <ul>
-                  <li class="field-body">
-                    <b><code>out0</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
-                    <div class="doc-md-description">
-                      <p>The decoded bit sequence. Its length is a multiple of the code's dimension $k$.</p>
+                    <div class="highlight">
+                      <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ExhaustiveSearchDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">"soft"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+<span class="go">array([[1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 1]])</span>
+</code></pre>
                     </div>
-                  </li>
-                </ul>
-                <p><span class="doc-section-title">Examples:</span></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">default_decoder</span>
-<span class="go">'syndrome-table'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">supported_decoders</span><span class="p">()</span>
-<span class="go">['exhaustive-search-hard', 'exhaustive-search-soft', 'syndrome-table']</span>
-</code></pre>
-                </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([1, 1, 0, 0, 1, 0, 1, 1])</span>
-</code></pre>
-                </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'exhaustive-search-soft'</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="o">-</span><span class="mf">0.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">1.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.16</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.87</span><span class="p">,</span> <span class="mf">1.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.83</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">])</span>
-<span class="go">array([1, 1, 0, 0, 1, 0, 1, 1])</span>
-</code></pre>
+                  </div>
                 </div>
                 <div class="doc doc-children"></div>
               </div>
@@ -708,7 +616,7 @@
     </main>
     <footer class="md-footer">
       <nav class="md-footer__inner md-grid" aria-label="Footer">
-        <a href="../BlockEncoder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BlockEncoder">
+        <a href="../BerlekampDecoder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BerlekampDecoder">
         <div class="md-footer__button md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
           <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -716,13 +624,13 @@
         <div class="md-footer__title">
           <span class="md-footer__direction">Previous</span>
           <div class="md-ellipsis">
-            BlockEncoder
+            BerlekampDecoder
           </div>
-        </div></a> <a href="../ConvolutionalCode/" class="md-footer__link md-footer__link--next" aria-label="Next: ConvolutionalCode">
+        </div></a> <a href="../ReedDecoder/" class="md-footer__link md-footer__link--next" aria-label="Next: ReedDecoder">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            ConvolutionalCode
+            ReedDecoder
           </div>
         </div>
         <div class="md-footer__button md-icon">
