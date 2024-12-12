@@ -1,15 +1,15 @@
 import itertools as it
+from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
 from .util import Word, is_prefix_free, parse_prefix_free
 
 
-@frozen
+@dataclass
 class VariableToFixedCode:
     r"""
     Variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \to \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
@@ -26,7 +26,7 @@ class VariableToFixedCode:
     target_block_size: int
     dec_mapping: dict[Word, Word]
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
         T = self.target_cardinality
         S = self.source_cardinality

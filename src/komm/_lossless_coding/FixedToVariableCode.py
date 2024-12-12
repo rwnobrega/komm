@@ -1,15 +1,15 @@
 import itertools as it
+from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
 from .util import Word, is_prefix_free, is_uniquely_decodable, parse_prefix_free
 
 
-@frozen
+@dataclass
 class FixedToVariableCode:
     r"""
     Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an injective *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
@@ -26,7 +26,7 @@ class FixedToVariableCode:
     source_block_size: int
     enc_mapping: dict[Word, Word]
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
         S = self.source_cardinality
         T = self.target_cardinality
