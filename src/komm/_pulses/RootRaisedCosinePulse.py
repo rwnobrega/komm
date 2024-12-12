@@ -1,13 +1,14 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import override
 
 from .. import abc
 from .RaisedCosinePulse import RaisedCosinePulse
 
 
-@frozen
+@dataclass
 class RootRaisedCosinePulse(abc.Pulse):
     r"""
     Root raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
@@ -28,7 +29,7 @@ class RootRaisedCosinePulse(abc.Pulse):
     </div>
 
     Attributes:
-        rolloff (float): The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `0.0`.
+        rolloff: The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `0.0`.
 
     Examples:
         >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)

@@ -1,12 +1,13 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import override
 
 from .. import abc
 
 
-@frozen
+@dataclass
 class ManchesterPulse(abc.Pulse):
     r"""
     Manchester pulse. It is a [pulse](/ref/Pulse) with waveform given by

@@ -1,12 +1,13 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import override
 
 from .. import abc
 
 
-@frozen
+@dataclass
 class GaussianPulse(abc.Pulse):
     r"""
     Gaussian pulse. It is a [pulse](/ref/Pulse) with waveform given by
@@ -30,7 +31,7 @@ class GaussianPulse(abc.Pulse):
     </div>
 
     Attributes:
-        half_power_bandwidth (float): The half-power bandwidth $B$ of the pulse. The default value is `1.0`.
+        half_power_bandwidth: The half-power bandwidth $B$ of the pulse. The default value is `1.0`.
 
     Examples:
         >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)

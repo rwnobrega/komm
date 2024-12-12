@@ -1,14 +1,14 @@
+from dataclasses import dataclass
 from functools import cache
 from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
 from .. import abc
 
 
-@frozen
+@dataclass(eq=False)
 class TransmitFilter:
     r"""
     Transmit filter (pulse shaping). Given a sequence of $N$ real or complex symbols $x[n]$, this filter outputs samples of the signal
@@ -72,17 +72,17 @@ class TransmitFilter:
         else:
             return "semi-infinite"
 
-    def __attrs_post_init__(self) -> None:
-        if self._pulse_support_kind() == "semi-infinite":
-            raise ValueError("pulses with semi-infinite support are not supported")
-        elif self._pulse_support_kind() == "finite":
+    def __post_init__(self) -> None:
+        if self._pulse_support_kind() == "finite":
             if self.truncation is not None:
                 raise ValueError("'truncation' only applies to infinite-support pulses")
         elif self._pulse_support_kind() == "infinite":
             if self.truncation is None:
-                object.__setattr__(self, "truncation", 32)
+                self.truncation = 32
             elif self.truncation <= 0 or self.truncation % 2 != 0:
                 raise ValueError("'truncation' must be an even positive integer")
+        else:  # self._pulse_support_kind() == "semi-infinite"
+            raise ValueError("pulses with semi-infinite support are not supported")
 
     @property
     @cache
@@ -109,12 +109,10 @@ class TransmitFilter:
             assert self.truncation is not None  # Guaranteed
             t_min_h = -self.truncation // 2
             t_max_h = self.truncation // 2
-        elif self._pulse_support_kind() == "finite":
+        else:  # self._pulse_support_kind() == "finite"
             support = self.pulse.support
             t_min_h = int(np.floor(support[0]))
             t_max_h = int(np.ceil(support[1]))
-        else:
-            assert False  # Unreachable
         return t_min_h, t_max_h
 
     def _time(self, num_symbols: int) -> npt.NDArray[np.floating]:

@@ -1,12 +1,13 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from typing_extensions import override
 
 from .. import abc
 
 
-@frozen
+@dataclass
 class RectangularPulse(abc.Pulse):
     r"""
     Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
@@ -39,7 +40,7 @@ class RectangularPulse(abc.Pulse):
         - For $w = 0.5$ it is also called the _halfway RZ pulse_.
 
     Attributes:
-        width (Optional[float]): The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
+        width: The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
 
     Examples:
         >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
