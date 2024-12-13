@@ -2,7 +2,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
+from attrs import field, frozen
 
 from .. import abc
 from .._util.information_theory import (
@@ -25,6 +25,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
     """
 
     erasure_probability: float = 0.0
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     def __attrs_post_init__(self) -> None:
         assert_is_probability(self.erasure_probability)
@@ -50,10 +51,10 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         $$
 
         Examples:
-            >>> bec = komm.BinaryErasureChannel(0.1)
+            >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec.transition_matrix
-            array([[0.9, 0. , 0.1],
-                   [0. , 0.9, 0.1]])
+            array([[0.8, 0. , 0.2],
+                   [0. , 0.8, 0.2]])
         """
         epsilon = self.erasure_probability
         return np.array([[1 - epsilon, 0, epsilon], [0, 1 - epsilon, epsilon]])
@@ -73,9 +74,9 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         Same as the [corresponding method](/ref/DiscreteMemorylessChannel/#mutual_information) of the general class.
 
         Examples:
-            >>> bec = komm.BinaryErasureChannel(0.1)
+            >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec.mutual_information([0.45, 0.55]) # doctest: +NUMBER
-            np.float64(0.8934970085890275)
+            np.float64(0.7942195631902467)
         """
         input_pmf = PMF(input_pmf)
         epsilon = self.erasure_probability
@@ -91,9 +92,9 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         in bits.
 
         Examples:
-            >>> bec = komm.BinaryErasureChannel(0.1)
+            >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec.capacity()
-            np.float64(0.9)
+            np.float64(0.8)
         """
         return (1.0 - self.erasure_probability) / np.log2(base)
 
@@ -106,13 +107,14 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             output: The output sequence.
 
         Examples:
-            >>> np.random.seed(1)
-            >>> bec = komm.BinaryErasureChannel(0.1)
+            >>> rng = np.random.default_rng(seed=42)
+            >>> bec = komm.BinaryErasureChannel(0.2, rng=rng)
             >>> bec([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
-            array([1, 1, 2, 0, 0, 2, 1, 0, 1, 0])
+            array([1, 1, 1, 0, 2, 0, 1, 0, 2, 0])
         """
         epsilon = self.erasure_probability
-        erasure_pattern = np.random.rand(np.size(input)) < epsilon
+        input = np.asarray(input)
+        erasure_pattern = self.rng.random(input.shape) < epsilon
         output = np.copy(input)
         output[erasure_pattern] = 2
         return output

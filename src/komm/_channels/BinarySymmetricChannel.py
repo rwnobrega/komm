@@ -2,7 +2,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
+from attrs import field, frozen
 
 from .. import abc
 from .._util.information_theory import (
@@ -29,6 +29,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     """
 
     crossover_probability: float = 0.0
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     def __attrs_post_init__(self) -> None:
         assert_is_probability(self.crossover_probability)
@@ -50,10 +51,10 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         $$
 
         Examples:
-            >>> bsc = komm.BinarySymmetricChannel(0.1)
+            >>> bsc = komm.BinarySymmetricChannel(0.2)
             >>> bsc.transition_matrix
-            array([[0.9, 0.1],
-                   [0.1, 0.9]])
+            array([[0.8, 0.2],
+                   [0.2, 0.8]])
         """
         p = self.crossover_probability
         return np.array([[1 - p, p], [p, 1 - p]])
@@ -73,9 +74,9 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         Same as the [corresponding method](/ref/DiscreteMemorylessChannel/#mutual_information) of the general class.
 
         Examples:
-            >>> bsc = komm.BinarySymmetricChannel(0.1)
+            >>> bsc = komm.BinarySymmetricChannel(0.2)
             >>> bsc.mutual_information([0.45, 0.55])
-            np.float64(0.5263828452309445)
+            np.float64(0.2754734936803773)
         """
         input_pmf = PMF(input_pmf)
         p = self.crossover_probability
@@ -91,9 +92,9 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         in bits, where $\Hb$ is the [binary entropy function](/ref/binary_entropy).
 
         Examples:
-            >>> bsc = komm.BinarySymmetricChannel(0.1)
+            >>> bsc = komm.BinarySymmetricChannel(0.2)
             >>> bsc.capacity()
-            np.float64(0.5310044064107188)
+            np.float64(0.2780719051126377)
         """
         p = self.crossover_probability
         return (1.0 - binary_entropy(p)) / np.log2(base)
@@ -107,12 +108,12 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             output: The output sequence.
 
         Examples:
-            >>> np.random.seed(1)
-            >>> bsc = komm.BinarySymmetricChannel(0.1)
-            >>> bsc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-            array([0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
+            >>> rng = np.random.default_rng(seed=42)
+            >>> bsc = komm.BinarySymmetricChannel(0.2, rng=rng)
+            >>> bsc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            array([1, 1, 1, 0, 1, 0, 1, 0, 0, 0])
         """
         p = self.crossover_probability
         input = np.array(input)
-        error_pattern = np.random.rand(np.size(input)) < p
+        error_pattern = self.rng.random(input.shape) < p
         return (input + error_pattern) % 2

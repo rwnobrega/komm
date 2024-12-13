@@ -23,6 +23,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
     """
 
     transition_matrix: npt.NDArray[np.floating] = field(converter=TransitionMatrix)
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     @property
     def input_cardinality(self) -> int:
@@ -101,14 +102,15 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
             output: The output sequence.
 
         Examples:
-            >>> np.random.seed(1)
-            >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
-            >>> dmc([0, 1, 0, 1, 1, 1, 0, 0, 0, 1])
-            array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])
+            >>> rng = np.random.default_rng(seed=42)
+            >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]], rng=rng)
+            >>> dmc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])
         """
         input = np.asarray(input)
-        output = [
-            np.random.choice(self.output_cardinality, p=self.transition_matrix[x])
-            for x in input
-        ]
-        return np.array(output)
+        output = np.empty_like(input, dtype=int)
+        for index, symbol in np.ndenumerate(input):
+            output[index] = self.rng.choice(
+                a=self.output_cardinality, p=self.transition_matrix[symbol]
+            )
+        return output

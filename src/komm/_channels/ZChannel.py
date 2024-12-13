@@ -2,7 +2,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
+from attrs import field, frozen
 
 from .. import abc
 from .._util.information_theory import (
@@ -29,6 +29,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
     """
 
     decay_probability: float = 0.0
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     def __attrs_post_init__(self) -> None:
         assert_is_probability(self.decay_probability)
@@ -50,10 +51,10 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         $$
 
         Examples:
-            >>> zc = komm.ZChannel(0.1)
+            >>> zc = komm.ZChannel(0.2)
             >>> zc.transition_matrix
             array([[1. , 0. ],
-                   [0.1, 0.9]])
+                   [0.2, 0.8]])
         """
         p = self.decay_probability
         return np.array([[1, 0], [p, 1 - p]])
@@ -73,9 +74,9 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         Same as the [corresponding method](/ref/DiscreteMemorylessChannel/#mutual_information) of the general class.
 
         Examples:
-            >>> zc = komm.ZChannel(0.1)
+            >>> zc = komm.ZChannel(0.2)
             >>> zc.mutual_information([0.5, 0.5])  # doctest: +NUMBER
-            np.float64(0.7582766571931676)
+            np.float64(0.6099865470109874)
         """
         input_pmf = PMF(input_pmf)
         p = self.decay_probability
@@ -91,9 +92,9 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         in bits.
 
         Examples:
-            >>> zc = komm.ZChannel(0.1)
+            >>> zc = komm.ZChannel(0.2)
             >>> zc.capacity()  # doctest: +NUMBER
-            np.float64(0.7628482520105094)
+            np.float64(0.6182313659549211)
         """
         p = self.decay_probability
         if p == 1.0:
@@ -110,12 +111,12 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             output: The output sequence.
 
         Examples:
-            >>> np.random.seed(1)
-            >>> zc = komm.ZChannel(0.1)
-            >>> zc([0, 1, 1, 1, 0, 0, 0, 0, 0, 1])
-            array([0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+            >>> rng = np.random.default_rng(seed=42)
+            >>> zc = komm.ZChannel(0.2, rng=rng)
+            >>> zc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            array([1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
         """
         p = self.decay_probability
         input = np.asarray(input)
-        keep_pattern = np.random.rand(np.size(input)) > p
+        keep_pattern = self.rng.random(input.shape) >= p
         return (input * keep_pattern).astype(int)

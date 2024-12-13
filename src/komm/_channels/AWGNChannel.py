@@ -2,7 +2,7 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
+from attrs import field, frozen
 
 
 @frozen
@@ -28,6 +28,7 @@ class AWGNChannel:
 
     signal_power: float | Literal["measured"]
     snr: float = np.inf
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     @property
     def noise_power(self) -> float:
@@ -60,17 +61,16 @@ class AWGNChannel:
             output: The output signal $Y_n$.
 
         Examples:
-            >>> np.random.seed(1)
-            >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
+            >>> rng = np.random.default_rng(seed=42)
+            >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0, rng=rng)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
             >>> awgn(x).round(2)  # doctest: +NORMALIZE_WHITESPACE
-            array([ 1.26,  2.9 , -3.08, -1.17, -0.86,  0.64,  3.28,  0.88, -0.95,  2.96])
+            array([ 1.05,  2.84, -2.88, -0.85, -1.31,  0.79,  3.02,  0.95, -1.  ,  2.87])
         """
         input = np.array(input)
-        size = input.size
 
         if self.signal_power == "measured":
-            signal_power = np.linalg.norm(input) ** 2 / size
+            signal_power = np.linalg.norm(input) ** 2 / input.shape[-1]
         else:
             signal_power = self.signal_power
 
@@ -78,9 +78,10 @@ class AWGNChannel:
 
         if input.dtype == complex:
             noise = np.sqrt(noise_power / 2) * (
-                np.random.normal(size=size) + 1j * np.random.normal(size=size)
+                self.rng.standard_normal(size=input.shape)
+                + 1j * self.rng.standard_normal(size=input.shape)
             )
         else:
-            noise = np.sqrt(noise_power) * np.random.normal(size=size)
+            noise = np.sqrt(noise_power) * self.rng.standard_normal(size=input.shape)
 
         return input + noise
