@@ -10,19 +10,14 @@ class DiscreteMemorylessSource:
     r"""
     Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
-    To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example below).
-
     Attributes:
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
 
-    Examples:
-        >>> np.random.seed(42)
-        >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
-        >>> dms(10)
-        array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])
+    :::komm.DiscreteMemorylessSource.DiscreteMemorylessSource.__call__
     """
 
     pmf: npt.NDArray[np.floating] = field(converter=PMF)
+    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
     @property
     def cardinality(self) -> int:
@@ -47,5 +42,23 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
-    def __call__(self, size: int) -> npt.NDArray[np.integer]:
-        return np.random.choice(self.pmf.size, p=self.pmf, size=size)
+    def __call__(self, shape: int | tuple[int, ...] = ()) -> npt.NDArray[np.integer]:
+        r"""
+        Parameters:
+            shape: The shape of the output array. If `shape` is an integer, the output array will have shape `(shape,)`. The default value is `()`, which returns a single sample.
+
+        Returns:
+            An array of shape `shape` with random samples from the source.
+
+        Examples:
+            >>> rng = np.random.default_rng(seed=42)
+            >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1], rng=rng)
+            >>> dms()
+            array(1)
+            >>> dms(10)
+            array([0, 1, 1, 0, 2, 1, 1, 0, 0, 0])
+            >>> dms((2, 5))
+            array([[2, 1, 1, 0, 0],
+                   [1, 0, 1, 1, 1]])
+        """
+        return self.rng.choice(self.pmf.size, p=self.pmf, size=shape)
