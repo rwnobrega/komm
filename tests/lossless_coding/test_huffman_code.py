@@ -79,3 +79,12 @@ def test_huffman_code_invalid_call():
         komm.HuffmanCode([0.5, 0.5], source_block_size=0)
     with pytest.raises(ValueError):
         komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore
+
+
+@pytest.mark.parametrize("n", range(2, 16))
+def test_huffman_code_encode_decode(n):
+    integers = np.random.randint(0, 100, n)
+    pmf = integers / integers.sum()
+    code = komm.HuffmanCode(pmf)
+    x = np.random.randint(0, n - 1, 1000)
+    assert np.array_equal(code.decode(code.encode(x)), x)
