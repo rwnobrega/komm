@@ -266,6 +266,6 @@ def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
             13: 0b10000000011011,
             14: 0b100010001000011,
             15: 0b1000000000000011,
-            16: 0b10000000010000011,
+            16: 0b11010000000010001,
         }[degree]
     )

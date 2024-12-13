@@ -71,7 +71,7 @@ class LFSRSequence(BinarySequence):
         | $5$        | `0b100101`                 | $13$       | `0b10000000011011`         |
         | $6$        | `0b1000011`                | $14$       | `0b100010001000011`        |
         | $7$        | `0b10001001`               | $15$       | `0b1000000000000011`       |
-        | $8$        | `0b100011101`              | $16$       | `0b10001000000001011`      |
+        | $8$        | `0b100011101`              | $16$       | `0b11010000000010001`      |
 
         Parameters:
             degree: The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 16]$ are implemented.
