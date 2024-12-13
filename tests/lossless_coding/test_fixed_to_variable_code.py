@@ -232,3 +232,17 @@ def test_encoding_decoding(code_parameters, x, y):
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     assert np.array_equal(code.encode(x), y)
     assert np.array_equal(code.decode(y), x)
+
+
+def test_invalid_decoding_input():
+    code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1, 0)])
+    assert np.array_equal(code.decode([1, 1, 0, 1, 0]), [2, 1])
+    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
+    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
+    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
+    with pytest.raises(ValueError):  # Invalid codeword
+        code.decode([1, 1, 0, 1, 0, 1, 1, 1])
+    with pytest.raises(ValueError):  # Incomplete codeword
+        code.decode([1, 1, 0, 1, 0, 1])
+    with pytest.raises(ValueError):  # Invalid symbol
+        code.decode([1, 1, 0, 1, 0, 1, 3])

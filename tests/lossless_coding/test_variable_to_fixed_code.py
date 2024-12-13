@@ -110,3 +110,17 @@ def test_encoding_decoding():
     y = [0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0]
     assert np.array_equal(code.encode(x), y)
     assert np.array_equal(code.decode(y), x)
+
+
+def test_invalid_encoding_input():
+    code = komm.VariableToFixedCode.from_sourcewords(3, [(0,), (1, 0), (1, 1, 0)])
+    assert np.array_equal(code.encode([1, 1, 0, 1, 0]), [2, 1])
+    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
+    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
+    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
+    with pytest.raises(ValueError):  # Invalid codeword
+        code.encode([1, 1, 0, 1, 0, 1, 1, 1])
+    with pytest.raises(ValueError):  # Incomplete codeword
+        code.encode([1, 1, 0, 1, 0, 1])
+    with pytest.raises(ValueError):  # Invalid symbol
+        code.encode([1, 1, 0, 1, 0, 1, 3])

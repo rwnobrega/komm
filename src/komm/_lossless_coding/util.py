@@ -37,18 +37,19 @@ def is_uniquely_decodable(words: list[Word]) -> bool:
 def parse_prefix_free(
     input_sequence: npt.NDArray[np.integer], dictionary: dict[Word, Word]
 ) -> npt.NDArray[np.integer]:
+    max_key_length = max(len(word) for word in dictionary.keys())
     output_sequence: list[int] = []
     i = 0
     while i < len(input_sequence):
-        j = 1
-        while i + j <= len(input_sequence):
+        for j in range(1, max_key_length + 1):
             try:
                 key = tuple(input_sequence[i : i + j])
                 output_sequence.extend(dictionary[key])
+                i += j
                 break
             except KeyError:
-                j += 1
-        i += j
+                if j == max_key_length:
+                    raise ValueError("input contains invalid sequence")
     return np.asarray(output_sequence)
 
 
