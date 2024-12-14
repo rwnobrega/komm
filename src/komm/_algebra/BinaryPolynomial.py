@@ -295,16 +295,27 @@ def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
     )
 
 
+def power_of_two_mod(
+    base: BinaryPolynomial, exponent_power: int, modulus: BinaryPolynomial
+) -> BinaryPolynomial:
+    # Computes (base ** (2**exponent_power)) % modulus
+    result = base
+    for _ in range(exponent_power):
+        result = (result * result) % modulus
+    return result
+
+
 def rabin_irreducibility_test(poly: BinaryPolynomial) -> bool:
     n = poly.degree
     if n <= 0:  # p(X) = 0 or p(X) = 1
         return False
+    X = BinaryPolynomial(0b10)  # The polynomial X
     for m in range(1, n):
         if n % m != 0:
             continue
-        h = BinaryPolynomial.from_exponents([1, 2**m]) % poly
+        h = power_of_two_mod(X, m, poly) + X % poly
         g = BinaryPolynomial.gcd(poly, h)
         if g != BinaryPolynomial(1):
             return False
-    g = BinaryPolynomial.from_exponents([1, 2**n]) % poly
+    g = power_of_two_mod(X, n, poly) + X % poly
     return g == BinaryPolynomial(0)
