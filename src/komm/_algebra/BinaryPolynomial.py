@@ -204,6 +204,21 @@ class BinaryPolynomial:
         """
         return ring.binary_horner(self.coefficients(), point)
 
+    def is_irreducible(self) -> bool:
+        r"""
+        Tests whether the binary polynomial is irreducible using [Rabin's irreducibility test](https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility).
+
+        Returns:
+            result: `True` if the binary polynomial is irreducible; `False` otherwise.
+
+        Examples:
+            >>> komm.BinaryPolynomial(0b10011).is_irreducible()
+            True
+            >>> komm.BinaryPolynomial(0b11011).is_irreducible()
+            False
+        """
+        return rabin_irreducibility_test(self)
+
     def __repr__(self) -> str:
         return f"BinaryPolynomial({self.value:#b})"
 
@@ -278,3 +293,18 @@ def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
             # 24: 0b1000000000000000010000111,
         }[degree]
     )
+
+
+def rabin_irreducibility_test(poly: BinaryPolynomial) -> bool:
+    n = poly.degree
+    if n <= 0:  # p(X) = 0 or p(X) = 1
+        return False
+    for m in range(1, n):
+        if n % m != 0:
+            continue
+        h = BinaryPolynomial.from_exponents([1, 2**m]) % poly
+        g = BinaryPolynomial.gcd(poly, h)
+        if g != BinaryPolynomial(1):
+            return False
+    g = BinaryPolynomial.from_exponents([1, 2**n]) % poly
+    return g == BinaryPolynomial(0)
