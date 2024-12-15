@@ -204,7 +204,7 @@ def test_binary_polynomial_rabin_irreducibility_test():
 
 
 def test_binary_polynomial_default_primitive_polynomial():
-    for degree in range(1, 17):
+    for degree in range(1, 25):
         primitive_polynomial = default_primitive_polynomial(degree)
         assert primitive_polynomial.degree == degree
         assert primitive_polynomial.is_irreducible()

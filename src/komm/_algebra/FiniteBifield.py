@@ -95,18 +95,8 @@ class FiniteBifield:
     Attributes:
         degree (int): Degree $k$ of the finite field. Must be a positive integer.
 
-        modulus (Optional[BinaryPolynomial | int]): Modulus (primitive polynomial) $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from the table below <cite>LC04, p.42</cite>.
+        modulus (Optional[BinaryPolynomial | int]): Modulus $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from [the list of default primitive polynomials](/resources/primitive-polynomials).
 
-            | Degree $k$ | Modulus $p(X)$ | Degree $k$ | Modulus $p(X)$        |
-            | :--------: | -------------- | :--------: | --------------------- |
-            | $1$        | `0b11`         | $9$        | `0b1000010001`        |
-            | $2$        | `0b111`        | $10$       | `0b10000001001`       |
-            | $3$        | `0b1011`       | $11$       | `0b100000000101`      |
-            | $4$        | `0b10011`      | $12$       | `0b1000001010011`     |
-            | $5$        | `0b100101`     | $13$       | `0b10000000011011`    |
-            | $6$        | `0b1000011`    | $14$       | `0b100010001000011`   |
-            | $7$        | `0b10001001`   | $15$       | `0b1000000000000011`  |
-            | $8$        | `0b100011101`  | $16$       | `0b11010000000010001` |
 
     Examples:
         >>> field = komm.FiniteBifield(4)

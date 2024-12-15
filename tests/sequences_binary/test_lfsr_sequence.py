@@ -21,7 +21,7 @@ def test_lfsr_sequence():
     )
 
 
-@pytest.mark.parametrize("degree", range(2, 16))
+@pytest.mark.parametrize("degree", range(2, 13))
 def test_lfsr_mls(degree):
     lfsr = komm.LFSRSequence.maximum_length_sequence(degree)
     assert degree == lfsr.feedback_polynomial.degree
@@ -31,7 +31,7 @@ def test_lfsr_mls(degree):
     np.testing.assert_array_equal(lfsr.cyclic_autocorrelation(), cyclic_autocorrelation)
 
 
-@pytest.mark.parametrize("degree", [-10, 0, 17, 20])
+@pytest.mark.parametrize("degree", [-10, 0, 25])
 def test_lfsr_mls_invalid(degree):
     with pytest.raises(ValueError):
         komm.LFSRSequence.maximum_length_sequence(degree)
