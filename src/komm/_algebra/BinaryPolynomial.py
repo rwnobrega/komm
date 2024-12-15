@@ -146,7 +146,7 @@ class BinaryPolynomial:
     @property
     def degree(self) -> int:
         r"""
-        The degree of the polynomial.
+        The degree of the binary polynomial.
 
         Examples:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
@@ -190,7 +190,7 @@ class BinaryPolynomial:
 
     def evaluate(self, point: T) -> T:
         r"""
-        Evaluates the polynomial at a given point. Uses Horner's method.
+        Evaluates the binary polynomial at a given point. Uses Horner's method.
 
         Parameters:
             point (RingElement): The point at which the polynomial is evaluated. It must be an element of a ring in which multiplication by integers is defined.
@@ -207,21 +207,60 @@ class BinaryPolynomial:
 
     def is_irreducible(self) -> bool:
         r"""
-        Tests whether the binary polynomial is irreducible using [Rabin's irreducibility test](https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility).
+        Checks whether the binary polynomial is irreducible. A binary polynomial is *irreducible* if it is not divisible by any other nonconstant binary polynomial of smaller degree.
+
+        This method checks the irreducibility using [Rabin's irreducibility test](https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility).
 
         Returns:
-            result: `True` if the binary polynomial is irreducible; `False` otherwise.
+            result: `True`, if the binary polynomial is irreducible; `False`, otherwise.
 
         Examples:
-            >>> komm.BinaryPolynomial(0b10011).is_irreducible()
-            True
             >>> komm.BinaryPolynomial(0b11011).is_irreducible()
             False
+            >>> komm.BinaryPolynomial(0b11111).is_irreducible()
+            True
+            >>> komm.BinaryPolynomial(0b10011).is_irreducible()
+            True
         """
-        return rabin_irreducibility_test(self)
+        degree = self.degree
+        if degree <= 0:  # p(X) = 0 or p(X) = 1
+            return False
+        X = BinaryPolynomial(0b10)  # The polynomial X
+        for q in set(prime_factors(degree)):
+            h = power_mod(X, 2 ** (degree // q), self) + X % self
+            if BinaryPolynomial.gcd(self, h) != BinaryPolynomial(1):
+                return False
+        h = power_mod(X, 2**degree, self) + X % self
+        return h == BinaryPolynomial(0)
+
+    def is_primitive(self) -> bool:
+        r"""
+        Checks whether the binary polynomial is primitive. A binary polynomial of degree $m$ is *primitive* if it is irreducible and if the smallest positive integer $n$ such that the polynomial divides $X^n + 1$ is $n = 2^m - 1$.
+
+        Returns:
+            result: `True`, if the binary polynomial is primitive; `False`, otherwise.
+
+        Examples:
+            >>> komm.BinaryPolynomial(0b11011).is_primitive()
+            False
+            >>> komm.BinaryPolynomial(0b11111).is_primitive()
+            False
+            >>> komm.BinaryPolynomial(0b10011).is_primitive()
+            True
+        """
+        if not self.is_irreducible():
+            return False
+        X = BinaryPolynomial(0b10)  # The polynomial X
+        if self == X:
+            return False
+        order = 2**self.degree - 1
+        for q in set(prime_factors(order)):
+            if power_mod(X, order // q, self) == BinaryPolynomial(1):
+                return False
+        return True
 
     def __repr__(self) -> str:
-        return f"BinaryPolynomial({self.value:#b})"
+        return f"{self.__class__.__name__}({self.value:#b})"
 
     def __str__(self) -> str:
         return bin(self.value)
@@ -296,24 +335,15 @@ def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
     )
 
 
-def power_of_two_mod(
-    base: BinaryPolynomial, exponent_power: int, modulus: BinaryPolynomial
+def power_mod(
+    base: BinaryPolynomial, exponent: int, modulus: BinaryPolynomial
 ) -> BinaryPolynomial:
-    # Computes (base ** (2**exponent_power)) % modulus
-    result = base
-    for _ in range(exponent_power):
-        result = (result * result) % modulus
+    # Computes (base ** exponent) % modulus using binary exponentiation.
+    result = BinaryPolynomial(1)
+    current = base
+    while exponent > 0:
+        if exponent & 1:
+            result = (result * current) % modulus
+        current = (current * current) % modulus
+        exponent >>= 1
     return result
-
-
-def rabin_irreducibility_test(poly: BinaryPolynomial) -> bool:
-    n = poly.degree
-    if n <= 0:  # p(X) = 0 or p(X) = 1
-        return False
-    X = BinaryPolynomial(0b10)  # The polynomial X
-    for ell in set(prime_factors(n)):
-        h = power_of_two_mod(X, n // ell, poly) + X % poly
-        if BinaryPolynomial.gcd(poly, h) != BinaryPolynomial(1):
-            return False
-    h = power_of_two_mod(X, n, poly) + X % poly
-    return h == BinaryPolynomial(0)
