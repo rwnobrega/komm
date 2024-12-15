@@ -9,6 +9,7 @@ from typing_extensions import Self
 
 from .._util.bit_operations import bits_to_int, int_to_bits
 from . import domain, ring
+from .Integers import prime_factors
 
 T = TypeVar("T", bound=ring.RingElement)
 
@@ -310,12 +311,9 @@ def rabin_irreducibility_test(poly: BinaryPolynomial) -> bool:
     if n <= 0:  # p(X) = 0 or p(X) = 1
         return False
     X = BinaryPolynomial(0b10)  # The polynomial X
-    for m in range(1, n):
-        if n % m != 0:
-            continue
-        h = power_of_two_mod(X, m, poly) + X % poly
-        g = BinaryPolynomial.gcd(poly, h)
-        if g != BinaryPolynomial(1):
+    for ell in set(prime_factors(n)):
+        h = power_of_two_mod(X, n // ell, poly) + X % poly
+        if BinaryPolynomial.gcd(poly, h) != BinaryPolynomial(1):
             return False
-    g = power_of_two_mod(X, n, poly) + X % poly
-    return g == BinaryPolynomial(0)
+    h = power_of_two_mod(X, n, poly) + X % poly
+    return h == BinaryPolynomial(0)
