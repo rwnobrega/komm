@@ -35,10 +35,21 @@ def test_finite_bifield_invalid_degree():
 
 
 def test_finite_bifield_invalid_modulus():
-    with pytest.raises(ValueError):  # degree mismatch
-        komm.FiniteBifield(4, 0b101)
-    # with pytest.raises(ValueError):  # reducible polynomial
-    #    komm.FiniteBifield(2, 0b101)
+    komm.FiniteBifield(2, 0b111)  # OK  (irreducible and primitive)
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(3, 0b111)  # degree mismatch
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(2, 0b101)  # reducible polynomial
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(3, 0b101)  # both degree mismatch and reducible polynomial
+
+    komm.FiniteBifield(4, 0b11111)  # OK  (irreducible but not primitive)
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(3, 0b11111)  # degree mismatch
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(4, 0b10001)  # reducible polynomial
+    with pytest.raises(ValueError):
+        komm.FiniteBifield(3, 0b10001)  # both degree mismatch and reducible polynomial
 
 
 def test_finite_bifield_element_construction():
@@ -112,7 +123,7 @@ def test_finite_bifield_element_field_properties(m):
     y = field(randint(0, field.order - 1))
     z = field(randint(0, field.order - 1))
 
-    # aAssociativity
+    # Associativity
     assert (x + y) + z == x + (y + z)
     assert (x * y) * z == x * (y * z)
 
