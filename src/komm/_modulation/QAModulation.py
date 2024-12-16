@@ -106,7 +106,7 @@ class QAModulation(Modulation):
         self.phase_offset = phase_offset
         self.labeling_parameter = labeling
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         args = ", ".join([
             f"orders={self.orders}",
             f"base_amplitudes={self.base_amplitudes}",

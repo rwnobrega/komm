@@ -81,10 +81,10 @@ class FiniteBifieldElement(Generic[F]):
         coefficients: list[Self] = list(functools.reduce(np.convolve, monomials))
         return BinaryPolynomial.from_coefficients([c.value.value for c in coefficients])
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return bin(self.value.value)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return bin(self.value.value)
 
 
