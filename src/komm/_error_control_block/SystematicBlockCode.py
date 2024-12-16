@@ -53,9 +53,11 @@ class SystematicBlockCode(BlockCode):
     )
 
     def __repr__(self) -> str:
-        args_str = f"parity_submatrix={self.parity_submatrix.tolist()}, "
-        args_str += f"information_set={self.information_set.tolist()}"
-        return f"{self.__class__.__name__}({args_str})"
+        args = ", ".join([
+            f"parity_submatrix={self.parity_submatrix.tolist()}",
+            f"information_set={self.information_set.tolist()}",
+        ])
+        return f"{self.__class__.__name__}({args})"
 
     @cached_property
     def parity_submatrix(self) -> npt.NDArray[np.integer]:

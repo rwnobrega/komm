@@ -72,13 +72,13 @@ class CyclicCode(BlockCode):
             raise ValueError("'check_polynomial' must be a factor of X^n + 1")
 
     def __repr__(self) -> str:
-        s = f"{self.__class__.__name__}(length={self.length}"
+        args = f"length={self.length}"
         if self._generator_polynomial is not None:
-            s += f", generator_polynomial={self.generator_polynomial}"
+            args += f", generator_polynomial={self.generator_polynomial}"
         if self._check_polynomial is not None:
-            s += f", check_polynomial={self.check_polynomial}"
-        s += f", systematic={self.systematic})"
-        return s
+            args += f", check_polynomial={self.check_polynomial}"
+        args += f", systematic={self.systematic}"
+        return f"{self.__class__.__name__}({args})"
 
     @property
     def length(self) -> int:
