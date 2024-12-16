@@ -10,7 +10,7 @@ def test_berlekamp_lin_costello():
     code = komm.BCHCode(mu=4, delta=7)
     decoder = komm.BerlekampDecoder(code)
     field = code.field
-    alpha = decoder._alpha
+    alpha = code.alpha
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     r_poly = komm.BinaryPolynomial.from_coefficients(r)
     syndrome = code.bch_syndrome(r_poly)

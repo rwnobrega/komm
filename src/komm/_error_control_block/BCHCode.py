@@ -99,14 +99,17 @@ class BCHCode(CyclicCode):
     def lcm_set(self) -> set[BinaryPolynomial]:
         return {self.phi(i) for i in range(1, self.delta)}
 
+    @cached_property
+    def alpha(self) -> FiniteBifieldElement[FiniteBifield]:
+        # Since the default modulus is a primitive polynomial, alpha = X is a primitive element.
+        return self.field(0b10)
+
     @cache
     def phi(self, i: int) -> BinaryPolynomial:
-        alpha = self.field.primitive_element
-        return (alpha**i).minimal_polynomial()
+        return (self.alpha**i).minimal_polynomial()
 
     def bch_syndrome(
         self, r_poly: BinaryPolynomial
     ) -> list[FiniteBifieldElement[FiniteBifield]]:
         # BCH syndrome computation. See [LC04, p. 205–209].
-        alpha = self.field.primitive_element
-        return [(r_poly % self.phi(i)).evaluate(alpha**i) for i in range(1, self.delta)]
+        return [r_poly.evaluate(self.alpha**i) for i in range(1, self.delta)]

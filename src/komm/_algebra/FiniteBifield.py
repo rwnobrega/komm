@@ -204,23 +204,6 @@ class FiniteBifield:
         """
         return 2**self.degree
 
-    @property
-    def primitive_element(self) -> FiniteBifieldElement[Self]:
-        r"""
-        A primitive element $\alpha$ of the finite field. It satisfies $p(\alpha) = 0$, where $p(X)$ is the modulus (primitive polynomial) of the finite field.
-
-        Examples:
-            >>> field1 = komm.FiniteBifield(3, modulus=0b1011)
-            >>> alpha1 = field1.primitive_element
-            >>> [alpha1**i for i in range(7)]
-            [0b1, 0b10, 0b100, 0b11, 0b110, 0b111, 0b101]
-            >>> field2 = komm.FiniteBifield(3, modulus=0b1101)
-            >>> alpha2 = field2.primitive_element
-            >>> [alpha2**i for i in range(7)]
-            [0b1, 0b10, 0b100, 0b101, 0b111, 0b11, 0b110]
-        """
-        return self(2)
-
     def __repr__(self) -> str:
         if self.modulus.value == default_primitive_polynomial(self.degree):
             args = f"{self.degree}"
@@ -245,7 +228,7 @@ def find_roots(
 
     Examples:
         >>> field = komm.FiniteBifield(4)
-        >>> alpha = field.primitive_element
+        >>> alpha = field(0b10)  # alpha = X, a primitive element
         >>> coefficients = [field.one, field.one, field.zero, alpha**5]  # 1 + X + alpha^5 X^3
         >>> find_roots(field, coefficients)
         [0b111, 0b1000, 0b1111]

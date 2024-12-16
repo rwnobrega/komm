@@ -30,9 +30,6 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
 
     code: BCHCode
 
-    def __post_init__(self) -> None:
-        self._alpha = self.code.field.primitive_element
-
     def _berlekamp_algorithm(
         self, syndrome: list[Any]
     ) -> list[FiniteBifieldElement[FiniteBifield]]:
@@ -92,7 +89,7 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
             return self.code.inverse_encode(input)
         sigma_poly = self._berlekamp_algorithm(syndrome)
         roots = find_roots(self.code.field, sigma_poly)
-        e_loc = [e.inverse().logarithm(self._alpha) for e in roots]
+        e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
         e_hat = np.bincount(e_loc, minlength=self.code.length)
         v_hat = (input + e_hat) % 2
         output = self.code.inverse_encode(v_hat)

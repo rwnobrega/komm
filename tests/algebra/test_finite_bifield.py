@@ -173,7 +173,7 @@ def test_finite_bifield_power(m):
 @pytest.mark.parametrize("k", list(range(2, 8)))
 def test_finite_bifield_logarithm(k):
     field = komm.FiniteBifield(k)
-    alpha = field.primitive_element
+    alpha = field(0b10)
     for i in range(field.order - 1):
         assert (alpha**i).logarithm(alpha) == i
 
@@ -192,7 +192,7 @@ def test_finite_bifield_LC_example_2_7():
     Lin--Costello, Example 2.7, p. 46.
     """
     field = komm.FiniteBifield(4, 0b10011)
-    alpha = field.primitive_element
+    alpha = field(0b10)
     one = field.one
 
     assert alpha**4 == one + alpha == field(0b0011)
@@ -214,7 +214,7 @@ def test_finite_bifield_LC_table_2_9():
     Lin--Costello, Table 2.9,  p. 52.
     """
     field = komm.FiniteBifield(4, 0b10011)
-    alpha = field.primitive_element
+    alpha = field(0b10)
 
     assert set(field.zero.conjugates()) == {field.zero}
     assert set(field.one.conjugates()) == {field.one}
