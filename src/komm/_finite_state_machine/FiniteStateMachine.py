@@ -4,7 +4,6 @@ from typing import Any, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 
 class MetricMemory(TypedDict):
@@ -16,7 +15,6 @@ Z = TypeVar("Z")
 MetricFunction = Callable[[int, Z], float]
 
 
-@frozen
 class FiniteStateMachine:
     r"""
     Finite-state machine (Mealy machine). It is defined by a *set of states* $\mathcal{S}$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition function* $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S} \times \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as $\mathcal{S} = \\{ 0, 1, \ldots, |\mathcal{S}| - 1 \\}$, $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$, and $\mathcal{Y} = \\{ 0, 1, \ldots, |\mathcal{Y}| - 1 \\}$, respectively.
@@ -40,33 +38,31 @@ class FiniteStateMachine:
     | $3$   | $0$   | $2$        | $2$    |
     | $3$   | $1$   | $3$        | $1$    |
 
-    Attributes:
-        next_states (Array2D[int]): The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
+    Parameters:
+        next_states: The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
 
-        outputs (Array2D[int]): The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
+        outputs: The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.
 
     Examples:
         >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
     """
 
-    next_states: npt.NDArray[np.integer] = field(
-        converter=np.asarray, repr=lambda x: x.tolist()
-    )
-    outputs: npt.NDArray[np.integer] = field(
-        converter=np.asarray, repr=lambda x: x.tolist()
-    )
-    _input_edges: npt.NDArray[np.integer] = field(init=False, repr=False)
-    _output_edges: npt.NDArray[np.integer] = field(init=False, repr=False)
-
-    def __attrs_post_init__(self) -> None:
-        input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
-        output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
+    def __init__(self, next_states: npt.ArrayLike, outputs: npt.ArrayLike):
+        self.next_states = np.asarray(next_states)
+        self.outputs = np.asarray(outputs)
+        self._input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
+        self._output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
         for state_from in range(self.num_states):
             for x, state_to in enumerate(self.next_states[state_from, :]):
-                input_edges[state_from, state_to] = x
-                output_edges[state_from, state_to] = self.outputs[state_from, x]
-        object.__setattr__(self, "_input_edges", input_edges)
-        object.__setattr__(self, "_output_edges", output_edges)
+                self._input_edges[state_from, state_to] = x
+                self._output_edges[state_from, state_to] = self.outputs[state_from, x]
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"next_states={self.next_states.tolist()}",
+            f"outputs={self.outputs.tolist()}",
+        ])
+        return f"{self.__class__.__name__}({args})"
 
     @cached_property
     def num_states(self) -> int:
@@ -128,14 +124,14 @@ class FiniteStateMachine:
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
 
         Parameters:
-            input_sequence (Array1D[int]): The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
+            input_sequence: The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
 
-            initial_state (int): The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
+            initial_state: The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
 
         Returns:
-            output_sequence (Array1D[int]): The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output_sequence: The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
-            final_state (int): The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
+            final_state: The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
         Examples:
             >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
@@ -165,16 +161,16 @@ class FiniteStateMachine:
         Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
 
         Parameters:
-            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
-            metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
+            metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            initial_metrics (Optional[Array1D[float]]): The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
+            initial_metrics: The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
 
         Returns:
-            input_sequences_hat (Array2D[int]): The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
+            input_sequences_hat: The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
 
-            final_metrics (Array1D[float]): The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
+            final_metrics: The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
         L, num_states = len(observed_sequence), self.num_states
         choices = np.empty((L, num_states), dtype=int)
@@ -212,14 +208,14 @@ class FiniteStateMachine:
         Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
 
         Parameters:
-            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
-            metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
+            metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            memory (dict): The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
+            memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
 
         Returns:
-            input_sequence_hat (Array1D[int]): The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
+            input_sequence_hat: The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
         """
         num_states = self.num_states
         input_sequences_hat = np.empty(len(observed_sequence), dtype=int)
@@ -260,18 +256,18 @@ class FiniteStateMachine:
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
 
         Parameters:
-            observed_sequence (Array1D): The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
-            metric_function (function): The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
+            metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            input_priors (Optional[Array2D[float]]): The prior pmf of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value yields uniform priors.
+            input_priors: The prior pmf of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value yields uniform priors.
 
-            initial_state_distribution (Optional[Array1D[float]]): The pmf of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            initial_state_distribution: The pmf of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
-            final_state_distribution (Optional[Array1D[float]]): The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
+            final_state_distribution: The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
         Returns:
-            input_posteriors (Array2D[float]): The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
+            input_posteriors: The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
         """
         L, num_states, num_input_symbols = (
             len(observed_sequence),
