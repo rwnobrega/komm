@@ -161,26 +161,20 @@ class FiniteBifield:
     """
 
     def __init__(self, degree: int, modulus: BinaryPolynomial | int | None = None):
-        self.degree = degree
         if degree < 1:
             raise ValueError("'degree' must be a positive integer")
+        self.degree = degree
         if modulus is None:
-            self._modulus = default_primitive_polynomial(degree)
-        elif isinstance(modulus, int):
-            self._modulus = BinaryPolynomial(modulus)
+            self.modulus = default_primitive_polynomial(degree)
         else:
-            self._modulus = modulus
-        if self._modulus.degree != self.degree:
+            self.modulus = BinaryPolynomial(modulus)
+        if self.modulus.degree != self.degree:
             raise ValueError("'modulus' must have the same degree as the field")
-        if not self._modulus.is_irreducible():
+        if not self.modulus.is_irreducible():
             raise ValueError("'modulus' must be an irreducible polynomial")
 
     def __call__(self, value: int | BinaryPolynomial) -> FiniteBifieldElement[Self]:
         return FiniteBifieldElement(self, value)
-
-    @property
-    def modulus(self) -> BinaryPolynomial:
-        return self._modulus
 
     @property
     def zero(self) -> FiniteBifieldElement[Self]:
