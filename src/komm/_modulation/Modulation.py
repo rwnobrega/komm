@@ -2,15 +2,13 @@ from itertools import combinations, product
 
 import numpy as np
 import numpy.typing as npt
-from attrs import define, field
 
 
-@define
 class Modulation:
     r"""
     General modulation scheme. A *modulation scheme* of *order* $M = 2^m$ is defined by a *constellation* $\mathbf{X}$, which is a real or complex vector of length $M$, and a *binary labeling* $\mathbf{Q}$, which is an $M \times m$ binary matrix whose rows are all distinct. The $i$-th element of $\mathbf{X}$, for $i \in [0:M)$, is denoted by $x_i$ and is called the $i$-th *constellation symbol*. The $i$-th row of $\mathbf{Q}$, for $i \in [0:M)$, is called the *binary representation* of the $i$-th constellation symbol. For more details, see <cite>SA15, Sec. 2.5</cite>.
 
-    Attributes:
+    Parameters:
         constellation: The constellation $\mathbf{X}$ of the modulation. Must be a 1D-array containing $M$ real or complex numbers.
 
         labeling: The binary labeling $\mathbf{Q}$ of the modulation. Must be a 2D-array of shape $(M, m)$ where each row is a distinct binary $m$-tuple.
@@ -85,16 +83,9 @@ class Modulation:
                [1, 1]])
     """
 
-    constellation: npt.NDArray[np.floating | np.complexfloating] = field(
-        converter=np.asarray,
-        repr=lambda x: x.tolist(),
-    )
-    labeling: npt.NDArray[np.integer] = field(
-        converter=np.asarray,
-        repr=lambda x: x.tolist(),
-    )
-
-    def __attrs_post_init__(self) -> None:
+    def __init__(self, constellation: npt.ArrayLike, labeling: npt.ArrayLike) -> None:
+        self.constellation = np.asarray(constellation)
+        self.labeling = np.asarray(labeling)
         order, m = self.order, self.bits_per_symbol
         if order & (order - 1):
             raise ValueError("length of 'constellation' must be a power of two")
@@ -104,6 +95,13 @@ class Modulation:
             raise ValueError("elements of 'labeling' must be either 0 or 1")
         if len(set(tuple(row) for row in self.labeling)) != order:
             raise ValueError("rows of 'labeling' must be distinct")
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"constellation={self.constellation.tolist()}",
+            f"labeling={self.labeling.tolist()}",
+        ])
+        return f"{self.__class__.__name__}({args})"
 
     @property
     def order(self) -> int:
@@ -224,10 +222,10 @@ class Modulation:
         Modulates a sequence of bits to its corresponding constellation symbols.
 
         Parameters:
-            bits (Array1D[int]): The bits to be modulated. It should be a 1D-array of integers in the set $\{ 0, 1 \}$. Its length must be a multiple of $m$.
+            bits: The bits to be modulated. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
 
         Returns:
-            symbols (Array1D[complex] | Array1D[float]): The constellation symbols corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
+            symbols: The constellation symbols corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
@@ -249,10 +247,10 @@ class Modulation:
         Demodulates a sequence of received points to a sequence of bits using hard-decision decoding.
 
         Parameters:
-            received (Array1D[T]): The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
+            received: The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
 
         Returns:
-            hard_bits (Array1D[int]): The bits corresponding to `received`. It is a 1D-array of bits (integers in the set $\{ 0, 1 \}$). Its length is equal to the length of `received` multiplied by $m$.
+            hard_bits: The bits corresponding to `received`. It is a 1D-array of bits (integers in the set $\\{ 0, 1 \\}$). Its length is equal to the length of `received` multiplied by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
@@ -276,12 +274,12 @@ class Modulation:
         Demodulates a sequence of received points to a sequence of bits using soft-decision decoding.
 
         Parameters:
-            received (Array1D[T]): The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
+            received: The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
 
-            snr (float): The signal-to-noise ratio (SNR) of the channel. It should be a positive real number.
+            snr: The signal-to-noise ratio (SNR) of the channel. It should be a positive real number.
 
         Returns:
-            soft_bits (Array1D[float]): The soft bits corresponding to `received`. It is a 1D-array of L-values (real numbers, where positive values correspond to bit $0$ and negative values correspond to bit $1$). Its length is equal to the length of `received` multiplied by $m$.
+            soft_bits: The soft bits corresponding to `received`. It is a 1D-array of L-values (real numbers, where positive values correspond to bit $0$ and negative values correspond to bit $1$). Its length is equal to the length of `received` multiplied by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
