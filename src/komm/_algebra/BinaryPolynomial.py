@@ -301,7 +301,6 @@ class BinaryPolynomial:
         return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
 
 
-@frozen
 class BinaryPolynomials:
     def __call__(self, value: int) -> BinaryPolynomial:
         return BinaryPolynomial(value)

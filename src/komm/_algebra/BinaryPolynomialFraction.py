@@ -82,7 +82,6 @@ class BinaryPolynomialFraction:
         return str(self.numerator) + "/" + str(self.denominator)
 
 
-@frozen
 class BinaryPolynomialFractions:
     def __call__(self, value: tuple[int, int]) -> BinaryPolynomialFraction:
         return BinaryPolynomialFraction(*value)
