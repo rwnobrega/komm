@@ -96,6 +96,15 @@ def test_binary_polynomial_evaluation():
     assert one_poly.evaluate(komm.Integer(42)) == komm.Integer(1)
 
 
+def test_binary_polynomial_reciprocal():
+    poly = komm.BinaryPolynomial(0b10100110111)
+    assert poly.reciprocal() == komm.BinaryPolynomial(0b11101100101)
+    np.testing.assert_array_equal(
+        poly.reciprocal().coefficients(),
+        poly.coefficients()[::-1],
+    )
+
+
 def test_binary_polynomial_arithmetic():
     poly0 = komm.BinaryPolynomial(0b101011)
     poly1 = komm.BinaryPolynomial(0b10011101)

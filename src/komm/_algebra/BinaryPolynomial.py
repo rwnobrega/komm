@@ -188,6 +188,20 @@ class BinaryPolynomial:
         """
         return np.flatnonzero(self.coefficients())
 
+    def reciprocal(self, width: int | None = None) -> Self:
+        r"""
+        Returns the reciprocal (reflexion) of the binary polynomial. The reciprocal of a binary polynomial is the polynomial with the coefficients in reversed order, that is, the coefficient of $X^i$ becomes the coefficient of $X^{n-i}$, where $n$ is the degree of the polynomial.
+
+        Returns:
+            result (BinaryPolynomial): The binary polynomial with the reversed coefficients.
+
+        Examples:
+            >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
+            >>> poly.reciprocal()  # X^3 + X + 1
+            BinaryPolynomial(0b1011)
+        """
+        return self.__class__(bits_to_int(self.coefficients(width)[::-1]))
+
     def evaluate(self, point: T) -> T:
         r"""
         Evaluates the binary polynomial at a given point. Uses Horner's method.
