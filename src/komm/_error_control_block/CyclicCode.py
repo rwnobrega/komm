@@ -114,35 +114,35 @@ class CyclicCode(BlockCode):
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.integer]:
-        # See [LC04, Sec. 5.2].
+        # See [McE04, Sec. 8.1].
         n, k, m = self.length, self.dimension, self.redundancy
         generator_matrix = np.empty((k, n), dtype=int)
+        X = BinaryPolynomial(0b10)  # The polynomial X
         if not self.systematic:
-            row = self.generator_polynomial.coefficients(width=n)
             for i in range(k):
-                generator_matrix[i] = np.roll(row, i)
+                row_poly = X**i * self.generator_polynomial
+                generator_matrix[i] = row_poly.coefficients(width=n)
         else:
-            generator_matrix[:, m:] = np.eye(k, dtype=int)
             for i in range(k):
-                b_i_poly = (
-                    BinaryPolynomial.from_exponents([m + i]) % self.generator_polynomial
-                )
-                b_i = b_i_poly.coefficients(width=m)
-                generator_matrix[i, :m] = b_i
+                row_poly = X ** (m + i) + X ** (m + i) % self.generator_polynomial
+                generator_matrix[i] = row_poly.coefficients(width=n)
         return generator_matrix
 
     @cached_property
     def check_matrix(self) -> npt.NDArray[np.integer]:
-        # See [LC04, Sec. 5.2].
+        # See [McE04, Sec. 8.1].
+        n, m = self.length, self.redundancy
+        check_matrix = np.empty((m, n), dtype=int)
+        X = BinaryPolynomial(0b10)  # The polynomial X
         if not self.systematic:
-            n, m = self.length, self.redundancy
-            check_matrix = np.empty((m, n), dtype=int)
-            row = self.check_polynomial.coefficients(width=n)[::-1]
             for i in range(m):
-                check_matrix[m - i - 1] = np.roll(row, -i)
-            return check_matrix
+                row_poly = X**i * self.check_polynomial.reciprocal()
+                check_matrix[i] = row_poly.coefficients(width=n)
         else:
-            raise NotImplementedError
+            for j in range(n):
+                col_poly = X**j % self.generator_polynomial
+                check_matrix[:, j] = col_poly.coefficients(width=m)
+        return check_matrix
 
     @vectorized_method
     def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:

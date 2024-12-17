@@ -36,28 +36,84 @@ def test_cyclic_code_systematic_encode():
     np.testing.assert_array_equal(code.inverse_encode(v), u)
 
 
-def test_cyclic_code_non_systematic_generator_matrix():
-    # [LC04, p. 143-144]
+def test_cyclic_code_matrices_haykin():
+    # Hamming (7,4) - [Hay04, Example 10.3]
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=False)
-    generator_matrix = [
-        [1, 1, 0, 1, 0, 0, 0],
-        [0, 1, 1, 0, 1, 0, 0],
-        [0, 0, 1, 1, 0, 1, 0],
-        [0, 0, 0, 1, 1, 0, 1],
-    ]
-    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
-
-
-def test_cyclic_code_systematic_generator_matrix():
-    # [LC04, p. 143-144]
+    np.testing.assert_array_equal(
+        code.generator_matrix,
+        [
+            [1, 1, 0, 1, 0, 0, 0],
+            [0, 1, 1, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0, 1, 0],
+            [0, 0, 0, 1, 1, 0, 1],
+        ],
+    )
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 0, 1, 1, 1, 0, 0],
+            [0, 1, 0, 1, 1, 1, 0],
+            [0, 0, 1, 0, 1, 1, 1],
+        ],
+    )
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=True)
-    generator_matrix = [
-        [1, 1, 0, 1, 0, 0, 0],
-        [0, 1, 1, 0, 1, 0, 0],
-        [1, 1, 1, 0, 0, 1, 0],
-        [1, 0, 1, 0, 0, 0, 1],
-    ]
-    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_array_equal(
+        code.generator_matrix,
+        [
+            [1, 1, 0, 1, 0, 0, 0],
+            [0, 1, 1, 0, 1, 0, 0],
+            [1, 1, 1, 0, 0, 1, 0],
+            [1, 0, 1, 0, 0, 0, 1],
+        ],
+    )
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 0, 0, 1, 0, 1, 1],
+            [0, 1, 0, 1, 1, 1, 0],
+            [0, 0, 1, 0, 1, 1, 1],
+        ],
+    )
+
+
+def test_cyclic_code_matrices_mceliece():
+    # Simplex (7,3) - [McE04, Example 8.7]
+    code = komm.CyclicCode(length=7, generator_polynomial=0b11101, systematic=False)
+    np.testing.assert_array_equal(
+        code.generator_matrix,
+        [
+            [1, 0, 1, 1, 1, 0, 0],
+            [0, 1, 0, 1, 1, 1, 0],
+            [0, 0, 1, 0, 1, 1, 1],
+        ],
+    )
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 1, 0, 1, 0, 0, 0],
+            [0, 1, 1, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0, 1, 0],
+            [0, 0, 0, 1, 1, 0, 1],
+        ],
+    )
+    code = komm.CyclicCode(length=7, generator_polynomial=0b11101, systematic=True)
+    np.testing.assert_array_equal(
+        code.generator_matrix,
+        [
+            [1, 0, 1, 1, 1, 0, 0],
+            [1, 1, 1, 0, 0, 1, 0],
+            [0, 1, 1, 1, 0, 0, 1],
+        ],
+    )
+    np.testing.assert_array_equal(
+        code.check_matrix,
+        [
+            [1, 0, 0, 0, 1, 1, 0],
+            [0, 1, 0, 0, 0, 1, 1],
+            [0, 0, 1, 0, 1, 1, 1],
+            [0, 0, 0, 1, 1, 0, 1],
+        ],
+    )
 
 
 def test_cyclic_code_check():
