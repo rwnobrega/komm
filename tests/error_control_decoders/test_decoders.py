@@ -5,11 +5,7 @@ import komm
 import komm.abc
 
 block = komm.HammingCode(3)
-terminated = komm.TerminatedConvolutionalCode(
-    komm.ConvolutionalCode([[0b111, 0b101]]),
-    num_blocks=5,
-    mode="zero-termination",
-)
+terminated = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12)
 bch = komm.BCHCode(4, 5)
 reed_muller = komm.ReedMullerCode(1, 5)
 
