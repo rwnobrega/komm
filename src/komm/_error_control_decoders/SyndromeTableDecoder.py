@@ -38,16 +38,8 @@ class SyndromeTableDecoder(abc.BlockDecoder[BlockCode]):
         self._coset_leaders = self.code.coset_leaders()
 
     def _decode(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        r"""
-        Parameters: Input:
-            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-        Returns: Output:
-            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
-        """
         s = self.code.check(r)
         e_hat = self._coset_leaders[bits_to_int(s)]
         v_hat = np.bitwise_xor(r, e_hat)
-        ouput = self.code.inverse_encode(v_hat)
-        return ouput
+        u_hat = self.code.inverse_encode(v_hat)
+        return u_hat
