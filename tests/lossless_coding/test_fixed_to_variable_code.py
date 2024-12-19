@@ -164,7 +164,7 @@ def test_non_injective_enc_mapping():
 )
 def test_decoding_not_prefix_free(source_cardinality, codewords):
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
-    with pytest.raises(ValueError):
+    with pytest.raises(NotImplementedError):
         code.decode([0, 0, 0, 0])
 
 

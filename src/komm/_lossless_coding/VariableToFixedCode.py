@@ -181,7 +181,7 @@ class VariableToFixedCode:
 
     def encode(self, source_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols using the code.
+        Encodes a sequence of source symbols using the code. Only implemented for prefix-free codes.
 
         Parameters:
             source_symbols: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
@@ -198,10 +198,12 @@ class VariableToFixedCode:
             >>> code.encode([0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0])
             Traceback (most recent call last):
             ...
-            ValueError: code is not prefix-free
+            NotImplementedError: encoding is not implemented for non-prefix-free codes
         """
         if not self.is_prefix_free():
-            raise ValueError("code is not prefix-free")
+            raise NotImplementedError(
+                "encoding is not implemented for non-prefix-free codes"
+            )
         source_symbols = np.asarray(source_symbols)
         return parse_prefix_free(source_symbols, self.inv_dec_mapping)
 

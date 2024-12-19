@@ -224,7 +224,7 @@ class FixedToVariableCode:
 
     def decode(self, target_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a sequence of target symbols using the code. Only works if the code is prefix-free.
+        Decodes a sequence of target symbols using the code. Only implemented for prefix-free codes.
 
         Parameters:
             target_symbols: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
@@ -241,9 +241,11 @@ class FixedToVariableCode:
             >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
             Traceback (most recent call last):
             ...
-            ValueError: code is not prefix-free
+            NotImplementedError: decoding is not implemented for non-prefix-free codes
         """
         if not self.is_prefix_free():
-            raise ValueError("code is not prefix-free")
+            raise NotImplementedError(
+                "decoding is not implemented for non-prefix-free codes"
+            )
         target_symbols = np.asarray(target_symbols)
         return parse_prefix_free(target_symbols, self.inv_enc_mapping)
