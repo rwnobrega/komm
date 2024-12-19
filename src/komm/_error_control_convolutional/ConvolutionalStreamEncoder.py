@@ -14,8 +14,6 @@ class ConvolutionalStreamEncoder:
     Attributes:
         convolutional_code: The convolutional code.
         state: The current state of the encoder. The default value is `0`.
-
-    :::komm.ConvolutionalStreamEncoder.ConvolutionalStreamEncoder.__call__
     """
 
     convolutional_code: ConvolutionalCode
@@ -23,10 +21,10 @@ class ConvolutionalStreamEncoder:
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Parameters: Input:
+        Parameters:
             input: The bit sequence to be encoded.
 
-        Returns: Output:
+        Returns:
             output: The encoded bit sequence.
 
         Examples:

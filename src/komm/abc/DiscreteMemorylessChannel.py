@@ -34,4 +34,13 @@ class DiscreteMemorylessChannel(ABC):
 
     @abstractmethod
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Transmits the input sequence through the channel and returns the output sequence.
+
+        Parameters:
+            input: The input sequence.
+
+        Returns:
+            output: The output sequence.
+        """
         pass

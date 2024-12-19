@@ -12,8 +12,6 @@ class DiscreteMemorylessSource:
 
     Attributes:
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
-
-    :::komm.DiscreteMemorylessSource.DiscreteMemorylessSource.__call__
     """
 
     pmf: npt.NDArray[np.floating] = field(converter=PMF)
@@ -44,6 +42,8 @@ class DiscreteMemorylessSource:
 
     def __call__(self, shape: int | tuple[int, ...] = ()) -> npt.NDArray[np.integer]:
         r"""
+        Returns random samples from the source.
+
         Parameters:
             shape: The shape of the output array. If `shape` is an integer, the output array will have shape `(shape,)`. The default value is `()`, which returns a single sample.
 

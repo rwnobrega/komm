@@ -22,8 +22,6 @@ class AWGNChannel:
         signal_power: The input signal power $P$. If equal to the string `'measured'`, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).
 
         snr: The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is `np.inf`, which corresponds to a noiseless channel.
-
-    :::komm.AWGNChannel.AWGNChannel.__call__
     """
 
     signal_power: float | Literal["measured"]
@@ -54,10 +52,12 @@ class AWGNChannel:
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
-        Parameters: Input:
+        Transmits the input signal through the channel and returns the output signal.
+
+        Parameters:
             input: The input signal $X_n$.
 
-        Returns: Output:
+        Returns:
             output: The output signal $Y_n$.
 
         Examples:

@@ -24,8 +24,6 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
 
     Attributes:
         crossover_probability: The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
-
-    :::komm.BinarySymmetricChannel.BinarySymmetricChannel.__call__
     """
 
     crossover_probability: float = 0.0
@@ -101,11 +99,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Parameters: Input:
-            input: The input sequence.
-
-        Returns: Output:
-            output: The output sequence.
+        :::komm.abc.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
 
         Examples:
             >>> rng = np.random.default_rng(seed=42)

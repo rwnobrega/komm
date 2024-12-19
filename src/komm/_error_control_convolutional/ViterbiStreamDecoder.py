@@ -19,8 +19,6 @@ class ViterbiStreamDecoder:
         traceback_length: The traceback length (path memory) $\tau$ of the decoder.
         state: The current state of the decoder. The default value is `0`.
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
-
-    :::komm.ViterbiStreamDecoder.ViterbiStreamDecoder.__call__
     """
 
     convolutional_code: ConvolutionalCode
@@ -51,10 +49,10 @@ class ViterbiStreamDecoder:
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Parameters: Input:
+        Parameters:
             input: The (hard or soft) bit sequence to be decoded.
 
-        Returns: Output:
+        Returns:
             output: The decoded bit sequence.
 
         Examples:

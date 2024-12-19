@@ -20,8 +20,6 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
 
     Attributes:
         erasure_probability: The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
-
-    :::komm.BinaryErasureChannel.BinaryErasureChannel.__call__
     """
 
     erasure_probability: float = 0.0
@@ -100,11 +98,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Parameters: Input:
-            input: The input sequence.
-
-        Returns: Output:
-            output: The output sequence.
+        :::komm.abc.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
 
         Examples:
             >>> rng = np.random.default_rng(seed=42)

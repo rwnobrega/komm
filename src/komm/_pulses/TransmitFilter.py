@@ -27,36 +27,6 @@ class TransmitFilter:
         pulse: The pulse whose waveform is $h(t)$.
         samples_per_symbol: The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
         truncation: The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
-
-    :::komm.TransmitFilter.TransmitFilter.__call__
-
-    Examples:
-        >>> pulse = komm.RectangularPulse(width=1.0)
-        >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
-        >>> tx_filter([1.0, -1.0, 1.0, 1.0])
-        array([ 1.,  1.,  1., -1., -1., -1.,  1.,  1.,  1.,  1.,  1.,  1.])
-
-        >>> pulse = komm.RectangularPulse(width=0.25)
-        >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
-        >>> tx_filter([1.0, -1.0, 1.0, 1.0])
-        array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])
-
-        >>> pulse = komm.SincPulse()
-        >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
-        >>> tx_filter([1.0, -1.0, 1.0, 1.0]).reshape((-1, 4)).round(6)
-        array([[-0.      , -0.128617, -0.212207, -0.180063],
-               [ 0.      ,  0.428722,  0.848826,  1.08038 ],
-               [ 1.      ,  0.471594, -0.212207, -0.780274],
-               [-1.      , -0.908891, -0.424413,  0.291531],
-               [ 1.      ,  1.380485,  1.485446,  1.329038],
-               [ 1.      ,  0.720253,  0.424413,  0.171489],
-               [ 0.      , -0.180063, -0.212207, -0.128617]])
-
-        >>> pulse = komm.RectangularPulse()
-        >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
-        Traceback (most recent call last):
-        ...
-        ValueError: 'truncation' only applies to infinite-support pulses
     """
 
     pulse: abc.Pulse
@@ -179,11 +149,41 @@ class TransmitFilter:
         self, input: npt.ArrayLike
     ) -> npt.NDArray[np.floating | np.complexfloating]:
         r"""
-        Parameters: Input:
+        Process the input symbols through the transmit filter.
+
+        Parameters:
             input: The input symbols $x[n]$, of length $N$.
 
-        Returns: Output:
+        Returns:
             output: The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.
+
+        Examples:
+            >>> pulse = komm.RectangularPulse(width=1.0)
+            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
+            >>> tx_filter([1.0, -1.0, 1.0, 1.0])
+            array([ 1.,  1.,  1., -1., -1., -1.,  1.,  1.,  1.,  1.,  1.,  1.])
+
+            >>> pulse = komm.RectangularPulse(width=0.25)
+            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
+            >>> tx_filter([1.0, -1.0, 1.0, 1.0])
+            array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])
+
+            >>> pulse = komm.SincPulse()
+            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            >>> tx_filter([1.0, -1.0, 1.0, 1.0]).reshape((-1, 4)).round(6)
+            array([[-0.      , -0.128617, -0.212207, -0.180063],
+                   [ 0.      ,  0.428722,  0.848826,  1.08038 ],
+                   [ 1.      ,  0.471594, -0.212207, -0.780274],
+                   [-1.      , -0.908891, -0.424413,  0.291531],
+                   [ 1.      ,  1.380485,  1.485446,  1.329038],
+                   [ 1.      ,  0.720253,  0.424413,  0.171489],
+                   [ 0.      , -0.180063, -0.212207, -0.128617]])
+
+            >>> pulse = komm.RectangularPulse()
+            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            Traceback (most recent call last):
+            ...
+            ValueError: 'truncation' only applies to infinite-support pulses
         """
         input = np.asarray(input)
         beta = self.samples_per_symbol

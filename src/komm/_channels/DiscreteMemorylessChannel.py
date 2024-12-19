@@ -18,8 +18,6 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
 
     Attributes:
         transition_matrix: The channel transition probability matrix $p_{Y \mid X}$. The element in row $x \in \mathcal{X}$ and column $y \in \mathcal{Y}$ must be equal to $p_{Y \mid X}(y \mid x)$.
-
-    :::komm.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
     """
 
     transition_matrix: npt.NDArray[np.floating] = field(converter=TransitionMatrix)
@@ -95,11 +93,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Parameters: Input:
-            input: The input sequence.
-
-        Returns: Output:
-            output: The output sequence.
+        :::komm.abc.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
 
         Examples:
             >>> rng = np.random.default_rng(seed=42)
