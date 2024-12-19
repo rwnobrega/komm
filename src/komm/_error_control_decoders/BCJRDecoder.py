@@ -22,7 +22,16 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         - Input type: `soft`.
         - Output type: `soft`.
 
-    :::komm.BCJRDecoder.BCJRDecoder._decode
+    # `__call__`
+
+    :::komm.abc.BlockDecoder.BlockDecoder.__call__
+
+    Examples:
+        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11, 0b11])
+        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode="zero-termination")
+        >>> decoder = komm.BCJRDecoder(code, snr=0.25)
+        >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
+        array([-0.47774884, -0.61545527,  1.03018771])
     """
 
     code: TerminatedConvolutionalCode
@@ -47,26 +56,12 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         return 2.0 * self.snr * np.dot(self._cache_polar[y], z)
 
     @vectorized_method
-    def _decode(self, input: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
-        r"""
-        Parameters: Input:
-            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-        Returns: Output:
-            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
-        Examples:
-            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11, 0b11])
-            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode="zero-termination")
-            >>> decoder = komm.BCJRDecoder(code, snr=0.25)
-            >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
-            array([-0.47774884, -0.61545527,  1.03018771])
-        """
+    def _decode(self, r: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order
 
         input_posteriors = self._fsm.forward_backward(
-            observed_sequence=input.reshape(-1, n),
+            observed_sequence=r.reshape(-1, n),
             metric_function=self._metric_function,
             initial_state_distribution=self._initial_state_distribution,
             final_state_distribution=self._final_state_distribution,

@@ -21,7 +21,22 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
 
-    :::komm.ExhaustiveSearchDecoder.ExhaustiveSearchDecoder._decode
+    # `__call__`
+
+    :::komm.abc.BlockDecoder.BlockDecoder.__call__
+
+    Examples:
+        >>> code = komm.HammingCode(3)
+        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+        >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+        array([[1, 1, 0, 0],
+               [1, 0, 1, 1]])
+
+        >>> code = komm.HammingCode(3)
+        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+        >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
+        array([[1, 1, 0, 0],
+               [1, 0, 1, 1]])
     """
 
     code: BlockCode
@@ -31,33 +46,13 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
         self._codewords = self.code.codewords()
 
     def _decode(
-        self, input: npt.NDArray[np.float64 | np.integer]
+        self, r: npt.NDArray[np.float64 | np.integer]
     ) -> npt.NDArray[np.integer]:
-        r"""
-        Parameters: Input:
-            input: The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.
-
-        Returns: Output:
-            output: The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.
-
-        Examples:
-            >>> code = komm.HammingCode(3)
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
-            array([[1, 1, 0, 0],
-                   [1, 0, 1, 1]])
-
-            >>> code = komm.HammingCode(3)
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
-            >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
-            array([[1, 1, 0, 0],
-                   [1, 0, 1, 1]])
-        """
         if self.input_type == "hard":
-            ds = input[..., np.newaxis, :] != self._codewords
+            ds = r[..., np.newaxis, :] != self._codewords
         else:
-            ds = -input[..., np.newaxis, :] * (-1) ** self._codewords
+            ds = -r[..., np.newaxis, :] * (-1) ** self._codewords
         metrics = np.sum(ds, axis=-1)
         v_hat = self._codewords[np.argmin(metrics, axis=-1)]
-        output = self.code.inverse_encode(v_hat)
-        return output
+        u_hat = self.code.inverse_encode(v_hat)
+        return u_hat
