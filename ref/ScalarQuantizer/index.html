@@ -464,6 +464,9 @@
                                           <li class="md-nav__item">
                                             <a href="#num_levels" class="md-nav__link"><span class="md-ellipsis">num_levels</span></a>
                                           </li>
+                                          <li class="md-nav__item">
+                                            <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                          </li>
                                         </ul>
                                       </nav>
                                     </li>
@@ -545,6 +548,9 @@
                   <li class="md-nav__item">
                     <a href="#num_levels" class="md-nav__link"><span class="md-ellipsis">num_levels</span></a>
                   </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -556,7 +562,6 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>General scalar quantizer. It is defined by a list of <em>levels</em>, $v_0, v_1, \ldots, v_{L-1}$, and a list of <em>thresholds</em>, $t_0, t_1, \ldots, t_L$, satisfying $$ -\infty = t_0 &lt; v_0 &lt; t_1 &lt; v_1 &lt; \cdots &lt; t_{L - 1} &lt; v_{L - 1} &lt; t_L = +\infty. $$ Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x &lt; t_{i+1}$, where $i \in [0:L)$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Ch. 9</cite>.</p>
-                <p>To invoke the quantizer, call the object giving the input signal as parameter (see example below).</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -573,18 +578,12 @@
                   </li>
                 </ul>
                 <p><span class="doc-section-title">Examples:</span></p>
-                <p>The following example considers the $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below.</p>
+                <p>The $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels $$ v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2, $$ and thresholds $$ t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty. $$</p>
                 <figure>
                   <p><img alt="Scalar quantizer example." src="/figures/scalar_quantizer_5.svg"></p>
                 </figure>
-                <p>The levels are $$ v_0 = -2, ~ v_1 = -1, ~ v_2 = 0, ~ v_3 = 1, ~ v_4 = 2, $$ and the thresholds are $$ t_0 = -\infty, ~ t_1 = -1.5, ~ t_2 = -0.3, ~ t_3 = 0.8, ~ t_4 = 1.4, ~ t_5 = \infty. $$</p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">quantizer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
-<span class="go">array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],</span>
-<span class="go">       [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])</span>
 </code></pre>
                 </div>
                 <div class="doc doc-children">
@@ -592,6 +591,47 @@
                     <h2 id="num_levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">num_levels</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The number of quantization levels $L$.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">num_levels</span>
+<span class="go">5</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Quantizes the input signal.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The input signal $x$ to be quantized.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The quantized signal $y$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ScalarQuantizer</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">quantizer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+<span class="go">array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],</span>
+<span class="go">       [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])</span>
+</code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>

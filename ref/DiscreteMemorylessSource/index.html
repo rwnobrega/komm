@@ -487,6 +487,9 @@
                                     <li class="md-nav__item">
                                       <a href="#entropy" class="md-nav__link"><span class="md-ellipsis">entropy()</span></a>
                                     </li>
+                                    <li class="md-nav__item">
+                                      <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                    </li>
                                   </ul>
                                 </nav>
                               </li>
@@ -551,6 +554,9 @@
                   <li class="md-nav__item">
                     <a href="#entropy" class="md-nav__link"><span class="md-ellipsis">entropy()</span></a>
                   </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -562,7 +568,6 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Discrete memoryless source (<abbr title="discrete memoryless source">DMS</abbr>). It is defined by an <em>alphabet</em> $\mathcal{X}$ and a <em>probability mass function</em> (<abbr title="probability mass function">pmf</abbr>) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$. The <abbr title="probability mass function">pmf</abbr> $p_X$ gives the probability of the source emitting the symbol $X = x$.</p>
-                <p>To invoke the source, call the object giving the number of symbols to be emitted as parameter (see example below).</p>
                 <p><strong>Attributes:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -572,14 +577,6 @@
                     </div>
                   </li>
                 </ul>
-                <p><span class="doc-section-title">Examples:</span></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessSource</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">array([0, 2, 1, 1, 0, 0, 0, 1, 1, 1])</span>
-</code></pre>
-                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
                     <h2 id="cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
@@ -607,6 +604,43 @@
 <span class="go">np.float64(1.75)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="go">np.float64(0.875)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns random samples from the source.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>shape</code></b> <span class="doc-param-annotation">(<code>int | tuple[int, ...]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The shape of the output array. If <code>shape</code> is an integer, the output array will have shape <code>(shape,)</code>. The default value is <code>()</code>, which returns a single sample.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span> –
+                          <div class="doc-md-description">
+                            <p>An array of shape <code>shape</code> with random samples from the source.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessSource</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="p">()</span>
+<span class="go">array(1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">array([0, 1, 1, 0, 2, 1, 1, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dms</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">array([[2, 1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 1, 1]])</span>
 </code></pre>
                       </div>
                     </div>

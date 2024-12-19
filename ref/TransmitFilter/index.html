@@ -380,6 +380,9 @@
                                           <li class="md-nav__item">
                                             <a href="#time" class="md-nav__link"><span class="md-ellipsis">time()</span></a>
                                           </li>
+                                          <li class="md-nav__item">
+                                            <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                          </li>
                                         </ul>
                                       </nav>
                                     </li>
@@ -557,6 +560,9 @@
                   <li class="md-nav__item">
                     <a href="#time" class="md-nav__link"><span class="md-ellipsis">time()</span></a>
                   </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -598,64 +604,6 @@
                     </div>
                   </li>
                 </ul>
-                <div class="doc doc-object doc-function">
-                  <div class="doc doc-contents first">
-                    <p><strong>Input:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The input symbols $x[n]$, of length $N$.</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <p><strong>Output:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span> | <span title="numpy.complexfloating">complexfloating</span>]</code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.</p>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <p><span class="doc-section-title">Examples:</span></p>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="go">array([ 1.,  1.,  1., -1., -1., -1.,  1.,  1.,  1.,  1.,  1.,  1.])</span>
-</code></pre>
-                </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="go">array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])</span>
-</code></pre>
-                </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-<span class="go">array([[-0.      , -0.128617, -0.212207, -0.180063],</span>
-<span class="go">       [ 0.      ,  0.428722,  0.848826,  1.08038 ],</span>
-<span class="go">       [ 1.      ,  0.471594, -0.212207, -0.780274],</span>
-<span class="go">       [-1.      , -0.908891, -0.424413,  0.291531],</span>
-<span class="go">       [ 1.      ,  1.380485,  1.485446,  1.329038],</span>
-<span class="go">       [ 1.      ,  0.720253,  0.424413,  0.171489],</span>
-<span class="go">       [ 0.      , -0.180063, -0.212207, -0.128617]])</span>
-</code></pre>
-                </div>
-                <div class="highlight">
-                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">'truncation' only applies to infinite-support pulses</span>
-</code></pre>
-                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
                     <h2 id="pulse_time_span" class="doc doc-heading"><code class="highlight language-python"><span class="n">pulse_time_span</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
@@ -747,6 +695,66 @@
 <span class="go">       [ 2.  ,  2.25,  2.5 ,  2.75],</span>
 <span class="go">       [ 3.  ,  3.25,  3.5 ,  3.75],</span>
 <span class="go">       [ 4.  ,  4.25,  4.5 ,  4.75]])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Process the input symbols through the transmit filter.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The input symbols $x[n]$, of length $N$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span> | <span title="numpy.complexfloating">complexfloating</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">array([ 1.,  1.,  1., -1., -1., -1.,  1.,  1.,  1.,  1.,  1.,  1.])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">array([[-0.      , -0.128617, -0.212207, -0.180063],</span>
+<span class="go">       [ 0.      ,  0.428722,  0.848826,  1.08038 ],</span>
+<span class="go">       [ 1.      ,  0.471594, -0.212207, -0.780274],</span>
+<span class="go">       [-1.      , -0.908891, -0.424413,  0.291531],</span>
+<span class="go">       [ 1.      ,  1.380485,  1.485446,  1.329038],</span>
+<span class="go">       [ 1.      ,  0.720253,  0.424413,  0.171489],</span>
+<span class="go">       [ 0.      , -0.180063, -0.212207, -0.128617]])</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">'truncation' only applies to infinite-support pulses</span>
 </code></pre>
                       </div>
                     </div>

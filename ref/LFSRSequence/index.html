@@ -591,73 +591,13 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="maximum_length_sequence" class="doc doc-heading"><code class="highlight language-python"><span class="n">maximum_length_sequence</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen according to the following table of primitive polynomials.</p>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th style="text-align: center;">Degree $n$</th>
-                            <th>Feedback polynomial $p(X)$</th>
-                            <th style="text-align: center;">Degree $n$</th>
-                            <th>Feedback polynomial $p(X)$</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td style="text-align: center;">$1$</td>
-                            <td><code>0b11</code></td>
-                            <td style="text-align: center;">$9$</td>
-                            <td><code>0b1000010001</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$2$</td>
-                            <td><code>0b111</code></td>
-                            <td style="text-align: center;">$10$</td>
-                            <td><code>0b10000001001</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$3$</td>
-                            <td><code>0b1011</code></td>
-                            <td style="text-align: center;">$11$</td>
-                            <td><code>0b100000000101</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$4$</td>
-                            <td><code>0b10011</code></td>
-                            <td style="text-align: center;">$12$</td>
-                            <td><code>0b1000001010011</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$5$</td>
-                            <td><code>0b100101</code></td>
-                            <td style="text-align: center;">$13$</td>
-                            <td><code>0b10000000011011</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$6$</td>
-                            <td><code>0b1000011</code></td>
-                            <td style="text-align: center;">$14$</td>
-                            <td><code>0b100010001000011</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$7$</td>
-                            <td><code>0b10001001</code></td>
-                            <td style="text-align: center;">$15$</td>
-                            <td><code>0b1000000000000011</code></td>
-                          </tr>
-                          <tr>
-                            <td style="text-align: center;">$8$</td>
-                            <td><code>0b100011101</code></td>
-                            <td style="text-align: center;">$16$</td>
-                            <td><code>0b10001000000001011</code></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <p>Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen from <a href="/resources/primitive-polynomials">the list of default primitive polynomials</a>.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
                           <b><code>degree</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
                           <div class="doc-md-description">
-                            <p>The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 16]$ are implemented.</p>
+                            <p>The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 24]$ are implemented.</p>
                           </div>
                         </li>
                         <li class="field-body">

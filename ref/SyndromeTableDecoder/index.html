@@ -245,7 +245,15 @@
                                       <a href="../ReedDecoder/" class="md-nav__link"><span class="md-ellipsis">ReedDecoder</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">SyndromeTableDecoder</span></a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">SyndromeTableDecoder</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">SyndromeTableDecoder</span></a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#komm._error_control_decoders.SyndromeTableDecoder.SyndromeTableDecoder--__call__" class="md-nav__link"><span class="md-ellipsis">__call__</span></a>
+                                          </li>
+                                        </ul>
+                                      </nav>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../ViterbiDecoder/" class="md-nav__link"><span class="md-ellipsis">ViterbiDecoder</span></a>
@@ -531,7 +539,14 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#komm._error_control_decoders.SyndromeTableDecoder.SyndromeTableDecoder--__call__" class="md-nav__link"><span class="md-ellipsis">__call__</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -559,36 +574,38 @@
                     <li>Output type: <code>hard</code>.</li>
                   </ul>
                 </details>
+                <h2 id="komm._error_control_decoders.SyndromeTableDecoder.SyndromeTableDecoder--__call__"><code>__call__</code></h2>
                 <div class="doc doc-object doc-function">
                   <div class="doc doc-contents first">
-                    <p><strong>Input:</strong></p>
+                    <p>Decode received words. This method takes one or more sequences of received words and returns their corresponding estimated message sequences.</p>
+                    <p><strong>Parameters:</strong></p>
                     <ul>
                       <li class="field-body">
-                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                         <div class="doc-md-description">
-                          <p>The input received word(s). Can be a single received word of length $n$ or a multidimensional array where the last dimension has length $n$.</p>
+                          <p>The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.</p>
                         </div>
                       </li>
                     </ul>
-                    <p><strong>Output:</strong></p>
+                    <p><strong>Returns:</strong></p>
                     <ul>
                       <li class="field-body">
-                        <b><code>ouput</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                        <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span> | <span title="numpy.floating">floating</span>]</code>)</span> –
                         <div class="doc-md-description">
-                          <p>The output message(s). Has the same shape as the input, with the last dimension reduced from $n$ to $k$.</p>
+                          <p>The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.</p>
                         </div>
                       </li>
                     </ul>
-                    <p><span class="doc-section-title">Examples:</span></p>
-                    <div class="highlight">
-                      <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+                  </div>
+                </div>
+                <p><span class="doc-section-title">Examples:</span></p>
+                <div class="highlight">
+                  <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HammingCode</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SyndromeTableDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 <span class="go">array([[1, 1, 0, 0],</span>
 <span class="go">       [1, 0, 1, 1]])</span>
 </code></pre>
-                    </div>
-                  </div>
                 </div>
                 <div class="doc doc-children"></div>
               </div>

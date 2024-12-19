@@ -855,7 +855,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="decode" class="doc doc-heading"><code class="highlight language-python"><span class="n">decode</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Decodes a sequence of target symbols using the code. Only works if the code is prefix-free.</p>
+                      <p>Decodes a sequence of target symbols using the code. Only implemented for prefix-free codes.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
@@ -886,7 +886,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">code is not prefix-free</span>
+<span class="gr">NotImplementedError</span>: <span class="n">decoding is not implemented for non-prefix-free codes</span>
 </code></pre>
                       </div>
                     </div>

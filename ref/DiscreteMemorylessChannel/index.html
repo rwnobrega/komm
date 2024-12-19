@@ -161,24 +161,7 @@
                                 <a href="../AWGNChannel/" class="md-nav__link"><span class="md-ellipsis">AWGNChannel</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">DiscreteMemorylessChannel</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
-                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                                    <li class="md-nav__item">
-                                      <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
-                                    </li>
-                                    <li class="md-nav__item">
-                                      <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
-                                    </li>
-                                  </ul>
-                                </nav>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../BinarySymmetricChannel/" class="md-nav__link"><span class="md-ellipsis">BinarySymmetricChannel</span></a>
@@ -548,23 +531,7 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
-                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-                  <li class="md-nav__item">
-                    <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
-                  </li>
-                  <li class="md-nav__item">
-                    <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
-                  </li>
-                </ul>
-              </nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
             </div>
           </div>
         </div>
@@ -583,36 +550,6 @@
                     </div>
                   </li>
                 </ul>
-                <div class="doc doc-object doc-function">
-                  <div class="doc doc-contents first">
-                    <p><strong>Input:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The input sequence.</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <p><strong>Output:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The output sequence.</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <p><span class="doc-section-title">Examples:</span></p>
-                    <div class="highlight">
-                      <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="go">array([0, 2, 0, 1, 1, 1, 0, 0, 0, 2])</span>
-</code></pre>
-                    </div>
-                  </div>
-                </div>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
                     <h2 id="input_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
@@ -698,6 +635,42 @@
 <span class="go">np.float64(0.101978)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">'e'</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">np.float64(0.112035)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <div class="doc doc-object doc-function">
+                        <div class="doc doc-contents first">
+                          <p>Transmits the input sequence through the channel and returns the output sequence.</p>
+                          <p><strong>Parameters:</strong></p>
+                          <ul>
+                            <li class="field-body">
+                              <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                              <div class="doc-md-description">
+                                <p>The input sequence.</p>
+                              </div>
+                            </li>
+                          </ul>
+                          <p><strong>Returns:</strong></p>
+                          <ul>
+                            <li class="field-body">
+                              <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                              <div class="doc-md-description">
+                                <p>The output sequence.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])</span>
 </code></pre>
                       </div>
                     </div>

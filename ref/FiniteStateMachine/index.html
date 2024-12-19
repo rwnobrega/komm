@@ -669,16 +669,16 @@
                     </tr>
                   </tbody>
                 </table>
-                <p><strong>Attributes:</strong></p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>next_states</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <b><code>next_states</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>outputs</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                    <b><code>outputs</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
                     </div>
@@ -747,7 +747,7 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>input_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>input_sequence</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                           <div class="doc-md-description">
                             <p>The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.</p>
                           </div>
@@ -762,7 +762,7 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>output_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>output_sequence</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to <code>input_sequence</code>, assuming the machine starts at the state given by <code>initial_state</code>. It is a 1D-array with elements in $\mathcal{Y}$.</p>
                           </div>
@@ -794,19 +794,19 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D</code>)</span> –
+                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code>function</code>)</span> –
+                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>initial_metrics</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>initial_metrics</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span> –
                           <div class="doc-md-description">
                             <p>The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is <code>0.0</code> for all states.</p>
                           </div>
@@ -815,13 +815,13 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>input_sequences_hat</code></b> <span class="doc-param-annotation">(<code>Array2D[int]</code>)</span> –
+                          <b><code>input_sequences_hat</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>final_metrics</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                          <b><code>final_metrics</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.</p>
                           </div>
@@ -836,19 +836,19 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D</code>)</span> –
+                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code>function</code>)</span> –
+                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>memory</code></b> <span class="doc-param-annotation">(<code>dict</code>)</span> –
+                          <b><code>memory</code></b> <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricMemory">MetricMemory</span></code>)</span> –
                           <div class="doc-md-description">
                             <p>The metrics for each state. It must be a dictionary containing two keys: <code>'paths'</code>, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and <code>'metrics'</code>, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.</p>
                           </div>
@@ -857,7 +857,7 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>input_sequence_hat</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>input_sequence_hat</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$</p>
                           </div>
@@ -872,31 +872,31 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code>Array1D</code>)</span> –
+                          <b><code>observed_sequence</code></b> <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code>function</code>)</span> –
+                          <b><code>metric_function</code></b> <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>input_priors</code></b> <span class="doc-param-annotation">(<code>Optional[Array2D[float]]</code>)</span> –
+                          <b><code>input_priors</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span> –
                           <div class="doc-md-description">
                             <p>The prior <abbr title="probability mass function">pmf</abbr> of each input, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ should be $p(x_t = x)$. The default value yields uniform priors.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>initial_state_distribution</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>initial_state_distribution</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span> –
                           <div class="doc-md-description">
                             <p>The <abbr title="probability mass function">pmf</abbr> of the initial state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.</p>
                           </div>
                         </li>
                         <li class="field-body">
-                          <b><code>final_state_distribution</code></b> <span class="doc-param-annotation">(<code>Optional[Array1D[float]]</code>)</span> –
+                          <b><code>final_state_distribution</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span> –
                           <div class="doc-md-description">
                             <p>The <abbr title="probability mass function">pmf</abbr> of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.</p>
                           </div>
@@ -905,7 +905,7 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>input_posteriors</code></b> <span class="doc-param-annotation">(<code>Array2D[float]</code>)</span> –
+                          <b><code>input_posteriors</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The posterior <abbr title="probability mass function">pmf</abbr> of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.</p>
                           </div>

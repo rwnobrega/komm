@@ -271,7 +271,15 @@
                                       <a href="../ConvolutionalStreamEncoder/" class="md-nav__link"><span class="md-ellipsis">ConvolutionalStreamEncoder</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ViterbiStreamDecoder</span></a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">ViterbiStreamDecoder</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">ViterbiStreamDecoder</span></a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                          </li>
+                                        </ul>
+                                      </nav>
                                     </li>
                                   </ul>
                                 </nav>
@@ -531,7 +539,14 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -568,39 +583,41 @@
                     </div>
                   </li>
                 </ul>
-                <div class="doc doc-object doc-function">
-                  <div class="doc doc-contents first">
-                    <p><strong>Input:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The (hard or soft) bit sequence to be decoded.</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <p><strong>Output:</strong></p>
-                    <ul>
-                      <li class="field-body">
-                        <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
-                        <div class="doc-md-description">
-                          <p>The decoded bit sequence.</p>
-                        </div>
-                      </li>
-                    </ul>
-                    <p><span class="doc-section-title">Examples:</span></p>
-                    <div class="highlight">
-                      <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mo">0o7</span><span class="p">,</span> <span class="mo">0o5</span><span class="p">]])</span>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The (hard or soft) bit sequence to be decoded.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The decoded bit sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">convolutional_code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mo">0o7</span><span class="p">,</span> <span class="mo">0o5</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ViterbiStreamDecoder</span><span class="p">(</span><span class="n">convolutional_code</span><span class="p">,</span> <span class="n">traceback_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
 <span class="go">array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])</span>
 </code></pre>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="doc doc-children"></div>
               </div>
             </div>
           </article>

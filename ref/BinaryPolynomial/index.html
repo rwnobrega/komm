@@ -161,7 +161,16 @@
                                       <a href="#exponents" class="md-nav__link"><span class="md-ellipsis">exponents()</span></a>
                                     </li>
                                     <li class="md-nav__item">
+                                      <a href="#reciprocal" class="md-nav__link"><span class="md-ellipsis">reciprocal()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
                                       <a href="#evaluate" class="md-nav__link"><span class="md-ellipsis">evaluate()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#is_irreducible" class="md-nav__link"><span class="md-ellipsis">is_irreducible()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#is_primitive" class="md-nav__link"><span class="md-ellipsis">is_primitive()</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="#xgcd" class="md-nav__link"><span class="md-ellipsis">xgcd()</span></a>
@@ -582,7 +591,16 @@
                     <a href="#exponents" class="md-nav__link"><span class="md-ellipsis">exponents()</span></a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="#reciprocal" class="md-nav__link"><span class="md-ellipsis">reciprocal()</span></a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#evaluate" class="md-nav__link"><span class="md-ellipsis">evaluate()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#is_irreducible" class="md-nav__link"><span class="md-ellipsis">is_irreducible()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#is_primitive" class="md-nav__link"><span class="md-ellipsis">is_primitive()</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#xgcd" class="md-nav__link"><span class="md-ellipsis">xgcd()</span></a>
@@ -687,7 +705,7 @@
                   <div class="doc doc-object doc-attribute">
                     <h2 id="degree" class="doc doc-heading"><code class="highlight language-python"><span class="n">degree</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The degree of the polynomial.</p>
+                      <p>The degree of the binary polynomial.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
@@ -753,9 +771,31 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
+                    <h2 id="reciprocal" class="doc doc-heading"><code class="highlight language-python"><span class="n">reciprocal</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns the reciprocal (reflexion) of the binary polynomial. The reciprocal of a binary polynomial is the polynomial with the coefficients in reversed order, that is, the coefficient of $X^i$ becomes the coefficient of $X^{n-i}$, where $n$ is the degree of the polynomial.</p>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>result</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The binary polynomial with the reversed coefficients.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">()</span>  <span class="c1"># X^3 + X + 1</span>
+<span class="go">BinaryPolynomial(0b1011)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
                     <h2 id="evaluate" class="doc doc-heading"><code class="highlight language-python"><span class="n">evaluate</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Evaluates the polynomial at a given point. Uses Horner's method.</p>
+                      <p>Evaluates the binary polynomial at a given point. Uses Horner's method.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
@@ -779,6 +819,57 @@
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11010</span><span class="p">)</span>  <span class="c1"># X^4 + X^3 + X</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">komm</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>  <span class="c1"># same as 7**4 + 7**3 + 7</span>
 <span class="go">Integer(value=2751)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="is_irreducible" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_irreducible</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Checks whether the binary polynomial is irreducible. A binary polynomial is <em>irreducible</em> if it is not divisible by any other nonconstant binary polynomial of smaller degree.</p>
+                      <p>This method checks the irreducibility using <a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin's irreducibility test</a>.</p>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>result</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
+                          <div class="doc-md-description">
+                            <p><code>True</code>, if the binary polynomial is irreducible; <code>False</code>, otherwise.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11011</span><span class="p">)</span><span class="o">.</span><span class="n">is_irreducible</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11111</span><span class="p">)</span><span class="o">.</span><span class="n">is_irreducible</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10011</span><span class="p">)</span><span class="o">.</span><span class="n">is_irreducible</span><span class="p">()</span>
+<span class="go">True</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="is_primitive" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_primitive</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Checks whether the binary polynomial is primitive. A binary polynomial of degree $m$ is <em>primitive</em> if it is irreducible and if the smallest positive integer $n$ such that the polynomial divides $X^n + 1$ is $n = 2^m - 1$.</p>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>result</code></b> <span class="doc-param-annotation">(<code>bool</code>)</span> –
+                          <div class="doc-md-description">
+                            <p><code>True</code>, if the binary polynomial is primitive; <code>False</code>, otherwise.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11011</span><span class="p">)</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b11111</span><span class="p">)</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">BinaryPolynomial</span><span class="p">(</span><span class="mb">0b10011</span><span class="p">)</span><span class="o">.</span><span class="n">is_primitive</span><span class="p">()</span>
+<span class="go">True</span>
 </code></pre>
                       </div>
                     </div>
