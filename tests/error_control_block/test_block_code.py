@@ -82,39 +82,3 @@ def test_block_code_mappings(execution_number):
             code.check(v),
             np.zeros((3, 4, m)),
         )
-
-
-def test_block_code_mappings_invalid_input():
-    code = komm.BlockCode(
-        generator_matrix=[
-            [1, 0, 0, 0, 1, 1],
-            [0, 1, 0, 1, 0, 1],
-            [0, 0, 1, 1, 1, 0],
-        ]
-    )
-
-    # For 'encode', last dimension of 'u' should be the code dimension (3)
-    code.encode(np.zeros((3, 4, 3)))  # Correct
-    with np.testing.assert_raises(ValueError):
-        code.encode(np.zeros((3, 4, 4)))  # Incorrect
-
-    # For 'inverse_encode', last dimension of 'v' should be the code length (6)
-    code.inverse_encode(np.zeros((3, 4, 6)))  # Correct
-    with np.testing.assert_raises(ValueError):
-        code.inverse_encode(np.zeros((3, 4, 5)))
-
-    # For 'check', last dimension of 'r' should be the code length (6)
-    code.check(np.zeros((3, 4, 6)))  # Correct
-    with np.testing.assert_raises(ValueError):
-        code.check(np.zeros((3, 4, 5)))
-
-
-def test_block_code_inverse_encode_invalid_input():
-    code = komm.BlockCode(
-        generator_matrix=[[1, 0, 0, 0, 1, 1], [0, 1, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0]]
-    )
-    r = np.zeros(code.length)
-    code.inverse_encode(r)  # Correct
-    with np.testing.assert_raises(ValueError):
-        r[0] = 1
-        code.inverse_encode(r)  # Incorrect

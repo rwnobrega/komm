@@ -21,13 +21,13 @@ class BlockCode(ABC):
         pass
 
     @abstractmethod
-    def encode(self, u: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass
 
     @abstractmethod
-    def inverse_encode(self, v: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass
 
     @abstractmethod
-    def check(self, r: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         pass

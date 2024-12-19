@@ -20,29 +20,27 @@ class SystematicBlockCode(BlockCode):
         information_set: Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.
 
     Examples:
-        >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+        >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
         >>> (code.length, code.dimension, code.redundancy)
-        (6, 3, 3)
+        (5, 2, 3)
         >>> code.generator_matrix
-        array([[1, 0, 0, 0, 1, 1],
-               [0, 1, 0, 1, 0, 1],
-               [0, 0, 1, 1, 1, 0]])
+        array([[1, 0, 0, 1, 1],
+               [0, 1, 1, 1, 0]])
         >>> code.check_matrix
-        array([[0, 1, 1, 1, 0, 0],
-               [1, 0, 1, 0, 1, 0],
-               [1, 1, 0, 0, 0, 1]])
+        array([[0, 1, 1, 0, 0],
+               [1, 1, 0, 1, 0],
+               [1, 0, 0, 0, 1]])
 
-        >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]], information_set='right')
+        >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]], information_set='right')
         >>> (code.length, code.dimension, code.redundancy)
-        (6, 3, 3)
+        (5, 2, 3)
         >>> code.generator_matrix
-        array([[0, 1, 1, 1, 0, 0],
-               [1, 0, 1, 0, 1, 0],
-               [1, 1, 0, 0, 0, 1]])
+        array([[0, 1, 1, 1, 0],
+               [1, 1, 0, 0, 1]])
         >>> code.check_matrix
-        array([[1, 0, 0, 0, 1, 1],
-               [0, 1, 0, 1, 0, 1],
-               [0, 0, 1, 1, 1, 0]])
+        array([[1, 0, 0, 0, 1],
+               [0, 1, 0, 1, 1],
+               [0, 0, 1, 1, 0]])
     """
 
     _parity_submatrix: npt.ArrayLike = field(
