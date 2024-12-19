@@ -3,6 +3,22 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.14.0 (2024-12-19)
+
+### Breaking changes
+
+- Removed `primitive_element` method from `FiniteField` class, since the implementation was incorrect. The method was assuming that the modulus was always primitive (which may not be true).
+
+### Added
+
+- Added polynomial [irreducibility](https://komm.dev/ref/BinaryPolynomial#is_irreducible) and [primitivity](https://komm.dev/ref/BinaryPolynomial#is_primitive) tests for binary polynomials.
+
+- Restored sequence support in block code and decoders methods.
+
+  - Block code methods `encode`, `inverse_encode`, `check`, and block decoders `__call__` now accept sequences spanning multiple blocks (as before v0.13.0) as well as multidimensional arrays.
+
+- Added support for multidimensional input in modulation, demodulation, and channel methods.
+
 ## v0.13.0 (2024-12-12)
 
 ### Breaking changes
