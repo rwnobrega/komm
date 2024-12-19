@@ -64,7 +64,7 @@ class QAModulation(Modulation):
         The rectangular $8$-QAM modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 2)$, and Gray labeling is depicted below.
 
         <figure markdown>
-            ![8-QAM modulation with Gray labeling.](/figures/qam_8_gray.svg)
+          ![8-QAM modulation with Gray labeling.](/figures/qam_8_gray.svg)
         </figure>
 
         >>> qam = komm.QAModulation(orders=(4, 2), base_amplitudes=(1.0, 2.0))
