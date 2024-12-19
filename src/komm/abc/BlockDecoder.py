@@ -26,9 +26,15 @@ class BlockDecoder(ABC, Generic[T]):
             output: The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.
         """
         input = np.asarray(input)
-        if input.shape[-1] != self.code.length:
-            raise ValueError("last dimension of 'input' should be the code length")
-        return self._decode(input)
+        if input.shape[-1] % self.code.length != 0:
+            raise ValueError(
+                "last dimension of 'input' must be a multiple of code length"
+                f" {self.code.length} (got {input.shape[-1]})"
+            )
+        r = input.reshape(*input.shape[:-1], -1, self.code.length)
+        u_hat = self._decode(r)
+        output = u_hat.reshape(*u_hat.shape[:-2], -1)
+        return output
 
     @abstractmethod
     def _decode(self, r: npt.NDArray[Any]) -> npt.NDArray[np.integer]:
