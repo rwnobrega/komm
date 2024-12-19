@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import override
 
+from .._util.decorators import vectorized_method
 from .._util.special_functions import logcosh
 from .constellations import constellation_pam
 from .labelings import get_labeling
@@ -85,8 +86,9 @@ class PAModulation(Modulation):
         return 2.0 * self.base_amplitude
 
     @override
-    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        received = np.asarray(received)
+    def _demodulate_hard(
+        self, received: npt.NDArray[np.floating | np.complexfloating]
+    ) -> npt.NDArray[np.integer]:
         indices = np.clip(
             np.around((received + self.order - 1) / 2), 0, self.order - 1
         ).astype(int)
@@ -94,19 +96,25 @@ class PAModulation(Modulation):
         return hard_bits
 
     @override
-    def demodulate_soft(
-        self, received: npt.ArrayLike, snr: float = 1.0
+    def _demodulate_soft(
+        self, received: npt.NDArray[np.floating | np.complexfloating], snr: float
     ) -> npt.NDArray[np.floating]:
-        print(self.order, self.labeling_parameter)
         if self.order == 2:
-            y = np.asarray(received) / self.base_amplitude
-            return -4 * snr * y  # [SA15, eq. (3.65)]
+            y = received / self.base_amplitude
+            return self._demodulate_pam2_soft(y, snr / 1.0)
         elif self.order == 4 and self.labeling_parameter == "reflected":
-            y = np.asarray(received) / self.base_amplitude
+            y = received / self.base_amplitude
             return self._demodulate_pam4_soft_reflected(y, snr / 5.0)
         # Fall back to general implementation
-        return super().demodulate_soft(received, snr)
+        return super()._demodulate_soft(received, snr)
 
+    @vectorized_method
+    def _demodulate_pam2_soft(
+        self, y: npt.NDArray[np.floating], gamma: float
+    ) -> npt.NDArray[np.floating]:
+        return -4 * gamma * y  # [SA15, eq. (3.65)]
+
+    @vectorized_method
     def _demodulate_pam4_soft_reflected(
         self, y: npt.NDArray[np.floating], gamma: float
     ) -> npt.NDArray[np.floating]:

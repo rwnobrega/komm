@@ -1,7 +1,10 @@
-from itertools import combinations, product
+from itertools import combinations
+from typing import final
 
 import numpy as np
 import numpy.typing as npt
+
+from .._util.decorators import vectorized_method
 
 
 class Modulation:
@@ -215,99 +218,122 @@ class Modulation:
             [np.abs(s1 - s2) for s1, s2 in combinations(self.constellation, 2)]
         )
 
+    @final
     def modulate(
-        self, bits: npt.ArrayLike
+        self, input: npt.ArrayLike
     ) -> npt.NDArray[np.floating | np.complexfloating]:
         r"""
-        Modulates a sequence of bits to its corresponding constellation symbols.
+        Modulates one or more sequences of bits to their corresponding constellation symbols (real or complex numbers).
 
         Parameters:
-            bits: The bits to be modulated. It should be a 1D-array of integers in the set $\\{ 0, 1 \\}$. Its length must be a multiple of $m$.
+            input: The input sequence(s). Can be either a single sequence whose length is a multiple of $m$, or a multidimensional array where the last dimension is a multiple of $m$.
 
         Returns:
-            symbols: The constellation symbols corresponding to `bits`. It is a 1D-array of real or complex numbers. Its length is equal to the length of `bits` divided by $m$.
+            output: The output sequence(s). Has the same shape as the input, with the last dimension divided by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> modulation.modulate([0, 0, 1, 1, 0, 0, 1, 0])
             array([ 2. ,  0. ,  2. , -0.5])
+            >>> modulation.modulate([[0, 0, 1, 1], [0, 0, 1, 0]])
+            array([[ 2. ,  0. ],
+                   [ 2. , -0.5]])
         """
-        bits = np.asarray(bits, dtype=int)
-        m = self.bits_per_symbol
-        n_symbols = bits.size // m
-        if bits.size != n_symbols * m:
-            raise ValueError("length of 'bits' must be a multiple of bits per symbol")
-        symbols = np.empty(n_symbols, dtype=self.constellation.dtype)
-        for i, bit_sequence in enumerate(np.reshape(bits, shape=(n_symbols, m))):
-            symbols[i] = self.constellation[self.inverse_labeling[tuple(bit_sequence)]]
-        return symbols
+        input = np.asarray(input)
+        if input.shape[-1] % self.bits_per_symbol != 0:
+            raise ValueError(
+                "last dimension of 'bits' must be a multiple of bits per symbol"
+                f" {self.bits_per_symbol} (got {input.shape[-1]})"
+            )
+        bits = input.reshape(*input.shape[:-1], -1, self.bits_per_symbol)
+        symbols = self._modulate(bits)
+        output = symbols.reshape(*symbols.shape[:-1], -1)
+        return output
 
-    def demodulate_hard(self, received: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    @vectorized_method
+    def _modulate(
+        self, bits: npt.NDArray[np.integer]
+    ) -> npt.NDArray[np.floating | np.complexfloating]:
+        return self.constellation[self.inverse_labeling[tuple(bits)]]
+
+    @final
+    def demodulate_hard(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Demodulates a sequence of received points to a sequence of bits using hard-decision decoding.
+        Demodulates one or more sequences of received points (real or complex numbers) to their corresponding sequences of hard bits ($\mathtt{0}$ or $\mathtt{1}$) using hard-decision decoding.
 
         Parameters:
-            received: The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
+            input: The input sequence(s). Can be either a single sequence, or a multidimensional array.
 
         Returns:
-            hard_bits: The bits corresponding to `received`. It is a 1D-array of bits (integers in the set $\\{ 0, 1 \\}$). Its length is equal to the length of `received` multiplied by $m$.
+            output: The output sequence(s). Has the same shape as the input, with the last dimension multiplied by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> modulation.demodulate_hard([2.17, -0.06, 1.94, -0.61])
             array([0, 0, 1, 1, 0, 0, 1, 0])
+            >>> modulation.demodulate_hard([[2.17, -0.06], [1.94, -0.61]])
+            array([[0, 0, 1, 1],
+                   [0, 0, 1, 0]])
         """
+        input = np.asarray(input)
+        received = input.reshape(*input.shape[:-1], -1, 1)
+        hard_bits = self._demodulate_hard(received)
+        output = hard_bits.reshape(*input.shape[:-1], -1)
+        return output
+
+    @vectorized_method
+    def _demodulate_hard(
+        self, received: npt.NDArray[np.floating | np.complexfloating]
+    ) -> npt.NDArray[np.integer]:
         # General minimum Euclidean distance hard demodulator.
-        received = np.asarray(received)
-        hard_bits = np.empty((received.size, self.bits_per_symbol), dtype=int)
-        for i, y in enumerate(received):
-            hard_bits[i, :] = self.labeling[
-                np.argmin(np.abs(self.constellation - y)), :
-            ]
-        hard_bits = np.reshape(hard_bits, shape=-1)
-        return hard_bits
+        return self.labeling[np.argmin(np.abs(self.constellation - received[0]))]
 
     def demodulate_soft(
-        self, received: npt.ArrayLike, snr: float = 1.0
+        self, input: npt.ArrayLike, snr: float = 1.0
     ) -> npt.NDArray[np.floating]:
         r"""
-        Demodulates a sequence of received points to a sequence of bits using soft-decision decoding.
+        Demodulates one or more sequences of received points (real or complex numbers) to their corresponding sequences of soft bits (L-values) using soft-decision decoding. The soft bits are the log-likelihood ratios of the bits, where positive values correspond to bit $\mathtt{0}$ and negative values correspond to bit $\mathtt{1}$.
 
         Parameters:
-            received: The received points to be demodulated. It should be a 1D-array of real or complex numbers. It may be of any length.
-
-            snr: The signal-to-noise ratio (SNR) of the channel. It should be a positive real number.
+            input: The received sequence(s). Can be either a single sequence, or a multidimensional array.
+            snr: The signal-to-noise ratio (SNR) of the channel. It should be a positive real number. The default value is `1.0`.
 
         Returns:
-            soft_bits: The soft bits corresponding to `received`. It is a 1D-array of L-values (real numbers, where positive values correspond to bit $0$ and negative values correspond to bit $1$). Its length is equal to the length of `received` multiplied by $m$.
+            output: The output sequence(s). Has the same shape as the input, with the last dimension multiplied by $m$.
 
         Examples:
             >>> modulation = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
-            >>> modulation.demodulate_soft([2.17, -0.06, 1.94, -0.61], snr=100.0)
-            array([ 416.        ,  245.33333333,  -27.5555556 ,  -16.88888889,
-                    334.22222222,  184.        , -108.44444444,   32.        ])
+            >>> modulation.demodulate_soft([2.17, -0.06, 1.94, -0.61], snr=100.0).round(1)
+            array([ 416. ,  245.3,  -27.6,  -16.9,  334.2,  184. , -108.4,   32. ])
+            >>> modulation.demodulate_soft([[2.17, -0.06], [1.94, -0.61]], snr=100.0).round(1)
+            array([[ 416. ,  245.3,  -27.6,  -16.9],
+                   [ 334.2,  184. , -108.4,   32. ]])
         """
+        input = np.asarray(input)
+        received = input.reshape(*input.shape[:-1], -1, 1)
+        soft_bits = self._demodulate_soft(received, snr)
+        output = soft_bits.reshape(*input.shape[:-1], -1)
+        return output
+
+    def _demodulate_soft(
+        self, received: npt.NDArray[np.floating | np.complexfloating], snr: float
+    ) -> npt.NDArray[np.floating]:
         # Computes the L-values (LLR) of each bit. Assumes uniformly distributed bits.
         # See [SA15, eq. (3.50)].
         m = self.bits_per_symbol
         n0 = self.energy_per_symbol / snr
+        received = received.ravel()
 
-        def pdf_received_given_bit(bit_index: int, bit_value: int) -> float:
-            bits = np.empty(m, dtype=int)
-            bits[bit_index] = bit_value
-            rest_index = np.setdiff1d(np.arange(m), [bit_index])
-            f = 0.0
-            for b_rest in product([0, 1], repeat=m - 1):
-                bits[rest_index] = b_rest
-                point = self.constellation[self.inverse_labeling[tuple(bits)]]
-                f += np.exp(-np.abs(received - point) ** 2 / n0)
-            return f
+        # Precompute the distances and exponentials.
+        distances = np.abs(received[:, np.newaxis] - self.constellation) ** 2
+        exp_terms = np.exp(-distances / n0)
 
-        received = np.asarray(received)
         soft_bits = np.empty(received.size * m, dtype=float)
         for bit_index in range(m):
-            p0 = pdf_received_given_bit(bit_index, 0)
-            p1 = pdf_received_given_bit(bit_index, 1)
+            i0 = [i for i, label in enumerate(self.labeling) if label[bit_index] == 0]
+            i1 = [i for i, label in enumerate(self.labeling) if label[bit_index] == 1]
+            p0 = np.sum(exp_terms[:, i0], axis=1)
+            p1 = np.sum(exp_terms[:, i1], axis=1)
             with np.errstate(divide="ignore"):
                 soft_bits[bit_index::m] = np.log(p0) - np.log(p1)
         return soft_bits
