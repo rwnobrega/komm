@@ -4,12 +4,12 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
 from .._error_control_block import BlockCode
+from . import base
 
 
 @dataclass
-class ExhaustiveSearchDecoder(abc.BlockDecoder[BlockCode]):
+class ExhaustiveSearchDecoder(base.BlockDecoder[BlockCode]):
     r"""
     Exhaustive search decoder for general [block codes](/ref/BlockCode). This decoder implements a brute-force search over all possible codewords to find the one that is closest (in terms of Hamming distance, for hard-decision decoding, or Euclidean distance, for soft-decision decoding) to the received word.
 

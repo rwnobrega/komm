@@ -3,13 +3,13 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
 from .._error_control_block import BlockCode
 from .._util import bits_to_int
+from . import base
 
 
 @dataclass
-class SyndromeTableDecoder(abc.BlockDecoder[BlockCode]):
+class SyndromeTableDecoder(base.BlockDecoder[BlockCode]):
     r"""
     Syndrome table decoder for general [block codes](/ref/BlockCode). This decoder implements syndrome-based hard-decision decoding using a precomputed table of coset leaders.
 

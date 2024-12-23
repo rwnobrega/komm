@@ -5,13 +5,6 @@ import komm
 import komm.abc
 
 
-def test_dmc_protocol():
-    channel: komm.abc.DiscreteMemorylessChannel = komm.DiscreteMemorylessChannel(
-        [[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]]
-    )
-    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
-
-
 @pytest.mark.parametrize(
     "transition_matrix",
     [

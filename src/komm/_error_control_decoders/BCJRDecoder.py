@@ -3,14 +3,14 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import vectorized_method
+from . import base
 
 
 @dataclass
-class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
+class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     r"""
     Bahl–Cocke–Jelinek–Raviv (BCJR) decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). For more details, see <cite>LC04, Sec. 12.6</cite>.
 

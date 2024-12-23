@@ -5,11 +5,6 @@ import komm
 import komm.abc
 
 
-def test_bsc_protocol():
-    channel: komm.abc.DiscreteMemorylessChannel = komm.BinarySymmetricChannel(0.5)
-    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
-
-
 @pytest.mark.parametrize("p", [-0.1, 1.1])
 def test_bsc_invalid_crossover_probability(p):
     with pytest.raises(ValueError):

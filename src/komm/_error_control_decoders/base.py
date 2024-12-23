@@ -5,9 +5,9 @@ from typing import Any, Generic, TypeVar, final
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
+from .._error_control_block.base import BlockCode
 
-T = TypeVar("T", bound=abc.BlockCode)
+T = TypeVar("T", bound=BlockCode)
 
 
 @dataclass

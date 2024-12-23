@@ -5,11 +5,6 @@ import komm
 import komm.abc
 
 
-def test_bec_protocol():
-    channel: komm.abc.DiscreteMemorylessChannel = komm.BinaryErasureChannel(0.5)
-    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
-
-
 @pytest.mark.parametrize("eps", [-0.1, 1.1])
 def test_bec_invalid_erasure_probability(eps):
     with pytest.raises(ValueError):

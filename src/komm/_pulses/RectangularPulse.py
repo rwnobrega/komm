@@ -4,11 +4,11 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import override
 
-from .. import abc
+from . import base
 
 
 @dataclass
-class RectangularPulse(abc.Pulse):
+class RectangularPulse(base.Pulse):
     r"""
     Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

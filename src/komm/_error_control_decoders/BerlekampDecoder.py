@@ -6,15 +6,15 @@ import numpy.typing as npt
 
 from komm._algebra import FiniteBifield
 
-from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifieldElement, find_roots
 from .._error_control_block import BCHCode
 from .._util.decorators import vectorized_method
+from . import base
 
 
 @dataclass
-class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
+class BerlekampDecoder(base.BlockDecoder[BCHCode]):
     r"""
     Berlekamp decoder for [BCH codes](/ref/BCHCode). For more details, see <cite>LC04, Sec. 6.3</cite>.
 

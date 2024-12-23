@@ -4,11 +4,11 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import override
 
-from .. import abc
+from . import base
 
 
 @dataclass
-class SincPulse(abc.Pulse):
+class SincPulse(base.Pulse):
     r"""
     Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

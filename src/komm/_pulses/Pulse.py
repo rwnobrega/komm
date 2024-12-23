@@ -1,7 +1,7 @@
-from .. import abc
+from . import base
 
 
-class Pulse(abc.Pulse):
+class Pulse(base.Pulse):
     r"""
     General pulse [Not implemented yet].
     """

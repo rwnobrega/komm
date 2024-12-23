@@ -3,13 +3,13 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
 from .._error_control_block import SingleParityCheckCode
 from .._util.decorators import vectorized_method
+from . import base
 
 
 @dataclass
-class WagnerDecoder(abc.BlockDecoder[SingleParityCheckCode]):
+class WagnerDecoder(base.BlockDecoder[SingleParityCheckCode]):
     r"""
     Wagner decoder for [single parity-check codes](/ref/SingleParityCheckCode). For more information, see <cite>CF07, Sec. III.C</cite>.
 

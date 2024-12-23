@@ -4,12 +4,12 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import override
 
-from .. import abc
+from . import base
 from .RaisedCosinePulse import RaisedCosinePulse
 
 
 @dataclass
-class RootRaisedCosinePulse(abc.Pulse):
+class RootRaisedCosinePulse(base.Pulse):
     r"""
     Root raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

@@ -4,17 +4,17 @@ import numpy as np
 import numpy.typing as npt
 from attrs import field, frozen
 
-from .. import abc
 from .._util.information_theory import (
     PMF,
     LogBase,
     assert_is_probability,
     binary_entropy,
 )
+from . import base
 
 
 @frozen
-class ZChannel(abc.DiscreteMemorylessChannel):
+class ZChannel(base.DiscreteMemorylessChannel):
     r"""
     Z-channel. It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *decay probability*. Bit $0$ is always received correctly, but bit $1$ turns into $0$ with probability $p$. Equivalently, the channel can be modeled as
     $$

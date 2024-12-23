@@ -5,7 +5,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
+from . import base
 
 
 @dataclass(eq=False)
@@ -29,7 +29,7 @@ class TransmitFilter:
         truncation: The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
     """
 
-    pulse: abc.Pulse
+    pulse: base.Pulse
     samples_per_symbol: int
     truncation: int | None = None
 

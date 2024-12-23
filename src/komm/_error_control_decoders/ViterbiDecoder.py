@@ -4,14 +4,14 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .. import abc
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import vectorized_method
+from . import base
 
 
 @dataclass
-class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
+class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     r"""
     Viterbi decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). For more details, see <cite>LC04, Sec. 12.1</cite>.
 

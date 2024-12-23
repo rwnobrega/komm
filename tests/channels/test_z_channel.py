@@ -5,11 +5,6 @@ import komm
 import komm.abc
 
 
-def test_zc_protocol():
-    channel: komm.abc.DiscreteMemorylessChannel = komm.ZChannel(0.5)
-    assert isinstance(channel, komm.abc.DiscreteMemorylessChannel)
-
-
 @pytest.mark.parametrize("p", [-0.1, 1.1])
 def test_zc_invalid_crossover_probability(p):
     with pytest.raises(ValueError):
