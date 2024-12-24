@@ -87,6 +87,4 @@ class ScalarQuantizer(base.ScalarQuantizer):
             array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
                    [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
         """
-        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
-        output = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
-        return output
+        return super().__call__(input)

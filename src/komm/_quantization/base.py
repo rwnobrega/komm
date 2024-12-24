@@ -32,4 +32,6 @@ class ScalarQuantizer(ABC):
         Returns:
             output: The quantized signal $y$.
         """
-        raise NotImplementedError
+        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
+        output = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
+        return output

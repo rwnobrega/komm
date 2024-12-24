@@ -55,6 +55,11 @@ class UniformQuantizer(base.ScalarQuantizer):
     def quantization_step(self) -> float:
         r"""
         The quantization step $\Delta$.
+
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer.quantization_step
+            0.5
         """
         x_min, x_max = self.input_range
         delta = (x_max - x_min) / self.num_levels
