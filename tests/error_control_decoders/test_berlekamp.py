@@ -3,6 +3,7 @@ import pytest
 
 import komm
 from komm._algebra.FiniteBifield import find_roots
+from komm._error_control_decoders.BerlekampDecoder import berlekamp_algorithm
 
 
 def test_berlekamp_lin_costello():
@@ -15,7 +16,7 @@ def test_berlekamp_lin_costello():
     r_poly = komm.BinaryPolynomial.from_coefficients(r)
     syndrome = code.bch_syndrome(r_poly)
     assert syndrome == [field.one, field.one, alpha**10, field.one, alpha**10, alpha**5]
-    sigma = decoder._berlekamp_algorithm(syndrome)
+    sigma = berlekamp_algorithm(code, syndrome)
     assert sigma == [field.one, field.one, field.zero, alpha**5]
     roots = set(find_roots(field, sigma))
     assert roots == {alpha**3, alpha**10, alpha**12}

@@ -28,44 +28,6 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
 
     code: BCHCode
 
-    def _berlekamp_algorithm(
-        self, syndrome: list[Any]
-    ) -> list[FiniteBifieldElement[FiniteBifield]]:
-        # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
-        # See [LC04, Sec. 6.3].
-        field = self.code.field
-        delta = self.code.delta
-        sigma = {-1: [field.one], 0: [field.one]}
-        discrepancy = {-1: field.one, 0: syndrome[0]}
-        degree = {-1: 0, 0: 0}
-
-        # In [LC04]: μ <-> j and ρ <-> k.
-        for j in range(delta - 1):
-            if discrepancy[j] == field.zero:
-                degree[j + 1] = degree[j]
-                sigma[j + 1] = sigma[j]
-            else:
-                k, max_so_far = -1, -1
-                for i in range(-1, j):
-                    if discrepancy[i] != field.zero and i - degree[i] > max_so_far:
-                        k, max_so_far = i, i - degree[i]
-                degree[j + 1] = max(degree[j], degree[k] + j - k)
-                fst = [field.zero] * (degree[j + 1] + 1)
-                fst[: degree[j] + 1] = sigma[j]
-                snd = [field.zero] * (degree[j + 1] + 1)
-                snd[j - k : degree[k] + j - k + 1] = sigma[k]
-                # [LC04, Eq. (6.25)]
-                sigma[j + 1] = [
-                    fst[i] + snd[i] * discrepancy[j] / discrepancy[k]
-                    for i in range(degree[j + 1] + 1)
-                ]
-            if j < delta - 2:
-                discrepancy[j + 1] = syndrome[j + 1]
-                for i in range(degree[j + 1]):
-                    discrepancy[j + 1] += sigma[j + 1][i + 1] * syndrome[j - i]
-
-        return sigma[delta - 1]
-
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
@@ -82,7 +44,7 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             syndrome = self.code.bch_syndrome(r_poly)
             if all(x == self.code.field.zero for x in syndrome):
                 return self.code.inverse_encode(r)
-            sigma_poly = self._berlekamp_algorithm(syndrome)
+            sigma_poly = berlekamp_algorithm(self.code, syndrome)
             roots = find_roots(self.code.field, sigma_poly)
             e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
             e_hat = np.bincount(e_loc, minlength=self.code.length)
@@ -91,3 +53,42 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             return u_hat
 
         return decode(input)
+
+
+def berlekamp_algorithm(
+    code: BCHCode, syndrome: list[Any]
+) -> list[FiniteBifieldElement[FiniteBifield]]:
+    # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
+    # See [LC04, Sec. 6.3].
+    field = code.field
+    delta = code.delta
+    sigma = {-1: [field.one], 0: [field.one]}
+    discrepancy = {-1: field.one, 0: syndrome[0]}
+    degree = {-1: 0, 0: 0}
+
+    # In [LC04]: μ <-> j and ρ <-> k.
+    for j in range(delta - 1):
+        if discrepancy[j] == field.zero:
+            degree[j + 1] = degree[j]
+            sigma[j + 1] = sigma[j]
+        else:
+            k, max_so_far = -1, -1
+            for i in range(-1, j):
+                if discrepancy[i] != field.zero and i - degree[i] > max_so_far:
+                    k, max_so_far = i, i - degree[i]
+            degree[j + 1] = max(degree[j], degree[k] + j - k)
+            fst = [field.zero] * (degree[j + 1] + 1)
+            fst[: degree[j] + 1] = sigma[j]
+            snd = [field.zero] * (degree[j + 1] + 1)
+            snd[j - k : degree[k] + j - k + 1] = sigma[k]
+            # [LC04, Eq. (6.25)]
+            sigma[j + 1] = [
+                fst[i] + snd[i] * discrepancy[j] / discrepancy[k]
+                for i in range(degree[j + 1] + 1)
+            ]
+        if j < delta - 2:
+            discrepancy[j + 1] = syndrome[j + 1]
+            for i in range(degree[j + 1]):
+                discrepancy[j + 1] += sigma[j + 1][i + 1] * syndrome[j - i]
+
+    return sigma[delta - 1]
