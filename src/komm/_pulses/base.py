@@ -7,13 +7,13 @@ import numpy.typing as npt
 class Pulse(ABC):
     @abstractmethod
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def support(self) -> tuple[float, float]:
-        pass
+        raise NotImplementedError
