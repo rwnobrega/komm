@@ -1,11 +1,11 @@
+from dataclasses import dataclass, field
 from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 
-@frozen
+@dataclass
 class AWGNChannel:
     r"""
     Additive white Gaussian noise (AWGN) channel. It is defined by

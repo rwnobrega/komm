@@ -1,8 +1,8 @@
+from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 from .._util.information_theory import (
     PMF,
@@ -13,7 +13,7 @@ from .._util.information_theory import (
 from . import base
 
 
-@frozen
+@dataclass
 class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
     r"""
     Binary symmetric channel (BSC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *crossover probability*. With probability $1 - p$, the output symbol is identical to the input symbol, and with probability $p$, the output symbol is flipped. Equivalently, the channel can be modeled as
@@ -29,21 +29,27 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
     crossover_probability: float = 0.0
     rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         assert_is_probability(self.crossover_probability)
 
     @property
     def input_cardinality(self) -> int:
+        r"""
+        For the BSC, it is given by $|\mathcal{X}| = 2$.
+        """
         return 2
 
     @property
     def output_cardinality(self) -> int:
+        r"""
+        For the BSC, it is given by $|\mathcal{Y}| = 2$.
+        """
         return 2
 
     @property
     def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""
-        The transition probability matrix of the channel. It is given by
+        For the BSC, it is given by
         $$
             p_{Y \mid X} = \begin{bmatrix} 1-p & p \\\\ p & 1-p \end{bmatrix}.
         $$
@@ -61,15 +67,11 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
         r"""
-        Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by
+        For the BSC, it is given by
         $$
             \mathrm{I}(X ; Y) = \Hb(p + \pi - 2 p \pi) - \Hb(p),
         $$
         in bits, where $\pi = \Pr[X = 1]$, and $\Hb$ is the [binary entropy function](/ref/binary_entropy).
-
-        **Parameters:**
-
-        Same as the [corresponding method](/ref/DiscreteMemorylessChannel/#mutual_information) of the general class.
 
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
@@ -83,7 +85,7 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
 
     def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
         r"""
-        Returns the channel capacity $C$. It is given by
+        For the BSC, it is given by
         $$
             C = 1 - \Hb(p),
         $$

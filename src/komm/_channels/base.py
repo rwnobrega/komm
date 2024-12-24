@@ -10,27 +10,55 @@ class DiscreteMemorylessChannel(ABC):
     @property
     @abstractmethod
     def transition_matrix(self) -> npt.NDArray[np.floating]:
-        pass
+        r"""
+        The channel transition probability matrix $p_{Y \mid X}$.
+        """
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def input_cardinality(self) -> int:
-        pass
+        r"""
+        The channel input cardinality $|\mathcal{X}|$.
+        """
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def output_cardinality(self) -> int:
-        pass
+        r"""
+        The channel output cardinality $|\mathcal{Y}|$.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
     ) -> float:
-        pass
+        r"""Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.
+
+        Parameters:
+            input_pmf: The probability mass function $p_X$ of the channel input $X$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+
+            base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+
+        Returns:
+            The mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def capacity(self, base: LogBase = 2.0) -> float:
-        pass
+        r"""
+        Returns the channel capacity $C$.
+
+        Parameters:
+            base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+
+        Returns:
+            The channel capacity $C$.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -43,4 +71,4 @@ class DiscreteMemorylessChannel(ABC):
         Returns:
             output: The output sequence.
         """
-        pass
+        raise NotImplementedError
