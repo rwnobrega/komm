@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import Generic, TypeVar
 
 import numpy as np
@@ -10,7 +9,6 @@ from .._error_control_block.base import BlockCode
 T = TypeVar("T", bound=BlockCode)
 
 
-@dataclass
 class BlockDecoder(ABC, Generic[T]):
     code: T
 
@@ -25,3 +23,4 @@ class BlockDecoder(ABC, Generic[T]):
         Returns:
             output: The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.
         """
+        raise NotImplementedError
