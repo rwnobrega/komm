@@ -1,21 +1,25 @@
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 from .._util.information_theory import PMF, LogBase, entropy
 
 
-@frozen
 class DiscreteMemorylessSource:
     r"""
     Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
-    Attributes:
+    Parameters:
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
     """
 
-    pmf: npt.NDArray[np.floating] = field(converter=PMF)
-    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
+    def __init__(
+        self, pmf: npt.ArrayLike, rng: np.random.Generator = np.random.default_rng()
+    ):
+        self.pmf = PMF(pmf)
+        self.rng = rng
+
+    def __repr__(self) -> str:
+        return f"{__class__.__name__}(pmf={self.pmf.tolist()})"
 
     @property
     def cardinality(self) -> int:
