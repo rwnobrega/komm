@@ -4,7 +4,7 @@ from typing import final
 import numpy as np
 import numpy.typing as npt
 
-from .._util.decorators import vectorized_method
+from .._util.decorators import vectorize
 
 
 class Modulation:
@@ -246,11 +246,10 @@ class Modulation:
                 f" {self.bits_per_symbol} (got {input.shape[-1]})"
             )
         bits = input.reshape(*input.shape[:-1], -1, self.bits_per_symbol)
-        symbols = self._modulate(bits)
+        symbols = vectorize(self._modulate)(bits)
         output = symbols.reshape(*symbols.shape[:-1], -1)
         return output
 
-    @vectorized_method
     def _modulate(
         self, bits: npt.NDArray[np.integer]
     ) -> npt.NDArray[np.floating | np.complexfloating]:
@@ -277,11 +276,10 @@ class Modulation:
         """
         input = np.asarray(input)
         received = input.reshape(*input.shape[:-1], -1, 1)
-        hard_bits = self._demodulate_hard(received)
+        hard_bits = vectorize(self._demodulate_hard)(received)
         output = hard_bits.reshape(*input.shape[:-1], -1)
         return output
 
-    @vectorized_method
     def _demodulate_hard(
         self, received: npt.NDArray[np.floating | np.complexfloating]
     ) -> npt.NDArray[np.integer]:

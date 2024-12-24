@@ -5,7 +5,7 @@ import numpy.typing as npt
 from attrs import field, frozen
 
 from .._algebra import BinaryPolynomial
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from .BlockCode import BlockCode
 
 
@@ -144,34 +144,47 @@ class CyclicCode(BlockCode):
                 check_matrix[:, j] = col_poly.coefficients(width=m)
         return check_matrix
 
-    @vectorized_method
-    def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        u_poly = BinaryPolynomial.from_coefficients(u)
-        if not self.systematic:
-            v_poly = u_poly * self.generator_polynomial
-        else:
-            u_poly_shifted = u_poly << self.redundancy
-            b_poly = u_poly_shifted % self.generator_polynomial
-            v_poly = u_poly_shifted + b_poly
-        v = v_poly.coefficients(width=self.length)
-        return v
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        @blockwise(self.dimension)
+        @vectorize
+        def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            u_poly = BinaryPolynomial.from_coefficients(u)
+            if not self.systematic:
+                v_poly = u_poly * self.generator_polynomial
+            else:
+                u_poly_shifted = u_poly << self.redundancy
+                b_poly = u_poly_shifted % self.generator_polynomial
+                v_poly = u_poly_shifted + b_poly
+            v = v_poly.coefficients(width=self.length)
+            return v
 
-    @vectorized_method
-    def _inverse_encode(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        s = self._check(v)
+        return encode(input)
+
+    def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        s = self.check(input)
         if not np.all(s == 0):
             raise ValueError("one or more inputs in 'v' are not valid codewords")
-        v_poly = BinaryPolynomial.from_coefficients(v)
-        if not self.systematic:
-            u_poly = v_poly // self.generator_polynomial
-        else:
-            u_poly = v_poly >> self.redundancy
-        u = u_poly.coefficients(width=self.dimension)
-        return u
 
-    @vectorized_method
-    def _check(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        r_poly = BinaryPolynomial.from_coefficients(r)
-        s_poly = r_poly % self.generator_polynomial
-        s = s_poly.coefficients(width=self.redundancy)
-        return s
+        @blockwise(self.length)
+        @vectorize
+        def inverse_encode(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            v_poly = BinaryPolynomial.from_coefficients(v)
+            if not self.systematic:
+                u_poly = v_poly // self.generator_polynomial
+            else:
+                u_poly = v_poly >> self.redundancy
+            u = u_poly.coefficients(width=self.dimension)
+            return u
+
+        return inverse_encode(input)
+
+    def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        @blockwise(self.length)
+        @vectorize
+        def check(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            r_poly = BinaryPolynomial.from_coefficients(r)
+            s_poly = r_poly % self.generator_polynomial
+            s = s_poly.coefficients(width=self.redundancy)
+            return s
+
+        return check(input)

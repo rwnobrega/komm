@@ -9,28 +9,39 @@ T = TypeVar("T", bound=np.generic)
 U = TypeVar("U", bound=np.generic)
 
 
-def vectorized_method(
-    func: Callable[..., npt.NDArray[U]],
-) -> Callable[..., npt.NDArray[U]]:
-    r"""
-    Decorator to vectorize a method that accepts a 1D array and returns a 1D array. The decorator will apply the method along the last axis of a multidimensional array. The decorated method should have the following signature:
+ArrayFunction = Callable[[npt.NDArray[T]], npt.NDArray[U]]
 
-    ```python
-    def method(self, x: np.ndarray[T], *args, **kwargs) -> np.ndarray[U]:
-        ...
-    ```
+
+def vectorize(func: ArrayFunction[T, U]):
+    r"""
+    Vectorizes a function that accepts a 1D array and returns a 1D array.
     """
 
     @wraps(func)
-    def wrapper(
-        self: object,
-        arr: npt.NDArray[T],
-        *args: Any,
-        **kwargs: Any,
-    ) -> npt.NDArray[U]:
-        def func1d(x: npt.NDArray[T]) -> npt.NDArray[U]:
-            return func(self, x, *args, **kwargs)
-
-        return np.apply_along_axis(func1d, -1, arr)
+    def wrapper(arr: npt.NDArray[T], *args: Any, **kwargs: Any):
+        return np.apply_along_axis(func, -1, arr, *args, **kwargs)
 
     return wrapper
+
+
+def blockwise(block_size: int):
+    r"""
+    Applies a function blockwise to the last dimension of an array.
+    """
+
+    def decorator(func: ArrayFunction[T, U]):
+        @wraps(func)
+        def wrapper(arr: npt.ArrayLike):
+            arr = np.asarray(arr)
+            if arr.shape[-1] % block_size != 0:
+                raise ValueError(
+                    "last dimension of array must be a multiple of block size"
+                    f" {block_size} (got {arr.shape[-1]})"
+                )
+            blocks = arr.reshape(*arr.shape[:-1], -1, block_size)
+            processed = func(blocks)
+            return processed.reshape(*processed.shape[:-2], -1)
+
+        return wrapper
+
+    return decorator

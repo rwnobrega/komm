@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._error_control_block import SingleParityCheckCode
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from . import base
 
 
@@ -34,11 +34,15 @@ class WagnerDecoder(base.BlockDecoder[SingleParityCheckCode]):
 
     code: SingleParityCheckCode
 
-    @vectorized_method
-    def _decode(self, r: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
-        v_hat = (r < 0).astype(int)
-        if np.count_nonzero(v_hat) % 2 != 0:
-            i = np.argmin(np.abs(r))
-            v_hat[i] ^= 1
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        @blockwise(self.code.length)
+        @vectorize
+        def decode(r: npt.NDArray[np.integer]):
+            v_hat = (r < 0).astype(int)
+            if np.count_nonzero(v_hat) % 2 != 0:
+                i = np.argmin(np.abs(r))
+                v_hat[i] ^= 1
+            u_hat = self.code.inverse_encode(v_hat)
+            return u_hat
+
+        return decode(input)

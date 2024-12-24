@@ -5,6 +5,7 @@ import numpy.typing as npt
 
 from .._error_control_block import BlockCode
 from .._util import bits_to_int
+from .._util.decorators import blockwise
 from . import base
 
 
@@ -37,9 +38,13 @@ class SyndromeTableDecoder(base.BlockDecoder[BlockCode]):
     def __post_init__(self) -> None:
         self._coset_leaders = self.code.coset_leaders()
 
-    def _decode(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        s = self.code.check(r)
-        e_hat = self._coset_leaders[bits_to_int(s)]
-        v_hat = np.bitwise_xor(r, e_hat)
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        @blockwise(self.code.length)
+        def decode(r: npt.NDArray[np.integer]):
+            s = self.code.check(r)
+            e_hat = self._coset_leaders[bits_to_int(s)]
+            v_hat = np.bitwise_xor(r, e_hat)
+            u_hat = self.code.inverse_encode(v_hat)
+            return u_hat
+
+        return decode(input)

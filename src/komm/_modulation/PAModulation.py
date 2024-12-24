@@ -1,10 +1,10 @@
-from typing import Literal
+from typing import Literal, cast
 
 import numpy as np
 import numpy.typing as npt
 from typing_extensions import override
 
-from .._util.decorators import vectorized_method
+from .._util.decorators import vectorize
 from .._util.special_functions import logcosh
 from .constellations import constellation_pam
 from .labelings import get_labeling
@@ -101,23 +101,21 @@ class PAModulation(Modulation):
     ) -> npt.NDArray[np.floating]:
         if self.order == 2:
             y = received / self.base_amplitude
+            y = cast(npt.NDArray[np.floating], y)
             return self._demodulate_pam2_soft(y, snr / 1.0)
         elif self.order == 4 and self.labeling_parameter == "reflected":
             y = received / self.base_amplitude
-            return self._demodulate_pam4_soft_reflected(y, snr / 5.0)
+            y = cast(npt.NDArray[np.floating], y)
+            return vectorize(self._demodulate_pam4_soft_reflected)(y, snr / 5.0)  # type: ignore
         # Fall back to general implementation
         return super()._demodulate_soft(received, snr)
 
-    @vectorized_method
-    def _demodulate_pam2_soft(
-        self, y: npt.NDArray[np.floating], gamma: float
-    ) -> npt.NDArray[np.floating]:
+    def _demodulate_pam2_soft(self, y: npt.NDArray[np.floating], gamma: float):
         return -4 * gamma * y  # [SA15, eq. (3.65)]
 
-    @vectorized_method
     def _demodulate_pam4_soft_reflected(
         self, y: npt.NDArray[np.floating], gamma: float
-    ) -> npt.NDArray[np.floating]:
+    ):
         soft_bits = np.empty(2 * y.size, dtype=float)
         soft_bits[0::2] = (  # For bit_0: [SA15, eq. (5.15)]
             -8 * gamma + logcosh(6 * gamma * y) - logcosh(2 * gamma * y)

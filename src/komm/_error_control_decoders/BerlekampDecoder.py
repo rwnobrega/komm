@@ -9,7 +9,7 @@ from komm._algebra import FiniteBifield
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifieldElement, find_roots
 from .._error_control_block import BCHCode
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from . import base
 
 
@@ -76,16 +76,20 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
 
         return sigma[delta - 1]
 
-    @vectorized_method
-    def _decode(self, r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-        r_poly = BinaryPolynomial.from_coefficients(r)
-        syndrome = self.code.bch_syndrome(r_poly)
-        if all(x == self.code.field.zero for x in syndrome):
-            return self.code.inverse_encode(r)
-        sigma_poly = self._berlekamp_algorithm(syndrome)
-        roots = find_roots(self.code.field, sigma_poly)
-        e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
-        e_hat = np.bincount(e_loc, minlength=self.code.length)
-        v_hat = (r + e_hat) % 2
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        @blockwise(self.code.length)
+        @vectorize
+        def decode(r: npt.NDArray[np.integer]):
+            r_poly = BinaryPolynomial.from_coefficients(r)
+            syndrome = self.code.bch_syndrome(r_poly)
+            if all(x == self.code.field.zero for x in syndrome):
+                return self.code.inverse_encode(r)
+            sigma_poly = self._berlekamp_algorithm(syndrome)
+            roots = find_roots(self.code.field, sigma_poly)
+            e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
+            e_hat = np.bincount(e_loc, minlength=self.code.length)
+            v_hat = (r + e_hat) % 2
+            u_hat = self.code.inverse_encode(v_hat)
+            return u_hat
+
+        return decode(input)

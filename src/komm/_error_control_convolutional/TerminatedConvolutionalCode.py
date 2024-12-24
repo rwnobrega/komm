@@ -8,7 +8,7 @@ from typing_extensions import override
 
 from .._error_control_block.BlockCode import BlockCode
 from .._util.bit_operations import bits_to_int, int_to_bits
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from .ConvolutionalCode import ConvolutionalCode
 from .terminations import (
     DirectTruncation,
@@ -113,14 +113,19 @@ class TerminatedConvolutionalCode(BlockCode):
     def generator_matrix(self) -> npt.NDArray[np.integer]:
         return self._strategy.generator_matrix(self)
 
-    @vectorized_method
-    def _encode(self, u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
         fsm = self.convolutional_code.finite_state_machine()
-        u = self._strategy.pre_process_input(u)
-        input_sequence = bits_to_int(u.reshape(-1, k0))
-        initial_state = self._strategy.initial_state(input_sequence)
-        output_sequence, _ = fsm.process(input_sequence, initial_state)
-        v = int_to_bits(output_sequence, width=n0).ravel()
-        return v
+
+        @blockwise(self.dimension)
+        @vectorize
+        def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+            u = self._strategy.pre_process_input(u)
+            input_sequence = bits_to_int(u.reshape(-1, k0))
+            initial_state = self._strategy.initial_state(input_sequence)
+            output_sequence, _ = fsm.process(input_sequence, initial_state)
+            v = int_to_bits(output_sequence, width=n0).ravel()
+            return v
+
+        return encode(input)

@@ -1,5 +1,4 @@
 from functools import cache, cached_property
-from typing import final
 
 import numpy as np
 import numpy.typing as npt
@@ -120,7 +119,6 @@ class BlockCode(base.BlockCode):
         """
         return self.dimension / self.length
 
-    @final
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Applies the encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This method takes one or more sequences of messages and returns their corresponding codeword sequences.
@@ -159,7 +157,6 @@ class BlockCode(base.BlockCode):
         v = u @ self.generator_matrix % 2
         return v
 
-    @final
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Applies the inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.
@@ -201,7 +198,6 @@ class BlockCode(base.BlockCode):
         u = v @ self._generator_matrix_pseudo_inverse % 2
         return u
 
-    @final
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Applies the check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.

@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from . import base
 
 
@@ -55,19 +55,21 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     def _metric_function(self, y: int, z: float) -> float:
         return 2.0 * self.snr * np.dot(self._cache_polar[y], z)
 
-    @vectorized_method
-    def _decode(self, r: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order
 
-        input_posteriors = self._fsm.forward_backward(
-            observed_sequence=r.reshape(-1, n),
-            metric_function=self._metric_function,
-            initial_state_distribution=self._initial_state_distribution,
-            final_state_distribution=self._final_state_distribution,
-        )
+        @blockwise(self.code.length)
+        @vectorize
+        def decode(r: npt.NDArray[np.floating]):
+            input_posteriors = self._fsm.forward_backward(
+                observed_sequence=r.reshape(-1, n),
+                metric_function=self._metric_function,
+                initial_state_distribution=self._initial_state_distribution,
+                final_state_distribution=self._final_state_distribution,
+            )
+            if self.code.mode == "zero-termination":
+                input_posteriors = input_posteriors[:-mu]
+            return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
 
-        if self.code.mode == "zero-termination":
-            input_posteriors = input_posteriors[:-mu]
-
-        return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
+        return decode(input)

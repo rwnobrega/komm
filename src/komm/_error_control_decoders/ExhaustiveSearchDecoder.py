@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._error_control_block import BlockCode
+from .._util.decorators import blockwise
 from . import base
 
 
@@ -45,14 +46,16 @@ class ExhaustiveSearchDecoder(base.BlockDecoder[BlockCode]):
     def __post_init__(self) -> None:
         self._codewords = self.code.codewords()
 
-    def _decode(
-        self, r: npt.NDArray[np.float64 | np.integer]
-    ) -> npt.NDArray[np.integer]:
-        if self.input_type == "hard":
-            ds = r[..., np.newaxis, :] != self._codewords
-        else:
-            ds = -r[..., np.newaxis, :] * (-1) ** self._codewords
-        metrics = np.sum(ds, axis=-1)
-        v_hat = self._codewords[np.argmin(metrics, axis=-1)]
-        u_hat = self.code.inverse_encode(v_hat)
-        return u_hat
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        @blockwise(self.code.length)
+        def decode(r: npt.NDArray[np.integer]):
+            if self.input_type == "hard":
+                ds = r[..., np.newaxis, :] != self._codewords
+            else:
+                ds = -r[..., np.newaxis, :] * (-1) ** self._codewords
+            metrics = np.sum(ds, axis=-1)
+            v_hat = self._codewords[np.argmin(metrics, axis=-1)]
+            u_hat = self.code.inverse_encode(v_hat)
+            return u_hat
+
+        return decode(input)

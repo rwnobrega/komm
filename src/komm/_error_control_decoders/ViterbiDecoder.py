@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import vectorized_method
+from .._util.decorators import blockwise, vectorize
 from . import base
 
 
@@ -67,25 +67,25 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     def _metric_function_soft(self, y: int, z: int) -> float:
         return np.dot(self._cache_bit[y], z)
 
-    @vectorized_method
-    def _decode(
-        self, r: npt.NDArray[np.float64 | np.integer]
-    ) -> npt.NDArray[np.integer]:
+    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         k = self.code.convolutional_code.num_input_bits
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order
 
-        xs_hat, final_metrics = self._fsm.viterbi(
-            observed_sequence=r.reshape(-1, n),
-            metric_function=self._metric_function,
-            initial_metrics=self._initial_metrics,
-        )
+        @blockwise(self.code.length)
+        @vectorize
+        def decode(r: npt.NDArray[np.integer]):
+            xs_hat, final_metrics = self._fsm.viterbi(
+                observed_sequence=r.reshape(-1, n),
+                metric_function=self._metric_function,
+                initial_metrics=self._initial_metrics,
+            )
+            if self.code.mode == "direct-truncation":
+                s_hat = np.argmin(final_metrics)
+                x_hat = xs_hat[:, s_hat]
+            else:  # code.mode == "zero-termination"
+                x_hat = xs_hat[:, 0][:-mu]
+            u_hat = int_to_bits(x_hat, width=k).ravel()
+            return u_hat
 
-        if self.code.mode == "direct-truncation":
-            s_hat = np.argmin(final_metrics)
-            x_hat = xs_hat[:, s_hat]
-        else:  # code.mode == "zero-termination"
-            x_hat = xs_hat[:, 0][:-mu]
-
-        u_hat = int_to_bits(x_hat, width=k).ravel()
-        return u_hat
+        return decode(input)
