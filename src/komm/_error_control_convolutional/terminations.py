@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 from numpy.linalg import matrix_power
 
 from .._error_control_block import BlockCode
@@ -12,7 +12,7 @@ from .._util.matrices import pseudo_inverse
 from .ConvolutionalCode import ConvolutionalCode
 
 
-@frozen
+@dataclass
 class TerminationStrategy(ABC):
     convolutional_code: "ConvolutionalCode"
     num_blocks: int
@@ -45,7 +45,7 @@ def _base_generator_matrix(
     return generator_matrix
 
 
-@frozen
+@dataclass
 class DirectTruncation(TerminationStrategy):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
@@ -68,7 +68,7 @@ class DirectTruncation(TerminationStrategy):
         return generator_matrix
 
 
-@frozen
+@dataclass
 class ZeroTermination(TerminationStrategy):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         return 0
@@ -101,7 +101,7 @@ class ZeroTermination(TerminationStrategy):
         return AnB_message @ pseudo_inverse(AnB_tail) % 2
 
 
-@frozen
+@dataclass
 class TailBiting(TerminationStrategy):
     def initial_state(self, input_sequence: npt.ArrayLike) -> int:
         fsm = self.convolutional_code.finite_state_machine()

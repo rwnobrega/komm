@@ -1,15 +1,16 @@
+from dataclasses import dataclass
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, mutable
 
 from .._finite_state_machine.FiniteStateMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
 from .ConvolutionalCode import ConvolutionalCode
 
 
-@mutable
+@dataclass
 class ViterbiStreamDecoder:
     r"""
     Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
@@ -23,14 +24,13 @@ class ViterbiStreamDecoder:
 
     convolutional_code: ConvolutionalCode
     traceback_length: int
-    state: int = field(default=0)
-    input_type: str = field(default="hard")
-    memory: MetricMemory = field(init=False)
+    state: int = 0
+    input_type: Literal["hard", "soft"] = "hard"
 
-    def __attrs_post_init__(self):
+    def __post_init__(self):
         fsm = self.convolutional_code.finite_state_machine()
         num_states, traceback_length = fsm.num_states, self.traceback_length
-        self.memory = {
+        self.memory: MetricMemory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
             "metrics": np.full((num_states, traceback_length + 1), fill_value=np.inf),
         }

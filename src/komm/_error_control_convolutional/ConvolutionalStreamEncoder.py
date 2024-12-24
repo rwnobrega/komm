@@ -1,12 +1,13 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from attrs import field, mutable
 
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .ConvolutionalCode import ConvolutionalCode
 
 
-@mutable
+@dataclass
 class ConvolutionalStreamEncoder:
     r"""
     Convolutional stream encoder. Encode a bit stream using a given [convolutional code](/ref/ConvolutionalCode). The internal state of the encoder is maintained across each call.
@@ -17,7 +18,7 @@ class ConvolutionalStreamEncoder:
     """
 
     convolutional_code: ConvolutionalCode
-    state: int = field(default=0)
+    state: int = 0
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
