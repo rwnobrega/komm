@@ -8,18 +8,28 @@ class ScalarQuantizer(ABC):
     @property
     @abstractmethod
     def levels(self) -> npt.NDArray[np.floating]:
-        pass
+        r"""
+        The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.
+        """
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def thresholds(self) -> npt.NDArray[np.floating]:
-        pass
-
-    @property
-    @abstractmethod
-    def num_levels(self) -> int:
-        pass
+        r"""
+        The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        pass
+        r"""
+        Quantizes the input signal.
+
+        Parameters:
+            input: The input signal $x$ to be quantized.
+
+        Returns:
+            output: The quantized signal $y$.
+        """
+        raise NotImplementedError

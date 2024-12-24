@@ -1,14 +1,14 @@
+from dataclasses import dataclass, field
 from functools import cache
 from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 from . import base
 
 
-@frozen
+@dataclass(eq=False)
 class UniformQuantizer(base.ScalarQuantizer):
     r"""
     Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels. For more details, see <cite>Say06, Sec. 9.4</cite>.
@@ -40,19 +40,15 @@ class UniformQuantizer(base.ScalarQuantizer):
         array([0.125, 0.375, 0.625])
     """
 
-    _num_levels: int = field(alias="num_levels")
+    num_levels: int
     input_range: tuple[float, float] = field(default=(-1.0, 1.0))
     choice: Literal["mid-riser", "mid-tread"] = field(default="mid-riser")
 
-    def __attrs_post_init__(self) -> None:
-        if self.num_levels < 2:
+    def __post_init__(self) -> None:
+        if not self.num_levels > 1:
             raise ValueError("'num_levels' must be greater than 1")
-        if self.choice not in ["mid-riser", "mid-tread"]:
+        if not self.choice in ["mid-riser", "mid-tread"]:
             raise ValueError("'choice' must be either 'mid-riser' or 'mid-tread'")
-
-    @property
-    def num_levels(self) -> int:
-        return self._num_levels
 
     @property
     @cache
@@ -68,7 +64,10 @@ class UniformQuantizer(base.ScalarQuantizer):
     @cache
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
-        The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer.levels
+            array([-0.75, -0.25,  0.25,  0.75])
         """
         num = self.num_levels
         x_min, x_max = self.input_range
@@ -82,11 +81,20 @@ class UniformQuantizer(base.ScalarQuantizer):
     @cache
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
-        The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer.thresholds
+            array([-0.5,  0. ,  0.5])
         """
         return (self.levels + self.quantization_step / 2)[:-1]
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer([-0.6, 0.2, 0.8])
+            array([-0.75,  0.25,  0.75])
+        """
         input = np.array(input, dtype=float, ndmin=1)
         delta = self.quantization_step
         if self.choice == "mid-riser":

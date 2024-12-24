@@ -12,6 +12,7 @@
 *[LSB]: least significant bit
 *[LUT]: lookup table
 *[MSB]: most significant bit
+*[MSE]: mean-squared error
 *[NRZ]: non-return-to-zero
 *[PAM]: pulse-amplitude modulation
 *[pmf]: probability mass function
