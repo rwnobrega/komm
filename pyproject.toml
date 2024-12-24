@@ -48,6 +48,7 @@ test = [
 ]
 doc = [
     "griffe==1.5.1",
+    "griffe-inherited-docstrings==1.1.1",
     "mkdocs==1.6.1",
     "mkdocs-material==9.5.43",
     "mkdocstrings==0.26.2",

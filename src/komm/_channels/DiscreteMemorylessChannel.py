@@ -93,8 +93,6 @@ class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        :::komm.abc.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
-
         Examples:
             >>> rng = np.random.default_rng(seed=42)
             >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]], rng=rng)

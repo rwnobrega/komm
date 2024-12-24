@@ -54,6 +54,9 @@ plugins:
             members_order: source
             group_by_category: false
             show_signature: false
+            extensions:
+              - griffe_inherited_docstrings:
+                  merge: true
 
 theme:
   name: material

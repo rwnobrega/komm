@@ -21,23 +21,6 @@ class ExhaustiveSearchDecoder(base.BlockDecoder[BlockCode]):
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> code = komm.HammingCode(3)
-        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-        >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
-        array([[1, 1, 0, 0],
-               [1, 0, 1, 1]])
-
-        >>> code = komm.HammingCode(3)
-        >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
-        >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
-        array([[1, 1, 0, 0],
-               [1, 0, 1, 1]])
     """
 
     code: BlockCode
@@ -47,6 +30,21 @@ class ExhaustiveSearchDecoder(base.BlockDecoder[BlockCode]):
         self._codewords = self.code.codewords()
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+            >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+        """
+
         @blockwise(self.code.length)
         def decode(r: npt.NDArray[np.integer]):
             if self.input_type == "hard":

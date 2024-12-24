@@ -24,16 +24,6 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
     Notes:
         - Input type: `hard`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> code = komm.BCHCode(4, 7)
-        >>> decoder = komm.BerlekampDecoder(code)
-        >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
-        array([0, 0, 0, 0, 0])
     """
 
     code: BCHCode
@@ -77,6 +67,14 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
         return sigma[delta - 1]
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.BCHCode(4, 7)
+            >>> decoder = komm.BerlekampDecoder(code)
+            >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            array([0, 0, 0, 0, 0])
+        """
+
         @blockwise(self.code.length)
         @vectorize
         def decode(r: npt.NDArray[np.integer]):

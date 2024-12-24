@@ -21,22 +21,6 @@ class ReedDecoder(base.BlockDecoder[ReedMullerCode]):
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> code = komm.ReedMullerCode(1, 3)
-        >>> decoder = komm.ReedDecoder(code, input_type="hard")
-        >>> decoder([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
-        array([[0, 0, 0, 0],
-               [0, 0, 0, 1]])
-
-        >>> code = komm.ReedMullerCode(1, 3)
-        >>> decoder = komm.ReedDecoder(code, input_type="soft")
-        >>> decoder([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
-        array([0, 0, 0, 0])
     """
 
     code: ReedMullerCode
@@ -46,6 +30,20 @@ class ReedDecoder(base.BlockDecoder[ReedMullerCode]):
         self._reed_partitions = self.code.reed_partitions()
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.ReedMullerCode(1, 3)
+            >>> decoder = komm.ReedDecoder(code, input_type="hard")
+            >>> decoder([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
+            array([[0, 0, 0, 0],
+                   [0, 0, 0, 1]])
+
+            >>> code = komm.ReedMullerCode(1, 3)
+            >>> decoder = komm.ReedDecoder(code, input_type="soft")
+            >>> decoder([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
+            array([0, 0, 0, 0])
+        """
+
         @blockwise(self.code.length)
         @vectorize
         def decode_hard(r: npt.NDArray[np.integer]):

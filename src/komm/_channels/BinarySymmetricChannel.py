@@ -99,8 +99,6 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        :::komm.abc.DiscreteMemorylessChannel.DiscreteMemorylessChannel.__call__
-
         Examples:
             >>> rng = np.random.default_rng(seed=42)
             >>> bsc = komm.BinarySymmetricChannel(0.2, rng=rng)

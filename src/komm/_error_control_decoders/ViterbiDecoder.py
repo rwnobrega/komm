@@ -23,23 +23,6 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     Notes:
         - Input type: `hard` or `soft`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode="zero-termination")
-        >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-        >>> decoder([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1])
-        array([1, 1, 0, 0, 1])
-
-        >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode="direct-truncation")
-        >>> decoder = komm.ViterbiDecoder(code, input_type="soft", snr=10.0)
-        >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
-        array([1, 0, 0, 0])
     """
 
     code: TerminatedConvolutionalCode
@@ -68,6 +51,20 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         return np.dot(self._cache_bit[y], z)
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b011, 0b101, 0b111]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode="zero-termination")
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1])
+            array([1, 1, 0, 0, 1])
+
+            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
+            >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode="direct-truncation")
+            >>> decoder = komm.ViterbiDecoder(code, input_type="soft", snr=10.0)
+            >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
+            array([1, 0, 0, 0])
+        """
         k = self.code.convolutional_code.num_input_bits
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order

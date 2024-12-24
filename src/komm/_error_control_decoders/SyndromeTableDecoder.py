@@ -20,17 +20,6 @@ class SyndromeTableDecoder(base.BlockDecoder[BlockCode]):
     Notes:
         - Input type: `hard`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> code = komm.HammingCode(3)
-        >>> decoder = komm.SyndromeTableDecoder(code)
-        >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
-        array([[1, 1, 0, 0],
-               [1, 0, 1, 1]])
     """
 
     code: BlockCode
@@ -39,6 +28,15 @@ class SyndromeTableDecoder(base.BlockDecoder[BlockCode]):
         self._coset_leaders = self.code.coset_leaders()
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.SyndromeTableDecoder(code)
+            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+        """
+
         @blockwise(self.code.length)
         def decode(r: npt.NDArray[np.integer]):
             s = self.code.check(r)

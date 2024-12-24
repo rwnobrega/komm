@@ -19,22 +19,20 @@ class WagnerDecoder(base.BlockDecoder[SingleParityCheckCode]):
     Notes:
         - Input type: `soft`.
         - Output type: `hard`.
-
-    # `__call__`
-
-    :::komm.abc.BlockDecoder.BlockDecoder.__call__
-
-    Examples:
-        >>> code = komm.SingleParityCheckCode(4)
-        >>> decoder = komm.WagnerDecoder(code)
-        >>> decoder([[1.52, -0.36, 1.56, 0.82], [-0.75,  1.20 , -2.11,  1.73]])
-        array([[0, 0, 0],
-               [1, 0, 1]])
     """
 
     code: SingleParityCheckCode
 
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.SingleParityCheckCode(4)
+            >>> decoder = komm.WagnerDecoder(code)
+            >>> decoder([[1.52, -0.36, 1.56, 0.82], [-0.75,  1.20 , -2.11,  1.73]])
+            array([[0, 0, 0],
+                   [1, 0, 1]])
+        """
+
         @blockwise(self.code.length)
         @vectorize
         def decode(r: npt.NDArray[np.integer]):
