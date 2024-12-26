@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_block import BlockCode
+from .._error_control_block.base import BlockCode
 from .._util import bits_to_int
 from .._util.decorators import blockwise
 from . import base

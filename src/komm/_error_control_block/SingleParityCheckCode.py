@@ -1,14 +1,14 @@
-import math
-from functools import cache, cached_property
+from dataclasses import dataclass
+from functools import cache
+from math import comb
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
 from .BlockCode import BlockCode
 
 
-@frozen
+@dataclass(eq=False)
 class SingleParityCheckCode(BlockCode):
     r"""
     Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
@@ -48,9 +48,10 @@ class SingleParityCheckCode(BlockCode):
 
     n: int
 
-    @cached_property
-    def check_matrix(self) -> npt.NDArray[np.integer]:
-        return np.ones((1, self.n), dtype=int)
+    def __post_init__(self):
+        if not self.n >= 1:
+            raise ValueError("n must be a positive integer")
+        super().__init__(check_matrix=np.ones((1, self.n), dtype=int))
 
     @cache
     def minimum_distance(self) -> int:
@@ -61,5 +62,5 @@ class SingleParityCheckCode(BlockCode):
         n = self.n
         codeword_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range(0, n + 1, 2):
-            codeword_weight_distribution[w] = math.comb(n, w)
+            codeword_weight_distribution[w] = comb(n, w)
         return codeword_weight_distribution

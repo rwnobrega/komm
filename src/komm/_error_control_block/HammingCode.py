@@ -1,14 +1,15 @@
-from functools import cache, cached_property
+from dataclasses import dataclass
+from functools import cache
+from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
-from .matrices import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
+from .util import extended_parity_submatrix
 
 
-@frozen
+@dataclass(eq=False)
 class HammingCode(SystematicBlockCode):
     r"""
     Hamming code. For a given parameter $\mu \geq 2$, it is the [linear block code](/ref/BlockCode) with check matrix whose columns are all the $2^\mu - 1$ nonzero binary $\mu$-tuples. The Hamming code has the following parameters:
@@ -74,10 +75,25 @@ class HammingCode(SystematicBlockCode):
     mu: int
     extended: bool = False
 
-    @cached_property
-    def parity_submatrix(self) -> npt.NDArray[np.integer]:
-        return hamming_parity_submatrix(self.mu, self.extended)
+    def __post_init__(self):
+        if not self.mu >= 2:
+            raise ValueError("'mu' must be at least 2")
+        super().__init__(
+            parity_submatrix=hamming_parity_submatrix(self.mu, self.extended)
+        )
 
     @cache
     def minimum_distance(self) -> int:
         return 4 if self.extended else 3
+
+
+def hamming_parity_submatrix(m: int, extended: bool = False) -> npt.NDArray[np.integer]:
+    parity_submatrix = np.zeros((2**m - m - 1, m), dtype=int)
+    i = 0
+    for w in range(2, m + 1):
+        for idx in combinations(range(m), w):
+            parity_submatrix[i, list(idx)] = 1
+            i += 1
+    if extended:
+        parity_submatrix = extended_parity_submatrix(parity_submatrix)
+    return parity_submatrix

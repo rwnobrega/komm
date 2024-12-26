@@ -1,15 +1,13 @@
-import itertools as it
+from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
-from tqdm import tqdm
 
-from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.bit_operations import int_to_bits
 from . import base
 
 
-@frozen
+@dataclass
 class SlepianArray:
     r"""
     Slepian array (standard array) for a [linear block code](/ref/BlockCode). It is a table with $2^m$ rows and $2^k$ columns, where $m$ is the redundancy, and $k$ is the dimension of the code. Each row corresponds to a _coset_ of the group of codewords, in which:
@@ -31,29 +29,9 @@ class SlepianArray:
     """
 
     code: base.BlockCode
-    _leaders: npt.NDArray[np.integer] = field(init=False, repr=False)
 
-    def __attrs_post_init__(self) -> None:
-        object.__setattr__(self, "_leaders", self._generate_leaders())
-
-    def _generate_leaders(self) -> npt.NDArray[np.integer] | None:
-        m, n = self.code.redundancy, self.code.length
-        leaders = np.full(2**m, -1)
-        taken = 0
-        with tqdm(total=2**m, desc="Generating coset leaders", delay=2.5) as pbar:
-            for w in range(n + 1):
-                for idx in it.combinations(range(n), w):
-                    leader = np.zeros(n, dtype=int)
-                    leader[list(idx)] = 1
-                    syndrome = self.code.check(leader)
-                    i = bits_to_int(syndrome)
-                    if leaders[i] != -1:
-                        continue
-                    taken += 1
-                    pbar.update(1)
-                    leaders[i] = bits_to_int(leader)
-                    if taken == 2**m:
-                        return leaders
+    def __post_init__(self) -> None:
+        self._leaders = self.code.coset_leaders()
 
     def entry(self, i: int, j: int) -> npt.NDArray[np.integer]:
         r"""
@@ -81,8 +59,8 @@ class SlepianArray:
             100000 000011 110101 010110 101110 001101 111011 011000
             100100 000111 110001 010010 101010 001001 111111 011100
         """
-        n, k = self.code.length, self.code.dimension
-        leader = int_to_bits(self._leaders[i], n)
+        k = self.code.dimension
+        leader = self._leaders[i]
         message = int_to_bits(j, k)
         codeword = self.code.encode(message)
         return np.array(leader + codeword) % 2

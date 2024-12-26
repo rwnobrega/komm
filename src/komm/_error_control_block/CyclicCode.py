@@ -1,16 +1,15 @@
-from functools import cached_property
+from functools import cache, cached_property
+from typing import SupportsInt
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 
 from .._algebra import BinaryPolynomial
 from .._util.decorators import blockwise, vectorize
-from .BlockCode import BlockCode
+from . import base
 
 
-@frozen(kw_only=True)
-class CyclicCode(BlockCode):
+class CyclicCode(base.BlockCode):
     r"""
     General binary cyclic code. A cyclic code is a [linear block code](/ref/BlockCode) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.
 
@@ -50,26 +49,31 @@ class CyclicCode(BlockCode):
         7
     """
 
-    _length: int = field(default=None, repr=False, alias="length")
-    _generator_polynomial: BinaryPolynomial | int = field(
-        default=None, repr=False, alias="generator_polynomial"
-    )
-    _check_polynomial: BinaryPolynomial | int = field(
-        default=None, repr=False, alias="check_polynomial"
-    )
-    _systematic: bool = field(default=True, repr=False, alias="systematic")
-
-    def __attrs_post_init__(self) -> None:
-        if (
-            self._generator_polynomial is not None
-            and self.modulus % self.generator_polynomial != 0b0
-        ):
-            raise ValueError("'generator_polynomial' must be a factor of X^n + 1")
-        if (
-            self._check_polynomial is not None
-            and self.modulus % self.check_polynomial != 0b0
-        ):
-            raise ValueError("'check_polynomial' must be a factor of X^n + 1")
+    def __init__(
+        self,
+        length: int,
+        generator_polynomial: SupportsInt | None = None,
+        check_polynomial: SupportsInt | None = None,
+        systematic: bool = True,
+    ):
+        self._length = length
+        if generator_polynomial is None and check_polynomial is None:
+            raise ValueError(
+                "either 'generator_polynomial' or 'check_polynomial' must be provided"
+            )
+        if generator_polynomial is not None and check_polynomial is None:
+            self._generator_polynomial = BinaryPolynomial(generator_polynomial)
+            modulus, remainder = divmod(self.modulus, self.generator_polynomial)
+            if remainder != 0b0:
+                raise ValueError("'generator_polynomial' must be a factor of X^n + 1")
+            self._check_polynomial = modulus
+        elif generator_polynomial is None and check_polynomial is not None:
+            self._check_polynomial = BinaryPolynomial(check_polynomial)
+            modulus, remainder = divmod(self.modulus, self.check_polynomial)
+            if remainder != 0b0:
+                raise ValueError("'check_polynomial' must be a factor of X^n + 1")
+            self._generator_polynomial = modulus
+        self.systematic = systematic
 
     def __repr__(self) -> str:
         args = f"length={self.length}"
@@ -84,26 +88,6 @@ class CyclicCode(BlockCode):
     def length(self) -> int:
         return self._length
 
-    @cached_property
-    def generator_polynomial(self) -> BinaryPolynomial:
-        if self._generator_polynomial is None:
-            return self.modulus // self.check_polynomial
-        return BinaryPolynomial(self._generator_polynomial)
-
-    @cached_property
-    def check_polynomial(self) -> BinaryPolynomial:
-        if self._check_polynomial is None:
-            return self.modulus // self.generator_polynomial
-        return BinaryPolynomial(self._check_polynomial)
-
-    @property
-    def systematic(self) -> bool:
-        return self._systematic
-
-    @cached_property
-    def modulus(self) -> BinaryPolynomial:
-        return BinaryPolynomial.from_exponents([0, self.length])
-
     @property
     def dimension(self) -> int:
         return self.check_polynomial.degree
@@ -111,6 +95,22 @@ class CyclicCode(BlockCode):
     @property
     def redundancy(self) -> int:
         return self.generator_polynomial.degree
+
+    @property
+    def rate(self) -> float:
+        return super().rate
+
+    @cached_property
+    def generator_polynomial(self) -> BinaryPolynomial:
+        return self._generator_polynomial
+
+    @cached_property
+    def check_polynomial(self) -> BinaryPolynomial:
+        return self._check_polynomial
+
+    @cached_property
+    def modulus(self) -> BinaryPolynomial:
+        return BinaryPolynomial.from_exponents([0, self.length])
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.integer]:
@@ -127,6 +127,10 @@ class CyclicCode(BlockCode):
                 row_poly = X ** (m + i) + X ** (m + i) % self.generator_polynomial
                 generator_matrix[i] = row_poly.coefficients(width=n)
         return generator_matrix
+
+    @cached_property
+    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+        raise NotImplementedError
 
     @cached_property
     def check_matrix(self) -> npt.NDArray[np.integer]:
@@ -188,3 +192,31 @@ class CyclicCode(BlockCode):
             return s
 
         return check(input)
+
+    @cache
+    def codewords(self) -> npt.NDArray[np.integer]:
+        return super().codewords()
+
+    @cache
+    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+        return super().codeword_weight_distribution()
+
+    @cache
+    def minimum_distance(self) -> int:
+        return super().minimum_distance()
+
+    @cache
+    def coset_leaders(self) -> npt.NDArray[np.integer]:
+        return super().coset_leaders()
+
+    @cache
+    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+        return super().coset_leader_weight_distribution()
+
+    @cache
+    def packing_radius(self) -> int:
+        return super().packing_radius()
+
+    @cache
+    def covering_radius(self) -> int:
+        return super().covering_radius()

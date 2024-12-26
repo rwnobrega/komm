@@ -134,11 +134,10 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
 def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=5, mode=mode)
+    code2 = komm.BlockCode(generator_matrix=code.generator_matrix)
     for i in range(2**code.dimension):
         message = komm.int_to_bits(i, width=code.dimension)
-        encode1 = code.encode
-        encode2 = lambda u: komm.BlockCode.encode(code, u)
-        np.testing.assert_array_equal(encode1(message), encode2(message))
+        np.testing.assert_array_equal(code.encode(message), code2.encode(message))
 
 
 def test_terminated_convolutional_golay():

@@ -1,14 +1,13 @@
 import operator
-from functools import cache, cached_property, reduce
-
-from attrs import frozen
+from dataclasses import dataclass
+from functools import cached_property, reduce
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement
 from .CyclicCode import CyclicCode
 
 
-@frozen
+@dataclass(eq=False)
 class BCHCode(CyclicCode):
     r"""
     Bose–Ray-Chaudhuri–Hocquenghem (BCH) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *binary BCH code* is a [cyclic code](/ref/CyclicCode) with generator polynomial given by
@@ -70,43 +69,35 @@ class BCHCode(CyclicCode):
     mu: int
     delta: int
 
-    def __attrs_post_init__(self) -> None:
-        if self.mu < 2:
+    def __post_init__(self) -> None:
+        if not self.mu >= 2:
             raise ValueError("'mu' must satisfy mu >= 2")
         if not 2 <= self.delta <= 2**self.mu - 1:
             raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
-        if self.phi(self.delta) in self.lcm_set:
+
+        def phi(i: int):
+            return (self.alpha**i).minimal_polynomial()
+
+        lcm_set = {phi(i) for i in range(1, self.delta)}
+        if phi(self.delta) in lcm_set:
             bose_distance = self.delta
-            while self.phi(bose_distance) in self.lcm_set:
+            while phi(bose_distance) in lcm_set:
                 bose_distance += 1
             raise ValueError(
                 f"'delta' must be a Bose distance (the next one is {bose_distance})"
             )
-
-    @property
-    def length(self) -> int:
-        return 2**self.mu - 1
-
-    @cached_property
-    def generator_polynomial(self) -> BinaryPolynomial:
-        return reduce(operator.mul, self.lcm_set)
+        length = 2**self.mu - 1
+        generator_polynomial = reduce(operator.mul, lcm_set)
+        super().__init__(length=length, generator_polynomial=generator_polynomial)
 
     @cached_property
     def field(self) -> FiniteBifield:
         return FiniteBifield(self.mu)
 
     @cached_property
-    def lcm_set(self) -> set[BinaryPolynomial]:
-        return {self.phi(i) for i in range(1, self.delta)}
-
-    @cached_property
     def alpha(self) -> FiniteBifieldElement[FiniteBifield]:
         # Since the default modulus is a primitive polynomial, alpha = X is a primitive element.
         return self.field(0b10)
-
-    @cache
-    def phi(self, i: int) -> BinaryPolynomial:
-        return (self.alpha**i).minimal_polynomial()
 
     def bch_syndrome(
         self, r_poly: BinaryPolynomial

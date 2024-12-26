@@ -5,7 +5,7 @@ from .ViterbiStreamDecoder import ViterbiStreamDecoder
 
 __all__ = [
     "ConvolutionalCode",
-    "ConvolutionalStreamEncoder",
     "TerminatedConvolutionalCode",
+    "ConvolutionalStreamEncoder",
     "ViterbiStreamDecoder",
 ]

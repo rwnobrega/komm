@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 from numpy.linalg import matrix_power
 
-from .._error_control_block import BlockCode
+from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import pseudo_inverse
 from .ConvolutionalCode import ConvolutionalCode
@@ -29,11 +29,15 @@ class TerminationStrategy(ABC):
     def codeword_length(self) -> int: ...
 
     @abstractmethod
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]: ...
+    def generator_matrix(
+        self, code: TerminatedConvolutionalCode
+    ) -> npt.NDArray[np.integer]: ...
 
 
 def _base_generator_matrix(
-    code: BlockCode, convolutional_code: ConvolutionalCode, num_blocks: int
+    code: TerminatedConvolutionalCode,
+    convolutional_code: ConvolutionalCode,
+    num_blocks: int,
 ) -> npt.NDArray[np.integer]:
     k0 = convolutional_code.num_input_bits
     n0 = convolutional_code.num_output_bits
@@ -58,7 +62,9 @@ class DirectTruncation(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
+    def generator_matrix(
+        self, code: TerminatedConvolutionalCode
+    ) -> npt.NDArray[np.integer]:
         h = self.num_blocks
         k0 = self.convolutional_code.num_input_bits
         n0 = self.convolutional_code.num_output_bits
@@ -84,7 +90,9 @@ class ZeroTermination(TerminationStrategy):
         m = self.convolutional_code.memory_order
         return (h + m) * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
+    def generator_matrix(
+        self, code: TerminatedConvolutionalCode
+    ) -> npt.NDArray[np.integer]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
     @cached_property
@@ -120,7 +128,9 @@ class TailBiting(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def generator_matrix(self, code: BlockCode) -> npt.NDArray[np.integer]:
+    def generator_matrix(
+        self, code: TerminatedConvolutionalCode
+    ) -> npt.NDArray[np.integer]:
         return _base_generator_matrix(code, self.convolutional_code, self.num_blocks)
 
     @cached_property

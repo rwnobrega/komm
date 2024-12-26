@@ -1,15 +1,14 @@
-import itertools as it
-from functools import cache, cached_property
+from dataclasses import dataclass
+from functools import cache, reduce
+from itertools import combinations, product
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
 from .BlockCode import BlockCode
-from .matrices import reed_muller_generator_matrix
 
 
-@frozen
+@dataclass(eq=False)
 class ReedMullerCode(BlockCode):
     r"""
     Reed–Muller code. It is a [linear block code](/ref/BlockCode) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
@@ -51,13 +50,12 @@ class ReedMullerCode(BlockCode):
     rho: int
     mu: int
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         if not 0 <= self.rho < self.mu:
             raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
-
-    @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
-        return reed_muller_generator_matrix(self.rho, self.mu)
+        super().__init__(
+            generator_matrix=reed_muller_generator_matrix(self.rho, self.mu)
+        )
 
     @cache
     def minimum_distance(self) -> int:
@@ -89,14 +87,34 @@ class ReedMullerCode(BlockCode):
         rho, mu = self.rho, self.mu
         reed_partitions: list[npt.NDArray[np.integer]] = []
         binary_vectors = [
-            np.fliplr(np.array(list(it.product([0, 1], repeat=ell)), dtype=int))
+            np.fliplr(np.array(list(product([0, 1], repeat=ell)), dtype=int))
             for ell in range(mu + 1)
         ]
         for ell in range(rho, -1, -1):
-            for indices in it.combinations(range(mu), ell):
+            for indices in combinations(range(mu), ell):
                 setI = np.array(indices, dtype=int)
                 setE = np.setdiff1d(np.arange(mu), indices, assume_unique=True)
                 setS = np.dot(binary_vectors[ell], 2**setI)
                 setQ = np.dot(binary_vectors[mu - ell], 2**setE)
                 reed_partitions.append(setS[np.newaxis] + setQ[np.newaxis].T)
         return reed_partitions
+
+
+def reed_muller_generator_matrix(rho: int, mu: int) -> npt.NDArray[np.integer]:
+    # See [LC04, p. 105–114]. Assumes 0 <= rho < mu.
+    v = np.empty((mu, 2**mu), dtype=int)
+    for i in range(mu):
+        block = np.hstack((
+            np.zeros(2 ** (mu - i - 1), dtype=int),
+            np.ones(2 ** (mu - i - 1), dtype=int),
+        ))
+        v[mu - i - 1] = np.tile(block, 2**i)
+
+    G_list: list[npt.NDArray[np.integer]] = []
+    for ell in range(rho, 0, -1):
+        for indices in combinations(range(mu), ell):
+            row = reduce(np.multiply, v[indices, :])
+            G_list.append(row)
+    G_list.append(np.ones(2**mu, dtype=int))
+
+    return np.array(G_list, dtype=int)

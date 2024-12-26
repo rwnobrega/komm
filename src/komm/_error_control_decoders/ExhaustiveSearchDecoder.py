@@ -4,7 +4,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_block import BlockCode
+from .._error_control_block.base import BlockCode
 from .._util.decorators import blockwise
 from . import base
 

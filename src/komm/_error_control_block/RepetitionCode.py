@@ -1,14 +1,14 @@
-import math
-from functools import cache, cached_property
+from dataclasses import dataclass
+from functools import cache
+from math import comb
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
 from .BlockCode import BlockCode
 
 
-@frozen
+@dataclass(eq=False)
 class RepetitionCode(BlockCode):
     r"""
     Repetition code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
@@ -48,9 +48,10 @@ class RepetitionCode(BlockCode):
 
     n: int
 
-    @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
-        return np.ones((1, self.n), dtype=int)
+    def __post_init__(self):
+        if not self.n >= 1:
+            raise ValueError("n must be a positive integer")
+        super().__init__(generator_matrix=np.ones((1, self.n), dtype=int))
 
     @cache
     def minimum_distance(self) -> int:
@@ -61,7 +62,7 @@ class RepetitionCode(BlockCode):
         n = self.n
         coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
         for w in range((n + 1) // 2):
-            coset_leader_weight_distribution[w] = math.comb(n, w)
+            coset_leader_weight_distribution[w] = comb(n, w)
         if n % 2 == 0:
-            coset_leader_weight_distribution[n // 2] = math.comb(n, n // 2) // 2
+            coset_leader_weight_distribution[n // 2] = comb(n, n // 2) // 2
         return coset_leader_weight_distribution

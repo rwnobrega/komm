@@ -1,27 +1,22 @@
-from functools import cached_property
+from dataclasses import dataclass
+from functools import cache, cached_property
 from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
-from typing_extensions import override
 
-from .._error_control_block.BlockCode import BlockCode
+from .._error_control_block import base
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.decorators import blockwise, vectorize
+from .._util.matrices import null_matrix, pseudo_inverse
+from . import terminations
 from .ConvolutionalCode import ConvolutionalCode
-from .terminations import (
-    DirectTruncation,
-    TailBiting,
-    TerminationStrategy,
-    ZeroTermination,
-)
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
 
 
-@frozen
-class TerminatedConvolutionalCode(BlockCode):
+@dataclass(eq=False)
+class TerminatedConvolutionalCode(base.BlockCode):
     r"""
     Terminated convolutional code. It is a [linear block code](/ref/BlockCode) obtained by terminating a $(n_0, k_0)$ [convolutional code](/ref/ConvolutionalCode). A total of $h$ information blocks (each containing $k_0$ information bits) is encoded. The dimension of the resulting block code is thus $k = h k_0$; its length depends on the termination mode employed. There are three possible termination modes:
 
@@ -76,42 +71,50 @@ class TerminatedConvolutionalCode(BlockCode):
 
     convolutional_code: ConvolutionalCode
     num_blocks: int
-    mode: TerminationMode = field(default="zero-termination")
+    mode: TerminationMode = "zero-termination"
 
-    def __attrs_post_init__(self):
-        if self.mode not in TerminationMode.__args__:
+    def __post_init__(self):
+        if not self.mode in TerminationMode.__args__:
             raise ValueError(
                 f"mode '{self.mode}' is unknown\n"
                 f"supported termination modes: {set(TerminationMode.__args__)}"
             )
 
     @cached_property
-    def _strategy(self) -> TerminationStrategy:
+    def _strategy(self) -> terminations.TerminationStrategy:
         return {
-            "direct-truncation": DirectTruncation,
-            "zero-termination": ZeroTermination,
-            "tail-biting": TailBiting,
+            "direct-truncation": terminations.DirectTruncation,
+            "zero-termination": terminations.ZeroTermination,
+            "tail-biting": terminations.TailBiting,
         }[self.mode](self.convolutional_code, self.num_blocks)
 
     @property
-    @override
     def length(self) -> int:
         return self._strategy.codeword_length()
 
     @property
-    @override
     def dimension(self) -> int:
         return self.num_blocks * self.convolutional_code.num_input_bits
 
     @property
-    @override
     def redundancy(self) -> int:
         return self.length - self.dimension
 
+    @property
+    def rate(self) -> float:
+        return super().rate
+
     @cached_property
-    @override
     def generator_matrix(self) -> npt.NDArray[np.integer]:
         return self._strategy.generator_matrix(self)
+
+    @cached_property
+    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+        return pseudo_inverse(self.generator_matrix)
+
+    @cached_property
+    def check_matrix(self) -> npt.NDArray[np.integer]:
+        return null_matrix(self.generator_matrix)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         k0 = self.convolutional_code.num_input_bits
@@ -129,3 +132,37 @@ class TerminatedConvolutionalCode(BlockCode):
             return v
 
         return encode(input)
+
+    def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        return super().inverse_encode(input)
+
+    def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        return super().check(input)
+
+    @cache
+    def codewords(self) -> npt.NDArray[np.integer]:
+        return super().codewords()
+
+    @cache
+    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+        return super().codeword_weight_distribution()
+
+    @cache
+    def minimum_distance(self) -> int:
+        return super().minimum_distance()
+
+    @cache
+    def coset_leaders(self) -> npt.NDArray[np.integer]:
+        return super().coset_leaders()
+
+    @cache
+    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+        return super().coset_leader_weight_distribution()
+
+    @cache
+    def packing_radius(self) -> int:
+        return super().packing_radius()
+
+    @cache
+    def covering_radius(self) -> int:
+        return super().covering_radius()

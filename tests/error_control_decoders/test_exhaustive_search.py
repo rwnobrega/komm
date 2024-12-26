@@ -49,16 +49,16 @@ def test_exhaustive_search_soft():
     )
 
 
-@pytest.mark.parametrize("w", range(23 + 1))
-@pytest.mark.parametrize("execution_number", range(10))
-def test_exhaustive_search_hard_golay(w, execution_number):
+def test_exhaustive_search_hard_golay():
     code = komm.GolayCode()
     decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-    r = np.zeros(23, dtype=int)
-    error_locations = np.random.choice(23, w, replace=False)
-    r[error_locations] ^= 1
-    u_hat = decoder(r)
-    if w <= 3:  # Golay code can correct up to 3 errors.
-        assert np.array_equal(u_hat, np.zeros(12, dtype=int))
-    else:  # Golay code cannot correct more than 3 errors.
-        assert not np.array_equal(u_hat, np.zeros(12, dtype=int))
+    for w in range(code.length + 1):
+        for _ in range(10):
+            r = np.zeros(23, dtype=int)
+            error_locations = np.random.choice(23, w, replace=False)
+            r[error_locations] ^= 1
+            u_hat = decoder(r)
+            if w <= 3:  # Golay code can correct up to 3 errors.
+                assert np.array_equal(u_hat, np.zeros(12, dtype=int))
+            else:  # Golay code cannot correct more than 3 errors.
+                assert not np.array_equal(u_hat, np.zeros(12, dtype=int))

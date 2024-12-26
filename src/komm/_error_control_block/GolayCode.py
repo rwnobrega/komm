@@ -1,14 +1,14 @@
-from functools import cache, cached_property
+from dataclasses import dataclass
+from functools import cache
 
 import numpy as np
 import numpy.typing as npt
-from attrs import frozen
 
-from .matrices import golay_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
+from .util import extended_parity_submatrix
 
 
-@frozen
+@dataclass(eq=False)
 class GolayCode(SystematicBlockCode):
     r"""
     Binary Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
@@ -59,10 +59,27 @@ class GolayCode(SystematicBlockCode):
 
     extended: bool = False
 
-    @cached_property
-    def parity_submatrix(self) -> npt.NDArray[np.integer]:
-        return golay_parity_submatrix(self.extended)
+    def __post_init__(self):
+        super().__init__(parity_submatrix=golay_parity_submatrix(self.extended))
 
     @cache
     def minimum_distance(self) -> int:
         return 8 if self.extended else 7
+
+
+def golay_parity_submatrix(extended: bool = False) -> npt.NDArray[np.integer]:
+    parity_submatrix = np.array([
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
+        [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1],
+        [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
+        [1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1],
+        [0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
+        [0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+        [1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1],
+        [1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1],
+        [1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1],
+    ])
+    return extended_parity_submatrix(parity_submatrix) if extended else parity_submatrix
