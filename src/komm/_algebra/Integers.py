@@ -1,14 +1,24 @@
-from attrs import field, frozen
 from typing_extensions import Self
 
 
-@frozen
 class Integer:
-    value: int = field(converter=int)
+    def __init__(self, value: int) -> None:
+        self.value = value
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.value})"
+
+    def __str__(self) -> str:
+        return str(self.value)
 
     @property
     def ambient(self) -> "Integers":
         return Integers()
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.value == other.value
 
     def __add__(self, other: Self) -> Self:
         return self.__class__(self.value + other.value)

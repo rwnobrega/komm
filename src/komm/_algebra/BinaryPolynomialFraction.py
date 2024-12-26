@@ -1,12 +1,11 @@
-from attrs import field as attrs_field
-from attrs import frozen
+from typing import Any
+
 from typing_extensions import Self
 
 from . import field
 from .BinaryPolynomial import BinaryPolynomial
 
 
-@frozen
 class BinaryPolynomialFraction:
     r"""
     Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two [binary polynomials](/ref/BinaryPolynomial).
@@ -24,24 +23,34 @@ class BinaryPolynomialFraction:
     The binary polynomial fractions form a *field*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), and exponentiation (`**`).
     """
 
-    numerator: BinaryPolynomial = attrs_field(
-        converter=BinaryPolynomial,
-    )
-    denominator: BinaryPolynomial = attrs_field(
-        converter=BinaryPolynomial,
-        default=BinaryPolynomial(0b1),
-    )
+    def __init__(self, numerator: Any, denominator: Any = 0b1) -> None:
+        self.numerator = BinaryPolynomial(numerator)
+        self.denominator = BinaryPolynomial(denominator)
+        self.__post_init__()
 
-    def __attrs_post_init__(self):
+    def __post_init__(self):
         if self.denominator == 0b0:
             raise ZeroDivisionError("denominator cannot be zero")
         gcd = BinaryPolynomial.gcd(self.numerator, self.denominator)
-        object.__setattr__(self, "numerator", self.numerator // gcd)
-        object.__setattr__(self, "denominator", self.denominator // gcd)
+        self.numerator //= gcd
+        self.denominator //= gcd
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.numerator}, {self.denominator})"
+
+    def __str__(self) -> str:
+        return str(self.numerator) + "/" + str(self.denominator)
 
     @property
     def ambient(self):
         return BinaryPolynomialFractions()
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return (
+            self.numerator == other.numerator and self.denominator == other.denominator
+        )
 
     def __add__(self, other: Self) -> Self:
         n = self.numerator * other.denominator + other.numerator * self.denominator
@@ -74,12 +83,6 @@ class BinaryPolynomialFraction:
 
     def inverse(self) -> Self:
         return self.__class__(self.denominator, self.numerator)
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.numerator}, {self.denominator})"
-
-    def __str__(self) -> str:
-        return str(self.numerator) + "/" + str(self.denominator)
 
 
 class BinaryPolynomialFractions:

@@ -1,10 +1,8 @@
-import functools
 from collections.abc import Sequence
-from typing import Generic, TypeVar
+from functools import reduce
+from typing import Any, Generic, TypeVar
 
 import numpy as np
-from attrs import field as attrs_field
-from attrs import frozen
 from typing_extensions import Self
 
 from . import field
@@ -13,10 +11,24 @@ from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
 F = TypeVar("F", bound="FiniteBifield")
 
 
-@frozen
 class FiniteBifieldElement(Generic[F]):
-    ambient: F
-    value: BinaryPolynomial = attrs_field(converter=BinaryPolynomial)
+    def __init__(self, ambient: F, value: Any) -> None:
+        self.ambient = ambient
+        self.value = BinaryPolynomial(value)
+
+    def __repr__(self) -> str:
+        return bin(self.value.value)
+
+    def __str__(self) -> str:
+        return bin(self.value.value)
+
+    def __hash__(self) -> int:
+        return hash(self.value)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.ambient == other.ambient and self.value == other.value
 
     def check_same_ambient(self, other: Self):
         if self.ambient != other.ambient:
@@ -78,14 +90,8 @@ class FiniteBifieldElement(Generic[F]):
     def minimal_polynomial(self) -> BinaryPolynomial:
         one = self.ambient.one
         monomials = [np.array([y, one], dtype=object) for y in self.conjugates()]
-        coefficients: list[Self] = list(functools.reduce(np.convolve, monomials))
+        coefficients: list[Self] = list(reduce(np.convolve, monomials))
         return BinaryPolynomial.from_coefficients([c.value.value for c in coefficients])
-
-    def __repr__(self) -> str:
-        return bin(self.value.value)
-
-    def __str__(self) -> str:
-        return bin(self.value.value)
 
 
 class FiniteBifield:

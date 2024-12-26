@@ -1,10 +1,9 @@
-import functools
 import operator
-from typing import TypeVar
+from functools import reduce
+from typing import Any, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-from attrs import field, frozen
 from typing_extensions import Self
 
 from .._util.bit_operations import bits_to_int, int_to_bits
@@ -14,7 +13,6 @@ from .Integers import prime_factors
 T = TypeVar("T", bound=ring.RingElement)
 
 
-@frozen
 class BinaryPolynomial:
     r"""
     Binary polynomial. A *binary polynomial* is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \\{ 0, 1 \\}$.
@@ -51,7 +49,20 @@ class BinaryPolynomial:
         BinaryPolynomial(0b100010101)
     """
 
-    value: int = field(converter=int)
+    def __init__(self, value: Any) -> None:
+        self.value = int(value)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.value:#b})"
+
+    def __str__(self) -> str:
+        return bin(self.value)
+
+    def __int__(self) -> int:
+        return self.value
+
+    def __hash__(self) -> int:
+        return self.value
 
     @property
     def ambient(self):
@@ -84,12 +95,6 @@ class BinaryPolynomial:
             BinaryPolynomial(0b11010)
         """
         return cls(bits_to_int(np.bincount(exponents)))
-
-    def __int__(self) -> int:
-        return self.value
-
-    def __hash__(self) -> int:
-        return self.value
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, int):
@@ -215,7 +220,7 @@ class BinaryPolynomial:
         Examples:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.evaluate(komm.Integer(7))  # same as 7**4 + 7**3 + 7
-            Integer(value=2751)
+            Integer(2751)
         """
         return ring.binary_horner(self.coefficients(), point)
 
@@ -273,12 +278,6 @@ class BinaryPolynomial:
                 return False
         return True
 
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.value:#b})"
-
-    def __str__(self) -> str:
-        return bin(self.value)
-
     @classmethod
     def xgcd(cls, poly1: Self, poly2: Self) -> tuple[Self, Self, Self]:
         r"""
@@ -291,14 +290,14 @@ class BinaryPolynomial:
         r"""
         Computes the greatest common divisor (gcd) of the arguments.
         """
-        return functools.reduce(domain.gcd, poly_list)
+        return reduce(domain.gcd, poly_list)
 
     @classmethod
     def lcm(cls, *poly_list: Self) -> Self:
         r"""
         Computes the least common multiple (lcm) of the arguments.
         """
-        return functools.reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
+        return reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
 
 
 class BinaryPolynomials:
