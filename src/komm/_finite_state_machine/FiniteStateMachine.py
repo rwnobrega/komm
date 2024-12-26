@@ -140,7 +140,7 @@ class FiniteStateMachine:
             >>> output_sequence
             array([3, 2, 2, 0, 1])
             >>> final_state
-            np.int64(2)
+            2
         """
         output_sequence = np.empty_like(input_sequence, dtype=int)
         s = initial_state
@@ -148,7 +148,7 @@ class FiniteStateMachine:
             y = self.outputs[s, x]
             s = self.next_states[s, x]
             output_sequence[t] = y
-        final_state = s
+        final_state = int(s)
         return output_sequence, final_state
 
     def viterbi(
