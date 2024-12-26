@@ -6,7 +6,6 @@ readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
 license = { text = "GPL-3.0-only" }
 dependencies = [
-    "attrs>=24.2.0",
     "numpy>=2.1.1",
     "tqdm>=4.67.0",
     "typing-extensions>=4.12.0"
