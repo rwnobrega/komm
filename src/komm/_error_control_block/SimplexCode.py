@@ -31,7 +31,7 @@ class SimplexCode(SystematicBlockCode):
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
         extended: Whether to use the extended version of the Simplex code. Default is `False`.
 
-    This function constructs the code in systematic form, with the information set on the left.
+    This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 
     Examples:
         >>> code = komm.SimplexCode(3)

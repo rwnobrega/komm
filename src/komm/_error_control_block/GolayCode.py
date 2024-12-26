@@ -41,7 +41,7 @@ class GolayCode(SystematicBlockCode):
     Attributes:
         extended: If `True`, constructs the code in extended version. The default value is `False`.
 
-    This function returns the code in systematic form, with the information set on the left.
+    This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 
     Examples:
         >>> code = komm.GolayCode()

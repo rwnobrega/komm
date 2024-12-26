@@ -37,7 +37,7 @@ class HammingCode(SystematicBlockCode):
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
         extended: Whether to use the extended version of the Hamming code. Default is `False`.
 
-    This function returns the code in systematic form, with the information set on the left.
+    This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 
     Examples:
         >>> code = komm.HammingCode(3)
