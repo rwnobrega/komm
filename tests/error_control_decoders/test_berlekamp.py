@@ -29,18 +29,14 @@ def test_berlekamp_lin_costello():
 
 
 @pytest.mark.parametrize("mu, deltas", [(2, [3]), (3, [3, 7]), (4, [3, 5, 7, 15])])
-@pytest.mark.parametrize("execution_number", range(10))
-def test_berlekamp_error_correcting_capability(mu, deltas, execution_number):
+def test_berlekamp_error_correcting_capability(mu, deltas):
     for delta in deltas:
         code = komm.BCHCode(mu, delta)
-        d = code.minimum_distance()
         decoder = komm.BerlekampDecoder(code)
-        for w in range((d - 1) // 2 + 1):
-            r = np.zeros(code.length, dtype=int)
-            error_locations = np.random.choice(code.length, w, replace=False)
-            r[error_locations] ^= 1
-            print(r)
-            assert np.array_equal(
-                decoder(r),
-                np.zeros(code.dimension, dtype=int),
-            )
+        for w in range((delta - 1) // 2 + 1):
+            for _ in range(10):
+                r = np.zeros(code.length, dtype=int)
+                error_locations = np.random.choice(code.length, w, replace=False)
+                r[error_locations] ^= 1
+                print(r)
+                assert np.array_equal(decoder(r), np.zeros(code.dimension, dtype=int))
