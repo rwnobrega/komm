@@ -460,7 +460,21 @@
                                       <a href="../ScalarQuantizer/" class="md-nav__link"><span class="md-ellipsis">ScalarQuantizer</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">LloydMaxQuantizer</span></a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">LloydMaxQuantizer</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">LloydMaxQuantizer</span></a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                          </li>
+                                        </ul>
+                                      </nav>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../UniformQuantizer/" class="md-nav__link"><span class="md-ellipsis">UniformQuantizer</span></a>
@@ -531,16 +545,29 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#levels" class="md-nav__link"><span class="md-ellipsis">levels</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#thresholds" class="md-nav__link"><span class="md-ellipsis">thresholds</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
         <div class="md-content" data-md-component="content">
           <article class="md-content__inner md-typeset">
             <h1 id="kommlloydmaxquantizer">komm.LloydMaxQuantizer</h1>
-            <div class="doc doc-object doc-function">
+            <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Lloyd–Max scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> that minimizes the mean-squared error (MSE) between the input signal $X$ and its quantized version. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 9.6.1</cite>.</p>
+                <p>Lloyd–Max scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> that minimizes the mean-squared error (<abbr title="mean-squared error">MSE</abbr>) between the input signal $X$ and its quantized version. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 9.6.1</cite>.</p>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
@@ -565,11 +592,7 @@
                 <p><span class="doc-section-title">Examples:</span></p>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">uniform_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">input_pdf</span><span class="o">=</span><span class="n">uniform_pdf</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span><span class="n">input_pdf</span><span class="o">=</span><span class="n">uniform_pdf</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
@@ -578,16 +601,74 @@
                 </div>
                 <div class="highlight">
                   <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gaussian_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span><span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([-2.152, -1.344, -0.756, -0.245,  0.245,  0.756,  1.344,  2.152])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([-1.748, -1.05 , -0.501, -0.   ,  0.501,  1.05 ,  1.748])</span>
 </code></pre>
+                </div>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="levels" class="doc doc-heading"><code class="highlight language-python"><span class="n">levels</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gaussian_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span><span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([-2.152, -1.344, -0.756, -0.245,  0.245,  0.756,  1.344,  2.152])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="thresholds" class="doc doc-heading"><code class="highlight language-python"><span class="n">thresholds</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gaussian_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span><span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([-1.748, -1.05 , -0.501, -0.   ,  0.501,  1.05 ,  1.748])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
+                    <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Quantizes the input signal.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The input signal $x$ to be quantized.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The quantized signal $y$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gaussian_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span><span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0.245, 0.756, 2.152, 2.152, 2.152, 2.152, 2.152, 2.152])</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -167,7 +167,30 @@
                                 <a href="../BinarySymmetricChannel/" class="md-nav__link"><span class="md-ellipsis">BinarySymmetricChannel</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">BinaryErasureChannel</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">BinaryErasureChannel</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">BinaryErasureChannel</span></a>
+                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                    </li>
+                                  </ul>
+                                </nav>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../ZChannel/" class="md-nav__link"><span class="md-ellipsis">ZChannel</span></a>
@@ -531,7 +554,29 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -552,9 +597,24 @@
                 </ul>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
+                    <h2 id="input_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The channel input cardinality $|\mathcal{X}|$.</p>
+                      <p>For the <abbr title="binary erasure channel">BEC</abbr>, it is given by $|\mathcal{X}| = 2$.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="output_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">output_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The channel output cardinality $|\mathcal{Y}|$.</p>
+                      <p>For the <abbr title="binary erasure channel">BEC</abbr>, it is given by $|\mathcal{Y}| = 3$.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
                     <h2 id="transition_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">transition_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
-                      <p>The transition probability matrix of the channel, given by $$ p_{Y \mid X} = \begin{bmatrix} 1 - \epsilon & 0 & \epsilon \\ 0 & 1 - \epsilon & \epsilon \end{bmatrix}. $$</p>
+                      <p>The channel transition probability matrix $p_{Y \mid X}$.</p>
+                      <p>For the <abbr title="binary erasure channel">BEC</abbr>, it is given by $$ p_{Y \mid X} = \begin{bmatrix} 1 - \epsilon & 0 & \epsilon \\ 0 & 1 - \epsilon & \epsilon \end{bmatrix}. $$</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
@@ -568,9 +628,32 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by $$ \mathrm{I}(X ; Y) = (1 - \epsilon) \, \Hb(\pi), $$ in bits, where $\pi = \Pr[X = 1]$, and $\Hb$ is the <a href="/ref/binary_entropy">binary entropy function</a>.</p>
+                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.</p>
                       <p><strong>Parameters:</strong></p>
-                      <p>Same as the <a href="/ref/DiscreteMemorylessChannel/#mutual_information">corresponding method</a> of the general class.</p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input_pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The probability mass function $p_X$ of the channel input $X$. It must be a valid <abbr title="probability mass function">pmf</abbr>, that is, all of its values must be non-negative and sum up to $1$.</p>
+                          </div>
+                        </li>
+                        <li class="field-body">
+                          <b><code>base</code></b> <span class="doc-param-annotation">(<code><span title="komm._util.information_theory.LogBase">LogBase</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The base of the logarithm to be used. It must be a positive float or the string <code>'e'</code>. The default value is <code>2.0</code>.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <span class="doc-param-annotation"><code>float</code></span> –
+                          <div class="doc-md-description">
+                            <p>The mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p>For the <abbr title="binary erasure channel">BEC</abbr>, it is given by $$ \mathrm{I}(X ; Y) = (1 - \epsilon) \, \Hb(\pi), $$ in bits, where $\pi = \Pr[X = 1]$, and $\Hb$ is the <a href="/ref/binary_entropy">binary entropy function</a>.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
@@ -583,7 +666,26 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the channel capacity $C$. It is given by $$ C = 1 - \epsilon, $$ in bits.</p>
+                      <p>Returns the channel capacity $C$.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>base</code></b> <span class="doc-param-annotation">(<code><span title="komm._util.information_theory.LogBase">LogBase</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The base of the logarithm to be used. It must be a positive float or the string <code>'e'</code>. The default value is <code>2.0</code>.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <span class="doc-param-annotation"><code>float</code></span> –
+                          <div class="doc-md-description">
+                            <p>The channel capacity $C$.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p>For the <abbr title="binary erasure channel">BEC</abbr>, it is given by $$ C = 1 - \epsilon, $$ in bits.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bec</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinaryErasureChannel</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
@@ -596,29 +698,25 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
                     <div class="doc doc-contents">
-                      <div class="doc doc-object doc-function">
-                        <div class="doc doc-contents first">
-                          <p>Transmits the input sequence through the channel and returns the output sequence.</p>
-                          <p><strong>Parameters:</strong></p>
-                          <ul>
-                            <li class="field-body">
-                              <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
-                              <div class="doc-md-description">
-                                <p>The input sequence.</p>
-                              </div>
-                            </li>
-                          </ul>
-                          <p><strong>Returns:</strong></p>
-                          <ul>
-                            <li class="field-body">
-                              <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
-                              <div class="doc-md-description">
-                                <p>The output sequence.</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+                      <p>Transmits the input sequence through the channel and returns the output sequence.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The input sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The output sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>

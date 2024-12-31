@@ -541,6 +541,12 @@
             <div class="doc doc-object doc-function">
               <div class="doc doc-contents first">
                 <p>Binary Tunstall code. It is an optimal (minimal expected rate) <a href="/ref/VariableToFixedCode">variable-to-fixed length code</a> for a given probability mass function. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 3.7</cite>.</p>
+                <details class="notes" open>
+                  <summary>
+                    Notes
+                  </summary>
+                  <p>Tunstall codes are always <a href="/ref/VariableToFixedCode/#is_prefix_free">prefix-free</a> (hence <a href="/ref/VariableToFixedCode/#is_uniquely_encodable">uniquely encodable</a>) and <a href="/ref/VariableToFixedCode/#is_fully_covering">fully covering</a>.</p>
+                </details>
                 <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">

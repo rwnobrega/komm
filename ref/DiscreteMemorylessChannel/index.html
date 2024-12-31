@@ -161,7 +161,30 @@
                                 <a href="../AWGNChannel/" class="md-nav__link"><span class="md-ellipsis">AWGNChannel</span></a>
                               </li>
                               <li class="md-nav__item md-nav__item--active">
-                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
+                                <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">DiscreteMemorylessChannel</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">DiscreteMemorylessChannel</span></a>
+                                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                  <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                    <li class="md-nav__item">
+                                      <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                                    </li>
+                                  </ul>
+                                </nav>
                               </li>
                               <li class="md-nav__item">
                                 <a href="../BinarySymmetricChannel/" class="md-nav__link"><span class="md-ellipsis">BinarySymmetricChannel</span></a>
@@ -531,7 +554,29 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#transition_matrix" class="md-nav__link"><span class="md-ellipsis">transition_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#input_cardinality" class="md-nav__link"><span class="md-ellipsis">input_cardinality</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#output_cardinality" class="md-nav__link"><span class="md-ellipsis">output_cardinality</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#mutual_information" class="md-nav__link"><span class="md-ellipsis">mutual_information()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#capacity" class="md-nav__link"><span class="md-ellipsis">capacity()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#__call__" class="md-nav__link"><span class="md-ellipsis">__call__()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -552,6 +597,12 @@
                 </ul>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-attribute">
+                    <h2 id="transition_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">transition_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The channel transition probability matrix $p_{Y \mid X}$.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
                     <h2 id="input_cardinality" class="doc doc-heading"><code class="highlight language-python"><span class="n">input_cardinality</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The channel input cardinality $|\mathcal{X}|$.</p>
@@ -566,7 +617,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="mutual_information" class="doc doc-heading"><code class="highlight language-python"><span class="n">mutual_information</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel. It is given by $$ \mathrm{I}(X ; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y), $$ where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 2</cite>.</p>
+                      <p>Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
@@ -591,6 +642,7 @@
                           </div>
                         </li>
                       </ul>
+                      <p>The mutual information is given by $$ \mathrm{I}(X; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y), $$ where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 2</cite>.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">]])</span>
@@ -607,7 +659,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="capacity" class="doc doc-heading"><code class="highlight language-python"><span class="n">capacity</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns the channel capacity $C$. It is given by $C = \max_{p_X} \mathrm{I}(X;Y)$. This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 10.8</cite>.</p>
+                      <p>Returns the channel capacity $C$.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
@@ -626,6 +678,7 @@
                           </div>
                         </li>
                       </ul>
+                      <p>The channel capacity is given by $$ C = \max_{p_X} \mathrm{I}(X; Y). $$ This method computes the channel capacity via the Arimoto–Blahut algorithm. See <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 10.8</cite>.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessChannel</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">]])</span>
@@ -642,29 +695,25 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="__call__" class="doc doc-heading"><code class="highlight language-python"><span class="fm">__call__</span></code></h2>
                     <div class="doc doc-contents">
-                      <div class="doc doc-object doc-function">
-                        <div class="doc doc-contents first">
-                          <p>Transmits the input sequence through the channel and returns the output sequence.</p>
-                          <p><strong>Parameters:</strong></p>
-                          <ul>
-                            <li class="field-body">
-                              <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
-                              <div class="doc-md-description">
-                                <p>The input sequence.</p>
-                              </div>
-                            </li>
-                          </ul>
-                          <p><strong>Returns:</strong></p>
-                          <ul>
-                            <li class="field-body">
-                              <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
-                              <div class="doc-md-description">
-                                <p>The output sequence.</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+                      <p>Transmits the input sequence through the channel and returns the output sequence.</p>
+                      <p><strong>Parameters:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>input</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The input sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The output sequence.</p>
+                          </div>
+                        </li>
+                      </ul>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>

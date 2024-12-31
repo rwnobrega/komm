@@ -210,7 +210,15 @@
                                       <a href="../SingleParityCheckCode/" class="md-nav__link"><span class="md-ellipsis">SingleParityCheckCode</span></a>
                                     </li>
                                     <li class="md-nav__item md-nav__item--active">
-                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">CordaroWagnerCode</span></a>
+                                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc"> <label class="md-nav__link md-nav__link--active" for="__toc"><span class="md-ellipsis">CordaroWagnerCode</span> <span class="md-nav__icon md-icon"></span></label> <a href="./" class="md-nav__link md-nav__link--active"><span class="md-ellipsis">CordaroWagnerCode</span></a>
+                                      <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                                        <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                                        <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                                          <li class="md-nav__item">
+                                            <a href="#minimum_distance" class="md-nav__link"><span class="md-ellipsis">minimum_distance()</span></a>
+                                          </li>
+                                        </ul>
+                                      </nav>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../ReedMullerCode/" class="md-nav__link"><span class="md-ellipsis">ReedMullerCode</span></a>
@@ -531,7 +539,14 @@
         <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
           <div class="md-sidebar__scrollwrap">
             <div class="md-sidebar__inner">
-              <nav class="md-nav md-nav--secondary" aria-label="Table of contents"></nav>
+              <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                <label class="md-nav__title" for="__toc"><span class="md-nav__icon md-icon"></span> Table of contents</label>
+                <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+                  <li class="md-nav__item">
+                    <a href="#minimum_distance" class="md-nav__link"><span class="md-ellipsis">minimum_distance()</span></a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -572,7 +587,21 @@
 <span class="go">array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])</span>
 </code></pre>
                 </div>
-                <div class="doc doc-children"></div>
+                <div class="doc doc-children">
+                  <div class="doc doc-object doc-function">
+                    <h2 id="minimum_distance" class="doc doc-heading"><code class="highlight language-python"><span class="n">minimum_distance</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>Returns the minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BlockCode</span><span class="p">(</span><span class="n">generator_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </article>

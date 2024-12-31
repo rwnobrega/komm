@@ -203,6 +203,15 @@
                                             <a href="#rate" class="md-nav__link"><span class="md-ellipsis">rate</span></a>
                                           </li>
                                           <li class="md-nav__item">
+                                            <a href="#generator_matrix" class="md-nav__link"><span class="md-ellipsis">generator_matrix</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#generator_matrix_right_inverse" class="md-nav__link"><span class="md-ellipsis">generator_matrix_right_inverse</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
+                                            <a href="#check_matrix" class="md-nav__link"><span class="md-ellipsis">check_matrix</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
                                             <a href="#encode" class="md-nav__link"><span class="md-ellipsis">encode()</span></a>
                                           </li>
                                           <li class="md-nav__item">
@@ -594,6 +603,15 @@
                     <a href="#rate" class="md-nav__link"><span class="md-ellipsis">rate</span></a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="#generator_matrix" class="md-nav__link"><span class="md-ellipsis">generator_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#generator_matrix_right_inverse" class="md-nav__link"><span class="md-ellipsis">generator_matrix_right_inverse</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#check_matrix" class="md-nav__link"><span class="md-ellipsis">check_matrix</span></a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="#encode" class="md-nav__link"><span class="md-ellipsis">encode()</span></a>
                   </li>
                   <li class="md-nav__item">
@@ -707,6 +725,24 @@
 <span class="go">0.4</span>
 </code></pre>
                       </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="generator_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The generator matrix $G \in \mathbb{B}^{k \times n}$ of the code.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="generator_matrix_right_inverse" class="doc doc-heading"><code class="highlight language-python"><span class="n">generator_matrix_right_inverse</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The right-inverse $G^+ \in \mathbb{B}^{n \times k}$ of the generator matrix.</p>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="check_matrix" class="doc doc-heading"><code class="highlight language-python"><span class="n">check_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-cached"><code>cached</code></small> <small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The check matrix $H \in \mathbb{B}^{m \times n}$ of the code.</p>
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">

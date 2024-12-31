@@ -568,10 +568,10 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Discrete memoryless source (<abbr title="discrete memoryless source">DMS</abbr>). It is defined by an <em>alphabet</em> $\mathcal{X}$ and a <em>probability mass function</em> (<abbr title="probability mass function">pmf</abbr>) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$. The <abbr title="probability mass function">pmf</abbr> $p_X$ gives the probability of the source emitting the symbol $X = x$.</p>
-                <p><strong>Attributes:</strong></p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>)</span> –
+                    <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.</p>
                     </div>
