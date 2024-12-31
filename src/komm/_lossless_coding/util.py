@@ -63,17 +63,13 @@ def parse_prefix_free(
     allow_incomplete: bool,
 ) -> npt.NDArray[np.integer]:
     output: list[int] = []
-    i = 0
-    while i < len(input):
-        j = 1
-        while i + j <= len(input):
-            try:
-                key = tuple(input[i : i + j])
-                output.extend(dictionary[key])
-                break
-            except KeyError:
-                j += 1
-        i += j
+    i, j = 0, 0
+    while j < len(input):
+        j += 1
+        key = tuple(input[i:j])
+        if key in dictionary:
+            output.extend(dictionary[key])
+            i = j
 
     if i == len(input):
         return np.asarray(output)

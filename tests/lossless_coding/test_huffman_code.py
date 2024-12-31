@@ -81,10 +81,14 @@ def test_huffman_code_invalid_call():
         komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore
 
 
-@pytest.mark.parametrize("n", range(2, 16))
-def test_huffman_code_encode_decode(n):
-    integers = np.random.randint(0, 100, n)
+@pytest.mark.parametrize("source_cardinality", [2, 3, 4, 5, 6])
+@pytest.mark.parametrize("source_block_size", [1, 2])
+@pytest.mark.parametrize("policy", ["high", "low"])
+def test_huffman_code_encode_decode(source_cardinality, source_block_size, policy):
+    integers = np.random.randint(0, 100, source_cardinality)
     pmf = integers / integers.sum()
-    code = komm.HuffmanCode(pmf)
-    x = np.random.randint(0, n - 1, 1000)
-    assert np.array_equal(code.decode(code.encode(x)), x)
+    dms = komm.DiscreteMemorylessSource(pmf)
+    code = komm.HuffmanCode(pmf, source_block_size=source_block_size, policy=policy)
+    x = dms(1000 * source_block_size)
+    x_hat = code.decode(code.encode(x))
+    assert np.array_equal(x_hat, x)
