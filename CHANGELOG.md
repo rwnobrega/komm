@@ -3,6 +3,12 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.15.1 (2024-12-31)
+
+### Fixed
+
+- Fixed `parse_prefix_free` when `allow_incomplete=True`.
+
 ## v0.15.0 (2024-12-30)
 
 ### Fixed
