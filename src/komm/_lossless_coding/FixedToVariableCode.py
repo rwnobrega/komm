@@ -1,30 +1,36 @@
-import itertools as it
-from dataclasses import dataclass
+from itertools import count, product
 
 import numpy as np
 import numpy.typing as npt
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
-from .util import Word, is_prefix_free, is_uniquely_decodable, parse_prefix_free
+from .util import (
+    Word,
+    is_prefix_free,
+    is_uniquely_decipherable,
+    parse_fixed_length,
+    parse_prefix_free,
+)
 
 
-@dataclass
 class FixedToVariableCode:
     r"""
     Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an injective *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
-
-    Attributes:
-        source_cardinality: The source cardinality $S$.
-        target_cardinality: The target cardinality $T$.
-        source_block_size: The source block size $k$.
-        enc_mapping: The encoding mapping $\Enc$ of the code. Must be a dictionary of length $S^k$ whose keys are $k$-tuples of integers in $[0:S)$ and whose values are distinct non-empty tuples of integers in $[0:T)$.
     """
 
-    source_cardinality: int
-    target_cardinality: int
-    source_block_size: int
-    enc_mapping: dict[Word, Word]
+    def __init__(
+        self,
+        source_cardinality: int,
+        target_cardinality: int,
+        source_block_size: int,
+        enc_mapping: dict[Word, Word],
+    ) -> None:
+        self._source_cardinality = source_cardinality
+        self._target_cardinality = target_cardinality
+        self._source_block_size = source_block_size
+        self._enc_mapping = enc_mapping
+        self.__post_init__()
 
     def __post_init__(self) -> None:
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
@@ -37,7 +43,7 @@ class FixedToVariableCode:
             raise ValueError("'target_cardinality': must be at least 2")
         if not k >= 1:
             raise ValueError("'source_block_size': must be at least 1")
-        if set(domain) != set(it.product(range(S), repeat=k)):
+        if set(domain) != set(product(range(S), repeat=k)):
             raise ValueError(f"'enc_mapping': invalid domain")
         if not all(
             all(0 <= x < T for x in word) and len(word) > 0 for word in codomain
@@ -46,31 +52,47 @@ class FixedToVariableCode:
         if len(set(codomain)) != len(codomain):
             raise ValueError(f"'enc_mapping': non-injective mapping")
 
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"source_cardinality={self.source_cardinality}",
+            f"target_cardinality={self.target_cardinality}",
+            f"source_block_size={self.source_block_size}",
+            f"enc_mapping={self.enc_mapping}",
+        ])
+        return f"{self.__class__.__name__}({args})"
+
     @classmethod
     def from_enc_mapping(cls, enc_mapping: dict[Word, Word]) -> Self:
         r"""
         Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.
 
         Parameters:
-            enc_mapping: The encoding mapping $\Enc$. See the corresponding attribute for more details.
+            enc_mapping: The encoding mapping $\Enc$. Must be a dictionary whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are distinct non-empty tuples of integers in $[0:T)$.
+
+        Notes:
+            The source block size $k$ is inferred from the domain of the encoding mapping, and the source and target cardinalities $S$ and $T$ are inferred from the maximum values in the domain and co-domain, respectively.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_enc_mapping({(0,): (0,), (1,): (1,0), (2,): (1,1)})
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0,): (0,),
+            ...     (1,): (1, 0),
+            ...     (2,): (1, 1),
+            ... })
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
-            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
-            {(0,): (0,),
-             (1,): (1, 0),
-             (2,): (1, 1)}
+            >>> code.codewords
+            [(0,), (1, 0), (1, 1)]
 
-            >>> code = komm.FixedToVariableCode.from_enc_mapping({(0,0): (0,), (0,1): (1,0,0), (1,0): (1,1), (1,1): (1,0,1)})
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0, 0): (0,),
+            ...     (0, 1): (1, 1),
+            ...     (1, 0): (1, 1, 0),
+            ...     (1, 1): (1, 0, 1),
+            ... })
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (2, 2, 2)
-            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
-            {(0, 0): (0,),
-             (0, 1): (1, 0, 0),
-             (1, 0): (1, 1),
-             (1, 1): (1, 0, 1)}
+            >>> code.codewords
+            [(0,), (1, 1), (1, 1, 0), (1, 0, 1)]
         """
         domain, codomain = enc_mapping.keys(), enc_mapping.values()
         S = max(max(word) for word in domain) + 1
@@ -85,10 +107,17 @@ class FixedToVariableCode:
 
         Parameters:
             source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
-            codewords: The codewords of the code. See the [corresponding property](./#codewords) for more details.
+
+            codewords: The codewords of the code. Must be a list of length $S^k$ containing tuples of integers in $[0:T)$, where $T$ is the target cardinality of the code. The tuple in position $i$ must be equal to $\Enc(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $[0:S)^k$.
+
+        Notes:
+            The source block size $k$ is inferred from the length of the codewords, and the target cardinality $T$ is inferred from the maximum value in the codewords.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code = komm.FixedToVariableCode.from_codewords(
+            ...     source_cardinality=3,
+            ...     codewords=[(0,), (1,0), (1,1)],
+            ... )
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
             >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
@@ -96,32 +125,71 @@ class FixedToVariableCode:
              (1,): (1, 0),
              (2,): (1, 1)}
 
-            >>> code = komm.FixedToVariableCode.from_codewords(2, [(0,), (1,0,0), (1,1), (1,0,1)])
+            >>> code = komm.FixedToVariableCode.from_codewords(
+            ...     source_cardinality=2,
+            ...     codewords=[(0,), (1,1), (1,1,0), (1,0,1)]
+            ... )
             >>> (code.source_cardinality, code.target_cardinality, code.source_block_size)
             (2, 2, 2)
             >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
             {(0, 0): (0,),
-             (0, 1): (1, 0, 0),
-             (1, 0): (1, 1),
+             (0, 1): (1, 1),
+             (1, 0): (1, 1, 0),
              (1, 1): (1, 0, 1)}
         """
         S = source_cardinality
         T = max(max(codeword) for codeword in codewords) + 1
-        k = next(k for k in it.count(1) if S**k >= len(codewords))
-        enc_mapping = dict(zip(it.product(range(S), repeat=k), codewords))
+        k = next(k for k in count(1) if S**k >= len(codewords))
+        enc_mapping = dict(zip(product(range(S), repeat=k), codewords))
         return cls(S, T, k, enc_mapping)
 
     @property
-    def codewords(self) -> list[Word]:
+    def source_cardinality(self) -> int:
         r"""
-        The codewords of the code. It is a list of length $S^k$ containing tuples of integers in $[0:T)$. The tuple in position $i$ of `codewords` is equal to $\Enc(u)$, where $u$ is the $i$-th element in the lexicographic ordering of $[0:S)^k$.
+        The source cardinality $S$ of the code. It is the number of symbols in the source alphabet.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_enc_mapping({(0,): (0,), (1,): (1,0), (2,): (1,1)})
-            >>> code.codewords
-            [(0,), (1, 0), (1, 1)]
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.source_cardinality
+            3
         """
-        return list(self.enc_mapping.values())
+        return self._source_cardinality
+
+    @property
+    def target_cardinality(self) -> int:
+        r"""
+        The target cardinality $T$ of the code. It is the number of symbols in the target alphabet.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.target_cardinality
+            2
+        """
+        return self._target_cardinality
+
+    @property
+    def source_block_size(self) -> int:
+        r"""
+        The source block size $k$ of the code. It is the number of symbols in each source block.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.source_block_size
+            1
+        """
+        return self._source_block_size
+
+    @property
+    def enc_mapping(self) -> dict[Word, Word]:
+        r"""
+        The encoding mapping $\Enc$ of the code. It is a dictionary of length $S^k$ whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are the corresponding codewords.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.enc_mapping
+            {(0,): (0,), (1,): (1, 0), (2,): (1, 1)}
+        """
+        return self._enc_mapping
 
     @property
     def inv_enc_mapping(self) -> dict[Word, Word]:
@@ -130,19 +198,30 @@ class FixedToVariableCode:
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
-            >>> code.inv_enc_mapping  # doctest: +NORMALIZE_WHITESPACE
-            {(0,): (0,),
-             (1, 0): (1,),
-             (1, 1): (2,)}
+            >>> code.inv_enc_mapping
+            {(0,): (0,), (1, 0): (1,), (1, 1): (2,)}
         """
         return {v: k for k, v in self.enc_mapping.items()}
 
+    @property
+    def codewords(self) -> list[Word]:
+        r"""
+        The codewords of the code. They correspond to the image of the encoding mapping $\Enc$.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0,): (0,),
+            ...     (1,): (1, 0),
+            ...     (2,): (1, 1),
+            ... })
+            >>> code.codewords
+            [(0,), (1, 0), (1, 1)]
+        """
+        return list(self.enc_mapping.values())
+
     def is_uniquely_decodable(self) -> bool:
         r"""
-        Returns whether the code is uniquely decodable or not. A code is *uniquely decodable* if
-        $$
-            s_1 \cdots s_n \neq s'_1 \cdots s'_m \implies \Enc(s_1) \cdots \Enc(s_n) \neq \Enc(s'_1) \cdots \Enc(s'_m).
-        $$
+        Returns whether the code is uniquely decodable. A code is *uniquely decodable* if there is a unique way to parse any concatenation of codewords.
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
@@ -154,14 +233,14 @@ class FixedToVariableCode:
             True
 
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
-            >>> code.is_uniquely_decodable()
+            >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
             False
         """
-        return is_uniquely_decodable(self.codewords)
+        return is_uniquely_decipherable(self.codewords)
 
     def is_prefix_free(self) -> bool:
         r"""
-        Returns whether the code is prefix-free or not. A code is *prefix-free* if no codeword is a prefix of any other codeword.
+        Returns whether the code is prefix-free. A code is *prefix-free* if no codeword is a prefix of any other codeword.
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
@@ -182,7 +261,7 @@ class FixedToVariableCode:
         r"""
         Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
         $$
-            R = \frac{\bar{n}}{k},
+            R = \frac{\bar{n}}{k}\vphantom{\Bigg|},
         $$
         where $\bar{n}$ is the expected codeword length, assuming iid source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.
 
@@ -194,58 +273,98 @@ class FixedToVariableCode:
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
-            >>> code.rate([0.5, 0.25, 0.25])
+            >>> code.rate([1/2, 1/4, 1/4])
             np.float64(1.5)
         """
         pmf = PMF(pmf)
         k = self.source_block_size
-        probabilities = [np.prod(ps) for ps in it.product(pmf, repeat=k)]
+        probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
         lengths = [len(word) for word in self.codewords]
         return np.dot(lengths, probabilities) / k
 
-    def encode(self, source_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols using the code.
+        Encodes a sequence of source symbols using the code, which must be uniquely decodable.
 
         Parameters:
-            source_symbols: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
+            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code) and have a length that is a multiple of the source block size $k$.
 
         Returns:
-            The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
+            output: The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code).
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
-            >>> code.encode([1, 0, 1, 0, 2, 0])
-            array([1, 0, 0, 1, 0, 0, 1, 1, 0])
-        """
-        source_symbols = np.asarray(source_symbols)
-        k, enc = self.source_block_size, self.enc_mapping
-        return np.concatenate([enc[tuple(s)] for s in source_symbols.reshape(-1, k)])
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0, 0): (0,),
+            ...     (0, 1): (1, 1),
+            ...     (1, 0): (1, 0, 0),
+            ...     (1, 1): (1, 0, 1),
+            ... })
 
-    def decode(self, target_symbols: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        r"""
-        Decodes a sequence of target symbols using the code. Only implemented for prefix-free codes.
+            >>> code.encode([0, 1, 0, 0])
+            array([1, 1, 0])
 
-        Parameters:
-            target_symbols: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$, where $T$ is the target cardinality of the code.
-
-        Returns:
-            output: The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$, where $S$ is the source cardinality of the code.
-
-        Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
-            >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
-            array([1, 0, 1, 0, 2, 0])
-
-            >>> code = komm.FixedToVariableCode.from_codewords(2, [(0,), (1,0), (1,1), (1,1,0)])
-            >>> code.decode([1, 0, 0, 1, 0, 0, 1, 1, 0])
+            >>> code.encode([0, 1, 0])  # Not a multiple of the source block size
             Traceback (most recent call last):
             ...
-            NotImplementedError: decoding is not implemented for non-prefix-free codes
+            ValueError: length of 'input' must be a multiple of block size 2 (got 3)
+
+            >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
+            Traceback (most recent call last):
+            ...
+            ValueError: input contains invalid word
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
+            >>> code.encode([0, 1, 0])  # Code is not uniquely decodable
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not uniquely decodable
         """
+        if not self.is_uniquely_decodable():
+            raise ValueError("code is not uniquely decodable")
+        input = np.asarray(input)
+        return parse_fixed_length(input, self.enc_mapping, self.source_block_size)
+
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Decodes a sequence of target symbols using the code, which must be uniquely decodable.
+
+        Warning:
+            Decoding for non-prefix-free codes is not implemented yet.
+
+        Parameters:
+            input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code). Also, the sequence must be a concatenation of codewords (i.e., the output of the `encode` method).
+
+        Returns:
+            output: The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code) with a length that is a multiple of the source block size $k$.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0, 0): (0,),
+            ...     (0, 1): (1, 1),
+            ...     (1, 0): (1, 0, 0),
+            ...     (1, 1): (1, 0, 1),
+            ... })
+
+
+            >>> code.decode([1, 1, 0])
+            array([0, 1, 0, 0])
+
+            >>> code.decode([0, 0, 1])  # Not a concatenation of codewords
+            Traceback (most recent call last):
+            ...
+            ValueError: input contains invalid word
+
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
+            >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not uniquely decodable
+        """
+        if not self.is_uniquely_decodable():
+            raise ValueError("code is not uniquely decodable")
         if not self.is_prefix_free():
             raise NotImplementedError(
-                "decoding is not implemented for non-prefix-free codes"
+                "decoding for non-prefix-free codes is not implemented yet"
             )
-        target_symbols = np.asarray(target_symbols)
-        return parse_prefix_free(target_symbols, self.inv_enc_mapping)
+        input = np.asarray(input)
+        return parse_prefix_free(input, self.inv_enc_mapping, allow_incomplete=False)

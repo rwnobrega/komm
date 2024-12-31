@@ -18,6 +18,7 @@ def test_tunstall_code():
         (2,): (1, 1, 0),
     }
     assert np.isclose(code.rate(pmf), 3 / 1.96)
+    assert code.is_fully_covering()
 
 
 def test_tunstall_code_invalid_init():
@@ -25,3 +26,16 @@ def test_tunstall_code_invalid_init():
         komm.TunstallCode([0.5, 0.5, 0.1], 3)
     with pytest.raises(ValueError):
         komm.TunstallCode([0.5, 0.5], 0)
+
+
+@pytest.mark.parametrize("source_cardinality", range(2, 10))
+@pytest.mark.parametrize("target_block_size", range(1, 7))
+def test_random_tunstall_code(source_cardinality, target_block_size):
+    if 2**target_block_size < source_cardinality:  # Target block size too low.
+        return
+    for _ in range(10):
+        pmf = np.random.rand(source_cardinality)
+        pmf /= pmf.sum()
+        code = komm.TunstallCode(pmf, target_block_size)
+        assert code.is_prefix_free()
+        assert code.is_fully_covering()

@@ -162,10 +162,10 @@ def test_non_injective_enc_mapping():
         (3, [(0, 0), (1, 0), (0,)]),
     ],
 )
-def test_decoding_not_prefix_free(source_cardinality, codewords):
+def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
-    with pytest.raises(NotImplementedError):
-        code.decode([0, 0, 0, 0])
+    with pytest.raises(ValueError):
+        code.decode([0])
 
 
 @pytest.mark.parametrize(

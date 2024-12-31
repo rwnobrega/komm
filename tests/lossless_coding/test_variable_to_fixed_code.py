@@ -88,10 +88,7 @@ def test_rate():
 
 @pytest.mark.parametrize(
     "pmf",
-    [
-        [0.5, 0.5, 0.1],
-        [-0.4, 0.4, 1.0],
-    ],
+    [[0.5, 0.5, 0.1], [-0.4, 0.4, 1.0]],
 )
 def test_rate_invalid_pmf(pmf):
     code = komm.VariableToFixedCode.from_sourcewords(
@@ -112,15 +109,10 @@ def test_encoding_decoding():
     assert np.array_equal(code.decode(y), x)
 
 
-def test_invalid_encoding_input():
-    code = komm.VariableToFixedCode.from_sourcewords(3, [(0,), (1, 0), (1, 1, 0)])
-    assert np.array_equal(code.encode([1, 1, 0, 1, 0]), [2, 1])
-    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
-    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
-    assert np.array_equal(code.encode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
-    with pytest.raises(ValueError):  # Invalid codeword
-        code.encode([1, 1, 0, 1, 0, 1, 1, 1])
-    with pytest.raises(ValueError):  # Incomplete codeword
-        code.encode([1, 1, 0, 1, 0, 1])
-    with pytest.raises(ValueError):  # Invalid symbol
-        code.encode([1, 1, 0, 1, 0, 1, 3])
+def test_encoding_not_fully_covering():
+    # [Say06, Example 3.7.1]
+    code = komm.VariableToFixedCode.from_sourcewords(
+        2, [(0, 0, 0), (0, 1, 0), (0, 1), (1,)]
+    )
+    with pytest.raises(ValueError):  # Code is not fully covering
+        code.encode([0])

@@ -1,32 +1,36 @@
-import heapq
-import itertools as it
-import math
-from typing import Literal
+from itertools import product
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Self
-
-from .._util.information_theory import PMF
 
 Word = tuple[int, ...]
 
 
+def is_prefix_of(w1: Word, w2: Word) -> bool:
+    return len(w1) <= len(w2) and w2[: len(w1)] == w1
+
+
 def is_prefix_free(words: list[Word]) -> bool:
-    for c1, c2 in it.permutations(words, 2):
-        if c1[: len(c2)] == c2:
-            return False
+    words = sorted(words, key=len)
+    for i, w1 in enumerate(words):
+        for w2 in words[i + 1 :]:
+            if is_prefix_of(w1, w2):
+                return False
     return True
 
 
-def is_uniquely_decodable(words: list[Word]) -> bool:
+def is_uniquely_decipherable(words: list[Word]) -> bool:
     # Sardinas–Patterson algorithm. See [Say06, Sec. 2.4.1].
     augmented_words = set(words)
     while True:
         dangling_suffixes: set[Word] = set()
-        for c1, c2 in it.permutations(augmented_words, 2):
-            if c1[: len(c2)] == c2:
-                dangling_suffixes.add(c1[len(c2) :])
+        for w1, w2 in product(set(words), augmented_words):
+            if w1 == w2:
+                continue
+            if is_prefix_of(w1, w2):
+                dangling_suffixes.add(w2[len(w1) :])
+            elif is_prefix_of(w2, w1):
+                dangling_suffixes.add(w1[len(w2) :])
         if dangling_suffixes & set(words):
             return False
         if dangling_suffixes <= augmented_words:
@@ -34,88 +38,95 @@ def is_uniquely_decodable(words: list[Word]) -> bool:
         augmented_words |= dangling_suffixes
 
 
-def parse_prefix_free(
-    input_sequence: npt.NDArray[np.integer], dictionary: dict[Word, Word]
+def parse_fixed_length(
+    input: npt.NDArray[np.integer],
+    dictionary: dict[Word, Word],
+    block_size: int,
 ) -> npt.NDArray[np.integer]:
-    max_key_length = max(len(word) for word in dictionary.keys())
-    output_sequence: list[int] = []
+    if input.size % block_size != 0:
+        raise ValueError(
+            "length of 'input' must be a multiple of block size"
+            f" {block_size} (got {len(input)})"
+        )
+    try:
+        output = np.concatenate(
+            [dictionary[tuple(w)] for w in input.reshape(-1, block_size)]
+        )
+    except KeyError:
+        raise ValueError("input contains invalid word")
+    return output
+
+
+def parse_prefix_free(
+    input: npt.NDArray[np.integer],
+    dictionary: dict[Word, Word],
+    allow_incomplete: bool,
+) -> npt.NDArray[np.integer]:
+    output: list[int] = []
     i = 0
-    while i < len(input_sequence):
-        for j in range(1, max_key_length + 1):
+    while i < len(input):
+        j = 1
+        while i + j <= len(input):
             try:
-                key = tuple(input_sequence[i : i + j])
-                output_sequence.extend(dictionary[key])
-                i += j
+                key = tuple(input[i : i + j])
+                output.extend(dictionary[key])
                 break
             except KeyError:
-                if j == max_key_length:
-                    raise ValueError("input contains invalid sequence")
-    return np.asarray(output_sequence)
+                j += 1
+        i += j
+
+    if i == len(input):
+        return np.asarray(output)
+
+    if not allow_incomplete:
+        raise ValueError("input contains invalid word")
+
+    remaining = tuple(input[i:])
+    for key, value in dictionary.items():
+        if is_prefix_of(remaining, key):
+            output.extend(value)
+            return np.asarray(output)
+
+    raise ValueError("input contains invalid word")
 
 
-def huffman_algorithm(
-    pmf: PMF, source_block_size: int, policy: Literal["high", "low"]
-) -> list[Word]:
-    class Node:
-        def __init__(self, index: int, probability: float):
-            self.index: int = index
-            self.probability: float = probability
-            self.parent: int | None = None
-            self.bit: int = -1
+def is_fully_covering(words: list[Word], cardinality: int) -> bool:
+    class TrieNode:
+        def __init__(self):
+            self.id = id(self)
+            self.is_end: bool = False
+            self.children: dict[int, TrieNode] = {}
 
-        def __lt__(self, other: Self) -> bool:
-            i0, p0 = self.index, self.probability
-            i1, p1 = other.index, other.probability
-            if policy == "high":
-                return (p0, i0) < (p1, i1)
-            elif policy == "low":
-                return (p0, -i0) < (p1, -i1)
+    def build_trie(words: list[Word]) -> TrieNode:
+        root = TrieNode()
+        for w in words:
+            current = root
+            for symbol in w:
+                if symbol not in current.children:
+                    current.children[symbol] = TrieNode()
+                current = current.children[symbol]
+            current.is_end = True
+        return root
 
-    tree = [
-        Node(i, math.prod(probs))
-        for (i, probs) in enumerate(it.product(pmf, repeat=source_block_size))
-    ]
-    queue = [node for node in tree]
-    heapq.heapify(queue)
-    while len(queue) > 1:
-        node1 = heapq.heappop(queue)
-        node0 = heapq.heappop(queue)
-        node1.bit = 1
-        node0.bit = 0
-        node = Node(index=len(tree), probability=node0.probability + node1.probability)
-        node0.parent = node1.parent = node.index
-        heapq.heappush(queue, node)
-        tree.append(node)
+    def check_coverage_from_node(node: TrieNode, visited: set[int]) -> bool:
+        # Recursively check if all possible sequences from this node lead to valid words.
+        # Uses DFS with cycle detection to handle infinite paths.
 
-    codewords: list[Word] = []
-    for symbol in range(pmf.size**source_block_size):
-        node = tree[symbol]
-        bits: list[int] = []
-        while node.parent is not None:
-            bits.insert(0, node.bit)
-            node = tree[node.parent]
-        codewords.append(tuple(bits))
+        if node.id in visited:
+            return True
 
-    return codewords
+        visited.add(node.id)
 
+        for symbol in range(cardinality):
+            if symbol not in node.children:
+                return False
+            child = node.children[symbol]
+            if child.is_end:
+                continue
+            if not check_coverage_from_node(child, visited):
+                return False
 
-def tunstall_algorithm(pmf: PMF, code_block_size: int) -> list[Word]:
-    class Node:
-        def __init__(self, symbols: Word, probability: float):
-            self.symbols = symbols
-            self.probability = probability
+        return True
 
-        def __lt__(self, other: Self) -> bool:
-            return -self.probability < -other.probability
-
-    queue = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
-    heapq.heapify(queue)
-
-    while len(queue) + pmf.size - 1 < 2**code_block_size:
-        node = heapq.heappop(queue)
-        for symbol, probability in enumerate(pmf):
-            new_node = Node(node.symbols + (symbol,), node.probability * probability)
-            heapq.heappush(queue, new_node)
-    sourcewords = sorted(node.symbols for node in queue)
-
-    return sourcewords
+    root = build_trie(words)
+    return check_coverage_from_node(root, set())
