@@ -3,6 +3,13 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.15.0 (2024-12-30)
+
+### Fixed
+
+- Fixed Sardinas–Patterson algorithm.
+- Encoding and decoding of [variable-to-fixed codes](https://komm.dev/ref/VariableToFixedCode) now work require the code to be [fully covering](https://komm.dev/ref/VariableToFixedCode#is_fully_covering).
+
 ## v0.14.0 (2024-12-19)
 
 ### Breaking changes
