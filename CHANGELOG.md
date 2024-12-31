@@ -14,7 +14,7 @@
 ### Fixed
 
 - Fixed Sardinas–Patterson algorithm.
-- Encoding and decoding of [variable-to-fixed codes](https://komm.dev/ref/VariableToFixedCode) now work require the code to be [fully covering](https://komm.dev/ref/VariableToFixedCode#is_fully_covering).
+- Encoding and decoding of [variable-to-fixed codes](https://komm.dev/ref/VariableToFixedCode) now require the code to be [fully covering](https://komm.dev/ref/VariableToFixedCode#is_fully_covering).
 
 ## v0.14.0 (2024-12-19)
 
