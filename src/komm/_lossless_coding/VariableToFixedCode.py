@@ -393,7 +393,7 @@ class VariableToFixedCode:
             >>> code.decode([1, 1, 0, 0, 1])  # Not a multiple of target block size
             Traceback (most recent call last):
             ...
-            ValueError: length of 'input' must be a multiple of block size 2 (got 5)
+            ValueError: length of input must be a multiple of block size 2 (got 5)
 
             >>> code.decode([0, 0, 1, 1])  # 11 is not a valid target word
             Traceback (most recent call last):

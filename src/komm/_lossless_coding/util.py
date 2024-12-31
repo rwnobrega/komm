@@ -45,7 +45,7 @@ def parse_fixed_length(
 ) -> npt.NDArray[np.integer]:
     if input.size % block_size != 0:
         raise ValueError(
-            "length of 'input' must be a multiple of block size"
+            "length of input must be a multiple of block size"
             f" {block_size} (got {len(input)})"
         )
     try:
@@ -63,23 +63,21 @@ def parse_prefix_free(
     allow_incomplete: bool,
 ) -> npt.NDArray[np.integer]:
     output: list[int] = []
-    i, j = 0, 0
-    while j < len(input):
-        j += 1
-        key = tuple(input[i:j])
+    i = 0
+    for j in range(len(input)):
+        key = tuple(input[i : j + 1])
         if key in dictionary:
             output.extend(dictionary[key])
-            i = j
+            i = j + 1
 
     if i == len(input):
         return np.asarray(output)
-
-    if not allow_incomplete:
+    elif not allow_incomplete:
         raise ValueError("input contains invalid word")
 
-    remaining = tuple(input[i:])
+    remainder = tuple(input[i:])
     for key, value in dictionary.items():
-        if is_prefix_of(remaining, key):
+        if is_prefix_of(remainder, key):
             output.extend(value)
             return np.asarray(output)
 

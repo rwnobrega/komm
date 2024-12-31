@@ -306,7 +306,7 @@ class FixedToVariableCode:
             >>> code.encode([0, 1, 0])  # Not a multiple of the source block size
             Traceback (most recent call last):
             ...
-            ValueError: length of 'input' must be a multiple of block size 2 (got 3)
+            ValueError: length of input must be a multiple of block size 2 (got 3)
 
             >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
             Traceback (most recent call last):
