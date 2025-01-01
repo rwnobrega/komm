@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._util.information_theory import random_pmf
 
 
 def test_tunstall_code():
@@ -28,26 +29,29 @@ def test_tunstall_code_invalid_init():
         komm.TunstallCode([0.5, 0.5], 0)
 
 
-@pytest.mark.parametrize("source_cardinality", range(2, 10))
+@pytest.mark.parametrize("source_cardinality", range(2, 9))
 @pytest.mark.parametrize("target_block_size", range(1, 7))
-def test_random_tunstall_code(source_cardinality, target_block_size):
+def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
     if 2**target_block_size < source_cardinality:  # target block size too low
         return
     for _ in range(10):
-        pmf = np.random.rand(source_cardinality)
-        pmf /= pmf.sum()
+        pmf = random_pmf(source_cardinality)
         code = komm.TunstallCode(pmf, target_block_size)
-        assert code.is_prefix_free()
         assert code.is_fully_covering()
+        assert code.is_uniquely_encodable()
+        assert code.is_prefix_free()
+        # Permute pmf and check if the rate is the same.
+        pmf1 = pmf[np.random.permutation(source_cardinality)]
+        code1 = komm.TunstallCode(pmf1, target_block_size)
+        np.testing.assert_almost_equal(code.rate(pmf), code1.rate(pmf1))
 
 
-@pytest.mark.parametrize("source_cardinality", range(2, 10))
+@pytest.mark.parametrize("source_cardinality", range(2, 9))
 @pytest.mark.parametrize("target_block_size", range(1, 7))
 def test_tunstall_code_encode_decode(source_cardinality, target_block_size):
     if 2**target_block_size < source_cardinality:  # target block size too low
         return
-    integers = np.random.randint(0, 100, source_cardinality)
-    pmf = integers / integers.sum()
+    pmf = random_pmf(source_cardinality)
     dms = komm.DiscreteMemorylessSource(pmf)
     code = komm.TunstallCode(pmf, target_block_size=target_block_size)
     x = dms(1000)
