@@ -1,4 +1,5 @@
-import heapq
+from dataclasses import dataclass
+from heapq import heapify, heappop, heappush
 from itertools import product
 from math import prod
 from typing import Literal
@@ -21,6 +22,7 @@ def HuffmanCode(
 
     Notes:
         Huffman codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
+
     Parameters:
         pmf: The probability mass function of the source.
         source_block_size: The source block size $k$. The default value is $k = 1$.
@@ -63,12 +65,12 @@ def HuffmanCode(
 def huffman_algorithm(
     pmf: PMF, source_block_size: int, policy: Literal["high", "low"]
 ) -> list[Word]:
+    @dataclass
     class Node:
-        def __init__(self, index: int, probability: float):
-            self.index: int = index
-            self.probability: float = probability
-            self.parent: int | None = None
-            self.bit: int = -1
+        index: int
+        probability: float
+        parent: int | None = None
+        bit: int = -1
 
         def __lt__(self, other: Self) -> bool:
             i0, p0 = self.index, self.probability
@@ -79,28 +81,28 @@ def huffman_algorithm(
                 return (p0, -i0) < (p1, -i1)
 
     tree = [
-        Node(i, prod(probs))
-        for (i, probs) in enumerate(product(pmf, repeat=source_block_size))
+        Node(index, prod(probs))
+        for (index, probs) in enumerate(product(pmf, repeat=source_block_size))
     ]
-    queue = [node for node in tree]
-    heapq.heapify(queue)
-    while len(queue) > 1:
-        node1 = heapq.heappop(queue)
-        node0 = heapq.heappop(queue)
+    heap = tree.copy()
+    heapify(heap)
+    while len(heap) > 1:
+        node1 = heappop(heap)
+        node0 = heappop(heap)
         node1.bit = 1
         node0.bit = 0
         node = Node(index=len(tree), probability=node0.probability + node1.probability)
         node0.parent = node1.parent = node.index
-        heapq.heappush(queue, node)
+        heappush(heap, node)
         tree.append(node)
 
     codewords: list[Word] = []
-    for symbol in range(pmf.size**source_block_size):
-        node = tree[symbol]
+    for index in range(pmf.size**source_block_size):
+        node = tree[index]
         bits: list[int] = []
         while node.parent is not None:
-            bits.insert(0, node.bit)
+            bits.append(node.bit)
             node = tree[node.parent]
-        codewords.append(tuple(bits))
+        codewords.append(tuple(reversed(bits)))
 
     return codewords

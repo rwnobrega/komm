@@ -1,4 +1,5 @@
-import heapq
+from dataclasses import dataclass
+from heapq import heapify, heappop, heappush
 from math import ceil, log2
 
 import numpy.typing as npt
@@ -58,22 +59,22 @@ def TunstallCode(
 
 
 def tunstall_algorithm(pmf: PMF, code_block_size: int) -> list[Word]:
+    @dataclass
     class Node:
-        def __init__(self, symbols: Word, probability: float):
-            self.symbols = symbols
-            self.probability = probability
+        sourceword: Word
+        probability: float
 
         def __lt__(self, other: Self) -> bool:
             return -self.probability < -other.probability
 
-    queue = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
-    heapq.heapify(queue)
+    heap = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
+    heapify(heap)
 
-    while len(queue) + pmf.size - 1 < 2**code_block_size:
-        node = heapq.heappop(queue)
+    while len(heap) + pmf.size - 1 < 2**code_block_size:
+        node = heappop(heap)
         for symbol, probability in enumerate(pmf):
-            new_node = Node(node.symbols + (symbol,), node.probability * probability)
-            heapq.heappush(queue, new_node)
-    sourcewords = sorted(node.symbols for node in queue)
+            new_node = Node(node.sourceword + (symbol,), node.probability * probability)
+            heappush(heap, new_node)
+    sourcewords = sorted(node.sourceword for node in heap)
 
     return sourcewords

@@ -8,7 +8,7 @@ from .._util.information_theory import PMF
 from .util import (
     Word,
     is_prefix_free,
-    is_uniquely_decipherable,
+    is_uniquely_parsable,
     parse_fixed_length,
     parse_prefix_free,
 )
@@ -236,7 +236,7 @@ class FixedToVariableCode:
             >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
             False
         """
-        return is_uniquely_decipherable(self.codewords)
+        return is_uniquely_parsable(self.codewords)
 
     def is_prefix_free(self) -> bool:
         r"""
@@ -334,7 +334,7 @@ class FixedToVariableCode:
             >>> code.encode([0, 1, 0])  # Not a multiple of the source block size
             Traceback (most recent call last):
             ...
-            ValueError: length of 'input' must be a multiple of block size 2 (got 3)
+            ValueError: length of input must be a multiple of block size 2 (got 3)
 
             >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
             Traceback (most recent call last):
