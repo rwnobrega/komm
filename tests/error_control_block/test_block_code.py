@@ -64,8 +64,8 @@ def test_block_code():
         np.testing.assert_equal(code.covering_radius(), 3)
 
 
-@pytest.mark.parametrize("execution_number", range(20))
-def test_block_code_mappings(execution_number):
+@pytest.mark.repeat(20)
+def test_block_code_mappings():
     while True:
         code = komm.BlockCode(generator_matrix=np.random.randint(0, 2, (4, 8)))
         if rank(code.generator_matrix) == code.dimension:
