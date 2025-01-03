@@ -1,6 +1,7 @@
 from math import ceil, log2
 
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
@@ -70,10 +71,20 @@ def next_in_lexicographic_order(word: Word) -> Word:
 
 
 def shannon_code(pmf: PMF, source_block_size: int) -> dict[Word, Word]:
+    pbar = tqdm(
+        desc="Generating Shannon code",
+        total=2 * pmf.size**source_block_size,
+        delay=2.5,
+    )
+
     enc_mapping = empty_mapping(pmf.size, source_block_size)
     v = ()
-    for u, pu in extended_probabilities(pmf, source_block_size):
+    for u, pu in extended_probabilities(pmf, source_block_size, pbar):
         length = ceil(log2(1 / pu))
         v = next_in_lexicographic_order(v) + (0,) * (length - len(v))
         enc_mapping[u] = v
+        pbar.update()
+
+    pbar.close()
+
     return enc_mapping

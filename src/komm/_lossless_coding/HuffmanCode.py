@@ -5,6 +5,7 @@ from math import prod
 from typing import Literal
 
 import numpy.typing as npt
+from tqdm import tqdm
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
@@ -80,10 +81,17 @@ def huffman_algorithm(
             elif policy == "low":
                 return (p0, -i0) < (p1, -i1)
 
-    tree = [
-        Node(index, prod(probs))
-        for (index, probs) in enumerate(product(pmf, repeat=source_block_size))
-    ]
+    pbar = tqdm(
+        desc="Generating Huffman code",
+        total=3 * pmf.size**source_block_size - 1,
+        delay=2.5,
+    )
+
+    tree: list[Node] = []
+    for index, probs in enumerate(product(pmf, repeat=source_block_size)):
+        tree.append(Node(index, prod(probs)))
+        pbar.update()
+
     heap = tree.copy()
     heapify(heap)
     while len(heap) > 1:
@@ -95,6 +103,7 @@ def huffman_algorithm(
         node0.parent = node1.parent = node.index
         heappush(heap, node)
         tree.append(node)
+        pbar.update()
 
     codewords: list[Word] = []
     for index in range(pmf.size**source_block_size):
@@ -104,5 +113,8 @@ def huffman_algorithm(
             bits.append(node.bit)
             node = tree[node.parent]
         codewords.append(tuple(reversed(bits)))
+        pbar.update()
+
+    pbar.close()
 
     return codewords

@@ -3,6 +3,7 @@ from heapq import heapify, heappop, heappush
 from math import ceil, log2
 
 import numpy.typing as npt
+from tqdm import tqdm
 from typing_extensions import Self
 
 from .._util.information_theory import PMF
@@ -67,14 +68,21 @@ def tunstall_algorithm(pmf: PMF, code_block_size: int) -> list[Word]:
         def __lt__(self, other: Self) -> bool:
             return -self.probability < -other.probability
 
+    pbar = tqdm(
+        desc="Generating Tunstall code",
+        total=2 ** (code_block_size - 1) - pmf.size + 1,
+        delay=2.5,
+    )
+
     heap = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
     heapify(heap)
-
     while len(heap) + pmf.size - 1 < 2**code_block_size:
         node = heappop(heap)
         for symbol, probability in enumerate(pmf):
             new_node = Node(node.sourceword + (symbol,), node.probability * probability)
             heappush(heap, new_node)
-    sourcewords = sorted(node.sourceword for node in heap)
+        pbar.update()
 
-    return sourcewords
+    pbar.close()
+
+    return sorted(node.sourceword for node in heap)

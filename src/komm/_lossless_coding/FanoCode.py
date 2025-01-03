@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
@@ -55,18 +56,28 @@ def FanoCode(
 
 
 def fano_algorithm(pmf: PMF, source_block_size: int) -> dict[Word, Word]:
+    pbar = tqdm(
+        desc="Generating Fano code",
+        total=2 * pmf.size**source_block_size,
+        delay=2.5,
+    )
+
     enc_mapping = empty_mapping(pmf.size, source_block_size)
-    xpmf = extended_probabilities(pmf, source_block_size)
+    xpmf = extended_probabilities(pmf, source_block_size, pbar)
     stack: list[tuple[list[tuple[Word, float]], Word]] = [(xpmf, ())]
     while stack:
         current_pmf, prefix = stack.pop()
         if len(current_pmf) == 1:
             u, _ = current_pmf[0]
             enc_mapping[u] = prefix
+            pbar.update()
             continue
         probs = [p for _, p in current_pmf]
         total = np.sum(probs)
         index = np.argmin(np.abs(np.cumsum(probs) - total / 2))
         stack.append((current_pmf[index + 1 :], prefix + (1,)))
         stack.append((current_pmf[: index + 1], prefix + (0,)))
+
+    pbar.close()
+
     return enc_mapping
