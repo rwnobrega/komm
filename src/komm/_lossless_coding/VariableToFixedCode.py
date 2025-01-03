@@ -9,7 +9,7 @@ from .util import (
     Word,
     is_fully_covering,
     is_prefix_free,
-    is_uniquely_decipherable,
+    is_uniquely_parsable,
     parse_fixed_length,
     parse_prefix_free,
 )
@@ -272,7 +272,7 @@ class VariableToFixedCode:
             >>> code.is_uniquely_encodable()
             True
         """
-        return is_uniquely_decipherable(self.sourcewords)
+        return is_uniquely_parsable(self.sourcewords)
 
     def is_prefix_free(self) -> bool:
         r"""
@@ -317,9 +317,10 @@ class VariableToFixedCode:
             np.float64(1.3846153846153846)
         """
         pmf = PMF(pmf)
+        n = self.target_block_size
         probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
         lengths = [len(word) for word in self.sourcewords]
-        return self.target_block_size / np.dot(lengths, probabilities)
+        return n / np.dot(lengths, probabilities)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

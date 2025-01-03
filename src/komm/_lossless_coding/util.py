@@ -1,7 +1,11 @@
 from itertools import product
+from math import prod
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
+
+from .._util.information_theory import PMF
 
 Word = tuple[int, ...]
 
@@ -19,7 +23,7 @@ def is_prefix_free(words: list[Word]) -> bool:
     return True
 
 
-def is_uniquely_decipherable(words: list[Word]) -> bool:
+def is_uniquely_parsable(words: list[Word]) -> bool:
     # Sardinas–Patterson algorithm. See [Say06, Sec. 2.4.1].
     augmented_words = set(words)
     while True:
@@ -124,3 +128,17 @@ def is_fully_covering(words: list[Word], cardinality: int) -> bool:
 
     root = build_trie(words)
     return check_coverage_from_node(root, set())
+
+
+def extended_probabilities(pmf: PMF, k: int, pbar: Any) -> list[tuple[Word, float]]:
+    probs: list[tuple[float, Word]] = []
+    for u in product(range(pmf.size), repeat=k):
+        pu = prod(pmf[list(u)])
+        probs.append((-pu, u))
+        if pbar is not None:
+            pbar.update()
+    return [(u, -p) for p, u in sorted(probs)]
+
+
+def empty_mapping(cardinality: int, block_size: int) -> dict[Word, Word]:
+    return {x: () for x in product(range(cardinality), repeat=block_size)}

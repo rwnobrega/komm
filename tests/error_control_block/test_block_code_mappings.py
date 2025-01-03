@@ -11,8 +11,8 @@ terminated = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]
 
 
 @pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
-@pytest.mark.parametrize("execution_number", range(20))
-def test_mappings_array_input(code: komm.abc.BlockCode, execution_number: int):
+@pytest.mark.repeat(20)
+def test_mappings_array_input(code: komm.abc.BlockCode):
     u1 = np.random.randint(0, 2, code.dimension)
     u2 = np.random.randint(0, 2, code.dimension)
     v1 = code.encode(u1)
@@ -32,8 +32,8 @@ def test_mappings_array_input(code: komm.abc.BlockCode, execution_number: int):
 
 
 @pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
-@pytest.mark.parametrize("execution_number", range(20))
-def test_mappings_inverses(code: komm.abc.BlockCode, execution_number: int):
+@pytest.mark.repeat(20)
+def test_mappings_inverses(code: komm.abc.BlockCode):
     # Check that 'inverse_encode' is the inverse of 'encode'
     u = np.random.randint(0, 2, (3, 4, code.dimension))
     np.testing.assert_array_equal(u, code.inverse_encode(code.encode(u)))

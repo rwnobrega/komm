@@ -11,7 +11,7 @@ from . import base
 @dataclass
 class WagnerDecoder(base.BlockDecoder[SingleParityCheckCode]):
     r"""
-    Wagner decoder for [single parity-check codes](/ref/SingleParityCheckCode). For more information, see <cite>CF07, Sec. III.C</cite>.
+    Wagner decoder for [single parity-check codes](/ref/SingleParityCheckCode). For more details, see <cite>CF07, Sec. III.C</cite>.
 
     Parameters:
         code: The single parity-check code to be used for decoding.

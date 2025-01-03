@@ -73,6 +73,8 @@ Sequences:
 Source coding:
   Lossless coding:
     - FixedToVariableCode
+    - ShannonCode
+    - FanoCode
     - HuffmanCode
     - VariableToFixedCode
     - TunstallCode

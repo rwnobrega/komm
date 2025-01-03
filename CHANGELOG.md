@@ -3,6 +3,13 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.16.0 (2025-01-03)
+
+### Added
+
+- Implemented [Shannon](https://komm.dev/ref/ShannonCode) and [Fano](https://komm.dev/ref/FanoCode) codes.
+- Implemented method to compute the [Kraft parameter](https://komm.dev/ref/FixedToVariableCode#kraft_parameter) of a fixed-to-variable code.
+
 ## v0.15.1 (2024-12-31)
 
 ### Fixed

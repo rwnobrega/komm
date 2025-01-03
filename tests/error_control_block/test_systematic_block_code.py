@@ -65,8 +65,8 @@ def test_systematic_block_code():
     np.testing.assert_equal(code.covering_radius(), 3)
 
 
-@pytest.mark.parametrize("execution_number", range(20))
-def test_systematic_block_code_mappings(execution_number):
+@pytest.mark.repeat(20)
+def test_systematic_block_code_mappings():
     code = komm.SystematicBlockCode(parity_submatrix=np.random.randint(0, 2, (4, 4)))
     k, m = code.dimension, code.redundancy
     for _ in range(100):

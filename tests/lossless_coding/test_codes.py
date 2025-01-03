@@ -3,98 +3,98 @@ import pytest
 from komm._lossless_coding.util import (
     is_fully_covering,
     is_prefix_free,
-    is_uniquely_decipherable,
+    is_uniquely_parsable,
 )
 
 test_cases = [
     {
         "words": [(0, 0), (0, 1), (1, 0), (1, 1)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": True,
     },
     {  # [Say06, Sec. 2.4.1, Code 2]
         "words": [(0,), (1,), (0, 0), (1, 1)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # [Say06, Sec. 2.4.1, Code 3]
         "words": [(0,), (1, 0), (1, 1, 0), (1, 1, 1)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": True,
     },
     {  # [Say06, Sec. 2.4.1, Code 4]
         "words": [(0,), (0, 1), (0, 1, 1), (0, 1, 1, 1)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # [Say06, Sec. 2.4.1, Code 5]
         "words": [(0,), (0, 1), (1, 1)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # [Say06, Sec. 2.4.1, Code 6]
         "words": [(0,), (0, 1), (1, 0)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # [CT06, Sec. 5.1, Table 5.1, Code 2]
         "words": [(0,), (0, 1, 0), (0, 1), (1, 0)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # [CT06, Sec. 5.1, Table 5.1, Code 3]
         "words": [(1, 0), (0, 0), (1, 1), (1, 1, 0)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # Wikipedia example
         "words": [(1,), (0, 1, 1), (0, 1, 1, 1, 0), (1, 1, 1, 0), (1, 0, 0, 1, 1)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # Old false negative for UD
         "words": [(0,), (0, 1), (1, 1, 0)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {
         "words": [(0,), (0, 0)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.2]: "Any suffix-free code is uniquely decodable"
         "words": [(0,), (0, 1)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.3]
         "words": [(0, 0, 1, 1), (0, 1, 1), (1, 1), (1, 1, 1, 0)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.3]
         "words": [(0, 1), (1, 0), (0, 1, 1), (1, 1, 0)],
-        "uniquely_decipherable": False,  # Course page is wrong: (01)(110) = (011)(10)
+        "uniquely_parsable": False,  # Course page is wrong: (01)(110) = (011)(10)
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(1,), (1, 0, 0, 0, 0, 0), (0, 0)],
-        "uniquely_decipherable": True,
+        "uniquely_parsable": True,
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(0, 1), (1, 0, 0, 1), (1, 0, 1, 1), (1, 1, 1), (1, 1, 1, 0)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(1,), (0, 1, 1), (0, 1, 1, 1, 0), (1, 1, 1, 0), (1, 0, 0, 1, 1)],
-        "uniquely_decipherable": False,
+        "uniquely_parsable": False,
         "prefix_free": False,
     },
     {
         "words": [(1, 0, 1), (0, 0, 1, 1, 1), (0, 1, 0, 0), (1,)],
-        "uniquely_decipherable": False,  # (101)(00111) = (1)(0100)(1)(1)(1)
+        "uniquely_parsable": False,  # (101)(00111) = (1)(0100)(1)(1)(1)
         "prefix_free": False,
     },
 ]
@@ -109,11 +109,11 @@ def test_is_prefix_free(words, expected_prefix_free):
 
 
 @pytest.mark.parametrize(
-    "words, expected_uniquely_decipherable",
-    [(case["words"], case["uniquely_decipherable"]) for case in test_cases],
+    "words, expected_uniquely_parsable",
+    [(case["words"], case["uniquely_parsable"]) for case in test_cases],
 )
-def test_is_uniquely_decipherable(words, expected_uniquely_decipherable):
-    assert is_uniquely_decipherable(words) == expected_uniquely_decipherable
+def test_is_uniquely_parsable(words, expected_uniquely_parsable):
+    assert is_uniquely_parsable(words) == expected_uniquely_parsable
 
 
 @pytest.mark.parametrize(

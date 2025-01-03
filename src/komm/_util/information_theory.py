@@ -37,6 +37,11 @@ class PMF(npt.NDArray[np.floating]):
             return
 
 
+def random_pmf(size: int) -> PMF:
+    pmf = np.random.rand(size)
+    return PMF(pmf / pmf.sum())
+
+
 class TransitionMatrix(npt.NDArray[np.floating]):
     def __new__(cls, values: npt.ArrayLike):
         arr = np.asarray(values, dtype=float)

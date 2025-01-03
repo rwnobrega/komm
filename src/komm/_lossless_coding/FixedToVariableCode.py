@@ -8,7 +8,7 @@ from .._util.information_theory import PMF
 from .util import (
     Word,
     is_prefix_free,
-    is_uniquely_decipherable,
+    is_uniquely_parsable,
     parse_fixed_length,
     parse_prefix_free,
 )
@@ -236,7 +236,7 @@ class FixedToVariableCode:
             >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
             False
         """
-        return is_uniquely_decipherable(self.codewords)
+        return is_uniquely_parsable(self.codewords)
 
     def is_prefix_free(self) -> bool:
         r"""
@@ -256,6 +256,34 @@ class FixedToVariableCode:
             False
         """
         return is_prefix_free(self.codewords)
+
+    def kraft_parameter(self) -> float:
+        r"""
+        Computes the Kraft parameter $K$ of the code. This quantity is given by
+        $$
+            K = \sum_{u \in \mathcal{S}^k} T^{-{\ell_u}},
+        $$
+        where $\ell_u$ is the length of the codeword $\Enc(u)$, $T$ is the target cardinality, and $k$ is the source block size.
+
+        Returns:
+            kraft_parameter: The Kraft parameter $K$ of the code.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(5, [(0,0,0), (0,0,1), (0,1,0), (1,0,1), (1,1)])
+            >>> code.kraft_parameter()
+            np.float64(0.75)
+
+            >>> code = komm.FixedToVariableCode.from_codewords(4, [(0,), (1,0), (1,1,0), (1,1,1)])
+            >>> code.kraft_parameter()
+            np.float64(1.0)
+
+            >>> code = komm.FixedToVariableCode.from_codewords(4, [(0,0), (1,1), (0,), (1,)])
+            >>> code.kraft_parameter()
+            np.float64(1.5)
+        """
+        T = self.target_cardinality
+        lengths = np.array([len(word) for word in self.codewords])
+        return np.sum(np.float_power(T, -lengths))
 
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
