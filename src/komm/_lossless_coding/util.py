@@ -137,7 +137,7 @@ def extended_probabilities(pmf: PMF, k: int, pbar: Any) -> list[tuple[Word, floa
         probs.append((-pu, u))
         if pbar is not None:
             pbar.update()
-    return [(u, -p) for p, u in sorted(probs)]
+    return [(u, -minus_pu) for minus_pu, u in sorted(probs)]
 
 
 def empty_mapping(cardinality: int, block_size: int) -> dict[Word, Word]:

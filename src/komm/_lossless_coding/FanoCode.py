@@ -63,20 +63,20 @@ def fano_algorithm(pmf: PMF, source_block_size: int) -> dict[Word, Word]:
     )
 
     enc_mapping = empty_mapping(pmf.size, source_block_size)
-    xpmf = extended_probabilities(pmf, source_block_size, pbar)
-    stack: list[tuple[list[tuple[Word, float]], Word]] = [(xpmf, ())]
+    group = extended_probabilities(pmf, source_block_size, pbar)
+    stack: list[tuple[list[tuple[Word, float]], Word]] = [(group, ())]
     while stack:
-        current_pmf, prefix = stack.pop()
-        if len(current_pmf) == 1:
-            u, _ = current_pmf[0]
-            enc_mapping[u] = prefix
+        group, v = stack.pop()
+        if len(group) == 1:
+            u, _ = group[0]
+            enc_mapping[u] = v
             pbar.update()
             continue
-        probs = [p for _, p in current_pmf]
+        probs = [p for _, p in group]
         total = np.sum(probs)
         index = np.argmin(np.abs(np.cumsum(probs) - total / 2))
-        stack.append((current_pmf[index + 1 :], prefix + (1,)))
-        stack.append((current_pmf[: index + 1], prefix + (0,)))
+        stack.append((group[index + 1 :], v + (1,)))
+        stack.append((group[: index + 1], v + (0,)))
 
     pbar.close()
 
