@@ -10,7 +10,7 @@ from typing_extensions import Self
 
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word
+from .util import Word, empty_mapping
 
 
 def HuffmanCode(
@@ -57,15 +57,17 @@ def HuffmanCode(
     pmf = PMF(pmf)
     if not policy in {"high", "low"}:
         raise ValueError("'policy': must be in {'high', 'low'}")
-    return FixedToVariableCode.from_codewords(
+    return FixedToVariableCode(
         source_cardinality=pmf.size,
-        codewords=huffman_algorithm(pmf, source_block_size, policy),
+        target_cardinality=2,
+        source_block_size=source_block_size,
+        enc_mapping=huffman_algorithm(pmf, source_block_size, policy),
     )
 
 
 def huffman_algorithm(
     pmf: PMF, source_block_size: int, policy: Literal["high", "low"]
-) -> list[Word]:
+) -> dict[Word, Word]:
     @dataclass
     class Node:
         index: int
@@ -105,16 +107,17 @@ def huffman_algorithm(
         tree.append(node)
         pbar.update()
 
-    codewords: list[Word] = []
-    for index in range(pmf.size**source_block_size):
+    enc_mapping = empty_mapping(pmf.size, source_block_size)
+    for index, u in enumerate(enc_mapping.keys()):
         node = tree[index]
         bits: list[int] = []
         while node.parent is not None:
             bits.append(node.bit)
             node = tree[node.parent]
-        codewords.append(tuple(reversed(bits)))
+        v = tuple(reversed(bits))
+        enc_mapping[u] = v
         pbar.update()
 
     pbar.close()
 
-    return codewords
+    return enc_mapping
