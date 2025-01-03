@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="canonical" href="https://komm.dev/ref/FixedToVariableCode/">
   <link rel="prev" href="../ZadoffChuSequence/">
-  <link rel="next" href="../HuffmanCode/">
+  <link rel="next" href="../ShannonCode/">
   <link rel="icon" href="../../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
   <title>FixedToVariableCode - Komm</title>
@@ -472,6 +472,9 @@
                                             <a href="#is_prefix_free" class="md-nav__link"><span class="md-ellipsis">is_prefix_free()</span></a>
                                           </li>
                                           <li class="md-nav__item">
+                                            <a href="#kraft_parameter" class="md-nav__link"><span class="md-ellipsis">kraft_parameter()</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
                                             <a href="#rate" class="md-nav__link"><span class="md-ellipsis">rate()</span></a>
                                           </li>
                                           <li class="md-nav__item">
@@ -482,6 +485,12 @@
                                           </li>
                                         </ul>
                                       </nav>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../ShannonCode/" class="md-nav__link"><span class="md-ellipsis">ShannonCode</span></a>
+                                    </li>
+                                    <li class="md-nav__item">
+                                      <a href="../FanoCode/" class="md-nav__link"><span class="md-ellipsis">FanoCode</span></a>
                                     </li>
                                     <li class="md-nav__item">
                                       <a href="../HuffmanCode/" class="md-nav__link"><span class="md-ellipsis">HuffmanCode</span></a>
@@ -607,6 +616,9 @@
                   </li>
                   <li class="md-nav__item">
                     <a href="#is_prefix_free" class="md-nav__link"><span class="md-ellipsis">is_prefix_free()</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#kraft_parameter" class="md-nav__link"><span class="md-ellipsis">kraft_parameter()</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#rate" class="md-nav__link"><span class="md-ellipsis">rate()</span></a>
@@ -864,6 +876,40 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-function">
+                    <h2 id="kraft_parameter" class="doc doc-heading"><code class="highlight language-python"><span class="n">kraft_parameter</span></code></h2>
+                    <div class="doc doc-contents">
+                      <p>Computes the Kraft parameter $K$ of the code. This quantity is given by $$ K = \sum_{u \in \mathcal{S}^k} T^{-{\ell_u}}, $$ where $\ell_u$ is the length of the codeword $\Enc(u)$, $T$ is the target cardinality, and $k$ is the source block size.</p>
+                      <p><strong>Returns:</strong></p>
+                      <ul>
+                        <li class="field-body">
+                          <b><code>kraft_parameter</code></b> <span class="doc-param-annotation">(<code>float</code>)</span> –
+                          <div class="doc-md-description">
+                            <p>The Kraft parameter $K$ of the code.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">kraft_parameter</span><span class="p">()</span>
+<span class="go">np.float64(0.75)</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">kraft_parameter</span><span class="p">()</span>
+<span class="go">np.float64(1.0)</span>
+</code></pre>
+                      </div>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">kraft_parameter</span><span class="p">()</span>
+<span class="go">np.float64(1.5)</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-function">
                     <h2 id="rate" class="doc doc-heading"><code class="highlight language-python"><span class="n">rate</span></code></h2>
                     <div class="doc doc-contents">
                       <p>Computes the expected rate $R$ of the code, considering a given <abbr title="probability mass function">pmf</abbr>. This quantity is given by $$ R = \frac{\bar{n}}{k}\vphantom{\Bigg|}, $$ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.</p>
@@ -1037,11 +1083,11 @@
           <div class="md-ellipsis">
             ZadoffChuSequence
           </div>
-        </div></a> <a href="../HuffmanCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HuffmanCode">
+        </div></a> <a href="../ShannonCode/" class="md-footer__link md-footer__link--next" aria-label="Next: ShannonCode">
         <div class="md-footer__title">
           <span class="md-footer__direction">Next</span>
           <div class="md-ellipsis">
-            HuffmanCode
+            ShannonCode
           </div>
         </div>
         <div class="md-footer__button md-icon">
