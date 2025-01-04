@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from itertools import product
 from math import prod
 from typing import Any
@@ -40,6 +41,37 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
         if dangling_suffixes <= augmented_words:
             return True
         augmented_words |= dangling_suffixes
+
+
+def is_fully_covering(words: list[Word], cardinality: int) -> bool:
+    @dataclass(eq=False)
+    class Node:
+        is_end: bool = False
+        children: dict[int, "Node"] = field(default_factory=dict)
+
+    # Build trie
+    root = Node()
+    for word in words:
+        node = root
+        for symbol in word:
+            if symbol not in node.children:
+                node.children[symbol] = Node()
+            node = node.children[symbol]
+        node.is_end = True
+
+    visited = {root}
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        for symbol in range(cardinality):
+            if symbol not in node.children:
+                return False
+            child = node.children[symbol]
+            if not child.is_end and child not in visited:
+                visited.add(child)
+                stack.append(child)
+
+    return True
 
 
 def parse_fixed_length(
@@ -86,48 +118,6 @@ def parse_prefix_free(
             return np.asarray(output)
 
     raise ValueError("input contains invalid word")
-
-
-def is_fully_covering(words: list[Word], cardinality: int) -> bool:
-    class TrieNode:
-        def __init__(self):
-            self.id = id(self)
-            self.is_end: bool = False
-            self.children: dict[int, TrieNode] = {}
-
-    def build_trie(words: list[Word]) -> TrieNode:
-        root = TrieNode()
-        for w in words:
-            current = root
-            for symbol in w:
-                if symbol not in current.children:
-                    current.children[symbol] = TrieNode()
-                current = current.children[symbol]
-            current.is_end = True
-        return root
-
-    def check_coverage_from_node(node: TrieNode, visited: set[int]) -> bool:
-        # Recursively check if all possible sequences from this node lead to valid words.
-        # Uses DFS with cycle detection to handle infinite paths.
-
-        if node.id in visited:
-            return True
-
-        visited.add(node.id)
-
-        for symbol in range(cardinality):
-            if symbol not in node.children:
-                return False
-            child = node.children[symbol]
-            if child.is_end:
-                continue
-            if not check_coverage_from_node(child, visited):
-                return False
-
-        return True
-
-    root = build_trie(words)
-    return check_coverage_from_node(root, set())
 
 
 def extended_probabilities(pmf: PMF, k: int, pbar: Any) -> list[tuple[Word, float]]:

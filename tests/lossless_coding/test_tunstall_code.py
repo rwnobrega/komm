@@ -1,4 +1,4 @@
-from math import ceil, floor, log2
+from math import ceil, log2
 
 import numpy as np
 import pytest

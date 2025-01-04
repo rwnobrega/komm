@@ -242,7 +242,7 @@ class VariableToFixedCode:
 
     def is_fully_covering(self) -> bool:
         """
-        Returns whether the code is fully covering. A code is *fully covering* if any sequence of source symbols can be parsed as a concatenation of sourcewords, except possibly for the last parsing, which must be a prefix of some sourceword.
+        Returns whether the code is fully covering. A code is *fully covering* if every possible source sequence has a prefix that is a sourceword.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,0), (1,1)])
