@@ -457,6 +457,9 @@
                                             <a href="#source_block_size" class="md-nav__link"><span class="md-ellipsis">source_block_size</span></a>
                                           </li>
                                           <li class="md-nav__item">
+                                            <a href="#size" class="md-nav__link"><span class="md-ellipsis">size</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
                                             <a href="#enc_mapping" class="md-nav__link"><span class="md-ellipsis">enc_mapping</span></a>
                                           </li>
                                           <li class="md-nav__item">
@@ -601,6 +604,9 @@
                   </li>
                   <li class="md-nav__item">
                     <a href="#source_block_size" class="md-nav__link"><span class="md-ellipsis">source_block_size</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#size" class="md-nav__link"><span class="md-ellipsis">size</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#enc_mapping" class="md-nav__link"><span class="md-ellipsis">enc_mapping</span></a>
@@ -778,6 +784,19 @@
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">source_block_size</span>
 <span class="go">1</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
+                    <h2 id="size" class="doc doc-heading"><code class="highlight language-python"><span class="n">size</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The number of codewords in the code. It is equal to $S^k$.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_codewords</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">size</span>
+<span class="go">3</span>
 </code></pre>
                       </div>
                     </div>

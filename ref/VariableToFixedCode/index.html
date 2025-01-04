@@ -469,6 +469,9 @@
                                             <a href="#target_block_size" class="md-nav__link"><span class="md-ellipsis">target_block_size</span></a>
                                           </li>
                                           <li class="md-nav__item">
+                                            <a href="#size" class="md-nav__link"><span class="md-ellipsis">size</span></a>
+                                          </li>
+                                          <li class="md-nav__item">
                                             <a href="#dec_mapping" class="md-nav__link"><span class="md-ellipsis">dec_mapping</span></a>
                                           </li>
                                           <li class="md-nav__item">
@@ -601,6 +604,9 @@
                   </li>
                   <li class="md-nav__item">
                     <a href="#target_block_size" class="md-nav__link"><span class="md-ellipsis">target_block_size</span></a>
+                  </li>
+                  <li class="md-nav__item">
+                    <a href="#size" class="md-nav__link"><span class="md-ellipsis">size</span></a>
                   </li>
                   <li class="md-nav__item">
                     <a href="#dec_mapping" class="md-nav__link"><span class="md-ellipsis">dec_mapping</span></a>
@@ -791,6 +797,19 @@
                     </div>
                   </div>
                   <div class="doc doc-object doc-attribute">
+                    <h2 id="size" class="doc doc-heading"><code class="highlight language-python"><span class="n">size</span><span class="p">:</span> <span class="nb">int</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
+                    <div class="doc doc-contents">
+                      <p>The number of sourcewords in the code. It is less than or equal to $T^n$.</p>
+                      <p><span class="doc-section-title">Examples:</span></p>
+                      <div class="highlight">
+                        <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">size</span>
+<span class="go">3</span>
+</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="doc doc-object doc-attribute">
                     <h2 id="dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">dec_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Word</span><span class="p">,</span> <span class="n">Word</span><span class="p">]</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-property"><code>property</code></small></span></h2>
                     <div class="doc doc-contents">
                       <p>The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $T^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are the corresponding sourcewords.</p>
@@ -836,7 +855,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="is_fully_covering" class="doc doc-heading"><code class="highlight language-python"><span class="n">is_fully_covering</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Returns whether the code is fully covering. A code is <em>fully covering</em> if any sequence of source symbols can be parsed as a concatenation of sourcewords, except possibly for the last parsing, which must be a prefix of some sourceword.</p>
+                      <p>Returns whether the code is fully covering. A code is <em>fully covering</em> if every possible source sequence has a prefix that is a sourceword.</p>
                       <p><span class="doc-section-title">Examples:</span></p>
                       <div class="highlight">
                         <pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
