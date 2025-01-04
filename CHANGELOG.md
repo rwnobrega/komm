@@ -3,6 +3,12 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.16.1 (2025-01-04)
+
+### Added
+
+- Added size property to lossless source coding codes.
+
 ## v0.16.0 (2025-01-03)
 
 ### Added
