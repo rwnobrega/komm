@@ -1,3 +1,5 @@
+from math import floor, log2
+
 import numpy as np
 import pytest
 
@@ -40,6 +42,7 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
         assert code.is_fully_covering()
         assert code.is_uniquely_encodable()
         assert code.is_prefix_free()
+        assert code.rate(pmf) >= komm.entropy(pmf)
         # Permute pmf and check if the rate is the same.
         pmf1 = pmf[np.random.permutation(source_cardinality)]
         code1 = komm.TunstallCode(pmf1, target_block_size)
