@@ -49,6 +49,20 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
         np.testing.assert_almost_equal(code.rate(pmf), code1.rate(pmf1))
 
 
+@pytest.mark.parametrize("source_cardinality", range(2, 7))
+def test_tunstall_code_rate_upper_bound(source_cardinality):
+    # From MIT 6.441 Supplementary Notes 1, 2/10/94, eq. (5).
+    for _ in range(10):
+        pmf = random_pmf(source_cardinality)
+        min_p = np.min(pmf)
+        target_block_size = int(np.ceil(np.log2(1 / min_p))) + 1
+        code = komm.TunstallCode(pmf, target_block_size)
+        size = len(code.sourcewords)
+        entropy = komm.entropy(pmf)
+        bound = entropy * log2(size + source_cardinality - 2) / log2(size * min_p)
+        assert code.rate(pmf) <= bound
+
+
 @pytest.mark.parametrize("source_cardinality", range(2, 9))
 @pytest.mark.parametrize("target_block_size", range(1, 7))
 def test_tunstall_code_encode_decode(source_cardinality, target_block_size):
