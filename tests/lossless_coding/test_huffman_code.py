@@ -89,6 +89,7 @@ def test_huffman_code_random_pmf(source_cardinality, source_block_size, policy):
     for _ in range(10):
         pmf = random_pmf(source_cardinality)
         code = komm.HuffmanCode(pmf, source_block_size=source_block_size, policy=policy)
+        assert code.size == source_cardinality**source_block_size
         assert code.is_uniquely_decodable()
         assert code.is_prefix_free()
         assert code.kraft_parameter() <= 1

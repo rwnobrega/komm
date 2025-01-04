@@ -180,6 +180,18 @@ class FixedToVariableCode:
         return self._source_block_size
 
     @property
+    def size(self) -> int:
+        r"""
+        The number of codewords in the code. It is equal to $S^k$.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
+            >>> code.size
+            3
+        """
+        return len(self.enc_mapping)
+
+    @property
     def enc_mapping(self) -> dict[Word, Word]:
         r"""
         The encoding mapping $\Enc$ of the code. It is a dictionary of length $S^k$ whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are the corresponding codewords.

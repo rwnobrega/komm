@@ -1,4 +1,4 @@
-from math import floor, log2
+from math import ceil, floor, log2
 
 import numpy as np
 import pytest
@@ -39,6 +39,7 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
     for _ in range(10):
         pmf = random_pmf(source_cardinality)
         code = komm.TunstallCode(pmf, target_block_size)
+        assert code.size <= 2**target_block_size
         assert code.is_fully_covering()
         assert code.is_uniquely_encodable()
         assert code.is_prefix_free()
@@ -55,9 +56,9 @@ def test_tunstall_code_rate_upper_bound(source_cardinality):
     for _ in range(10):
         pmf = random_pmf(source_cardinality)
         min_p = np.min(pmf)
-        target_block_size = int(np.ceil(np.log2(1 / min_p))) + 1
+        target_block_size = ceil(log2(1 / min_p)) + 1
         code = komm.TunstallCode(pmf, target_block_size)
-        size = len(code.sourcewords)
+        size = code.size
         entropy = komm.entropy(pmf)
         bound = entropy * log2(size + source_cardinality - 2) / log2(size * min_p)
         assert code.rate(pmf) <= bound

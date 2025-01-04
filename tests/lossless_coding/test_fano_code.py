@@ -24,6 +24,7 @@ def test_fano_code_random_pmf(source_cardinality, source_block_size):
     for _ in range(10):
         pmf = random_pmf(source_cardinality)
         code = komm.FanoCode(pmf, source_block_size)
+        assert code.size == source_cardinality**source_block_size
         assert code.is_uniquely_decodable()
         assert code.is_prefix_free()
         assert code.kraft_parameter() <= 1

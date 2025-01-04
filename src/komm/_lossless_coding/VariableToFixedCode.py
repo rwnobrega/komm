@@ -189,6 +189,18 @@ class VariableToFixedCode:
         return self._target_block_size
 
     @property
+    def size(self) -> int:
+        r"""
+        The number of sourcewords in the code. It is less than or equal to $T^n$.
+
+        Examples:
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code.size
+            3
+        """
+        return len(self.dec_mapping)
+
+    @property
     def dec_mapping(self) -> dict[Word, Word]:
         r"""
         The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $T^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are the corresponding sourcewords.
