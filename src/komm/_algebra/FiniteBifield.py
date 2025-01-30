@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from functools import reduce
-from typing import Any, Generic, TypeVar
+from typing import Generic, SupportsInt, TypeVar
 
 import numpy as np
 from typing_extensions import Self
@@ -12,7 +12,7 @@ F = TypeVar("F", bound="FiniteBifield")
 
 
 class FiniteBifieldElement(Generic[F]):
-    def __init__(self, ambient: F, value: Any) -> None:
+    def __init__(self, ambient: F, value: SupportsInt) -> None:
         self.ambient = ambient
         self.value = BinaryPolynomial(value)
 

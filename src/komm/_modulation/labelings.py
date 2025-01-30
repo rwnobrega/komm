@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .._util.bit_operations import int_to_bits
 
-T = TypeVar("T", bound=npt.NDArray[np.number[Any]])
+T = TypeVar("T", bound=npt.NDArray[np.number])
 
 
 def cartesian_product(A: T, B: T) -> T:

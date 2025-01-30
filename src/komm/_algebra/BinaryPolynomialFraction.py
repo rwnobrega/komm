@@ -1,4 +1,4 @@
-from typing import Any
+from typing import SupportsInt
 
 from typing_extensions import Self
 
@@ -23,7 +23,7 @@ class BinaryPolynomialFraction:
     The binary polynomial fractions form a *field*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), and exponentiation (`**`).
     """
 
-    def __init__(self, numerator: Any, denominator: Any = 0b1) -> None:
+    def __init__(self, numerator: SupportsInt, denominator: SupportsInt = 0b1) -> None:
         self.numerator = BinaryPolynomial(numerator)
         self.denominator = BinaryPolynomial(denominator)
         self.__post_init__()

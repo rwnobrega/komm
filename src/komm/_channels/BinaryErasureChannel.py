@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -83,7 +82,7 @@ class BinaryErasureChannel(base.DiscreteMemorylessChannel):
         pi = input_pmf[1]
         return (1.0 - epsilon) * binary_entropy(pi) / np.log2(base)
 
-    def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
+    def capacity(self, base: LogBase = 2.0) -> float:
         r"""
         For the BEC, it is given by
         $$

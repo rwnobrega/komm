@@ -1,6 +1,6 @@
 import operator
 from functools import reduce
-from typing import Any, TypeVar
+from typing import SupportsInt, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -49,7 +49,7 @@ class BinaryPolynomial:
         BinaryPolynomial(0b100010101)
     """
 
-    def __init__(self, value: Any) -> None:
+    def __init__(self, value: SupportsInt) -> None:
         self.value = int(value)
 
     def __repr__(self) -> str:

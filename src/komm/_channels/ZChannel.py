@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -83,7 +82,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
         pi = input_pmf[1]
         return (binary_entropy(pi * (1 - p)) - pi * binary_entropy(p)) / np.log2(base)
 
-    def capacity(self, base: LogBase = 2.0, **kwargs: Any) -> float:
+    def capacity(self, base: LogBase = 2.0) -> float:
         r"""
         For the Z-channel, it is given by
         $$
