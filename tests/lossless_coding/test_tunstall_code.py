@@ -52,7 +52,7 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
 def test_tunstall_code_rate_upper_bound(source_cardinality):
-    # From MIT 6.441 Supplementary Notes 1, 2/10/94, eq. (5).
+    # From R. Gallager - MIT 6.441 Supplementary Notes 1, 2/10/94, eq. (5).
     for _ in range(10):
         pmf = random_pmf(source_cardinality)
         min_p = np.min(pmf)
