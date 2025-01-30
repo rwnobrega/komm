@@ -318,7 +318,7 @@ class VariableToFixedCode:
         where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.
 
         Parameters:
-            pmf (Array1D[float]): The (first-order) probability mass function $p_X$ to be considered.
+            pmf: The (first-order) probability mass function $p_X$ to be considered.
 
         Returns:
             rate: The expected rate $R$ of the code.

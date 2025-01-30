@@ -9,7 +9,7 @@ class ComplexSequence:
     General complex sequence. It is denoted by $x[n]$, with elements in $\\mathbb{C}$. Its length (or period) is denoted by $L$.
 
     Parameters:
-        sequence (Array1D[complex]): The complex sequence. Must be a 1D-array of length $L$ with elements in $\\mathbb{C}$.
+        sequence: The complex sequence. Must be a 1D-array of length $L$ with elements in $\\mathbb{C}$.
 
     Examples:
         >>> seq = ComplexSequence([1, 1j, -1, -1j])

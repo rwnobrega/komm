@@ -75,7 +75,7 @@ def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     r"""
     Evaluates a polynomial at a point using Horner's method.
 
-    Args:
+    Parameters:
         poly: Polynomial to evaluate
         x: Point at which to evaluate the polynomial (ring element)
 

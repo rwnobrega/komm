@@ -33,7 +33,7 @@ class DiscreteMemorylessSource:
         Returns the source entropy $\mathrm{H}(X)$. See [`komm.entropy`](/ref/entropy) for more details.
 
         Parameters:
-            base (Optional[float | str]): See [`komm.entropy`](/ref/entropy). The default value is $2.0$.
+            base: See [`komm.entropy`](/ref/entropy). The default value is $2.0$.
 
         Examples:
             >>> dms = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])

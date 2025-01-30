@@ -17,7 +17,7 @@ def gcd(x: T, y: T) -> T:
     r"""
     Greatest common divisor. Computes the greatest common divisor (gcd) of two elements in a domain using the Euclidean algorithm.
 
-    Args:
+    Parameters:
         x: First element
         y: Second element
 
@@ -37,7 +37,7 @@ def xgcd(x: T, y: T) -> tuple[T, T, T]:
     r"""
     Extended gcd. Computes the greatest common divisor (gcd) and the Bézout coefficients of two elements in a domain using the extended Euclidean algorithm.
 
-    Args:
+    Parameters:
         x: First element
         y: Second element
 

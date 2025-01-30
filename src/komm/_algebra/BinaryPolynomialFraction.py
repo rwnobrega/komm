@@ -10,7 +10,7 @@ class BinaryPolynomialFraction:
     r"""
     Binary polynomial fraction. A *binary polynomial fraction* is a ratio of two [binary polynomials](/ref/BinaryPolynomial).
 
-    Attributes:
+    Parameters:
         numerator: The numerator of the fraction.
         denominator: The denominator of the fraction.
 

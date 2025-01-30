@@ -19,8 +19,8 @@ class BinaryPolynomial:
 
     The default constructor of the class expects the following:
 
-    Attributes:
-        value (int): An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
+    Parameters:
+        value: An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer `0b11010` = `0o32` = `26`.
 
     Examples:
         >>> komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
@@ -74,7 +74,7 @@ class BinaryPolynomial:
         Constructs a binary polynomial from its coefficients.
 
         Parameters:
-            coefficients (Array1D[int]): The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
+            coefficients: The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, `[0, 1, 0, 1, 1]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
             >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
@@ -88,7 +88,7 @@ class BinaryPolynomial:
         Constructs a binary polynomial from its exponents.
 
         Parameters:
-            exponents (Array1D[int]): The exponents of the nonzero terms of the binary polynomial. For example, `[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
+            exponents: The exponents of the nonzero terms of the binary polynomial. For example, `[1, 3, 4]` represents the binary polynomial $X^4 + X^3 + X$.
 
         Examples:
             >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
@@ -165,10 +165,10 @@ class BinaryPolynomial:
         Returns the coefficients of the binary polynomial.
 
         Parameters:
-            width (int | None): If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width: If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
 
         Returns:
-            coefficients (Array1D[int]): Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
+            coefficients: Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
 
         Examples:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
@@ -184,7 +184,7 @@ class BinaryPolynomial:
         Returns the exponents of the binary polynomial.
 
         Returns:
-            exponents (Array1D[int]): Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
+            exponents: Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.
 
         Examples:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X

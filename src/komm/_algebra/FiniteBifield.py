@@ -98,10 +98,10 @@ class FiniteBifield:
     r"""
     Finite field with binary characteristic. Objects of this class represent a *finite field* $\mathrm{GF}(2^k)$ (also known as *Galois field*), with *characteristic* $2$ and *degree* $k$.
 
-    Attributes:
-        degree (int): Degree $k$ of the finite field. Must be a positive integer.
+    Parameters:
+        degree: Degree $k$ of the finite field. Must be a positive integer.
 
-        modulus (Optional[BinaryPolynomial | int]): Modulus $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from [the list of default primitive polynomials](/resources/primitive-polynomials).
+        modulus: Modulus $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from [the list of default primitive polynomials](/resources/primitive-polynomials).
 
 
     Examples:
