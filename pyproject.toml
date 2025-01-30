@@ -36,9 +36,9 @@ testpaths = ["src/komm", "tests"]
 
 [tool.pdm.dev-dependencies]
 lint = [
-    "black>=24.10.0",
-    "isort>=5.13.2",
-    "pyright>=1.1.0",
+    "black==25.1.0",
+    "isort==6.0.0",
+    "pyright==1.1.393",
 ]
 test = [
     "pytest==8.3.3",
