@@ -154,13 +154,13 @@ class Modulation:
         Examples:
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_symbol
-            np.float64(1.125)
+            1.125
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.energy_per_symbol
-            np.float64(0.75)
+            0.75
         """
-        return ((self.constellation * self.constellation.conj()).real).mean()
+        return float(np.mean(np.real(self.constellation * self.constellation.conj())))
 
     @property
     def energy_per_bit(self) -> float:
@@ -170,11 +170,11 @@ class Modulation:
         Examples:
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.energy_per_bit
-            np.float64(0.5625)
+            0.5625
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.energy_per_bit
-            np.float64(0.375)
+            0.375
         """
         return self.energy_per_symbol / self.bits_per_symbol
 
@@ -189,13 +189,14 @@ class Modulation:
         Examples:
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.symbol_mean
-            np.float64(0.5)
+            0.5
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.symbol_mean
-            np.complex128(0.25j)
+            0.25j
         """
-        return self.constellation.mean()
+        mean = np.mean(self.constellation)
+        return complex(mean) if np.iscomplexobj(self.constellation) else float(mean)
 
     @property
     def minimum_distance(self) -> float:
@@ -208,14 +209,14 @@ class Modulation:
         Examples:
             >>> mod = komm.Modulation(constellation=[-0.5, 0.0, 0.5, 2.0], labeling=[[1, 0], [1, 1], [0, 1], [0, 0]])
             >>> mod.minimum_distance
-            np.float64(0.5)
+            0.5
 
             >>> mod = komm.Modulation(constellation=[0, -1, 1, 1j], labeling=[[0, 0], [0, 1], [1, 0], [1, 1]])
             >>> mod.minimum_distance
-            np.float64(1.0)
+            1.0
         """
-        return np.min(
-            [np.abs(s1 - s2) for s1, s2 in combinations(self.constellation, 2)]
+        return float(
+            np.min([np.abs(s1 - s2) for s1, s2 in combinations(self.constellation, 2)])
         )
 
     @final
