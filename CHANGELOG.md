@@ -3,6 +3,12 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.16.2 (2025-02-18)
+
+### Fixed
+
+- Fixed regression in block decoders when processing input with errors beyond their error correction capability.
+
 ## v0.16.1 (2025-01-04)
 
 ### Added
