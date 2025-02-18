@@ -87,26 +87,32 @@ class BlockCode(ABC):
         return encode(input)
 
     @abstractmethod
+    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        @blockwise(self.length)
+        def project(v: npt.NDArray[np.integer]):
+            u = v @ self.generator_matrix_right_inverse % 2
+            return u
+
+        return project(input)
+
+    @abstractmethod
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Applies the inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.
+        Applies the inverse encoding partial mapping $\Enc^{-1} : \mathbb{B}^n \rightharpoonup \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
 
         Returns:
             output: The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.
+
+        Raises:
+            ValueError: If the input contains any invalid codewords.
         """
         s = self.check(input)
         if not np.all(s == 0):
             raise ValueError("one or more inputs in 'v' are not valid codewords")
-
-        @blockwise(self.length)
-        def inverse_encode(v: npt.NDArray[np.integer]):
-            u = v @ self.generator_matrix_right_inverse % 2
-            return u
-
-        return inverse_encode(input)
+        return self.project_word(input)
 
     @abstractmethod
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:

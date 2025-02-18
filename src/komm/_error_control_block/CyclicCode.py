@@ -164,14 +164,10 @@ class CyclicCode(base.BlockCode):
 
         return encode(input)
 
-    def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        s = self.check(input)
-        if not np.all(s == 0):
-            raise ValueError("one or more inputs in 'v' are not valid codewords")
-
+    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
         @vectorize
-        def inverse_encode(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        def project(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v_poly = BinaryPolynomial.from_coefficients(v)
             if not self.systematic:
                 u_poly = v_poly // self.generator_polynomial
@@ -180,7 +176,10 @@ class CyclicCode(base.BlockCode):
             u = u_poly.coefficients(width=self.dimension)
             return u
 
-        return inverse_encode(input)
+        return project(input)
+
+    def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        return super().inverse_encode(input)
 
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)

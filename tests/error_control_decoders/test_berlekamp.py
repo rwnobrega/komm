@@ -39,3 +39,16 @@ def test_berlekamp_error_correcting_capability(mu, deltas):
                 error_locations = np.random.choice(code.length, w, replace=False)
                 r[error_locations] ^= 1
                 assert np.array_equal(decoder(r), np.zeros(code.dimension, dtype=int))
+
+
+def test_berlekamp_above_error_correcting_capability():
+    code = komm.BCHCode(mu=4, delta=7)
+    n = code.length
+    t = (code.delta - 1) // 2
+    decoder = komm.BerlekampDecoder(code)
+    for w in range(t + 1, n + 1):
+        for _ in range(10):
+            r = np.zeros(code.length, dtype=int)
+            error_locations = np.random.choice(code.length, w, replace=False)
+            r[error_locations] ^= 1
+            decoder(r)  # No exception should be raised.

@@ -42,7 +42,7 @@ class SyndromeTableDecoder(base.BlockDecoder[BlockCode]):
             s = self.code.check(r)
             e_hat = self._coset_leaders[bits_to_int(s)]
             v_hat = np.bitwise_xor(r, e_hat)
-            u_hat = self.code.inverse_encode(v_hat)
+            u_hat = self.code.project_word(v_hat)
             return u_hat
 
         return decode(input)

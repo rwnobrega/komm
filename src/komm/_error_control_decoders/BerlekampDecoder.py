@@ -43,13 +43,13 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             r_poly = BinaryPolynomial.from_coefficients(r)
             syndrome = self.code.bch_syndrome(r_poly)
             if all(x == self.code.field.zero for x in syndrome):
-                return self.code.inverse_encode(r)
+                return self.code.project_word(r)
             sigma_poly = berlekamp_algorithm(self.code, syndrome)
             roots = find_roots(self.code.field, sigma_poly)
             e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
             e_hat = np.bincount(e_loc, minlength=self.code.length)
             v_hat = (r + e_hat) % 2
-            u_hat = self.code.inverse_encode(v_hat)
+            u_hat = self.code.project_word(v_hat)
             return u_hat
 
         return decode(input)

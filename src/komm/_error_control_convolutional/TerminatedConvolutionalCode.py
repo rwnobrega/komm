@@ -133,6 +133,9 @@ class TerminatedConvolutionalCode(base.BlockCode):
 
         return encode(input)
 
+    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        return super().project_word(input)
+
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return super().inverse_encode(input)
 

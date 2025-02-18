@@ -128,6 +128,9 @@ class BlockCode(base.BlockCode):
         """
         return super().encode(input)
 
+    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        return super().project_word(input)
+
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
