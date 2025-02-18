@@ -23,6 +23,9 @@ class BinaryPolynomialFraction:
     The binary polynomial fractions form a *field*. The following operations are supported: addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), and exponentiation (`**`).
     """
 
+    numerator: BinaryPolynomial
+    denominator: BinaryPolynomial
+
     def __init__(self, numerator: SupportsInt, denominator: SupportsInt = 0b1) -> None:
         self.numerator = BinaryPolynomial(numerator)
         self.denominator = BinaryPolynomial(denominator)

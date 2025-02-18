@@ -38,7 +38,7 @@ testpaths = ["src/komm", "tests"]
 lint = [
     "black==25.1.0",
     "isort==6.0.0",
-    "pyright==1.1.393",
+    "pyright==1.1.394",
 ]
 test = [
     "pytest==8.3.3",
