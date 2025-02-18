@@ -629,10 +629,10 @@
               <div class="doc doc-contents first">
                 <p>Binary polynomial. A <em>binary polynomial</em> is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \{ 0, 1 \}$.</p>
                 <p>The default constructor of the class expects the following:</p>
-                <p><strong>Attributes:</strong></p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
-                    <b><code>value</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
+                    <b><code>value</code></b> <span class="doc-param-annotation">(<code><span title="typing.SupportsInt">SupportsInt</span></code>)</span> –
                     <div class="doc-md-description">
                       <p>An integer whose binary digits represent the coefficients of the polynomial—the leftmost bit standing for the highest degree term. For example, the binary polynomial $X^4 + X^3 + X$ is represented by the integer <code>0b11010</code> = <code>0o32</code> = <code>26</code>.</p>
                     </div>
@@ -673,7 +673,7 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>coefficients</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>coefficients</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                           <div class="doc-md-description">
                             <p>The coefficients of the binary polynomial—the $i$-th element of the array standing for the coefficient of $X^i$. For example, <code>[0, 1, 0, 1, 1]</code> represents the binary polynomial $X^4 + X^3 + X$.</p>
                           </div>
@@ -694,7 +694,7 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>exponents</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>exponents</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                           <div class="doc-md-description">
                             <p>The exponents of the nonzero terms of the binary polynomial. For example, <code>[1, 3, 4]</code> represents the binary polynomial $X^4 + X^3 + X$.</p>
                           </div>
@@ -737,7 +737,7 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>coefficients</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>coefficients</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.</p>
                           </div>
@@ -761,7 +761,7 @@
                       <p><strong>Returns:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>exponents</code></b> <span class="doc-param-annotation">(<code>Array1D[int]</code>)</span> –
+                          <b><code>exponents</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>Exponents of the nonzero terms of the binary polynomial. The exponents are returned in ascending order.</p>
                           </div>

@@ -568,7 +568,7 @@
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
                 <p>Finite field with binary characteristic. Objects of this class represent a <em>finite field</em> $\mathrm{GF}(2^k)$ (also known as <em>Galois field</em>), with <em>characteristic</em> $2$ and <em>degree</em> $k$.</p>
-                <p><strong>Attributes:</strong></p>
+                <p><strong>Parameters:</strong></p>
                 <ul>
                   <li class="field-body">
                     <b><code>degree</code></b> <span class="doc-param-annotation">(<code>int</code>)</span> –
@@ -577,7 +577,7 @@
                     </div>
                   </li>
                   <li class="field-body">
-                    <b><code>modulus</code></b> <span class="doc-param-annotation">(<code>Optional[<span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int]</code>)</span> –
+                    <b><code>modulus</code></b> <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span> | int | None</code>)</span> –
                     <div class="doc-md-description">
                       <p>Modulus $p(X)$ of the field, specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from <a href="/resources/primitive-polynomials">the list of default primitive polynomials</a>.</p>
                     </div>

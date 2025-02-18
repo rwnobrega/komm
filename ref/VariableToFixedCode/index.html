@@ -645,7 +645,7 @@
             <h1 id="kommvariabletofixedcode">komm.VariableToFixedCode</h1>
             <div class="doc doc-object doc-class">
               <div class="doc doc-contents first">
-                <p>Variable-to-fixed length code. A <em>variable-to-fixed length code</em> with <em>target alphabet</em> $\mathcal{T}$, <em>source alphabet</em> $\mathcal{S}$, and <em>target block size</em> $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \to \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
+                <p>Variable-to-fixed length code. A <em>variable-to-fixed length code</em> with <em>target alphabet</em> $\mathcal{T}$, <em>source alphabet</em> $\mathcal{S}$, and <em>target block size</em> $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
                 <div class="doc doc-children">
                   <div class="doc doc-object doc-function">
                     <h2 id="from_dec_mapping" class="doc doc-heading"><code class="highlight language-python"><span class="n">from_dec_mapping</span></code> <span class="doc doc-labels"><small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small></span></h2>
@@ -952,7 +952,7 @@
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
-                          <b><code>pmf</code></b> <span class="doc-param-annotation">(<code>Array1D[float]</code>)</span> –
+                          <b><code>pmf</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span> –
                           <div class="doc-md-description">
                             <p>The (first-order) probability mass function $p_X$ to be considered.</p>
                           </div>

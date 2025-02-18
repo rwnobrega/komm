@@ -802,7 +802,7 @@
                   <div class="doc doc-object doc-function">
                     <h2 id="inverse_encode" class="doc doc-heading"><code class="highlight language-python"><span class="n">inverse_encode</span></code></h2>
                     <div class="doc doc-contents">
-                      <p>Applies the inverse encoding mapping $\Enc^{-1} : \mathbb{B}^n \to \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.</p>
+                      <p>Applies the inverse encoding partial mapping $\Enc^{-1} : \mathbb{B}^n \rightharpoonup \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.</p>
                       <p><strong>Parameters:</strong></p>
                       <ul>
                         <li class="field-body">
@@ -818,6 +818,15 @@
                           <b><code>output</code></b> <span class="doc-param-annotation">(<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>)</span> –
                           <div class="doc-md-description">
                             <p>The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <p><span class="doc-section-title">Raises:</span></p>
+                      <ul>
+                        <li class="doc-section-item field-body">
+                          <code>ValueError</code> –
+                          <div class="doc-md-description">
+                            <p>If the input contains any invalid codewords.</p>
                           </div>
                         </li>
                       </ul>
