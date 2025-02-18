@@ -38,5 +38,4 @@ def test_berlekamp_error_correcting_capability(mu, deltas):
                 r = np.zeros(code.length, dtype=int)
                 error_locations = np.random.choice(code.length, w, replace=False)
                 r[error_locations] ^= 1
-                print(r)
                 assert np.array_equal(decoder(r), np.zeros(code.dimension, dtype=int))

@@ -105,7 +105,6 @@ def test_pam_modem(order, labeling):
     symbols = pam.modulate(bits)
     bits_hat_hard = pam.demodulate_hard(symbols)
     np.testing.assert_allclose(bits_hat_hard, bits)
-    print(pam.demodulate_soft(symbols))
     bits_hat_soft = (pam.demodulate_soft(symbols, snr=1000.0) < 0).astype(int)
     np.testing.assert_allclose(bits_hat_soft, bits)
 
