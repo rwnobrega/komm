@@ -8,7 +8,7 @@ from komm._util.information_theory import random_pmf
 
 
 def test_tunstall_code():
-    # Sayood.06, p. 71.
+    # [Say06, p. 71]
     pmf = [0.6, 0.3, 0.1]
     code = komm.TunstallCode(pmf, 3)
     assert code.inv_dec_mapping == {

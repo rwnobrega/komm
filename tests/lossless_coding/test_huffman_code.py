@@ -6,7 +6,7 @@ from komm._util.information_theory import random_pmf
 
 
 def test_huffman_code_1():
-    # Sayood.06, p. 47.
+    # [Say06, p. 47]
     pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
     code = komm.HuffmanCode(pmf)
     assert code.enc_mapping == {
@@ -20,7 +20,7 @@ def test_huffman_code_1():
 
 
 def test_huffman_code_2():
-    # Sayood.06, p. 44.
+    # [Say06, p. 44]
     pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
     code = komm.HuffmanCode(pmf, policy="low")
     assert code.enc_mapping == {
@@ -34,7 +34,7 @@ def test_huffman_code_2():
 
 
 def test_huffman_code_3():
-    # Haykin.04, p. 620.
+    # [Hay04, p. 620]
     pmf = [0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1]
     code1 = komm.HuffmanCode(pmf, policy="high")
     assert code1.enc_mapping == {
@@ -65,7 +65,7 @@ def test_huffman_code_3():
 
 
 def test_huffman_code_4():
-    # Haykin.04, p. 620.
+    # [Hay04, p. 620]
     pmf = [0.7, 0.15, 0.15]
     code1 = komm.HuffmanCode(pmf, source_block_size=1)
     assert np.isclose(code1.rate(pmf), 1.3)
