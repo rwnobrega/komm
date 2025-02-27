@@ -132,3 +132,19 @@ def extended_probabilities(pmf: PMF, k: int, pbar: Any) -> list[tuple[Word, floa
 
 def empty_mapping(cardinality: int, block_size: int) -> dict[Word, Word]:
     return {x: () for x in product(range(cardinality), repeat=block_size)}
+
+
+def integer_to_symbols(integer: int, base: int, width: int) -> list[int]:
+    symbols: list[int] = []
+    for _ in range(width):
+        symbols.append(integer % base)
+        integer //= base
+    return symbols
+
+
+def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
+    symbols = np.asarray(symbols)
+    integer = 0
+    for symbol in reversed(symbols):
+        integer = integer * base + symbol
+    return integer

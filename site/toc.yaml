@@ -78,6 +78,7 @@ Source coding:
     - HuffmanCode
     - VariableToFixedCode
     - TunstallCode
+    - LempelZiv78Code
   Quantization:
     - ScalarQuantizer
     - LloydMaxQuantizer
