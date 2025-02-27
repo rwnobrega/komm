@@ -3,6 +3,12 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.17.0 (2025-02-26)
+
+### Added
+
+- Implemented [Lempel–Ziv 78](https://komm.dev/ref/LempelZiv78Code) and [Lempel–Ziv–Welch](https://komm.dev/ref/LempelZivWelchCode) lossless data compression algorithms.
+
 ## v0.16.2 (2025-02-18)
 
 ### Fixed
