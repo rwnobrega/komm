@@ -118,4 +118,5 @@ class LempelZivWelchCode:
             dictionary[len(dictionary)] = old + (word[0],)
             old = word
             i += k
+
         return np.array(output, dtype=int)
