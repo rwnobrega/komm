@@ -79,6 +79,7 @@ Source coding:
     - VariableToFixedCode
     - TunstallCode
     - LempelZiv78Code
+    - LempelZivWelchCode
   Quantization:
     - ScalarQuantizer
     - LloydMaxQuantizer
