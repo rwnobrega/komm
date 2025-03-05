@@ -33,7 +33,7 @@ def TunstallCode(
         {(0, 0): (0,),
          (0, 1): (1,),
          (1, 0): (2,)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(2.0)
 
         >>> code = komm.TunstallCode(pmf, 3)
@@ -45,7 +45,7 @@ def TunstallCode(
          (1, 0, 0): (0, 2),
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.3698630137)
     """
     pmf = PMF(pmf)

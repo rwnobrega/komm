@@ -29,7 +29,7 @@ def FanoCode(
         {(0,): (0,),
          (1,): (1, 0),
          (2,): (1, 1)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.3)
 
         >>> code = komm.FanoCode(pmf, 2)
@@ -43,7 +43,7 @@ def FanoCode(
          (2, 0): (1, 1, 1, 0),
          (2, 1): (1, 1, 1, 1, 1, 0),
          (2, 2): (1, 1, 1, 1, 1, 1)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.1975)
     """
     pmf = PMF(pmf)

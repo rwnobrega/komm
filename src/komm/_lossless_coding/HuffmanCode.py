@@ -37,7 +37,7 @@ def HuffmanCode(
         {(0,): (0,),
          (1,): (1, 1),
          (2,): (1, 0)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.3)
 
         >>> code = komm.HuffmanCode(pmf, 2)
@@ -51,7 +51,7 @@ def HuffmanCode(
          (2, 0): (0, 0, 1),
          (2, 1): (0, 0, 0, 1, 0, 1),
          (2, 2): (0, 0, 0, 1, 0, 0)}
-        >>> code.rate(pmf)  # doctest: +NUMBER
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.1975)
     """
     pmf = PMF(pmf)

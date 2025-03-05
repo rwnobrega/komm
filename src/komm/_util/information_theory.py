@@ -76,13 +76,13 @@ def entropy(pmf: npt.ArrayLike, base: LogBase = 2.0) -> float:
         The entropy $\mathrm{H}(X)$ of the random variable.
 
     Examples:
-        >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +NUMBER
+        >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +FLOAT_CMP
         np.float64(2.0)
 
-        >>> komm.entropy(pmf=[1/3, 1/3, 1/3], base=3.0)  # doctest: +NUMBER
+        >>> komm.entropy(pmf=[1/3, 1/3, 1/3], base=3.0)  # doctest: +FLOAT_CMP
         np.float64(1.0)
 
-        >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +NUMBER
+        >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +FLOAT_CMP
         np.float64(0.6931471805599453)
     """
     pmf = PMF(pmf)
@@ -110,7 +110,7 @@ def binary_entropy(p: float) -> float:
         The value of the binary entropy function $\Hb(p)$.
 
     Examples:
-        >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +NUMBER
+        >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +FLOAT_CMP
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
     assert_is_probability(p)
@@ -142,16 +142,16 @@ def relative_entropy(
         The relative entropy $\mathrm{D}(p || q)$ between the two <span>pmf</span>s.
 
     Examples:
-        >>> komm.relative_entropy([1/2, 1/2], [1/2, 1/2])  # doctest: +NUMBER
+        >>> komm.relative_entropy([1/2, 1/2], [1/2, 1/2])  # doctest: +FLOAT_CMP
         np.float64(0.0)
 
-        >>> komm.relative_entropy([1/2, 1/2], [3/4, 1/4])  # doctest: +NUMBER
+        >>> komm.relative_entropy([1/2, 1/2], [3/4, 1/4])  # doctest: +FLOAT_CMP
         np.float64(0.20751874963942185)
 
-        >>> komm.relative_entropy([3/4, 1/4], [1/2, 1/2])  # doctest: +NUMBER
+        >>> komm.relative_entropy([3/4, 1/4], [1/2, 1/2])  # doctest: +FLOAT_CMP
         np.float64(0.18872187554086717)
 
-        >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +NUMBER
+        >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +FLOAT_CMP
         np.float64(inf)
     """
     pmf = PMF(pmf)

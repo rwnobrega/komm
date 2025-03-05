@@ -74,7 +74,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
 
         Examples:
             >>> zc = komm.ZChannel(0.2)
-            >>> zc.mutual_information([0.5, 0.5])  # doctest: +NUMBER
+            >>> zc.mutual_information([0.5, 0.5])  # doctest: +FLOAT_CMP
             np.float64(0.6099865470109874)
         """
         input_pmf = PMF(input_pmf)
@@ -92,7 +92,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
 
         Examples:
             >>> zc = komm.ZChannel(0.2)
-            >>> zc.capacity()  # doctest: +NUMBER
+            >>> zc.capacity()  # doctest: +FLOAT_CMP
             np.float64(0.6182313659549211)
         """
         p = self.decay_probability
