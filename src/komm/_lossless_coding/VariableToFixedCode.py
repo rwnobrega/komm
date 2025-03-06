@@ -1,4 +1,4 @@
-import itertools as it
+from itertools import count, product
 
 import numpy as np
 import numpy.typing as npt
@@ -44,7 +44,7 @@ class VariableToFixedCode:
             raise ValueError("'source_cardinality': must be at least 2")
         if not n >= 1:
             raise ValueError("'target_block_size': must be at least 1")
-        if not set(domain) <= set(it.product(range(T), repeat=n)):
+        if not set(domain) <= set(product(range(T), repeat=n)):
             raise ValueError(f"'dec_mapping': invalid domain")
         if not all(
             all(0 <= x < S for x in word) and len(word) > 0 for word in codomain
@@ -148,8 +148,8 @@ class VariableToFixedCode:
         """
         T = target_cardinality
         S = max(max(word) for word in sourcewords) + 1
-        n = next(n for n in it.count(1) if T**n >= len(sourcewords))
-        dec_mapping = dict(zip(it.product(range(T), repeat=n), sourcewords))
+        n = next(n for n in count(1) if T**n >= len(sourcewords))
+        dec_mapping = dict(zip(product(range(T), repeat=n), sourcewords))
         return cls(T, S, n, dec_mapping)
 
     @property
