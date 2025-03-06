@@ -1,3 +1,4 @@
+from functools import cache
 from itertools import count, product
 
 import numpy as np
@@ -240,6 +241,7 @@ class VariableToFixedCode:
         """
         return list(self.dec_mapping.values())
 
+    @cache
     def is_fully_covering(self) -> bool:
         """
         Returns whether the code is fully covering. A code is *fully covering* if every possible source sequence has a prefix that is a sourceword.
@@ -263,6 +265,7 @@ class VariableToFixedCode:
         """
         return is_fully_covering(self.sourcewords, self.source_cardinality)
 
+    @cache
     def is_uniquely_encodable(self) -> bool:
         r"""
         Returns whether the code is uniquely encodable. A code is *uniquely encodable* if there is a unique way to parse any concatenation of sourcewords.
@@ -286,6 +289,7 @@ class VariableToFixedCode:
         """
         return is_uniquely_parsable(self.sourcewords)
 
+    @cache
     def is_prefix_free(self) -> bool:
         r"""
         Returns whether the code is prefix-free. A code is *prefix-free* if no sourceword is a prefix of any other sourceword.

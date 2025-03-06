@@ -1,3 +1,4 @@
+from functools import cache
 from itertools import count, product
 
 import numpy as np
@@ -231,6 +232,7 @@ class FixedToVariableCode:
         """
         return list(self.enc_mapping.values())
 
+    @cache
     def is_uniquely_decodable(self) -> bool:
         r"""
         Returns whether the code is uniquely decodable. A code is *uniquely decodable* if there is a unique way to parse any concatenation of codewords.
@@ -250,6 +252,7 @@ class FixedToVariableCode:
         """
         return is_uniquely_parsable(self.codewords)
 
+    @cache
     def is_prefix_free(self) -> bool:
         r"""
         Returns whether the code is prefix-free. A code is *prefix-free* if no codeword is a prefix of any other codeword.
@@ -269,6 +272,7 @@ class FixedToVariableCode:
         """
         return is_prefix_free(self.codewords)
 
+    @cache
     def kraft_parameter(self) -> float:
         r"""
         Computes the Kraft parameter $K$ of the code. This quantity is given by
