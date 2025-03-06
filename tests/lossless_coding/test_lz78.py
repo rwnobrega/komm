@@ -42,12 +42,33 @@ def test_lz78_shor():
     # https://math.mit.edu/~shor/18.310/lempel_ziv_notes.pdf
     code = komm.LempelZiv78Code(2)
     message = [ord(char) - ord("A") for char in "AABABBBABAABABBBABBABB"]
-    compressed = [
-        int(char)
-        # Below we manually converted the pointers from MSB-first to LSB-first.
-        for char in ",0 | 1,1 | 01,1 | 00,1 | 010,0 | 101,1 | 001,1 | 110,0 | 1110"
-        if char in "01"
-    ]
+    compressed = [int(char) for char in "01110100101001011100101100111"]
+    np.testing.assert_array_equal(code.encode(message), compressed)
+    np.testing.assert_array_equal(code.decode(compressed), message)
+
+
+@pytest.mark.parametrize(
+    "message, compressed",
+    [
+        (  # Sec. 6.4, p. 119
+            "1011010100010",
+            "100011101100001000010",
+        ),
+        (  # Exercise 6.5, p. 120 / 128
+            "000000000000100000000000",
+            "010100110010110001100",
+        ),
+        (  # Exercise 6.6, p. 120 / 128
+            "0100001000100010101000001",
+            "00101011101100100100011010101000011",
+        ),
+    ],
+)
+def test_lz78_mackay(message, compressed):
+    # David J.C. MacKay: Information Theory, Inference, and Learning Algorithms
+    code = komm.LempelZiv78Code(2)
+    message = [int(char) for char in message]
+    compressed = [int(char) for char in compressed]
     np.testing.assert_array_equal(code.encode(message), compressed)
     np.testing.assert_array_equal(code.decode(compressed), message)
 

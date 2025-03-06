@@ -43,7 +43,7 @@ class LempelZivWelchCode:
         Examples:
             >>> lzw = komm.LempelZivWelchCode(2)
             >>> lzw.encode(np.zeros(15, dtype=int))
-            array([0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1])
+            array([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
 
             >>> lzw = komm.LempelZivWelchCode(2, 8)
             >>> lzw.encode(np.zeros(15, dtype=int))
@@ -85,7 +85,7 @@ class LempelZivWelchCode:
 
         Examples:
             >>> lzw = komm.LempelZivWelchCode(2)
-            >>> lzw.decode([0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1])
+            >>> lzw.decode([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
             >>> lzw = komm.LempelZivWelchCode(2, 8)

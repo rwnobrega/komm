@@ -43,7 +43,7 @@ class LempelZiv78Code:
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
             >>> lz78.encode(np.zeros(15, dtype=int))
-            array([0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0])
+            array([0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0])
 
             >>> lz78 = komm.LempelZiv78Code(2, 8)
             >>> lz78.encode(np.zeros(15, dtype=int))
@@ -86,7 +86,7 @@ class LempelZiv78Code:
 
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
-            >>> lz78.decode([0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0])
+            >>> lz78.decode([0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
             >>> lz78 = komm.LempelZiv78Code(2, 8)
