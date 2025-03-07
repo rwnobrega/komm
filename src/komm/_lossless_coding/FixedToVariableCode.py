@@ -385,7 +385,6 @@ class FixedToVariableCode:
             ...     (1, 1): (1, 0, 1),
             ... })
 
-
             >>> code.decode([1, 1, 0])
             array([0, 1, 0, 0])
 
