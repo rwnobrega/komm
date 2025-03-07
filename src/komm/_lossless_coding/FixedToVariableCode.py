@@ -201,18 +201,7 @@ class FixedToVariableCode:
         return self._enc_mapping
 
     @property
-    def inv_enc_mapping(self) -> dict[Word, Word]:
-        r"""
-        The inverse encoding mapping $\Enc^{-1}$ of the code. It is a dictionary of length $S^k$ whose keys are all the codewords of the code and whose values are the corresponding source words.
-
-        Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1,0), (1,1)])
-            >>> code.inv_enc_mapping
-            {(0,): (0,), (1, 0): (1,), (1, 1): (2,)}
-        """
-        return {v: k for k, v in self.enc_mapping.items()}
-
-    @property
+    @cache
     def codewords(self) -> list[Word]:
         r"""
         The codewords of the code. They correspond to the image of the encoding mapping $\Enc$.
@@ -227,6 +216,11 @@ class FixedToVariableCode:
             [(0,), (1, 0), (1, 1)]
         """
         return list(self.enc_mapping.values())
+
+    @property
+    @cache
+    def _inv_enc_mapping(self) -> dict[Word, Word]:
+        return {v: k for k, v in self.enc_mapping.items()}
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -406,4 +400,4 @@ class FixedToVariableCode:
                 "decoding for non-prefix-free codes is not implemented yet"
             )
         input = np.asarray(input)
-        return parse_prefix_free(input, self.inv_enc_mapping, allow_incomplete=False)
+        return parse_prefix_free(input, self._inv_enc_mapping, allow_incomplete=False)
