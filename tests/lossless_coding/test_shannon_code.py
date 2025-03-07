@@ -47,3 +47,13 @@ def test_shannon_code_random_pmf(source_cardinality, source_block_size):
         pmf1 = pmf[np.random.permutation(source_cardinality)]
         code1 = komm.ShannonCode(pmf1, source_block_size)
         np.testing.assert_almost_equal(code.rate(pmf), code1.rate(pmf1))
+
+
+@pytest.mark.parametrize("source_block_size", [1, 2])
+def test_shannon_code_deterministic(source_block_size):
+    source_cardinality = 5
+    for i in range(source_cardinality):
+        pmf = np.zeros(source_cardinality)
+        pmf[i] = 1.0
+        code = komm.ShannonCode(pmf, source_block_size)
+        np.testing.assert_almost_equal(code.rate(pmf), 1 / source_block_size)

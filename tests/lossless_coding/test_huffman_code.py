@@ -111,3 +111,14 @@ def test_huffman_code_encode_decode(source_cardinality, source_block_size, polic
     x = dms(1000 * source_block_size)
     x_hat = code.decode(code.encode(x))
     assert np.array_equal(x_hat, x)
+
+
+@pytest.mark.parametrize("source_block_size", [1, 2])
+@pytest.mark.parametrize("policy", ["high", "low"])
+def test_huffman_code_deterministic(source_block_size, policy):
+    source_cardinality = 5
+    for i in range(source_cardinality):
+        pmf = np.zeros(source_cardinality)
+        pmf[i] = 1.0
+        code = komm.HuffmanCode(pmf, source_block_size, policy)
+        np.testing.assert_almost_equal(code.rate(pmf), 1 / source_block_size)

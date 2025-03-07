@@ -80,9 +80,10 @@ def shannon_code(pmf: PMF, source_block_size: int) -> dict[Word, Word]:
     enc_mapping = empty_mapping(pmf.size, source_block_size)
     v = ()
     for u, pu in extended_probabilities(pmf, source_block_size, pbar):
-        length = ceil(log2(1 / pu))
-        v = next_in_lexicographic_order(v) + (0,) * (length - len(v))
-        enc_mapping[u] = v
+        if pu > 0:
+            length = max(ceil(log2(1 / pu)), 1)
+            v = next_in_lexicographic_order(v) + (0,) * (length - len(v))
+            enc_mapping[u] = v
         pbar.update()
 
     pbar.close()
