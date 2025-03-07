@@ -17,7 +17,7 @@ from .util import (
 
 class FixedToVariableCode:
     r"""
-    Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an injective *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
+    Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
     """
 
     def __init__(
@@ -46,12 +46,8 @@ class FixedToVariableCode:
             raise ValueError("'source_block_size': must be at least 1")
         if set(domain) != set(product(range(S), repeat=k)):
             raise ValueError(f"'enc_mapping': invalid domain")
-        if not all(
-            all(0 <= x < T for x in word) and len(word) > 0 for word in codomain
-        ):
+        if not all(all(0 <= x < T for x in word) for word in codomain):
             raise ValueError(f"'enc_mapping': invalid co-domain")
-        if len(set(codomain)) != len(codomain):
-            raise ValueError(f"'enc_mapping': non-injective mapping")
 
     def __repr__(self) -> str:
         args = ", ".join([

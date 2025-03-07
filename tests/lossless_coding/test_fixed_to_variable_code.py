@@ -115,7 +115,7 @@ def test_invalid_enc_mapping_domain_4():
         komm.FixedToVariableCode(3, 2, 2, enc_mapping)
 
 
-def test_invalid_enc_mapping_codomain_1():
+def test_invalid_enc_mapping_codomain():
     enc_mapping: dict = {
         (0, 0): (0,),
         (0, 1): (1, 0, 0),
@@ -124,32 +124,6 @@ def test_invalid_enc_mapping_codomain_1():
     }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0, 1)] = (1, 0, 2)
-    with pytest.raises(ValueError):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-
-
-def test_invalid_enc_mapping_codomain_2():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    enc_mapping[(0, 1)] = ()
-    with pytest.raises(ValueError):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-
-
-def test_non_injective_enc_mapping():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    enc_mapping[(1, 1)] = (1, 1)
     with pytest.raises(ValueError):
         komm.FixedToVariableCode(2, 2, 2, enc_mapping)
 
