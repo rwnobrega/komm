@@ -17,7 +17,7 @@ from .util import (
 
 class FixedToVariableCode:
     r"""
-    Fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
+    General fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{S}$, *target alphabet* $\mathcal{T}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc : \mathcal{S}^k \to \mathcal{T}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{S}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{T}$. Here we assume that $\mathcal{S} = [0:S)$ and $\mathcal{T} = [0:T)$, for integers $S \geq 2$ and $T \geq 2$. The elements in the image of $\Enc$ are called *codewords*.
     """
 
     def __init__(
@@ -64,7 +64,7 @@ class FixedToVariableCode:
         Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.
 
         Parameters:
-            enc_mapping: The encoding mapping $\Enc$. Must be a dictionary whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are distinct non-empty tuples of integers in $[0:T)$.
+            enc_mapping: The encoding mapping $\Enc$. Must be a dictionary whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are non-empty tuples of integers in $[0:T)$.
 
         Notes:
             The source block size $k$ is inferred from the domain of the encoding mapping, and the source and target cardinalities $S$ and $T$ are inferred from the maximum values in the domain and co-domain, respectively.

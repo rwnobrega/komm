@@ -18,7 +18,7 @@ from .util import (
 
 class VariableToFixedCode:
     r"""
-    Variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
     """
 
     def __init__(
