@@ -57,3 +57,5 @@ def test_shannon_code_deterministic(source_block_size):
         pmf[i] = 1.0
         code = komm.ShannonCode(pmf, source_block_size)
         np.testing.assert_almost_equal(code.rate(pmf), 1 / source_block_size)
+        message = np.full(10, i, dtype=int)
+        np.testing.assert_array_equal(code.decode(code.encode(message)), message)
