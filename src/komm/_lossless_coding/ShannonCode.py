@@ -1,3 +1,4 @@
+from functools import cache
 from math import ceil, log2
 
 import numpy.typing as npt
@@ -8,10 +9,7 @@ from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping, extended_probabilities
 
 
-def ShannonCode(
-    pmf: npt.ArrayLike,
-    source_block_size: int = 1,
-) -> FixedToVariableCode:
+class ShannonCode(FixedToVariableCode):
     r"""
     Binary Shannon code. It is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(u)$ for a source symbol $u \in \mathcal{S}^k$ is given by
     $$
@@ -51,13 +49,30 @@ def ShannonCode(
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.6)
     """
-    pmf = PMF(pmf)
-    return FixedToVariableCode(
-        source_cardinality=pmf.size,
-        target_cardinality=2,
-        source_block_size=source_block_size,
-        enc_mapping=shannon_code(pmf, source_block_size),
-    )
+
+    def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
+        self.pmf = PMF(pmf)
+        super().__init__(
+            source_cardinality=self.pmf.size,
+            target_cardinality=2,
+            source_block_size=source_block_size,
+            enc_mapping=shannon_code(self.pmf, source_block_size),
+        )
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"pmf={self.pmf.tolist()}",
+            f"source_block_size={self.source_block_size}",
+        ])
+        return f"{self.__class__.__name__}({args})"
+
+    @cache
+    def is_uniquely_decodable(self) -> bool:
+        return True
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        return True
 
 
 def next_in_lexicographic_order(word: Word) -> Word:

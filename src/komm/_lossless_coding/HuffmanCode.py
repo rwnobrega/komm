@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from functools import cache
 from heapq import heapify, heappop, heappush
 from itertools import product
 from math import prod
@@ -13,11 +14,7 @@ from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping
 
 
-def HuffmanCode(
-    pmf: npt.ArrayLike,
-    source_block_size: int = 1,
-    policy: Literal["high", "low"] = "high",
-) -> FixedToVariableCode:
+class HuffmanCode(FixedToVariableCode):
     r"""
     Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.2</cite>.
 
@@ -54,15 +51,39 @@ def HuffmanCode(
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.1975)
     """
-    pmf = PMF(pmf)
-    if not policy in {"high", "low"}:
-        raise ValueError("'policy': must be in {'high', 'low'}")
-    return FixedToVariableCode(
-        source_cardinality=pmf.size,
-        target_cardinality=2,
-        source_block_size=source_block_size,
-        enc_mapping=huffman_algorithm(pmf, source_block_size, policy),
-    )
+
+    def __init__(
+        self,
+        pmf: npt.ArrayLike,
+        source_block_size: int = 1,
+        policy: Literal["high", "low"] = "high",
+    ):
+        self.pmf = PMF(pmf)
+        if not policy in {"high", "low"}:
+            raise ValueError("'policy': must be in {'high', 'low'}")
+        self.policy = policy
+        super().__init__(
+            source_cardinality=self.pmf.size,
+            target_cardinality=2,
+            source_block_size=source_block_size,
+            enc_mapping=huffman_algorithm(self.pmf, source_block_size, policy),
+        )
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"pmf={self.pmf.tolist()}",
+            f"source_block_size={self.source_block_size}",
+            f"policy='{self.policy}'",
+        ])
+        return f"{self.__class__.__name__}({args})"
+
+    @cache
+    def is_uniquely_decodable(self) -> bool:
+        return True
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        return True
 
 
 def huffman_algorithm(

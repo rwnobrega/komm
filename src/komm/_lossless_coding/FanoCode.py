@@ -1,3 +1,5 @@
+from functools import cache
+
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
@@ -7,10 +9,7 @@ from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping, extended_probabilities
 
 
-def FanoCode(
-    pmf: npt.ArrayLike,
-    source_block_size: int = 1,
-) -> FixedToVariableCode:
+class FanoCode(FixedToVariableCode):
     r"""
     Binary Fano code. It is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the source words are first sorted in descending order of probability and then are recursively partitioned into two groups of approximately equal total probability, assigning bit $\mathtt{0}$ to one group and bit $\mathtt{1}$ to the other, until each source word is assigned a unique codeword. For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
@@ -46,13 +45,30 @@ def FanoCode(
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.1975)
     """
-    pmf = PMF(pmf)
-    return FixedToVariableCode(
-        source_cardinality=pmf.size,
-        target_cardinality=2,
-        source_block_size=source_block_size,
-        enc_mapping=fano_algorithm(pmf, source_block_size),
-    )
+
+    def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
+        self.pmf = PMF(pmf)
+        super().__init__(
+            source_cardinality=self.pmf.size,
+            target_cardinality=2,
+            source_block_size=source_block_size,
+            enc_mapping=fano_algorithm(self.pmf, source_block_size),
+        )
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"pmf={self.pmf.tolist()}",
+            f"source_block_size={self.source_block_size}",
+        ])
+        return f"{self.__class__.__name__}({args})"
+
+    @cache
+    def is_uniquely_decodable(self) -> bool:
+        return True
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        return True
 
 
 def fano_algorithm(pmf: PMF, source_block_size: int) -> dict[Word, Word]:
