@@ -9,14 +9,6 @@ from .._util.information_theory import LogBase
 class DiscreteMemorylessChannel(ABC):
     @property
     @abstractmethod
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
-        r"""
-        The channel transition probability matrix $p_{Y \mid X}$.
-        """
-        raise NotImplementedError
-
-    @property
-    @abstractmethod
     def input_cardinality(self) -> int:
         r"""
         The channel input cardinality $|\mathcal{X}|$.
@@ -28,6 +20,14 @@ class DiscreteMemorylessChannel(ABC):
     def output_cardinality(self) -> int:
         r"""
         The channel output cardinality $|\mathcal{Y}|$.
+        """
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
+        r"""
+        The channel transition probability matrix $p_{Y \mid X}$.
         """
         raise NotImplementedError
 

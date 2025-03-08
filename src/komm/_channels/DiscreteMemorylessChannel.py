@@ -30,16 +30,16 @@ class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"
 
     @property
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
-        return self._transition_matrix
-
-    @property
     def input_cardinality(self) -> int:
         return self.transition_matrix.shape[0]
 
     @property
     def output_cardinality(self) -> int:
         return self.transition_matrix.shape[1]
+
+    @property
+    def transition_matrix(self) -> npt.NDArray[np.floating]:
+        return self._transition_matrix
 
     def mutual_information(
         self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
