@@ -27,12 +27,12 @@ test = [
     "pytest-cov==6.0.0",
 ]
 doc = [
-    "griffe==1.5.1",
+    "griffe==1.6.0",
     "griffe-inherited-docstrings==1.1.1",
     "mkdocs==1.6.1",
-    "mkdocs-material==9.5.43",
-    "mkdocstrings==0.26.2",
-    "mkdocstrings-python==1.12.2",
+    "mkdocs-material==9.6.2",
+    "mkdocstrings==0.28.2",
+    "mkdocstrings-python==1.16.2",
     "mkdocs-gen-files==0.5.0",
     "mkdocs-include-markdown-plugin==6.0.4",
     "mkdocs-literate-nav==0.6.1",
