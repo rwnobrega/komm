@@ -4,10 +4,8 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from komm._algebra import FiniteBifield
-
 from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .._algebra.FiniteBifield import FiniteBifieldElement, find_roots
+from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement, find_roots
 from .._error_control_block import BCHCode
 from .._util.decorators import blockwise, vectorize
 from . import base

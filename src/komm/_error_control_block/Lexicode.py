@@ -5,8 +5,8 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-from komm._error_control_block import BlockCode
-from komm._util.bit_operations import int_to_bits
+from .._util.bit_operations import int_to_bits
+from .BlockCode import BlockCode
 
 
 @dataclass(eq=False)
