@@ -1,4 +1,9 @@
 # komm.{{ obj.name }}
 
 ::: {{ obj.qualname }}
-{##}
+{% if obj.options %}
+    options:
+    {% for key, value in obj.options.items() %}
+        {{ key }}: {{ value }}
+    {% endfor %}
+{% endif %}

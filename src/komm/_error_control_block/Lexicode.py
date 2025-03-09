@@ -6,9 +6,11 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
+from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
+@mkdocstrings(filters=["!.*"])
 @dataclass(eq=False)
 class Lexicode(BlockCode):
     r"""

@@ -5,10 +5,12 @@ from itertools import combinations
 import numpy as np
 import numpy.typing as npt
 
+from .._util.docs import mkdocstrings
 from .SystematicBlockCode import SystematicBlockCode
 from .util import extended_parity_submatrix
 
 
+@mkdocstrings(filters=["!.*"])
 @dataclass(eq=False)
 class HammingCode(SystematicBlockCode):
     r"""

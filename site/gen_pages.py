@@ -18,6 +18,7 @@ def get_data(toc):
             "name": obj.__name__,
             "summary": summary,
             "qualname": f"{obj.__module__}.{obj.__qualname__}",
+            "options": obj._doc_options() if hasattr(obj, "_doc_options") else None,
         }
 
     def _get_objects_data(objects):

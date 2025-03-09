@@ -4,9 +4,11 @@ from functools import cache
 import numpy as np
 import numpy.typing as npt
 
+from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
+@mkdocstrings(filters=["!.*"])
 @dataclass(eq=False)
 class CordaroWagnerCode(BlockCode):
     r"""

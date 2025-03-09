@@ -5,9 +5,11 @@ from math import comb
 import numpy as np
 import numpy.typing as npt
 
+from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
+@mkdocstrings(filters=["!.*"])
 @dataclass(eq=False)
 class SingleParityCheckCode(BlockCode):
     r"""

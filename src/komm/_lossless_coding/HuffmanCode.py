@@ -9,11 +9,13 @@ import numpy.typing as npt
 from tqdm import tqdm
 from typing_extensions import Self
 
+from .._util.docs import mkdocstrings
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping
 
 
+@mkdocstrings(filters=["!.*"])
 class HuffmanCode(FixedToVariableCode):
     r"""
     Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.2</cite>.

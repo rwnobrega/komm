@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from functools import cache
 
+from .._util.docs import mkdocstrings
 from .HammingCode import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 
+@mkdocstrings(filters=["!.*"])
 @dataclass(eq=False)
 class SimplexCode(SystematicBlockCode):
     r"""

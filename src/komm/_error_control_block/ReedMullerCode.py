@@ -5,9 +5,11 @@ from itertools import combinations, product
 import numpy as np
 import numpy.typing as npt
 
+from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
+@mkdocstrings(members=["reed_partitions"], filters=["!.*"])
 @dataclass(eq=False)
 class ReedMullerCode(BlockCode):
     r"""

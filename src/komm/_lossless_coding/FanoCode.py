@@ -4,11 +4,13 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .._util.docs import mkdocstrings
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping, extended_probabilities
 
 
+@mkdocstrings(filters=["!.*"])
 class FanoCode(FixedToVariableCode):
     r"""
     Binary Fano code. It is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the source words are first sorted in descending order of probability and then are recursively partitioned into two groups of approximately equal total probability, assigning bit $\mathtt{0}$ to one group and bit $\mathtt{1}$ to the other, until each source word is assigned a unique codeword. For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).

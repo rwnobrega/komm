@@ -4,11 +4,13 @@ from math import ceil, log2
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .._util.docs import mkdocstrings
 from .._util.information_theory import PMF
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping, extended_probabilities
 
 
+@mkdocstrings(filters=["!.*"])
 class ShannonCode(FixedToVariableCode):
     r"""
     Binary Shannon code. It is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(u)$ for a source symbol $u \in \mathcal{S}^k$ is given by
