@@ -18,7 +18,7 @@ from .util import (
 
 class VariableToFixedCode:
     r"""
-    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) injective decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
     """
 
     def __init__(
@@ -51,8 +51,6 @@ class VariableToFixedCode:
             all(0 <= x < S for x in word) and len(word) > 0 for word in codomain
         ):
             raise ValueError(f"'dec_mapping': invalid co-domain")
-        if len(set(codomain)) != len(codomain):
-            raise ValueError(f"'dec_mapping': non-injective mapping")
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -69,7 +67,7 @@ class VariableToFixedCode:
         Constructs a variable-to-fixed length code from the decoding mapping $\Dec$.
 
         Parameters:
-            dec_mapping: The decoding mapping $\Dec$. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are distinct non-empty tuples of integers in $[0:S)$.
+            dec_mapping: The decoding mapping $\Dec$. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are non-empty tuples of integers in $[0:S)$.
 
         Notes:
             The target block size $n$ is inferred from the domain of the decoding mapping, and the target and source cardinalities $T$ and $S$ are inferred from the maximum values in the domain and co-domain, respectively.
@@ -214,18 +212,7 @@ class VariableToFixedCode:
         return self._dec_mapping
 
     @property
-    def inv_dec_mapping(self) -> dict[Word, Word]:
-        r"""
-        The inverse decoding mapping $\mathrm{Dec}^{-1}$ of the code. It is a dictionary of length at most $T^n$ whose keys are all the sourcewords of the code, and whose values are the corresponding target words.
-
-        Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
-            >>> code.inv_dec_mapping
-            {(0,): (0, 0), (1,): (0, 1), (0, 1): (1, 0)}
-        """
-        return {v: k for k, v in self.dec_mapping.items()}
-
-    @property
+    @cache
     def sourcewords(self) -> list[Word]:
         r"""
         The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$.
@@ -240,6 +227,11 @@ class VariableToFixedCode:
             [(0,), (1,), (0, 1)]
         """
         return list(self.dec_mapping.values())
+
+    @property
+    @cache
+    def _inv_dec_mapping(self) -> dict[Word, Word]:
+        return {v: k for k, v in self.dec_mapping.items()}
 
     @cache
     def is_fully_covering(self) -> bool:
@@ -386,7 +378,7 @@ class VariableToFixedCode:
                 "encoding for non-prefix-free codes is not implemented yet"
             )
         input = np.asarray(input)
-        return parse_prefix_free(input, self.inv_dec_mapping, allow_incomplete=True)
+        return parse_prefix_free(input, self._inv_dec_mapping, allow_incomplete=True)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

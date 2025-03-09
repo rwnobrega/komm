@@ -11,7 +11,7 @@ def test_tunstall_code():
     # [Say06, p. 71]
     pmf = [0.6, 0.3, 0.1]
     code = komm.TunstallCode(pmf, 3)
-    assert code.inv_dec_mapping == {
+    assert code._inv_dec_mapping == {
         (0, 0, 0): (0, 0, 0),
         (0, 0, 1): (0, 0, 1),
         (0, 0, 2): (0, 1, 0),

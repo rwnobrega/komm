@@ -66,19 +66,6 @@ def test_invalid_dec_mapping_codomain_2():
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
-def test_non_injective_dec_mapping():
-    dec_mapping: dict = {
-        (0, 0): (0, 0, 0),
-        (0, 1): (0, 0, 1),
-        (1, 0): (0, 1),
-        (1, 1): (1,),
-    }
-    komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-    dec_mapping[(1, 1)] = (0, 1)
-    with pytest.raises(ValueError):
-        komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-
-
 def test_rate():
     code = komm.VariableToFixedCode.from_sourcewords(
         2, [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
