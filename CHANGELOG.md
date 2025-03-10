@@ -3,6 +3,13 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.18.0 (2025-03-10)
+
+### Breaking changes
+
+- Adopt MSB-first instead of LSB-first for `LempelZiv78` and `LempelZivWelch` classes.
+- Hide `inv_enc_mapping` from `FixedToVariableCode`, and `inv_dec_mapping` from `VariableToFixedCode` classes.
+
 ## v0.17.0 (2025-02-26)
 
 ### Added

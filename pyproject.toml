@@ -1,6 +1,6 @@
 [project]
 name = "komm"
-version = "0.17.0"
+version = "0.18.0"
 description = "An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems."
 readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
