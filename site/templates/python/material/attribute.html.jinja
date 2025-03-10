@@ -1,5 +1,15 @@
 {{ log.debug("Rendering " + attribute.path) }}
 
+{% macro strip_module_names(value) %}
+  {% set str_value = value|string %}
+  {% set result = str_value %}
+  {% set result = result.replace('typing.', '') %}
+  {% set result = result.replace('np.', '') %}
+  {% set result = result.replace('npt.', '') %}
+  {% set result = result.replace('collections.', '') %}
+  {{ result }}
+{% endmacro %}
+
 <div class="doc doc-object doc-attribute">
 {% with html_id = attribute.name %}
 
@@ -26,9 +36,9 @@
       {% else %}
         {% filter highlight(language="python", inline=True) %}
           {% if show_full_path %}{{ attribute.path }}{% else %}{{ attribute.name }}{% endif %}
-          {% if attribute.annotation %}: {{ attribute.annotation }}{% endif %}
-          {% if attribute.value %} = {{ attribute.value }}{% endif %}
         {% endfilter %}
+        {% if attribute.annotation %}<span class="doc-param-annotation"><code>{{ strip_module_names(attribute.annotation) }}</code></span>{% endif %}
+        {% if attribute.value %} = {{ attribute.value }}{% endif %}
       {% endif %}
 
       {% with labels = attribute.labels %}
