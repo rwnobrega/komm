@@ -30,7 +30,7 @@ class ShannonCode(FixedToVariableCode):
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.ShannonCode(pmf, 1)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0,): (0,),
          (1,): (1, 0, 0),
          (2,): (1, 0, 1)}
@@ -38,7 +38,7 @@ class ShannonCode(FixedToVariableCode):
         np.float64(1.6)
 
         >>> code = komm.ShannonCode(pmf, 2)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0, 0): (0, 0),
          (0, 1): (0, 1, 0, 0),
          (0, 2): (0, 1, 0, 1),

@@ -117,7 +117,7 @@ class FixedToVariableCode:
             ... )
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
-            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.enc_mapping
             {(0,): (0,),
              (1,): (1, 0),
              (2,): (1, 1)}
@@ -128,7 +128,7 @@ class FixedToVariableCode:
             ... )
             >>> (code.source_cardinality, code.target_cardinality, code.source_block_size)
             (2, 2, 2)
-            >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.enc_mapping
             {(0, 0): (0,),
              (0, 1): (1, 1),
              (1, 0): (1, 1, 0),

@@ -32,7 +32,7 @@ class HuffmanCode(FixedToVariableCode):
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.HuffmanCode(pmf)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0,): (0,),
          (1,): (1, 1),
          (2,): (1, 0)}
@@ -40,7 +40,7 @@ class HuffmanCode(FixedToVariableCode):
         np.float64(1.3)
 
         >>> code = komm.HuffmanCode(pmf, 2)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0, 0): (1,),
          (0, 1): (0, 0, 0, 0),
          (0, 2): (0, 1, 1),

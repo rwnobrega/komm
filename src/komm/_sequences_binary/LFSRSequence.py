@@ -24,9 +24,9 @@ class LFSRSequence(BinarySequence):
 
     Examples:
         >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
-        >>> lfsr.bit_sequence  # doctest: +NORMALIZE_WHITESPACE
+        >>> lfsr.bit_sequence
         array([0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1])
-        >>> lfsr.cyclic_autocorrelation()  # doctest: +NORMALIZE_WHITESPACE
+        >>> lfsr.cyclic_autocorrelation()
         array([31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1])
 
     <h2>Maximum-length sequences</h2>

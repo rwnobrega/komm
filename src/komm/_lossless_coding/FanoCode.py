@@ -26,7 +26,7 @@ class FanoCode(FixedToVariableCode):
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.FanoCode(pmf, 1)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0,): (0,),
          (1,): (1, 0),
          (2,): (1, 1)}
@@ -34,7 +34,7 @@ class FanoCode(FixedToVariableCode):
         np.float64(1.3)
 
         >>> code = komm.FanoCode(pmf, 2)
-        >>> code.enc_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.enc_mapping
         {(0, 0): (0,),
          (0, 1): (1, 0, 0),
          (0, 2): (1, 0, 1),

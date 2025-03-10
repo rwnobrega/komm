@@ -124,7 +124,7 @@ class VariableToFixedCode:
             ... )
             >>> code.target_cardinality, code.source_cardinality, code.target_block_size
             (2, 2, 2)
-            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.dec_mapping
             {(0, 0): (0, 0, 0),
              (0, 1): (0, 0, 1),
              (1, 0): (0, 1),
@@ -136,7 +136,7 @@ class VariableToFixedCode:
             ... )
             >>> code.target_cardinality, code.source_cardinality, code.target_block_size
             (2, 3, 3)
-            >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+            >>> code.dec_mapping
             {(0, 0, 0): (1,),
              (0, 0, 1): (2,),
              (0, 1, 0): (0, 1),

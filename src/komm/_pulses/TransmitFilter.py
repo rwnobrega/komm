@@ -128,7 +128,7 @@ class TransmitFilter:
         Examples:
             >>> pulse = komm.RectangularPulse()
             >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
-            >>> tx_filter.time([1.0, -1.0, 1.0, 1.0]).round(2)  # doctest: +NORMALIZE_WHITESPACE
+            >>> tx_filter.time([1.0, -1.0, 1.0, 1.0]).round(2)
             array([0.  , 0.33, 0.67, 1.  , 1.33, 1.67, 2.  , 2.33, 2.67, 3.  , 3.33, 3.67])
 
             >>> pulse = komm.SincPulse()

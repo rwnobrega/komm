@@ -38,7 +38,7 @@ class ReedMullerCode(BlockCode):
         >>> code = komm.ReedMullerCode(1, 5)
         >>> (code.length, code.dimension, code.redundancy)
         (32, 6, 26)
-        >>> code.generator_matrix  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.generator_matrix
         array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
                [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],

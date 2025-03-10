@@ -64,7 +64,7 @@ class AWGNChannel:
             >>> rng = np.random.default_rng(seed=42)
             >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0, rng=rng)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-            >>> awgn(x).round(2)  # doctest: +NORMALIZE_WHITESPACE
+            >>> awgn(x).round(2)
             array([ 1.05,  2.84, -2.88, -0.85, -1.31,  0.79,  3.02,  0.95, -1.  ,  2.87])
         """
         input = np.array(input)

@@ -46,7 +46,7 @@ class SlepianArray:
             >>> sa = komm.SlepianArray(code)
             >>> binlist2str = lambda binlist: "".join(str(bit) for bit in binlist)
             >>> m, k = code.redundancy, code.dimension
-            >>> for i in range(2**m):  # doctest: +NORMALIZE_WHITESPACE
+            >>> for i in range(2**m):
             ...     for j in range(2**k):
             ...         print(binlist2str(sa.entry(i, j)), end=" ")
             ...     print()

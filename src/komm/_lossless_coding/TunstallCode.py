@@ -30,7 +30,7 @@ class TunstallCode(VariableToFixedCode):
         >>> pmf = [0.7, 0.15, 0.15]
 
         >>> code = komm.TunstallCode(pmf)
-        >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.dec_mapping
         {(0, 0): (0,),
          (0, 1): (1,),
          (1, 0): (2,)}
@@ -38,7 +38,7 @@ class TunstallCode(VariableToFixedCode):
         np.float64(2.0)
 
         >>> code = komm.TunstallCode(pmf, 3)
-        >>> code.dec_mapping  # doctest: +NORMALIZE_WHITESPACE
+        >>> code.dec_mapping
         {(0, 0, 0): (0, 0, 0),
          (0, 0, 1): (0, 0, 1),
          (0, 1, 0): (0, 0, 2),

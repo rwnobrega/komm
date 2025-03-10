@@ -36,14 +36,14 @@ class PSKModulation(Modulation):
         </figure>
 
         >>> psk = komm.PSKModulation(4, phase_offset=np.pi/4.0)
-        >>> psk.constellation  # doctest: +NORMALIZE_WHITESPACE
+        >>> psk.constellation
         array([ 0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678-0.70710678j])
         >>> psk.labeling
         array([[0, 0],
                [1, 0],
                [1, 1],
                [0, 1]])
-        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])  # doctest: +NORMALIZE_WHITESPACE
+        >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
         array([ 0.70710678+0.70710678j, -0.70710678-0.70710678j,  0.70710678+0.70710678j, -0.70710678+0.70710678j, -0.70710678+0.70710678j])
     """
 

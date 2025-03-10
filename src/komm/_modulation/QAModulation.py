@@ -48,12 +48,12 @@ class QAModulation(Modulation):
         </figure>
 
         >>> qam = komm.QAModulation(16)
-        >>> qam.constellation  # doctest: +NORMALIZE_WHITESPACE
+        >>> qam.constellation
         array([-3.-3.j, -1.-3.j,  1.-3.j,  3.-3.j,
                -3.-1.j, -1.-1.j,  1.-1.j,  3.-1.j,
                -3.+1.j, -1.+1.j,  1.+1.j,  3.+1.j,
                -3.+3.j, -1.+3.j,  1.+3.j,  3.+3.j])
-        >>> qam.labeling   # doctest: +NORMALIZE_WHITESPACE
+        >>> qam.labeling
         array([[0, 0, 0, 0], [1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0],
                [0, 0, 1, 0], [1, 0, 1, 0], [1, 1, 1, 0], [0, 1, 1, 0],
                [0, 0, 1, 1], [1, 0, 1, 1], [1, 1, 1, 1], [0, 1, 1, 1],
@@ -68,10 +68,10 @@ class QAModulation(Modulation):
         </figure>
 
         >>> qam = komm.QAModulation(orders=(4, 2), base_amplitudes=(1.0, 2.0))
-        >>> qam.constellation  # doctest: +NORMALIZE_WHITESPACE
+        >>> qam.constellation
         array([-3.-2.j, -1.-2.j,  1.-2.j,  3.-2.j,
                -3.+2.j, -1.+2.j,  1.+2.j,  3.+2.j])
-        >>> qam.labeling  # doctest: +NORMALIZE_WHITESPACE
+        >>> qam.labeling
         array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
                [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
         >>> qam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1])
