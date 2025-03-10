@@ -31,7 +31,10 @@ class SystematicBlockCode(base.BlockCode):
                [1, 1, 0, 1, 0],
                [1, 0, 0, 0, 1]])
 
-        >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]], information_set='right')
+        >>> code = komm.SystematicBlockCode(
+        ...     parity_submatrix=[[0, 1, 1], [1, 1, 0]],
+        ...     information_set='right',
+        ... )
         >>> (code.length, code.dimension, code.redundancy)
         (5, 2, 3)
         >>> code.generator_matrix
@@ -81,22 +84,53 @@ class SystematicBlockCode(base.BlockCode):
 
     @property
     def length(self) -> int:
+        r"""
+        Examples:
+           >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+           >>> code.length
+           5
+        """
         return self.dimension + self.redundancy
 
     @property
     def dimension(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.dimension
+            2
+        """
         return self.parity_submatrix.shape[0]
 
     @property
     def redundancy(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.redundancy
+            3
+        """
         return self.parity_submatrix.shape[1]
 
     @property
     def rate(self) -> float:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.rate
+            0.4
+        """
         return super().rate
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.generator_matrix
+            array([[1, 0, 0, 1, 1],
+                   [0, 1, 1, 1, 0]])
+        """
         k, n = self.dimension, self.length
         matrix = np.empty((k, n), dtype=int)
         matrix[:, self.information_set] = np.eye(k, dtype=int)
@@ -112,6 +146,14 @@ class SystematicBlockCode(base.BlockCode):
 
     @cached_property
     def check_matrix(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.check_matrix
+            array([[0, 1, 1, 0, 0],
+                   [1, 1, 0, 1, 0],
+                   [1, 0, 0, 0, 1]])
+        """
         m, n = self.redundancy, self.length
         matrix = np.empty((m, n), dtype=int)
         matrix[:, self.information_set] = self.parity_submatrix.T
@@ -119,6 +161,26 @@ class SystematicBlockCode(base.BlockCode):
         return matrix
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.generator_matrix
+            array([[1, 0, 0, 1, 1],
+                   [0, 1, 1, 1, 0]])
+            >>> code.encode([0, 0])  # Sequence with single message
+            array([0, 0, 0, 0, 0])
+            >>> code.encode([0, 0, 1, 1])  # Sequence with two messages
+            array([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])
+            >>> code.encode([[0, 0],  # 2D array of single messages
+            ...              [1, 1]])
+            array([[0, 0, 0, 0, 0],
+                   [1, 1, 1, 0, 1]])
+            >>> code.encode([[0, 0, 1, 1],  # 2D array of two messages
+            ...              [1, 1, 1, 0]])
+            array([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+                   [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
+        """
+
         @blockwise(self.dimension)
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v = np.empty(u.shape[:-1] + (self.length,), dtype=int)
@@ -137,9 +199,42 @@ class SystematicBlockCode(base.BlockCode):
         return project(input)
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.inverse_encode([0, 0, 0, 0, 0])  # Sequence with single codeword
+            array([0, 0])
+            >>> code.inverse_encode([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])  # Sequence with two codewords
+            array([0, 0, 1, 1])
+            >>> code.inverse_encode([[0, 0, 0, 0, 0],  # 2D array of single codewords
+            ...                      [1, 1, 1, 0, 1]])
+            array([[0, 0],
+                   [1, 1]])
+            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],  # 2D array of two codewords
+            ...                      [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
+            array([[0, 0, 1, 1],
+                   [1, 1, 1, 0]])
+        """
         return super().inverse_encode(input)
 
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.check([1, 1, 1, 0, 1])  # Sequence with single received word
+            array([0, 0, 0])
+            >>> code.check([1, 1, 1, 0, 1, 1, 1, 1, 1, 1])  # Sequence with two received words
+            array([0, 0, 0, 0, 1, 0])
+            >>> code.check([[1, 1, 1, 0, 1],  # 2D array of single received words
+            ...             [1, 1, 1, 1, 1]])
+            array([[0, 0, 0],
+                   [0, 1, 0]])
+            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1],  # 2D array of two received words
+            ...             [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])
+            array([[0, 0, 0, 0, 1, 0],
+                   [0, 1, 0, 0, 1, 1]])
+        """
+
         @blockwise(self.length)
         def check(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             r_inf = r[..., self.information_set]
@@ -151,28 +246,80 @@ class SystematicBlockCode(base.BlockCode):
 
     @cache
     def codewords(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.codewords()
+            array([[0, 0, 0, 0, 0],
+                   [1, 0, 0, 1, 1],
+                   [0, 1, 1, 1, 0],
+                   [1, 1, 1, 0, 1]])
+        """
         return super().codewords()
 
     @cache
     def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.codeword_weight_distribution()
+            array([1, 0, 0, 2, 1, 0])
+        """
         return super().codeword_weight_distribution()
 
     @cache
     def minimum_distance(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.minimum_distance()
+            3
+        """
         return super().minimum_distance()
 
     @cache
     def coset_leaders(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.coset_leaders()
+            array([[0, 0, 0, 0, 0],
+                   [0, 0, 1, 0, 0],
+                   [0, 0, 0, 1, 0],
+                   [0, 1, 0, 0, 0],
+                   [0, 0, 0, 0, 1],
+                   [1, 1, 0, 0, 0],
+                   [1, 0, 0, 0, 0],
+                   [1, 0, 1, 0, 0]])
+        """
         return super().coset_leaders()
 
     @cache
     def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.coset_leader_weight_distribution()
+            array([1, 5, 2, 0, 0, 0])
+        """
         return super().coset_leader_weight_distribution()
 
     @cache
     def packing_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.packing_radius()
+            1
+        """
         return super().packing_radius()
 
     @cache
     def covering_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.covering_radius()
+            2
+        """
         return super().covering_radius()
