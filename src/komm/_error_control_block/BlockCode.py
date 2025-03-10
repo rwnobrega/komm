@@ -19,7 +19,10 @@ class BlockCode(base.BlockCode):
         check_matrix: The check matrix $H$ of the code, which is a $m \times n$ binary matrix.
 
     Examples:
-        >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+        >>> code = komm.BlockCode(generator_matrix=[
+        ...     [1, 0, 0, 1, 1],
+        ...     [0, 1, 1, 1, 0],
+        ... ])
         >>> (code.length, code.dimension, code.redundancy)
         (5, 2, 3)
         >>> code.generator_matrix
@@ -30,7 +33,11 @@ class BlockCode(base.BlockCode):
                [1, 1, 0, 1, 0],
                [1, 0, 0, 0, 1]])
 
-        >>> code = komm.BlockCode(check_matrix=[[0, 1, 1, 0, 0], [1, 1, 0, 1, 0], [1, 0, 0, 0, 1]])
+        >>> code = komm.BlockCode(check_matrix=[
+        ...     [0, 1, 1, 0, 0],
+        ...     [1, 1, 0, 1, 0],
+        ...     [1, 0, 0, 0, 1],
+        ... ])
         >>> (code.length, code.dimension, code.redundancy)
         (5, 2, 3)
         >>> code.generator_matrix
@@ -75,21 +82,51 @@ class BlockCode(base.BlockCode):
 
     @property
     def length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
+            >>> code.length
+            5
+        """
         return self._length
 
     @property
     def dimension(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
+            >>> code.dimension
+            2
+        """
         return self._dimension
 
     @property
     def redundancy(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
+            >>> code.redundancy
+            3
+        """
         return self._redundancy
 
     @property
     def rate(self) -> float:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.rate
             0.4
         """
@@ -97,6 +134,17 @@ class BlockCode(base.BlockCode):
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(check_matrix=[
+            ...     [0, 1, 1, 0, 0],
+            ...     [1, 1, 0, 1, 0],
+            ...     [1, 0, 0, 0, 1],
+            ... ])
+            >>> code.generator_matrix
+            array([[1, 0, 0, 1, 1],
+                   [0, 1, 1, 1, 0]])
+        """
         if self._generator_matrix is not None:
             return self._generator_matrix
         return rref(null_matrix(self.check_matrix))
@@ -107,6 +155,17 @@ class BlockCode(base.BlockCode):
 
     @cached_property
     def check_matrix(self) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
+            >>> code.check_matrix
+            array([[0, 1, 1, 0, 0],
+                   [1, 1, 0, 1, 0],
+                   [1, 0, 0, 0, 1]])
+        """
         if self._check_matrix is not None:
             return self._check_matrix
         return null_matrix(self.generator_matrix)
@@ -114,15 +173,20 @@ class BlockCode(base.BlockCode):
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.encode([0, 0])  # Sequence with single message
             array([0, 0, 0, 0, 0])
             >>> code.encode([0, 0, 1, 1])  # Sequence with two messages
             array([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])
-            >>> code.encode([[0, 0], [1, 1]])  # 2D array of single messages
+            >>> code.encode([[0, 0],  # 2D array of single messages
+            ...              [1, 1]])
             array([[0, 0, 0, 0, 0],
                    [1, 1, 1, 0, 1]])
-            >>> code.encode([[0, 0, 1, 1], [1, 1, 1, 0]])  # 2D array of two messages
+            >>> code.encode([[0, 0, 1, 1],  # 2D array of two messages
+            ...              [1, 1, 1, 0]])
             array([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
                    [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
         """
@@ -134,15 +198,20 @@ class BlockCode(base.BlockCode):
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.inverse_encode([0, 0, 0, 0, 0])  # Sequence with single codeword
             array([0, 0])
             >>> code.inverse_encode([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])  # Sequence with two codewords
             array([0, 0, 1, 1])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]])  # 2D array of single codewords
+            >>> code.inverse_encode([[0, 0, 0, 0, 0],  # 2D array of single codewords
+            ...                      [1, 1, 1, 0, 1]])
             array([[0, 0],
                    [1, 1]])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1], [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]]) # 2D array of two codewords
+            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],  # 2D array of two codewords
+            ...                      [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
             array([[0, 0, 1, 1],
                    [1, 1, 1, 0]])
         """
@@ -151,15 +220,20 @@ class BlockCode(base.BlockCode):
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.check([1, 1, 1, 0, 1])  # Sequence with single received word
             array([0, 0, 0])
             >>> code.check([1, 1, 1, 0, 1, 1, 1, 1, 1, 1])  # Sequence with two received words
             array([0, 0, 0, 0, 1, 0])
-            >>> code.check([[1, 1, 1, 0, 1], [1, 1, 1, 1, 1]])  # 2D array of single received words
+            >>> code.check([[1, 1, 1, 0, 1],  # 2D array of single received words
+            ...             [1, 1, 1, 1, 1]])
             array([[0, 0, 0],
                    [0, 1, 0]])
-            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])  # 2D array of two received words
+            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1],  # 2D array of two received words
+            ...             [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])
             array([[0, 0, 0, 0, 1, 0],
                    [0, 1, 0, 0, 1, 1]])
         """
@@ -169,7 +243,10 @@ class BlockCode(base.BlockCode):
     def codewords(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.codewords()
             array([[0, 0, 0, 0, 0],
                    [1, 0, 0, 1, 1],
@@ -182,7 +259,10 @@ class BlockCode(base.BlockCode):
     def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.codeword_weight_distribution()
             array([1, 0, 0, 2, 1, 0])
         """
@@ -192,7 +272,10 @@ class BlockCode(base.BlockCode):
     def minimum_distance(self) -> int:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.minimum_distance()
             3
         """
@@ -202,7 +285,10 @@ class BlockCode(base.BlockCode):
     def coset_leaders(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.coset_leaders()
             array([[0, 0, 0, 0, 0],
                    [0, 0, 1, 0, 0],
@@ -219,7 +305,10 @@ class BlockCode(base.BlockCode):
     def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.coset_leader_weight_distribution()
             array([1, 5, 2, 0, 0, 0])
         """
@@ -229,7 +318,10 @@ class BlockCode(base.BlockCode):
     def packing_radius(self) -> int:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.packing_radius()
             1
         """
@@ -239,7 +331,10 @@ class BlockCode(base.BlockCode):
     def covering_radius(self) -> int:
         r"""
         Examples:
-            >>> code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
             >>> code.covering_radius()
             2
         """
