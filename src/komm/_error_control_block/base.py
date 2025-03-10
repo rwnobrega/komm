@@ -54,9 +54,6 @@ class BlockCode(ABC):
     @cached_property
     @abstractmethod
     def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
-        r"""
-        The right-inverse $G^+ \in \mathbb{B}^{n \times k}$ of the generator matrix.
-        """
         raise NotImplementedError
 
     @cached_property
