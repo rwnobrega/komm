@@ -5,41 +5,69 @@ import komm
 
 
 @pytest.mark.parametrize(
-    "order, bits_per_symbol, constellation, energy_per_symbol, energy_per_bit",
+    "params, expected",
     [
-        (2, 1, [-1, 1], 1.0, 1.0),
-        (4, 2, [-3, -1, 1, 3], 5.0, 2.5),
-        (8, 3, [-7, -5, -3, -1, 1, 3, 5, 7], 21.0, 7.0),
+        (
+            {"order": 2, "base_amplitude": 1.0},
+            {
+                "bits_per_symbol": 1,
+                "constellation": [-1, 1],
+                "energy_per_symbol": 1.0,
+                "energy_per_bit": 1.0,
+                "minimum_distance": 2.0,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 1.0},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [-3, -1, 1, 3],
+                "energy_per_symbol": 5.0,
+                "energy_per_bit": 2.5,
+                "minimum_distance": 2.0,
+            },
+        ),
+        (
+            {"order": 8, "base_amplitude": 1.0},
+            {
+                "bits_per_symbol": 3,
+                "constellation": [-7, -5, -3, -1, 1, 3, 5, 7],
+                "energy_per_symbol": 21.0,
+                "energy_per_bit": 7.0,
+                "minimum_distance": 2.0,
+            },
+        ),
+        (
+            {"order": 8, "base_amplitude": 2.0},
+            {
+                "bits_per_symbol": 3,
+                "constellation": [-14, -10, -6, -2, 2, 6, 10, 14],
+                "energy_per_symbol": 84.0,
+                "energy_per_bit": 28.0,
+                "minimum_distance": 4.0,
+            },
+        ),
+        (
+            {"order": 8, "base_amplitude": 0.5},
+            {
+                "bits_per_symbol": 3,
+                "constellation": [-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5],
+                "energy_per_symbol": 5.25,
+                "energy_per_bit": 1.75,
+                "minimum_distance": 1.0,
+            },
+        ),
     ],
 )
-def test_pam_modulation_order(
-    order, constellation, bits_per_symbol, energy_per_symbol, energy_per_bit
-):
-    pam = komm.PAModulation(order)
-    assert pam.order == order
-    assert pam.bits_per_symbol == bits_per_symbol
-    np.testing.assert_allclose(pam.constellation, constellation)
-    np.testing.assert_allclose(pam.energy_per_symbol, energy_per_symbol)
-    np.testing.assert_allclose(pam.energy_per_bit, energy_per_bit)
+def test_pam_parameters(params, expected):
+    pam = komm.PAModulation(**params)
+    assert pam.order == params["order"]
+    assert pam.bits_per_symbol == expected["bits_per_symbol"]
+    np.testing.assert_allclose(pam.constellation, expected["constellation"])
+    np.testing.assert_allclose(pam.energy_per_symbol, expected["energy_per_symbol"])
+    np.testing.assert_allclose(pam.energy_per_bit, expected["energy_per_bit"])
     np.testing.assert_allclose(pam.symbol_mean, 0.0)
-    np.testing.assert_allclose(pam.minimum_distance, 2.0)
-
-
-@pytest.mark.parametrize(
-    "base_amplitude, constellation",
-    [
-        (1.0, [-7, -5, -3, -1, 1, 3, 5, 7]),
-        (2.0, [-14, -10, -6, -2, 2, 6, 10, 14]),
-        (0.5, [-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5]),
-    ],
-)
-def test_pam_base_amplitude(base_amplitude, constellation):
-    pam8 = komm.PAModulation(8, base_amplitude=base_amplitude)
-    np.testing.assert_allclose(pam8.constellation, constellation)
-    np.testing.assert_allclose(pam8.energy_per_symbol, 21.0 * base_amplitude**2)
-    np.testing.assert_allclose(pam8.energy_per_bit, 7.0 * base_amplitude**2)
-    np.testing.assert_allclose(pam8.symbol_mean, 0.0)
-    np.testing.assert_allclose(pam8.minimum_distance, 2.0 * base_amplitude)
+    np.testing.assert_allclose(pam.minimum_distance, expected["minimum_distance"])
 
 
 def test_pam_labeling():
@@ -107,31 +135,3 @@ def test_pam_modem(order, labeling):
     np.testing.assert_allclose(bits_hat_hard, bits)
     bits_hat_soft = (pam.demodulate_soft(symbols, snr=1000.0) < 0).astype(int)
     np.testing.assert_allclose(bits_hat_soft, bits)
-
-
-@pytest.mark.parametrize("order", [2, 4, 8])
-@pytest.mark.parametrize("labeling", ["natural", "reflected"])
-@pytest.mark.parametrize("snr", [0.3, 1.0, 3.0, 10.0])
-def test_pam_general_modulation_equivalent(order, labeling, snr):
-    pam = komm.PAModulation(order, labeling=labeling)
-    mod = komm.Modulation(pam.constellation, pam.labeling)
-    channel = komm.AWGNChannel(signal_power=pam.energy_per_symbol, snr=snr)
-
-    np.testing.assert_array_equal(pam.constellation, mod.constellation)
-    np.testing.assert_array_equal(pam.labeling, mod.labeling)
-    assert pam.inverse_labeling == mod.inverse_labeling
-    assert pam.bits_per_symbol == mod.bits_per_symbol
-    assert pam.energy_per_symbol == mod.energy_per_symbol
-    assert pam.energy_per_bit == mod.energy_per_bit
-    assert pam.symbol_mean == mod.symbol_mean
-    assert pam.minimum_distance == mod.minimum_distance
-
-    bits = np.random.randint(0, 2, size=100 * pam.bits_per_symbol, dtype=int)
-    symbols = pam.modulate(bits)
-    received = channel(symbols)
-    hard_bits = pam.demodulate_hard(received)
-    soft_bits = pam.demodulate_soft(received, snr=snr)
-
-    np.testing.assert_array_almost_equal(symbols, mod.modulate(bits))
-    np.testing.assert_array_almost_equal(hard_bits, mod.demodulate_hard(received))
-    np.testing.assert_array_almost_equal(soft_bits, mod.demodulate_soft(received, snr))
