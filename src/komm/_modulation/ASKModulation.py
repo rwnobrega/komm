@@ -1,5 +1,6 @@
 from typing import Literal
 
+import numpy as np
 import numpy.typing as npt
 
 from .constellations import constellation_ask
@@ -7,7 +8,7 @@ from .labelings import get_labeling
 from .Modulation import Modulation
 
 
-class ASKModulation(Modulation):
+class ASKModulation(Modulation[np.complexfloating]):
     r"""
     Amplitude-shift keying (ASK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the points of the constellation symbols are *uniformly arranged* in a ray. More precisely, the $i$-th constellation symbol is given by
     $$

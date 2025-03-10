@@ -1,5 +1,6 @@
 from typing import Literal
 
+import numpy as np
 import numpy.typing as npt
 
 from .constellations import constellation_apsk
@@ -7,7 +8,7 @@ from .labelings import get_labeling
 from .Modulation import Modulation
 
 
-class APSKModulation(Modulation):
+class APSKModulation(Modulation[np.complexfloating]):
     r"""
     Amplitude- and phase-shift keying (APSK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the constellation is the union (concatenation) of component [PSK](/ref/PSKModulation) constellations, called *rings*. More precisely, consider $K$ rings $\mathbf{X}_k$, for $k \in [0 : K)$, where the $k$-th ring has order $M_k$, amplitude $A_k$, and phase offset $\phi_k$. The $i$-th constellation symbol of the $k$-th ring is given by
     $$

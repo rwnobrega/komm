@@ -1,5 +1,6 @@
 from typing import Literal
 
+import numpy as np
 import numpy.typing as npt
 
 from .constellations import constellation_psk
@@ -7,7 +8,7 @@ from .labelings import get_labeling
 from .Modulation import Modulation
 
 
-class PSKModulation(Modulation):
+class PSKModulation(Modulation[np.complexfloating]):
     r"""
     Phase-shift keying (PSK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in a circle. More precisely, the the $i$-th constellation symbol is given by
     $$

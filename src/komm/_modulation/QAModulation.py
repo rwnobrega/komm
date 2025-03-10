@@ -2,6 +2,7 @@ import math
 from collections.abc import Iterable
 from typing import Literal
 
+import numpy as np
 import numpy.typing as npt
 
 from .constellations import constellation_qam
@@ -9,7 +10,7 @@ from .labelings import get_labeling
 from .Modulation import Modulation
 
 
-class QAModulation(Modulation):
+class QAModulation(Modulation[np.complexfloating]):
     r"""
     Quadrature-amplitude modulation (QAM). It is a complex [modulation scheme](/ref/Modulation) in which the constellation is given as a Cartesian product of two [PAM](/ref/PAModulation) constellations, namely, the *in-phase constellation*, and the *quadrature constellation*. More precisely, the $i$-th constellation symbol is given by
     $$
