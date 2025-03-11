@@ -30,7 +30,7 @@ doc = [
     "griffe==1.6.0",
     "griffe-inherited-docstrings==1.1.1",
     "mkdocs==1.6.1",
-    "mkdocs-material==9.6.2",
+    "mkdocs-material==9.4.0",
     "mkdocstrings==0.28.3",
     "mkdocstrings-python==1.16.3",
     "mkdocs-gen-files==0.5.0",
