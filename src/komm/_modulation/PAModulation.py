@@ -199,7 +199,7 @@ class PAModulation(base.Modulation[np.floating]):
         return super().modulate(input)
 
     def demodulate_hard(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        input = np.asarray(input)
+        input = np.asarray(input) / self._base_amplitude
         indices = np.clip(
             np.around((input + self._order - 1) / 2), 0, self._order - 1
         ).astype(int)
