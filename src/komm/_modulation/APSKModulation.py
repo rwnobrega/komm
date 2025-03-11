@@ -86,6 +86,6 @@ class APSKModulation(Modulation[np.complexfloating]):
             f"orders={self.orders}",
             f"amplitudes={self.amplitudes}",
             f"phase_offsets={self.phase_offsets}",
-            f"labeling='{self.labeling_parameter}'",
+            f"labeling={self.labeling_parameter!r}",
         ])
         return f"{self.__class__.__name__}({args})"

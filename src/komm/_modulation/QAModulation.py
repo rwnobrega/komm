@@ -112,6 +112,6 @@ class QAModulation(Modulation[np.complexfloating]):
             f"orders={self.orders}",
             f"base_amplitudes={self.base_amplitudes}",
             f"phase_offset={self.phase_offset}",
-            f"labeling='{self.labeling_parameter}'",
+            f"labeling={self.labeling_parameter!r}",
         ])
         return f"{self.__class__.__name__}({args})"

@@ -101,5 +101,5 @@ class WalshHadamardSequence(BinarySequence):
         super().__init__(polar_sequence=hadamard_matrix(length)[natural_index])
 
     def __repr__(self) -> str:
-        args = f"length={self.length}, ordering='{self.ordering}', index={self.index}"
+        args = f"length={self.length}, ordering={self.ordering!r}, index={self.index}"
         return f"{self.__class__.__name__}({args})"

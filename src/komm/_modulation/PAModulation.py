@@ -74,10 +74,14 @@ class PAModulation(base.Modulation[np.floating]):
         super()._validate_parameters()
 
     def __repr__(self) -> str:
+        if isinstance(self._labeling, str):
+            labeling_repr = repr(self._labeling)
+        else:
+            labeling_repr = self.labeling.tolist()
         args = ", ".join([
             f"order={self._order}",
             f"base_amplitude={self._base_amplitude}",
-            f"labeling='{self._labeling_parameter}'",
+            f"labeling={labeling_repr}",
         ])
         return f"{self.__class__.__name__}({args})"
 

@@ -75,7 +75,7 @@ class HuffmanCode(FixedToVariableCode):
         args = ", ".join([
             f"pmf={self.pmf.tolist()}",
             f"source_block_size={self.source_block_size}",
-            f"policy='{self.policy}'",
+            f"policy={self.policy!r}",
         ])
         return f"{self.__class__.__name__}({args})"
 

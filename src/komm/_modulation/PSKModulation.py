@@ -68,6 +68,6 @@ class PSKModulation(Modulation[np.complexfloating]):
             f"order={self.order}",
             f"amplitude={self.amplitude}",
             f"phase_offset={self.phase_offset}",
-            f"labeling='{self.labeling_parameter}'",
+            f"labeling={self.labeling_parameter!r}",
         ])
         return f"PSKModulation({args})"
