@@ -2,20 +2,24 @@
 hide: toc
 ---
 
-# Home
+# Komm
 
-Welcome to **Komm**!
-
-{!
-   include-markdown "../../README.md"
-   start="<!--intro-start-->"
-   end="<!--intro-end-->"
-!}
-
-For installation instructions and source code, please check the [project's development page](https://github.com/rwnobrega/komm).
+_A Python library for communication systems._
 
 {!
-   include-markdown "../../README.md"
-   start="<!--notes-start-->"
-   end="<!--notes-end-->"
+include-markdown "../../README.md"
+start="<!--intro-start-->"
+end="<!--intro-end-->"
 !}
+
+### Quick Installation
+
+```bash
+pip install komm
+```
+
+For more installation options and source code, please visit the [project's development page](https://github.com/rwnobrega/komm).
+
+### Documentation
+
+Check out our [library reference](/ref) for information on the classes and functions available.
