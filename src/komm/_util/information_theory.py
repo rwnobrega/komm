@@ -127,9 +127,9 @@ def relative_entropy(
     r"""
     Computes the relative entropy (Kullback–Leibler divergence) between two <span>pmf</span>s. Let $p$ and $q$ be two <span>pmf</span>s over the same alphabet $\mathcal{X}$. The relative entropy of $p$ with respect to $q$ is defined as
     $$
-        \mathrm{D}(p || q) = \sum_{x \in \mathcal{X}} p(x) \log \frac{p(x)}{q(x)}.
+        \mathrm{D}(p \parallel q) = \sum_{x \in \mathcal{X}} p(x) \log \frac{p(x)}{q(x)}.
     $$
-    Note that, in general, $\mathrm{D}(p || q) \neq \mathrm{D}(q || p)$. For more details, see <cite>CT06, Sec. 2.3</cite>.
+    Note that, in general, $\mathrm{D}(p \parallel q) \neq \mathrm{D}(q \parallel p)$. For more details, see <cite>CT06, Sec. 2.3</cite>.
 
     Parameters:
         pmf: The probability mass function $p$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
@@ -139,7 +139,7 @@ def relative_entropy(
         base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
     Returns:
-        The relative entropy $\mathrm{D}(p || q)$ between the two <span>pmf</span>s.
+        The relative entropy $\mathrm{D}(p \parallel q)$ between the two <span>pmf</span>s.
 
     Examples:
         >>> komm.relative_entropy([1/2, 1/2], [1/2, 1/2])  # doctest: +FLOAT_CMP

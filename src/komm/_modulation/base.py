@@ -75,9 +75,9 @@ class Modulation(ABC, Generic[T]):
         r"""
         The average symbol energy $E_\mathrm{s}$ of the constellation. It assumes equiprobable symbols. It is given by
         $$
-          E_\mathrm{s} = \frac{1}{M} \sum_{i \in [0:M)} \|| x_i \||^2,
+          E_\mathrm{s} = \frac{1}{M} \sum_{i \in [0:M)} \lVert x_i \rVert^2,
         $$
-        where $\|| x_i \||^2$ is the energy of constellation symbol $x_i$, and $M$ is the order of the modulation.
+        where $\lVert x_i \rVert^2$ is the energy of constellation symbol $x_i$, and $M$ is the order of the modulation.
         """
         return float(np.mean(np.real(self.constellation * self.constellation.conj())))
 
@@ -111,7 +111,7 @@ class Modulation(ABC, Generic[T]):
         r"""
         The minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
         $$
-            d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \|| x_i - x_j \||.
+            d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert x_i - x_j \rVert.
         $$
         """
         return float(
