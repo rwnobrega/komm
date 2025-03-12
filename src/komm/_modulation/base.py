@@ -121,7 +121,7 @@ class Modulation(ABC, Generic[T]):
     @abstractmethod
     def modulate(self, input: npt.ArrayLike) -> npt.NDArray[T]:
         r"""
-        Modulates one or more sequences of bits to their corresponding constellation symbols (real or complex numbers).
+        Modulates one or more sequences of bits to their corresponding constellation symbols.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $m$, or a multidimensional array where the last dimension is a multiple of $m$.
@@ -148,7 +148,7 @@ class Modulation(ABC, Generic[T]):
     @abstractmethod
     def demodulate_hard(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Demodulates one or more sequences of received points (real or complex numbers) to their corresponding sequences of hard bits ($\mathtt{0}$ or $\mathtt{1}$) using hard-decision decoding.
+        Demodulates one or more sequences of received points to their corresponding sequences of hard bits ($\mathtt{0}$ or $\mathtt{1}$) using hard-decision decoding.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence, or a multidimensional array.
@@ -173,7 +173,7 @@ class Modulation(ABC, Generic[T]):
         self, input: npt.ArrayLike, snr: float = 1.0
     ) -> npt.NDArray[np.floating]:
         r"""
-        Demodulates one or more sequences of received points (real or complex numbers) to their corresponding sequences of soft bits (L-values) using soft-decision decoding. The soft bits are the log-likelihood ratios of the bits, where positive values correspond to bit $\mathtt{0}$ and negative values correspond to bit $\mathtt{1}$.
+        Demodulates one or more sequences of received points to their corresponding sequences of soft bits (L-values) using soft-decision decoding. The soft bits are the log-likelihood ratios of the bits, where positive values correspond to bit $\mathtt{0}$ and negative values correspond to bit $\mathtt{1}$.
 
         Parameters:
             input: The received sequence(s). Can be either a single sequence, or a multidimensional array.
