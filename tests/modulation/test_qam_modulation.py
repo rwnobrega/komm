@@ -5,12 +5,9 @@ import komm
 from komm._modulation.labelings import cartesian_product
 
 
-def test_qam_modulation_1():
-    qam4 = komm.QAModulation(4)
-    qam8 = komm.QAModulation((4, 2))
-    qam16 = komm.QAModulation(16)
-    assert np.allclose(
-        qam4.constellation,
+def test_qam_constellations():
+    np.testing.assert_almost_equal(
+        komm.QAModulation(4).constellation,
         [
             -1.0 - 1.0j,
             1.0 - 1.0j,
@@ -18,8 +15,8 @@ def test_qam_modulation_1():
             1.0 + 1.0j,
         ],
     )
-    assert np.allclose(
-        qam8.constellation,
+    np.testing.assert_almost_equal(
+        komm.QAModulation((4, 2)).constellation,
         [
             -3.0 - 1.0j,
             -1.0 - 1.0j,
@@ -31,8 +28,8 @@ def test_qam_modulation_1():
             3.0 + 1.0j,
         ],
     )
-    assert np.allclose(
-        qam16.constellation,
+    np.testing.assert_almost_equal(
+        komm.QAModulation(16).constellation,
         [
             -3.0 - 3.0j,
             -1.0 - 3.0j,
@@ -64,7 +61,7 @@ def test_qam_modulation_1():
         ((4, 4), (3, 7)),
     ],
 )
-def test_qam_modulation_2(orders, base_amplitudes):
+def test_qam_vs_pam(orders, base_amplitudes):
     (M_I, M_Q) = orders
     (A_I, A_Q) = base_amplitudes
     qam = komm.QAModulation(orders, base_amplitudes=base_amplitudes)
@@ -75,7 +72,7 @@ def test_qam_modulation_2(orders, base_amplitudes):
         pam_I.constellation.reshape(-1, 1), pam_Q.constellation.reshape(-1, 1)
     )
     qam_complex_1d = qam_real_2d[:, 0] + 1j * qam_real_2d[:, 1]
-    assert np.allclose(qam_complex_1d, qam.constellation)
+    np.testing.assert_almost_equal(qam_complex_1d, qam.constellation)
 
     qam_doc_formula = []
     for i in range(M_I * M_Q):
@@ -83,4 +80,17 @@ def test_qam_modulation_2(orders, base_amplitudes):
         qam_doc_formula.append(
             A_I * (2 * i_I - M_I + 1) + 1j * A_Q * (2 * i_Q - M_Q + 1)
         )
-    assert np.allclose(qam_doc_formula, qam.constellation)
+    np.testing.assert_almost_equal(qam_doc_formula, qam.constellation)
+
+
+def test_qam_invalid():
+    with pytest.raises(ValueError):  # Invalid order
+        komm.QAModulation(8)
+    with pytest.raises(ValueError):  # Invalid order
+        komm.QAModulation((6, 2))
+    with pytest.raises(ValueError):  # Invalid order
+        komm.QAModulation((3, 3))
+    with pytest.raises(ValueError):  # Invalid labeling
+        komm.QAModulation(4, labeling="invalid")
+    with pytest.raises(ValueError):  # Invalid labeling
+        komm.QAModulation(4, labeling=[[0, 0], [1, 0], [1, 1]])
