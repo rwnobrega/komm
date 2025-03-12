@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
 
 
 class ScalarQuantizer(ABC):
-    @property
+    @cached_property
     @abstractmethod
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
@@ -13,7 +14,7 @@ class ScalarQuantizer(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""

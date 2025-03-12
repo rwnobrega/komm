@@ -144,14 +144,14 @@ class ConvolutionalCode:
             args += f", feedback_polynomials={vec_str(self.feedback_polynomials)}"
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def num_input_bits(self) -> int:
         r"""
         The number of input bits per block, $k$.
         """
         return self.feedforward_polynomials.shape[0]
 
-    @property
+    @cached_property
     def num_output_bits(self) -> int:
         r"""
         The number of output bits per block, $n$.

@@ -11,7 +11,7 @@ from .._util.decorators import blockwise
 
 
 class BlockCode(ABC):
-    @property
+    @cached_property
     @abstractmethod
     def length(self) -> int:
         r"""
@@ -19,7 +19,7 @@ class BlockCode(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def dimension(self) -> int:
         r"""
@@ -27,7 +27,7 @@ class BlockCode(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def redundancy(self) -> int:
         r"""
@@ -35,7 +35,7 @@ class BlockCode(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def rate(self) -> float:
         r"""

@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
@@ -48,7 +49,7 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
             max_iter=100,
         )
 
-    @property
+    @cached_property
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
@@ -59,7 +60,7 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
         """
         return self._levels
 
-    @property
+    @cached_property
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:

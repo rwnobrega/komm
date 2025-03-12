@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from functools import cache
+from functools import cached_property
 from typing import Literal
 
 import numpy as np
@@ -50,8 +50,7 @@ class UniformQuantizer(base.ScalarQuantizer):
         if not self.choice in ["mid-riser", "mid-tread"]:
             raise ValueError("'choice' must be either 'mid-riser' or 'mid-tread'")
 
-    @property
-    @cache
+    @cached_property
     def quantization_step(self) -> float:
         r"""
         The quantization step $\Delta$.
@@ -65,8 +64,7 @@ class UniformQuantizer(base.ScalarQuantizer):
         delta = (x_max - x_min) / self.num_levels
         return delta
 
-    @property
-    @cache
+    @cached_property
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
@@ -82,8 +80,7 @@ class UniformQuantizer(base.ScalarQuantizer):
         max_level = x_max - (delta / 2) * endpoint
         return np.linspace(min_level, max_level, num=num, endpoint=endpoint)
 
-    @property
-    @cache
+    @cached_property
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:

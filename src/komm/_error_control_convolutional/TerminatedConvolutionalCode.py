@@ -88,19 +88,19 @@ class TerminatedConvolutionalCode(base.BlockCode):
             "tail-biting": terminations.TailBiting,
         }[self.mode](self.convolutional_code, self.num_blocks)
 
-    @property
+    @cached_property
     def length(self) -> int:
         return self._strategy.codeword_length()
 
-    @property
+    @cached_property
     def dimension(self) -> int:
         return self.num_blocks * self.convolutional_code.num_input_bits
 
-    @property
+    @cached_property
     def redundancy(self) -> int:
         return self.length - self.dimension
 
-    @property
+    @cached_property
     def rate(self) -> float:
         return super().rate
 

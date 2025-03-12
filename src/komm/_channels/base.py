@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
@@ -7,7 +8,7 @@ from .._util.information_theory import LogBase
 
 
 class DiscreteMemorylessChannel(ABC):
-    @property
+    @cached_property
     @abstractmethod
     def input_cardinality(self) -> int:
         r"""
@@ -15,7 +16,7 @@ class DiscreteMemorylessChannel(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def output_cardinality(self) -> int:
         r"""
@@ -23,7 +24,7 @@ class DiscreteMemorylessChannel(ABC):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""

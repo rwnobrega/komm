@@ -85,7 +85,7 @@ class FiniteStateMachine:
         """
         return int(np.amax(self.outputs))
 
-    @property
+    @cached_property
     def input_edges(self) -> npt.NDArray[np.integer]:
         r"""
         The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.
@@ -100,7 +100,7 @@ class FiniteStateMachine:
         """
         return self._input_edges
 
-    @property
+    @cached_property
     def output_edges(self) -> npt.NDArray[np.integer]:
         r"""
         The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.

@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 import numpy.typing as npt
 
@@ -57,7 +59,7 @@ class ScalarQuantizer(base.ScalarQuantizer):
         ])
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
@@ -67,7 +69,7 @@ class ScalarQuantizer(base.ScalarQuantizer):
         """
         return self._levels
 
-    @property
+    @cached_property
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:

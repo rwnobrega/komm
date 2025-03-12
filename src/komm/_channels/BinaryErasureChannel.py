@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
@@ -27,21 +28,21 @@ class BinaryErasureChannel(base.DiscreteMemorylessChannel):
     def __post_init__(self) -> None:
         assert_is_probability(self.erasure_probability)
 
-    @property
+    @cached_property
     def input_cardinality(self) -> int:
         r"""
         For the BEC, it is given by $|\mathcal{X}| = 2$.
         """
         return 2
 
-    @property
+    @cached_property
     def output_cardinality(self) -> int:
         r"""
         For the BEC, it is given by $|\mathcal{Y}| = 3$.
         """
         return 3
 
-    @property
+    @cached_property
     def transition_matrix(self) -> npt.NDArray[np.floating]:
         r"""
         For the BEC, it is given by

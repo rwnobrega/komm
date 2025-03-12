@@ -82,7 +82,7 @@ class SystematicBlockCode(base.BlockCode):
     def parity_set(self) -> npt.NDArray[np.integer]:
         return np.setdiff1d(np.arange(self.length), self.information_set)
 
-    @property
+    @cached_property
     def length(self) -> int:
         r"""
         Examples:
@@ -92,7 +92,7 @@ class SystematicBlockCode(base.BlockCode):
         """
         return self.dimension + self.redundancy
 
-    @property
+    @cached_property
     def dimension(self) -> int:
         r"""
         Examples:
@@ -102,7 +102,7 @@ class SystematicBlockCode(base.BlockCode):
         """
         return self.parity_submatrix.shape[0]
 
-    @property
+    @cached_property
     def redundancy(self) -> int:
         r"""
         Examples:
@@ -112,7 +112,7 @@ class SystematicBlockCode(base.BlockCode):
         """
         return self.parity_submatrix.shape[1]
 
-    @property
+    @cached_property
     def rate(self) -> float:
         r"""
         Examples:

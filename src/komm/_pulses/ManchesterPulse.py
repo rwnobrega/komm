@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import override
 
 from . import base
 
@@ -42,17 +42,14 @@ class ManchesterPulse(base.Pulse):
         array([0.5249, 0.4053, 0.1391, 0.    , 0.1391, 0.4053, 0.5249])
     """
 
-    @override
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         return -1.0 * (0 <= t) * (t < 0.5) + 1.0 * (0.5 <= t) * (t < 1.0)
 
-    @override
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         return np.sinc(f / 2) ** 2 * np.sin(np.pi * f / 2) ** 2
 
-    @property
-    @override
+    @cached_property
     def support(self) -> tuple[float, float]:
         return (0.0, 1.0)

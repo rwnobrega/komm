@@ -1,4 +1,4 @@
-from functools import cache
+from functools import cache, cached_property
 from itertools import count, product
 
 import numpy as np
@@ -151,7 +151,7 @@ class VariableToFixedCode:
         dec_mapping = dict(zip(product(range(T), repeat=n), sourcewords))
         return cls(T, S, n, dec_mapping)
 
-    @property
+    @cached_property
     def target_cardinality(self) -> int:
         r"""
         The target cardinality $T$ of the code. It is the number of symbols in the target alphabet.
@@ -163,7 +163,7 @@ class VariableToFixedCode:
         """
         return self._target_cardinality
 
-    @property
+    @cached_property
     def source_cardinality(self) -> int:
         r"""
         The source cardinality $S$ of the code. It is the number of symbols in the source alphabet.
@@ -175,7 +175,7 @@ class VariableToFixedCode:
         """
         return self._source_cardinality
 
-    @property
+    @cached_property
     def target_block_size(self) -> int:
         r"""
         The target block size $n$ of the code. It is the number of symbols in each target block.
@@ -187,7 +187,7 @@ class VariableToFixedCode:
         """
         return self._target_block_size
 
-    @property
+    @cached_property
     def size(self) -> int:
         r"""
         The number of sourcewords in the code. It is less than or equal to $T^n$.
@@ -199,7 +199,7 @@ class VariableToFixedCode:
         """
         return len(self.dec_mapping)
 
-    @property
+    @cached_property
     def dec_mapping(self) -> dict[Word, Word]:
         r"""
         The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $T^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are the corresponding sourcewords.
@@ -211,8 +211,7 @@ class VariableToFixedCode:
         """
         return self._dec_mapping
 
-    @property
-    @cache
+    @cached_property
     def sourcewords(self) -> list[Word]:
         r"""
         The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$.
@@ -228,8 +227,7 @@ class VariableToFixedCode:
         """
         return list(self.dec_mapping.values())
 
-    @property
-    @cache
+    @cached_property
     def _inv_dec_mapping(self) -> dict[Word, Word]:
         return {v: k for k, v in self.dec_mapping.items()}
 

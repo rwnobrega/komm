@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import override
 
 from . import base
 
@@ -58,17 +58,14 @@ class RectangularPulse(base.Pulse):
 
     width: float = 1.0
 
-    @override
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         return 1.0 * (0.0 <= t) * (t < self.width)
 
-    @override
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         return self.width * np.sinc(self.width * f)
 
-    @property
-    @override
+    @cached_property
     def support(self) -> tuple[float, float]:
         return (0.0, self.width)

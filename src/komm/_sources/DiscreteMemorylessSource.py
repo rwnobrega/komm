@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 import numpy.typing as npt
 
@@ -21,7 +23,7 @@ class DiscreteMemorylessSource:
     def __repr__(self) -> str:
         return f"{__class__.__name__}(pmf={self.pmf.tolist()})"
 
-    @property
+    @cached_property
     def cardinality(self) -> int:
         r"""
         The cardinality $|\mathcal{X}|$ of the source alphabet.

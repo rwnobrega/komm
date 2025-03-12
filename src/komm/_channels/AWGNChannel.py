@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from functools import cached_property
 from typing import Literal
 
 import numpy as np
@@ -28,7 +29,7 @@ class AWGNChannel:
     snr: float = np.inf
     rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
 
-    @property
+    @cached_property
     def noise_power(self) -> float:
         r"""
         The noise power $N$.

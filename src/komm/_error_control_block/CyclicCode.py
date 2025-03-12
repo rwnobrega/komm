@@ -84,19 +84,19 @@ class CyclicCode(base.BlockCode):
         args += f", systematic={self.systematic}"
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def length(self) -> int:
         return self._length
 
-    @property
+    @cached_property
     def dimension(self) -> int:
         return self.check_polynomial.degree
 
-    @property
+    @cached_property
     def redundancy(self) -> int:
         return self.generator_polynomial.degree
 
-    @property
+    @cached_property
     def rate(self) -> float:
         return super().rate
 

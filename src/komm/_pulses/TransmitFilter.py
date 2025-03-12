@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from functools import cache
+from functools import cached_property
 from typing import Literal
 
 import numpy as np
@@ -54,8 +54,7 @@ class TransmitFilter:
         else:  # self._pulse_support_kind() == "semi-infinite"
             raise ValueError("pulses with semi-infinite support are not supported")
 
-    @property
-    @cache
+    @cached_property
     def pulse_time_span(self) -> tuple[int, int]:
         r"""
         The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $h(t)$.
@@ -93,8 +92,7 @@ class TransmitFilter:
         t = np.arange(t_min_x * beta, t_max_x * beta) / beta
         return t
 
-    @property
-    @cache
+    @cached_property
     def taps(self) -> npt.NDArray[np.floating]:
         r"""
         The FIR filter taps of the transmit filter.

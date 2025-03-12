@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import override
 
 from . import base
 
@@ -43,19 +43,16 @@ class GaussianPulse(base.Pulse):
 
     half_power_bandwidth: float = 1.0
 
-    @override
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
         return np.exp(-0.5 * (2 * np.pi * b_bar * t) ** 2)
 
-    @override
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
         return 1 / (np.sqrt(2 * np.pi) * b_bar) * np.exp(-0.5 * (f / b_bar) ** 2)
 
-    @property
-    @override
+    @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)

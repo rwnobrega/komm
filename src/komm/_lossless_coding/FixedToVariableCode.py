@@ -1,4 +1,4 @@
-from functools import cache
+from functools import cache, cached_property
 from itertools import count, product
 
 import numpy as np
@@ -140,7 +140,7 @@ class FixedToVariableCode:
         enc_mapping = dict(zip(product(range(S), repeat=k), codewords))
         return cls(S, T, k, enc_mapping)
 
-    @property
+    @cached_property
     def source_cardinality(self) -> int:
         r"""
         The source cardinality $S$ of the code. It is the number of symbols in the source alphabet.
@@ -152,7 +152,7 @@ class FixedToVariableCode:
         """
         return self._source_cardinality
 
-    @property
+    @cached_property
     def target_cardinality(self) -> int:
         r"""
         The target cardinality $T$ of the code. It is the number of symbols in the target alphabet.
@@ -164,7 +164,7 @@ class FixedToVariableCode:
         """
         return self._target_cardinality
 
-    @property
+    @cached_property
     def source_block_size(self) -> int:
         r"""
         The source block size $k$ of the code. It is the number of symbols in each source block.
@@ -176,7 +176,7 @@ class FixedToVariableCode:
         """
         return self._source_block_size
 
-    @property
+    @cached_property
     def size(self) -> int:
         r"""
         The number of codewords in the code. It is equal to $S^k$.
@@ -188,7 +188,7 @@ class FixedToVariableCode:
         """
         return len(self.enc_mapping)
 
-    @property
+    @cached_property
     def enc_mapping(self) -> dict[Word, Word]:
         r"""
         The encoding mapping $\Enc$ of the code. It is a dictionary of length $S^k$ whose keys are all the $k$-tuples of integers in $[0:S)$ and whose values are the corresponding codewords.
@@ -200,8 +200,7 @@ class FixedToVariableCode:
         """
         return self._enc_mapping
 
-    @property
-    @cache
+    @cached_property
     def codewords(self) -> list[Word]:
         r"""
         The codewords of the code. They correspond to the image of the encoding mapping $\Enc$.
@@ -217,8 +216,7 @@ class FixedToVariableCode:
         """
         return list(self.enc_mapping.values())
 
-    @property
-    @cache
+    @cached_property
     def _inv_enc_mapping(self) -> dict[Word, Word]:
         return {v: k for k, v in self.enc_mapping.items()}
 

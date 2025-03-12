@@ -80,7 +80,7 @@ class BlockCode(base.BlockCode):
             args = f"check_matrix={self.check_matrix.tolist()}"
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def length(self) -> int:
         r"""
         Examples:
@@ -93,7 +93,7 @@ class BlockCode(base.BlockCode):
         """
         return self._length
 
-    @property
+    @cached_property
     def dimension(self) -> int:
         r"""
         Examples:
@@ -106,7 +106,7 @@ class BlockCode(base.BlockCode):
         """
         return self._dimension
 
-    @property
+    @cached_property
     def redundancy(self) -> int:
         r"""
         Examples:
@@ -119,7 +119,7 @@ class BlockCode(base.BlockCode):
         """
         return self._redundancy
 
-    @property
+    @cached_property
     def rate(self) -> float:
         r"""
         Examples:

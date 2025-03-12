@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 import numpy.typing as npt
 
@@ -29,15 +31,15 @@ class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"
 
-    @property
+    @cached_property
     def input_cardinality(self) -> int:
         return self.transition_matrix.shape[0]
 
-    @property
+    @cached_property
     def output_cardinality(self) -> int:
         return self.transition_matrix.shape[1]
 
-    @property
+    @cached_property
     def transition_matrix(self) -> npt.NDArray[np.floating]:
         return self._transition_matrix
 

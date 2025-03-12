@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 import numpy.typing as npt
 
@@ -46,7 +48,7 @@ class BinarySequence:
         args = f"bit_sequence={self.bit_sequence.tolist()}"
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def length(self) -> int:
         r"""
         The length (or period) $L$ of the binary sequence.

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import override
 
 from . import base
 
@@ -54,13 +54,11 @@ class RaisedCosinePulse(base.Pulse):
 
     rolloff: float = 1.0
 
-    @override
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         a = self.rolloff
         t = np.asarray(t) + 1e-8  # TODO: Improve this workaround
         return np.sinc(t) * np.cos(np.pi * a * t) / (1 - (2 * a * t) ** 2)
 
-    @override
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         a = self.rolloff
         f = np.asarray(f)
@@ -72,7 +70,6 @@ class RaisedCosinePulse(base.Pulse):
         band2 = (f1 < abs(f)) * (abs(f) < f2)
         return 1.0 * band1 + (0.5 * (1 + np.cos(np.pi * (abs(f) - f1) / a))) * band2
 
-    @property
-    @override
+    @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)

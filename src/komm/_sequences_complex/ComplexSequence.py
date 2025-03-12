@@ -1,3 +1,5 @@
+from functools import cached_property
+
 import numpy as np
 import numpy.typing as npt
 
@@ -24,7 +26,7 @@ class ComplexSequence:
         args = f"sequence={self.sequence.tolist()}"
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def length(self):
         r"""
         The length (or period) $L$ of the complex sequence.

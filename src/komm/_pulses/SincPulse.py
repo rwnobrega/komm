@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import override
 
 from . import base
 
@@ -42,17 +42,14 @@ class SincPulse(base.Pulse):
         array([0., 0., 1., 1., 1., 0., 0.])
     """
 
-    @override
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         t = np.asarray(t)
         return np.sinc(t)
 
-    @override
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         f = np.asarray(f)
         return 1.0 * (abs(f) < 0.5)
 
-    @property
-    @override
+    @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)
