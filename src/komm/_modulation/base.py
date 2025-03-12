@@ -25,7 +25,7 @@ class Modulation(ABC, Generic[T]):
         if len(set(tuple(row) for row in self.labeling)) != order:
             raise ValueError("rows of 'labeling' must be distinct")
 
-    @property
+    @cached_property
     @abstractmethod
     def constellation(self) -> npt.NDArray[T]:
         r"""
@@ -33,7 +33,7 @@ class Modulation(ABC, Generic[T]):
         """
         raise NotImplementedError
 
-    @property
+    @cached_property
     @abstractmethod
     def labeling(self) -> npt.NDArray[np.integer]:
         r"""
@@ -49,7 +49,7 @@ class Modulation(ABC, Generic[T]):
         """
         return {tuple(int(x) for x in row): i for i, row in enumerate(self.labeling)}
 
-    @property
+    @cached_property
     @abstractmethod
     def order(self) -> int:
         r"""
@@ -57,7 +57,7 @@ class Modulation(ABC, Generic[T]):
         """
         return self.constellation.size
 
-    @property
+    @cached_property
     @abstractmethod
     def bits_per_symbol(self) -> int:
         r"""
@@ -69,7 +69,7 @@ class Modulation(ABC, Generic[T]):
         """
         return (self.order - 1).bit_length()
 
-    @property
+    @cached_property
     @abstractmethod
     def energy_per_symbol(self) -> float:
         r"""
@@ -81,7 +81,7 @@ class Modulation(ABC, Generic[T]):
         """
         return float(np.mean(np.real(self.constellation * self.constellation.conj())))
 
-    @property
+    @cached_property
     @abstractmethod
     def energy_per_bit(self) -> float:
         r"""
@@ -93,7 +93,7 @@ class Modulation(ABC, Generic[T]):
         """
         return self.energy_per_symbol / self.bits_per_symbol
 
-    @property
+    @cached_property
     @abstractmethod
     def symbol_mean(self) -> float | complex:
         r"""
@@ -105,7 +105,7 @@ class Modulation(ABC, Generic[T]):
         mean = self.constellation.mean()
         return complex(mean) if np.iscomplexobj(self.constellation) else float(mean)
 
-    @property
+    @cached_property
     @abstractmethod
     def minimum_distance(self) -> float:
         r"""

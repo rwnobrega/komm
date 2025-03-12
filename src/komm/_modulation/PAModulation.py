@@ -85,7 +85,7 @@ class PAModulation(base.Modulation[np.floating]):
         ])
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def constellation(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
@@ -95,7 +95,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return self._constellation
 
-    @property
+    @cached_property
     def labeling(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
@@ -118,7 +118,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return super().inverse_labeling
 
-    @property
+    @cached_property
     def order(self) -> int:
         r"""
         Examples:
@@ -128,7 +128,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return self._order
 
-    @property
+    @cached_property
     def bits_per_symbol(self) -> int:
         r"""
         Examples:
@@ -138,7 +138,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return super().bits_per_symbol
 
-    @property
+    @cached_property
     def energy_per_symbol(self) -> float:
         r"""
         For the PAM, it is given by
@@ -153,7 +153,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return (self._base_amplitude**2) * (self._order**2 - 1) / 3
 
-    @property
+    @cached_property
     def energy_per_bit(self) -> float:
         r"""
         Examples:
@@ -163,7 +163,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return super().energy_per_bit
 
-    @property
+    @cached_property
     def symbol_mean(self) -> float:
         r"""
         For the PAM, it is given by
@@ -178,7 +178,7 @@ class PAModulation(base.Modulation[np.floating]):
         """
         return 0.0
 
-    @property
+    @cached_property
     def minimum_distance(self) -> float:
         r"""
         For the PAM, it is given by

@@ -84,7 +84,7 @@ class Modulation(base.Modulation[T]):
         ])
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def constellation(self) -> npt.NDArray[T]:
         r"""
         Examples:
@@ -97,7 +97,7 @@ class Modulation(base.Modulation[T]):
         """
         return self._constellation
 
-    @property
+    @cached_property
     def labeling(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
@@ -126,7 +126,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().inverse_labeling
 
-    @property
+    @cached_property
     def order(self) -> int:
         r"""
         Examples:
@@ -139,7 +139,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().order
 
-    @property
+    @cached_property
     def bits_per_symbol(self) -> int:
         r"""
         Examples:
@@ -152,7 +152,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().bits_per_symbol
 
-    @property
+    @cached_property
     def energy_per_symbol(self) -> float:
         r"""
         Examples:
@@ -172,7 +172,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().energy_per_symbol
 
-    @property
+    @cached_property
     def energy_per_bit(self) -> float:
         r"""
         Examples:
@@ -192,7 +192,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().energy_per_bit
 
-    @property
+    @cached_property
     def symbol_mean(self) -> float | complex:
         r"""
         Examples:
@@ -212,7 +212,7 @@ class Modulation(base.Modulation[T]):
         """
         return super().symbol_mean
 
-    @property
+    @cached_property
     def minimum_distance(self) -> float:
         r"""
         Examples:

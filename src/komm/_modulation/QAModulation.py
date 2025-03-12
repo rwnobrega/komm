@@ -107,7 +107,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         ])
         return f"{self.__class__.__name__}({args})"
 
-    @property
+    @cached_property
     def constellation(self) -> npt.NDArray[np.complexfloating]:
         r"""
         Examples:
@@ -122,7 +122,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
             self._orders, self._base_amplitudes, self._phase_offset
         )
 
-    @property
+    @cached_property
     def labeling(self) -> npt.NDArray[np.integer]:
         r"""
         Examples:
@@ -150,7 +150,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         """
         return super().inverse_labeling
 
-    @property
+    @cached_property
     def order(self) -> int:
         r"""
         Examples:
@@ -160,7 +160,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         """
         return self._orders[0] * self._orders[1]
 
-    @property
+    @cached_property
     def bits_per_symbol(self) -> int:
         r"""
         Examples:
@@ -170,7 +170,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         """
         return super().bits_per_symbol
 
-    @property
+    @cached_property
     def energy_per_symbol(self) -> float:
         r"""
         For the QAM, it is given by
@@ -191,7 +191,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         M_I, M_Q = self._orders
         return (A_I**2) * (M_I**2 - 1) / 3 + (A_Q**2) * (M_Q**2 - 1) / 3
 
-    @property
+    @cached_property
     def energy_per_bit(self) -> float:
         r"""
         Examples:
@@ -201,7 +201,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         """
         return super().energy_per_bit
 
-    @property
+    @cached_property
     def symbol_mean(self) -> complex:
         r"""
         For the QAM, it is given by
@@ -216,7 +216,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         """
         return 0j
 
-    @property
+    @cached_property
     def minimum_distance(self) -> float:
         r"""
         For the QAM, it is given by
