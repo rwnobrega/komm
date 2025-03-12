@@ -143,7 +143,7 @@ class PAModulation(base.Modulation[np.floating]):
         r"""
         For the PAM, it is given by
         $$
-            E_\mathrm{s} = \frac{A^2}{3} \left( M^2 - 1 \right)\vphantom{\Bigg|}.
+            E_\mathrm{s} = \frac{A^2}{3}(M^2 - 1).
         $$
 
         Examples:

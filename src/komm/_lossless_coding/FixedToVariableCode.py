@@ -295,7 +295,7 @@ class FixedToVariableCode:
         r"""
         Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
         $$
-            R = \frac{\bar{n}}{k}\vphantom{\Bigg|},
+            R = \frac{\bar{n}}{k},
         $$
         where $\bar{n}$ is the expected codeword length, assuming iid source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.
 
