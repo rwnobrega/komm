@@ -80,6 +80,9 @@ Source coding:
     - TunstallCode
     - LempelZiv78Code
     - LempelZivWelchCode
+  Integer coding:
+    - UnaryCode
+    - FibonacciCode
   Quantization:
     - ScalarQuantizer
     - LloydMaxQuantizer
