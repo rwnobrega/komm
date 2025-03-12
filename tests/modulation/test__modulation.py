@@ -23,6 +23,14 @@ labeling = ["natural_2d", "reflected_2d"]
 for args in product(orders, base_amplitudes, phase_offset, labeling):
     params.append(komm.QAModulation(*args))
 
+# PSK
+order = [2, 4, 8, 16]
+amplitude = [0.5, 1.0, 2.0]
+phase_offset = [0.0, np.pi / 4, np.pi / 3]
+labeling = ["natural", "reflected"]
+for args in product(order, amplitude, phase_offset, labeling):
+    params.append(komm.PSKModulation(*args))
+
 
 @pytest.fixture(params=params, ids=lambda mod: repr(mod))
 def mod(request: pytest.FixtureRequest):
@@ -66,11 +74,19 @@ def test_modulation_high_snr(mod: komm.abc.Modulation):
     ref = komm.Modulation(mod.constellation, mod.labeling)
     bits = np.random.randint(0, 2, size=100 * mod.bits_per_symbol, dtype=int)
     symbols = mod.modulate(bits)
-    np.testing.assert_array_equal(mod.demodulate_hard(symbols), bits)
-    np.testing.assert_array_equal(ref.demodulate_hard(symbols), bits)
     np.testing.assert_array_equal(
-        (mod.demodulate_soft(symbols, snr=1e4) < 0).astype(int), bits
+        mod.demodulate_hard(symbols),
+        bits,
     )
     np.testing.assert_array_equal(
-        (ref.demodulate_soft(symbols, snr=1e4) < 0).astype(int), bits
+        ref.demodulate_hard(symbols),
+        bits,
+    )
+    np.testing.assert_array_equal(
+        (mod.demodulate_soft(symbols, snr=1e4) < 0).astype(int),
+        bits,
+    )
+    np.testing.assert_array_equal(
+        (ref.demodulate_soft(symbols, snr=1e4) < 0).astype(int),
+        bits,
     )
