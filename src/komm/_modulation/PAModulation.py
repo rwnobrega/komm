@@ -197,8 +197,8 @@ class PAModulation(base.Modulation[np.floating]):
         r"""
         Examples:
             >>> pam = komm.PAModulation(4)
-            >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0, 1, 0])
-            array([-3.,  1., -3., -1., -1.])
+            >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0])
+            array([-3.,  1., -3., -1.])
         """
         return super().modulate(input)
 
