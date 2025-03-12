@@ -212,8 +212,8 @@ class PSKModulation(base.Modulation[np.complexfloating]):
 
     def demodulate_hard(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         M, phi = self._order, self._phase_offset
-        phase = np.angle(np.multiply(input, np.exp(-1j * phi)))
-        indices = np.mod(np.around(phase / (2 * np.pi / M)), M).astype(int)
+        turn = np.angle(np.multiply(input, np.exp(-1j * phi))) / (2 * np.pi)
+        indices = np.mod(np.around(M * turn), M).astype(int)
         hard_bits = np.reshape(self.labeling[indices], shape=-1)
         return hard_bits
 

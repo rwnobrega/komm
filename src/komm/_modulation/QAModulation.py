@@ -247,14 +247,11 @@ class QAModulation(base.Modulation[np.complexfloating]):
     def demodulate_hard(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         A_I, A_Q = self._base_amplitudes
         M_I, M_Q = self._orders
-        input = np.asarray(input) * np.exp(-1j * self._phase_offset)
-        indices_real = np.clip(
-            np.around((np.real(input) / A_I + M_I - 1) / 2), 0, M_I - 1
-        ).astype(int)
-        indices_imag = np.clip(
-            np.around((np.imag(input) / A_Q + M_Q - 1) / 2), 0, M_Q - 1
-        ).astype(int)
-        indices = indices_real + indices_imag * M_I
+        input_I = np.real(np.multiply(input, np.exp(-1j * self._phase_offset))) / A_I
+        input_Q = np.imag(np.multiply(input, np.exp(-1j * self._phase_offset))) / A_Q
+        indices_I = np.clip(np.around((input_I + M_I - 1) / 2), 0, M_I - 1).astype(int)
+        indices_Q = np.clip(np.around((input_Q + M_Q - 1) / 2), 0, M_Q - 1).astype(int)
+        indices = indices_I + indices_Q * M_I
         hard_bits = np.reshape(self.labeling[indices], shape=-1)
         return hard_bits
 
