@@ -71,13 +71,12 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         self._order = order
         self._base_amplitude = base_amplitude
         self._phase_offset = phase_offset
-        self._labeling_parameter = labeling
-        self._labeling = get_labeling(labeling, ("natural", "reflected"), order)
+        self._labeling = labeling
         super()._validate_parameters()
 
     def __repr__(self) -> str:
-        if isinstance(self._labeling_parameter, str):
-            labeling_repr = repr(self._labeling_parameter)
+        if isinstance(self._labeling, str):
+            labeling_repr = repr(self._labeling)
         else:
             labeling_repr = self.labeling.tolist()
         args = ", ".join([
@@ -109,7 +108,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
                    [1, 1],
                    [0, 1]])
         """
-        return self._labeling
+        return get_labeling(self._labeling, ("natural", "reflected"), self._order)
 
     @cached_property
     def inverse_labeling(self) -> dict[tuple[int, ...], int]:

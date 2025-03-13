@@ -67,10 +67,8 @@ class PAModulation(base.Modulation[np.floating]):
         labeling: Literal["natural", "reflected"] | npt.ArrayLike = "reflected",
     ) -> None:
         self._order = order
-        self._constellation = constellation_pam(order, base_amplitude)
-        self._labeling_parameter = labeling
-        self._labeling = get_labeling(labeling, ("natural", "reflected"), order)
         self._base_amplitude = base_amplitude
+        self._labeling = labeling
         super()._validate_parameters()
 
     def __repr__(self) -> str:
@@ -93,7 +91,7 @@ class PAModulation(base.Modulation[np.floating]):
             >>> pam.constellation
             array([-3., -1.,  1.,  3.])
         """
-        return self._constellation
+        return constellation_pam(self._order, self._base_amplitude)
 
     @cached_property
     def labeling(self) -> npt.NDArray[np.integer]:
@@ -106,7 +104,7 @@ class PAModulation(base.Modulation[np.floating]):
                    [1, 1],
                    [0, 1]])
         """
-        return self._labeling
+        return get_labeling(self._labeling, ("natural", "reflected"), self._order)
 
     @cached_property
     def inverse_labeling(self) -> dict[tuple[int, ...], int]:
@@ -215,7 +213,7 @@ class PAModulation(base.Modulation[np.floating]):
         if self._order == 2:
             y = np.asarray(input) / self._base_amplitude
             return self._demodulate_pam2_soft(y, snr / 1.0)
-        elif self._order == 4 and self._labeling_parameter == "reflected":
+        elif self._order == 4 and self._labeling == "reflected":
             y = np.asarray(input) / self._base_amplitude
             return vectorize(self._demodulate_pam4_soft_reflected)(y, snr / 5.0)  # type: ignore
         # Fall back to general implementation
