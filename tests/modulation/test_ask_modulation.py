@@ -5,63 +5,107 @@ import komm
 
 
 @pytest.mark.parametrize(
-    "order, bits_per_symbol, constellation, energy_per_symbol, energy_per_bit,"
-    " symbol_mean",
+    "params, expected",
     [
-        (2, 1, [0.0, 1.0], 0.5, 0.5, 0.5),
-        (4, 2, [0.0, 1.0, 2.0, 3.0], 3.5, 1.75, 1.5),
-        (8, 3, [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0], 17.5, 35 / 6, 3.5),
+        (
+            {"order": 2, "base_amplitude": 1, "phase_offset": 0},
+            {
+                "bits_per_symbol": 1,
+                "constellation": [0, 1],
+                "energy_per_symbol": 0.5,
+                "energy_per_bit": 0.5,
+                "symbol_mean": 0.5,
+                "minimum_distance": 1,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 1, "phase_offset": 0},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [0, 1, 2, 3],
+                "energy_per_symbol": 3.5,
+                "energy_per_bit": 1.75,
+                "symbol_mean": 1.5,
+                "minimum_distance": 1,
+            },
+        ),
+        (
+            {"order": 8, "base_amplitude": 1, "phase_offset": 0},
+            {
+                "bits_per_symbol": 3,
+                "constellation": [0, 1, 2, 3, 4, 5, 6, 7],
+                "energy_per_symbol": 17.5,
+                "energy_per_bit": 35 / 6,
+                "symbol_mean": 3.5,
+                "minimum_distance": 1,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 1, "phase_offset": 0},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [0, 1, 2, 3],
+                "energy_per_symbol": 3.5,
+                "energy_per_bit": 1.75,
+                "symbol_mean": 1.5,
+                "minimum_distance": 1,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 2, "phase_offset": 0},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [0, 2, 4, 6],
+                "energy_per_symbol": 14,
+                "energy_per_bit": 7,
+                "symbol_mean": 3,
+                "minimum_distance": 2,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 1, "phase_offset": np.pi / 4},
+            {
+                "bits_per_symbol": 2,
+                "constellation": np.array([0, 1 + 1j, 2 + 2j, 3 + 3j]) / np.sqrt(2),
+                "energy_per_symbol": 3.5,
+                "energy_per_bit": 1.75,
+                "symbol_mean": (1.5 + 1.5j) / np.sqrt(2),
+                "minimum_distance": 1,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 0.5, "phase_offset": np.pi},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [0, -0.5, -1, -1.5],
+                "energy_per_symbol": 0.875,
+                "energy_per_bit": 0.4375,
+                "symbol_mean": -0.75,
+                "minimum_distance": 0.5,
+            },
+        ),
+        (
+            {"order": 4, "base_amplitude": 2.5, "phase_offset": np.pi / 2},
+            {
+                "bits_per_symbol": 2,
+                "constellation": [0, 2.5j, 5j, 7.5j],
+                "energy_per_symbol": 21.875,
+                "energy_per_bit": 10.9375,
+                "symbol_mean": 3.75j,
+                "minimum_distance": 2.5,
+            },
+        ),
     ],
 )
-def test_ask_modulation_1(
-    order,
-    constellation,
-    bits_per_symbol,
-    energy_per_symbol,
-    energy_per_bit,
-    symbol_mean,
-):
-    ask = komm.ASKModulation(order)
-    assert ask.order == order
-    assert ask.bits_per_symbol == bits_per_symbol
-    assert np.allclose(ask.constellation, constellation)
-    assert np.allclose(ask.energy_per_symbol, energy_per_symbol)
-    assert np.allclose(ask.energy_per_bit, energy_per_bit)
-    assert np.allclose(ask.symbol_mean, symbol_mean)
-    assert np.allclose(ask.minimum_distance, 1.0)
-
-
-@pytest.mark.parametrize(
-    "base_amplitude, phase_offset, constellation",
-    [
-        (1.0, 0.0, [0.0, 1.0, 2.0, 3.0]),
-        (2.0, 0.0, [0.0, 2.0, 4.0, 6.0]),
-        (1.0, np.pi / 4.0, np.array([0, 1 + 1j, 2 + 2j, 3 + 3j]) / np.sqrt(2)),
-        (0.5, np.pi, [0, -0.5, -1, -1.5]),
-        (2.5, np.pi / 2.0, [0, 2.5j, 5j, 7.5j]),
-    ],
-)
-def test_ask_modulation_2(base_amplitude, phase_offset, constellation):
-    ask4 = komm.ASKModulation(
-        4, base_amplitude=base_amplitude, phase_offset=phase_offset
-    )
-    assert np.allclose(ask4.constellation, constellation)
-    assert np.allclose(ask4.energy_per_symbol, 3.5 * base_amplitude**2)
-    assert np.allclose(ask4.energy_per_bit, 1.75 * base_amplitude**2)
-    assert np.allclose(
-        ask4.symbol_mean, 1.5 * base_amplitude * np.exp(1j * phase_offset)
-    )
-    assert np.allclose(ask4.minimum_distance, base_amplitude)
-
-
-@pytest.mark.parametrize("order", [2, 4, 8])
-@pytest.mark.parametrize("labeling", ["natural", "reflected"])
-def test_ask_modulation_3(order, labeling):
-    # Test hard demodulation
-    ask = komm.PAModulation(order, labeling=labeling)
-    m = ask.bits_per_symbol
-    bits = np.random.randint(0, 2, size=100 * m, dtype=int)
-    assert np.allclose(ask.demodulate_hard(ask.modulate(bits)), bits)
+def test_ask_parameters(params, expected):
+    ask = komm.ASKModulation(**params)
+    assert ask.order == params["order"]
+    assert ask.bits_per_symbol == expected["bits_per_symbol"]
+    np.testing.assert_allclose(ask.constellation, expected["constellation"])
+    np.testing.assert_allclose(ask.energy_per_symbol, expected["energy_per_symbol"])
+    np.testing.assert_allclose(ask.energy_per_bit, expected["energy_per_bit"])
+    np.testing.assert_allclose(ask.symbol_mean, expected["symbol_mean"])
+    np.testing.assert_allclose(ask.minimum_distance, expected["minimum_distance"])
 
 
 @pytest.mark.parametrize(
@@ -72,7 +116,7 @@ def test_ask_modulation_3(order, labeling):
         (8, [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1]),
     ],
 )
-def test_ask_modulation_4(order, demodulated):
+def test_ask_demodulate_hard(order, demodulated):
     ask = komm.ASKModulation(order)
-    y = [-0.5, 0.25, 0.4, 0.65, 2.1, 10.0]
+    y = [-0.5, 0.25, 0.4, 0.65, 2.1, 10]
     assert np.allclose(ask.demodulate_hard(y), demodulated)

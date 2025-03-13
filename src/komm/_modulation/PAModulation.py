@@ -27,7 +27,7 @@ class PAModulation(base.Modulation[np.floating]):
         labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
 
     Examples:
-        1. The PAM modulation with order $M = 4$, base amplitude $A = 1$, and natural labeling is depicted below.
+        1. The $4$-PAM modulation with base amplitude $A = 1$ and natural labeling is depicted below.
             <figure markdown>
             ![4-PAM modulation with Gray labeling.](/figures/pam_4_natural.svg)
             </figure>
@@ -41,7 +41,7 @@ class PAModulation(base.Modulation[np.floating]):
                        [0, 1],
                        [1, 1]])
 
-        1. The PAM modulation with order $M = 8$, base amplitude $A = 0.5$, and Gray labeling is depicted below.
+        1. The $8$-PAM modulation with base amplitude $A = 0.5$ and Gray labeling is depicted below.
             <figure markdown>
             ![8-PAM modulation with Gray labeling.](/figures/pam_8_gray.svg)
             </figure>

@@ -31,6 +31,14 @@ labeling = ["natural", "reflected"]
 for args in product(order, amplitude, phase_offset, labeling):
     params.append(komm.PSKModulation(*args))
 
+# ASK
+order = [2, 4, 8]
+base_amplitude = [0.5, 1.0, 2.0]
+phase_offset = [0.0, np.pi / 4, np.pi / 3]
+labeling = ["natural", "reflected"]
+for args in product(order, base_amplitude, phase_offset, labeling):
+    params.append(komm.ASKModulation(*args))
+
 
 @pytest.fixture(params=params, ids=lambda mod: repr(mod))
 def mod(request: pytest.FixtureRequest):
