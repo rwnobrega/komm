@@ -37,9 +37,9 @@ class PSKModulation(base.Modulation[np.complexfloating]):
                 array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j])
                 >>> psk.labeling
                 array([[0, 0],
-                       [1, 0],
+                       [0, 1],
                        [1, 1],
-                       [0, 1]])
+                       [1, 0]])
 
         1. The $8$-PSK modulation with base amplitude $A = 0.5$, phase offset $\phi = \pi/8$, and natural labeling is depicted below.
             <figure markdown>
@@ -57,12 +57,12 @@ class PSKModulation(base.Modulation[np.complexfloating]):
                        -0.462-0.191j, -0.191-0.462j,  0.191-0.462j,  0.462-0.191j])
                 >>> psk.labeling
                 array([[0, 0, 0],
-                       [1, 0, 0],
-                       [0, 1, 0],
-                       [1, 1, 0],
                        [0, 0, 1],
-                       [1, 0, 1],
+                       [0, 1, 0],
                        [0, 1, 1],
+                       [1, 0, 0],
+                       [1, 0, 1],
+                       [1, 1, 0],
                        [1, 1, 1]])
     """
 
@@ -109,9 +109,9 @@ class PSKModulation(base.Modulation[np.complexfloating]):
             >>> psk = komm.PSKModulation(4)
             >>> psk.labeling
             array([[0, 0],
-                   [1, 0],
+                   [0, 1],
                    [1, 1],
-                   [0, 1]])
+                   [1, 0]])
         """
         return get_labeling(self._labeling, ("natural", "reflected"), self._order)
 
@@ -121,7 +121,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         Examples:
             >>> psk = komm.PSKModulation(4)
             >>> psk.inverse_labeling
-            {(0, 0): 0, (1, 0): 1, (1, 1): 2, (0, 1): 3}
+            {(0, 0): 0, (0, 1): 1, (1, 1): 2, (1, 0): 3}
         """
         return super().inverse_labeling
 
@@ -204,7 +204,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> psk = komm.PSKModulation(4)
-            >>> psk.modulate([0, 0, 1, 1, 0, 0, 1, 0]).round(3)  # doctest: +FLOAT_CMP
+            >>> psk.modulate([0, 0, 1, 1, 0, 0, 0, 1]).round(3)  # doctest: +FLOAT_CMP
             array([ 1.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])
         """
         return super().modulate(input)

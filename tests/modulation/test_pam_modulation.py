@@ -72,9 +72,9 @@ def test_pam_parameters(params, expected):
 
 def test_pam_labeling():
     pam = komm.PAModulation(4, labeling="reflected")
-    np.testing.assert_allclose(pam.labeling, [[0, 0], [1, 0], [1, 1], [0, 1]])
+    np.testing.assert_allclose(pam.labeling, [[0, 0], [0, 1], [1, 1], [1, 0]])
     pam = komm.PAModulation(4, labeling="natural")
-    np.testing.assert_allclose(pam.labeling, [[0, 0], [1, 0], [0, 1], [1, 1]])
+    np.testing.assert_allclose(pam.labeling, [[0, 0], [0, 1], [1, 0], [1, 1]])
 
 
 def test_pam_invalid():
@@ -90,8 +90,8 @@ def test_pam_invalid():
     "order, modulated",
     [
         (2, [-1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, 1]),
-        (4, [-3, 1, -3, -1, -1, 3]),
-        (8, [7, -5, 5, 7]),
+        (4, [-3, 1, -3, 3, 3, -1]),
+        (8, [-5, 7, 5, -5]),
     ],
 )
 def test_pam_modulate(order, modulated):
@@ -104,8 +104,8 @@ def test_pam_modulate(order, modulated):
     "order, demodulated",
     [
         (2, [0, 0, 0, 1, 1, 1]),
-        (4, [0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1]),
-        (8, [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1]),
+        (4, [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0]),
+        (8, [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0]),
     ],
 )
 def test_pam_demodulate_hard(order, demodulated):

@@ -112,8 +112,8 @@ def test_ask_parameters(params, expected):
     "order, demodulated",
     [
         (2, [0, 0, 0, 1, 1, 1]),
-        (4, [0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1]),
-        (8, [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1]),
+        (4, [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0]),
+        (8, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0]),
     ],
 )
 def test_ask_demodulate_hard(order, demodulated):

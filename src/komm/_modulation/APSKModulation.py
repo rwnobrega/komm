@@ -128,12 +128,12 @@ class APSKModulation(base.Modulation[np.complexfloating]):
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
             >>> apsk.labeling
             array([[0, 0, 0],
-                   [1, 0, 0],
-                   [0, 1, 0],
-                   [1, 1, 0],
                    [0, 0, 1],
-                   [1, 0, 1],
+                   [0, 1, 0],
                    [0, 1, 1],
+                   [1, 0, 0],
+                   [1, 0, 1],
+                   [1, 1, 0],
                    [1, 1, 1]])
         """
         return get_labeling(self._labeling, ("natural",), sum(self._orders))
@@ -145,12 +145,12 @@ class APSKModulation(base.Modulation[np.complexfloating]):
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
             >>> apsk.inverse_labeling
             {(0, 0, 0): 0,
-             (1, 0, 0): 1,
+             (0, 0, 1): 1,
              (0, 1, 0): 2,
-             (1, 1, 0): 3,
-             (0, 0, 1): 4,
+             (0, 1, 1): 3,
+             (1, 0, 0): 4,
              (1, 0, 1): 5,
-             (0, 1, 1): 6,
+             (1, 1, 0): 6,
              (1, 1, 1): 7}
         """
         return super().inverse_labeling
@@ -219,7 +219,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> apsk.modulate([0, 0, 0, 1, 1, 0, 0, 0, 0]).round(3)
+            >>> apsk.modulate([0, 0, 0, 0, 1, 1, 0, 0, 0]).round(3)
             array([ 1.+0.j, -0.-1.j,  1.+0.j])
         """
         return super().modulate(input)

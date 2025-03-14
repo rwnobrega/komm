@@ -37,8 +37,8 @@ class PAModulation(base.Modulation[np.floating]):
                 array([-3., -1.,  1.,  3.])
                 >>> pam.labeling
                 array([[0, 0],
-                       [1, 0],
                        [0, 1],
+                       [1, 0],
                        [1, 1]])
 
         1. The $8$-PAM modulation with base amplitude $A = 0.5$ and Gray labeling is depicted below.
@@ -51,13 +51,13 @@ class PAModulation(base.Modulation[np.floating]):
                 array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])
                 >>> pam.labeling
                 array([[0, 0, 0],
-                       [1, 0, 0],
-                       [1, 1, 0],
-                       [0, 1, 0],
+                       [0, 0, 1],
                        [0, 1, 1],
+                       [0, 1, 0],
+                       [1, 1, 0],
                        [1, 1, 1],
                        [1, 0, 1],
-                       [0, 0, 1]])
+                       [1, 0, 0]])
     """
 
     def __init__(
@@ -100,9 +100,9 @@ class PAModulation(base.Modulation[np.floating]):
             >>> pam = komm.PAModulation(4)
             >>> pam.labeling
             array([[0, 0],
-                   [1, 0],
+                   [0, 1],
                    [1, 1],
-                   [0, 1]])
+                   [1, 0]])
         """
         return get_labeling(self._labeling, ("natural", "reflected"), self._order)
 
@@ -112,7 +112,7 @@ class PAModulation(base.Modulation[np.floating]):
         Examples:
             >>> pam = komm.PAModulation(4)
             >>> pam.inverse_labeling
-            {(0, 0): 0, (1, 0): 1, (1, 1): 2, (0, 1): 3}
+            {(0, 0): 0, (0, 1): 1, (1, 1): 2, (1, 0): 3}
         """
         return super().inverse_labeling
 
@@ -195,7 +195,7 @@ class PAModulation(base.Modulation[np.floating]):
         r"""
         Examples:
             >>> pam = komm.PAModulation(4)
-            >>> pam.modulate([0, 0, 1, 1, 0, 0, 1, 0])
+            >>> pam.modulate([0, 0, 1, 1, 0, 0, 0, 1])
             array([-3.,  1., -3., -1.])
         """
         return super().modulate(input)
@@ -226,10 +226,10 @@ class PAModulation(base.Modulation[np.floating]):
         self, y: npt.NDArray[np.floating], gamma: float
     ):
         soft_bits = np.empty(2 * y.size, dtype=float)
-        soft_bits[0::2] = (  # For bit_0: [SA15, eq. (5.15)]
-            -8 * gamma + logcosh(6 * gamma * y) - logcosh(2 * gamma * y)
-        )
-        soft_bits[1::2] = (  # For bit_1: [SA15, eq. (5.6)]
+        soft_bits[0::2] = (  # For bit_0: [SA15, eq. (5.6)]
             -8 * gamma * y + logcosh(2 * gamma * (y + 2)) - logcosh(2 * gamma * (y - 2))
+        )
+        soft_bits[1::2] = (  # For bit_1: [SA15, eq. (5.15)]
+            -8 * gamma + logcosh(6 * gamma * y) - logcosh(2 * gamma * y)
         )
         return soft_bits

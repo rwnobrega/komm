@@ -33,7 +33,7 @@ def labeling_natural(order: int) -> npt.NDArray[np.integer]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
-        labeling[i, :] = int_to_bits(i, m)
+        labeling[i, :] = int_to_bits(i, m)[::-1]
     return labeling
 
 
@@ -41,7 +41,7 @@ def labeling_reflected(order: int) -> npt.NDArray[np.integer]:
     m = order.bit_length() - 1
     labeling = np.empty((order, m), dtype=int)
     for i in range(order):
-        labeling[i, :] = int_to_bits(i ^ (i >> 1), m)
+        labeling[i, :] = int_to_bits(i ^ (i >> 1), m)[::-1]
     return labeling
 
 

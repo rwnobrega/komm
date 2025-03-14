@@ -27,7 +27,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         labeling: The binary labeling of the modulation. Can be specified either as a 2D-array of integers (see [base class](/ref/Modulation) for details), or as a string. In the latter case, the string must be either `'natural'` or `'reflected'`. The default value is `'reflected'`, corresponding to the Gray labeling.
 
     Examples:
-        1. The $4$-ASK modulation with base amplitude $A = 1$ and Gray labeling is depicted below.
+        1. The $4$-ASK modulation with base amplitude $A = 1$, phase offset $\phi = 0$, and Gray labeling is depicted below.
             <figure markdown>
             ![4-ASK modulation with Gray labeling.](/figures/ask_4_gray.svg)
             </figure>
@@ -37,11 +37,11 @@ class ASKModulation(base.Modulation[np.complexfloating]):
                 array([0.+0.j, 1.+0.j, 2.+0.j, 3.+0.j])
                 >>> ask.labeling
                 array([[0, 0],
-                       [1, 0],
+                       [0, 1],
                        [1, 1],
-                       [0, 1]])
+                       [1, 0]])
 
-        2. The $4$-ASK modulation with base amplitude $A = 2$, phase offset $\phi = \pi/4$, and natural labeling is depicted below.
+        2. The $4$-ASK modulation with base amplitude $A = 2\sqrt{2}$, phase offset $\phi = \pi/4$, and natural labeling is depicted below.
             <figure markdown>
             ![4-ASK modulation with natural labeling.](/figures/ask_4_natural.svg)
             </figure>
@@ -56,8 +56,8 @@ class ASKModulation(base.Modulation[np.complexfloating]):
                 array([0.+0.j, 2.+2.j, 4.+4.j, 6.+6.j])
                 >>> ask.labeling
                 array([[0, 0],
-                       [1, 0],
                        [0, 1],
+                       [1, 0],
                        [1, 1]])
     """
 
@@ -104,9 +104,9 @@ class ASKModulation(base.Modulation[np.complexfloating]):
             >>> ask = komm.ASKModulation(4)
             >>> ask.labeling
             array([[0, 0],
-                   [1, 0],
+                   [0, 1],
                    [1, 1],
-                   [0, 1]])
+                   [1, 0]])
         """
         return get_labeling(self._labeling, ("natural", "reflected"), self._order)
 
@@ -116,7 +116,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         Examples:
             >>> ask = komm.ASKModulation(4)
             >>> ask.inverse_labeling
-            {(0, 0): 0, (1, 0): 1, (1, 1): 2, (0, 1): 3}
+            {(0, 0): 0, (0, 1): 1, (1, 1): 2, (1, 0): 3}
         """
         return super().inverse_labeling
 
@@ -200,7 +200,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> ask = komm.ASKModulation(4)
-            >>> ask.modulate([0, 0, 1, 1, 0, 0, 1, 0])
+            >>> ask.modulate([0, 0, 1, 1, 0, 0, 0, 1])
             array([0.+0.j, 2.+0.j, 0.+0.j, 1.+0.j])
         """
         return super().modulate(input)
