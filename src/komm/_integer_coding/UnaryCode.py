@@ -6,7 +6,7 @@ from . import base
 
 class UnaryCode(base.IntegerCode):
     r"""
-    Unary code. It is an integer code. For more details, see [Wikipedia: Unary coding](https://en.wikipedia.org/wiki/Unary_coding).
+    Unary code. It is an integer code. For the definition of this code, see [Wikipedia: Unary coding](https://en.wikipedia.org/wiki/Unary_coding).
     """
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:

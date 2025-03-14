@@ -8,7 +8,7 @@ from . import base
 
 class FibonacciCode(base.IntegerCode):
     r"""
-    Fibonacci code. It is an integer code. For more details, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
+    Fibonacci code. It is an integer code. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
