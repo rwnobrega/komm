@@ -61,8 +61,8 @@ deprecateTypingAliases = true
 strict = ["src/**"]
 
 [tool.pytest.ini_options]
-addopts = "--last-failed --doctest-plus"
+addopts = ["--last-failed", "--doctest-plus"]
 python_files = ["test_*.py", "bench_*.py"]
 python_functions = ["test_*", "bench_*"]
-pythonpath = "."
+pythonpath = ["."]
 testpaths = ["src/komm", "tests"]
