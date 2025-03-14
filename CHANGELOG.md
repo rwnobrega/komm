@@ -3,6 +3,16 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.19.0 (2025-03-13)
+
+### Breaking changes
+
+- Adopt MSB-first instead of LSB-first for the labeling of modulation schemes.
+
+### Added
+
+- Implemented [unary code](https://komm.dev/ref/UnaryCode) and [Fibonacci code](https://komm.dev/ref/FibonacciCode).
+
 ## v0.18.0 (2025-03-10)
 
 ### Breaking changes
