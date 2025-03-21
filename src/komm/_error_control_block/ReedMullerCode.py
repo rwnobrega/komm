@@ -117,6 +117,7 @@ def reed_muller_generator_matrix(rho: int, mu: int) -> npt.NDArray[np.integer]:
         for indices in combinations(range(mu), ell):
             row = reduce(np.multiply, v[indices, :])
             G_list.append(row)
-    G_list.append(np.ones(2**mu, dtype=int))
+    row = np.ones(2**mu, dtype=int)
+    G_list.append(row)
 
     return np.array(G_list, dtype=int)
