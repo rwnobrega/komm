@@ -21,9 +21,6 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js
   - https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js
 
-hooks:
-  - site/tidy_html.py
-
 validation:
   links:
     absolute_links: ignore
