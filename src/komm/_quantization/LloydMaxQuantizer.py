@@ -22,14 +22,22 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
 
     Examples:
         >>> uniform_pdf = lambda x: 1/8 * (np.abs(x) <= 4)
-        >>> quantizer = komm.LloydMaxQuantizer(input_pdf=uniform_pdf, input_range=(-4, 4), num_levels=8)
+        >>> quantizer = komm.LloydMaxQuantizer(
+        ...     input_pdf=uniform_pdf,
+        ...     input_range=(-4, 4),
+        ...     num_levels=8,
+        ... )
         >>> quantizer.levels
         array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])
         >>> quantizer.thresholds
         array([-3., -2., -1.,  0.,  1.,  2.,  3.])
 
         >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
-        >>> quantizer = komm.LloydMaxQuantizer(input_pdf=gaussian_pdf, input_range=(-5, 5), num_levels=8)
+        >>> quantizer = komm.LloydMaxQuantizer(
+        ...     input_pdf=gaussian_pdf,
+        ...     input_range=(-5, 5),
+        ...     num_levels=8,
+        ... )
         >>> quantizer.levels.round(3)
         array([-2.152, -1.344, -0.756, -0.245,  0.245,  0.756,  1.344,  2.152])
         >>> quantizer.thresholds.round(3)  # doctest: +FLOAT_CMP
@@ -54,7 +62,11 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
-            >>> quantizer = komm.LloydMaxQuantizer(input_pdf=gaussian_pdf, input_range=(-5, 5), num_levels=8)
+            >>> quantizer = komm.LloydMaxQuantizer(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ...     num_levels=8,
+            ... )
             >>> quantizer.levels.round(3)
             array([-2.152, -1.344, -0.756, -0.245,  0.245,  0.756,  1.344,  2.152])
         """
@@ -65,7 +77,11 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
-            >>> quantizer = komm.LloydMaxQuantizer(input_pdf=gaussian_pdf, input_range=(-5, 5), num_levels=8)
+            >>> quantizer = komm.LloydMaxQuantizer(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ...     num_levels=8,
+            ... )
             >>> quantizer.thresholds.round(3)  # doctest: +FLOAT_CMP
             array([-1.748, -1.05 , -0.501,  0.   ,  0.501,  1.05 ,  1.748])
         """
@@ -75,7 +91,11 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
-            >>> quantizer = komm.LloydMaxQuantizer(input_pdf=gaussian_pdf, input_range=(-5, 5), num_levels=8)
+            >>> quantizer = komm.LloydMaxQuantizer(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ...     num_levels=8,
+            ... )
             >>> quantizer([0, 1, 2, 3, 4, 5, 6, 7]).round(3)
             array([0.245, 0.756, 2.152, 2.152, 2.152, 2.152, 2.152, 2.152])
         """

@@ -33,7 +33,10 @@ class ScalarQuantizer(base.ScalarQuantizer):
           ![Scalar quantizer example.](/figures/scalar_quantizer_5.svg)
         </figure>
 
-        >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
+        >>> quantizer = komm.ScalarQuantizer(
+        ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+        ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+        ... )
     """
 
     def __init__(self, levels: npt.ArrayLike, thresholds: npt.ArrayLike) -> None:
@@ -63,7 +66,10 @@ class ScalarQuantizer(base.ScalarQuantizer):
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
+            >>> quantizer = komm.ScalarQuantizer(
+            ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+            ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+            ... )
             >>> quantizer.levels
             array([-2., -1.,  0.,  1.,  2.])
         """
@@ -73,7 +79,10 @@ class ScalarQuantizer(base.ScalarQuantizer):
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
+            >>> quantizer = komm.ScalarQuantizer(
+            ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+            ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+            ... )
             >>> quantizer.thresholds
             array([-1.5, -0.3,  0.8,  1.4])
         """
@@ -82,7 +91,10 @@ class ScalarQuantizer(base.ScalarQuantizer):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.ScalarQuantizer(levels=[-2.0, -1.0, 0.0, 1.0, 2.0], thresholds=[-1.5, -0.3, 0.8, 1.4])
+            >>> quantizer = komm.ScalarQuantizer(
+            ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+            ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+            ... )
             >>> x = np.linspace(-2.5, 2.5, num=11)
             >>> y = quantizer(x)
             >>> np.vstack([x, y])

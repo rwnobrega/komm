@@ -21,19 +21,31 @@ class UniformQuantizer(base.ScalarQuantizer):
         choice: The choice for the uniform quantizer. Must be either `'mid-riser'` or `'mid-tread'`. The default is `'mid-riser'`.
 
     Examples:
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+        >>> quantizer = komm.UniformQuantizer(
+        ...     num_levels=4,
+        ...     input_range=(-1.0, 1.0),
+        ...     choice='mid-riser',
+        ... )
         >>> quantizer.levels
         array([-0.75, -0.25,  0.25,  0.75])
         >>> quantizer.thresholds
         array([-0.5,  0. ,  0.5])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-tread')
+        >>> quantizer = komm.UniformQuantizer(
+        ...     num_levels=4,
+        ...     input_range=(-1.0, 1.0),
+        ...     choice='mid-tread',
+        ... )
         >>> quantizer.levels
         array([-1. , -0.5,  0. ,  0.5])
         >>> quantizer.thresholds
         array([-0.75, -0.25,  0.25])
 
-        >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(0.0, 1.0), choice='mid-tread')
+        >>> quantizer = komm.UniformQuantizer(
+        ...     num_levels=4,
+        ...     input_range=(0.0, 1.0),
+        ...     choice='mid-tread',
+        ... )
         >>> quantizer.levels
         array([0.  , 0.25, 0.5 , 0.75])
         >>> quantizer.thresholds
@@ -56,7 +68,7 @@ class UniformQuantizer(base.ScalarQuantizer):
         The quantization step $\Delta$.
 
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
             >>> quantizer.quantization_step
             0.5
         """
@@ -68,7 +80,7 @@ class UniformQuantizer(base.ScalarQuantizer):
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
             >>> quantizer.levels
             array([-0.75, -0.25,  0.25,  0.75])
         """
@@ -84,7 +96,7 @@ class UniformQuantizer(base.ScalarQuantizer):
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
             >>> quantizer.thresholds
             array([-0.5,  0. ,  0.5])
         """
@@ -93,7 +105,7 @@ class UniformQuantizer(base.ScalarQuantizer):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
             >>> quantizer([-0.6, 0.2, 0.8])
             array([-0.75,  0.25,  0.75])
         """
