@@ -3316,19 +3316,31 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-0.75, -0.25,  0.25,  0.75])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.5,  0. ,  0.5])</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-tread&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-tread&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-1. , -0.5,  0. ,  0.5])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.75, -0.25,  0.25])</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-tread&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-tread&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([0.  , 0.25, 0.5 , 0.75])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
@@ -3374,7 +3386,7 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">quantization_step</span>
 <span class="go">0.5</span>
 </code></pre></div>
@@ -3410,7 +3422,7 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
 <span class="go">array([-0.75, -0.25,  0.25,  0.75])</span>
 </code></pre></div>
@@ -3446,7 +3458,7 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.5,  0. ,  0.5])</span>
 </code></pre></div>
@@ -3498,7 +3510,7 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">choice</span><span class="o">=</span><span class="s1">&#39;mid-riser&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
 <span class="go">array([-0.75,  0.25,  0.75])</span>
 </code></pre></div>
