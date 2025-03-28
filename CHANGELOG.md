@@ -3,6 +3,12 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.20.0 (2025-03-27)
+
+### Breaking changes
+
+- Renamed `__call__` method to `quantize`, and added `digitize` method in quantizers.
+
 ## v0.19.0 (2025-03-13)
 
 ### Breaking changes
