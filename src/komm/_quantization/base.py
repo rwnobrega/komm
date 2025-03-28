@@ -23,7 +23,22 @@ class ScalarQuantizer(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Returns the quantization indices for the input signal.
+
+        Parameters:
+            input: The input signal $x$ to be digitized.
+
+        Returns:
+            output: The integer indices of the quantization levels for each input sample.
+        """
+        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
+        output = np.sum(tiled >= self.thresholds, axis=1)
+        return output
+
+    @abstractmethod
+    def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Quantizes the input signal.
 
@@ -33,6 +48,4 @@ class ScalarQuantizer(ABC):
         Returns:
             output: The quantized signal $y$.
         """
-        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
-        output = self.levels[np.sum(tiled >= self.thresholds, axis=1)]
-        return output
+        return self.levels[self.digitize(input)]

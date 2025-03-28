@@ -88,17 +88,26 @@ class ScalarQuantizer(base.ScalarQuantizer):
         """
         return self._thresholds
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> quantizer = komm.ScalarQuantizer(
             ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
             ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
             ... )
-            >>> x = np.linspace(-2.5, 2.5, num=11)
-            >>> y = quantizer(x)
-            >>> np.vstack([x, y])
-            array([[-2.5, -2. , -1.5, -1. , -0.5,  0. ,  0.5,  1. ,  1.5,  2. ,  2.5],
-                   [-2. , -2. , -1. , -1. , -1. ,  0. ,  0. ,  1. ,  2. ,  2. ,  2. ]])
+            >>> quantizer.digitize([-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5])
+            array([0, 0, 1, 1, 1, 2, 2, 3, 4, 4, 4])
         """
-        return super().__call__(input)
+        return super().digitize(input)
+
+    def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> quantizer = komm.ScalarQuantizer(
+            ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+            ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+            ... )
+            >>> quantizer.quantize([-2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5])
+            array([-2., -2., -1., -1., -1.,  0.,  0.,  1.,  2.,  2.,  2.])
+        """
+        return super().quantize(input)

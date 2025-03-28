@@ -102,11 +102,22 @@ class UniformQuantizer(base.ScalarQuantizer):
         """
         return (self.levels + self.quantization_step / 2)[:-1]
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
-            >>> quantizer([-0.6, 0.2, 0.8])
+            >>> quantizer.digitize([-0.6, 0.2, 0.8])
+            array([0, 2, 3])
+        """
+        input = np.asarray(input, dtype=float)
+        output = np.digitize(input, self.thresholds, right=True)
+        return output
+
+    def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
+            >>> quantizer.quantize([-0.6, 0.2, 0.8])
             array([-0.75,  0.25,  0.75])
         """
         input = np.array(input, dtype=float, ndmin=1)

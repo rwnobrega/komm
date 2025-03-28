@@ -87,7 +87,7 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
         """
         return self._thresholds
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
@@ -96,10 +96,24 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
             ...     input_range=(-5, 5),
             ...     num_levels=8,
             ... )
-            >>> quantizer([0, 1, 2, 3, 4, 5, 6, 7]).round(3)
+            >>> quantizer.digitize([0, 1, 2, 3, 4, 5, 6, 7])
+            array([4, 5, 7, 7, 7, 7, 7, 7])
+        """
+        return super().digitize(input)
+
+    def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
+            >>> quantizer = komm.LloydMaxQuantizer(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ...     num_levels=8,
+            ... )
+            >>> quantizer.quantize([0, 1, 2, 3, 4, 5, 6, 7]).round(3)
             array([0.245, 0.756, 2.152, 2.152, 2.152, 2.152, 2.152, 2.152])
         """
-        return super().__call__(input)
+        return super().quantize(input)
 
 
 def lloyd_max_quantizer(

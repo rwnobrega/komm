@@ -52,7 +52,7 @@ def test_uniform_quantizer_range():
     quantizer = komm.UniformQuantizer(num_levels=8)
     x = np.linspace(-0.5, 0.4, num=10)
     y = [-0.375, -0.375, -0.375, -0.125, -0.125, 0.125, 0.125, 0.125, 0.375, 0.375]
-    assert np.allclose(quantizer(x), y)
+    assert np.allclose(quantizer.quantize(x), y)
 
 
 @pytest.mark.parametrize("choice", ["mid-riser", "mid-tread"])
@@ -63,7 +63,7 @@ def test_uniform_quantizer_scalar_equivalent(num_levels, peak, choice):
     quantizer_1 = komm.UniformQuantizer(num_levels, input_range, choice)
     quantizer_2 = komm.ScalarQuantizer(quantizer_1.levels, quantizer_1.thresholds)
     x = np.linspace(-20.0, 20.0, num=10000)
-    assert np.allclose(quantizer_1(x), quantizer_2(x))
+    assert np.allclose(quantizer_1.quantize(x), quantizer_2.quantize(x))
 
 
 def test_uniform_quantizer_invalid_constructions():
