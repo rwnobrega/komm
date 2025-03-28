@@ -2809,8 +2809,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#__call__" class="md-nav__link">
-    __call__()
+  <a href="#digitize" class="md-nav__link">
+    digitize()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantize" class="md-nav__link">
+    quantize()
   </a>
   
 </li>
@@ -3238,8 +3245,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#__call__" class="md-nav__link">
-    __call__()
+  <a href="#digitize" class="md-nav__link">
+    digitize()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantize" class="md-nav__link">
+    quantize()
   </a>
   
 </li>
@@ -3427,8 +3441,66 @@
 
 
 
-<h2 id="__call__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__call__</span><span class="p">()</span></code>      
+<h2 id="digitize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">digitize</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the quantization indices for the input signal.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The input signal $x$ to be digitized.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The integer indices of the quantization levels for each input sample.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gaussian_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LloydMaxQuantizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_pdf</span><span class="o">=</span><span class="n">gaussian_pdf</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">digitize</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="go">array([4, 5, 7, 7, 7, 7, 7, 7])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="quantize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">quantize</span><span class="p">()</span></code>      
 
 </h2>
 
@@ -3468,7 +3540,7 @@
 <span class="gp">... </span>    <span class="n">input_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">num_levels</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">quantize</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([0.245, 0.756, 2.152, 2.152, 2.152, 2.152, 2.152, 2.152])</span>
 </code></pre></div>
 
