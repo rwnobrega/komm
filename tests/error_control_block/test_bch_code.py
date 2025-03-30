@@ -1,6 +1,8 @@
 import operator
 from functools import reduce
 
+import pytest
+
 import komm
 
 
@@ -43,6 +45,30 @@ def test_bch_generator_polynomial():
             operator.mul,
             [factors.get(i, komm.BinaryPolynomial(0b1)) for i in range(1, tau + 1)],
         )
+
+
+parameters = {
+    2: [3],
+    3: [3, 7],
+    4: [3, 5, 7, 15],
+    5: [7, 11, 15, 31],
+    6: [23, 27, 31, 63],
+    7: [55, 63, 127],
+}
+
+
+def get_mu_delta_pairs():
+    pairs = []
+    for mu, deltas in parameters.items():
+        for delta in deltas:
+            pairs.append((mu, delta))
+    return pairs
+
+
+@pytest.mark.parametrize("mu, delta", get_mu_delta_pairs())
+def test_bch_minimum_distance(mu, delta):
+    code = komm.BCHCode(mu, delta)
+    assert code.minimum_distance() >= delta
 
 
 def test_bch_syndrome():
