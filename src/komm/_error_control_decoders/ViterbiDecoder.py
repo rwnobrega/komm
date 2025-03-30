@@ -3,6 +3,7 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
@@ -65,6 +66,13 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
         """
+        pbar = tqdm(
+            total=np.size(input) // self.code.length,
+            desc="Decoding with Viterbi algorithm",
+            unit="blocks",
+            delay=2.5,
+        )
+
         k = self.code.convolutional_code.num_input_bits
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order
@@ -83,6 +91,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             else:  # code.mode == "zero-termination"
                 x_hat = xs_hat[:, 0][:-mu]
             u_hat = int_to_bits(x_hat, width=k).ravel()
+            pbar.update(1)
             return u_hat
 
         return decode(input)

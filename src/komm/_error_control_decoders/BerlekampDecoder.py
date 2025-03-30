@@ -35,10 +35,8 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0])
         """
-        input = np.asarray(input, dtype=int)
-
         pbar = tqdm(
-            total=input.size // self.code.length,
+            total=np.size(input) // self.code.length,
             desc="Decoding with Berlekamp algorithm",
             unit="blocks",
             delay=2.5,
