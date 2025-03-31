@@ -8,6 +8,7 @@ import numpy.typing as npt
 from typing_extensions import final
 
 from .._util.decorators import vectorize
+from .._util.information_theory import marginalize_bits
 
 T = TypeVar("T", np.floating, np.complexfloating)
 
@@ -187,23 +188,10 @@ class Modulation(ABC, Generic[T]):
         def demodulate_soft(received: npt.NDArray[T]) -> npt.NDArray[np.floating]:
             # Computes the L-values (LLR) of each bit. Assumes uniformly distributed bits.
             # See [SA15, eq. (3.50)].
-            m = self.bits_per_symbol
             n0 = self.energy_per_symbol / snr
             received = received.ravel()
-
-            # Precompute the distances and exponentials.
-            distances = np.abs(received[:, np.newaxis] - self.constellation) ** 2
-            exp_terms = np.exp(-distances / n0)
-
-            soft_bits = np.empty(received.size * m, dtype=float)
-            for bit_index in range(m):
-                i0 = [i for i, q in enumerate(self.labeling) if q[bit_index] == 0]
-                i1 = [i for i, q in enumerate(self.labeling) if q[bit_index] == 1]
-                p0 = np.sum(exp_terms[:, i0], axis=1)
-                p1 = np.sum(exp_terms[:, i1], axis=1)
-                with np.errstate(divide="ignore"):
-                    soft_bits[bit_index::m] = np.log(p0) - np.log(p1)
-            return soft_bits
+            distances = np.abs(received - self.constellation) ** 2
+            return marginalize_bits(np.exp(-distances / n0), self.labeling)
 
         input = np.asarray(input)
         received = input.reshape(*input.shape[:-1], -1, 1)
