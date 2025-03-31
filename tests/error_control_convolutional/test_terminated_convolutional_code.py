@@ -2,7 +2,9 @@ import numpy as np
 import pytest
 
 import komm
-from komm._error_control_convolutional.terminations import ZeroTermination
+from komm._error_control_convolutional.TerminatedConvolutionalCode import (
+    ZeroTermination,
+)
 
 
 @pytest.mark.parametrize(
