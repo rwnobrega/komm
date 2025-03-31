@@ -2,12 +2,12 @@ from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._error_control_convolutional import TerminatedConvolutionalCode
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise, vectorize, with_pbar
 from . import base
+from .util import get_pbar
 
 
 @dataclass
@@ -54,18 +54,12 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([-0.47774884, -0.61545527,  1.03018771])
         """
-        pbar = tqdm(
-            total=np.size(input) // self.code.length,
-            desc="Decoding with BCJR algorithm",
-            unit="blocks",
-            delay=2.5,
-        )
-
         n = self.code.convolutional_code.num_output_bits
         mu = self.code.convolutional_code.memory_order
 
         @blockwise(self.code.length)
         @vectorize
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
         def decode(r: npt.NDArray[np.floating]):
             input_posteriors = self._fsm.forward_backward(
                 observed_sequence=r.reshape(-1, n),
@@ -75,7 +69,6 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             )
             if self.code.mode == "zero-termination":
                 input_posteriors = input_posteriors[:-mu]
-            pbar.update(1)
             return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
 
         return decode(input)

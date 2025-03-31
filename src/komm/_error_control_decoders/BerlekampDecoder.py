@@ -3,13 +3,13 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement, find_roots
 from .._error_control_block import BCHCode
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise, vectorize, with_pbar
 from . import base
+from .util import get_pbar
 
 
 @dataclass
@@ -35,15 +35,10 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0])
         """
-        pbar = tqdm(
-            total=np.size(input) // self.code.length,
-            desc="Decoding with Berlekamp algorithm",
-            unit="blocks",
-            delay=2.5,
-        )
 
         @blockwise(self.code.length)
         @vectorize
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "Berlekamp"))
         def decode(r: npt.NDArray[np.integer]):
             r_poly = BinaryPolynomial.from_coefficients(r)
             syndrome = self.code.bch_syndrome(r_poly)
@@ -55,7 +50,6 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
             e_hat = np.bincount(e_loc, minlength=self.code.length)
             v_hat = (r + e_hat) % 2
             u_hat = self.code.project_word(v_hat)
-            pbar.update(1)
             return u_hat
 
         return decode(input)

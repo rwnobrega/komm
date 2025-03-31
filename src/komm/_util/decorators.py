@@ -4,6 +4,7 @@ from typing import Any, TypeVar
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 T = TypeVar("T", bound=np.generic)
 U = TypeVar("U", bound=np.generic)
@@ -41,6 +42,23 @@ def blockwise(block_size: int):
             blocks = arr.reshape(*arr.shape[:-1], -1, block_size)
             processed = func(blocks)
             return processed.reshape(*processed.shape[:-2], -1)
+
+        return wrapper
+
+    return decorator
+
+
+def with_pbar(pbar: "tqdm[Any]"):
+    r"""
+    Updates a given tqdm progress bar after a function call.
+    """
+
+    def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any):
+            result = func(*args, **kwargs)
+            pbar.update()
+            return result
 
         return wrapper
 
