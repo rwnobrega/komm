@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from functools import cache, cached_property
 from typing import SupportsInt
 
@@ -75,6 +77,13 @@ class CyclicCode(base.BlockCode):
             self._generator_polynomial = modulus
         self.systematic = systematic
 
+    @cached_property
+    def _encoding_strategy(self) -> "EncodingStrategy":
+        if self.systematic:
+            return SystematicStrategy(self)
+        else:
+            return NonSystematicStrategy(self)
+
     def __repr__(self) -> str:
         args = f"length={self.length}"
         if self._generator_polynomial is not None:
@@ -114,19 +123,7 @@ class CyclicCode(base.BlockCode):
 
     @cached_property
     def generator_matrix(self) -> npt.NDArray[np.integer]:
-        # See [McE04, Sec. 8.1].
-        n, k, m = self.length, self.dimension, self.redundancy
-        generator_matrix = np.empty((k, n), dtype=int)
-        X = BinaryPolynomial(0b10)  # The polynomial X
-        if not self.systematic:
-            for i in range(k):
-                row_poly = X**i * self.generator_polynomial
-                generator_matrix[i] = row_poly.coefficients(width=n)
-        else:
-            for i in range(k):
-                row_poly = X ** (m + i) + X ** (m + i) % self.generator_polynomial
-                generator_matrix[i] = row_poly.coefficients(width=n)
-        return generator_matrix
+        return self._encoding_strategy.generator_matrix()
 
     @cached_property
     def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
@@ -134,31 +131,14 @@ class CyclicCode(base.BlockCode):
 
     @cached_property
     def check_matrix(self) -> npt.NDArray[np.integer]:
-        # See [McE04, Sec. 8.1].
-        n, m = self.length, self.redundancy
-        check_matrix = np.empty((m, n), dtype=int)
-        X = BinaryPolynomial(0b10)  # The polynomial X
-        if not self.systematic:
-            for i in range(m):
-                row_poly = X**i * self.check_polynomial.reciprocal()
-                check_matrix[i] = row_poly.coefficients(width=n)
-        else:
-            for j in range(n):
-                col_poly = X**j % self.generator_polynomial
-                check_matrix[:, j] = col_poly.coefficients(width=m)
-        return check_matrix
+        return self._encoding_strategy.check_matrix()
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.dimension)
         @vectorize
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             u_poly = BinaryPolynomial.from_coefficients(u)
-            if not self.systematic:
-                v_poly = u_poly * self.generator_polynomial
-            else:
-                u_poly_shifted = u_poly << self.redundancy
-                b_poly = u_poly_shifted % self.generator_polynomial
-                v_poly = u_poly_shifted + b_poly
+            v_poly = self._encoding_strategy.encode(u_poly)
             v = v_poly.coefficients(width=self.length)
             return v
 
@@ -169,10 +149,7 @@ class CyclicCode(base.BlockCode):
         @vectorize
         def project(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v_poly = BinaryPolynomial.from_coefficients(v)
-            if not self.systematic:
-                u_poly = v_poly // self.generator_polynomial
-            else:
-                u_poly = v_poly >> self.redundancy
+            u_poly = self._encoding_strategy.project_word(v_poly)
             u = u_poly.coefficients(width=self.dimension)
             return u
 
@@ -219,3 +196,80 @@ class CyclicCode(base.BlockCode):
     @cache
     def covering_radius(self) -> int:
         return super().covering_radius()
+
+
+@dataclass
+class EncodingStrategy(ABC):
+    code: CyclicCode
+
+    @abstractmethod
+    def generator_matrix(self) -> npt.NDArray[np.integer]: ...
+
+    @abstractmethod
+    def check_matrix(self) -> npt.NDArray[np.integer]: ...
+
+    @abstractmethod
+    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial: ...
+
+    @abstractmethod
+    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial: ...
+
+
+class SystematicStrategy(EncodingStrategy):
+    # See [McE04, Sec. 8.1].
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
+        n, k, m = self.code.length, self.code.dimension, self.code.redundancy
+        generator_matrix = np.empty((k, n), dtype=int)
+        X = BinaryPolynomial(0b10)  # The polynomial X
+        for i in range(k):
+            row_poly = X ** (m + i) + X ** (m + i) % self.code.generator_polynomial
+            generator_matrix[i] = row_poly.coefficients(width=n)
+        return generator_matrix
+
+    def check_matrix(self) -> npt.NDArray[np.integer]:
+        n, m = self.code.length, self.code.redundancy
+        check_matrix = np.empty((m, n), dtype=int)
+        X = BinaryPolynomial(0b10)
+        for j in range(n):
+            col_poly = X**j % self.code.generator_polynomial
+            check_matrix[:, j] = col_poly.coefficients(width=m)
+        return check_matrix
+
+    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial:
+        u_poly_shifted = u_poly << self.code.redundancy
+        b_poly = u_poly_shifted % self.code.generator_polynomial
+        v_poly = u_poly_shifted + b_poly
+        return v_poly
+
+    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
+        u_poly = v_poly >> self.code.redundancy
+        return u_poly
+
+
+class NonSystematicStrategy(EncodingStrategy):
+    # See [McE04, Sec. 8.1].
+    def generator_matrix(self) -> npt.NDArray[np.integer]:
+        n, k = self.code.length, self.code.dimension
+        generator_matrix = np.empty((k, n), dtype=int)
+        X = BinaryPolynomial(0b10)  # The polynomial X
+        for i in range(k):
+            row_poly = X**i * self.code.generator_polynomial
+            generator_matrix[i] = row_poly.coefficients(width=n)
+        return generator_matrix
+
+    def check_matrix(self) -> npt.NDArray[np.integer]:
+        n, m = self.code.length, self.code.redundancy
+        check_matrix = np.empty((m, n), dtype=int)
+        X = BinaryPolynomial(0b10)
+        for i in range(m):
+            row_poly = X**i * self.code.check_polynomial.reciprocal()
+            check_matrix[i] = row_poly.coefficients(width=n)
+        return check_matrix
+
+    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial:
+        v_poly = u_poly * self.code.generator_polynomial
+        return v_poly
+
+    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
+        u_poly = v_poly // self.code.generator_polynomial
+        return u_poly
