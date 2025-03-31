@@ -32,7 +32,9 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
 
     def __post_init__(self) -> None:
         if self.code.mode == "tail-biting":
-            raise NotImplementedError("algorithm not implemented for 'tail-biting'")
+            raise NotImplementedError(
+                "Viterbi algorithm not implemented for 'tail-biting'"
+            )
         if self.input_type == "hard":
             self._metric_function = self._metric_function_hard
         elif self.input_type == "soft":
@@ -40,6 +42,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         else:
             raise ValueError("input_type must be 'hard' or 'soft'")
         self._fsm = self.code.convolutional_code.finite_state_machine()
+        self._post_process_output = self.code.strategy.viterbi_post_process_output
         n = self.code.convolutional_code.num_output_bits
         self._cache_bit = int_to_bits(range(2**n), width=n)
         self._initial_metrics = np.full(self._fsm.num_states, fill_value=np.inf)
@@ -68,7 +71,6 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         """
         k = self.code.convolutional_code.num_input_bits
         n = self.code.convolutional_code.num_output_bits
-        mu = self.code.convolutional_code.memory_order
 
         @blockwise(self.code.length)
         @vectorize
@@ -79,11 +81,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
                 metric_function=self._metric_function,
                 initial_metrics=self._initial_metrics,
             )
-            if self.code.mode == "direct-truncation":
-                s_hat = np.argmin(final_metrics)
-                x_hat = xs_hat[:, s_hat]
-            else:  # code.mode == "zero-termination"
-                x_hat = xs_hat[:, 0][:-mu]
+            x_hat = self._post_process_output(xs_hat, final_metrics)
             u_hat = int_to_bits(x_hat, width=k).ravel()
             return u_hat
 

@@ -113,8 +113,8 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
     # Assert that the final state is always 0.
     for message_int in range(2**code.dimension):
         message = komm.int_to_bits(message_int, width=code.dimension)
-        assert isinstance(code._strategy, ZeroTermination)
-        tail = message @ code._strategy._tail_projector % 2
+        assert isinstance(code.strategy, ZeroTermination)
+        tail = message @ code.strategy._tail_projector % 2
         message_with_tail = np.concatenate([message, tail])
         input_sequence = komm.bits_to_int(message_with_tail.reshape(-1, k))
         _, fs = fsm.process(input_sequence, 0)

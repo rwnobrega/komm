@@ -28,17 +28,16 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     snr: float = 1.0
 
     def __post_init__(self) -> None:
+        if self.code.mode == "tail-biting":
+            raise NotImplementedError(
+                "BCJR algorithm not implemented for 'tail-biting'"
+            )
         self._fsm = self.code.convolutional_code.finite_state_machine()
         num_states = self._fsm.num_states
-        if self.code.mode == "direct-truncation":
-            self._initial_state_distribution = np.eye(1, num_states, 0)
-            self._final_state_distribution = np.ones(num_states) / num_states
-        elif self.code.mode == "zero-termination":
-            self._initial_state_distribution = np.eye(1, num_states, 0)
-            self._final_state_distribution = np.eye(1, num_states, 0)
-        elif self.code.mode == "tail-biting":
-            raise NotImplementedError("algorithm not implemented for 'tail-biting'")
-
+        self._initial_state_distribution, self._final_state_distribution = (
+            self.code.strategy.bcjr_initial_final_distributions(num_states)
+        )
+        self._post_process_output = self.code.strategy.bcjr_post_process_output
         n = self.code.convolutional_code.num_output_bits
         self._cache_polar = (-1) ** int_to_bits(range(2**n), width=n)
 
@@ -55,7 +54,6 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             array([-0.47774884, -0.61545527,  1.03018771])
         """
         n = self.code.convolutional_code.num_output_bits
-        mu = self.code.convolutional_code.memory_order
 
         @blockwise(self.code.length)
         @vectorize
@@ -67,8 +65,7 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
                 initial_state_distribution=self._initial_state_distribution,
                 final_state_distribution=self._final_state_distribution,
             )
-            if self.code.mode == "zero-termination":
-                input_posteriors = input_posteriors[:-mu]
+            input_posteriors = self._post_process_output(input_posteriors)
             return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
 
         return decode(input)
