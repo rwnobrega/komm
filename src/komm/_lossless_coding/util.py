@@ -5,6 +5,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .._util.information_theory import PMF
 
@@ -120,7 +121,9 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
-def extended_probabilities(pmf: PMF, k: int, pbar: Any) -> list[tuple[Word, float]]:
+def extended_probabilities(
+    pmf: PMF, k: int, pbar: "tqdm[Any]"
+) -> list[tuple[Word, float]]:
     probs: list[tuple[float, Word]] = []
     for u in product(range(pmf.size), repeat=k):
         pu = prod(pmf[list(u)])

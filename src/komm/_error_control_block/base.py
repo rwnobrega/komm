@@ -183,7 +183,7 @@ class BlockCode(ABC):
                     if leaders[i] != -1:
                         continue
                     taken += 1
-                    pbar.update(1)
+                    pbar.update()
                     leaders[i] = bits_to_int(leader)
                     if taken == 2**m:
                         return int_to_bits(leaders, n)
