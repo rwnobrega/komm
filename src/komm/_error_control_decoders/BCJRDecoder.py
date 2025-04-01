@@ -51,7 +51,7 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
-            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11, 0b11])
+            >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
             >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode="zero-termination")
             >>> decoder = komm.BCJRDecoder(code, snr=0.25)
             >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
