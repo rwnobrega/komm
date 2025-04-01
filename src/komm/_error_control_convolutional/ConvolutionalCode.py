@@ -42,42 +42,44 @@ class ConvolutionalCode:
         feedback_polynomials: The vector of feedback polynomials $\mathbf{q}(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
     Examples:
-        The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
-        $$
-            \mathbf{G}(D) =
-            \begin{bmatrix}
-                D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
-            \end{bmatrix},
-        $$
-        yielding `feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
+        1. The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
+            $$
+                \mathbf{G}(D) =
+                \begin{bmatrix}
+                    D^6 + D^3 + D^2 + D + 1  &  D^6 + D^5 + D^3 + D^2 + 1
+                \end{bmatrix},
+            $$
+            yielding `feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]`.
 
-        <figure markdown>
-          ![Convolutional encoder for (2, 1, 6) code.](/figures/cc_2_1_6.svg)
-        </figure>
+            <figure markdown>
+            ![Convolutional encoder for (2, 1, 6) code.](/figures/cc_2_1_6.svg)
+            </figure>
 
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (2, 1, 6)
+                >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
+                >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+                (2, 1, 6)
 
-        The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
-        $$
-            \mathbf{G}(D) =
-            \begin{bmatrix}
-                D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
-                0  &  D^3 + D  &  D^3 + D^2 + 1
-            \end{bmatrix},
-        $$
-        yielding `feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
+        1. The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
+            $$
+                \mathbf{G}(D) =
+                \begin{bmatrix}
+                    D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
+                    0  &  D^3 + D  &  D^3 + D^2 + 1
+                \end{bmatrix},
+            $$
+            yielding `feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]`.
 
-        <figure markdown>
-          ![Convolutional encoder for (3, 2, 7) code.](/figures/cc_3_2_7.svg)
-        </figure>
+            <figure markdown>
+            ![Convolutional encoder for (3, 2, 7) code.](/figures/cc_3_2_7.svg)
+            </figure>
 
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (3, 2, 7)
+                >>> code = komm.ConvolutionalCode(
+                ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+                ... )
+                >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+                (3, 2, 7)
 
-        The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
+        1. The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
         $$
             \mathbf{G}(D) =
             \begin{bmatrix}
@@ -87,12 +89,17 @@ class ConvolutionalCode:
         yielding `feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and `feedback_polynomials = [0b10111] = [0o27] = [23]`.
 
         <figure markdown>
-          ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
+        ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
         </figure>
 
-        >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0o27, 0o31]], feedback_polynomials=[0o27])
-        >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-        (2, 1, 4)
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o27, 0o31]],
+            ...     feedback_polynomials=[0o27],
+            ... )
+            >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+            (2, 1, 4)
+
+    <h2>Tables of optimal convolutional codes</h2>
 
     The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.
 
@@ -148,6 +155,13 @@ class ConvolutionalCode:
     def num_input_bits(self) -> int:
         r"""
         The number of input bits per block, $k$.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> code.num_input_bits
+            2
         """
         return self.feedforward_polynomials.shape[0]
 
@@ -155,6 +169,13 @@ class ConvolutionalCode:
     def num_output_bits(self) -> int:
         r"""
         The number of output bits per block, $n$.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> code.num_output_bits
+            3
         """
         return self.feedforward_polynomials.shape[1]
 
@@ -174,6 +195,13 @@ class ConvolutionalCode:
     def constraint_lengths(self) -> npt.NDArray[np.integer]:
         r"""
         The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a $k$-array of integers.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> code.constraint_lengths
+            array([4, 3])
         """
         nus = np.empty(self.num_input_bits, dtype=int)
         for i in range(self.num_input_bits):
@@ -186,6 +214,13 @@ class ConvolutionalCode:
     def overall_constraint_length(self) -> int:
         r"""
         The overall constraint length $\nu$ of the code.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> code.overall_constraint_length
+            7
         """
         return int(np.sum(self.constraint_lengths))
 
@@ -193,6 +228,13 @@ class ConvolutionalCode:
     def memory_order(self) -> int:
         r"""
         The memory order $\mu$ of the code.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> code.memory_order
+            4
         """
         return int(np.max(self.constraint_lengths))
 
@@ -207,7 +249,8 @@ class ConvolutionalCode:
         Examples:
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
             >>> code.finite_state_machine()
-            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]], outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
+            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
+                               outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
         """
         n = self.num_output_bits
         k = self.num_input_bits
@@ -276,11 +319,16 @@ class ConvolutionalCode:
         where $\mathbf{A}$ is the $\nu \times \nu$ *state matrix*, $\mathbf{B}$ is the $k \times \nu$ *control matrix*, $\mathbf{C}$ is the $\nu \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
 
         Returns:
-            The state matrix $\mathbf{A}$, control matrix $\mathbf{B}$, observation matrix $\mathbf{C}$, and transition matrix $\mathbf{D}$ of the code.
+            The state matrix $\mathbf{A}$ of the code.
+            The control matrix $\mathbf{B}$ of the code.
+            The observation matrix $\mathbf{C}$ of the code.
+            The transition matrix $\mathbf{D}$ of the code.
 
         Examples:
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
-            >>> state_matrix, control_matrix, observation_matrix, transition_matrix = code.state_space_representation()
+            >>> state_matrix, control_matrix, observation_matrix, transition_matrix = (
+            ...     code.state_space_representation()
+            ... )
             >>> state_matrix
             array([[0, 1],
                    [0, 0]])
