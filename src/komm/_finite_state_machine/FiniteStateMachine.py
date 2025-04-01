@@ -50,12 +50,6 @@ class FiniteStateMachine:
     def __init__(self, next_states: npt.ArrayLike, outputs: npt.ArrayLike):
         self.next_states = np.asarray(next_states)
         self.outputs = np.asarray(outputs)
-        self._input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
-        self._output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
-        for state_from in range(self.num_states):
-            for x, state_to in enumerate(self.next_states[state_from, :]):
-                self._input_edges[state_from, state_to] = x
-                self._output_edges[state_from, state_to] = self.outputs[state_from, x]
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -98,7 +92,11 @@ class FiniteStateMachine:
                    [ 0,  1, -1, -1],
                    [-1, -1,  0,  1]])
         """
-        return self._input_edges
+        input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
+        for state_from in range(self.num_states):
+            for x, state_to in enumerate(self.next_states[state_from, :]):
+                input_edges[state_from, state_to] = x
+        return input_edges
 
     @cached_property
     def output_edges(self) -> npt.NDArray[np.integer]:
@@ -113,7 +111,11 @@ class FiniteStateMachine:
                    [ 3,  0, -1, -1],
                    [-1, -1,  2,  1]])
         """
-        return self._output_edges
+        output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
+        for state_from in range(self.num_states):
+            for x, state_to in enumerate(self.next_states[state_from, :]):
+                output_edges[state_from, state_to] = self.outputs[state_from, x]
+        return output_edges
 
     def process(
         self,
