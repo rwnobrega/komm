@@ -1,11 +1,14 @@
 from dataclasses import dataclass
+from functools import partial
 
 import numpy as np
 import numpy.typing as npt
 
 from .._error_control_convolutional import TerminatedConvolutionalCode
+from .._modulation.labelings import labeling_natural
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.information_theory import marginalize_bits
 from . import base
 from .util import get_pbar
 
@@ -40,6 +43,7 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         self._post_process_output = self.code.strategy.bcjr_post_process_output
         n = self.code.convolutional_code.num_output_bits
         self._cache_polar = (-1) ** int_to_bits(range(2**n), width=n)
+        self._labeling = labeling_natural(n)
 
     def _metric_function(self, y: int, z: float) -> float:
         return 2.0 * self.snr * np.dot(self._cache_polar[y], z)
@@ -59,13 +63,18 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         @vectorize
         @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
         def decode(r: npt.NDArray[np.floating]):
-            input_posteriors = self._fsm.forward_backward(
+            symbol_posteriors = self._fsm.forward_backward(
                 observed_sequence=r.reshape(-1, n),
                 metric_function=self._metric_function,
                 initial_state_distribution=self._initial_state_distribution,
                 final_state_distribution=self._final_state_distribution,
             )
-            input_posteriors = self._post_process_output(input_posteriors)
-            return np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
+            symbol_posteriors = self._post_process_output(symbol_posteriors)
+            soft_bits = np.apply_along_axis(
+                func1d=partial(marginalize_bits, labeling=self._labeling),
+                axis=1,
+                arr=symbol_posteriors,
+            ).ravel()
+            return soft_bits
 
         return decode(input)
