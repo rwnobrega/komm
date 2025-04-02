@@ -65,16 +65,16 @@ class CyclicCode(base.BlockCode):
             )
         if generator_polynomial is not None and check_polynomial is None:
             self._generator_polynomial = BinaryPolynomial(generator_polynomial)
-            modulus, remainder = divmod(self.modulus, self.generator_polynomial)
+            quotient, remainder = divmod(self.modulus, self.generator_polynomial)
             if remainder != 0b0:
                 raise ValueError("'generator_polynomial' must be a factor of X^n + 1")
-            self._check_polynomial = modulus
+            self._check_polynomial = quotient
         elif generator_polynomial is None and check_polynomial is not None:
             self._check_polynomial = BinaryPolynomial(check_polynomial)
-            modulus, remainder = divmod(self.modulus, self.check_polynomial)
+            quotient, remainder = divmod(self.modulus, self.check_polynomial)
             if remainder != 0b0:
                 raise ValueError("'check_polynomial' must be a factor of X^n + 1")
-            self._generator_polynomial = modulus
+            self._generator_polynomial = quotient
         self.systematic = systematic
 
     @cached_property
