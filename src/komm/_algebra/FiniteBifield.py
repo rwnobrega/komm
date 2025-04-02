@@ -30,23 +30,23 @@ class FiniteBifieldElement(Generic[F]):
             return NotImplemented
         return self.ambient == other.ambient and self.value == other.value
 
-    def check_same_ambient(self, other: Self):
+    def _check_same_ambient(self, other: Self):
         if self.ambient != other.ambient:
             raise ValueError("elements must belong to the same finite field")
 
     def __add__(self, other: Self) -> Self:
-        self.check_same_ambient(other)
+        self._check_same_ambient(other)
         return self.__class__(self.ambient, self.value + other.value)
 
     def __sub__(self, other: Self) -> Self:
-        self.check_same_ambient(other)
+        self._check_same_ambient(other)
         return self.__class__(self.ambient, self.value - other.value)
 
     def __neg__(self) -> Self:
         return self
 
     def __mul__(self, other: Self) -> Self:
-        self.check_same_ambient(other)
+        self._check_same_ambient(other)
         value = (self.value * other.value) % self.ambient.modulus
         return self.__class__(self.ambient, value)
 
@@ -63,7 +63,7 @@ class FiniteBifieldElement(Generic[F]):
         raise ZeroDivisionError("element does not have a multiplicative inverse")
 
     def __truediv__(self, other: Self) -> Self:
-        self.check_same_ambient(other)
+        self._check_same_ambient(other)
         return self * other.inverse()
 
     def __pow__(self, exponent: int) -> Self:
