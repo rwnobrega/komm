@@ -128,8 +128,7 @@ def extended_probabilities(
     for u in product(range(pmf.size), repeat=k):
         pu = prod(pmf[list(u)])
         probs.append((-pu, u))
-        if pbar is not None:
-            pbar.update()
+        pbar.update()
     return [(u, -minus_pu) for minus_pu, u in sorted(probs)]
 
 
