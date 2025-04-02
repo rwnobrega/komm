@@ -75,6 +75,19 @@ def test_finite_bifield_different_fields():
         _ = x1 / x2
 
 
+def test_finite_bifield_same_field():
+    field1 = komm.FiniteBifield(4)
+    field2 = komm.FiniteBifield(4)
+    field3 = komm.FiniteBifield(4)
+    x1 = field1(0b1011)
+    x2 = field2(0b1011)
+    assert x1 == x2
+    assert x1 + x2 == field3(0b0)
+    assert x1 - x2 == field3(0b0)
+    assert x1 * x2 == field3(0b1001)
+    assert x1 / x2 == field3(0b1)
+
+
 @pytest.mark.parametrize("k", list(range(2, 8)))
 def test_finite_bifield_properties(k):
     field = komm.FiniteBifield(k)

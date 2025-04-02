@@ -50,6 +50,11 @@ class Integers:
     def __call__(self, value: int) -> Integer:
         return Integer(value)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return True
+
     @property
     def zero(self) -> Integer:
         return Integer(0)

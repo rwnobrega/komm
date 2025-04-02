@@ -92,6 +92,11 @@ class BinaryPolynomialFractions:
     def __call__(self, value: tuple[int, int]) -> BinaryPolynomialFraction:
         return BinaryPolynomialFraction(*value)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return True
+
     @property
     def zero(self) -> BinaryPolynomialFraction:
         return BinaryPolynomialFraction(0, 1)

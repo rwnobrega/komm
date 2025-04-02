@@ -182,6 +182,11 @@ class FiniteBifield:
     def __call__(self, value: int | BinaryPolynomial) -> FiniteBifieldElement[Self]:
         return FiniteBifieldElement(self, value)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return self.degree == other.degree and self.modulus == other.modulus
+
     @property
     def zero(self) -> FiniteBifieldElement[Self]:
         return self(0)
