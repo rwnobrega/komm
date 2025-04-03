@@ -2,6 +2,7 @@
 *[ASK]: amplitude-shift keying
 *[AWGN]: additive white Gaussian noise
 *[BCH]: Bose–Ray-Chaudhuri–Hocquenghem
+*[BCJR]: Bahl–Cocke–Jelinek–Raviv
 *[BEC]: binary erasure channel
 *[BSC]: binary symmetric channel
 *[DMC]: discrete memoryless channel
