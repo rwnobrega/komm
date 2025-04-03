@@ -11,7 +11,7 @@ from . import base
 @dataclass
 class LloydMaxQuantizer(base.ScalarQuantizer):
     r"""
-    Lloyd–Max scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) that minimizes the mean-squared error (MSE) between the input signal $X$ and its quantized version. For more details, see <cite>Say06, Sec. 9.6.1</cite>.
+    Lloyd–Max scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) that minimizes the mean squared error (MSE) between the input signal $X$ and its quantized version. For more details, see <cite>Say06, Sec. 9.6.1</cite>.
 
     Parameters:
         input_pdf: The probability density function $f_X(x)$ of the input signal.
