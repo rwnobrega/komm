@@ -140,14 +140,12 @@ class ConvolutionalCode:
         else:
             self.feedback_polynomials = vecBinaryPolynomial(feedback_polynomials)
 
-        self._feedback_polynomials_parameters = feedback_polynomials
-
     def __repr__(self) -> str:
         def vec_str(arr: npt.NDArray[np.object_]) -> str:
             return str(np.vectorize(str)(arr).tolist()).replace("'", "")
 
         args = f"feedforward_polynomials={vec_str(self.feedforward_polynomials)}"
-        if self._feedback_polynomials_parameters is not None:
+        if not np.all(self.feedback_polynomials == 0b1):
             args += f", feedback_polynomials={vec_str(self.feedback_polynomials)}"
         return f"{self.__class__.__name__}({args})"
 
