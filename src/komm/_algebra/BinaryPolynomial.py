@@ -304,6 +304,9 @@ class BinaryPolynomials:
     def __call__(self, value: int) -> BinaryPolynomial:
         return BinaryPolynomial(value)
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return NotImplemented

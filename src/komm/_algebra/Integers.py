@@ -55,6 +55,9 @@ class Integers:
             return NotImplemented
         return True
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     @property
     def zero(self) -> Integer:
         return Integer(0)
