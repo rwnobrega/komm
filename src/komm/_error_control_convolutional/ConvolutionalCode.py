@@ -80,24 +80,24 @@ class ConvolutionalCode:
                 (3, 2, 7)
 
         1. The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
-        $$
-            \mathbf{G}(D) =
-            \begin{bmatrix}
-                1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
-            \end{bmatrix},
-        $$
-        yielding `feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and `feedback_polynomials = [0b10111] = [0o27] = [23]`.
+            $$
+                \mathbf{G}(D) =
+                \begin{bmatrix}
+                    1  &  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+                \end{bmatrix},
+            $$
+            yielding `feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]` and `feedback_polynomials = [0b10111] = [0o27] = [23]`.
 
-        <figure markdown>
-        ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
-        </figure>
+            <figure markdown>
+            ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
+            </figure>
 
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o27, 0o31]],
-            ...     feedback_polynomials=[0o27],
-            ... )
-            >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-            (2, 1, 4)
+                >>> code = komm.ConvolutionalCode(
+                ...     feedforward_polynomials=[[0o27, 0o31]],
+                ...     feedback_polynomials=[0o27],
+                ... )
+                >>> (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
+                (2, 1, 4)
 
     <h2>Tables of optimal convolutional codes</h2>
 
