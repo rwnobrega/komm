@@ -16,6 +16,7 @@
 *[MSE]: mean squared error
 *[NRZ]: non-return-to-zero
 *[PAM]: pulse-amplitude modulation
+*[pdf]: probability density function
 *[pmf]: probability mass function
 *[PSK]: phase-shift keying
 *[QAM]: quadrature amplitude modulation

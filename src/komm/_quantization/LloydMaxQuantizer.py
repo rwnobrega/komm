@@ -53,8 +53,8 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
             self.input_pdf,
             self.num_levels,
             self.input_range,
-            points_per_interval=1000,
-            max_iter=100,
+            points_per_interval=4096,
+            max_iter=1000,
         )
 
     @cached_property
@@ -86,6 +86,28 @@ class LloydMaxQuantizer(base.ScalarQuantizer):
             array([-1.748, -1.05 , -0.501,  0.   ,  0.501,  1.05 ,  1.748])
         """
         return self._thresholds
+
+    def mean_squared_error(
+        self,
+        input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
+        input_range: tuple[float, float],
+        points_per_interval: int = 4096,
+    ) -> float:
+        r"""
+        Examples:
+            >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
+            >>> quantizer = komm.LloydMaxQuantizer(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ...     num_levels=8,
+            ... )
+            >>> quantizer.mean_squared_error(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ... )  # doctest: +FLOAT_CMP
+            0.034542475663845607
+        """
+        return super().mean_squared_error(input_pdf, input_range, points_per_interval)
 
     def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

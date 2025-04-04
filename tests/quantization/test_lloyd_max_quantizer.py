@@ -4,7 +4,6 @@ import numpy as np
 import pytest
 
 import komm
-from komm._quantization.util import mean_squared_quantization_error
 
 uniform_pdf = lambda x, peak: 1 / (2 * peak) * (np.abs(x) <= peak)
 gaussian_pdf = lambda x: 1 / np.sqrt(2 * np.pi) * np.exp(-(x**2) / 2)
@@ -104,7 +103,5 @@ def test_lloyd_max_quantizer_sayood_table_9_6(
     assert np.allclose(quantizer.thresholds, thresholds, atol=0.0005)
     x = np.linspace(input_range[0], input_range[1], num=1000)
     signal_power = np.trapezoid(input_pdf(x) * x**2, x)
-    noise_power = mean_squared_quantization_error(
-        quantizer, input_pdf, input_range, points_per_interval=1000
-    )
+    noise_power = quantizer.mean_squared_error(input_pdf, input_range)
     assert np.isclose(10 * np.log10(signal_power / noise_power), snr_db, atol=0.05)

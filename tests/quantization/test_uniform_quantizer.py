@@ -4,7 +4,6 @@ import numpy as np
 import pytest
 
 import komm
-from komm._quantization.util import mean_squared_quantization_error
 
 
 @pytest.mark.parametrize(
@@ -81,11 +80,10 @@ def test_uniform_quantizer_snr(n_bits, peak):
     input_range = (-peak, peak)
     quantizer = komm.UniformQuantizer(num_levels=2**n_bits, input_range=input_range)
     signal_power = (2 * peak) ** 2 / 12
-    noise_power = mean_squared_quantization_error(
-        quantizer,
+    noise_power = quantizer.mean_squared_error(
         input_pdf=partial(uniform_pdf, peak=peak),
         input_range=input_range,
-        points_per_interval=1000,
     )
+    assert np.isclose(noise_power, quantizer.quantization_step**2 / 12)
     snr_db = 10 * np.log10(signal_power / noise_power)
-    assert np.isclose(snr_db, 6.02 * n_bits, atol=0.05)
+    assert np.isclose(snr_db, 6.02059991328 * n_bits)

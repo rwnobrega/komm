@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from functools import cached_property
 
 import numpy as np
@@ -87,6 +88,27 @@ class ScalarQuantizer(base.ScalarQuantizer):
             array([-1.5, -0.3,  0.8,  1.4])
         """
         return self._thresholds
+
+    def mean_squared_error(
+        self,
+        input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
+        input_range: tuple[float, float],
+        points_per_interval: int = 4096,
+    ) -> float:
+        r"""
+        Examples:
+            >>> quantizer = komm.ScalarQuantizer(
+            ...     levels=[-2.0, -1.0, 0.0, 1.0, 2.0],
+            ...     thresholds=[-1.5, -0.3, 0.8, 1.4],
+            ... )
+            >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
+            >>> quantizer.mean_squared_error(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ... )  # doctest: +FLOAT_CMP
+            0.13598089455499335
+        """
+        return super().mean_squared_error(input_pdf, input_range, points_per_interval)
 
     def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

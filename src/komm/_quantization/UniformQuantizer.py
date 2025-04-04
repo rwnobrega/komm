@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Literal
@@ -68,9 +69,9 @@ class UniformQuantizer(base.ScalarQuantizer):
         The quantization step $\Delta$.
 
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
             >>> quantizer.quantization_step
-            0.5
+            2.0
         """
         x_min, x_max = self.input_range
         delta = (x_max - x_min) / self.num_levels
@@ -80,9 +81,9 @@ class UniformQuantizer(base.ScalarQuantizer):
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
             >>> quantizer.levels
-            array([-0.75, -0.25,  0.25,  0.75])
+            array([-3., -1.,  1.,  3.])
         """
         num = self.num_levels
         x_min, x_max = self.input_range
@@ -96,17 +97,43 @@ class UniformQuantizer(base.ScalarQuantizer):
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
             >>> quantizer.thresholds
-            array([-0.5,  0. ,  0.5])
+            array([-2.,  0.,  2.])
         """
         return (self.levels + self.quantization_step / 2)[:-1]
+
+    def mean_squared_error(
+        self,
+        input_pdf: Callable[[npt.NDArray[np.floating]], npt.NDArray[np.floating]],
+        input_range: tuple[float, float],
+        points_per_interval: int = 4096,
+    ) -> float:
+        r"""
+        Examples:
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
+            >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
+            >>> quantizer.mean_squared_error(
+            ...     input_pdf=gaussian_pdf,
+            ...     input_range=(-5, 5),
+            ... )  # doctest: +FLOAT_CMP
+            0.3363025489037716
+            >>> uniform_pdf = lambda x: 1/8 * (np.abs(x) <= 4)
+            >>> quantizer.mean_squared_error(
+            ...     input_pdf=uniform_pdf,
+            ...     input_range=(-4, 4),
+            ... )  # doctest: +FLOAT_CMP
+            0.3333333730891729
+            >>> quantizer.quantization_step**2 / 12  # doctest: +FLOAT_CMP
+            0.3333333333333333
+        """
+        return super().mean_squared_error(input_pdf, input_range, points_per_interval)
 
     def digitize(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
-            >>> quantizer.digitize([-0.6, 0.2, 0.8])
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
+            >>> quantizer.digitize([-2.4,  0.8,  3.2])
             array([0, 2, 3])
         """
         input = np.asarray(input, dtype=float)
@@ -116,9 +143,9 @@ class UniformQuantizer(base.ScalarQuantizer):
     def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Examples:
-            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0))
-            >>> quantizer.quantize([-0.6, 0.2, 0.8])
-            array([-0.75,  0.25,  0.75])
+            >>> quantizer = komm.UniformQuantizer(num_levels=4, input_range=(-4, 4))
+            >>> quantizer.quantize([-2.4,  0.8,  3.2])
+            array([-3.,  1.,  3.])
         """
         input = np.array(input, dtype=float, ndmin=1)
         delta = self.quantization_step

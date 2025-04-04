@@ -85,8 +85,8 @@ Source coding:
     - FibonacciCode
   Quantization:
     - ScalarQuantizer
-    - LloydMaxQuantizer
     - UniformQuantizer
+    - LloydMaxQuantizer
 Sources:
   - DiscreteMemorylessSource
 Utilities:
