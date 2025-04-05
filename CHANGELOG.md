@@ -3,6 +3,16 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.20.1 (2025-04-04)
+
+### Added
+
+- Implemented `mean_squared_error` method for quantizers.
+
+### Fixed
+
+- Fixed `BCJRDecoder` for the case of $k > 1$.
+
 ## v0.20.0 (2025-03-27)
 
 ### Breaking changes
