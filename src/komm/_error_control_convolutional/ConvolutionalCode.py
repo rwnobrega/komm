@@ -5,6 +5,7 @@ import numpy.typing as npt
 
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import FiniteStateMachine
+from .._util.array import array
 from .._util.bit_operations import bits_to_int, int_to_bits
 
 
@@ -126,27 +127,31 @@ class ConvolutionalCode:
     | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`                |
     """
 
+    feedforward_polynomials: npt.NDArray[np.object_]
+    feedback_polynomials: npt.NDArray[np.object_]
+
     def __init__(
         self,
         feedforward_polynomials: npt.ArrayLike,
         feedback_polynomials: npt.ArrayLike | None = None,
     ) -> None:
-        vecBinaryPolynomial = np.vectorize(BinaryPolynomial)
-
-        self.feedforward_polynomials = vecBinaryPolynomial(feedforward_polynomials)
-
+        self.feedforward_polynomials = array(feedforward_polynomials, BinaryPolynomial)
+        if self.feedforward_polynomials.ndim != 2:
+            raise ValueError("feedforward must be a 2-dimensional array")
+        k = self.feedforward_polynomials.shape[0]
         if feedback_polynomials is None:
-            self.feedback_polynomials = vecBinaryPolynomial([0b1] * self.num_input_bits)
+            self.feedback_polynomials = array([1] * k, BinaryPolynomial)
         else:
-            self.feedback_polynomials = vecBinaryPolynomial(feedback_polynomials)
+            self.feedback_polynomials = array(feedback_polynomials, BinaryPolynomial)
+        if self.feedback_polynomials.ndim != 1:
+            raise ValueError("feedback must be a 1-dimensional array")
+        if self.feedback_polynomials.shape[0] != k:
+            raise ValueError("feedback and feedforward dimensions do not match")
 
     def __repr__(self) -> str:
-        def vec_str(arr: npt.NDArray[np.object_]) -> str:
-            return str(np.vectorize(str)(arr).tolist()).replace("'", "")
-
-        args = f"feedforward_polynomials={vec_str(self.feedforward_polynomials)}"
-        if not np.all(self.feedback_polynomials == 0b1):
-            args += f", feedback_polynomials={vec_str(self.feedback_polynomials)}"
+        args = f"feedforward_polynomials={self.feedforward_polynomials}"
+        if not np.all(self.feedback_polynomials == 1):
+            args += f", feedback_polynomials={self.feedback_polynomials}"
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
@@ -181,6 +186,23 @@ class ConvolutionalCode:
     def transfer_function_matrix(self) -> npt.NDArray[np.object_]:
         r"""
         The transfer function matrix $\mathbf{G}(D)$ of the code. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            ... )
+            >>> for row in code.transfer_function_matrix:
+            ...     print("[" + ", ".join(str(x).ljust(12) for x in row) + "]")
+            [0b11001/0b1 , 0b10111/0b1 , 0b0/0b1     ]
+            [0b0/0b1     , 0b1010/0b1  , 0b1101/0b1  ]
+
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o27, 0o31]],
+            ...     feedback_polynomials=[0o27],
+            ... )
+            >>> for row in code.transfer_function_matrix:
+            ...     print("[" + ", ".join(str(x) for x in row) + "]")
+            [0b1/0b1, 0b11001/0b10111]
         """
         transfer_function_matrix = np.empty_like(self.feedforward_polynomials)
         for i, j in np.ndindex(self.feedforward_polynomials.shape):
