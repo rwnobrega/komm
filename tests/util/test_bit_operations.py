@@ -1,4 +1,4 @@
-import random
+from random import choices, randint
 
 import numpy as np
 import pytest
@@ -81,7 +81,7 @@ def test_int_to_bits_big_numbers(n):
 @pytest.mark.parametrize("n", [10, 100])
 def test_bits_to_int_to_bits(n):
     for _ in range(1000):
-        bits = random.choices([0, 1], k=n)
+        bits = choices([0, 1], k=n)
         np.testing.assert_array_equal(
             bits,
             komm.int_to_bits(komm.bits_to_int(bits), width=n),
@@ -91,7 +91,7 @@ def test_bits_to_int_to_bits(n):
 @pytest.mark.parametrize("n", [10, 100])
 def test_int_to_bits_to_int(n):
     for _ in range(1000):
-        integer = random.randint(0, 2**n - 1)
+        integer = randint(0, 2**n - 1)
         np.testing.assert_equal(
             integer,
             komm.bits_to_int(komm.int_to_bits(integer, width=n)),
