@@ -48,11 +48,17 @@ git clone https://github.com/rwnobrega/komm
 cd komm
 ```
 
-This project uses [PDM](https://pdm-project.org/) for dependency management. After installing PDM, install the dependencies and activate the virtual environment:
+Then, create and activate a virtual environment. For example, using `venv`:
 
 ```bash
-pdm install
-pdm venv activate
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Next, install the development dependencies. For example, using `pip`:
+
+```bash
+pip install -e .[lint,test,doc,debug,demo]
 ```
 
 ### Testing
