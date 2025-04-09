@@ -99,4 +99,5 @@ Utilities:
   - cyclic_autocorrelation
   - entropy
   - binary_entropy
+  - binary_entropy_inv
   - relative_entropy

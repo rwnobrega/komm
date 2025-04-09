@@ -1,5 +1,5 @@
-import math
 from functools import partial
+from math import log2
 from typing import Literal
 
 import numpy as np
@@ -116,7 +116,36 @@ def binary_entropy(p: float) -> float:
     assert_is_probability(p)
     if p in {0.0, 1.0}:
         return 0.0
-    return -p * math.log2(p) - (1 - p) * math.log2(1 - p)
+    return -p * log2(p) - (1 - p) * log2(1 - p)
+
+
+def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
+    r"""
+    Computes the inverse of the [binary entropy function](/ref/binary_entropy). More precisely, it computes the value of $p \in [0, 1/2]$ such that $\Hb(p) = h$.
+
+    Parameters:
+        h: A value in the interval $[0, 1]$.
+        tol: The tolerance for the binary search. The default value is `1e-12`.
+
+    Returns:
+        The value of $p \in [0, 1/2]$ such that $\Hb(p) = h$.
+
+    Examples:
+        >>> [komm.binary_entropy_inv(h) for h in [0.0, 0.25, 0.5, 0.75, 1.0]]
+        [0.0, 0.04169269027397604, 0.1100278644385071, 0.2145017448597173, 0.5]
+    """
+    if not 0.0 <= h <= 1.0:
+        raise ValueError("h must be in [0, 1]")
+    if h in {0.0, 1.0}:
+        return 0.5 * h
+    low, high = 0.0, 0.5
+    while high - low > tol:
+        mid = (low + high) / 2
+        if binary_entropy(mid) < h:
+            low = mid
+        else:
+            high = mid
+    return (low + high) / 2
 
 
 def relative_entropy(

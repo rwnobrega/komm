@@ -94,3 +94,32 @@ def test_relative_entropy_invalid_base():
         komm.relative_entropy(pmf1, pmf2, base=-1.0)
     with pytest.raises(ValueError):
         komm.relative_entropy(pmf1, pmf2, base="f")  # type: ignore
+
+
+def test_binary_entropy():
+    with pytest.raises(ValueError):
+        komm.binary_entropy(-1)
+    with pytest.raises(ValueError):
+        komm.binary_entropy(2)
+    for p in np.linspace(0, 0.5, 1000):
+        np.testing.assert_almost_equal(
+            komm.binary_entropy(p),
+            komm.binary_entropy(1 - p),
+        )
+
+
+def test_binary_entropy_inv():
+    with pytest.raises(ValueError):
+        komm.binary_entropy_inv(-1)
+    with pytest.raises(ValueError):
+        komm.binary_entropy_inv(2)
+    for p in np.linspace(0, 0.5, 1000):
+        np.testing.assert_almost_equal(
+            p,
+            komm.binary_entropy_inv(komm.binary_entropy(p)),
+        )
+    for h in np.linspace(0, 1, 1000):
+        np.testing.assert_almost_equal(
+            h,
+            komm.binary_entropy(komm.binary_entropy_inv(h)),
+        )
