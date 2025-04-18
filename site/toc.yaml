@@ -92,6 +92,7 @@ Sources:
 Utilities:
   - bits_to_int
   - int_to_bits
+  - boxplus
   - gaussian_q
   - gaussian_q_inv
   - marcum_q

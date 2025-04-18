@@ -6,7 +6,7 @@ from .information_theory import (
     entropy,
     relative_entropy,
 )
-from .special_functions import gaussian_q, gaussian_q_inv, marcum_q
+from .special_functions import boxplus, gaussian_q, gaussian_q_inv, marcum_q
 
 __all__ = [
     "bits_to_int",
@@ -20,4 +20,5 @@ __all__ = [
     "gaussian_q",
     "gaussian_q_inv",
     "marcum_q",
+    "boxplus",
 ]

@@ -128,3 +128,33 @@ def logcosh(x: npt.ArrayLike) -> np.floating:
     s = np.sign(x) * x
     p = np.exp(-2 * s)
     return s + np.log1p(p) - np.log(2)
+
+
+def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    r"""
+    Computes the box-plus operation. It is defined by
+    $$
+        a \boxplus b = 2 \operatorname{atanh} \left( \tanh\left(\frac{a}{2}\right) \tanh\left(\frac{b}{2}\right) \right).
+    $$
+    If $X, Y$ are independent binary random variables, then $L(X \oplus Y) = L(X) \boxplus L(Y)$, where $L$ denotes the L-value and $\oplus$ denotes the modulo-$2$ sum.
+
+    Parameters:
+        a: A float or array of floats containing L-values.
+        b: A float or array of floats containing L-values.
+
+    Returns:
+        The result of the boxplus operation. It has the same shape as the inputs.
+
+    Examples:
+        >>> komm.boxplus(1, 2)  # doctest: +FLOAT_CMP
+        np.float64(0.735325664055519)
+
+        >>> komm.boxplus([0, 1, 2], [1, -1, -1])
+        array([ 0.        , -0.43378083, -0.73532566])
+    """
+    a = np.asarray(a)
+    b = np.asarray(b)
+    if a.shape != b.shape:
+        raise ValueError("inputs must have the same shape")
+    with np.errstate(divide="ignore"):
+        return 2 * np.atanh(np.tanh(a / 2) * np.tanh(b / 2))
