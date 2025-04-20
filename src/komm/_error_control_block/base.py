@@ -140,7 +140,10 @@ class BlockCode(ABC):
         k, n = self.dimension, self.length
         codewords = np.empty((2**k, n), dtype=int)
         for i in tqdm(
-            range(0, 2**k, batch_size), desc="Generating codewords", delay=2.5
+            range(0, 2**k, batch_size),
+            desc="Generating codewords",
+            delay=2.5,
+            unit_scale=batch_size,
         ):
             batch_end = min(i + batch_size, 2**k)
             js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
