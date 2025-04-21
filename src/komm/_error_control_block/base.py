@@ -114,7 +114,7 @@ class BlockCode(ABC):
     @abstractmethod
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Applies the check mapping $\mathrm{Chk}: \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.
+        Applies the check mapping $\mathrm{Chk} : \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
@@ -136,8 +136,8 @@ class BlockCode(ABC):
         r"""
         Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (MSB in the right).
         """
-        batch_size = 1024
         k, n = self.dimension, self.length
+        batch_size = 1024
         codewords = np.empty((2**k, n), dtype=int)
         for i in tqdm(
             range(0, 2**k, batch_size),
@@ -149,6 +149,7 @@ class BlockCode(ABC):
             js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
             messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
             codewords[i:batch_end] = self.encode(messages_batch)
+        self._cached_codewords = True
         return codewords
 
     @cache
@@ -157,7 +158,24 @@ class BlockCode(ABC):
         r"""
         Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
         """
-        return np.bincount(np.sum(self.codewords(), axis=1), minlength=self.length + 1)
+        k, n = self.dimension, self.length
+        if hasattr(self, "_cached_codewords"):
+            return np.bincount(np.sum(self.codewords(), axis=1), minlength=n + 1)
+        batch_size = 1024
+        distribution = np.zeros(n + 1, dtype=int)
+        for i in tqdm(
+            range(0, 2**k, batch_size),
+            desc="Generating codeword weight distribution",
+            delay=2.5,
+            unit_scale=batch_size,
+        ):
+            batch_end = min(i + batch_size, 2**k)
+            js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
+            messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
+            codewords_batch = self.encode(messages_batch)
+            weights = np.sum(codewords_batch, axis=1)
+            distribution += np.bincount(weights, minlength=n + 1)
+        return distribution
 
     @cache
     @abstractmethod
