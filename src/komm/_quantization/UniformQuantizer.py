@@ -17,9 +17,9 @@ class UniformQuantizer(base.ScalarQuantizer):
     Attributes:
         num_levels: The number of quantization levels $L$. It must be greater than $1$.
 
-        input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal. The default is $(-1.0, 1.0)$.
+        input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal. Default is $(-1.0, 1.0)$.
 
-        choice: The choice for the uniform quantizer. Must be either `'mid-riser'` or `'mid-tread'`. The default is `'mid-riser'`.
+        choice: The choice for the uniform quantizer. Must be either `'mid-riser'` or `'mid-tread'`. Default is `'mid-riser'`.
 
     Examples:
         >>> quantizer = komm.UniformQuantizer(
