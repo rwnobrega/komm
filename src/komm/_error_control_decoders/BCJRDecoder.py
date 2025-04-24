@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from functools import partial
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
@@ -21,20 +22,24 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     Parameters:
         code: The terminated convolutional code to be used for decoding.
         snr: The signal-to-noise ratio (SNR) of the channel (linear, not decibel).
+        output_type: The type of the output. Either `'hard'` or `'soft'`. Default is `'soft'`.
 
     Notes:
         - Input type: `soft`.
-        - Output type: `soft`.
+        - Output type: `hard` or `soft`.
     """
 
     code: TerminatedConvolutionalCode
     snr: float = 1.0
+    output_type: Literal["hard", "soft"] = "soft"
 
     def __post_init__(self) -> None:
         if self.code.mode == "tail-biting":
             raise NotImplementedError(
                 "BCJR algorithm not implemented for 'tail-biting'"
             )
+        if self.output_type not in ["hard", "soft"]:
+            raise ValueError("'output_type' must be 'hard' or 'soft'")
         self._fsm = self.code.convolutional_code.finite_state_machine()
         num_states = self._fsm.num_states
         self._initial_state_distribution, self._final_state_distribution = (
@@ -53,16 +58,21 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         Examples:
             >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b11, 0b1]], feedback_polynomials=[0b11])
             >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode="zero-termination")
+
             >>> decoder = komm.BCJRDecoder(code, snr=0.25)
             >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([-0.47774884, -0.61545527,  1.03018771])
+
+            >>> decoder = komm.BCJRDecoder(code, snr=0.25, output_type="hard")
+            >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
+            array([1, 1, 0])
         """
         n = self.code.convolutional_code.num_output_bits
 
         @blockwise(self.code.length)
         @vectorize
         @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
-        def decode(r: npt.NDArray[np.floating]):
+        def decode(r: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             symbol_posteriors = self._fsm.forward_backward(
                 observed_sequence=r.reshape(-1, n),
                 metric_function=self._metric_function,
@@ -77,4 +87,8 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
             ).ravel()
             return soft_bits
 
-        return decode(input)
+        soft_bits = decode(input)
+        if self.output_type == "hard":
+            return (soft_bits < 0.0).astype(int)
+        else:  # if self.output_type == "soft":
+            return soft_bits
