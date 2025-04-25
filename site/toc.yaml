@@ -22,12 +22,14 @@ Error control:
     - ReedMullerCode
     - BCHCode
     - Lexicode
+    - PolarCode
     - SlepianArray
   Block decoders:
     - BCJRDecoder
     - BerlekampDecoder
     - ExhaustiveSearchDecoder
     - ReedDecoder
+    - SCDecoder
     - SyndromeTableDecoder
     - ViterbiDecoder
     - WagnerDecoder

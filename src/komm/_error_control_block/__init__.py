@@ -5,6 +5,7 @@ from .CyclicCode import CyclicCode
 from .GolayCode import GolayCode
 from .HammingCode import HammingCode
 from .Lexicode import Lexicode
+from .PolarCode import PolarCode
 from .ReedMullerCode import ReedMullerCode
 from .RepetitionCode import RepetitionCode
 from .SimplexCode import SimplexCode
@@ -20,6 +21,7 @@ __all__ = [
     "GolayCode",
     "HammingCode",
     "Lexicode",
+    "PolarCode",
     "ReedMullerCode",
     "RepetitionCode",
     "SimplexCode",

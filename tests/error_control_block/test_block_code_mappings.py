@@ -4,13 +4,16 @@ import pytest
 import komm
 import komm.abc
 
-block = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
-systematic = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
-cyclic = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)
-terminated = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12)
+codes = [
+    komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]]),
+    komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]]),
+    komm.CyclicCode(length=23, generator_polynomial=0b101011100011),
+    komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12),
+    komm.PolarCode(mu=4, frozen=[0, 1, 2, 3, 4, 5, 6, 8, 9]),
+]
 
 
-@pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
+@pytest.mark.parametrize("code", codes)
 @pytest.mark.repeat(20)
 def test_mappings_array_input(code: komm.abc.BlockCode):
     u1 = np.random.randint(0, 2, code.dimension)
@@ -31,7 +34,7 @@ def test_mappings_array_input(code: komm.abc.BlockCode):
     np.testing.assert_array_equal(code.check(v), np.zeros((2, code.redundancy)))
 
 
-@pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
+@pytest.mark.parametrize("code", codes)
 @pytest.mark.repeat(20)
 def test_mappings_inverses(code: komm.abc.BlockCode):
     # Check that 'inverse_encode' is the inverse of 'encode'
@@ -39,7 +42,7 @@ def test_mappings_inverses(code: komm.abc.BlockCode):
     np.testing.assert_array_equal(u, code.inverse_encode(code.encode(u)))
 
 
-@pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
+@pytest.mark.parametrize("code", codes)
 def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
     n, k = code.length, code.dimension
 
@@ -62,7 +65,7 @@ def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
         code.check(np.zeros((3, 4, n + 1)))  # Incorrect
 
 
-@pytest.mark.parametrize("code", [block, systematic, cyclic, terminated])
+@pytest.mark.parametrize("code", codes)
 def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
