@@ -18,7 +18,6 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
 
     Parameters:
         code: The terminated convolutional code to be used for decoding.
-        snr: The signal-to-noise ratio (SNR) of the channel (linear, not decibel). Only used for soft-input decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
     Notes:
@@ -27,7 +26,6 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
     """
 
     code: TerminatedConvolutionalCode
-    snr: float = 1.0
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
@@ -65,7 +63,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
 
             >>> convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
             >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=4, mode="direct-truncation")
-            >>> decoder = komm.ViterbiDecoder(code, input_type="soft", snr=10.0)
+            >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
             >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
         """
