@@ -13,7 +13,11 @@ from .BlockCode import BlockCode
 @dataclass(eq=False)
 class ReedMullerCode(BlockCode):
     r"""
-    Reed–Muller code. It is a [linear block code](/ref/BlockCode) defined by two integers $\rho$ and $\mu$, which must satisfy $0 \leq \rho < \mu$. See references for more details. The resulting code is denoted by $\mathrm{RM}(\rho, \mu)$, and has the following parameters:
+    Reed–Muller code. Let $\mu$ and $\rho$ be two integers such that $0 \leq \rho < \mu$. The Reed–Muller code with parameters $(\rho, \mu)$ is the [linear block code](/ref/BlockCode) whose generator matrix rows are
+    $$
+        \mathbf{1}, \, v_1, \ldots, v_m, \, v_1 v_2, v_1 v_3, \ldots, v_{\mu} v_{\mu - 1}, \, \ldots \, \text{(up to products of degree $\rho$)},
+    $$
+    where $\mathbf{1}$ is the all-one $2^\mu$-tuple, $v_i$ is the binary $2^\mu$-tuple composed of $2^{\mu-i}$ repetitions of alternating blocks of zeros and ones, each block of length $2^i$, for $1 \leq i \leq \mu$, and $v_i v_j$ denotes the component-wise product (logical AND) of $v_i$ and $v_j$. Here we take the rows in reverse order. The resulting code has the following parameters:
 
     - Length: $n = 2^{\mu}$
     - Dimension: $k = 1 + {\mu \choose 1} + \cdots + {\mu \choose \rho}$
@@ -28,25 +32,28 @@ class ReedMullerCode(BlockCode):
         - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
         - For $\rho = \mu - 1$ it reduces to a [single parity-check code](/ref/SingleParityCheckCode).
 
-    Attributes:
+    Parameters:
         rho: The parameter $\rho$ of the code.
         mu: The parameter $\mu$ of the code.
 
-    The parameters must satisfy $0 \leq \rho < \mu$.
-
     Examples:
-        >>> code = komm.ReedMullerCode(1, 5)
+        >>> code = komm.ReedMullerCode(2, 4)
         >>> (code.length, code.dimension, code.redundancy)
-        (32, 6, 26)
+        (16, 11, 5)
         >>> code.generator_matrix
-        array([[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-               [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
-               [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+        array([[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+               [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+               [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+               [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+               [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+               [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
         >>> code.minimum_distance()
-        16
+        4
     """
 
     rho: int
