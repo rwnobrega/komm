@@ -28,8 +28,8 @@ class SCDecoder(base.BlockDecoder[PolarCode]):
         output_type: The type of the output. Either `'hard'` or `'soft'`. Default is `'soft'`.
 
     Notes:
-        - Input type: `soft`.
-        - Output type: `hard` or `soft`.
+        - Input type: `soft` (L-values).
+        - Output type: `hard` (bits) or `soft` (L-values).
     """
 
     code: PolarCode

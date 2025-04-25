@@ -21,8 +21,8 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
     Notes:
-        - Input type: `hard` or `soft`.
-        - Output type: `hard`.
+        - Input type: `hard` (bits) or `soft` (either L-values or channel outputs).
+        - Output type: `hard` (bits).
     """
 
     code: TerminatedConvolutionalCode

@@ -17,8 +17,8 @@ class WagnerDecoder(base.BlockDecoder[SingleParityCheckCode]):
         code: The single parity-check code to be used for decoding.
 
     Notes:
-        - Input type: `soft`.
-        - Output type: `hard`.
+        - Input type: `soft` (L-values or channel outputs).
+        - Output type: `hard` (bits).
     """
 
     code: SingleParityCheckCode

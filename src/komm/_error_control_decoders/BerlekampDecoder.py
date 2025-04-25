@@ -21,8 +21,8 @@ class BerlekampDecoder(base.BlockDecoder[BCHCode]):
         code: The BCH code to be used for decoding.
 
     Notes:
-        - Input type: `hard`.
-        - Output type: `hard`.
+        - Input type: `hard` (bits).
+        - Output type: `hard` (bits).
     """
 
     code: BCHCode
