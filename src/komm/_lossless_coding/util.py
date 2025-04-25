@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from itertools import product
 from math import prod
 from typing import Any
@@ -45,10 +44,10 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
 
 
 def is_fully_covering(words: list[Word], cardinality: int) -> bool:
-    @dataclass(eq=False)
     class Node:
-        is_end: bool = False
-        children: dict[int, "Node"] = field(default_factory=dict)
+        def __init__(self):
+            self.is_end: bool = False
+            self.children: dict[int, "Node"] = {}
 
     # Build trie
     root = Node()
