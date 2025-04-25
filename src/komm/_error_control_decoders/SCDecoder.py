@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
@@ -9,9 +9,9 @@ from .._util.decorators import blockwise, vectorize
 from .._util.special_functions import boxplus
 from . import base
 
-type Belief = npt.NDArray[np.floating]
-type Decision = npt.NDArray[np.integer]
-type Node = tuple[int, int]  # depth, index
+Belief: TypeAlias = npt.NDArray[np.floating]
+Decision: TypeAlias = npt.NDArray[np.integer]
+Node: TypeAlias = tuple[int, int]  # depth, index
 
 
 def g(r: Belief, s: Belief, b: Decision) -> Belief:
