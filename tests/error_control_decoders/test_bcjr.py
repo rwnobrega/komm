@@ -27,5 +27,7 @@ import komm
 )
 def test_bcjr(convolutional_code, num_blocks, mode, snr, r, u_hat):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
-    decoder = komm.BCJRDecoder(code, snr=snr)
-    assert np.allclose(decoder(r), u_hat, atol=0.05)
+    decoder = komm.BCJRDecoder(code)
+    bpsk = komm.PSKModulation(2)
+    li = bpsk.demodulate_soft(r, snr=snr)
+    assert np.allclose(decoder(li), u_hat, atol=0.05)
