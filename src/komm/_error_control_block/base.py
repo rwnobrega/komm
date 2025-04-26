@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 from functools import cache, cached_property
-from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 
 
@@ -192,22 +191,36 @@ class BlockCode(ABC):
         Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (MSB in the right), and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
         """
         m, n = self.redundancy, self.length
-        leaders = np.full(2**m, -1)
-        taken = 0
-        with tqdm(total=2**m, desc="Generating coset leaders", delay=2.5) as pbar:
-            for w in range(n + 1):
-                for idx in combinations(range(n), w):
-                    leader = np.zeros(n, dtype=int)
-                    leader[list(idx)] = 1
-                    syndrome = self.check(leader)
-                    i = bits_to_int(syndrome)
-                    if leaders[i] != -1:
+        H_cols = np.asarray(bits_to_int(self.check_matrix.T))
+        visited = np.zeros(2**m, dtype=bool)
+        visited[0] = True
+        count = 1
+        syndromes = [0]
+        leaders = np.zeros((2**m, n), dtype=int)
+        pbar = tqdm(
+            total=2**m,
+            desc="Generating coset leaders",
+            delay=2.5,
+            initial=1,
+        )
+        while True:
+            next_syndromes: list[int] = []
+            for s in syndromes:
+                for j, h in enumerate(H_cols):
+                    s0 = s ^ h
+                    if visited[s0]:
                         continue
-                    taken += 1
+                    visited[s0] = True
+                    leaders[s0] = leaders[s].copy()
+                    leaders[s0, j] ^= 1
+                    next_syndromes.append(s0)
+                    count += 1
                     pbar.update()
-                    leaders[i] = bits_to_int(leader)
-                    if taken == 2**m:
-                        return int_to_bits(leaders, n)
+                    if count == 2**m:
+                        self._cached_coset_leaders = True
+                        pbar.close()
+                        return leaders
+            syndromes = next_syndromes
 
     @cache
     @abstractmethod
@@ -215,9 +228,40 @@ class BlockCode(ABC):
         r"""
         Returns the coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
         """
-        return np.bincount(
-            np.sum(self.coset_leaders(), axis=1), minlength=self.length + 1
+        m, n = self.redundancy, self.length
+        if hasattr(self, "_cached_coset_leaders"):
+            return np.bincount(np.sum(self.coset_leaders(), axis=1), minlength=n + 1)
+        H_cols = np.asarray(bits_to_int(self.check_matrix.T))
+        visited = np.zeros(2**m, dtype=bool)
+        visited[0] = True
+        count = 1
+        syndromes = [0]
+        weight = 0
+        distribution = np.zeros(n + 1, dtype=int)
+        pbar = tqdm(
+            total=2**m,
+            desc="Computing coset leader weight distribution",
+            delay=2.5,
+            initial=1,
         )
+        while True:
+            distribution[weight] = len(syndromes)
+            next_syndromes: list[int] = []
+            for s in syndromes:
+                for h in H_cols:
+                    s0 = s ^ h
+                    if visited[s0]:
+                        continue
+                    visited[s0] = True
+                    next_syndromes.append(s0)
+                    count += 1
+                    pbar.update()
+                    if count == 2**m:
+                        distribution[weight + 1] = len(next_syndromes)
+                        pbar.close()
+                        return distribution
+            syndromes = next_syndromes
+            weight += 1
 
     @cache
     @abstractmethod
