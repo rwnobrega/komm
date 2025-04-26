@@ -165,7 +165,7 @@ class BlockCode(ABC):
         distribution = np.zeros(n + 1, dtype=int)
         for i in tqdm(
             range(0, 2**k, batch_size),
-            desc="Generating codeword weight distribution",
+            desc="Computing codeword weight distribution",
             delay=2.5,
             unit_scale=batch_size,
         ):
