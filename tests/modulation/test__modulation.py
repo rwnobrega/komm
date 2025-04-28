@@ -45,7 +45,7 @@ def mod(request: pytest.FixtureRequest):
     return request.param
 
 
-def test_equivalence_properties(mod: komm.abc.Modulation):
+def test_modulation_equivalence_properties(mod: komm.abc.Modulation):
     ref = komm.Modulation(mod.constellation, mod.labeling)
     np.testing.assert_almost_equal(ref.constellation, mod.constellation)
     np.testing.assert_equal(ref.labeling, mod.labeling)
