@@ -19,7 +19,7 @@ class RectangularPulse(base.Pulse):
         \end{cases}
         = \rect\left(\frac{t}{w}\right),
     $$
-    where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. Its spectrum is given by
+    where $w$ is the *relative width* of the pulse, which must satisfy $0 < w \leq 1$. Its spectrum is given by
     $$
         \hat{h}(f) = w \, \sinc(w f).
     $$
@@ -40,7 +40,7 @@ class RectangularPulse(base.Pulse):
         - For $w = 0.5$ it is also called the _halfway RZ pulse_.
 
     Attributes:
-        width: The width $w$ of the pulse. Must satisfy $0 \leq w \leq 1$. The default value is `1.0`.
+        width: The relative width $w$ of the pulse. Must satisfy $0 < w \leq 1$. The default value is `1.0`.
 
     Examples:
         >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
