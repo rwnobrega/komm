@@ -17,11 +17,11 @@ class RectangularPulse(base.Pulse):
             1, & 0 \leq t < w, \\\\
             0, & \text{otherwise}.
         \end{cases}
-        = \mathrm{rect}\left(\frac{t}{w}\right),
+        = \rect\left(\frac{t}{w}\right),
     $$
     where $w$ is the *width* of the pulse, which must satisfy $0 \leq w \leq 1$. Its spectrum is given by
     $$
-        \hat{h}(f) = w \, \operatorname{sinc}(w f).
+        \hat{h}(f) = w \, \sinc(w f).
     $$
 
     The rectangular pulse is depicted below for $w = 1$, and for $w = 0.5$.

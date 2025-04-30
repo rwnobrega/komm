@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "\\Enc": "\\mathrm{Enc}",
       "\\Dec": "\\mathrm{Dec}",
       "\\Hb": "\\mathrm{H}_\\mathrm{b}",
+      "\\rect": "\\operatorname{rect}",
+      "\\sinc": "\\operatorname{sinc}",
     },
     throwOnError: false,
   });

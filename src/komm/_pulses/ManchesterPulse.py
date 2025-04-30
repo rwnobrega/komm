@@ -21,7 +21,7 @@ class ManchesterPulse(base.Pulse):
     $$
     and spectrum given by
     $$
-        \hat{h}(f) = \operatorname{sinc}^2 \left( \frac{f}{2} \right) \, \sin^2 \left( \frac{\pi f}{2} \right).
+        \hat{h}(f) = \sinc^2 \left( \frac{f}{2} \right) \, \sin^2 \left( \frac{\pi f}{2} \right).
     $$
 
     The Manchester pulse is depicted below.

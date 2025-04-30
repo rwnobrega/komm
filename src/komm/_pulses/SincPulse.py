@@ -12,7 +12,7 @@ class SincPulse(base.Pulse):
     r"""
     Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t},
+        h(t) = \sinc(t) = \frac{\sin(\pi t)}{\pi t},
     $$
     and spectrum given by
     $$

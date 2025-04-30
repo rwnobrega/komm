@@ -12,7 +12,7 @@ class RaisedCosinePulse(base.Pulse):
     r"""
     Raised cosine pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \operatorname{sinc}(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
+        h(t) = \sinc(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2},
     $$
     where $\alpha$ is the *roll-off factor*, which must satisfy $0 \leq \alpha \leq 1$. Its spectrum is given by
     $$
