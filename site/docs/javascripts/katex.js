@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "\\Hb": "\\mathrm{H}_\\mathrm{b}",
       "\\rect": "\\operatorname{rect}",
       "\\sinc": "\\operatorname{sinc}",
+      "\\tri": "\\operatorname{tri}",
     },
     throwOnError: false,
   });

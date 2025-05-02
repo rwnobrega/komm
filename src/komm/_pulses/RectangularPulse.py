@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .util import rect
 
 
 @dataclass
@@ -50,15 +51,20 @@ class RectangularPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
-            >>> pulse.waveform([-0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0])
-            array([0., 0., 1., 1., 1., 1., 0.])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0., 0., 0., 0., 1., 1., 1., 1., 0.])
 
             >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
-            >>> pulse.waveform([-0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0])
-            array([0., 0., 1., 1., 0., 0., 0.])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0., 0., 0., 0., 1., 1., 0., 0., 0.])
         """
+        w = self.width
         t = np.asarray(t)
-        return 1.0 * (0.0 <= t) * (t < self.width)
+        return rect((t - w / 2) / w)
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
@@ -70,19 +76,20 @@ class RectangularPulse(base.Pulse):
         Examples:
             >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
             >>> np.abs(pulse.spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... )).round(4)
-            array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
 
             >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
             >>> np.abs(pulse.spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... )).round(4)
-            array([0.3921, 0.4502, 0.4872, 0.5   , 0.4872, 0.4502, 0.3921])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )).round(3)
+            array([0.318, 0.392, 0.45 , 0.487, 0.5  , 0.487, 0.45 , 0.392, 0.318])
         """
+        w = self.width
         f = np.asarray(f)
-        cexp = np.exp(-2j * np.pi * self.width / 2 * f)
-        centered = self.width * np.sinc(self.width * f)
+        cexp = np.exp(-2j * np.pi * w / 2 * f)
+        centered = w * np.sinc(w * f)
         return centered.astype(complex) * cexp
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
@@ -95,18 +102,19 @@ class RectangularPulse(base.Pulse):
         Examples:
             >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
             >>> pulse.energy_density_spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... ).round(4)
-            array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.09 , 0.405, 0.811, 1.   , 0.811, 0.405, 0.09 , 0.   ])
 
             >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
             >>> pulse.energy_density_spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... ).round(4)
-            array([0.2358, 0.2436, 0.2484, 0.25  , 0.2484, 0.2436, 0.2358])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.101, 0.154, 0.203, 0.237, 0.25 , 0.237, 0.203, 0.154, 0.101])
         """
+        w = self.width
         f = np.asarray(f)
-        return self.width**2 * np.sinc(self.width**2 * f)
+        return w**2 * np.sinc(w * f) ** 2
 
     @cached_property
     def support(self) -> tuple[float, float]:

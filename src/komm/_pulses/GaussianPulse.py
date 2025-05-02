@@ -42,8 +42,10 @@ class GaussianPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
-            >>> pulse.waveform([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75]).round(4)
-            array([0.3675, 0.6408, 0.8947, 1.    , 0.8947, 0.6408, 0.3675])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.169, 0.367, 0.641, 0.895, 1.   , 0.895, 0.641, 0.367, 0.169])
         """
         t = np.asarray(t)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
@@ -54,9 +56,9 @@ class GaussianPulse(base.Pulse):
         Examples:
             >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
             >>> np.abs(pulse.spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... )).round(4)
-            array([0.0587, 0.3321, 0.9394, 1.3286, 0.9394, 0.3321, 0.0587])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )).round(3)
+            array([0.005, 0.059, 0.332, 0.939, 1.329, 0.939, 0.332, 0.059, 0.005])
         """
         f = np.asarray(f)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
@@ -73,9 +75,9 @@ class GaussianPulse(base.Pulse):
         Examples:
             >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
             >>> pulse.energy_density_spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... ).round(4)
-            array([0.0034, 0.1103, 0.8825, 1.7651, 0.8825, 0.1103, 0.0034])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.003, 0.11 , 0.883, 1.765, 0.883, 0.11 , 0.003, 0.   ])
         """
         f = np.asarray(f)
         b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))

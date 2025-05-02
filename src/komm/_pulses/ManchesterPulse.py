@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .util import rect
 
 
 @dataclass
@@ -40,11 +41,13 @@ class ManchesterPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.ManchesterPulse()
-            >>> pulse.waveform([-0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0])
-            array([ 0.,  0., -1., -1.,  1.,  1.,  0.])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([ 0.,  0.,  0.,  0., -1., -1.,  1.,  1.,  0.])
         """
         t = np.asarray(t)
-        return -1.0 * (0 <= t) * (t < 0.5) + 1.0 * (0.5 <= t) * (t < 1.0)
+        return -rect((t - 0.25) / 0.5) + rect((t - 0.75) / 0.5)
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
@@ -56,9 +59,9 @@ class ManchesterPulse(base.Pulse):
         Examples:
             >>> pulse = komm.ManchesterPulse()
             >>> np.abs(pulse.spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... )).round(4)
-            array([0.7245, 0.6366, 0.3729, 0.    , 0.3729, 0.6366, 0.7245])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )).round(3)
+            array([0.637, 0.725, 0.637, 0.373, 0.   , 0.373, 0.637, 0.725, 0.637])
         """
         f = np.asarray(f)
         cexp = np.exp(-2j * np.pi * (f / 2 + 1 / 4))
@@ -75,9 +78,9 @@ class ManchesterPulse(base.Pulse):
         Examples:
             >>> pulse = komm.ManchesterPulse()
             >>> pulse.energy_density_spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... ).round(4)
-            array([0.5249, 0.4053, 0.1391, 0.    , 0.1391, 0.4053, 0.5249])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.405, 0.525, 0.405, 0.139, 0.   , 0.139, 0.405, 0.525, 0.405])
         """
         f = np.asarray(f)
         return np.sinc(f / 2) ** 2 * np.sin(2 * np.pi * f / 4) ** 2

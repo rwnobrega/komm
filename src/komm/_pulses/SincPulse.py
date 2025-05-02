@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .util import rect
 
 
 @dataclass
@@ -38,8 +39,10 @@ class SincPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.SincPulse()
-            >>> pulse.waveform([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75]).round(4)
-            array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
         """
         t = np.asarray(t)
         return np.sinc(t)
@@ -53,12 +56,13 @@ class SincPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.SincPulse()
-            >>> np.abs(pulse.spectrum([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75]))
-            array([0., 1., 1., 1., 1., 0., 0.])
+            >>> np.abs(pulse.spectrum(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ))
+            array([0., 0., 1., 1., 1., 1., 0., 0., 0.])
         """
         f = np.asarray(f)
-        spectrum = 1.0 * (-0.5 <= f) * (f < 0.5)
-        return spectrum.astype(complex)
+        return rect(f).astype(complex)
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
@@ -69,11 +73,13 @@ class SincPulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.SincPulse()
-            >>> pulse.energy_density_spectrum([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75])
-            array([0., 1., 1., 1., 1., 0., 0.])
+            >>> pulse.energy_density_spectrum(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0., 0., 1., 1., 1., 1., 0., 0., 0.])
         """
         f = np.asarray(f)
-        return 1.0 * (-0.5 <= f) * (f < 0.5)
+        return rect(f)
 
     @cached_property
     def support(self) -> tuple[float, float]:

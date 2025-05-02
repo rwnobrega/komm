@@ -54,8 +54,10 @@ class RaisedCosinePulse(base.Pulse):
 
         Examples:
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
-            >>> pulse.waveform([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75]).round(4)
-            array([0.2904, 0.6274, 0.897 , 1.    , 0.897 , 0.6274, 0.2904])
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.29 , 0.627, 0.897, 1.   , 0.897, 0.627, 0.29 , 0.   ])
         """
         α = self.rolloff
         t = np.asarray(t)
@@ -72,9 +74,9 @@ class RaisedCosinePulse(base.Pulse):
         Examples:
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
             >>> np.abs(pulse.spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... )).round(4)
-            array([0. , 0.5, 1. , 1. , 1. , 0.5, 0. ])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ))
+            array([0. , 0. , 0.5, 1. , 1. , 1. , 0.5, 0. , 0. ])
         """
         α = self.rolloff
         f = np.asarray(f)
@@ -103,9 +105,9 @@ class RaisedCosinePulse(base.Pulse):
         Examples:
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
             >>> pulse.energy_density_spectrum(
-            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
-            ... ).round(4)
-            array([0. , 0.25, 1. , 1. , 1. , 0.25, 0. ])
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0.  , 0.  , 0.25, 1.  , 1.  , 1.  , 0.25, 0.  , 0.  ])
         """
         return np.abs(self.spectrum(f)) ** 2
 
