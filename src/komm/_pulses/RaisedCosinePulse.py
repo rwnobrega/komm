@@ -5,12 +5,13 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .SincPulse import SincPulse
 
 
 @dataclass
 class RaisedCosinePulse(base.Pulse):
     r"""
-    Raised cosine pulse. For a given *roll-off factor* $\alpha$ satisfing $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
+    Raised-cosine pulse. For a given *roll-off factor* $\alpha$ satisfing $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
     with spectrum given by
     $$
         \hat{h}(f) = \begin{cases}
@@ -21,18 +22,18 @@ class RaisedCosinePulse(base.Pulse):
     $$
     where $f_1 = (1 - \alpha) / 2$ and $f_2 = (1 + \alpha) / 2$.
 
-    The waveform of the raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
+    The waveform of the raised-cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.
 
     <div class="centered" markdown>
       <span>
-      ![Raised cosine pulse with roll-off factor 0.25.](/figures/pulse_raised_cosine_25.svg)
+      ![Raised-cosine pulse with roll-off factor 0.25.](/figures/pulse_raised_cosine_25.svg)
       </span>
       <span>
-      ![Raised cosine pulse with roll-off factor 0.75.](/figures/pulse_raised_cosine_75.svg)
+      ![Raised-cosine pulse with roll-off factor 0.75.](/figures/pulse_raised_cosine_75.svg)
       </span>
     </div>
 
-    For more details, see <cite>PS08, Sec. 9.2-1</cite>.
+    For more details, see [Wikipedia: Raised-cosine filter](https://en.wikipedia.org/wiki/Raised-cosine_filter).
 
     Notes:
         - For $\alpha = 0$ it reduces to the [sinc pulse](/ref/SincPulse).
@@ -46,7 +47,7 @@ class RaisedCosinePulse(base.Pulse):
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
-        For the raised cosine pulse, it is given by
+        For the raised-cosine pulse, it is given by
         $$
             h(t) = \sinc(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2}.
         $$
@@ -57,8 +58,14 @@ class RaisedCosinePulse(base.Pulse):
             array([0.2904, 0.6274, 0.897 , 1.    , 0.897 , 0.6274, 0.2904])
         """
         α = self.rolloff
-        t = np.asarray(t) + 1e-8  # TODO: Improve this workaround
-        return np.sinc(t) * np.cos(np.pi * α * t) / (1 - (2 * α * t) ** 2)
+        t = np.asarray(t)
+        if α == 0:
+            return SincPulse().waveform(t)
+        with np.errstate(divide="ignore"):
+            waveform = np.sinc(t) * np.cos(np.pi * α * t) / (1 - (2 * α * t) ** 2)
+        singularity = np.isclose(np.abs(t), 1 / (2 * α))
+        waveform[singularity] = (np.pi / 4) * np.sinc(1 / (2 * α))
+        return waveform
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
@@ -72,7 +79,7 @@ class RaisedCosinePulse(base.Pulse):
         α = self.rolloff
         f = np.asarray(f)
         if α == 0:
-            return (1.0 * (abs(f) < 0.5)).astype(complex)
+            return SincPulse().spectrum(f)
         f1 = (1 - α) / 2
         f2 = (1 + α) / 2
         band1 = abs(f) < f1

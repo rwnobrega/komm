@@ -24,8 +24,6 @@ class SincPulse(base.Pulse):
     ![Sinc pulse.](/figures/pulse_sinc.svg)
     </figure>
 
-    For more details, see <cite>PS08, Sec. 9.2-1</cite>.
-
     **Attributes:**
 
     <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span>
