@@ -85,6 +85,29 @@ class RectangularPulse(base.Pulse):
         centered = self.width * np.sinc(self.width * f)
         return centered.astype(complex) * cexp
 
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the rectangular pulse, it is given by
+        $$
+            S(f) = w^2 \sinc^2(w f).
+        $$
+
+        Examples:
+            >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
+            >>> pulse.energy_density_spectrum(
+            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+            ... ).round(4)
+            array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
+
+            >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
+            >>> pulse.energy_density_spectrum(
+            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+            ... ).round(4)
+            array([0.2358, 0.2436, 0.2484, 0.25  , 0.2484, 0.2436, 0.2358])
+        """
+        f = np.asarray(f)
+        return self.width**2 * np.sinc(self.width**2 * f)
+
     @cached_property
     def support(self) -> tuple[float, float]:
         return (0.0, self.width)

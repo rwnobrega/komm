@@ -60,6 +60,21 @@ class SincPulse(base.Pulse):
         spectrum = 1.0 * (-0.5 <= f) * (f < 0.5)
         return spectrum.astype(complex)
 
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            S(f) = \rect(f).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.energy_density_spectrum([-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75])
+            array([0., 1., 1., 1., 1., 0., 0.])
+        """
+        f = np.asarray(f)
+        return 1.0 * (-0.5 <= f) * (f < 0.5)
+
     @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)

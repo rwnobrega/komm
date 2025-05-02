@@ -50,7 +50,7 @@ class ManchesterPulse(base.Pulse):
         r"""
         For the Manchester pulse, it is given by
         $$
-            \hat{h}(f) = \sinc \left( \frac{f}{2} \right) \, \sin \left( 2 \pi \frac{f}{4} \right)  \mathrm{e}^{-\mathrm{j} 2 \pi (f/2\,+\,1/4)}.
+            \hat{h}(f) = \sinc \left( \frac{f}{2} \right) \, \sin \left( 2 \pi \frac{f}{4} \right) \mathrm{e}^{-\mathrm{j} 2 \pi (f/2\,+\,1/4)}.
         $$
 
         Examples:
@@ -64,6 +64,23 @@ class ManchesterPulse(base.Pulse):
         cexp = np.exp(-2j * np.pi * (f / 2 + 1 / 4))
         centered = np.sinc(f / 2) * np.sin(2 * np.pi * f / 4)
         return centered.astype(complex) * cexp
+
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the Manchester pulse, it is given by
+        $$
+            S(f) = \sinc^2 \left( \frac{f}{2} \right) \, \sin^2 \left( 2 \pi \frac{f}{4} \right).
+        $$
+
+        Examples:
+            >>> pulse = komm.ManchesterPulse()
+            >>> pulse.energy_density_spectrum(
+            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+            ... ).round(4)
+            array([0.5249, 0.4053, 0.1391, 0.    , 0.1391, 0.4053, 0.5249])
+        """
+        f = np.asarray(f)
+        return np.sinc(f / 2) ** 2 * np.sin(2 * np.pi * f / 4) ** 2
 
     @cached_property
     def support(self) -> tuple[float, float]:

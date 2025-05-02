@@ -20,6 +20,13 @@ class Pulse(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        The energy density spectrum $S(f)$ of the pulse.
+        """
+        raise NotImplementedError
+
     @cached_property
     @abstractmethod
     def support(self) -> tuple[float, float]:

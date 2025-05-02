@@ -63,6 +63,24 @@ class GaussianPulse(base.Pulse):
         spectrum = 1 / (np.sqrt(2 * np.pi) * b_bar) * np.exp(-0.5 * (f / b_bar) ** 2)
         return spectrum.astype(complex)
 
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the Gaussian pulse, it is given by
+        $$
+            S(f) = \frac{1}{2 \pi \bar{B}^2} \mathrm{e}^{-(f / \bar{B})^2}.
+        $$
+
+        Examples:
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
+            >>> pulse.energy_density_spectrum(
+            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+            ... ).round(4)
+            array([0.0034, 0.1103, 0.8825, 1.7651, 0.8825, 0.1103, 0.0034])
+        """
+        f = np.asarray(f)
+        b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
+        return (1 / (2 * np.pi * b_bar**2)) * np.exp(-((f / b_bar) ** 2))
+
     @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)

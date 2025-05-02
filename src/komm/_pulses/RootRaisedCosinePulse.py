@@ -76,6 +76,26 @@ class RootRaisedCosinePulse(base.Pulse):
         α = self.rolloff
         return np.sqrt(RaisedCosinePulse(rolloff=α).spectrum(f))
 
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the root-raised-cosine pulse, it is given by
+        $$
+            S(f) = \begin{cases}
+                1, & |f| \leq f_1, \\\\[1ex]
+                \dfrac{1}{2} \left( 1 + \cos \left( \pi \dfrac{|f| - f_1}{f_2 - f_1}\right) \right), & f_1 \leq |f| \leq f_2, \\\\[1ex]
+                0, & \text{otherwise}.
+            \end{cases}
+        $$
+
+        Examples:
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+            >>> pulse.energy_density_spectrum(
+            ...     [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+            ... ).round(4)
+            array([0. , 0.5, 1. , 1. , 1. , 0.5, 0. ])
+        """
+        return np.abs(self.spectrum(f)) ** 2
+
     @cached_property
     def support(self) -> tuple[float, float]:
         return (-np.inf, np.inf)
