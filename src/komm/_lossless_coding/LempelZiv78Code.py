@@ -3,6 +3,7 @@ from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .util import Word, integer_to_symbols, symbols_to_integer
 
@@ -56,7 +57,7 @@ class LempelZiv78Code:
         output: list[int] = []
 
         word: Word = ()
-        for symbol in input:
+        for symbol in tqdm(input, "Compressing LZ78", delay=2.5):
             if word + (symbol,) in dictionary:
                 word += (symbol,)
                 continue
@@ -99,6 +100,7 @@ class LempelZiv78Code:
         dictionary: dict[int, Word] = {0: ()}
         output: list[int] = []
 
+        pbar = tqdm(total=input.size, desc="Decompressing LZ78", delay=2.5)
         i = 0
         while True:
             k = ceil(log(len(dictionary), T))
@@ -108,11 +110,14 @@ class LempelZiv78Code:
             word = dictionary[pointer]
             output.extend(word)
             i += k
+            pbar.update(k)
             if i + M > input.size:
                 break
             symbol = symbols_to_integer(input[i : i + M], base=T)
             output.append(symbol)
             dictionary[len(dictionary)] = word + (symbol,)
             i += M
+            pbar.update(M)
+        pbar.close()
 
         return np.array(output, dtype=int)

@@ -3,6 +3,7 @@ from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .util import Word, integer_to_symbols, symbols_to_integer
 
@@ -56,7 +57,7 @@ class LempelZivWelchCode:
         output: list[int] = []
 
         word: Word = ()
-        for symbol in input:
+        for symbol in tqdm(input, "Compressing LZW", delay=2.5):
             if word + (symbol,) in dictionary:
                 word += (symbol,)
                 continue
@@ -108,6 +109,7 @@ class LempelZivWelchCode:
         output.extend(old)
 
         i = k
+        pbar = tqdm(total=input.size, desc="Decompressing LZW", delay=2.5, initial=k)
         while True:
             k = ceil(log(len(dictionary) + 1, T))
             if i + k > input.size:
@@ -118,5 +120,7 @@ class LempelZivWelchCode:
             dictionary[len(dictionary)] = old + (word[0],)
             old = word
             i += k
+            pbar.update(k)
+        pbar.close()
 
         return np.array(output, dtype=int)
