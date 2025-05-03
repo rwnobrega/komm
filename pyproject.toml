@@ -42,8 +42,8 @@ debug = [
     "matplotlib>=3.8.2",
 ]
 demo = [
-    "streamlit==1.39.0",
-    "matplotlib==3.9.2",
+    "streamlit==1.45.0",
+    "matplotlib==3.10.1",
 ]
 
 [build-system]
