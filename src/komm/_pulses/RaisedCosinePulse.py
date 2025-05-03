@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
-from .util import raised_cosine
+from .util import raised_cosine, rect
 
 
 @dataclass
@@ -73,7 +73,7 @@ class RaisedCosinePulse(base.Pulse):
         α = self.rolloff
         f = np.asarray(f)
         if α == 0:
-            return np.sinc(f).astype(complex)
+            return rect(f).astype(complex)
         f1 = (1 - α) / 2
         f2 = (1 + α) / 2
         band1 = abs(f) < f1
@@ -99,9 +99,11 @@ class RaisedCosinePulse(base.Pulse):
         """
         α = self.rolloff
         tau = np.asarray(tau)
-        lhs = np.sinc(tau) * np.cos(np.pi * α * tau) / (1 - (2 * α * tau) ** 2)
-        rhs = α / 4 * np.sinc(α * tau) * np.cos(np.pi * tau) / (1 - (α * tau) ** 2)
-        return lhs - rhs
+        with np.errstate(divide="ignore", invalid="ignore"):
+            term = np.sinc(α * tau) * np.cos(np.pi * tau) / (1 - (α * tau) ** 2)
+        singularity = np.isclose(np.abs(tau), 1 / α)
+        term[singularity] = np.cos(np.pi / α) / 2
+        return raised_cosine(tau, α) - α / 4 * term
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
