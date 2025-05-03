@@ -65,6 +65,26 @@ class GaussianPulse(base.Pulse):
         spectrum = 1 / (np.sqrt(2 * np.pi) * b_bar) * np.exp(-0.5 * (f / b_bar) ** 2)
         return spectrum.astype(complex)
 
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the Gaussian pulse, it is given by
+        $$
+            R(\tau) = \frac{1}{2 \sqrt{\pi} \bar{B}} \mathbb{e}^{-(\pi \bar{B} \tau)^2}.
+        $$
+
+        Examples:
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.386, 0.569, 0.752, 0.889, 0.939, 0.889, 0.752, 0.569, 0.386])
+        """
+        tau = np.asarray(tau)
+        b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
+        return (1 / (2 * np.sqrt(np.pi) * b_bar)) * np.exp(
+            -((np.pi * b_bar * tau) ** 2)
+        )
+
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the Gaussian pulse, it is given by

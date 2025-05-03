@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from . import base
 from .RaisedCosinePulse import RaisedCosinePulse
-from .SincPulse import SincPulse
+from .util import raised_cosine
 
 
 @dataclass
@@ -52,7 +52,7 @@ class RootRaisedCosinePulse(base.Pulse):
         α = self.rolloff
         t = np.asarray(t)
         if α == 0:
-            return SincPulse().waveform(t)
+            return np.sinc(t)
         f1 = (1 - α) / 2
         f2 = (1 + α) / 2
         num = np.sin(2 * np.pi * f1 * t) + 4 * α * t * np.cos(2 * np.pi * f2 * t)
@@ -76,8 +76,23 @@ class RootRaisedCosinePulse(base.Pulse):
             ... )).round(3)
             array([0.   , 0.   , 0.707, 1.   , 1.   , 1.   , 0.707, 0.   , 0.   ])
         """
-        α = self.rolloff
-        return np.sqrt(RaisedCosinePulse(rolloff=α).spectrum(f))
+        return np.sqrt(RaisedCosinePulse(self.rolloff).spectrum(f))
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the root-raised-cosine pulse, it is given by
+        $$
+            R(\tau) = \sinc(\tau) \frac{\cos(\pi \alpha \tau)}{1 - (2 \alpha \tau)^2}.
+        $$
+
+        Examples:
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.29 , 0.627, 0.897, 1.   , 0.897, 0.627, 0.29 , 0.   ])
+        """
+        return raised_cosine(tau, self.rolloff)
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

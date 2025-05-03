@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
-from .SincPulse import SincPulse
+from .util import raised_cosine
 
 
 @dataclass
@@ -59,15 +59,7 @@ class RaisedCosinePulse(base.Pulse):
             ... ).round(3)
             array([0.   , 0.29 , 0.627, 0.897, 1.   , 0.897, 0.627, 0.29 , 0.   ])
         """
-        α = self.rolloff
-        t = np.asarray(t)
-        if α == 0:
-            return SincPulse().waveform(t)
-        with np.errstate(divide="ignore"):
-            waveform = np.sinc(t) * np.cos(np.pi * α * t) / (1 - (2 * α * t) ** 2)
-        singularity = np.isclose(np.abs(t), 1 / (2 * α))
-        waveform[singularity] = (np.pi / 4) * np.sinc(1 / (2 * α))
-        return waveform
+        return raised_cosine(t, self.rolloff)
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
@@ -81,7 +73,7 @@ class RaisedCosinePulse(base.Pulse):
         α = self.rolloff
         f = np.asarray(f)
         if α == 0:
-            return SincPulse().spectrum(f)
+            return np.sinc(f).astype(complex)
         f1 = (1 - α) / 2
         f2 = (1 + α) / 2
         band1 = abs(f) < f1
@@ -90,6 +82,26 @@ class RaisedCosinePulse(base.Pulse):
         spectrum[band1] = 1.0
         spectrum[band2] = 0.5 * (1 + np.cos(np.pi * (abs(f[band2]) - f1) / α))
         return spectrum
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the raised-cosine pulse, it is given by
+        $$
+            R(\tau) = \sinc(\tau) \frac{\cos(\pi \alpha \tau)}{1 - (2 \alpha \tau)^2} - \frac{\alpha}{4} \sinc(\alpha \tau) \frac{\cos(\pi \tau)}{1 - (\alpha \tau)^2}.
+        $$
+
+        Examples:
+            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.06 , 0.334, 0.627, 0.853, 0.938, 0.853, 0.627, 0.334, 0.06 ])
+        """
+        α = self.rolloff
+        tau = np.asarray(tau)
+        lhs = np.sinc(tau) * np.cos(np.pi * α * tau) / (1 - (2 * α * tau) ** 2)
+        rhs = α / 4 * np.sinc(α * tau) * np.cos(np.pi * tau) / (1 - (α * tau) ** 2)
+        return lhs - rhs
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

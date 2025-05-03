@@ -11,12 +11,9 @@ from .util import rect
 @dataclass
 class SincPulse(base.Pulse):
     r"""
-    Sinc pulse. It is a [pulse](/ref/Pulse) with spectrum given by
+    Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        \hat{h}(f) = \begin{cases}
-            1, & -\frac{1}{2} \leq f < \frac{1}{2}, \\\\
-            0, & \text{otherwise}.
-        \end{cases}
+        h(t) = \frac{\sin(\pi t)}{\pi t} = \sinc(t).
     $$
 
     The waveform of the sinc pulse is depicted below.
@@ -34,7 +31,7 @@ class SincPulse(base.Pulse):
         r"""
         For the sinc pulse, it is given by
         $$
-            h(t) = \sinc(t) = \frac{\sin(\pi t)}{\pi t}.
+            h(t) = \sinc(t).
         $$
 
         Examples:
@@ -63,6 +60,23 @@ class SincPulse(base.Pulse):
         """
         f = np.asarray(f)
         return rect(f).astype(complex)
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            R(\tau) = \sinc(\tau).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
+        """
+        tau = np.asarray(tau)
+        return np.sinc(tau)
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

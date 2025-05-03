@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
-from .util import rect
+from .util import rect, tri
 
 
 @dataclass
@@ -47,7 +47,7 @@ class ManchesterPulse(base.Pulse):
             array([ 0.,  0.,  0.,  0., -1., -1.,  1.,  1.,  0.])
         """
         t = np.asarray(t)
-        return -rect((t - 0.25) / 0.5) + rect((t - 0.75) / 0.5)
+        return -rect(2 * (t - 0.25)) + rect(2 * (t - 0.75))
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
@@ -67,6 +67,23 @@ class ManchesterPulse(base.Pulse):
         cexp = np.exp(-2j * np.pi * (f / 2 + 1 / 4))
         centered = np.sinc(f / 2) * np.sin(2 * np.pi * f / 4)
         return centered.astype(complex) * cexp
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the Manchester pulse, it is given
+        $$
+            R(\tau) = \tri \left( \frac{\tau}{1/2} \right) - \frac{1}{2} \tri \left( \frac{\tau + 1/2}{1/2} \right) - \frac{1}{2} \tri \left( \frac{\tau - 1/2}{1/2} \right).
+        $$
+
+        Examples:
+            >>> pulse = komm.ManchesterPulse()
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([ 0.  , -0.25, -0.5 ,  0.25,  1.  ,  0.25, -0.5 , -0.25,  0.  ])
+        """
+        tau = np.asarray(tau)
+        return tri(2 * tau) - 0.5 * tri(2 * (tau - 0.5)) - 0.5 * tri(2 * (tau + 0.5))
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

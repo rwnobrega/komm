@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
-from .util import rect
+from .util import rect, tri
 
 
 @dataclass
@@ -91,6 +91,30 @@ class RectangularPulse(base.Pulse):
         cexp = np.exp(-2j * np.pi * w / 2 * f)
         centered = w * np.sinc(w * f)
         return centered.astype(complex) * cexp
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the rectangular pulse, it is given by
+        $$
+            R(\tau) = w \tri\left(\frac{\tau}{w}\right).
+        $$
+
+        Examples:
+            >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0.  , 0.25, 0.5 , 0.75, 1.  , 0.75, 0.5 , 0.25, 0.  ])
+
+            >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0.  , 0.  , 0.  , 0.25, 0.5 , 0.25, 0.  , 0.  , 0.  ])
+        """
+        w = self.width
+        tau = np.asarray(tau)
+        return w * tri(tau / w)
 
     def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
