@@ -3,6 +3,40 @@
 > [!NOTE]
 > Changelog started with version v0.10.0.
 
+## v0.21.0 (2025-05-04)
+
+### Breaking changes
+
+- Modified BCJR decoder to accept L-values instead of direct channel output. As a consequence, the parameter `snr` of `BCJRDecoder` was removed. Instead of
+
+  ```
+  >>> decoder = komm.BCJRDecoder(code, snr=snr)
+  >>> lo = decoder(r)
+  ```
+
+  use, for example,
+
+  ```
+  >>> decoder = komm.BCJRDecoder(code)
+  >>> bpsk = komm.PSKModulation(2)
+  >>> li = bpsk.demodulate_soft(r, snr=snr)
+  >>> lo = decoder(li)
+  ```
+
+- Replaced `time()` convenience method with `axes()` in `TransmitFilter` to return both time and frequency axes. Instead of `ts = tx_filter.time()`, use `ts, fs = tx_filter.axes()`.
+
+- Changed default value of rollof of root-raised-cosine pulse (from `0.0` to `1.0`) for consistency with raised-cosine pulse.
+
+### Added
+
+- Implemented [Polar codes](https://komm.dev/ref/PolarCode) and its [successive cancellation decoder](https://komm.dev/ref/SCDecoder).
+- Added [`boxplus`](https://komm.dev/ref/boxplus) and [`binary_entropy_inv`](https://komm.dev/ref/binary_entropy_inv) utility functions.
+- Implemented `autocorrelation` and `energy_density_spectrum` methods for pulses.
+
+### Fixed
+
+- Adjusted spectrum of pulses to return correct phases.
+
 ## v0.20.1 (2025-04-04)
 
 ### Added
@@ -122,7 +156,7 @@
 ### Breaking changes
 
 - Converted property `finite_state_machine` of `ConvolutionalCode` to a method.
-- Removed properties `state_matrix`, `control_matrix`, `observation_matrix`, `transition_matrix` from `ConvolutionalCode`, and replaced them with the method `state_space_representation()`. The new usage is `state_matrix, control_matrix, observation_matrix, transition_matrix = convolutional_code.state_space_representation()`.
+- Removed properties `state_matrix`, `control_matrix`, `observation_matrix`, `transition_matrix` from `ConvolutionalCode`, and replaced them with the method `state_space_representation`. The new usage is `state_matrix, control_matrix, observation_matrix, transition_matrix = convolutional_code.state_space_representation()`.
 
 ## v0.10.0 (2024-11-29)
 
