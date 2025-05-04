@@ -48,7 +48,7 @@ t = tx_filter.time(seq)
 waveform = tx_filter(seq)
 spectrum = fft.fftshift(fft.fft(waveform, 1024)) / samples_per_symbol
 
-fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 5))
+fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
 ax0.stem(seq, linefmt="r", markerfmt="ro")
 ax0.plot(t, waveform, "o-", markersize=2)
 ax0.axis((-3, 9, -2, 2))
