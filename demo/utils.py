@@ -32,8 +32,8 @@ def show_documentation(title, stub):
     st.html(f"""
         <h3>
             {title}
-            <a href='https://komm.dev/ref/{stub}' style='text-decoration: none;'>
-                <span style='font-size: 0.7em; margin-left: 0.1em'>🌐</span>
+            <a href="https://komm.dev/ref/{stub}" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                <span style="font-size: 0.7em; margin-left: 0.1em">🌐</span>
             </a>
         </h3>
         """)
