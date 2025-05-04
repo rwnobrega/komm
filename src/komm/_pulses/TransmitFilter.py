@@ -13,18 +13,18 @@ class TransmitFilter:
     r"""
     Transmit filter (pulse shaping). Given a sequence of $N$ real or complex symbols $x[n]$, this filter outputs samples of the signal
     $$
-        x(t) = \sum_{n=0}^{N-1} x[n] h(t - n),
+        y(t) = \sum_{n=0}^{N-1} x[n] p(t - n),
     $$
-    where $h(t)$ is the waveform of a given [pulse](/ref/Pulse), and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.
+    where $p(t)$ is the waveform of a given [pulse](/ref/Pulse), and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.
 
-    The time span of $x(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $h(t)$. In turn, $n_0$ and $n_1$ depend on the support of $h(t)$:
+    The time span of $y(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $p(t)$. In turn, $n_0$ and $n_1$ depend on the support of $p(t)$:
 
-    - If $h(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.
+    - If $p(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.
 
-    - If $h(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the _truncation window length_.
+    - If $p(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the _truncation window length_.
 
     Attributes:
-        pulse: The pulse whose waveform is $h(t)$.
+        pulse: The pulse whose waveform is $p(t)$.
         samples_per_symbol: The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
         truncation: The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
     """
@@ -57,7 +57,7 @@ class TransmitFilter:
     @cached_property
     def pulse_time_span(self) -> tuple[int, int]:
         r"""
-        The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $h(t)$.
+        The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $p(t)$.
 
         Examples:
             >>> pulse = komm.RectangularPulse(0.25)
@@ -70,7 +70,9 @@ class TransmitFilter:
             >>> pulse = komm.SincPulse()
             >>> pulse.support
             (-inf, inf)
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            >>> tx_filter = komm.TransmitFilter(
+            ...     pulse=pulse, samples_per_symbol=4, truncation=4
+            ... )
             >>> tx_filter.pulse_time_span
             (-2, 2)
         """
@@ -89,8 +91,14 @@ class TransmitFilter:
         t_min_h, t_max_h = self.pulse_time_span
         t_min_x, t_max_x = t_min_h, t_max_h + num_symbols - 1
         beta = self.samples_per_symbol
-        t = np.arange(t_min_x * beta, t_max_x * beta) / beta
-        return t
+        ts = np.arange(t_min_x * beta, t_max_x * beta) / beta
+        return ts
+
+    def _frequency(self, num_symbols: int) -> npt.NDArray[np.floating]:
+        # The frequency axis of the output signal considering 'num_symbols' input symbols.
+        Na = num_symbols * self.samples_per_symbol
+        fs = np.arange(-Na // 2, Na // 2) / num_symbols
+        return fs
 
     @cached_property
     def taps(self) -> npt.NDArray[np.floating]:
@@ -104,7 +112,9 @@ class TransmitFilter:
             array([1., 0., 0.])
 
             >>> pulse = komm.SincPulse()
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            >>> tx_filter = komm.TransmitFilter(
+            ...     pulse=pulse, samples_per_symbol=4, truncation=4
+            ... )
             >>> tx_filter.taps.reshape((-1, 4)).round(6)
             array([[-0.      , -0.128617, -0.212207, -0.180063],
                    [ 0.      ,  0.300105,  0.63662 ,  0.900316],
@@ -112,36 +122,6 @@ class TransmitFilter:
                    [ 0.      , -0.180063, -0.212207, -0.128617]])
         """
         return self.pulse.waveform(self._time(1))
-
-    def time(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
-        r"""
-        Convenience function to generate the time axis of the output signal given the input symbols.
-
-        Parameters:
-            input: The input symbols $x[n]$, of length $N$.
-
-        Returns:
-            t: The time axis of the output signal, of length $(N + n_1 - n_0 - 1) \beta$.
-
-        Examples:
-            >>> pulse = komm.RectangularPulse()
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
-            >>> tx_filter.time([1.0, -1.0, 1.0, 1.0]).round(2)
-            array([0.  , 0.33, 0.67, 1.  , 1.33, 1.67, 2.  , 2.33, 2.67, 3.  , 3.33, 3.67])
-
-            >>> pulse = komm.SincPulse()
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
-            >>> tx_filter.time([1.0, -1.0, 1.0, 1.0]).reshape((-1, 4))
-            array([[-2.  , -1.75, -1.5 , -1.25],
-                   [-1.  , -0.75, -0.5 , -0.25],
-                   [ 0.  ,  0.25,  0.5 ,  0.75],
-                   [ 1.  ,  1.25,  1.5 ,  1.75],
-                   [ 2.  ,  2.25,  2.5 ,  2.75],
-                   [ 3.  ,  3.25,  3.5 ,  3.75],
-                   [ 4.  ,  4.25,  4.5 ,  4.75]])
-        """
-        input = np.asarray(input)
-        return self._time(input.size)
 
     def __call__(
         self, input: npt.ArrayLike
@@ -153,7 +133,7 @@ class TransmitFilter:
             input: The input symbols $x[n]$, of length $N$.
 
         Returns:
-            output: The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.
+            output: The samples of the output signal $y(t)$, of length $(N + n_1 - n_0 - 1) \beta$.
 
         Examples:
             >>> pulse = komm.RectangularPulse(width=1.0)
@@ -167,7 +147,9 @@ class TransmitFilter:
             array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])
 
             >>> pulse = komm.SincPulse()
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            >>> tx_filter = komm.TransmitFilter(
+            ...     pulse=pulse, samples_per_symbol=4, truncation=4
+            ... )
             >>> tx_filter([1.0, -1.0, 1.0, 1.0]).reshape((-1, 4)).round(6)
             array([[-0.      , -0.128617, -0.212207, -0.180063],
                    [ 0.      ,  0.428722,  0.848826,  1.08038 ],
@@ -178,7 +160,9 @@ class TransmitFilter:
                    [ 0.      , -0.180063, -0.212207, -0.128617]])
 
             >>> pulse = komm.RectangularPulse()
-            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=4, truncation=4)
+            >>> tx_filter = komm.TransmitFilter(
+            ...     pulse=pulse, samples_per_symbol=4, truncation=4
+            ... )
             Traceback (most recent call last):
             ...
             ValueError: 'truncation' only applies to infinite-support pulses
@@ -189,3 +173,49 @@ class TransmitFilter:
         input_interp[::beta] = input
         output = np.convolve(self.taps, input_interp)
         return output
+
+    def axes(
+        self, input: npt.ArrayLike
+    ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
+        r"""
+        Convenience function to generate the time and frequency axes of the output signal given the input symbols.
+
+        Parameters:
+            input: The input symbols $x[n]$, of length $N$.
+
+        Returns:
+            ts: The time axis of the output signal, having the same length as the output signal.
+            fs: The frequency axis of the output signal, having the same length as the output signal.
+
+        Examples:
+            >>> pulse = komm.RectangularPulse()
+            >>> tx_filter = komm.TransmitFilter(pulse=pulse, samples_per_symbol=3)
+            >>> ts, fs = tx_filter.axes([1.0, -1.0, 1.0, 1.0])
+            >>> ts.reshape((-1, 3))
+            array([[0.        , 0.33333333, 0.66666667],
+                   [1.        , 1.33333333, 1.66666667],
+                   [2.        , 2.33333333, 2.66666667],
+                   [3.        , 3.33333333, 3.66666667]])
+            >>> fs
+            array([-1.5 , -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,
+                    0.75,  1.  ,  1.25])
+
+            >>> pulse = komm.SincPulse()
+            >>> tx_filter = komm.TransmitFilter(
+            ...     pulse=pulse, samples_per_symbol=4, truncation=4
+            ... )
+            >>> ts, fs = tx_filter.axes([1.0, -1.0, 1.0, 1.0])
+            >>> ts.reshape((-1, 4))
+            array([[-2.  , -1.75, -1.5 , -1.25],
+                   [-1.  , -0.75, -0.5 , -0.25],
+                   [ 0.  ,  0.25,  0.5 ,  0.75],
+                   [ 1.  ,  1.25,  1.5 ,  1.75],
+                   [ 2.  ,  2.25,  2.5 ,  2.75],
+                   [ 3.  ,  3.25,  3.5 ,  3.75],
+                   [ 4.  ,  4.25,  4.5 ,  4.75]])
+            >>> fs
+            array([-2.  , -1.75, -1.5 , -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,
+                    0.25,  0.5 ,  0.75,  1.  ,  1.25,  1.5 ,  1.75])
+        """
+        input = np.asarray(input)
+        return self._time(input.size), self._frequency(input.size)

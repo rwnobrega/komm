@@ -14,7 +14,7 @@ def plot_barker(length):
     barker = komm.BarkerSequence(length=length)
     shifts = np.arange(-2 * length + 1, 2 * length)
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 3))
 
     ax0.stem(np.arange(length), barker.polar_sequence)
     ax0.set_title("Sequence")
@@ -40,7 +40,8 @@ def plot_walsh_hadamard(length, ordering, index):
         index=index,
     )
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 3))
+
     ax0.stem(np.arange(length), walsh_hadamard.polar_sequence)
     ax0.set_title("Sequence")
     ax0.set_xlabel("$n$")
@@ -61,7 +62,7 @@ def plot_lfsr(degree):
     length = lfsr.length
     shifts = np.arange(-2 * length + 1, 2 * length)
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 4))
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 3))
 
     ax0.stem(np.arange(length), lfsr.polar_sequence)
     ax0.set_title("Sequence")
@@ -96,7 +97,6 @@ with tab1:
     )
 
     barker, fig = plot_barker(length)
-    col1, col2 = st.columns(2)
     st.write(repr(barker))
     st.pyplot(fig)
     show_code(plot_barker)

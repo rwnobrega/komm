@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .util import rect
 
 
 @dataclass
@@ -12,43 +13,87 @@ class SincPulse(base.Pulse):
     r"""
     Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \operatorname{sinc}(t) = \frac{\sin(\pi t)}{\pi t},
-    $$
-    and spectrum given by
-    $$
-        \hat{h}(f) = \begin{cases}
-            1, & |f| < \frac{1}{2}, \\\\
-            0, & \text{otherwise}.
-        \end{cases}
+        p(t) = \frac{\sin(\pi t)}{\pi t} = \sinc(t).
     $$
 
-    The sinc pulse is depicted below.
+    The waveform of the sinc pulse is depicted below.
 
     <figure markdown>
-      ![Sinc pulse.](/figures/pulse_sinc.svg)
+    ![Sinc pulse.](/figures/pulse_sinc.svg)
     </figure>
-
-    For more details, see <cite>PS08, Sec. 9.2-1</cite>.
 
     **Attributes:**
 
     <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span>
-
-    Examples:
-        >>> pulse = komm.SincPulse()
-        >>> pulse.waveform([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75]).round(4)
-        array([0.3001, 0.6366, 0.9003, 1.    , 0.9003, 0.6366, 0.3001])
-        >>> pulse.spectrum([-0.75, -0.50, -0.25,  0.00,  0.25,  0.50,  0.75])
-        array([0., 0., 1., 1., 1., 0., 0.])
     """
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            p(t) = \sinc(t).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
+        """
         t = np.asarray(t)
         return np.sinc(t)
 
-    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            \hat{p}(f) = \rect(f).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> np.abs(pulse.spectrum(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ))
+            array([0., 0., 1., 1., 1., 1., 0., 0., 0.])
+        """
         f = np.asarray(f)
-        return 1.0 * (abs(f) < 0.5)
+        return rect(f).astype(complex)
+
+    def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            R(\tau) = \sinc(\tau).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.autocorrelation(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
+        """
+        tau = np.asarray(tau)
+        return np.sinc(tau)
+
+    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            S(f) = \rect(f).
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.energy_density_spectrum(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )
+            array([0., 0., 1., 1., 1., 1., 0., 0., 0.])
+        """
+        f = np.asarray(f)
+        return rect(f)
 
     @cached_property
     def support(self) -> tuple[float, float]:

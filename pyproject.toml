@@ -1,6 +1,6 @@
 [project]
 name = "komm"
-version = "0.20.1"
+version = "0.21.0"
 description = "An open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems."
 readme = "README.md"
 authors = [{ name = "Roberto W. Nobrega", email = "rwnobrega@gmail.com" }]
@@ -42,8 +42,8 @@ debug = [
     "matplotlib>=3.8.2",
 ]
 demo = [
-    "streamlit==1.39.0",
-    "matplotlib==3.9.2",
+    "streamlit==1.45.0",
+    "matplotlib==3.10.1",
 ]
 
 [build-system]
@@ -61,7 +61,7 @@ deprecateTypingAliases = true
 strict = ["src/**"]
 
 [tool.pytest.ini_options]
-addopts = ["--last-failed", "--doctest-plus"]
+addopts = ["--doctest-plus"]
 python_files = ["test_*.py", "bench_*.py"]
 python_functions = ["test_*", "bench_*"]
 pythonpath = ["."]
