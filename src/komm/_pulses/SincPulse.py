@@ -13,7 +13,7 @@ class SincPulse(base.Pulse):
     r"""
     Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) = \frac{\sin(\pi t)}{\pi t} = \sinc(t).
+        p(t) = \frac{\sin(\pi t)}{\pi t} = \sinc(t).
     $$
 
     The waveform of the sinc pulse is depicted below.
@@ -31,7 +31,7 @@ class SincPulse(base.Pulse):
         r"""
         For the sinc pulse, it is given by
         $$
-            h(t) = \sinc(t).
+            p(t) = \sinc(t).
         $$
 
         Examples:
@@ -48,7 +48,7 @@ class SincPulse(base.Pulse):
         r"""
         For the sinc pulse, it is given by
         $$
-            \hat{h}(f) = \rect(f).
+            \hat{p}(f) = \rect(f).
         $$
 
         Examples:

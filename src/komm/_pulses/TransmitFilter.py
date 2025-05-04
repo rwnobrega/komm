@@ -13,18 +13,18 @@ class TransmitFilter:
     r"""
     Transmit filter (pulse shaping). Given a sequence of $N$ real or complex symbols $x[n]$, this filter outputs samples of the signal
     $$
-        y(t) = \sum_{n=0}^{N-1} x[n] h(t - n),
+        y(t) = \sum_{n=0}^{N-1} x[n] p(t - n),
     $$
-    where $h(t)$ is the waveform of a given [pulse](/ref/Pulse), and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.
+    where $p(t)$ is the waveform of a given [pulse](/ref/Pulse), and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.
 
-    The time span of $y(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $h(t)$. In turn, $n_0$ and $n_1$ depend on the support of $h(t)$:
+    The time span of $y(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $p(t)$. In turn, $n_0$ and $n_1$ depend on the support of $p(t)$:
 
-    - If $h(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.
+    - If $p(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.
 
-    - If $h(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the _truncation window length_.
+    - If $p(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the _truncation window length_.
 
     Attributes:
-        pulse: The pulse whose waveform is $h(t)$.
+        pulse: The pulse whose waveform is $p(t)$.
         samples_per_symbol: The number $\beta$ of samples (of the output) per symbol (of the input). Must be a positive integer.
         truncation: The truncation window length $L$. Only applies to infinite-duration pulses. Must be an even positive integer. The default value is `32`.
     """
@@ -57,7 +57,7 @@ class TransmitFilter:
     @cached_property
     def pulse_time_span(self) -> tuple[int, int]:
         r"""
-        The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $h(t)$.
+        The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $p(t)$.
 
         Examples:
             >>> pulse = komm.RectangularPulse(0.25)

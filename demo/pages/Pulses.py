@@ -148,7 +148,7 @@ for tab_idx, config in enumerate(tab_configs):
             ax[0].axis(ht_axis)
             ax[0].set_title("Waveform")
             ax[0].set_xlabel("$t$")
-            ax[0].set_ylabel("$h(t)$")
+            ax[0].set_ylabel("$p(t)$")
             ax[0].grid()
             a, b = config["phase_adjust"] if "phase_adjust" in config else (0, 0)
             spectrum = pulse.spectrum(f) * np.exp(2j * np.pi * (a * f + b))
@@ -156,7 +156,7 @@ for tab_idx, config in enumerate(tab_configs):
             ax[1].axis(hf_axis)
             ax[1].set_title("Spectrum")
             ax[1].set_xlabel("$f$")
-            ax[1].set_ylabel("$\\hat{h}(f)$")
+            ax[1].set_ylabel("$\\hat{p}(f)$")
             ax[1].grid()
         elif to_show == "Autocorrelation and energy density spectrum":
             R_axis = config["R_axis"]

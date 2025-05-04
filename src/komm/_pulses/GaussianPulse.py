@@ -12,7 +12,7 @@ class GaussianPulse(base.Pulse):
     r"""
     Gaussian pulse. It is a [pulse](/ref/Pulse) with spectrum given by
     $$
-        \hat{h}(f) = \frac{1}{\sqrt{2 \pi} \bar{B}} \mathrm{e}^{-\frac{1}{2} (f / \bar{B})^2},
+        \hat{p}(f) = \frac{1}{\sqrt{2 \pi} \bar{B}} \mathrm{e}^{-\frac{1}{2} (f / \bar{B})^2},
     $$
     where the $\bar{B} = B / \sqrt{\ln 2}$, and $B$ is the _half-power bandwidth_ of the filter.
 
@@ -37,7 +37,7 @@ class GaussianPulse(base.Pulse):
         r"""
         For the Gaussian pulse, it is given by
         $$
-            h(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}.
+            p(t) = \mathrm{e}^{-\frac{1}{2} (2 \pi \bar{B} t)^2}.
         $$
 
         Examples:

@@ -14,7 +14,7 @@ class RaisedCosinePulse(base.Pulse):
     Raised-cosine pulse. For a given *roll-off factor* $\alpha$ satisfing $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
     with spectrum given by
     $$
-        \hat{h}(f) = \begin{cases}
+        \hat{p}(f) = \begin{cases}
             1, & |f| \leq f_1, \\\\[1ex]
             \dfrac{1}{2} \left( 1 + \cos \left( \pi \dfrac{|f| - f_1}{f_2 - f_1}\right) \right), & f_1 \leq |f| \leq f_2, \\\\[1ex]
             0, & \text{otherwise}.
@@ -49,7 +49,7 @@ class RaisedCosinePulse(base.Pulse):
         r"""
         For the raised-cosine pulse, it is given by
         $$
-            h(t) = \sinc(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2}.
+            p(t) = \sinc(t) \frac{\cos(\pi \alpha t)}{1 - (2 \alpha t)^2}.
         $$
 
         Examples:

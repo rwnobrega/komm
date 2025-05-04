@@ -9,14 +9,14 @@ class Pulse(ABC):
     @abstractmethod
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
-        The waveform $h(t)$ of the pulse.
+        The waveform $p(t)$ of the pulse.
         """
         raise NotImplementedError
 
     @abstractmethod
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
-        The spectrum $\hat{h}(f)$ of the pulse.
+        The spectrum $\hat{p}(f)$ of the pulse.
         """
         raise NotImplementedError
 

@@ -37,7 +37,7 @@ class RootRaisedCosinePulse(base.Pulse):
         r"""
         For the root-raised-cosine pulse, it is given by
         $$
-          h(t) = \frac{\sin \( 2 \pi f_1 t \) + 4 \alpha t \cos \( 2 \pi f_2 t \)}{\pi t \( 1 - (4 \alpha t)^2 \)},
+          p(t) = \frac{\sin \( 2 \pi f_1 t \) + 4 \alpha t \cos \( 2 \pi f_2 t \)}{\pi t \( 1 - (4 \alpha t)^2 \)},
         $$
         where $\alpha$ is the roll-off factor, $f_1 = (1 - \alpha) / 2$, and $f_2 = (1 + \alpha) / 2$.
 

@@ -13,7 +13,7 @@ class ManchesterPulse(base.Pulse):
     r"""
     Manchester pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) =
+        p(t) =
         \begin{cases}
             -1, & 0 \leq t <  1/2, \\\\
             1, & 1/2 \leq t < 1, \\\\
@@ -36,7 +36,7 @@ class ManchesterPulse(base.Pulse):
         r"""
         For the Manchester pulse, it is given by
         $$
-            h(t) = -\rect\left(\frac{t - 1/4}{1/2}\right) + \rect\left(\frac{t - 3/4}{1/2}\right).
+            p(t) = -\rect\left(\frac{t - 1/4}{1/2}\right) + \rect\left(\frac{t - 3/4}{1/2}\right).
         $$
 
         Examples:
@@ -53,7 +53,7 @@ class ManchesterPulse(base.Pulse):
         r"""
         For the Manchester pulse, it is given by
         $$
-            \hat{h}(f) = \sinc \left( \frac{f}{2} \right) \, \sin \left( 2 \pi \frac{f}{4} \right) \mathrm{e}^{-\mathrm{j} 2 \pi (f/2\,+\,1/4)}.
+            \hat{p}(f) = \sinc \left( \frac{f}{2} \right) \, \sin \left( 2 \pi \frac{f}{4} \right) \mathrm{e}^{-\mathrm{j} 2 \pi (f/2\,+\,1/4)}.
         $$
 
         Examples:

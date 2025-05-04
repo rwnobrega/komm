@@ -13,7 +13,7 @@ class RectangularPulse(base.Pulse):
     r"""
     Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
-        h(t) =
+        p(t) =
         \begin{cases}
             1, & 0 \leq t < w, \\\\
             0, & \text{otherwise},
@@ -46,7 +46,7 @@ class RectangularPulse(base.Pulse):
         r"""
         For the rectangular pulse, it is given by
         $$
-            h(t) = \rect\left(\frac{t - w/2}{w}\right).
+            p(t) = \rect\left(\frac{t - w/2}{w}\right).
         $$
 
         Examples:
@@ -70,7 +70,7 @@ class RectangularPulse(base.Pulse):
         r"""
         For the rectangular pulse, it is given by
         $$
-            \hat{h}(f) = w \sinc(w f) \mathrm{e}^{-\mathrm{j} 2 \pi (w/2) f}.
+            \hat{p}(f) = w \sinc(w f) \mathrm{e}^{-\mathrm{j} 2 \pi (w/2) f}.
         $$
 
         Examples:
