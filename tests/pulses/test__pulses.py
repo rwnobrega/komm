@@ -20,6 +20,13 @@ PULSES = [
 ]
 
 
+@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()])
+def test_pulses_spectrum_vs_energy_density_spectrum(pulse: komm.abc.Pulse):
+    fs = np.linspace(-2.0, 2.0, 101)
+    S = np.abs(pulse.spectrum(fs)) ** 2
+    np.testing.assert_allclose(S, pulse.energy_density_spectrum(fs))
+
+
 @pytest.mark.parametrize("pulse", PULSES)
 def test_pulses_energy_density_spectrum_vs_autocorrelation(pulse: komm.abc.Pulse):
     τs = np.linspace(-20.0, 20.0, 10001)
