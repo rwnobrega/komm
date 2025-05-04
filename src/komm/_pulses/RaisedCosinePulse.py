@@ -99,6 +99,8 @@ class RaisedCosinePulse(base.Pulse):
         """
         α = self.rolloff
         tau = np.asarray(tau)
+        if α == 0:
+            return np.sinc(tau)
         with np.errstate(divide="ignore", invalid="ignore"):
             term = np.sinc(α * tau) * np.cos(np.pi * tau) / (1 - (α * tau) ** 2)
         singularity = np.isclose(np.abs(tau), 1 / α)
