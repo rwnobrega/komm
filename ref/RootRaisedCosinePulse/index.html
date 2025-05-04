@@ -739,6 +739,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1013,6 +1015,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../PolarCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PolarCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../SlepianArray/" class="md-nav__link">
         
   
@@ -1042,6 +1064,8 @@
   
     
     
+      
+        
       
         
       
@@ -1156,6 +1180,26 @@
   
   <span class="md-ellipsis">
     ReedDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SCDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SCDecoder
   </span>
   
 
@@ -1890,6 +1934,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    RootRaisedCosinePulse
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1899,6 +1954,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#waveform" class="md-nav__link">
+    waveform()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectrum" class="md-nav__link">
+    spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorrelation" class="md-nav__link">
+    autocorrelation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#energy_density_spectrum" class="md-nav__link">
+    energy_density_spectrum()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2903,6 +3005,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2962,6 +3068,26 @@
   
   <span class="md-ellipsis">
     int_to_bits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boxplus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    boxplus
   </span>
   
 
@@ -3117,6 +3243,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../binary_entropy_inv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    binary_entropy_inv
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../relative_entropy/" class="md-nav__link">
         
   
@@ -3166,6 +3312,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#waveform" class="md-nav__link">
+    waveform()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectrum" class="md-nav__link">
+    spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorrelation" class="md-nav__link">
+    autocorrelation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#energy_density_spectrum" class="md-nav__link">
+    energy_density_spectrum()
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3190,20 +3372,17 @@
     <div class="doc doc-contents first">
 
 
-        <p>Root raised cosine pulse. It is a <a href="/ref/Pulse">pulse</a> with waveform given by
-$$
-    h(t) = \frac{\sin ( 2 \pi f_1 t ) + 4 \alpha t \cos ( 2 \pi f_2 t )}{\pi t ( 1 - (4 \alpha t)^2 )},
-$$
-where $\alpha$ is the <em>roll-off factor</em> (which must satisfy $0 \leq \alpha \leq 1$), $f_1 = (1 - \alpha) / 2$, and $f_2 = (1 + \alpha) / 2$. Its spectrum is given by the square root of the spectrum of the <a href="/ref/RaisedCosinePulse">raised cosine pulse</a>.</p>
-<p>The root raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.</p>
+        <p>Root-raised-cosine pulse. It is a <a href="/ref/Pulse">pulse</a> whose spectrum is given by the square root of the spectrum of the <a href="/ref/RaisedCosinePulse">raised cosine pulse</a> with same roll-off factor.</p>
+<p>The waveform of the root-raised cosine pulse is depicted below for $\alpha = 0.25$, and for $\alpha = 0.75$.</p>
 <div class="centered">
 <p><span>
-    <img alt="Root raised cosine pulse with roll-off factor 0.25." src="/figures/pulse_root_raised_cosine_25.svg" />
+  <img alt="Root-raised-cosine pulse with roll-off factor 0.25." src="/figures/pulse_root_raised_cosine_25.svg" />
   </span>
   <span>
-    <img alt="Root raised cosine pulse with roll-off factor 0.75." src="/figures/pulse_root_raised_cosine_75.svg" />
+  <img alt="Root-raised-cosine pulse with roll-off factor 0.75." src="/figures/pulse_root_raised_cosine_75.svg" />
   </span></p>
 </div>
+<p>For more details, see <a href="https://en.wikipedia.org/wiki/Root-raised-cosine_filter">Wikipedia: Root-raised-cosine filter</a>.</p>
 
   <p><strong>Attributes:</strong></p>
   <ul>
@@ -3212,19 +3391,10 @@ where $\alpha$ is the <em>roll-off factor</em> (which must satisfy $0 \leq \alph
             <span class="doc-param-annotation">(<code><span title="float">float</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is <code>0.0</code>.</p>
+          <p>The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is <code>1.0</code>.</p>
         </div>
       </li>
   </ul>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RootRaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">waveform</span><span class="p">([</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">array([0.2379, 0.6218, 0.9432, 1.0683, 0.9432, 0.6218, 0.2379])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">spectrum</span><span class="p">([</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">,</span>  <span class="mf">0.25</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">array([0.    , 0.7071, 1.    , 1.    , 1.    , 0.7071, 0.    ])</span>
-</code></pre></div>
 
 
 
@@ -3236,6 +3406,152 @@ where $\alpha$ is the <em>roll-off factor</em> (which must satisfy $0 \leq \alph
 
   <div class="doc doc-children">
 
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="waveform" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">waveform</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The waveform $p(t)$ of the pulse.</p>
+<p>For the root-raised-cosine pulse, it is given by
+$$
+  p(t) = \frac{\sin ( 2 \pi f_1 t ) + 4 \alpha t \cos ( 2 \pi f_2 t )}{\pi t ( 1 - (4 \alpha t)^2 )},
+$$
+where $\alpha$ is the roll-off factor, $f_1 = (1 - \alpha) / 2$, and $f_2 = (1 + \alpha) / 2$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RootRaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">waveform</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([-0.064,  0.238,  0.622,  0.943,  1.068,  0.943,  0.622,  0.238,</span>
+<span class="go">       -0.064])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">spectrum</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The spectrum $\hat{p}(f)$ of the pulse.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RootRaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">spectrum</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0.   , 0.   , 0.707, 1.   , 1.   , 1.   , 0.707, 0.   , 0.   ])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="autocorrelation" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">autocorrelation</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The autocorrelation function $R(\tau)$ of the pulse.</p>
+<p>For the root-raised-cosine pulse, it is given by
+$$
+    R(\tau) = \sinc(\tau) \frac{\cos(\pi \alpha \tau)}{1 - (2 \alpha \tau)^2}.
+$$</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RootRaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">autocorrelation</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0.   , 0.29 , 0.627, 0.897, 1.   , 0.897, 0.627, 0.29 , 0.   ])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="energy_density_spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">energy_density_spectrum</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The energy density spectrum $S(f)$ of the pulse.</p>
+<p>For the root-raised-cosine pulse, it is given by
+$$
+    S(f) = \begin{cases}
+        1, &amp; |f| \leq f_1, \\[1ex]
+        \dfrac{1}{2} \left( 1 + \cos \left( \pi \dfrac{|f| - f_1}{f_2 - f_1}\right) \right), &amp; f_1 \leq |f| \leq f_2, \\[1ex]
+        0, &amp; \text{otherwise}.
+    \end{cases}
+$$</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RootRaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">energy_density_spectrum</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0. , 0. , 0.5, 1. , 1. , 1. , 0.5, 0. , 0. ])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
 
 
 

@@ -739,6 +739,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1013,6 +1015,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../PolarCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PolarCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../SlepianArray/" class="md-nav__link">
         
   
@@ -1042,6 +1064,8 @@
   
     
     
+      
+        
       
         
       
@@ -1156,6 +1180,26 @@
   
   <span class="md-ellipsis">
     ReedDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SCDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SCDecoder
   </span>
   
 
@@ -2029,15 +2073,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#time" class="md-nav__link">
-    time()
+  <a href="#__call__" class="md-nav__link">
+    __call__()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#__call__" class="md-nav__link">
-    __call__()
+  <a href="#axes" class="md-nav__link">
+    axes()
   </a>
   
 </li>
@@ -2961,6 +3005,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -3020,6 +3068,26 @@
   
   <span class="md-ellipsis">
     int_to_bits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boxplus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    boxplus
   </span>
   
 
@@ -3175,6 +3243,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../binary_entropy_inv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    binary_entropy_inv
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../relative_entropy/" class="md-nav__link">
         
   
@@ -3245,15 +3333,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#time" class="md-nav__link">
-    time()
+  <a href="#__call__" class="md-nav__link">
+    __call__()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#__call__" class="md-nav__link">
-    __call__()
+  <a href="#axes" class="md-nav__link">
+    axes()
   </a>
   
 </li>
@@ -3286,16 +3374,16 @@
 
         <p>Transmit filter (pulse shaping). Given a sequence of $N$ real or complex symbols $x[n]$, this filter outputs samples of the signal
 $$
-    x(t) = \sum_{n=0}^{N-1} x[n] h(t - n),
+    y(t) = \sum_{n=0}^{N-1} x[n] p(t - n),
 $$
-where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.</p>
-<p>The time span of $x(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $h(t)$. In turn, $n_0$ and $n_1$ depend on the support of $h(t)$:</p>
+where $p(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the samples of the output signal are taken at an integer rate of $\beta$ samples per symbol. Note that the symbol interval is normalized to $1$.</p>
+<p>The time span of $y(t)$ is given by $[ n_0, n_1 + N - 1 )$, where $[ n_0, n_1 )$ is the integer-bounded time span of $p(t)$. In turn, $n_0$ and $n_1$ depend on the support of $p(t)$:</p>
 <ul>
 <li>
-<p>If $h(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.</p>
+<p>If $p(t)$ has finite support $[ t_0, t_1 ]$, then $n_0 = \lfloor t_0 \rfloor$ and $n_1 = \lceil t_1 \rceil$.</p>
 </li>
 <li>
-<p>If $h(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the <em>truncation window length</em>.</p>
+<p>If $p(t)$ has infinite support, then $n_0 = -L/2$ and $n_1 = L/2$, where $L$ is a given even positive integer, called the <em>truncation window length</em>.</p>
 </li>
 </ul>
 
@@ -3306,7 +3394,7 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
             <span class="doc-param-annotation">(<code><span title="komm._pulses.base.Pulse">Pulse</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The pulse whose waveform is $h(t)$.</p>
+          <p>The pulse whose waveform is $p(t)$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3362,7 +3450,7 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
 
   <div class="doc doc-contents ">
 
-        <p>The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $h(t)$.</p>
+        <p>The integer-bounded time span $[ n_0, n_1 )$ of the pulse waveform $p(t)$.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3376,7 +3464,9 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">support</span>
 <span class="go">(-inf, inf)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="o">.</span><span class="n">pulse_time_span</span>
 <span class="go">(-2, 2)</span>
 </code></pre></div>
@@ -3418,78 +3508,15 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
 <span class="go">array([1., 0., 0.])</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="o">.</span><span class="n">taps</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">array([[-0.      , -0.128617, -0.212207, -0.180063],</span>
 <span class="go">       [ 0.      ,  0.300105,  0.63662 ,  0.900316],</span>
 <span class="go">       [ 1.      ,  0.900316,  0.63662 ,  0.300105],</span>
 <span class="go">       [ 0.      , -0.180063, -0.212207, -0.128617]])</span>
 </code></pre></div>
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="time" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">time</span><span class="p">()</span></code>      
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Convenience function to generate the time axis of the output signal given the input symbols.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <ul>
-      <li class="field-body">
-        <b><code>input</code></b>
-            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The input symbols $x[n]$, of length $N$.</p>
-        </div>
-      </li>
-  </ul>
-
-  <p><strong>Returns:</strong></p>
-  <ul>
-      <li class="field-body">
-<b><code>t</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
-        –
-        <div class="doc-md-description">
-          <p>The time axis of the output signal, of length $(N + n_1 - n_0 - 1) \beta$.</p>
-      </div>
-      </li>
-  </ul>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="o">.</span><span class="n">time</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">array([0.  , 0.33, 0.67, 1.  , 1.33, 1.67, 2.  , 2.33, 2.67, 3.  , 3.33, 3.67])</span>
-</code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="o">.</span><span class="n">time</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="go">array([[-2.  , -1.75, -1.5 , -1.25],</span>
-<span class="go">       [-1.  , -0.75, -0.5 , -0.25],</span>
-<span class="go">       [ 0.  ,  0.25,  0.5 ,  0.75],</span>
-<span class="go">       [ 1.  ,  1.25,  1.5 ,  1.75],</span>
-<span class="go">       [ 2.  ,  2.25,  2.5 ,  2.75],</span>
-<span class="go">       [ 3.  ,  3.25,  3.5 ,  3.75],</span>
-<span class="go">       [ 4.  ,  4.25,  4.5 ,  4.75]])</span>
-</code></pre></div>
-
   </div>
 
 </div>
@@ -3531,7 +3558,7 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span> | <span title="numpy.complexfloating">complexfloating</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The samples of the output signal $x(t)$, of length $(N + n_1 - n_0 - 1) \beta$.</p>
+          <p>The samples of the output signal $y(t)$, of length $(N + n_1 - n_0 - 1) \beta$.</p>
       </div>
       </li>
   </ul>
@@ -3549,7 +3576,9 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
 <span class="go">array([ 1.,  0.,  0., -1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.])</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">array([[-0.      , -0.128617, -0.212207, -0.180063],</span>
 <span class="go">       [ 0.      ,  0.428722,  0.848826,  1.08038 ],</span>
@@ -3560,10 +3589,97 @@ where $h(t)$ is the waveform of a given <a href="/ref/Pulse">pulse</a>, and the 
 <span class="go">       [ 0.      , -0.180063, -0.212207, -0.128617]])</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">&#39;truncation&#39; only applies to infinite-support pulses</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="axes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">axes</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Convenience function to generate the time and frequency axes of the output signal given the input symbols.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The input symbols $x[n]$, of length $N$.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>ts</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The time axis of the output signal, having the same length as the output signal.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>fs</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The frequency axis of the output signal, having the same length as the output signal.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RectangularPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span><span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">tx_filter</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[0.        , 0.33333333, 0.66666667],</span>
+<span class="go">       [1.        , 1.33333333, 1.66666667],</span>
+<span class="go">       [2.        , 2.33333333, 2.66666667],</span>
+<span class="go">       [3.        , 3.33333333, 3.66666667]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span>
+<span class="go">array([-1.5 , -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,</span>
+<span class="go">        0.75,  1.  ,  1.25])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SincPulse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx_filter</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TransmitFilter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pulse</span><span class="o">=</span><span class="n">pulse</span><span class="p">,</span> <span class="n">samples_per_symbol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="mi">4</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">tx_filter</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="go">array([[-2.  , -1.75, -1.5 , -1.25],</span>
+<span class="go">       [-1.  , -0.75, -0.5 , -0.25],</span>
+<span class="go">       [ 0.  ,  0.25,  0.5 ,  0.75],</span>
+<span class="go">       [ 1.  ,  1.25,  1.5 ,  1.75],</span>
+<span class="go">       [ 2.  ,  2.25,  2.5 ,  2.75],</span>
+<span class="go">       [ 3.  ,  3.25,  3.5 ,  3.75],</span>
+<span class="go">       [ 4.  ,  4.25,  4.5 ,  4.75]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span>
+<span class="go">array([-2.  , -1.75, -1.5 , -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,</span>
+<span class="go">        0.25,  0.5 ,  0.75,  1.  ,  1.25,  1.5 ,  1.75])</span>
 </code></pre></div>
 
   </div>

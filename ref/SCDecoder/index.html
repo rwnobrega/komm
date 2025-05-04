@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://komm.dev/ref/CyclicCode/">
+        <link rel="canonical" href="https://komm.dev/ref/SCDecoder/">
       
       
-        <link rel="prev" href="../SystematicBlockCode/">
+        <link rel="prev" href="../ReedDecoder/">
       
       
-        <link rel="next" href="../HammingCode/">
+        <link rel="next" href="../SyndromeTableDecoder/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>CyclicCode - Komm</title>
+        <title>SCDecoder - Komm</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kommcycliccode" class="md-skip">
+        <a href="#kommscdecoder" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CyclicCode
+              SCDecoder
             
           </span>
         </div>
@@ -711,8 +711,6 @@
                 
   
   
-    
-  
   
     
     
@@ -747,13 +745,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
         
           <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
             
@@ -766,7 +764,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_4_1">
             <span class="md-nav__icon md-icon"></span>
             Block coding
@@ -817,29 +815,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    CyclicCode
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../CyclicCode/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -848,138 +826,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#length" class="md-nav__link">
-    length
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dimension" class="md-nav__link">
-    dimension
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#redundancy" class="md-nav__link">
-    redundancy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rate" class="md-nav__link">
-    rate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generator_matrix" class="md-nav__link">
-    generator_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check_matrix" class="md-nav__link">
-    check_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#encode" class="md-nav__link">
-    encode()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inverse_encode" class="md-nav__link">
-    inverse_encode()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check" class="md-nav__link">
-    check()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codewords" class="md-nav__link">
-    codewords()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codeword_weight_distribution" class="md-nav__link">
-    codeword_weight_distribution()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#minimum_distance" class="md-nav__link">
-    minimum_distance()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#coset_leaders" class="md-nav__link">
-    coset_leaders()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#coset_leader_weight_distribution" class="md-nav__link">
-    coset_leader_weight_distribution()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#packing_radius" class="md-nav__link">
-    packing_radius()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#covering_radius" class="md-nav__link">
-    covering_radius()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1217,6 +1063,8 @@
                 
   
   
+    
+  
   
     
     
@@ -1239,13 +1087,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" checked>
         
           <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
             
@@ -1258,7 +1106,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_4_2">
             <span class="md-nav__icon md-icon"></span>
             Block decoders
@@ -1349,9 +1197,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../SCDecoder/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    SCDecoder
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1360,6 +1228,33 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#__call__" class="md-nav__link">
+    __call__()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3403,113 +3298,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#length" class="md-nav__link">
-    length
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dimension" class="md-nav__link">
-    dimension
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#redundancy" class="md-nav__link">
-    redundancy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rate" class="md-nav__link">
-    rate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generator_matrix" class="md-nav__link">
-    generator_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check_matrix" class="md-nav__link">
-    check_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#encode" class="md-nav__link">
-    encode()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inverse_encode" class="md-nav__link">
-    inverse_encode()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check" class="md-nav__link">
-    check()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codewords" class="md-nav__link">
-    codewords()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codeword_weight_distribution" class="md-nav__link">
-    codeword_weight_distribution()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#minimum_distance" class="md-nav__link">
-    minimum_distance()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#coset_leaders" class="md-nav__link">
-    coset_leaders()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#coset_leader_weight_distribution" class="md-nav__link">
-    coset_leader_weight_distribution()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#packing_radius" class="md-nav__link">
-    packing_radius()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#covering_radius" class="md-nav__link">
-    covering_radius()
+  <a href="#__call__" class="md-nav__link">
+    __call__()
   </a>
   
 </li>
@@ -3529,7 +3319,7 @@
                   
 
 
-<h1 id="kommcycliccode">komm.CyclicCode</h1>
+<h1 id="kommscdecoder">komm.SCDecoder</h1>
 
 
 <div class="doc doc-object doc-class">
@@ -3540,92 +3330,36 @@
     <div class="doc doc-contents first">
 
 
-        <p>General binary cyclic code. A cyclic code is a <a href="/ref/BlockCode">linear block code</a> such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its <em>generator polynomial</em> $g(X)$, of degree $m$ (the redundancy of the code), and by its <em>check polynomial</em> $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.</p>
-<p>Examples of generator polynomials can be found in the table below.</p>
-<table>
-<thead>
-<tr>
-<th>Code $(n, k, d)$</th>
-<th>Generator polynomial $g(X)$</th>
-<th>Integer representation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Hamming $(7,4,3)$</td>
-<td>$X^3 + X + 1$</td>
-<td><code>0b1011 = 0o13 = 11</code></td>
-</tr>
-<tr>
-<td>Simplex $(7,3,4)$</td>
-<td>$X^4 + X^2 + X +   1$</td>
-<td><code>0b10111 = 0o27 = 23</code></td>
-</tr>
-<tr>
-<td><abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> $(15,5,7)$</td>
-<td>$X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$</td>
-<td><code>0b10100110111 = 0o2467 = 1335</code></td>
-</tr>
-<tr>
-<td>Golay $(23,12,7)$</td>
-<td>$X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$</td>
-<td><code>0b101011100011 = 0o5343 = 2787</code></td>
-</tr>
-</tbody>
-</table>
-<p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 5</cite>.</p>
-<p>The constructor expects either the generator polynomial or the check polynomial.</p>
+        <p>Successive cancellation decoder for <a href="/ref/PolarCode">Polar codes</a>.</p>
 
-  <p><strong>Attributes:</strong></p>
+  <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
-        <b><code>length</code></b>
-            <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
+        <b><code>code</code></b>
+            <span class="doc-param-annotation">(<code><span title="komm._error_control_block.PolarCode">PolarCode</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The length $n$ of the code.</p>
+          <p>The Polar code to be used for decoding.</p>
         </div>
       </li>
       <li class="field-body">
-        <b><code>generator_polynomial</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span></code>)</span>
+        <b><code>output_type</code></b>
+            <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>[&#39;hard&#39;, &#39;soft&#39;]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>check_polynomial</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>systematic</code></b>
-        –
-        <div class="doc-md-description">
-          <p>Whether the encoder is systematic. Default is <code>True</code>.</p>
+          <p>The type of the output. Either <code>'hard'</code> or <code>'soft'</code>. Default is <code>'soft'</code>.</p>
         </div>
       </li>
   </ul>
 
 
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
-<span class="go">(23, 12, 11)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
-<span class="go">7</span>
-</code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">check_polynomial</span><span class="o">=</span><span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
-<span class="go">(23, 12, 11)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
-<span class="go">7</span>
-</code></pre></div>
-
+<details class="notes" open>
+  <summary>Notes</summary>
+  <ul>
+<li>Input type: <code>soft</code> (L-values).</li>
+<li>Output type: <code>hard</code> (bits) or <code>soft</code> (L-values).</li>
+</ul>
+</details>
 
 
 
@@ -3642,239 +3376,19 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="length" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">length</span></code><span class="doc-param-annotation"><code>  int
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The length $n$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="dimension" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dimension</span></code><span class="doc-param-annotation"><code>  int
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The dimension $k$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="redundancy" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">redundancy</span></code><span class="doc-param-annotation"><code>  int
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The redundancy $m$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="rate" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">rate</span></code><span class="doc-param-annotation"><code>  float
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The rate $R = k/n$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="generator_matrix" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">generator_matrix</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The generator matrix $G \in \mathbb{B}^{k \times n}$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="check_matrix" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">check_matrix</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The check matrix $H \in \mathbb{B}^{m \times n}$ of the code.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
 <div class="doc doc-object doc-function">
 
 
 
-<h2 id="encode" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">encode</span><span class="p">()</span></code>      
+<h2 id="__call__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__call__</span><span class="p">()</span></code>      
 
 </h2>
 
 
   <div class="doc doc-contents ">
 
-        <p>Applies the encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This method takes one or more sequences of messages and returns their corresponding codeword sequences.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <ul>
-      <li class="field-body">
-        <b><code>input</code></b>
-            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The input sequence(s). Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.</p>
-        </div>
-      </li>
-  </ul>
-
-  <p><strong>Returns:</strong></p>
-  <ul>
-      <li class="field-body">
-<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
-        –
-        <div class="doc-md-description">
-          <p>The output sequence(s). Has the same shape as the input, with the last dimension expanded from $bk$ to $bn$, where $b$ is a positive integer.</p>
-      </div>
-      </li>
-  </ul>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="inverse_encode" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">inverse_encode</span><span class="p">()</span></code>      
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Applies the inverse encoding partial mapping $\Enc^{-1} : \mathbb{B}^n \rightharpoonup \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.</p>
+        <p>Decode received words. This method takes one or more sequences of received words and returns their corresponding estimated message sequences.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3891,7 +3405,7 @@
   <p><strong>Returns:</strong></p>
   <ul>
       <li class="field-body">
-<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span> | <span title="numpy.floating">floating</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.</p>
@@ -3900,251 +3414,17 @@
   </ul>
 
 
-<p><span class="doc-section-title">Raises:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><span title="ValueError">ValueError</span></code>
-            –
-          <div class="doc-md-description">
-            <p>If the input contains any invalid codewords.</p>
-          </div>
-        </li>
-    </ul>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="check" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">check</span><span class="p">()</span></code>      
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Applies the check mapping $\mathrm{Chk} : \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <ul>
-      <li class="field-body">
-        <b><code>input</code></b>
-            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.</p>
-        </div>
-      </li>
-  </ul>
-
-  <p><strong>Returns:</strong></p>
-  <ul>
-      <li class="field-body">
-<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
-        –
-        <div class="doc-md-description">
-          <p>The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bm$, where $b$ is a positive integer.</p>
-      </div>
-      </li>
-  </ul>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="codewords" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">codewords</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (<abbr title="most significant bit">MSB</abbr> in the right).</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="codeword_weight_distribution" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">codeword_weight_distribution</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="minimum_distance" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">minimum_distance</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="coset_leaders" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">coset_leaders</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (<abbr title="most significant bit">MSB</abbr> in the right), and whose Hamming weight is minimal. This may be used as a <abbr title="lookup table">LUT</abbr> for syndrome-based decoding.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="coset_leader_weight_distribution" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">coset_leader_weight_distribution</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="packing_radius" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">packing_radius</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="covering_radius" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">covering_radius</span><span class="p">()</span></code>      
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.</p>
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">PolarCode</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SCDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">array([ -6.84595089,  -5.96379094,  -9.30685282, -20.        ])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">SCDecoder</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 1, 1, 1])</span>
+</code></pre></div>
 
   </div>
 
@@ -4179,7 +3459,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../SystematicBlockCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SystematicBlockCode" rel="prev">
+          <a href="../ReedDecoder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ReedDecoder" rel="prev">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4189,20 +3469,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                SystematicBlockCode
+                ReedDecoder
               </div>
             </div>
           </a>
         
         
           
-          <a href="../HammingCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HammingCode" rel="next">
+          <a href="../SyndromeTableDecoder/" class="md-footer__link md-footer__link--next" aria-label="Next: SyndromeTableDecoder" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                HammingCode
+                SyndromeTableDecoder
               </div>
             </div>
             <div class="md-footer__button md-icon">

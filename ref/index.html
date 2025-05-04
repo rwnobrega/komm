@@ -741,6 +741,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1015,6 +1017,26 @@
   
   
     <li class="md-nav__item">
+      <a href="PolarCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PolarCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="SlepianArray/" class="md-nav__link">
         
   
@@ -1044,6 +1066,8 @@
   
     
     
+      
+        
       
         
       
@@ -1158,6 +1182,26 @@
   
   <span class="md-ellipsis">
     ReedDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SCDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SCDecoder
   </span>
   
 
@@ -2891,6 +2935,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2950,6 +2998,26 @@
   
   <span class="md-ellipsis">
     int_to_bits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="boxplus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    boxplus
   </span>
   
 
@@ -3090,6 +3158,26 @@
   
   <span class="md-ellipsis">
     binary_entropy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="binary_entropy_inv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    binary_entropy_inv
   </span>
   
 
@@ -3378,6 +3466,7 @@
 <li><a href="ReedMullerCode"><strong><code>ReedMullerCode</code></strong></a> – Reed–Muller code.</li>
 <li><a href="BCHCode"><strong><code>BCHCode</code></strong></a> – Bose–Ray-Chaudhuri–Hocquenghem (<abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr>) code.</li>
 <li><a href="Lexicode"><strong><code>Lexicode</code></strong></a> – Lexicographic code (lexicode).</li>
+<li><a href="PolarCode"><strong><code>PolarCode</code></strong></a> – Polar (Arıkan) code.</li>
 <li><a href="SlepianArray"><strong><code>SlepianArray</code></strong></a> – Slepian array (standard array) for a <a href="/ref/BlockCode">linear block code</a>.</li>
 </ul>
 <h3 id="block-decoders">Block decoders</h3>
@@ -3386,6 +3475,7 @@
 <li><a href="BerlekampDecoder"><strong><code>BerlekampDecoder</code></strong></a> – Berlekamp decoder for <a href="/ref/BCHCode"><abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> codes</a>.</li>
 <li><a href="ExhaustiveSearchDecoder"><strong><code>ExhaustiveSearchDecoder</code></strong></a> – Exhaustive search decoder for general <a href="/ref/BlockCode">block codes</a>.</li>
 <li><a href="ReedDecoder"><strong><code>ReedDecoder</code></strong></a> – Reed decoder for <a href="/ref/ReedMullerCode">Reed-Muller codes</a>.</li>
+<li><a href="SCDecoder"><strong><code>SCDecoder</code></strong></a> – Successive cancellation decoder for <a href="/ref/PolarCode">Polar codes</a>.</li>
 <li><a href="SyndromeTableDecoder"><strong><code>SyndromeTableDecoder</code></strong></a> – Syndrome table decoder for general <a href="/ref/BlockCode">block codes</a>.</li>
 <li><a href="ViterbiDecoder"><strong><code>ViterbiDecoder</code></strong></a> – Viterbi decoder for <a href="/ref/TerminatedConvolutionalCode">terminated convolutional codes</a>.</li>
 <li><a href="WagnerDecoder"><strong><code>WagnerDecoder</code></strong></a> – Wagner decoder for <a href="/ref/SingleParityCheckCode">single parity-check codes</a>.</li>
@@ -3421,8 +3511,8 @@
 <li><a href="RectangularPulse"><strong><code>RectangularPulse</code></strong></a> – Rectangular pulse.</li>
 <li><a href="ManchesterPulse"><strong><code>ManchesterPulse</code></strong></a> – Manchester pulse.</li>
 <li><a href="SincPulse"><strong><code>SincPulse</code></strong></a> – Sinc pulse.</li>
-<li><a href="RaisedCosinePulse"><strong><code>RaisedCosinePulse</code></strong></a> – Raised cosine pulse.</li>
-<li><a href="RootRaisedCosinePulse"><strong><code>RootRaisedCosinePulse</code></strong></a> – Root raised cosine pulse.</li>
+<li><a href="RaisedCosinePulse"><strong><code>RaisedCosinePulse</code></strong></a> – Raised-cosine pulse.</li>
+<li><a href="RootRaisedCosinePulse"><strong><code>RootRaisedCosinePulse</code></strong></a> – Root-raised-cosine pulse.</li>
 <li><a href="GaussianPulse"><strong><code>GaussianPulse</code></strong></a> – Gaussian pulse.</li>
 </ul>
 <h3 id="filtering">Filtering</h3>
@@ -3476,6 +3566,7 @@
 <ul>
 <li><a href="bits_to_int"><strong><code>bits_to_int</code></strong></a> – Converts a bit array to its integer representation (<abbr title="least significant bit">LSB</abbr> first).</li>
 <li><a href="int_to_bits"><strong><code>int_to_bits</code></strong></a> – Converts an integer, or array of integers, to their bit representations (<abbr title="least significant bit">LSB</abbr> first).</li>
+<li><a href="boxplus"><strong><code>boxplus</code></strong></a> – Computes the box-plus operation.</li>
 <li><a href="gaussian_q"><strong><code>gaussian_q</code></strong></a> – Computes the Gaussian Q-function.</li>
 <li><a href="gaussian_q_inv"><strong><code>gaussian_q_inv</code></strong></a> – Computes the inverse Gaussian Q-function.</li>
 <li><a href="marcum_q"><strong><code>marcum_q</code></strong></a> – Computes the Marcum Q-function.</li>
@@ -3483,6 +3574,7 @@
 <li><a href="cyclic_autocorrelation"><strong><code>cyclic_autocorrelation</code></strong></a> – Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $x[n]$.</li>
 <li><a href="entropy"><strong><code>entropy</code></strong></a> – Computes the entropy of a random variable with a given <abbr title="probability mass function">pmf</abbr>.</li>
 <li><a href="binary_entropy"><strong><code>binary_entropy</code></strong></a> – Computes the binary entropy function.</li>
+<li><a href="binary_entropy_inv"><strong><code>binary_entropy_inv</code></strong></a> – Computes the inverse of the <a href="/ref/binary_entropy">binary entropy function</a>.</li>
 <li><a href="relative_entropy"><strong><code>relative_entropy</code></strong></a> – Computes the relative entropy (Kullback–Leibler divergence) between two <span><abbr title="probability mass function">pmf</abbr></span>s.</li>
 </ul>
 
