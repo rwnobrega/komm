@@ -27,12 +27,12 @@ class ConvolutionalCode:
 
     The *overall constraint length* of the code is defined by
     $$
-        \nu = \sum_{0 \leq i < k} \nu_i.
+        \nu = \sum_{i \in [0:k)} \nu_i.
     $$
 
     The *memory order* of the code is defined by
     $$
-        \mu = \max_{0 \leq i < k} \nu_i.
+        \mu = \max_{i \in [0:k)} \nu_i.
     $$
 
     For more details, see <cite>JZ15</cite> and <cite>LC04, Chs. 11, 12</cite>.
