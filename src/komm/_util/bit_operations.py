@@ -3,6 +3,8 @@ from typing import cast
 import numpy as np
 import numpy.typing as npt
 
+xor = np.bitwise_xor.reduce
+
 
 def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.integer]:
     r"""
