@@ -46,11 +46,11 @@ class VariableToFixedCode:
         if not n >= 1:
             raise ValueError("'target_block_size': must be at least 1")
         if not set(domain) <= set(product(range(T), repeat=n)):
-            raise ValueError(f"'dec_mapping': invalid domain")
+            raise ValueError("'dec_mapping': invalid domain")
         if not all(
             all(0 <= x < S for x in word) and len(word) > 0 for word in codomain
         ):
-            raise ValueError(f"'dec_mapping': invalid co-domain")
+            raise ValueError("'dec_mapping': invalid co-domain")
 
     def __repr__(self) -> str:
         args = ", ".join([

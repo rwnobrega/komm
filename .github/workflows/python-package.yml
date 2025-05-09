@@ -14,9 +14,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: pip install -e ".[lint,test]"
-      - name: Check code style
+      - name: Black
         run: black --check .
-      - name: Check types
+      - name: Flake8
+        run: flake8 src/
+      - name: Pyright
         run: pyright
-      - name: Test with pytest
+      - name: pytest
         run: pytest

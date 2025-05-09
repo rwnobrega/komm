@@ -45,9 +45,9 @@ class FixedToVariableCode:
         if not k >= 1:
             raise ValueError("'source_block_size': must be at least 1")
         if set(domain) != set(product(range(S), repeat=k)):
-            raise ValueError(f"'enc_mapping': invalid domain")
+            raise ValueError("'enc_mapping': invalid domain")
         if not all(all(0 <= x < T for x in word) for word in codomain):
-            raise ValueError(f"'enc_mapping': invalid co-domain")
+            raise ValueError("'enc_mapping': invalid co-domain")
 
     def __repr__(self) -> str:
         args = ", ".join([
