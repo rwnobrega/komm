@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import numpy.fft as fft
 import streamlit as st
 
 import komm
