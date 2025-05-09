@@ -96,7 +96,8 @@ class TransmitFilter:
 
     def _frequency(self, num_symbols: int) -> npt.NDArray[np.floating]:
         # The frequency axis of the output signal considering 'num_symbols' input symbols.
-        Na = num_symbols * self.samples_per_symbol
+        t_min_h, t_max_h = self.pulse_time_span
+        Na = (t_max_h - t_min_h + num_symbols - 1) * self.samples_per_symbol
         fs = np.arange(-Na // 2, Na // 2) / num_symbols
         return fs
 
@@ -214,8 +215,10 @@ class TransmitFilter:
                    [ 3.  ,  3.25,  3.5 ,  3.75],
                    [ 4.  ,  4.25,  4.5 ,  4.75]])
             >>> fs
-            array([-2.  , -1.75, -1.5 , -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,
-                    0.25,  0.5 ,  0.75,  1.  ,  1.25,  1.5 ,  1.75])
+            array([-3.5 , -3.25, -3.  , -2.75, -2.5 , -2.25, -2.  , -1.75, -1.5 ,
+                   -1.25, -1.  , -0.75, -0.5 , -0.25,  0.  ,  0.25,  0.5 ,  0.75,
+                    1.  ,  1.25,  1.5 ,  1.75,  2.  ,  2.25,  2.5 ,  2.75,  3.  ,
+                    3.25])
         """
         input = np.asarray(input)
         return self._time(input.size), self._frequency(input.size)
