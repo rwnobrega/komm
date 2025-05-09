@@ -391,3 +391,67 @@ class ConvolutionalCode:
             transition_matrix[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
 
         return state_matrix, control_matrix, observation_matrix, transition_matrix
+
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Encodes a given bit sequence, starting from the all-zero state.
+
+        Parameters:
+            input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
+
+        Returns:
+            output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> code.encode([1, 1, 1, 1])
+            array([1, 1, 0, 1, 1, 0, 1, 0])
+        """
+        nu = self.overall_constraint_length
+        output, _ = self.encode_with_state(input, np.zeros(nu, dtype=int))
+        return output
+
+    def encode_with_state(
+        self,
+        input: npt.ArrayLike,
+        initial_state: npt.ArrayLike,
+    ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
+        """
+        Encodes a given bit sequence, starting from a given state.
+
+        Parameters:
+            input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
+            initial_state: The initial state. Must be a 1D-array of length $\\nu$.
+
+        Returns:
+            output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
+            final_state: The final state. It is a 1D-array of length $\\nu$.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> code.encode_with_state([1, 1, 1, 1], [0, 0])
+            (array([1, 1, 0, 1, 1, 0, 1, 0]), array([1, 1]))
+            >>> code.encode_with_state([1, 1, 1, 1], [1, 1])
+            (array([1, 0, 1, 0, 1, 0, 1, 0]), array([1, 1]))
+        """
+        n, k = self.num_output_bits, self.num_input_bits
+        nu = self.overall_constraint_length
+        A_mat, B_mat, C_mat, D_mat = self.state_space_representation()
+
+        input = np.asarray(input).reshape((-1, k))
+        state = np.asarray(initial_state)
+
+        if state.ndim != 1:
+            raise ValueError("'initial_state' must be a 1D-array")
+        if state.size != nu:
+            raise ValueError(
+                "length of 'initial_state' must be 'overall_constraint_length' "
+                f"(expected {nu}, got {state.size})"
+            )
+
+        output = np.empty(n * input.size // k, dtype=int)
+        for t, u in enumerate(input):
+            state, v = (state @ A_mat + u @ B_mat) % 2, (state @ C_mat + u @ D_mat) % 2
+            output[t * n : (t + 1) * n] = v
+
+        return output, state

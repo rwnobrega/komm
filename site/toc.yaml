@@ -36,7 +36,6 @@ Error control:
   Convolutional coding:
     - ConvolutionalCode
     - TerminatedConvolutionalCode
-    - ConvolutionalStreamEncoder
     - ViterbiStreamDecoder
   Checksum:
     - CyclicRedundancyCheck

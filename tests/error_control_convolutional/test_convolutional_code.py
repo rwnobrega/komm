@@ -43,6 +43,92 @@ def test_convolutional_code_basic():
     np.testing.assert_array_equal(code.overall_constraint_length, 2)
 
 
+def test_convolutional_code_encode_books():
+    # Abrantes.10, p. 307.
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b111, 0b101]],
+    )
+    np.testing.assert_array_equal(
+        code.encode([1, 0, 1, 1, 1, 0, 1, 1, 0, 0]),
+        [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1],
+    )
+
+    # Lin.Costello.04, p. 454--456.
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b1101, 0b1111]],
+    )
+    np.testing.assert_array_equal(
+        code.encode([1, 0, 1, 1, 1, 0, 0, 0]),
+        [1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+    )
+
+    # Lin.Costello.04, p. 456--458.
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]],
+    )
+    np.testing.assert_array_equal(
+        code.encode([1, 1, 0, 1, 1, 0, 0, 0]),
+        [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    )
+
+    # Ryan.Lin.09, p. 154.
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b111, 0b101]],
+    )
+    np.testing.assert_array_equal(
+        code.encode([1, 0, 0, 0]),
+        [1, 1, 1, 0, 1, 1, 0, 0],
+    )
+
+    # Ibid.
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b111, 0b101]],
+        feedback_polynomials=[0b111],
+    )
+    np.testing.assert_array_equal(
+        code.encode([1, 1, 1, 0]),
+        [1, 1, 1, 0, 1, 1, 0, 0],
+    )
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials, feedback_polynomials, message, codeword",
+    [
+        # fmt: off
+        (
+            [[0o7, 0o5]],
+            None,
+            komm.int_to_bits(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
+            komm.int_to_bits(0xBE84A1FACDF49B0D258444495561C0D11F496CD12589847E89BDCE6CE5555B0039B0E5589B37E56CEBE5612BD2BDF7DC0000, 400),
+        ),
+        (
+            [[0o117, 0o155]],
+            None,
+            komm.int_to_bits(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
+            komm.int_to_bits(0x3925A704C66355EB62F33DE3C4512D01A6D681376CCEC5F7FB8091BA4FF29B35456641CF63217AB7FD748A0560B5D4DC0000, 400),
+        ),
+        (
+            [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+            None,
+            komm.int_to_bits(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
+            komm.int_to_bits(0x6C889449F6801E93DAF4E498CCF75404897D7459CE571F1581A4D05B2011986C0C8501D4000, 300),
+        ),
+        (
+            [[0o27, 0o31]],
+            [0o27],
+            komm.int_to_bits(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
+            komm.int_to_bits(0x525114C160C91F2AC5511933F5D6EA2ECEB9F48CC779F998D9D86A762D57DF2A23DAA7551F298D762D85D6E70E526B2C0000, 400),
+        ),
+        # fmt: on
+    ],
+)
+def test_convolutional_code_encode_matlab(
+    feedforward_polynomials, feedback_polynomials, message, codeword
+):
+    code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    np.testing.assert_array_equal(code.encode(message), codeword)
+
+
 def test_convolutional_code_state_space_representation():
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0o7, 0o5]])
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
@@ -69,25 +155,19 @@ def test_convolutional_code_state_space_representation():
         ([[0o27, 0o31]], [0o27]),
     ],
 )
-def test_convolutional_state_space_representation_2(
-    feedforward_polynomials, feedback_polynomials
-):
+def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomials):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
-    n, k, nu = code.num_output_bits, code.num_input_bits, code.overall_constraint_length
+    n, k = code.num_output_bits, code.num_input_bits
 
-    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
+    u = np.random.randint(2, size=100 * k)
+    v1 = code.encode(u)
 
-    input_bits = np.random.randint(2, size=100 * k)
-    output_bits = np.empty(n * input_bits.size // k, dtype=int)
+    fsm = code.finite_state_machine()
+    input = komm.bits_to_int(u.reshape(-1, k))
+    output, _ = fsm.process(input, 0)
+    v2 = komm.int_to_bits(output, width=n).ravel()
 
-    s = np.zeros(nu, dtype=int)
-
-    for t, u in enumerate(np.reshape(input_bits, shape=(-1, k))):
-        s, v = (s @ A_mat + u @ B_mat) % 2, (s @ C_mat + u @ D_mat) % 2
-        output_bits[t * n : (t + 1) * n] = v
-
-    encoder = komm.ConvolutionalStreamEncoder(code)
-    np.testing.assert_array_equal(output_bits, encoder(input_bits))
+    np.testing.assert_array_equal(v1, v2)
 
 
 @pytest.mark.parametrize(
@@ -132,7 +212,7 @@ def test_convolutional_state_space_representation_2(
         (13, [[0o27251, 0o37363]], 16),
     ],
 )
-def test_convolutional_free_distance_g(
+def test_convolutional_code_free_distance_g(
     overall_constraint_length, feedforward_polynomials, free_distance
 ):
     # Lin.Costello.04, p. 539--540
