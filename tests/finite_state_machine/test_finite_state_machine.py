@@ -13,14 +13,14 @@ def test_fsm_viterbi_sklar():
         next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
         outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
     )
-    input_sequences_hat, final_metrics = fsm.viterbi(
-        observed_sequence=[(1, 1), (0, 1), (0, 1), (1, 0), (0, 1)],
+    input_hat, final_metrics = fsm.viterbi(
+        observed=[(1, 1), (0, 1), (0, 1), (1, 0), (0, 1)],
         metric_function=metric_function,
         initial_metrics=[0.0, np.inf, np.inf, np.inf],
     )
     assert np.allclose(final_metrics, [2.0, 2.0, 2.0, 1.0])
     assert np.array_equal(
-        input_sequences_hat.T,
+        input_hat.T,
         [[1, 1, 0, 0, 0], [1, 1, 0, 0, 1], [1, 1, 1, 1, 0], [1, 1, 0, 1, 1]],
     )
 
@@ -35,14 +35,14 @@ def test_fsm_viterbi_ryan_lin():
         next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
         outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
     )
-    input_sequences_hat, final_metrics = fsm.viterbi(
-        observed_sequence=[(-0.7, -0.5), (-0.8, -0.6), (-1.1, +0.4), (+0.9, +0.8)],
+    input_hat, final_metrics = fsm.viterbi(
+        observed=[(-0.7, -0.5), (-0.8, -0.6), (-1.1, +0.4), (+0.9, +0.8)],
         metric_function=metric_function,
         initial_metrics=[0.0, np.inf, np.inf, np.inf],
     )
     assert np.allclose(final_metrics, [-3.8, -3.4, -2.6, -2.4])
     assert np.array_equal(
-        input_sequences_hat.T, [[1, 0, 0, 0], [0, 1, 0, 1], [1, 1, 1, 0], [1, 1, 1, 1]]
+        input_hat.T, [[1, 0, 0, 0], [0, 1, 0, 1], [1, 1, 1, 0], [1, 1, 1, 1]]
     )
 
 
@@ -55,7 +55,7 @@ def test_fsm_forward_backward_lin_costello():
         next_states=[[0, 1], [1, 0]], outputs=[[0, 3], [2, 1]]
     )
     input_posteriors = fsm.forward_backward(
-        observed_sequence=[(-0.8, -0.1), (-1.0, +0.5), (1.8, -1.1), (-1.6, +1.6)],
+        observed=[(-0.8, -0.1), (-1.0, +0.5), (1.8, -1.1), (-1.6, +1.6)],
         metric_function=metric_function,
         initial_state_distribution=[1, 0],
         final_state_distribution=[1, 0],
@@ -75,7 +75,7 @@ def test_fsm_forward_backward_abrantes():
         outputs=[[0, 3], [3, 0], [1, 2], [2, 1]],
     )
     input_posteriors = fsm.forward_backward(
-        observed_sequence=[
+        observed=[
             (-0.3, -0.1),
             (+0.5, -0.2),
             (-0.8, -0.5),

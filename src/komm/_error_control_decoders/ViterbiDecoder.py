@@ -83,7 +83,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Viterbi"))
         def decode(r: npt.NDArray[np.integer]):
             xs_hat, final_metrics = self._fsm.viterbi(
-                observed_sequence=r.reshape(-1, n),
+                observed=r.reshape(-1, n),
                 metric_function=self._metric_function,
                 initial_metrics=self._initial_metrics,
             )

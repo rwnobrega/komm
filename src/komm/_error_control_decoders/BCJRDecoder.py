@@ -79,7 +79,7 @@ class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             symbol_posteriors = self._fsm.forward_backward(
-                observed_sequence=li.reshape(-1, n),
+                observed=li.reshape(-1, n),
                 metric_function=self._metric_function,
                 initial_state_distribution=self._initial_state_distribution,
                 final_state_distribution=self._final_state_distribution,

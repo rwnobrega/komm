@@ -67,10 +67,10 @@ class ViterbiStreamDecoder:
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
         fsm = self.convolutional_code.finite_state_machine()
-        input_sequence_hat = fsm.viterbi_streaming(
-            observed_sequence=input.reshape(-1, n),
+        input_hat = fsm.viterbi_streaming(
+            observed=input.reshape(-1, n),
             metric_function=self.metric_function,
             memory=self.memory,
         )
-        output = int_to_bits(input_sequence_hat, width=k).ravel()
+        output = int_to_bits(input_hat, width=k).ravel()
         return output

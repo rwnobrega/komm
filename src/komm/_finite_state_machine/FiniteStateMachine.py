@@ -119,43 +119,43 @@ class FiniteStateMachine:
 
     def process(
         self,
-        input_sequence: npt.ArrayLike,
+        input: npt.ArrayLike,
         initial_state: int,
     ) -> tuple[npt.NDArray[np.integer], int]:
         r"""
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
 
         Parameters:
-            input_sequence: The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
+            input: The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
 
             initial_state: The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
 
         Returns:
-            output_sequence: The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input_sequence`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output: The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
             final_state: The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
         Examples:
             >>> fsm = komm.FiniteStateMachine(next_states=[[0,1], [2,3], [0,1], [2,3]], outputs=[[0,3], [1,2], [3,0], [2,1]])
-            >>> input_sequence, initial_state = [1, 1, 0, 1, 0], 0
-            >>> output_sequence, final_state = fsm.process(input_sequence, initial_state)
-            >>> output_sequence
+            >>> input, initial_state = [1, 1, 0, 1, 0], 0
+            >>> output, final_state = fsm.process(input, initial_state)
+            >>> output
             array([3, 2, 2, 0, 1])
             >>> final_state
             2
         """
-        output_sequence = np.empty_like(input_sequence, dtype=int)
+        output = np.empty_like(input, dtype=int)
         s = initial_state
-        for t, x in np.ndenumerate(input_sequence):
+        for t, x in np.ndenumerate(input):
             y = self.outputs[s, x]
             s = self.next_states[s, x]
-            output_sequence[t] = y
+            output[t] = y
         final_state = int(s)
-        return output_sequence, final_state
+        return output, final_state
 
     def viterbi(
         self,
-        observed_sequence: Sequence[Z] | npt.NDArray[Any],
+        observed: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         initial_metrics: npt.ArrayLike | None = None,
     ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.floating]]:
@@ -163,25 +163,25 @@ class FiniteStateMachine:
         Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
 
         Parameters:
-            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
             initial_metrics: The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
 
         Returns:
-            input_sequences_hat: The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
+            input_hat: The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
 
             final_metrics: The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
-        L, num_states = len(observed_sequence), self.num_states
+        L, num_states = len(observed), self.num_states
         choices = np.empty((L, num_states), dtype=int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
         if initial_metrics is None:
             metrics[0, :] = np.zeros(num_states, dtype=float)
         else:
             metrics[0, :] = initial_metrics
-        for t, z in enumerate(observed_sequence):
+        for t, z in enumerate(observed):
             for s0 in range(num_states):
                 for s1, y in zip(self.next_states[s0], self.outputs[s0]):
                     candidate_metrics = metrics[t, s0] + metric_function(y, z)
@@ -190,19 +190,19 @@ class FiniteStateMachine:
                         choices[t, s1] = s0
 
         # Backtrack
-        input_sequences_hat = np.empty((L, num_states), dtype=int)
+        input_hat = np.empty((L, num_states), dtype=int)
         for final_state in range(num_states):
             s1 = final_state
             for t in reversed(range(L)):
                 s0 = choices[t, s1]
-                input_sequences_hat[t, final_state] = self.input_edges[s0, s1]
+                input_hat[t, final_state] = self.input_edges[s0, s1]
                 s1 = s0
 
-        return input_sequences_hat, metrics[L, :]
+        return input_hat, metrics[L, :]
 
     def viterbi_streaming(
         self,
-        observed_sequence: Sequence[Z] | npt.NDArray[Any],
+        observed: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         memory: MetricMemory,
     ) -> npt.NDArray[np.integer]:
@@ -210,18 +210,18 @@ class FiniteStateMachine:
         Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
 
         Parameters:
-            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
             memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
 
         Returns:
-            input_sequence_hat: The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
+            input_hat: The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
         """
         num_states = self.num_states
-        input_sequences_hat = np.empty(len(observed_sequence), dtype=int)
-        for t, z in enumerate(observed_sequence):
+        input_hat = np.empty(len(observed), dtype=int)
+        for t, z in enumerate(observed):
             new_metrics = np.full(num_states, fill_value=np.inf)
             choices = np.zeros(num_states, dtype=int)
             for s0 in range(num_states):
@@ -233,7 +233,7 @@ class FiniteStateMachine:
 
             s_star = np.argmin(new_metrics)
             s0, s1 = memory["paths"][s_star, :2]
-            input_sequences_hat[t] = self.input_edges[s0, s1]
+            input_hat[t] = self.input_edges[s0, s1]
 
             memory["metrics"] = np.roll(memory["metrics"], shift=-1, axis=1)
             memory["metrics"][:, -1] = new_metrics
@@ -244,11 +244,11 @@ class FiniteStateMachine:
                 memory["paths"][s1, :-1] = paths_copy[s0, :-1]
                 memory["paths"][s1, -1] = s1
 
-        return input_sequences_hat
+        return input_hat
 
     def forward_backward(
         self,
-        observed_sequence: Sequence[Z] | npt.NDArray[Any],
+        observed: Sequence[Z] | npt.NDArray[Any],
         metric_function: MetricFunction[Z],
         input_priors: npt.ArrayLike | None = None,
         initial_state_distribution: npt.ArrayLike | None = None,
@@ -258,7 +258,7 @@ class FiniteStateMachine:
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
 
         Parameters:
-            observed_sequence: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
@@ -272,7 +272,7 @@ class FiniteStateMachine:
             input_posteriors: The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
         """
         L, num_states, num_input_symbols = (
-            len(observed_sequence),
+            len(observed),
             self.num_states,
             self.num_input_symbols,
         )
@@ -293,7 +293,7 @@ class FiniteStateMachine:
             log_alpha[0, :] = np.log(initial_state_distribution)
             log_beta[L, :] = np.log(final_state_distribution)
 
-        for t, z in enumerate(observed_sequence):
+        for t, z in enumerate(observed):
             for x, s0 in np.ndindex(num_input_symbols, num_states):
                 y, s1 = self.outputs[s0, x], self.next_states[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
