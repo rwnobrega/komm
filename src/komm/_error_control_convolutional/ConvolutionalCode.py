@@ -293,7 +293,7 @@ class ConvolutionalCode:
         npt.NDArray[np.integer],
     ]:
         r"""
-        Returns the *state-space representation* of the code. Let
+        Returns the *state-space representation* of the code, in controller canonical form. Let
         $$
         \begin{aligned}
             \mathbf{u}_t & = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\\\
