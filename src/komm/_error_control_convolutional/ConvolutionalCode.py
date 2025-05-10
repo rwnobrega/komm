@@ -317,7 +317,7 @@ class ConvolutionalCode:
             transition_matrix: The transition matrix $\mathbf{D}$ of the code.
 
         Examples:
-            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
+            >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> state_matrix, control_matrix, observation_matrix, transition_matrix = (
             ...     code.state_space_representation()
             ... )
@@ -327,7 +327,7 @@ class ConvolutionalCode:
             >>> control_matrix
             array([[1, 0]])
             >>> observation_matrix
-            array([[0, 1],
+            array([[1, 0],
                    [1, 1]])
             >>> transition_matrix
             array([[1, 1]])
@@ -365,10 +365,10 @@ class ConvolutionalCode:
         Returns the [finite-state machine](/ref/FiniteStateMachine) of the code, in controller canonical form.
 
         Examples:
-            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
+            >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.finite_state_machine()
             FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
-                               outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
+                               outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
         """
         k, nu = self.num_input_bits, self.overall_constraint_length
         next_states = np.empty((2**nu, 2**k), dtype=int)
@@ -392,7 +392,7 @@ class ConvolutionalCode:
             output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
 
         Examples:
-            >>> code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.encode([1, 1, 1, 1])
             array([1, 1, 0, 1, 1, 0, 1, 0])
         """
@@ -417,7 +417,7 @@ class ConvolutionalCode:
             final_state: The final state. It is a 1D-array of length $\\nu$.
 
         Examples:
-            >>> code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.encode_with_state([1, 1, 1, 1], [0, 0])
             (array([1, 1, 0, 1, 1, 0, 1, 0]), array([1, 1]))
             >>> code.encode_with_state([1, 1, 1, 1], [1, 1])
