@@ -370,26 +370,15 @@ class ConvolutionalCode:
             FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
                                outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
         """
-        n, k = self.num_output_bits, self.num_input_bits
-        nu = self.overall_constraint_length
-        u_indices, s_indices = self._u_indices, self._s_indices
-        ff_taps, fb_taps = self._ff_taps, self._fb_taps
-
-        bits = np.empty(k + nu, dtype=int)
+        k, nu = self.num_input_bits, self.overall_constraint_length
         next_states = np.empty((2**nu, 2**k), dtype=int)
         outputs = np.empty((2**nu, 2**k), dtype=int)
-
         for s, x in np.ndindex(2**nu, 2**k):
-            bits[s_indices] = int_to_bits(s, width=nu)
-            bits[u_indices] = int_to_bits(x, width=k)
-            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-
-            next_state_bits = bits[s_indices - 1]
-            next_states[s, x] = bits_to_int(next_state_bits)
-
-            output_bits = [xor(bits[ff_taps[j]]) for j in range(n)]
-            outputs[s, x] = bits_to_int(output_bits)
-
+            initial_state = int_to_bits(s, width=nu)
+            u = int_to_bits(x, width=k)
+            v, final_state = self.encode_with_state(u, initial_state)
+            outputs[s, x] = bits_to_int(v)
+            next_states[s, x] = bits_to_int(final_state)
         return FiniteStateMachine(next_states, outputs)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -451,7 +440,7 @@ class ConvolutionalCode:
 
         output = np.empty(n * input.size // k, dtype=int)
         for t, u in enumerate(input):
-            state, v = (state @ A_mat + u @ B_mat) % 2, (state @ C_mat + u @ D_mat) % 2
-            output[t * n : (t + 1) * n] = v
+            output[t * n : (t + 1) * n] = (state @ C_mat + u @ D_mat) % 2
+            state = (state @ A_mat + u @ B_mat) % 2
 
         return output, state
