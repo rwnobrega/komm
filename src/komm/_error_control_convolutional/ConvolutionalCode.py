@@ -284,39 +284,6 @@ class ConvolutionalCode:
         return int(np.max(self.constraint_lengths))
 
     @cache
-    def finite_state_machine(self) -> FiniteStateMachine:
-        r"""
-        Returns the [finite-state machine](/ref/FiniteStateMachine) of the code, in controller canonical form.
-
-        Examples:
-            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
-            >>> code.finite_state_machine()
-            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
-                               outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
-        """
-        n, k = self.num_output_bits, self.num_input_bits
-        nu = self.overall_constraint_length
-        x_indices, s_indices = self._x_indices, self._s_indices
-        ff_taps, fb_taps = self._ff_taps, self._fb_taps
-
-        bits = np.empty(k + nu, dtype=int)
-        next_states = np.empty((2**nu, 2**k), dtype=int)
-        outputs = np.empty((2**nu, 2**k), dtype=int)
-
-        for s, x in np.ndindex(2**nu, 2**k):
-            bits[s_indices] = int_to_bits(s, width=nu)
-            bits[x_indices] = int_to_bits(x, width=k)
-            bits[x_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-
-            next_state_bits = bits[s_indices - 1]
-            next_states[s, x] = bits_to_int(next_state_bits)
-
-            output_bits = [xor(bits[ff_taps[j]]) for j in range(n)]
-            outputs[s, x] = bits_to_int(output_bits)
-
-        return FiniteStateMachine(next_states, outputs)
-
-    @cache
     def state_space_representation(
         self,
     ) -> tuple[
@@ -391,6 +358,39 @@ class ConvolutionalCode:
             transition_matrix[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
 
         return state_matrix, control_matrix, observation_matrix, transition_matrix
+
+    @cache
+    def finite_state_machine(self) -> FiniteStateMachine:
+        r"""
+        Returns the [finite-state machine](/ref/FiniteStateMachine) of the code, in controller canonical form.
+
+        Examples:
+            >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
+            >>> code.finite_state_machine()
+            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
+                               outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])
+        """
+        n, k = self.num_output_bits, self.num_input_bits
+        nu = self.overall_constraint_length
+        x_indices, s_indices = self._x_indices, self._s_indices
+        ff_taps, fb_taps = self._ff_taps, self._fb_taps
+
+        bits = np.empty(k + nu, dtype=int)
+        next_states = np.empty((2**nu, 2**k), dtype=int)
+        outputs = np.empty((2**nu, 2**k), dtype=int)
+
+        for s, x in np.ndindex(2**nu, 2**k):
+            bits[s_indices] = int_to_bits(s, width=nu)
+            bits[x_indices] = int_to_bits(x, width=k)
+            bits[x_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
+
+            next_state_bits = bits[s_indices - 1]
+            next_states[s, x] = bits_to_int(next_state_bits)
+
+            output_bits = [xor(bits[ff_taps[j]]) for j in range(n)]
+            outputs[s, x] = bits_to_int(output_bits)
+
+        return FiniteStateMachine(next_states, outputs)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
