@@ -139,15 +139,15 @@ class ConvolutionalCode:
         k = self.num_input_bits
         nu = self.overall_constraint_length
 
-        x_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
-        self._x_indices = x_indices
-        s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), x_indices)
+        u_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
+        self._u_indices = u_indices
+        s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), u_indices)
         self._s_indices = s_indices
 
         self._ff_taps: list[npt.NDArray[np.integer]] = []
         for j in range(n):
             taps = np.concatenate([
-                self.feedforward_polynomials[i, j].exponents() + x_indices[i]
+                self.feedforward_polynomials[i, j].exponents() + u_indices[i]
                 for i in range(k)
             ])
             self._ff_taps.append(taps)
@@ -156,7 +156,7 @@ class ConvolutionalCode:
         for i in range(k):
             taps = (
                 BinaryPolynomial(0b1) + self.feedback_polynomials[i]
-            ).exponents() + x_indices[i]
+            ).exponents() + u_indices[i]
             self._fb_taps.append(taps)
 
     def __repr__(self) -> str:
@@ -311,10 +311,10 @@ class ConvolutionalCode:
         where $\mathbf{A}$ is the $\nu \times \nu$ *state matrix*, $\mathbf{B}$ is the $k \times \nu$ *control matrix*, $\mathbf{C}$ is the $\nu \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
 
         Returns:
-            The state matrix $\mathbf{A}$ of the code.
-            The control matrix $\mathbf{B}$ of the code.
-            The observation matrix $\mathbf{C}$ of the code.
-            The transition matrix $\mathbf{D}$ of the code.
+            state_matrix: The state matrix $\mathbf{A}$ of the code.
+            control_matrix: The control matrix $\mathbf{B}$ of the code.
+            observation_matrix: The observation matrix $\mathbf{C}$ of the code.
+            transition_matrix: The transition matrix $\mathbf{D}$ of the code.
 
         Examples:
             >>> code = komm.ConvolutionalCode(feedforward_polynomials=[[0b101, 0b111]])
@@ -334,30 +334,30 @@ class ConvolutionalCode:
         """
         n, k = self.num_output_bits, self.num_input_bits
         nu = self.overall_constraint_length
-        x_indices, s_indices = self._x_indices, self._s_indices
+        u_indices, s_indices = self._u_indices, self._s_indices
         ff_taps, fb_taps = self._ff_taps, self._fb_taps
 
         bits = np.empty(k + nu, dtype=int)
-        state_matrix = np.zeros((nu, nu), dtype=int)
-        control_matrix = np.zeros((k, nu), dtype=int)
-        observation_matrix = np.zeros((nu, n), dtype=int)
-        transition_matrix = np.zeros((k, n), dtype=int)
+        A_mat = np.zeros((nu, nu), dtype=int)
+        B_mat = np.zeros((k, nu), dtype=int)
+        C_mat = np.zeros((nu, n), dtype=int)
+        D_mat = np.zeros((k, n), dtype=int)
 
         for row, s in enumerate(np.eye(nu)):
             bits[s_indices] = s
-            bits[x_indices] = 0
-            bits[x_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-            state_matrix[row] = bits[s_indices - 1]
-            observation_matrix[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
+            bits[u_indices] = 0
+            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
+            A_mat[row] = bits[s_indices - 1]
+            C_mat[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
 
-        for row, x in enumerate(np.eye(k)):
+        for row, u in enumerate(np.eye(k)):
             bits[s_indices] = 0
-            bits[x_indices] = x
-            bits[x_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-            control_matrix[row] = bits[s_indices - 1]
-            transition_matrix[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
+            bits[u_indices] = u
+            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
+            B_mat[row] = bits[s_indices - 1]
+            D_mat[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
 
-        return state_matrix, control_matrix, observation_matrix, transition_matrix
+        return A_mat, B_mat, C_mat, D_mat
 
     @cache
     def finite_state_machine(self) -> FiniteStateMachine:
@@ -372,7 +372,7 @@ class ConvolutionalCode:
         """
         n, k = self.num_output_bits, self.num_input_bits
         nu = self.overall_constraint_length
-        x_indices, s_indices = self._x_indices, self._s_indices
+        u_indices, s_indices = self._u_indices, self._s_indices
         ff_taps, fb_taps = self._ff_taps, self._fb_taps
 
         bits = np.empty(k + nu, dtype=int)
@@ -381,8 +381,8 @@ class ConvolutionalCode:
 
         for s, x in np.ndindex(2**nu, 2**k):
             bits[s_indices] = int_to_bits(s, width=nu)
-            bits[x_indices] = int_to_bits(x, width=k)
-            bits[x_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
+            bits[u_indices] = int_to_bits(x, width=k)
+            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
 
             next_state_bits = bits[s_indices - 1]
             next_states[s, x] = bits_to_int(next_state_bits)
