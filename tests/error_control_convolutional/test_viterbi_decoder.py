@@ -54,7 +54,9 @@ def test_viterbi_stream_decoder_matlab(
 ):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     tblen = len(message_hat) // code.num_input_bits
-    recvword = np.concatenate([recvword, np.zeros(code.num_output_bits * tblen)])
+    recvword = np.concatenate(
+        [recvword, np.zeros(code.num_output_bits * tblen, dtype=int)]
+    )
     decoder = komm.ViterbiStreamDecoder(code, traceback_length=tblen, input_type="hard")
     message_hat = np.pad(message_hat, (len(message_hat), 0), mode="constant")
     np.testing.assert_array_equal(message_hat, decoder(recvword))
