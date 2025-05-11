@@ -1,3 +1,6 @@
+from collections.abc import Sequence
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
@@ -165,3 +168,17 @@ def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
     null[:, not_pivots] = np.eye(n_cols - n_rows, dtype=int)
     null[:, pivots] = reduced[:, not_pivots].T
     return null
+
+
+def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> npt.NDArray[Any]:
+    arrays_np = [np.asarray(a) for a in arrays]
+    total_rows = sum(a.shape[0] for a in arrays_np)
+    total_cols = sum(a.shape[1] for a in arrays_np)
+    result = np.zeros((total_rows, total_cols), dtype=arrays_np[0].dtype)
+    r_off, c_off = 0, 0
+    for a in arrays_np:
+        r, c = a.shape
+        result[r_off : r_off + r, c_off : c_off + c] = a
+        r_off += r
+        c_off += c
+    return result

@@ -130,7 +130,7 @@ def test_convolutional_code_encode_matlab(
 
 
 def test_convolutional_code_state_space_representation():
-    code = komm.ConvolutionalCode(feedforward_polynomials=[[0o7, 0o5]])
+    code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
     np.testing.assert_array_equal(A_mat, [[0, 1], [0, 0]])
     np.testing.assert_array_equal(B_mat, [[1, 0]])
@@ -144,6 +144,85 @@ def test_convolutional_code_state_space_representation():
     np.testing.assert_array_equal(B_mat, [[1, 0, 0]])
     np.testing.assert_array_equal(C_mat, [[1, 0], [1, 1], [1, 1]])
     np.testing.assert_array_equal(D_mat, [[1, 1]])
+
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b11001, 0b10111, 0], [0, 0b1010, 0b1101]]
+    )
+    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
+    np.testing.assert_array_equal(
+        A_mat,
+        [
+            [0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0],
+        ],
+    )
+    np.testing.assert_array_equal(
+        B_mat,
+        [
+            [1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0],
+        ],
+    )
+    np.testing.assert_array_equal(
+        C_mat,
+        [
+            [0, 1, 0],
+            [0, 1, 0],
+            [1, 0, 0],
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+            [0, 1, 1],
+        ],
+    )
+    np.testing.assert_array_equal(
+        D_mat,
+        [
+            [1, 1, 0],
+            [0, 0, 1],
+        ],
+    )
+
+    code = komm.ConvolutionalCode(
+        feedforward_polynomials=[[0b10111, 0b11001]],
+        feedback_polynomials=[0b10111],
+    )
+    A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
+    np.testing.assert_array_equal(
+        A_mat,
+        [
+            [1, 1, 0, 0],
+            [1, 0, 1, 0],
+            [0, 0, 0, 1],
+            [1, 0, 0, 0],
+        ],
+    )
+    np.testing.assert_array_equal(
+        B_mat,
+        [
+            [1, 0, 0, 0],
+        ],
+    )
+    np.testing.assert_array_equal(
+        C_mat,
+        [
+            [0, 1],
+            [0, 1],
+            [0, 1],
+            [0, 0],
+        ],
+    )
+    np.testing.assert_array_equal(
+        D_mat,
+        [
+            [1, 1],
+        ],
+    )
 
 
 @pytest.mark.parametrize(

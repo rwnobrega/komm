@@ -6,7 +6,8 @@ import numpy.typing as npt
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import FiniteStateMachine
 from .._util.array import array
-from .._util.bit_operations import bits_to_int, int_to_bits, xor
+from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.matrices import block_diagonal
 
 
 class ConvolutionalCode:
@@ -132,32 +133,6 @@ class ConvolutionalCode:
             raise ValueError("feedback must be a 1-dimensional array")
         if self.feedback_polynomials.shape[0] != k:
             raise ValueError("feedback and feedforward dimensions do not match")
-        self.__post_init__()
-
-    def __post_init__(self) -> None:
-        n = self.num_output_bits
-        k = self.num_input_bits
-        nu = self.overall_constraint_length
-
-        u_indices = np.concatenate(([0], np.cumsum(self.constraint_lengths + 1)[:-1]))
-        self._u_indices = u_indices
-        s_indices = np.setdiff1d(np.arange(k + nu, dtype=int), u_indices)
-        self._s_indices = s_indices
-
-        self._ff_taps: list[npt.NDArray[np.integer]] = []
-        for j in range(n):
-            taps = np.concatenate([
-                self.feedforward_polynomials[i, j].exponents() + u_indices[i]
-                for i in range(k)
-            ])
-            self._ff_taps.append(taps)
-
-        self._fb_taps: list[npt.NDArray[np.integer]] = []
-        for i in range(k):
-            taps = (
-                BinaryPolynomial(0b1) + self.feedback_polynomials[i]
-            ).exponents() + u_indices[i]
-            self._fb_taps.append(taps)
 
     def __repr__(self) -> str:
         args = f"feedforward_polynomials={self.feedforward_polynomials}"
@@ -283,6 +258,20 @@ class ConvolutionalCode:
         """
         return int(np.max(self.constraint_lengths))
 
+    @cached_property
+    def feedforward_taps(self) -> list[npt.NDArray[np.integer]]:
+        return [
+            np.array([q.coefficients(nu + 1) for q in qs])
+            for nu, qs in zip(self.constraint_lengths, self.feedforward_polynomials)
+        ]
+
+    @cached_property
+    def feedback_taps(self) -> list[npt.NDArray[np.integer]]:
+        return [
+            p.coefficients(nu + 1)
+            for nu, p in zip(self.constraint_lengths, self.feedback_polynomials)
+        ]
+
     @cache
     def state_space_representation(
         self,
@@ -332,30 +321,24 @@ class ConvolutionalCode:
             >>> transition_matrix
             array([[1, 1]])
         """
-        n, k = self.num_output_bits, self.num_input_bits
-        nu = self.overall_constraint_length
-        u_indices, s_indices = self._u_indices, self._s_indices
-        ff_taps, fb_taps = self._ff_taps, self._fb_taps
+        betas = [taps.T for taps in self.feedforward_taps]
+        alphas = [taps[:, np.newaxis] for taps in self.feedback_taps]
 
-        bits = np.empty(k + nu, dtype=int)
-        A_mat = np.zeros((nu, nu), dtype=int)
-        B_mat = np.zeros((k, nu), dtype=int)
-        C_mat = np.zeros((nu, n), dtype=int)
-        D_mat = np.zeros((k, n), dtype=int)
+        A_blocks: list[npt.NDArray[np.integer]] = []
+        B_blocks: list[npt.NDArray[np.integer]] = []
+        C_blocks: list[npt.NDArray[np.integer]] = []
+        D_blocks: list[npt.NDArray[np.integer]] = []
 
-        for row, s in enumerate(np.eye(nu)):
-            bits[s_indices] = s
-            bits[u_indices] = 0
-            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-            A_mat[row] = bits[s_indices - 1]
-            C_mat[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
+        for beta, alpha, nu in zip(betas, alphas, self.constraint_lengths):
+            A_blocks.append(np.hstack([alpha[1:], np.eye(nu, nu - 1, dtype=int)]))
+            B_blocks.append(np.eye(1, nu, dtype=int))
+            C_blocks.append(beta[1:] ^ alpha[1:] * beta[0])
+            D_blocks.append(beta[0])
 
-        for row, u in enumerate(np.eye(k)):
-            bits[s_indices] = 0
-            bits[u_indices] = u
-            bits[u_indices] ^= [xor(bits[fb_taps[i]]) for i in range(k)]
-            B_mat[row] = bits[s_indices - 1]
-            D_mat[row] = [xor(bits[ff_taps[j]]) for j in range(n)]
+        A_mat = block_diagonal(A_blocks)
+        B_mat = block_diagonal(B_blocks)
+        C_mat = np.vstack(C_blocks)
+        D_mat = np.vstack(D_blocks)
 
         return A_mat, B_mat, C_mat, D_mat
 
