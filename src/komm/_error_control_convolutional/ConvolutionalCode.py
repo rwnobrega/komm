@@ -388,16 +388,16 @@ class ConvolutionalCode:
         input: npt.ArrayLike,
         initial_state: npt.ArrayLike,
     ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
-        """
+        r"""
         Encodes a given bit sequence, starting from a given state.
 
         Parameters:
             input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
-            initial_state: The initial state. Must be a 1D-array of length $\\nu$.
+            initial_state: The initial state. Must be a 1D-array of length $\nu$.
 
         Returns:
             output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
-            final_state: The final state. It is a 1D-array of length $\\nu$.
+            final_state: The final state. It is a 1D-array of length $\nu$.
 
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
