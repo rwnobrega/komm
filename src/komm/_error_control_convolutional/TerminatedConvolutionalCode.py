@@ -201,8 +201,8 @@ class DirectTruncation(TerminationStrategy):
         return np.asarray(input)
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        nu = self.convolutional_code.overall_constraint_length
-        return np.zeros(nu, dtype=int)
+        σ = self.convolutional_code.overall_constraint_length
+        return np.zeros(σ, dtype=int)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
@@ -233,13 +233,13 @@ class ZeroTermination(TerminationStrategy):
     @cached_property
     def _tail_projector(self) -> npt.NDArray[np.integer]:
         h = self.num_blocks
-        mu = self.convolutional_code.memory_order
+        μ = self.convolutional_code.memory_order
         A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
         AnB_message = np.vstack(
-            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(mu + h - 1, mu - 1, -1)]
+            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(μ + h - 1, μ - 1, -1)]
         )
         AnB_tail = np.vstack(
-            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(mu - 1, -1, -1)]
+            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(μ - 1, -1, -1)]
         )
         return AnB_message @ pseudo_inverse(AnB_tail) % 2
 
@@ -249,20 +249,20 @@ class ZeroTermination(TerminationStrategy):
         return np.concatenate([input, tail])
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        nu = self.convolutional_code.overall_constraint_length
-        return np.zeros(nu, dtype=int)
+        σ = self.convolutional_code.overall_constraint_length
+        return np.zeros(σ, dtype=int)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
         n0 = self.convolutional_code.num_output_bits
-        m = self.convolutional_code.memory_order
-        return (h + m) * n0
+        μ = self.convolutional_code.memory_order
+        return (h + μ) * n0
 
     def viterbi_post_process_output(
         self, xs_hat: npt.NDArray[np.integer], final_metrics: npt.NDArray[np.floating]
     ) -> npt.NDArray[np.integer]:
-        mu = self.convolutional_code.memory_order
-        x_hat = xs_hat[:, 0][:-mu]
+        μ = self.convolutional_code.memory_order
+        x_hat = xs_hat[:, 0][:-μ]
         return x_hat
 
     def bcjr_initial_final_distributions(
@@ -275,24 +275,24 @@ class ZeroTermination(TerminationStrategy):
     def bcjr_post_process_output(
         self, posteriors: npt.NDArray[np.floating]
     ) -> npt.NDArray[np.floating]:
-        mu = self.convolutional_code.memory_order
-        return posteriors[:-mu]
+        μ = self.convolutional_code.memory_order
+        return posteriors[:-μ]
 
 
 class TailBiting(TerminationStrategy):
     @cached_property
     def _zs_multiplier(self) -> npt.NDArray[np.integer]:
         h = self.num_blocks
-        nu = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.overall_constraint_length
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
-        return pseudo_inverse((matrix_power(A_mat, h) + np.eye(nu, dtype=int)) % 2)
+        return pseudo_inverse((matrix_power(A_mat, h) + np.eye(σ, dtype=int)) % 2)
 
     def pre_process_input(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return np.asarray(input)
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        nu = self.convolutional_code.overall_constraint_length
-        zero_state = np.zeros(nu, dtype=int)
+        σ = self.convolutional_code.overall_constraint_length
+        zero_state = np.zeros(σ, dtype=int)
         _, state = self.convolutional_code.encode_with_state(input, zero_state)
         return state @ self._zs_multiplier % 2
 

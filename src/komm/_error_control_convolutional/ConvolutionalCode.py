@@ -20,7 +20,7 @@ class ConvolutionalCode:
         feedback_polynomials: The vector of feedback polynomials $\mathbf{q}(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
     Examples:
-        1. Consider the encoder with parameters $(n, k, \nu) = (2, 1, 6)$ depicted below.
+        1. Consider the encoder with parameters $(n, k, \sigma) = (2, 1, 6)$ depicted below.
 
             <figure markdown>
             ![Convolutional encoder for (2, 1, 6) code.](/figures/cc_2_1_6.svg)
@@ -38,7 +38,7 @@ class ConvolutionalCode:
                 ...     feedforward_polynomials=[[0b1001111, 0b1101101]],
                 ... )
 
-        1. Consider the encoder with parameters $(n, k, \nu) = (3, 2, 7)$ depicted below.
+        1. Consider the encoder with parameters $(n, k, \sigma) = (3, 2, 7)$ depicted below.
 
             <figure markdown>
             ![Convolutional encoder for (3, 2, 7) code.](/figures/cc_3_2_7.svg)
@@ -60,7 +60,7 @@ class ConvolutionalCode:
                 ...     ],
                 ... )
 
-        1. Consider the feedback encoder with parameters $(n, k, \nu) = (2, 1, 4)$ depicted below.
+        1. Consider the feedback encoder with parameters $(n, k, \sigma) = (2, 1, 4)$ depicted below.
 
             <figure markdown>
             ![Convolutional encoder for (2, 1, 4) feedback code.](/figures/cc_2_1_4_fb.svg)
@@ -88,29 +88,29 @@ class ConvolutionalCode:
 
     <h2>Tables of optimal convolutional codes</h2>
 
-    The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.
+    The tables below <cite>LC04, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\sigma$.
 
-    | Parameters $(n, k, \nu)$ | Transfer function matrix $\mathbf{G}(D)$ |
-    | :----------------------: | ---------------------------------------- |
-    | $(2, 1, 1)$              | `[[0o1, 0o3]]`                           |
-    | $(2, 1, 2)$              | `[[0o5, 0o7]]`                           |
-    | $(2, 1, 3)$              | `[[0o13, 0o17]]`                         |
-    | $(2, 1, 4)$              | `[[0o27, 0o31]]`                         |
-    | $(2, 1, 5)$              | `[[0o53, 0o75]]`                         |
-    | $(2, 1, 6)$              | `[[0o117, 0o155]]`                       |
-    | $(2, 1, 7)$              | `[[0o247, 0o371]]`                       |
-    | $(2, 1, 8)$              | `[[0o561, 0o753]]`                       |
+    | Parameters $(n, k, \sigma)$ | Transfer function matrix $\mathbf{G}(D)$ |
+    | :-------------------------: | ---------------------------------------- |
+    | $(2, 1, 1)$                 | `[[0o1, 0o3]]`                           |
+    | $(2, 1, 2)$                 | `[[0o5, 0o7]]`                           |
+    | $(2, 1, 3)$                 | `[[0o13, 0o17]]`                         |
+    | $(2, 1, 4)$                 | `[[0o27, 0o31]]`                         |
+    | $(2, 1, 5)$                 | `[[0o53, 0o75]]`                         |
+    | $(2, 1, 6)$                 | `[[0o117, 0o155]]`                       |
+    | $(2, 1, 7)$                 | `[[0o247, 0o371]]`                       |
+    | $(2, 1, 8)$                 | `[[0o561, 0o753]]`                       |
 
-    | Parameters $(n, k, \nu)$ | Transfer function matrix $\mathbf{G}(D)$ |
-    | :----------------------: | ---------------------------------------- |
-    | $(3, 1, 1)$              | `[[0o1, 0o3, 0o3]]`                      |
-    | $(3, 1, 2)$              | `[[0o5, 0o7, 0o7]]`                      |
-    | $(3, 1, 3)$              | `[[0o13, 0o15, 0o17]]`                   |
-    | $(3, 1, 4)$              | `[[0o25, 0o33, 0o37]]`                   |
-    | $(3, 1, 5)$              | `[[0o47, 0o53, 0o75]]`                   |
-    | $(3, 1, 6)$              | `[[0o117, 0o127, 0o155]]`                |
-    | $(3, 1, 7)$              | `[[0o255, 0o331, 0o367]]`                |
-    | $(3, 1, 8)$              | `[[0o575, 0o623, 0o727]]`                |
+    | Parameters $(n, k, \sigma)$ | Transfer function matrix $\mathbf{G}(D)$ |
+    | :-------------------------: | ---------------------------------------- |
+    | $(3, 1, 1)$                 | `[[0o1, 0o3, 0o3]]`                      |
+    | $(3, 1, 2)$                 | `[[0o5, 0o7, 0o7]]`                      |
+    | $(3, 1, 3)$                 | `[[0o13, 0o15, 0o17]]`                   |
+    | $(3, 1, 4)$                 | `[[0o25, 0o33, 0o37]]`                   |
+    | $(3, 1, 5)$                 | `[[0o47, 0o53, 0o75]]`                   |
+    | $(3, 1, 6)$                 | `[[0o117, 0o127, 0o155]]`                |
+    | $(3, 1, 7)$                 | `[[0o255, 0o331, 0o367]]`                |
+    | $(3, 1, 8)$                 | `[[0o575, 0o623, 0o727]]`                |
     """
 
     feedforward_polynomials: npt.NDArray[np.object_]
@@ -227,9 +227,9 @@ class ConvolutionalCode:
     @cached_property
     def overall_constraint_length(self) -> int:
         r"""
-        The *overall constraint length* of the code, defined by
+        The *overall constraint length* $\sigma$ of the code, defined by
         $$
-            \nu = \sum_{i \in [0:k)} \nu_i.
+            \sigma = \sum_{i \in [0:k)} \nu_i.
         $$
 
         Examples:
@@ -244,7 +244,7 @@ class ConvolutionalCode:
     @cached_property
     def memory_order(self) -> int:
         r"""
-        The *memory order* of the code, defined by
+        The *memory order* $\mu$ of the code, defined by
         $$
             \mu = \max_{i \in [0:k)} \nu_i.
         $$
@@ -261,15 +261,15 @@ class ConvolutionalCode:
     @cached_property
     def feedforward_taps(self) -> list[npt.NDArray[np.integer]]:
         return [
-            np.array([q.coefficients(nu + 1) for q in qs])
-            for nu, qs in zip(self.constraint_lengths, self.feedforward_polynomials)
+            np.array([p.coefficients(nu + 1) for p in ps])
+            for nu, ps in zip(self.constraint_lengths, self.feedforward_polynomials)
         ]
 
     @cached_property
     def feedback_taps(self) -> list[npt.NDArray[np.integer]]:
         return [
-            p.coefficients(nu + 1)
-            for nu, p in zip(self.constraint_lengths, self.feedback_polynomials)
+            q.coefficients(nu + 1)
+            for nu, q in zip(self.constraint_lengths, self.feedback_polynomials)
         ]
 
     @cache
@@ -287,7 +287,7 @@ class ConvolutionalCode:
         \begin{aligned}
             \mathbf{u}_t & = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\\\
             \mathbf{v}_t & = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)}), \\\\
-            \mathbf{s}_t & = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)}),
+            \mathbf{s}_t & = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\sigma-1)}),
         \end{aligned}
         $$
         be the input block, output block, and state, respectively, all defined at time instant $t$. Then,
@@ -297,7 +297,7 @@ class ConvolutionalCode:
             \mathbf{v}\_{t} & = \mathbf{s}_t \mathbf{C} + \mathbf{u}\_t \mathbf{D},
         \end{aligned}
         $$
-        where $\mathbf{A}$ is the $\nu \times \nu$ *state matrix*, $\mathbf{B}$ is the $k \times \nu$ *control matrix*, $\mathbf{C}$ is the $\nu \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
+        where $\mathbf{A}$ is the $\sigma \times \sigma$ *state matrix*, $\mathbf{B}$ is the $k \times \sigma$ *control matrix*, $\mathbf{C}$ is the $\sigma \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
 
         Returns:
             state_matrix: The state matrix $\mathbf{A}$ of the code.
@@ -321,15 +321,15 @@ class ConvolutionalCode:
             >>> transition_matrix
             array([[1, 1]])
         """
-        betas = [taps.T for taps in self.feedforward_taps]
-        alphas = [taps[:, np.newaxis] for taps in self.feedback_taps]
+        alphas = [taps.T for taps in self.feedforward_taps]
+        betas = [taps[:, np.newaxis] for taps in self.feedback_taps]
 
         A_blocks: list[npt.NDArray[np.integer]] = []
         B_blocks: list[npt.NDArray[np.integer]] = []
         C_blocks: list[npt.NDArray[np.integer]] = []
         D_blocks: list[npt.NDArray[np.integer]] = []
 
-        for beta, alpha, nu in zip(betas, alphas, self.constraint_lengths):
+        for beta, alpha, nu in zip(alphas, betas, self.constraint_lengths):
             A_blocks.append(np.hstack([alpha[1:], np.eye(nu, nu - 1, dtype=int)]))
             B_blocks.append(np.eye(1, nu, dtype=int))
             C_blocks.append(beta[1:] ^ alpha[1:] * beta[0])
@@ -353,11 +353,11 @@ class ConvolutionalCode:
             FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
                                outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
         """
-        k, nu = self.num_input_bits, self.overall_constraint_length
-        next_states = np.empty((2**nu, 2**k), dtype=int)
-        outputs = np.empty((2**nu, 2**k), dtype=int)
-        for s, x in np.ndindex(2**nu, 2**k):
-            initial_state = int_to_bits(s, width=nu)
+        k, σ = self.num_input_bits, self.overall_constraint_length
+        next_states = np.empty((2**σ, 2**k), dtype=int)
+        outputs = np.empty((2**σ, 2**k), dtype=int)
+        for s, x in np.ndindex(2**σ, 2**k):
+            initial_state = int_to_bits(s, width=σ)
             u = int_to_bits(x, width=k)
             v, final_state = self.encode_with_state(u, initial_state)
             outputs[s, x] = bits_to_int(v)
@@ -379,8 +379,8 @@ class ConvolutionalCode:
             >>> code.encode([1, 1, 1, 1])
             array([1, 1, 0, 1, 1, 0, 1, 0])
         """
-        nu = self.overall_constraint_length
-        output, _ = self.encode_with_state(input, np.zeros(nu, dtype=int))
+        σ = self.overall_constraint_length
+        output, _ = self.encode_with_state(input, np.zeros(σ, dtype=int))
         return output
 
     def encode_with_state(
@@ -393,11 +393,11 @@ class ConvolutionalCode:
 
         Parameters:
             input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
-            initial_state: The initial state. Must be a 1D-array of length $\nu$.
+            initial_state: The initial state. Must be a 1D-array of length $\sigma$.
 
         Returns:
             output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
-            final_state: The final state. It is a 1D-array of length $\nu$.
+            final_state: The final state. It is a 1D-array of length $\sigma$.
 
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
@@ -407,7 +407,7 @@ class ConvolutionalCode:
             (array([1, 0, 1, 0, 1, 0, 1, 0]), array([1, 1]))
         """
         n, k = self.num_output_bits, self.num_input_bits
-        nu = self.overall_constraint_length
+        σ = self.overall_constraint_length
         A_mat, B_mat, C_mat, D_mat = self.state_space_representation()
 
         input = np.asarray(input).reshape((-1, k))
@@ -415,10 +415,10 @@ class ConvolutionalCode:
 
         if state.ndim != 1:
             raise ValueError("'initial_state' must be a 1D-array")
-        if state.size != nu:
+        if state.size != σ:
             raise ValueError(
                 "length of 'initial_state' must be 'overall_constraint_length' "
-                f"(expected {nu}, got {state.size})"
+                f"(expected {σ}, got {state.size})"
             )
 
         output = np.empty(n * input.size // k, dtype=int)
