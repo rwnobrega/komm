@@ -36,9 +36,11 @@ class TerminatedConvolutionalCode(base.BlockCode):
         mode: The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
     Examples:
-        >>> convolutional_code = komm.ConvolutionalCode([[0b1, 0b11]])
-
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='direct-truncation')
+        >>> code = komm.TerminatedConvolutionalCode(
+        ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+        ...     num_blocks=3,
+        ...     mode='direct-truncation',
+        ... )
         >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)
         >>> code.generator_matrix
@@ -48,7 +50,11 @@ class TerminatedConvolutionalCode(base.BlockCode):
         >>> code.minimum_distance()
         2
 
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='zero-termination')
+        >>> code = komm.TerminatedConvolutionalCode(
+        ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+        ...     num_blocks=3,
+        ...     mode='zero-termination',
+        ... )
         >>> (code.length, code.dimension, code.redundancy)
         (8, 3, 5)
         >>> code.generator_matrix
@@ -58,7 +64,11 @@ class TerminatedConvolutionalCode(base.BlockCode):
         >>> code.minimum_distance()
         3
 
-        >>> code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode='tail-biting')
+        >>> code = komm.TerminatedConvolutionalCode(
+        ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+        ...     num_blocks=3,
+        ...     mode='tail-biting',
+        ... )
         >>> (code.length, code.dimension, code.redundancy)
         (6, 3, 3)
         >>> code.generator_matrix
