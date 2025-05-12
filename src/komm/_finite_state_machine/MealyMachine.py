@@ -46,8 +46,8 @@ class MealyMachine:
             | $3$       | $1$       | $3$                  | $1$              |
 
                 >>> machine = komm.MealyMachine(
-                ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-                ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+                ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+                ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
                 ... )
     """
 
@@ -69,8 +69,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> machine.num_states
             4
@@ -84,8 +84,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> machine.num_input_symbols
             2
@@ -99,8 +99,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> machine.num_output_symbols
             4
@@ -114,8 +114,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> machine.input_edges
             array([[ 0,  1, -1, -1],
@@ -136,8 +136,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> machine.output_edges
             array([[ 0,  3, -1, -1],
@@ -171,8 +171,8 @@ class MealyMachine:
 
         Examples:
             >>> machine = komm.MealyMachine(
-            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
-            ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
+            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
             ... )
             >>> input, initial_state = [1, 1, 0, 1, 0], 0
             >>> output, final_state = machine.process(input, initial_state)
