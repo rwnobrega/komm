@@ -28,8 +28,8 @@ class ViterbiStreamDecoder:
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self):
-        fsm = self.convolutional_code.finite_state_machine()
-        num_states, traceback_length = fsm.num_states, self.traceback_length
+        self._fsm = self.convolutional_code.finite_state_machine()
+        num_states, traceback_length = self._fsm.num_states, self.traceback_length
         self.memory: MetricMemory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
             "metrics": np.full((num_states, traceback_length + 1), fill_value=np.inf),
@@ -66,8 +66,7 @@ class ViterbiStreamDecoder:
         input = np.asarray(input)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
-        fsm = self.convolutional_code.finite_state_machine()
-        input_hat = fsm.viterbi_streaming(
+        input_hat = self._fsm.viterbi_streaming(
             observed=input.reshape(-1, n),
             metric_function=self.metric_function,
             memory=self.memory,
