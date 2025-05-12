@@ -15,26 +15,26 @@ Z = TypeVar("Z")
 MetricFunction = Callable[[int, Z], float]
 
 
-class FiniteStateMachine:
+class MealyMachine:
     r"""
-    Finite-state machine (Mealy machine). It is defined by a *set of states* $\mathcal{S}$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, a *transition function* $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an *output function* $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see [Wikipedia: Mealy machine](https://en.wikipedia.org/wiki/Mealy_machine).
+    Finite-state Mealy machine. It is defined by a *set of states* $\mathcal{S}$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, a *transition function* $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an *output function* $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see [Wikipedia: Mealy machine](https://en.wikipedia.org/wiki/Mealy_machine).
 
 
     Parameters:
-        next_states: The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $T(s, x) \in \mathcal{S}$, that is, the next state of the machine given that the current state is $s$ and the input is $x$.
+        transitions: The matrix of transitions of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $T(s, x) \in \mathcal{S}$, that is, the next state of the machine given that the current state is $s$ and the input is $x$.
 
         outputs: The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $G(s, x) \in \mathcal{Y}$, that is, the output of the machine given that the current state is $s$ and the input is $x$.
 
     Examples:
-        1. Consider the finite-state machine whose state diagram depicted in the figure below.
+        1. Consider the finite-state Mealy machine whose state diagram depicted in the figure below.
 
             <figure markdown>
-            ![Finite-state machine (Mealy machine) example.](/figures/mealy.svg)
+            ![Finite-state Mealy machine example.](/figures/mealy.svg)
             </figure>
 
             It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$. The transition function $T$ and output function $G$ are given by the table below.
 
-            | State $s$ | Input $x$ | Next state $T(s, x)$ | Output $G(s, x)$ |
+            | State $s$ | Input $x$ | Transition $T(s, x)$ | Output $G(s, x)$ |
             | :-------: | :-------: | :------------------: | :--------------: |
             | $0$       | $0$       | $0$                  | $0$              |
             | $0$       | $1$       | $1$                  | $3$              |
@@ -45,19 +45,19 @@ class FiniteStateMachine:
             | $3$       | $0$       | $2$                  | $2$              |
             | $3$       | $1$       | $3$                  | $1$              |
 
-                >>> fsm = komm.FiniteStateMachine(
-                ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+                >>> machine = komm.MealyMachine(
+                ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
                 ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
                 ... )
     """
 
-    def __init__(self, next_states: npt.ArrayLike, outputs: npt.ArrayLike):
-        self.next_states = np.asarray(next_states)
+    def __init__(self, transitions: npt.ArrayLike, outputs: npt.ArrayLike):
+        self.transitions = np.asarray(transitions)
         self.outputs = np.asarray(outputs)
 
     def __repr__(self) -> str:
         args = ", ".join([
-            f"next_states={self.next_states.tolist()}",
+            f"transitions={self.transitions.tolist()}",
             f"outputs={self.outputs.tolist()}",
         ])
         return f"{self.__class__.__name__}({args})"
@@ -68,14 +68,14 @@ class FiniteStateMachine:
         The number of states of the machine.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
-            >>> fsm.num_states
+            >>> machine.num_states
             4
         """
-        return self.next_states.shape[0]
+        return self.transitions.shape[0]
 
     @cached_property
     def num_input_symbols(self) -> int:
@@ -83,14 +83,14 @@ class FiniteStateMachine:
         The size (cardinality) of the input alphabet $\mathcal{X}$.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
-            >>> fsm.num_input_symbols
+            >>> machine.num_input_symbols
             2
         """
-        return self.next_states.shape[1]
+        return self.transitions.shape[1]
 
     @cached_property
     def num_output_symbols(self) -> int:
@@ -98,11 +98,11 @@ class FiniteStateMachine:
         The size (cardinality) of the output alphabet $\mathcal{Y}$.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
-            >>> fsm.num_output_symbols
+            >>> machine.num_output_symbols
             4
         """
         return int(np.amax(self.outputs)) + 1
@@ -113,11 +113,11 @@ class FiniteStateMachine:
         The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
-            >>> fsm.input_edges
+            >>> machine.input_edges
             array([[ 0,  1, -1, -1],
                    [-1, -1,  0,  1],
                    [ 0,  1, -1, -1],
@@ -125,7 +125,7 @@ class FiniteStateMachine:
         """
         input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
         for state_from in range(self.num_states):
-            for x, state_to in enumerate(self.next_states[state_from, :]):
+            for x, state_to in enumerate(self.transitions[state_from, :]):
                 input_edges[state_from, state_to] = x
         return input_edges
 
@@ -135,11 +135,11 @@ class FiniteStateMachine:
         The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
-            >>> fsm.output_edges
+            >>> machine.output_edges
             array([[ 0,  3, -1, -1],
                    [-1, -1,  1,  2],
                    [ 3,  0, -1, -1],
@@ -147,7 +147,7 @@ class FiniteStateMachine:
         """
         output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
         for state_from in range(self.num_states):
-            for x, state_to in enumerate(self.next_states[state_from, :]):
+            for x, state_to in enumerate(self.transitions[state_from, :]):
                 output_edges[state_from, state_to] = self.outputs[state_from, x]
         return output_edges
 
@@ -170,12 +170,12 @@ class FiniteStateMachine:
             final_state: The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
         Examples:
-            >>> fsm = komm.FiniteStateMachine(
-            ...     next_states=[[0,1], [2,3], [0,1], [2,3]],
+            >>> machine = komm.MealyMachine(
+            ...     transitions=[[0,1], [2,3], [0,1], [2,3]],
             ...     outputs=[[0,3], [1,2], [3,0], [2,1]],
             ... )
             >>> input, initial_state = [1, 1, 0, 1, 0], 0
-            >>> output, final_state = fsm.process(input, initial_state)
+            >>> output, final_state = machine.process(input, initial_state)
             >>> output
             array([3, 2, 2, 0, 1])
             >>> final_state
@@ -185,7 +185,7 @@ class FiniteStateMachine:
         s = initial_state
         for t, x in np.ndenumerate(input):
             y = self.outputs[s, x]
-            s = self.next_states[s, x]
+            s = self.transitions[s, x]
             output[t] = y
         final_state = int(s)
         return output, final_state
@@ -220,7 +220,7 @@ class FiniteStateMachine:
             metrics[0, :] = initial_metrics
         for t, z in enumerate(observed):
             for s0 in range(num_states):
-                for s1, y in zip(self.next_states[s0], self.outputs[s0]):
+                for s1, y in zip(self.transitions[s0], self.outputs[s0]):
                     candidate_metrics = metrics[t, s0] + metric_function(y, z)
                     if candidate_metrics < metrics[t + 1, s1]:
                         metrics[t + 1, s1] = candidate_metrics
@@ -262,7 +262,7 @@ class FiniteStateMachine:
             new_metrics = np.full(num_states, fill_value=np.inf)
             choices = np.zeros(num_states, dtype=int)
             for s0 in range(num_states):
-                for s1, y in zip(self.next_states[s0], self.outputs[s0]):
+                for s1, y in zip(self.transitions[s0], self.outputs[s0]):
                     candidate_metric = memory["metrics"][s0, -1] + metric_function(y, z)
                     if candidate_metric < new_metrics[s1]:
                         new_metrics[s1] = candidate_metric
@@ -332,7 +332,7 @@ class FiniteStateMachine:
 
         for t, z in enumerate(observed):
             for x, s0 in np.ndindex(num_input_symbols, num_states):
-                y, s1 = self.outputs[s0, x], self.next_states[s0, x]
+                y, s1 = self.outputs[s0, x], self.transitions[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
 
         for t in range(0, L - 1):
@@ -352,7 +352,7 @@ class FiniteStateMachine:
         for t in range(L):
             for x in range(num_input_symbols):
                 for s0 in range(num_states):
-                    s1 = self.next_states[s0, x]
+                    s1 = self.transitions[s0, x]
                     edge_labels[s0] = (
                         log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
                     )

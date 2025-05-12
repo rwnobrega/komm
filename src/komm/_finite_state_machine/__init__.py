@@ -1,3 +1,3 @@
-from .FiniteStateMachine import FiniteStateMachine
+from .MealyMachine import MealyMachine
 
-__all__ = ["FiniteStateMachine"]
+__all__ = ["MealyMachine"]

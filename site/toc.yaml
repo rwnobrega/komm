@@ -40,7 +40,7 @@ Error control:
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
-  - FiniteStateMachine
+  - MealyMachine
 Modulation:
   - Modulation
   - PAModulation

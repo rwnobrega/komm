@@ -5,7 +5,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .._finite_state_machine.FiniteStateMachine import MetricMemory
+from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
 from .ConvolutionalCode import ConvolutionalCode
 

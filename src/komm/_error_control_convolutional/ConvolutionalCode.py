@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
-from .._finite_state_machine import FiniteStateMachine
+from .._finite_state_machine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import block_diagonal
 
@@ -344,26 +344,26 @@ class ConvolutionalCode:
         return A_mat, B_mat, C_mat, D_mat
 
     @cache
-    def finite_state_machine(self) -> FiniteStateMachine:
+    def finite_state_machine(self) -> MealyMachine:
         r"""
-        Returns the [finite-state machine](/ref/FiniteStateMachine) of the code, in controller canonical form.
+        Returns the [finite-state (Mealy) machine](/ref/MealyMachine) of the code, in controller canonical form.
 
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.finite_state_machine()
-            FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
-                               outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
+            MealyMachine(transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+                         outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])
         """
         k, σ = self.num_input_bits, self.overall_constraint_length
-        next_states = np.empty((2**σ, 2**k), dtype=int)
+        transitions = np.empty((2**σ, 2**k), dtype=int)
         outputs = np.empty((2**σ, 2**k), dtype=int)
         for s, x in np.ndindex(2**σ, 2**k):
             initial_state = int_to_bits(s, width=σ)
             u = int_to_bits(x, width=k)
             v, final_state = self.encode_with_state(u, initial_state)
+            transitions[s, x] = bits_to_int(final_state)
             outputs[s, x] = bits_to_int(v)
-            next_states[s, x] = bits_to_int(final_state)
-        return FiniteStateMachine(next_states, outputs)
+        return MealyMachine(transitions, outputs)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

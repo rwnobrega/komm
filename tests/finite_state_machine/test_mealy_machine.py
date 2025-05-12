@@ -3,17 +3,17 @@ import numpy as np
 import komm
 
 
-def test_fsm_viterbi_sklar():
+def test_mealy_machine_viterbi_sklar():
     # Sklar.01, p. 401-405.
     def metric_function(y, z):
         s = komm.int_to_bits(y, width=2)
         return np.count_nonzero(z != s)
 
-    fsm = komm.FiniteStateMachine(
-        next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
+    machine = komm.MealyMachine(
+        transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
         outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
     )
-    input_hat, final_metrics = fsm.viterbi(
+    input_hat, final_metrics = machine.viterbi(
         observed=[(1, 1), (0, 1), (0, 1), (1, 0), (0, 1)],
         metric_function=metric_function,
         initial_metrics=[0.0, np.inf, np.inf, np.inf],
@@ -25,17 +25,17 @@ def test_fsm_viterbi_sklar():
     )
 
 
-def test_fsm_viterbi_ryan_lin():
+def test_mealy_machine_viterbi_ryan_lin():
     # Ryan.Lin.09, p. 176-177
     def metric_function(y, z):
         y = (-1) ** komm.int_to_bits(y, width=2)
         return -np.dot(z, y)
 
-    fsm = komm.FiniteStateMachine(
-        next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],
+    machine = komm.MealyMachine(
+        transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
         outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
     )
-    input_hat, final_metrics = fsm.viterbi(
+    input_hat, final_metrics = machine.viterbi(
         observed=[(-0.7, -0.5), (-0.8, -0.6), (-1.1, +0.4), (+0.9, +0.8)],
         metric_function=metric_function,
         initial_metrics=[0.0, np.inf, np.inf, np.inf],
@@ -46,15 +46,13 @@ def test_fsm_viterbi_ryan_lin():
     )
 
 
-def test_fsm_forward_backward_lin_costello():
+def test_mealy_machine_forward_backward_lin_costello():
     # Lin.Costello.04, p. 572-575.
     def metric_function(y, z):
         return 0.5 * np.dot(z, (-1) ** komm.int_to_bits(y, width=2))
 
-    fsm = komm.FiniteStateMachine(
-        next_states=[[0, 1], [1, 0]], outputs=[[0, 3], [2, 1]]
-    )
-    input_posteriors = fsm.forward_backward(
+    machine = komm.MealyMachine(transitions=[[0, 1], [1, 0]], outputs=[[0, 3], [2, 1]])
+    input_posteriors = machine.forward_backward(
         observed=[(-0.8, -0.1), (-1.0, +0.5), (1.8, -1.1), (-1.6, +1.6)],
         metric_function=metric_function,
         initial_state_distribution=[1, 0],
@@ -65,16 +63,16 @@ def test_fsm_forward_backward_lin_costello():
     assert np.allclose(-llr, [0.48, 0.62, -1.02, 2.08], atol=0.05)
 
 
-def test_fsm_forward_backward_abrantes():
+def test_mealy_machine_forward_backward_abrantes():
     # Abrantes.10, p.434-437
     def metric_function(y, z):
         return 2.5 * np.dot(z, (-1) ** komm.int_to_bits(y, width=2))
 
-    fsm = komm.FiniteStateMachine(
-        next_states=[[0, 2], [0, 2], [1, 3], [1, 3]],
+    machine = komm.MealyMachine(
+        transitions=[[0, 2], [0, 2], [1, 3], [1, 3]],
         outputs=[[0, 3], [3, 0], [1, 2], [2, 1]],
     )
-    input_posteriors = fsm.forward_backward(
+    input_posteriors = machine.forward_backward(
         observed=[
             (-0.3, -0.1),
             (+0.5, -0.2),
