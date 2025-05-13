@@ -4,7 +4,7 @@
 
 ### Breaking changes
 
-- Renamed `FiniteStateMachine` to `MealyMachine` and its corresponding constructor parameter `next_states` to `transition`.
+- Renamed `FiniteStateMachine` to `MealyMachine` and its corresponding constructor parameter `next_states` to `transitions`.
 
 - Removed `ConvolutionalStreamEncoder` and add encoding methods to `ConvolutionalCode`. Instead of
 
