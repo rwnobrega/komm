@@ -48,7 +48,7 @@ demo = [
 ]
 
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["build", "setuptools>=61.0.0", "wheel", "twine"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
