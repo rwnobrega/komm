@@ -212,7 +212,7 @@ class MealyMachine:
             final_metrics: The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
         L, num_states = len(observed), self.num_states
-        choices = np.empty((L, num_states), dtype=int)
+        choices = np.zeros((L, num_states), dtype=int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
         if initial_metrics is None:
             metrics[0, :] = np.zeros(num_states, dtype=float)

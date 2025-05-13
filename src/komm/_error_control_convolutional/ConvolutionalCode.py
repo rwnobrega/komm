@@ -274,6 +274,43 @@ class ConvolutionalCode:
         ]
 
     @cache
+    def free_distance(self) -> int:
+        r"""
+        Returns the *free distance* $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all non-zero encoded bit sequences
+
+        Examples:
+            >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
+            >>> code.free_distance()
+            5
+        """
+        fsm = self.finite_state_machine()
+
+        def hamming_weight(y: int, _: int) -> int:
+            return y.bit_count()
+
+        # Start at all-zero state
+        metrics = np.full(fsm.num_states, np.inf)
+        metrics[0] = 0.0
+
+        _, metrics = fsm.viterbi(
+            observed=[-1],  # dummy
+            metric_function=hamming_weight,
+            initial_metrics=metrics,
+        )
+
+        # Block return to all-zero state at the first step
+        metrics[0] = np.inf
+
+        while metrics[0] > np.min(metrics[1:]):
+            _, metrics = fsm.viterbi(
+                observed=[-1],  # dummy
+                metric_function=hamming_weight,
+                initial_metrics=metrics,
+            )
+
+        return int(metrics[0])
+
+    @cache
     def state_space_representation(
         self,
     ) -> tuple[

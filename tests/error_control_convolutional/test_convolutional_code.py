@@ -295,11 +295,6 @@ def test_convolutional_code_free_distance_g(
     overall_constraint_length, feedforward_polynomials, free_distance
 ):
     # Lin.Costello.04, p. 539--540
-    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
-    assert convolutional_code.overall_constraint_length == overall_constraint_length
-    code = komm.TerminatedConvolutionalCode(
-        convolutional_code=convolutional_code,
-        num_blocks=overall_constraint_length,
-        mode="zero-termination",
-    )
-    assert code.minimum_distance() == free_distance
+    code = komm.ConvolutionalCode(feedforward_polynomials)
+    assert code.overall_constraint_length == overall_constraint_length
+    assert code.free_distance() == free_distance
