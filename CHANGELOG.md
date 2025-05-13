@@ -1,7 +1,40 @@
 # Changelog
 
-> [!NOTE]
-> Changelog started with version v0.10.0.
+## v0.22.0 (2025-05-13)
+
+### Breaking changes
+
+- Renamed `FiniteStateMachine` to `MealyMachine` and its corresponding constructor parameter `next_states` to `transition`.
+
+- Removed `ConvolutionalStreamEncoder` and add encoding methods to `ConvolutionalCode`. Instead of
+
+  ```
+  code = komm.ConvolutionalCode(...)
+  encoder = komm.ConvolutionalStreamEncoder(code, initial_state)
+  output = encoder(input)
+  final_state = encoder.state
+  ```
+
+  use
+
+  ```
+  code = komm.ConvolutionalCode(...)
+  output, final_state = code.encode_with_state(input, initial_state)
+  ```
+
+  or, to encode starting from the zero state, use
+
+  ```
+  code = komm.ConvolutionalCode(...)
+  output = code.encode(input)
+  ```
+
+  Note that in the latter case the final state is not returned.
+
+### Added
+
+- Implemented [Moore machine](https://komm.dev/ref/MooreMachine).
+- Implemented `free_distance` method for convolutional codes.
 
 ## v0.21.0 (2025-05-04)
 
@@ -181,3 +214,6 @@
 - Removed `RationalPolynomial` and `RationalPolynomialFraction` classes.
 - Refactored _algebra_ and _pulse_ modules. See documentation for new usage.
 - Adjusted string literals in `BlockDecoder` to kebab-case. For example, `method="exhaustive_search_hard"` should become `method="exhaustive-search-hard"`
+
+> [!NOTE]
+> Changelog started with version v0.10.0.
