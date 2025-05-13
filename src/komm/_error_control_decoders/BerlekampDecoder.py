@@ -81,7 +81,7 @@ def berlekamp_algorithm(
             fst[: degree[j] + 1] = sigma[j]
             snd = [field.zero] * (degree[j + 1] + 1)
             snd[j - k : degree[k] + j - k + 1] = sigma[k]
-            # [LC04, Eq. (6.25)]
+            # See [LC04, eq. (6.25)].
             sigma[j + 1] = [
                 fst[i] + snd[i] * discrepancy[j] / discrepancy[k]
                 for i in range(degree[j + 1] + 1)
