@@ -9,7 +9,7 @@ Channels:
   - BinaryErasureChannel
   - ZChannel
 Error control:
-  Block coding:
+  Block codes:
     - BlockCode
     - SystematicBlockCode
     - CyclicCode
@@ -24,7 +24,11 @@ Error control:
     - Lexicode
     - PolarCode
     - SlepianArray
-  Block decoders:
+  Convolutional codes:
+    - ConvolutionalCode
+    - TerminatedConvolutionalCode
+    - ViterbiStreamDecoder
+  Decoders:
     - BCJRDecoder
     - BerlekampDecoder
     - ExhaustiveSearchDecoder
@@ -33,10 +37,6 @@ Error control:
     - SyndromeTableDecoder
     - ViterbiDecoder
     - WagnerDecoder
-  Convolutional coding:
-    - ConvolutionalCode
-    - TerminatedConvolutionalCode
-    - ViterbiStreamDecoder
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
