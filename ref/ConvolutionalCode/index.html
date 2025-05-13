@@ -1295,8 +1295,6 @@
       
         
       
-        
-      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -1419,8 +1417,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finite_state_machine" class="md-nav__link">
-    finite_state_machine()
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
   </a>
   
 </li>
@@ -1428,6 +1426,27 @@
         <li class="md-nav__item">
   <a href="#state_space_representation" class="md-nav__link">
     state_space_representation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finite_state_machine" class="md-nav__link">
+    finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode" class="md-nav__link">
+    encode()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode_with_state" class="md-nav__link">
+    encode_with_state()
   </a>
   
 </li>
@@ -1452,26 +1471,6 @@
   
   <span class="md-ellipsis">
     TerminatedConvolutionalCode
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ConvolutionalStreamEncoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ConvolutionalStreamEncoder
   </span>
   
 
@@ -1593,6 +1592,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1627,11 +1628,31 @@
   
   
     <li class="md-nav__item">
-      <a href="../FiniteStateMachine/" class="md-nav__link">
+      <a href="../MooreMachine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    FiniteStateMachine
+    MooreMachine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MealyMachine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MealyMachine
   </span>
   
 
@@ -3389,8 +3410,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finite_state_machine" class="md-nav__link">
-    finite_state_machine()
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
   </a>
   
 </li>
@@ -3398,6 +3419,27 @@
         <li class="md-nav__item">
   <a href="#state_space_representation" class="md-nav__link">
     state_space_representation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finite_state_machine" class="md-nav__link">
+    finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode" class="md-nav__link">
+    encode()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode_with_state" class="md-nav__link">
+    encode_with_state()
   </a>
   
 </li>
@@ -3428,26 +3470,7 @@
     <div class="doc doc-contents first">
 
 
-        <p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> $\mathbf{P}(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $\mathbf{q}(D)$, of length $k$. The element in row $i$ and column $j$ of $\mathbf{P}(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $\mathbf{q}(D)$ is denoted by $q_i(D)$; they are <a href="/ref/BinaryPolynomial">binary polynomials</a> in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively.</p>
-<p>The <em>transfer function matrix</em> (also known as <em>transform-domain generator matrix</em>) $\mathbf{G}(D)$ of the convolutional code, of shape $k \times n$, is such that the element in row $i$ and column $j$ is given by
-$$
-    g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
-$$
-for $i \in [0 : k)$ and $j \in [0 : n)$.</p>
-<p>The <em>constraint lengths</em> of the code are defined by
-$$
-    \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},
-$$
-for $i \in [0 : k)$.</p>
-<p>The <em>overall constraint length</em> of the code is defined by
-$$
-    \nu = \sum_{i \in [0:k)} \nu_i.
-$$</p>
-<p>The <em>memory order</em> of the code is defined by
-$$
-    \mu = \max_{i \in [0:k)} \nu_i.
-$$</p>
-<p>For more details, see <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite> and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
+        <p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> $\mathbf{P}(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $\mathbf{q}(D)$, of length $k$. The element in row $i$ and column $j$ of $\mathbf{P}(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $\mathbf{q}(D)$ is denoted by $q_i(D)$; they are <a href="/ref/BinaryPolynomial">binary polynomials</a> in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. For more details, see <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite> and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3473,70 +3496,76 @@ $$</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <ol>
 <li>
-<p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 6)$; its transfer function matrix is given by
-    $$
-        \mathbf{G}(D) =
-        \begin{bmatrix}
-            D^6 + D^3 + D^2 + D + 1  &amp;  D^6 + D^5 + D^3 + D^2 + 1
-        \end{bmatrix},
-    $$
-    yielding <code>feedforward_polynomials = [[0b1001111, 0b1101101]] = [[0o117, 0o155]] = [[79, 109]]</code>.</p>
+<p>Consider the encoder with parameters $(n, k, \sigma) = (2, 1, 6)$ depicted below.</p>
 <p><figure markdown>
 <img alt="Convolutional encoder for (2, 1, 6) code." src="/figures/cc_2_1_6.svg" />
 </figure></p>
-<pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(feedforward_polynomials=[[0o117, 0o155]])
-&gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-(2, 1, 6)
+<p>Its matrix of feedforward polynomials is given by
+$$
+    \mathbf{P}(D) =
+    \begin{bmatrix}
+        D^6 + D^3 + D^2 + D + 1  &amp;&amp;  D^6 + D^5 + D^3 + D^2 + 1
+    \end{bmatrix}.
+$$</p>
+<pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(
+...     feedforward_polynomials=[[0b1001111, 0b1101101]],
+... )
 </code></pre>
 </li>
 <li>
-<p>The convolutional code with encoder depicted in the figure below has parameters $(n, k, \nu) = (3, 2, 7)$; its transfer function matrix is given by
-    $$
-        \mathbf{G}(D) =
-        \begin{bmatrix}
-            D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\
-            0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1
-        \end{bmatrix},
-    $$
-    yielding <code>feedforward_polynomials = [[0b11001, 0b10111, 0b00000], [0b0000, 0b1010, 0b1101]] = [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]] = [[25, 23, 0], [0, 10, 13]]</code>.</p>
+<p>Consider the encoder with parameters $(n, k, \sigma) = (3, 2, 7)$ depicted below.</p>
 <p><figure markdown>
 <img alt="Convolutional encoder for (3, 2, 7) code." src="/figures/cc_3_2_7.svg" />
 </figure></p>
+<p>Its matrix of feedforward polynomials is given by
+$$
+    \mathbf{P}(D) =
+    \begin{bmatrix}
+        D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\
+        0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1
+    \end{bmatrix}.
+$$</p>
 <pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(
-...     feedforward_polynomials=[[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],
+...     feedforward_polynomials=[
+...         [0b11001, 0b10111,      0],
+...         [      0,  0b1010, 0b1101],
+...     ],
 ... )
-&gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-(3, 2, 7)
 </code></pre>
 </li>
 <li>
-<p>The convolutional code with feedback encoder depicted in the figure below has parameters $(n, k, \nu) = (2, 1, 4)$; its transfer function matrix is given by
-    $$
-        \mathbf{G}(D) =
-        \begin{bmatrix}
-            1  &amp;  \dfrac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
-        \end{bmatrix},
-    $$
-    yielding <code>feedforward_polynomials = [[0b10111, 0b11001]] = [[0o27, 0o31]] = [[23, 25]]</code> and <code>feedback_polynomials = [0b10111] = [0o27] = [23]</code>.</p>
+<p>Consider the feedback encoder with parameters $(n, k, \sigma) = (2, 1, 4)$ depicted below.</p>
 <p><figure markdown>
 <img alt="Convolutional encoder for (2, 1, 4) feedback code." src="/figures/cc_2_1_4_fb.svg" />
 </figure></p>
+<p>Its matrix of feedforward polynomials is given by
+$$
+    \mathbf{P}(D) =
+    \begin{bmatrix}
+        D^4 + D^2 + D + 1 &amp;&amp; D^4 + D^3 + 1
+    \end{bmatrix},
+$$
+and its vector of feedback polynomials is given by
+$$
+    \mathbf{q}(D) =
+    \begin{bmatrix}
+        D^4 + D^2 + D + 1
+    \end{bmatrix}.
+$$</p>
 <pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(
-...     feedforward_polynomials=[[0o27, 0o31]],
-...     feedback_polynomials=[0o27],
+...     feedforward_polynomials=[[0b10111, 0b11001]],
+...     feedback_polynomials=[0b10111],
 ... )
-&gt;&gt;&gt; (code.num_output_bits, code.num_input_bits, code.overall_constraint_length)
-(2, 1, 4)
 </code></pre>
 </li>
 </ol>
         <h2>Tables of optimal convolutional codes</h2>
 
-<p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\nu$.</p>
+<p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\sigma$.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">Parameters $(n, k, \nu)$</th>
+<th style="text-align: center;">Parameters $(n, k, \sigma)$</th>
 <th>Transfer function matrix $\mathbf{G}(D)$</th>
 </tr>
 </thead>
@@ -3578,7 +3607,7 @@ $$</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">Parameters $(n, k, \nu)$</th>
+<th style="text-align: center;">Parameters $(n, k, \sigma)$</th>
 <th>Transfer function matrix $\mathbf{G}(D)$</th>
 </tr>
 </thead>
@@ -3729,7 +3758,11 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The transfer function matrix $\mathbf{G}(D)$ of the code. This is a $k \times n$ array of <a href="/ref/BinaryPolynomialFraction">binary polynomial fractions</a>.</p>
+        <p>The <em>transfer function matrix</em> (also known as <em>transform-domain generator matrix</em>) $\mathbf{G}(D)$ of the code. This is a $k \times n$ array of <a href="/ref/BinaryPolynomialFraction">binary polynomial fractions</a> with element in row $i$ and column $j$ given by
+$$
+    g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
+$$
+for $i \in [0 : k)$ and $j \in [0 : n)$.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3777,7 +3810,11 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The constraint lengths $\nu_i$ of the code, for $i \in [0 : k)$. This is a $k$-array of integers.</p>
+        <p>The <em>constraint lengths</em> $\nu_i$ of the code, defined by
+$$
+    \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},
+$$
+for $i \in [0 : k)$. This is a $k$-array of integers.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3815,7 +3852,10 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The overall constraint length $\nu$ of the code.</p>
+        <p>The <em>overall constraint length</em> $\sigma$ of the code, defined by
+$$
+    \sigma = \sum_{i \in [0:k)} \nu_i.
+$$</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3853,7 +3893,10 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The memory order $\mu$ of the code.</p>
+        <p>The <em>memory order</em> $\mu$ of the code, defined by
+$$
+    \mu = \max_{i \in [0:k)} \nu_i.
+$$</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3876,8 +3919,8 @@ $$</p>
 
 
 
-<h2 id="finite_state_machine" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">finite_state_machine</span><span class="p">()</span></code>      
+<h2 id="free_distance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">free_distance</span><span class="p">()</span></code>      
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
@@ -3888,25 +3931,13 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>Returns the <a href="/ref/FiniteStateMachine">finite-state machine</a> of the code, in direct form.</p>
-
-  <p><strong>Returns:</strong></p>
-  <ul>
-      <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="komm._finite_state_machine.FiniteStateMachine">FiniteStateMachine</span></code></span>
-        –
-        <div class="doc-md-description">
-          <p>The finite-state machine of the code.</p>
-      </div>
-      </li>
-  </ul>
+        <p>Returns the <em>free distance</em> $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all non-zero encoded bit sequences</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mb">0b101</span><span class="p">,</span> <span class="mb">0b111</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="p">()</span>
-<span class="go">FiniteStateMachine(next_states=[[0, 1], [2, 3], [0, 1], [2, 3]],</span>
-<span class="go">                   outputs=[[0, 3], [2, 1], [3, 0], [1, 2]])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">free_distance</span><span class="p">()</span>
+<span class="go">5</span>
 </code></pre></div>
 
   </div>
@@ -3934,12 +3965,12 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>Returns the <em>state-space representation</em> of the code. Let
+        <p>Returns the <em>state-space representation</em> of the code, in controller canonical form. Let
 $$
 \begin{aligned}
     \mathbf{u}_t &amp; = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\
     \mathbf{v}_t &amp; = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)}), \\
-    \mathbf{s}_t &amp; = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\nu-1)}),
+    \mathbf{s}_t &amp; = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\sigma-1)}),
 \end{aligned}
 $$
 be the input block, output block, and state, respectively, all defined at time instant $t$. Then,
@@ -3949,33 +3980,33 @@ $$
     \mathbf{v}_{t} &amp; = \mathbf{s}_t \mathbf{C} + \mathbf{u}_t \mathbf{D},
 \end{aligned}
 $$
-where $\mathbf{A}$ is the $\nu \times \nu$ <em>state matrix</em>, $\mathbf{B}$ is the $k \times \nu$ <em>control matrix</em>, $\mathbf{C}$ is the $\nu \times n$ <em>observation matrix</em>, and $\mathbf{D}$ is the $k \times n$ <em>transition matrix</em>. They are all binary matrices. For more details, see <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
+where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf{B}$ is the $k \times \sigma$ <em>control matrix</em>, $\mathbf{C}$ is the $\sigma \times n$ <em>observation matrix</em>, and $\mathbf{D}$ is the $k \times n$ <em>transition matrix</em>. They are all binary matrices. For more details, see <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
 
   <p><strong>Returns:</strong></p>
   <ul>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>
+<b><code>state_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The state matrix $\mathbf{A}$ of the code.</p>
       </div>
       </li>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>
+<b><code>control_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The control matrix $\mathbf{B}$ of the code.</p>
       </div>
       </li>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>
+<b><code>observation_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The observation matrix $\mathbf{C}$ of the code.</p>
       </div>
       </li>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>
+<b><code>transition_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The transition matrix $\mathbf{D}$ of the code.</p>
@@ -3985,7 +4016,7 @@ where $\mathbf{A}$ is the $\nu \times \nu$ <em>state matrix</em>, $\mathbf{B}$ i
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span><span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mb">0b101</span><span class="p">,</span> <span class="mb">0b111</span><span class="p">]])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">state_matrix</span><span class="p">,</span> <span class="n">control_matrix</span><span class="p">,</span> <span class="n">observation_matrix</span><span class="p">,</span> <span class="n">transition_matrix</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">code</span><span class="o">.</span><span class="n">state_space_representation</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -3995,10 +4026,168 @@ where $\mathbf{A}$ is the $\nu \times \nu$ <em>state matrix</em>, $\mathbf{B}$ i
 <span class="gp">&gt;&gt;&gt; </span><span class="n">control_matrix</span>
 <span class="go">array([[1, 0]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">observation_matrix</span>
-<span class="go">array([[0, 1],</span>
+<span class="go">array([[1, 0],</span>
 <span class="go">       [1, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transition_matrix</span>
 <span class="go">array([[1, 1]])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="finite_state_machine" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">finite_state_machine</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the <a href="/ref/MealyMachine">finite-state (Mealy) machine</a> of the code, in controller canonical form.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="p">()</span>
+<span class="go">MealyMachine(transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],</span>
+<span class="go">             outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="encode" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">encode</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Encodes a given bit sequence, starting from the all-zero state.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 1, 0, 1, 1, 0, 1, 0])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="encode_with_state" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">encode_with_state</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Encodes a given bit sequence, starting from a given state.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>initial_state</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The initial state. Must be a 1D-array of length $\sigma$.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>final_state</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The final state. It is a 1D-array of length $\sigma$.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode_with_state</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">(array([1, 1, 0, 1, 1, 0, 1, 0]), array([1, 1]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode_with_state</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">(array([1, 0, 1, 0, 1, 0, 1, 0]), array([1, 1]))</span>
 </code></pre></div>
 
   </div>

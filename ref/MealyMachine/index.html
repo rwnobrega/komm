@@ -8,10 +8,10 @@
       
       
       
-        <link rel="canonical" href="https://komm.dev/ref/FiniteStateMachine/">
+        <link rel="canonical" href="https://komm.dev/ref/MealyMachine/">
       
       
-        <link rel="prev" href="../CyclicRedundancyCheck/">
+        <link rel="prev" href="../MooreMachine/">
       
       
         <link rel="next" href="../Modulation/">
@@ -22,7 +22,7 @@
     
     
       
-        <title>FiniteStateMachine - Komm</title>
+        <title>MealyMachine - Komm</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kommfinitestatemachine" class="md-skip">
+        <a href="#kommmealymachine" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              FiniteStateMachine
+              MealyMachine
             
           </span>
         </div>
@@ -1291,8 +1291,6 @@
       
         
       
-        
-      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1352,26 +1350,6 @@
   
   <span class="md-ellipsis">
     TerminatedConvolutionalCode
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ConvolutionalStreamEncoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ConvolutionalStreamEncoder
   </span>
   
 
@@ -1495,6 +1473,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -1527,6 +1507,26 @@
                 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../MooreMachine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MooreMachine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1542,7 +1542,7 @@
           
   
   <span class="md-ellipsis">
-    FiniteStateMachine
+    MealyMachine
   </span>
   
 
@@ -1553,7 +1553,7 @@
         
   
   <span class="md-ellipsis">
-    FiniteStateMachine
+    MealyMachine
   </span>
   
 
@@ -3429,7 +3429,7 @@
                   
 
 
-<h1 id="kommfinitestatemachine">komm.FiniteStateMachine</h1>
+<h1 id="kommmealymachine">komm.MealyMachine</h1>
 
 
 <div class="doc doc-object doc-class">
@@ -3440,19 +3440,44 @@
     <div class="doc doc-contents first">
 
 
-        <p>Finite-state machine (Mealy machine). It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, and a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S} \times \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are always taken as $\mathcal{S} = \{ 0, 1, \ldots, |\mathcal{S}| - 1 \}$, $\mathcal{X} = \{ 0, 1, \ldots, |\mathcal{X}| - 1 \}$, and $\mathcal{Y} = \{ 0, 1, \ldots, |\mathcal{Y}| - 1 \}$, respectively.</p>
-<p>For example, consider the finite-state machine whose state diagram depicted in the figure below.</p>
-<figure>
-<p><img alt="Finite-state machine (Mealy machine) example." src="/figures/mealy.svg" /></p>
-</figure>
-<p>It has set of states $\mathcal{S} = \{ 0, 1, 2, 3 \}$, input alphabet $\mathcal{X} = \{ 0, 1 \}$, output alphabet $\mathcal{Y} = \{ 0, 1, 2, 3 \}$, and transition function $T$ given by the table below.</p>
+        <p>Finite-state Mealy machine. It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an <em>output function</em> $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see <a href="https://en.wikipedia.org/wiki/Mealy_machine">Wikipedia: Mealy machine</a>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>transitions</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The matrix of transitions of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $T(s, x) \in \mathcal{S}$, that is, the next state of the machine given that the current state is $s$ and the input is $x$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>outputs</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $G(s, x) \in \mathcal{Y}$, that is, the output of the machine given that the current state is $s$ and the input is $x$.</p>
+        </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <ol>
+<li>
+<p>Consider the finite-state Mealy machine whose state diagram depicted in the figure below.</p>
+<p><figure markdown>
+<img alt="Finite-state Mealy machine example." src="/figures/mealy.svg" />
+</figure></p>
+<p>It has set of states $\mathcal{S} = \{ 0, 1, 2, 3 \}$, input alphabet $\mathcal{X} = \{ 0, 1 \}$, output alphabet $\mathcal{Y} = \{ 0, 1, 2, 3 \}$. The transition function $T$ and output function $G$ are given by the table below.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">State</th>
-<th style="text-align: center;">Input</th>
-<th style="text-align: center;">Next state</th>
-<th style="text-align: center;">Output</th>
+<th style="text-align: center;">State $s$</th>
+<th style="text-align: center;">Input $x$</th>
+<th style="text-align: center;">Transition $T(s, x)$</th>
+<th style="text-align: center;">Output $G(s, x)$</th>
 </tr>
 </thead>
 <tbody>
@@ -3506,31 +3531,13 @@
 </tr>
 </tbody>
 </table>
-
-  <p><strong>Parameters:</strong></p>
-  <ul>
-      <li class="field-body">
-        <b><code>next_states</code></b>
-            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The matrix of next states of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the next state of the machine (an element in $\mathcal{S}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>outputs</code></b>
-            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s$ and column $x$ should be the output of the machine (an element in $\mathcal{Y}$), given that the current state is $s \in \mathcal{S}$ and the input is $x \in \mathcal{X}$.</p>
-        </div>
-      </li>
-  </ul>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-</code></pre></div>
+<pre><code>&gt;&gt;&gt; machine = komm.MealyMachine(
+...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+... )
+</code></pre>
+</li>
+</ol>
 
 
 
@@ -3568,6 +3575,16 @@
   <div class="doc doc-contents ">
 
         <p>The number of states of the machine.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">num_states</span>
+<span class="go">4</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3597,6 +3614,16 @@
   <div class="doc doc-contents ">
 
         <p>The size (cardinality) of the input alphabet $\mathcal{X}$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">num_input_symbols</span>
+<span class="go">2</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3626,6 +3653,16 @@
   <div class="doc doc-contents ">
 
         <p>The size (cardinality) of the output alphabet $\mathcal{Y}$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">num_output_symbols</span>
+<span class="go">4</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3658,8 +3695,11 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span><span class="o">.</span><span class="n">input_edges</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">input_edges</span>
 <span class="go">array([[ 0,  1, -1, -1],</span>
 <span class="go">       [-1, -1,  0,  1],</span>
 <span class="go">       [ 0,  1, -1, -1],</span>
@@ -3697,8 +3737,11 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span><span class="o">.</span><span class="n">output_edges</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">output_edges</span>
 <span class="go">array([[ 0,  3, -1, -1],</span>
 <span class="go">       [-1, -1,  1,  2],</span>
 <span class="go">       [ 3,  0, -1, -1],</span>
@@ -3730,7 +3773,7 @@
   <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
-        <b><code>input_sequence</code></b>
+        <b><code>input</code></b>
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
@@ -3750,10 +3793,10 @@
   <p><strong>Returns:</strong></p>
   <ul>
       <li class="field-body">
-<b><code>output_sequence</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to <code>input_sequence</code>, assuming the machine starts at the state given by <code>initial_state</code>. It is a 1D-array with elements in $\mathcal{Y}$.</p>
+          <p>The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to <code>input</code>, assuming the machine starts at the state given by <code>initial_state</code>. It is a 1D-array with elements in $\mathcal{Y}$.</p>
       </div>
       </li>
       <li class="field-body">
@@ -3767,10 +3810,13 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteStateMachine</span><span class="p">(</span><span class="n">next_states</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_sequence</span><span class="p">,</span> <span class="n">final_state</span> <span class="o">=</span> <span class="n">fsm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">input_sequence</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_sequence</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">input</span><span class="p">,</span> <span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span><span class="p">,</span> <span class="n">final_state</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span>
 <span class="go">array([3, 2, 2, 0, 1])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">final_state</span>
 <span class="go">2</span>
@@ -3802,8 +3848,8 @@
   <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
-        <b><code>observed_sequence</code></b>
-            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
+        <b><code>observed</code></b>
+            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
@@ -3811,7 +3857,7 @@
       </li>
       <li class="field-body">
         <b><code>metric_function</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span>
+            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.MealyMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
@@ -3830,7 +3876,7 @@
   <p><strong>Returns:</strong></p>
   <ul>
       <li class="field-body">
-<b><code>input_sequences_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+<b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.</p>
@@ -3871,8 +3917,8 @@
   <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
-        <b><code>observed_sequence</code></b>
-            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
+        <b><code>observed</code></b>
+            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
@@ -3880,7 +3926,7 @@
       </li>
       <li class="field-body">
         <b><code>metric_function</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span>
+            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.MealyMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
@@ -3888,7 +3934,7 @@
       </li>
       <li class="field-body">
         <b><code>memory</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricMemory">MetricMemory</span></code>)</span>
+            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.MealyMachine.MetricMemory">MetricMemory</span></code>)</span>
         –
         <div class="doc-md-description">
           <p>The metrics for each state. It must be a dictionary containing two keys: <code>'paths'</code>, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and <code>'metrics'</code>, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.</p>
@@ -3899,7 +3945,7 @@
   <p><strong>Returns:</strong></p>
   <ul>
       <li class="field-body">
-<b><code>input_sequence_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+<b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$</p>
@@ -3933,8 +3979,8 @@
   <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
-        <b><code>observed_sequence</code></b>
-            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
+        <b><code>observed</code></b>
+            <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
@@ -3942,7 +3988,7 @@
       </li>
       <li class="field-body">
         <b><code>metric_function</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.FiniteStateMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.FiniteStateMachine.Z">Z</span>]</code>)</span>
+            <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.MealyMachine.MetricFunction">MetricFunction</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>]</code>)</span>
         –
         <div class="doc-md-description">
           <p>The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.</p>
@@ -4018,7 +4064,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../CyclicRedundancyCheck/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CyclicRedundancyCheck" rel="prev">
+          <a href="../MooreMachine/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MooreMachine" rel="prev">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4028,7 +4074,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                CyclicRedundancyCheck
+                MooreMachine
               </div>
             </div>
           </a>
