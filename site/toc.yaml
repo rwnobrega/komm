@@ -40,6 +40,7 @@ Error control:
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
+  - MooreMachine
   - MealyMachine
 Modulation:
   - Modulation
