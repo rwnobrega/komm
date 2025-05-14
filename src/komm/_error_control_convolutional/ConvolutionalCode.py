@@ -7,6 +7,7 @@ import numpy.typing as npt
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.format import format_list_no_quotes as fmt
 from .._util.matrices import block_diagonal
 
 
@@ -136,9 +137,9 @@ class ConvolutionalCode:
         self.feedback_polynomials = [BinaryPolynomial(q) for q in fb]
 
     def __repr__(self) -> str:
-        args = f"feedforward_polynomials={self.feedforward_polynomials}"
+        args = f"feedforward_polynomials={fmt(self.feedforward_polynomials)}"
         if not np.all([q == 1 for q in self.feedback_polynomials]):
-            args += f", feedback_polynomials={self.feedback_polynomials}"
+            args += f", feedback_polynomials={fmt(self.feedback_polynomials)}"
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
