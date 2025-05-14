@@ -242,16 +242,17 @@ class DirectTruncation(TerminationStrategy):
 class ZeroTermination(TerminationStrategy):
     @cached_property
     def _tail_projector(self) -> npt.NDArray[np.integer]:
+        # See [WBR01, eq. (3)]. Set x_0 = x_t = 0, and t = h + μ.
         h = self.num_blocks
         μ = self.convolutional_code.memory_order
+        σ = self.convolutional_code.overall_constraint_length
         A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
-        AnB_message = np.vstack(
-            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(μ + h - 1, μ - 1, -1)]
-        )
-        AnB_tail = np.vstack(
-            [B_mat @ matrix_power(A_mat, j) % 2 for j in range(μ - 1, -1, -1)]
-        )
-        return AnB_message @ pseudo_inverse(AnB_tail) % 2
+        A_pow = [np.eye(σ, dtype=int)]
+        for _ in range(1, h + μ):
+            A_pow.append((A_pow[-1] @ A_mat) % 2)
+        M_info = np.vstack([B_mat @ A_pow[j] % 2 for j in range(h + μ - 1, μ - 1, -1)])
+        M_tail = np.vstack([B_mat @ A_pow[j] % 2 for j in range(μ - 1, -1, -1)])
+        return M_info @ pseudo_inverse(M_tail) % 2
 
     def pre_process_input(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         input = np.asarray(input)
@@ -292,6 +293,7 @@ class ZeroTermination(TerminationStrategy):
 class TailBiting(TerminationStrategy):
     @cached_property
     def _zs_multiplier(self) -> npt.NDArray[np.integer]:
+        # See [WBR01, eq. (4)].
         h = self.num_blocks
         σ = self.convolutional_code.overall_constraint_length
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
