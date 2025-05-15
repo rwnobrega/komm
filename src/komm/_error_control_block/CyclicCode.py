@@ -24,7 +24,7 @@ class CyclicCode(base.BlockCode):
     | BCH $(15,5,7)$    | $X^{10} + X^8 + X^5 + X^4 + X^2 + X + 1$ | `0b10100110111 = 0o2467 = 1335`  |
     | Golay $(23,12,7)$ | $X^{11} + X^9 + X^7 + X^6 + X^5 + X + 1$ | `0b101011100011 = 0o5343 = 2787` |
 
-    For more details, see <cite>LC04, Ch. 5</cite>.
+    For more details, see <cite>LC04, Ch. 5</cite> and <cite>McE04, Ch. 8</cite>.
 
     The constructor expects either the generator polynomial or the check polynomial.
 
