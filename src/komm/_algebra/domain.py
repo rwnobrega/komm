@@ -56,3 +56,24 @@ def xgcd(x: T, y: T) -> tuple[T, T, T]:
     else:
         d, s, t = xgcd(y % x, x)
         return d, t - s * (y // x), s
+
+
+def lcm(x: T, y: T) -> T:
+    r"""
+    Least common multiple. Computes the least common multiple (lcm) of two elements in a domain.
+
+    Parameters:
+        x: First element
+        y: Second element
+
+    Returns:
+        lcm: The least common multiple of `x` and `y`
+
+    References:
+        `Least common multiple <https://en.wikipedia.org/wiki/Least_common_multiple>`_
+    """
+    zero = x.ambient.zero
+    if x == zero or y == zero:
+        return zero
+    g = gcd(x, y)
+    return (x // g) * y

@@ -7,6 +7,7 @@
 *[JZ15]: Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.
 *[LC04]: Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.
 *[McE04]: Robert J. McEliece. The Theory of Information and Coding. Cambridge University Press, 2nd edition, 2004. ISBN 978-0511606267.
+*[McE98]: Robert J. McEliece. The Algebraic Theory of Convolutional Codes. Chapter 12 of Handbook of Coding Theory, Volume I (V. S. Pless and W. C. Huffman, Eds.). Elsevier, 1998. ISBN  978-0444814722.
 *[PS08]: John G. Proakis and Masoud Salehi. Digital Communications. McGraw-Hill, 5th edition, 2008. ISBN 978-0072957167.
 *[RL09]: William Ryan and Shu Lin. Channel Codes: Classical and Modern. Cambridge University Press, 1st edition, 2009. ISBN 978-0521848688.
 *[SA15]: Leszek Szczecinski, Alex Alvarado. Bit-Interleaved Coded Modulation: Fundamentals, Analysis and Design. Wiley-IEEE Press, 2015. ISBN 978-0470686171.

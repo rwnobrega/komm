@@ -296,5 +296,99 @@ def test_convolutional_code_free_distance_g(
 ):
     # Lin.Costello.04, p. 539--540
     code = komm.ConvolutionalCode(feedforward_polynomials)
+    assert code.is_catastrophic() is False
     assert code.overall_constraint_length == overall_constraint_length
     assert code.free_distance() == free_distance
+
+
+def test_convolutional_code_catastrophic_lin_costello():
+    # [LC04, Example 11.9 (a)]
+    code = komm.ConvolutionalCode([[0b1101, 0b1111]])
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(0b1)
+    assert code.is_catastrophic() is False
+    # [LC04, Example 11.9 (b)]
+    code = komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]])
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(0b1)
+    assert code.is_catastrophic() is False
+    # [LC04, Example 11.10]
+    code = komm.ConvolutionalCode([[0b11, 0b101]])
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(0b11)
+    assert code.is_catastrophic() is True
+
+
+def test_convolutional_code_catastrophic_mceliece():
+    # [McE98, Example 6.2]
+    code = komm.ConvolutionalCode([[0b111, 0b101]])
+    assert code.is_catastrophic() is False
+    code = komm.ConvolutionalCode([[0b1001, 0b1111]])
+    assert code.is_catastrophic() is True
+    # [McE98, Example 6.4]
+    code = komm.ConvolutionalCode([[0b1, 0b10, 0b1], [0b10, 0b11, 0b101]])
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(0b111)
+    assert code.is_catastrophic() is True
+    # [McE98, Example 6.5]
+    code = komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b11]])
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(0b1)
+    assert code.is_catastrophic() is False
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials, feedback_polynomials, delta, is_catastrophic",
+    [
+        (
+            [[0b1, 0b111, 0b101, 0b11], [0b10, 0b111, 0b100, 0b1]],
+            [0b111, 0b10],
+            0b111,
+            True,
+        ),
+        (
+            [[0b1, 0b111, 0b101, 0b11], [0b10, 0b111, 0b100, 0b1]],
+            None,
+            0b111,
+            True,
+        ),
+        (
+            [[0b1, 0b111, 0b101, 0b11], [0b0, 0b11, 0b10, 0b1]],
+            None,
+            0b1,
+            False,
+        ),
+        (
+            [[0b1, 0b10, 0b11, 0b0], [0b0, 0b11, 0b10, 0b1]],
+            None,
+            0b1,
+            False,
+        ),
+        (
+            [[0b11, 0b0, 0b1, 0b10], [0b10, 0b111, 0b100, 0b1]],
+            None,
+            0b111,
+            True,
+        ),
+        (
+            [[0b1, 0b1, 0b1, 0b1], [0b0, 0b11, 0b10, 0b1]],
+            None,
+            0b1,
+            False,
+        ),
+        (
+            [[0b11, 0b0, 0b1, 0b10], [0b1, 0b10, 0b11, 0b0]],
+            None,
+            0b10,
+            False,
+        ),
+        (
+            [[0b11, 0b0, 0b1, 0b10], [0b0, 0b11, 0b10, 0b1]],
+            [0b11, 0b11],
+            0b1,
+            False,
+        ),
+    ],
+)
+def test_convolutional_code_mceliece_table_8(
+    feedforward_polynomials, feedback_polynomials, delta, is_catastrophic
+):
+    # [McE98, Table 8, p. 1107; see p. 1079 for the matrices]
+    code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    assert code._minors_gcd() == komm.BinaryPolynomialFraction(delta)
+    assert code.is_catastrophic() == is_catastrophic

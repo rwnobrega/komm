@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Any, Protocol, TypeVar, runtime_checkable
 
 import numpy as np
@@ -93,3 +94,31 @@ def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     for coefficient in reversed(coefficients):
         result = result * x + coefficient * one
     return result
+
+
+def determinant(matrix: Sequence[Sequence[T_co]]) -> T_co:
+    r"""
+    Computes the determinant of a matrix using cofactor expansion.
+
+    Parameters:
+        matrix: The matrix with coefficients over a ring
+
+    Returns:
+        det: The determinant of the matrix (a ring element)
+
+    References:
+        `Laplace expansion <https://en.wikipedia.org/wiki/Laplace_expansion>`_
+    """
+    n = len(matrix)
+    if any(len(row) != n for row in matrix):
+        raise ValueError("'matrix' should be square")
+    if n == 1:
+        return matrix[0][0]
+    zero: T_co = matrix[0][0].ambient.zero
+    det = zero
+    for j in range(n):
+        minor = [list(row[:j]) + list(row[j + 1 :]) for row in matrix[1:]]
+        sign = -1 if j % 2 else 1
+        cofactor = matrix[0][j]
+        det += (sign * cofactor) * determinant(minor)
+    return det
