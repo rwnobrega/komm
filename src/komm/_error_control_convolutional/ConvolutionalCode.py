@@ -395,7 +395,10 @@ class ConvolutionalCode:
         D_blocks: list[npt.NDArray[np.integer]] = []
 
         for beta, alpha, nu in zip(alphas, betas, self.constraint_lengths):
-            A_blocks.append(np.hstack([alpha[1:], np.eye(nu, nu - 1, dtype=int)]))
+            if nu == 0:
+                A_blocks.append(np.zeros((0, 0), dtype=int))
+            else:
+                A_blocks.append(np.hstack([alpha[1:], np.eye(nu, nu - 1, dtype=int)]))
             B_blocks.append(np.eye(1, nu, dtype=int))
             C_blocks.append(beta[1:] ^ alpha[1:] * beta[0])
             D_blocks.append(beta[0])
