@@ -1,4 +1,5 @@
 from functools import cache, cached_property, reduce
+from heapq import heappop, heappush
 from itertools import combinations, product
 
 import numpy as np
@@ -277,44 +278,29 @@ class ConvolutionalCode:
     @cache
     def free_distance(self) -> int:
         r"""
-        Returns the *free distance* $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all non-zero encoded bit sequences
+        Returns the *free distance* $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all non-zero encoded sequences.
 
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.free_distance()
             5
         """
-        if self.is_catastrophic():
-            raise ValueError(
-                "cannot compute free distance when encoder is catastrophic"
-            )
-
-        def hamming_weight(y: int, _: int) -> int:
-            return y.bit_count()
-
         fsm = self.finite_state_machine()
-
-        # Start at all-zero state
-        metrics = np.full(fsm.num_states, np.inf)
-        metrics[0] = 0.0
-
-        _, metrics = fsm.viterbi(
-            observed=[-1],  # dummy
-            metric_function=hamming_weight,
-            initial_metrics=metrics,
-        )
-
-        # Block return to all-zero state at the first step
-        metrics[0] = np.inf
-
-        while metrics[0] > np.min(metrics[1:]):
-            _, metrics = fsm.viterbi(
-                observed=[-1],  # dummy
-                metric_function=hamming_weight,
-                initial_metrics=metrics,
-            )
-
-        return int(metrics[0])
+        heap = [(0, 0)]  # (weight, state)
+        best = [np.inf] * fsm.num_states
+        while heap:
+            w, s = heappop(heap)
+            if s == 0 and w > 0:
+                return int(w)
+            for x in range(fsm.num_input_symbols):
+                s1 = fsm.transitions[s][x]
+                w1 = w + fsm.outputs[s][x].bit_count()
+                if w1 < best[s1]:
+                    best[s1] = w1
+                    heappush(heap, (w1, s1))
+                elif s1 == 0 and w1 > 0:
+                    heappush(heap, (w1, 0))
+        raise RuntimeError
 
     @cache
     def _minors_gcd(self) -> BinaryPolynomialFraction:
