@@ -252,7 +252,7 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
 @pytest.mark.parametrize(
     "overall_constraint_length, feedforward_polynomials, free_distance",
     [
-        # (4, 1) convolutional codes
+        # Table 12.1(a): (4, 1) codes
         (1, [[0o1, 0o1, 0o3, 0o3]], 6),
         (2, [[0o5, 0o5, 0o7, 0o7]], 10),
         (3, [[0o13, 0o13, 0o15, 0o17]], 13),
@@ -262,7 +262,7 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
         (7, [[0o257, 0o311, 0o337, 0o355]], 22),
         (8, [[0o533, 0o575, 0o647, 0o711]], 24),
         (9, [[0o1173, 0o1325, 0o1467, 0o1751]], 27),
-        # (3, 1) convolutional codes
+        # Table 12.1(b): (3, 1) codes
         (1, [[0o1, 0o3, 0o3]], 5),
         (2, [[0o5, 0o7, 0o7]], 8),
         (3, [[0o13, 0o15, 0o17]], 10),
@@ -275,7 +275,7 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
         (10, [[0o2325, 0o2731, 0o3747]], 22),
         (11, [[0o5745, 0o6471, 0o7553]], 24),
         (12, [[0o2371, 0o13725, 0o14733]], 24),
-        # (2, 1) convolutional codes
+        # Table 12.1(c): (2, 1) codes
         (1, [[0o3, 0o1]], 3),
         (2, [[0o5, 0o7]], 5),
         (3, [[0o13, 0o17]], 6),
@@ -291,13 +291,79 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
         (13, [[0o27251, 0o37363]], 16),
     ],
 )
-def test_convolutional_code_free_distance_g(
+def test_convolutional_code_free_distance_g_lin_costello(
     overall_constraint_length, feedforward_polynomials, free_distance
 ):
-    # Lin.Costello.04, p. 539--540
+    # [LC04, p. 539--540]
     code = komm.ConvolutionalCode(feedforward_polynomials)
     assert code.is_catastrophic() is False
     assert code.overall_constraint_length == overall_constraint_length
+    assert code.free_distance() == free_distance
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials, free_distance",
+    [
+        # Table 2: (2, 1) codes
+        ([[0o1, 0o1]], 2),
+        ([[0o1, 0o3]], 3),
+        ([[0o5, 0o7]], 5),
+        ([[0o13, 0o17]], 6),
+        ([[0o23, 0o35]], 7),
+        ([[0o53, 0o75]], 8),
+        ([[0o133, 0o171]], 10),  # NASA
+        ([[0o561, 0o753]], 12),
+        ([[0o2335, 0o3661]], 14),
+        # Table 3: (3, 1) codes
+        ([[0o1, 0o1, 0o1]], 3),
+        ([[0o1, 0o3, 0o3]], 5),
+        ([[0o5, 0o7, 0o7]], 8),
+        ([[0o13, 0o15, 0o17]], 10),
+        ([[0o25, 0o33, 0o37]], 12),
+        ([[0o47, 0o53, 0o75]], 13),
+        ([[0o133, 0o145, 0o175]], 15),
+        ([[0o225, 0o331, 0o367]], 16),
+        ([[0o557, 0o663, 0o711]], 18),
+        ([[0o1117, 0o1365, 0o1633]], 20),
+        ([[0o2353, 0o2671, 0o3175]], 22),
+        # Table 4: (3, 2) codes
+        ([[0o1, 0o0, 0o1], [0o0, 0o1, 0o1]], 2),
+        ([[0o3, 0o2, 0o3], [0o2, 0o1, 0o1]], 3),
+        ([[0o1, 0o2, 0o3], [0o4, 0o1, 0o7]], 4),
+        ([[0o7, 0o4, 0o1], [0o2, 0o5, 0o7]], 5),
+        ([[0o3, 0o6, 0o7], [0o14, 0o1, 0o17]], 6),
+        ([[0o13, 0o6, 0o13], [0o6, 0o13, 0o17]], 7),
+        ([[0o3, 0o16, 0o15], [0o34, 0o31, 0o17]], 8),  # There is a typo in the book.
+        ([[0o25, 0o30, 0o17], [0o50, 0o7, 0o65]], 9),
+        ([[0o63, 0o54, 0o31], [0o26, 0o53, 0o43]], 10),
+        # Table 5: (4, 1) codes
+        ([[0o1, 0o1, 0o1, 0o1]], 4),
+        ([[0o1, 0o3, 0o3, 0o3]], 7),
+        ([[0o5, 0o7, 0o7, 0o7]], 10),
+        ([[0o13, 0o15, 0o15, 0o17]], 13),
+        ([[0o25, 0o27, 0o33, 0o37]], 16),
+        ([[0o53, 0o67, 0o71, 0o75]], 18),
+        ([[0o135, 0o135, 0o147, 0o163]], 20),
+        ([[0o235, 0o275, 0o313, 0o357]], 22),
+        ([[0o463, 0o535, 0o733, 0o745]], 24),
+        ([[0o1117, 0o1365, 0o1633, 0o1653]], 27),
+        ([[0o2327, 0o2353, 0o2671, 0o3175]], 29),  # There is a typo in the book.
+        # Table 6: (4, 3) codes
+        ([[0o1, 0o0, 0o0, 0o1], [0o0, 0o1, 0o0, 0o1], [0o0, 0o0, 0o1, 0o1]], 2),
+        ([[0o1, 0o1, 0o1, 0o1], [0o3, 0o1, 0o0, 0o0], [0o0, 0o3, 0o1, 0o0]], 3),
+        ([[0o1, 0o1, 0o1, 0o1], [0o0, 0o3, 0o2, 0o1], [0o0, 0o2, 0o5, 0o5]], 4),
+        ([[0o3, 0o2, 0o2, 0o3], [0o4, 0o3, 0o0, 0o7], [0o0, 0o2, 0o5, 0o5]], 5),
+        ([[0o3, 0o4, 0o0, 0o7], [0o6, 0o1, 0o4, 0o3], [0o2, 0o6, 0o7, 0o1]], 6),
+        ([[0o7, 0o6, 0o2, 0o1], [0o14, 0o5, 0o0, 0o15], [0o10, 0o4, 0o17, 0o1]], 7),
+        ([[0o1, 0o14, 0o16, 0o3], [0o10, 0o13, 0o2, 0o7], [0o16, 0o0, 0o3, 0o13]], 8),
+    ],
+)
+def test_convolutional_code_free_distance_g_mcelice(
+    feedforward_polynomials, free_distance
+):
+    # [McE98, p. 1086--1088]
+    code = komm.ConvolutionalCode(feedforward_polynomials)
+    assert code.is_catastrophic() is False
     assert code.free_distance() == free_distance
 
 
