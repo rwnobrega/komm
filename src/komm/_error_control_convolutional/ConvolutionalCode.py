@@ -386,15 +386,15 @@ class ConvolutionalCode:
             >>> transition_matrix
             array([[1, 1]])
         """
-        alphas = [taps.T for taps in self.feedforward_taps]
-        betas = [taps[:, np.newaxis] for taps in self.feedback_taps]
+        betas = [taps.T for taps in self.feedforward_taps]
+        alphas = [taps[:, np.newaxis] for taps in self.feedback_taps]
 
         A_blocks: list[npt.NDArray[np.integer]] = []
         B_blocks: list[npt.NDArray[np.integer]] = []
         C_blocks: list[npt.NDArray[np.integer]] = []
         D_blocks: list[npt.NDArray[np.integer]] = []
 
-        for beta, alpha, nu in zip(alphas, betas, self.constraint_lengths):
+        for alpha, beta, nu in zip(alphas, betas, self.constraint_lengths):
             if nu == 0:
                 A_blocks.append(np.zeros((0, 0), dtype=int))
             else:
