@@ -14,7 +14,8 @@ class FieldElement(ring.RingElement, Protocol):
 
 
 def power(x: T_co, n: int) -> T_co:
-    """Compute $x^n$ using exponentiation by squaring. See the corresponding function in :mod:`komm._algebra.ring`.
+    r"""
+    Compute $x^n$ using exponentiation by squaring. See the corresponding function in :mod:`komm._algebra.ring`.
 
     Parameters:
         x: The base (a field element)
