@@ -36,11 +36,12 @@ def constellation_psk(
     amplitude: float,
     phase_offset: float,
 ) -> npt.NDArray[np.complexfloating]:
+    # We round to avoid sin(pi) != 0
     return (
         amplitude
         * np.exp(2j * np.pi * np.arange(order) / order)
         * np.exp(1j * phase_offset)
-    )
+    ).round(15)
 
 
 def constellation_apsk(

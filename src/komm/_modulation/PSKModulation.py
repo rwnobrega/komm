@@ -33,7 +33,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
             </figure>
 
                 >>> psk = komm.PSKModulation(4)
-                >>> psk.constellation.round(3)
+                >>> psk.constellation
                 array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j])
                 >>> psk.labeling
                 array([[0, 0],
@@ -97,7 +97,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> psk = komm.PSKModulation(4)
-            >>> psk.constellation.round(3)
+            >>> psk.constellation
             array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j])
         """
         return constellation_psk(self._order, self._amplitude, self._phase_offset)
@@ -204,7 +204,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> psk = komm.PSKModulation(4)
-            >>> psk.modulate([0, 0, 1, 1, 0, 0, 0, 1]).round(3)  # doctest: +FLOAT_CMP
+            >>> psk.modulate([0, 0, 1, 1, 0, 0, 0, 1])
             array([ 1.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])
         """
         return super().modulate(input)

@@ -44,7 +44,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
         </figure>
 
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> apsk.constellation.round(3)
+            >>> apsk.constellation
             array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j,
                     2.+0.j,  0.+2.j, -2.+0.j, -0.-2.j])
 
@@ -115,7 +115,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> apsk.constellation.round(3)
+            >>> apsk.constellation
             array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j,
                     2.+0.j,  0.+2.j, -2.+0.j, -0.-2.j])
         """
@@ -219,7 +219,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
         r"""
         Examples:
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> apsk.modulate([0, 0, 0, 0, 1, 1, 0, 0, 0]).round(3)
+            >>> apsk.modulate([0, 0, 0, 0, 1, 1, 0, 0, 0])
             array([ 1.+0.j, -0.-1.j,  1.+0.j])
         """
         return super().modulate(input)
