@@ -20,10 +20,10 @@ class GaussianPulse(base.Pulse):
 
     <div class="centered" markdown>
       <span>
-      ![Gaussian pulse with half-power bandwidth of 0.5.](/figures/pulse_gaussian_50.svg)
+      ![Gaussian pulse with half-power bandwidth of 0.5.](/fig/pulse_gaussian_50.svg)
       </span>
       <span>
-      ![Gaussian pulse with half-power bandwidth of 1.](/figures/pulse_gaussian_100.svg)
+      ![Gaussian pulse with half-power bandwidth of 1.](/fig/pulse_gaussian_100.svg)
       </span>
     </div>
 

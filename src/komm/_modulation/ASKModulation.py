@@ -29,7 +29,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
     Examples:
         1. The $4$-ASK modulation with base amplitude $A = 1$, phase offset $\phi = 0$, and Gray labeling is depicted below.
             <figure markdown>
-            ![4-ASK modulation with Gray labeling.](/figures/ask_4_gray.svg)
+            ![4-ASK modulation with Gray labeling.](/fig/ask_4_gray.svg)
             </figure>
 
                 >>> ask = komm.ASKModulation(4)
@@ -43,7 +43,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
 
         2. The $4$-ASK modulation with base amplitude $A = 2\sqrt{2}$, phase offset $\phi = \pi/4$, and natural labeling is depicted below.
             <figure markdown>
-            ![4-ASK modulation with natural labeling.](/figures/ask_4_natural.svg)
+            ![4-ASK modulation with natural labeling.](/fig/ask_4_natural.svg)
             </figure>
 
                 >>> ask = komm.ASKModulation(

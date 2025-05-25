@@ -25,10 +25,10 @@ class RectangularPulse(base.Pulse):
 
     <div class="centered" markdown>
       <span>
-      ![Rectangular NRZ pulse.](/figures/pulse_rectangular_nrz.svg)
+      ![Rectangular NRZ pulse.](/fig/pulse_rectangular_nrz.svg)
       </span>
       <span>
-      ![Rectangular RZ pulse.](/figures/pulse_rectangular_rz.svg)
+      ![Rectangular RZ pulse.](/fig/pulse_rectangular_rz.svg)
       </span>
     </div>
 

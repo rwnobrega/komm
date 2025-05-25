@@ -36,7 +36,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
     Examples:
         1. The square $16$-QAM modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 1)$, and Gray labeling is depicted below.
             <figure markdown>
-            ![16-QAM modulation with Gray labeling.](/figures/qam_16_gray.svg)
+            ![16-QAM modulation with Gray labeling.](/fig/qam_16_gray.svg)
             </figure>
 
                 >>> qam = komm.QAModulation(16)
@@ -53,7 +53,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
 
         1.  The rectangular $8$-QAM modulation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(A_\mathrm{I}, A_\mathrm{Q}) = (1, 2)$, and natural labeling is depicted below.
             <figure markdown>
-            ![8-QAM modulation with Gray labeling.](/figures/qam_8_natural.svg)
+            ![8-QAM modulation with Gray labeling.](/fig/qam_8_natural.svg)
             </figure>
 
                 >>> qam = komm.QAModulation(

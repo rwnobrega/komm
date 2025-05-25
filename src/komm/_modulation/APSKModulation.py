@@ -40,7 +40,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
 
     1. The $8$-APSK modulation with $(M_0, M_1) = (4, 4)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, 0)$ is depicted below.
         <figure markdown>
-        ![(4,4)-APSK modulation.](/figures/apsk_4_4.svg)
+        ![(4,4)-APSK modulation.](/fig/apsk_4_4.svg)
         </figure>
 
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
@@ -50,7 +50,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
 
     1. The $16$-APSK modulation with $(M_0, M_1) = (8, 8)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, \pi/8)$ is depicted below.
         <figure markdown>
-        ![(8,8)-APSK modulation.](/figures/apsk_8_8.svg)
+        ![(8,8)-APSK modulation.](/fig/apsk_8_8.svg)
         </figure>
 
             >>> apsk = komm.APSKModulation(
@@ -66,7 +66,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
 
     1. The $16$-APSK modulation with $(M_0, M_1) = (4, 12)$, $(A_0, A_1) = (\sqrt{2}, 3)$, and $(\phi_0, \phi_1) = (\pi/4, 0)$ is depicted below.
         <figure markdown>
-        ![(4,12)-APSK modulation.](/figures/apsk_4_12.svg)
+        ![(4,12)-APSK modulation.](/fig/apsk_4_12.svg)
         </figure>
 
             >>> apsk = komm.APSKModulation(

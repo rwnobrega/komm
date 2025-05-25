@@ -24,7 +24,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         1. Consider the encoder with parameters $(n, k, \sigma) = (3, 2, 7)$ depicted below.
 
             <figure markdown>
-            ![Convolutional encoder with parameters (3, 2, 7).](/figures/cc_3_2_7.svg)
+            ![Convolutional encoder with parameters (3, 2, 7).](/fig/cc_3_2_7.svg)
             </figure>
 
             Its matrix of feedforward polynomials is given by
@@ -49,7 +49,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         1. Consider the feedback encoder with parameters $(n, k, \sigma) = (2, 1, 4)$ depicted below.
 
             <figure markdown>
-            ![Feedback convolutional encoder with parameters (2, 1, 4).](/figures/cc_2_1_4_fb.svg)
+            ![Feedback convolutional encoder with parameters (2, 1, 4).](/fig/cc_2_1_4_fb.svg)
             </figure>
 
             Its matrix of feedforward polynomials is given by

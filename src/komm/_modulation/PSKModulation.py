@@ -29,7 +29,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
     Examples:
         1. The $4$-PSK modulation with base amplitude $A = 1$, phase offset $\phi = 0$, and Gray labeling is depicted below.
             <figure markdown>
-            ![4-PSK modulation with Gray labeling.](/figures/psk_4_gray.svg)
+            ![4-PSK modulation with Gray labeling.](/fig/psk_4_gray.svg)
             </figure>
 
                 >>> psk = komm.PSKModulation(4)
@@ -43,7 +43,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
 
         1. The $8$-PSK modulation with base amplitude $A = 0.5$, phase offset $\phi = \pi/8$, and natural labeling is depicted below.
             <figure markdown>
-            ![8-PSK modulation with natural labeling.](/figures/psk_8_natural.svg)
+            ![8-PSK modulation with natural labeling.](/fig/psk_8_natural.svg)
             </figure>
 
                 >>> psk = komm.PSKModulation(

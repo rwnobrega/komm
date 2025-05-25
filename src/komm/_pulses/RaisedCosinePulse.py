@@ -26,10 +26,10 @@ class RaisedCosinePulse(base.Pulse):
 
     <div class="centered" markdown>
       <span>
-      ![Raised-cosine pulse with roll-off factor 0.25.](/figures/pulse_raised_cosine_25.svg)
+      ![Raised-cosine pulse with roll-off factor 0.25.](/fig/pulse_raised_cosine_25.svg)
       </span>
       <span>
-      ![Raised-cosine pulse with roll-off factor 0.75.](/figures/pulse_raised_cosine_75.svg)
+      ![Raised-cosine pulse with roll-off factor 0.75.](/fig/pulse_raised_cosine_75.svg)
       </span>
     </div>
 

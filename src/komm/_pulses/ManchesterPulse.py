@@ -24,7 +24,7 @@ class ManchesterPulse(base.Pulse):
     The waveform of the Manchester pulse is depicted below.
 
     <figure markdown>
-    ![Manchester pulse.](/figures/pulse_manchester.svg)
+    ![Manchester pulse.](/fig/pulse_manchester.svg)
     </figure>
 
     **Attributes:**

@@ -17,7 +17,7 @@ class MooreMachine:
         1. Consider the finite-state Moore machine whose state diagram depicted in the figure below.
 
             <figure markdown>
-            ![Finite-state Moore machine example.](/figures/moore.svg)
+            ![Finite-state Moore machine example.](/fig/moore.svg)
             </figure>
 
             It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1 \\}$. The transition function $T$ and output function $G$ are given by the tables below.

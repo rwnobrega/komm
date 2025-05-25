@@ -10,7 +10,7 @@ class LFSRSequence(BinarySequence):
     Linear-feedback shift register (LFSR) sequence. It is a [binary sequence](/ref/BinarySequence) obtained from the output of a LFSR. The LFSR feedback taps are specified as a [binary polynomial](/ref/BinaryPolynomial) $p(X)$ of degree $n$, called the *feedback polynomial*. More specifically: if bit $i$ of the LFSR is tapped, for $i \in [1 : n]$, then the coefficient of $X^i$ in $p(X)$ is $1$; otherwise, it is $0$; moreover, the coefficient of $X^0$ in $p(X)$ is always $1$. For example, the feedback polynomial corresponding to the LFSR in the figure below is $p(X) = X^5 + X^2 + 1$, whose integer representation is `0b100101`.
 
     <figure markdown>
-      ![Linear-feedback shift register example.](/figures/lfsr_5_2.svg)
+      ![Linear-feedback shift register example.](/fig/lfsr_5_2.svg)
     </figure>
 
     The start state of the machine is specified by the so called *start state polynomial*. More specifically, the coefficient of $X^i$ in the start state polynomial is equal to the initial value of bit $i$ of the LFSR. For more details, see [Wikipedia: Linear-feedback shift register](https://en.wikipedia.org/wiki/Linear-feedback_shift_register) and [Wikipedia: Maximum-length sequence](https://en.wikipedia.org/wiki/Maximum_length_sequence).
@@ -60,7 +60,7 @@ class LFSRSequence(BinarySequence):
         cls, degree: int, start_state_polynomial: BinaryPolynomial | int = 0b1
     ) -> Self:
         r"""
-        Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen from [the list of default primitive polynomials](/resources/primitive-polynomials).
+        Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen from [the list of default primitive polynomials](/res/primitive-polynomials).
 
         Parameters:
             degree: The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 24]$ are implemented.

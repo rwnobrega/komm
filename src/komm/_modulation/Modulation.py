@@ -21,7 +21,7 @@ class Modulation(base.Modulation[T]):
     Examples:
         1. The real modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.
             <figure markdown>
-            ![Example for real modulation with M = 4](/figures/modulation_real_4.svg)
+            ![Example for real modulation with M = 4](/fig/modulation_real_4.svg)
             </figure>
             The constellation and labeling are given, respectively, by
             $$
@@ -47,7 +47,7 @@ class Modulation(base.Modulation[T]):
 
         1. The complex modulation scheme depicted in the figure below has $M = 4$ and $m = 2$.
             <figure markdown>
-            ![Example for complex modulation with M = 4](/figures/modulation_complex_4.svg)
+            ![Example for complex modulation with M = 4](/fig/modulation_complex_4.svg)
             </figure>
             The constellation and labeling are given, respectively, by
             $$

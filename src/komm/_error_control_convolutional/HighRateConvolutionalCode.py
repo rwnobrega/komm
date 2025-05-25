@@ -20,7 +20,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         Consider the high-rate convolutional encoder with $(n, k, \sigma) = (4, 3, 3)$ depicted below.
 
         <figure markdown>
-        ![Convolutional encoder for high-rate (4, 3, 3) code.](/figures/cc_high_rate_4_3_3.svg)
+        ![Convolutional encoder for high-rate (4, 3, 3) code.](/fig/cc_high_rate_4_3_3.svg)
         </figure>
 
         Its check row is given by
@@ -34,7 +34,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
             >>> code = komm.HighRateConvolutionalCode([0b1010, 0b1101, 0b1011, 0b1001])
             >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
 
-    Please refer to [the table of optimal high-rate convolutional codes](/resources/convolutional-codes/#high-rate).
+    Please refer to [the table of optimal high-rate convolutional codes](/res/convolutional-codes/#high-rate).
     """
 
     h_row: list[BinaryPolynomial]

@@ -29,7 +29,7 @@ class PAModulation(base.Modulation[np.floating]):
     Examples:
         1. The $4$-PAM modulation with base amplitude $A = 1$ and natural labeling is depicted below.
             <figure markdown>
-            ![4-PAM modulation with Gray labeling.](/figures/pam_4_natural.svg)
+            ![4-PAM modulation with Gray labeling.](/fig/pam_4_natural.svg)
             </figure>
 
                 >>> pam = komm.PAModulation(4, labeling="natural")
@@ -43,7 +43,7 @@ class PAModulation(base.Modulation[np.floating]):
 
         1. The $8$-PAM modulation with base amplitude $A = 0.5$ and Gray labeling is depicted below.
             <figure markdown>
-            ![8-PAM modulation with Gray labeling.](/figures/pam_8_gray.svg)
+            ![8-PAM modulation with Gray labeling.](/fig/pam_8_gray.svg)
             </figure>
 
                 >>> pam = komm.PAModulation(8, base_amplitude=0.5)

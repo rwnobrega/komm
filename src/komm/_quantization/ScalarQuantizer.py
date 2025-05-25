@@ -31,7 +31,7 @@ class ScalarQuantizer(base.ScalarQuantizer):
         $$
 
         <figure markdown>
-          ![Scalar quantizer example.](/figures/scalar_quantizer_5.svg)
+          ![Scalar quantizer example.](/fig/scalar_quantizer_5.svg)
         </figure>
 
         >>> quantizer = komm.ScalarQuantizer(

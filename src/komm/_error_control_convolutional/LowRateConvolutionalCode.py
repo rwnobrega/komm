@@ -20,7 +20,7 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
         Consider the low-rate convolutional encoder with $(n, k, \sigma) = (2, 1, 6)$ depicted below.
 
         <figure markdown>
-        ![Convolutional encoder for low-rate (2, 1, 6) code.](/figures/cc_low_rate_2_1_6.svg)
+        ![Convolutional encoder for low-rate (2, 1, 6) code.](/fig/cc_low_rate_2_1_6.svg)
         </figure>
 
         Its generator row is given by
@@ -34,7 +34,7 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
             >>> code = komm.LowRateConvolutionalCode([0b1001111, 0b1101101])
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
 
-    Please refer to [the table of optimal low-rate convolutional codes](/resources/convolutional-codes/#low-rate).
+    Please refer to [the table of optimal low-rate convolutional codes](/res/convolutional-codes/#low-rate).
     """
 
     g_row: list[BinaryPolynomial]

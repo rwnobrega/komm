@@ -29,7 +29,7 @@ class MealyMachine:
         1. Consider the finite-state Mealy machine whose state diagram depicted in the figure below.
 
             <figure markdown>
-            ![Finite-state Mealy machine example.](/figures/mealy.svg)
+            ![Finite-state Mealy machine example.](/fig/mealy.svg)
             </figure>
 
             It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$. The transition function $T$ and output function $G$ are given by the table below.

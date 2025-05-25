@@ -19,7 +19,7 @@ class SincPulse(base.Pulse):
     The waveform of the sinc pulse is depicted below.
 
     <figure markdown>
-    ![Sinc pulse.](/figures/pulse_sinc.svg)
+    ![Sinc pulse.](/fig/pulse_sinc.svg)
     </figure>
 
     **Attributes:**
