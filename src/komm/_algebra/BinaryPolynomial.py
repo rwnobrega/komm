@@ -119,8 +119,14 @@ class BinaryPolynomial:
         return self
 
     def __mul__(self, other: Self) -> Self:
-        coeffs = np.convolve(self.coefficients(), other.coefficients()) % 2
-        return self.__class__(bits_to_int(coeffs))
+        value = 0
+        a, b = self.value, other.value
+        while b:
+            if b & 1:
+                value ^= a
+            a <<= 1
+            b >>= 1
+        return self.__class__(value)
 
     def __rmul__(self, other: int) -> Self:
         if other % 2 == 0:
