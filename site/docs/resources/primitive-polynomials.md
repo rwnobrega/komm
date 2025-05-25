@@ -4,7 +4,7 @@ title: Default primitive polynomials
 
 The table below lists the default primitive polynomials of degree $k$ over $\mathbb{F}_2$ for $k \in [1 : 24]$. The polynomial $p(X)$ is represented as a binary number, where the leftmost bit stands for the highest degree term. For example, the polynomial $p(X) = X^3 + X + 1$ is represented as `0b1011`.
 
-**Source:** <cite>LC04, Table 2.7, p.42</cite>.
+**Source:** <cite>LC04, Table 2.7, p. 42</cite>.
 
 | Degree $k$ | Primitive polynomial $p(X)$ | Degree $k$ | Primitive polynomial $p(X)$   |
 | :--------: | --------------------------- | :--------: | ----------------------------- |
