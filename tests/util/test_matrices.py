@@ -1,7 +1,8 @@
 import numpy as np
 import pytest
 
-from komm._util.matrices import pseudo_inverse, rank, rref, xrref
+import komm
+from komm._util.matrices import invariant_factors, pseudo_inverse, rank, rref, xrref
 
 
 @pytest.mark.parametrize(
@@ -122,3 +123,41 @@ def test_pseudo_inverse_random(n_rows, n_cols):
         if rank(matrix) == n_cols:
             eye = np.eye(n_cols, dtype=int)
             np.testing.assert_array_equal((p_inv @ matrix) % 2, eye)
+
+
+@pytest.mark.parametrize(
+    "matrix, factors",
+    [
+        (  # [McE98, p. 1128–1129]
+            [
+                [0b1, 0b111, 0b101, 0b11],
+                [0b10, 0b111, 0b100, 0b1],
+            ],
+            [0b1, 0b111],
+        ),
+        (  # [JZ15, p. 63–65]
+            [
+                [0b11, 0b10, 0b1],
+                [0b100, 0b1, 0b111],
+            ],
+            [0b1, 0b1],
+        ),
+        (
+            [
+                [0b1, 0b0, 0b0],
+                [0b0, 0b1, 0b0],
+            ],
+            [0b1, 0b1],
+        ),
+        (
+            [
+                [0b1001, 0b0, 0b0, 0b1010],
+                [0b0, 0b1001, 0b0, 0b1101],
+                [0b0, 0b0, 0b1001, 0b1011],
+            ],
+            [0b1, 0b1001, 0b1001],
+        ),
+    ],
+)
+def test_invariant_factors(matrix, factors):
+    assert invariant_factors(matrix) == [komm.BinaryPolynomial(f) for f in factors]

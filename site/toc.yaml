@@ -26,6 +26,8 @@ Error control:
     - SlepianArray
   Convolutional codes:
     - ConvolutionalCode
+    - LowRateConvolutionalCode
+    - HighRateConvolutionalCode
     - TerminatedConvolutionalCode
     - ViterbiStreamDecoder
   Decoders:

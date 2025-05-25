@@ -1,9 +1,12 @@
 from collections.abc import Sequence
+from itertools import product
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
+
+from komm._algebra import BinaryPolynomial
 
 ArrayInt = npt.NDArray[np.integer]
 
@@ -182,3 +185,85 @@ def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> npt.NDArray[Any]:
         r_off += r
         c_off += c
     return result
+
+
+def invariant_factors(matrix: npt.ArrayLike) -> list[BinaryPolynomial]:
+    r"""
+    Computes the invariant factors of a matrix over $\ZZ_2[D]$.
+
+    Parameters:
+        matrix: The matrix. Its elements must be [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+
+    Returns:
+        factors: The invariant factors of the matrix.
+
+    Examples:
+        >>> invariant_factors([[0b1, 0b111, 0b101, 0b11], [0b10, 0b111, 0b100, 0b1]])
+        [BinaryPolynomial(0b1), BinaryPolynomial(0b111)]
+    """
+    # See [McE98, Appendix B, p. 1128]
+    BP = BinaryPolynomial
+    matrix = np.array(matrix, dtype=int)
+    k, n = matrix.shape
+    if k > n:
+        raise ValueError("number of rows cannot exceed number of columns")
+    if np.all(matrix == 0):
+        return []
+
+    # E1: Find entry of least size and move it to position (0,0)
+    i0, j0, d0, a0 = -1, -1, np.inf, BP(0b0)
+    for i, j in product(range(k), range(n)):
+        a = BP(matrix[i, j])
+        if a == 0b0:
+            continue
+        d = a.degree
+        if d < d0:
+            i0, j0, d0, a0 = i, j, d, a
+    matrix[0, :], matrix[i0, :] = matrix[i0, :].copy(), matrix[0, :].copy()
+    matrix[:, 0], matrix[:, j0] = matrix[:, j0].copy(), matrix[:, 0].copy()
+
+    # E2a
+    done = False
+    while not done:
+        done = True
+        for j in range(1, n):
+            a = BP(matrix[0, j])
+            if a == 0:
+                continue
+            q, r = divmod(a, a0)
+            if r != 0:
+                a0 = r
+                for i in range(k):
+                    matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[i, 0])
+                matrix[:, 0], matrix[:, j] = matrix[:, j].copy(), matrix[:, 0].copy()
+                done = False
+                break
+    # E2b
+    done = False
+    while not done:
+        done = True
+        for i in range(1, k):
+            a = BP(matrix[i, 0])
+            if a == 0:
+                continue
+            q, r = divmod(a, a0)
+            if r != 0:
+                a0 = r
+                for j in range(n):
+                    matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[0, j])
+                matrix[0, :], matrix[i, :] = matrix[i, :].copy(), matrix[0, :].copy()
+                done = False
+                break
+
+    # E3a
+    for j in range(1, n):
+        q = BP(matrix[0, j]) // a0
+        for i in range(k):
+            matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[i, 0])
+    # E3b
+    for i in range(1, k):
+        q = BP(matrix[i, 0]) // a0
+        for j in range(n):
+            matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[0, j])
+
+    return [a0] + invariant_factors(matrix[1:, 1:])

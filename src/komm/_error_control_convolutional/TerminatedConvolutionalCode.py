@@ -211,7 +211,7 @@ class DirectTruncation(TerminationStrategy):
         return np.asarray(input)
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        σ = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.degree
         return np.zeros(σ, dtype=int)
 
     def codeword_length(self) -> int:
@@ -245,7 +245,7 @@ class ZeroTermination(TerminationStrategy):
         # See [WBR01, eq. (3)]. Set x_0 = x_t = 0, and t = h + μ.
         h = self.num_blocks
         μ = self.convolutional_code.memory_order
-        σ = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.degree
         A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
         A_pow = [np.eye(σ, dtype=int)]
         for _ in range(1, h + μ):
@@ -260,7 +260,7 @@ class ZeroTermination(TerminationStrategy):
         return np.concatenate([input, tail])
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        σ = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.degree
         return np.zeros(σ, dtype=int)
 
     def codeword_length(self) -> int:
@@ -295,7 +295,7 @@ class TailBiting(TerminationStrategy):
     def _zs_multiplier(self) -> npt.NDArray[np.integer]:
         # See [WBR01, eq. (4)].
         h = self.num_blocks
-        σ = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.degree
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
         return pseudo_inverse((matrix_power(A_mat, h) + np.eye(σ, dtype=int)) % 2)
 
@@ -303,7 +303,7 @@ class TailBiting(TerminationStrategy):
         return np.asarray(input)
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        σ = self.convolutional_code.overall_constraint_length
+        σ = self.convolutional_code.degree
         zero_state = np.zeros(σ, dtype=int)
         _, state = self.convolutional_code.encode_with_state(input, zero_state)
         return state @ self._zs_multiplier % 2

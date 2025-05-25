@@ -9,6 +9,7 @@ import numpy.typing as npt
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction, domain, ring
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.matrices import invariant_factors
 
 
 class ConvolutionalCode(ABC):
@@ -31,7 +32,7 @@ class ConvolutionalCode(ABC):
     @cached_property
     def degree(self) -> int:
         r"""
-        The degree of the encoder, $\sigma$.
+        The *degree* $\sigma$ of the encoder. This corresponds to the number of delay elements in the encoder realization.
         """
         raise NotImplementedError
 
@@ -46,22 +47,22 @@ class ConvolutionalCode(ABC):
         npt.NDArray[np.integer],
     ]:
         r"""
-        Returns the *state-space representation* of the encoder. Let
-        $$
-        \begin{aligned}
-            \mathbf{u}_t & = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\\\
-            \mathbf{v}_t & = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)}), \\\\
-            \mathbf{s}_t & = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\sigma-1)}),
-        \end{aligned}
-        $$
-        be the input block, output block, and state, respectively, all defined at time instant $t$. Then,
+        Returns the matrices $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ corresponding to the state-space representation of the encoder realization. The *state-space representation* of the encoder is given by
         $$
         \begin{aligned}
             \mathbf{s}\_{t+1} & = \mathbf{s}_t \mathbf{A} + \mathbf{u}_t \mathbf{B}, \\\\
             \mathbf{v}\_{t} & = \mathbf{s}_t \mathbf{C} + \mathbf{u}\_t \mathbf{D},
         \end{aligned}
         $$
-        where $\mathbf{A}$ is the $\sigma \times \sigma$ *state matrix*, $\mathbf{B}$ is the $k \times \sigma$ *control matrix*, $\mathbf{C}$ is the $\sigma \times n$ *observation matrix*, and $\mathbf{D}$ is the $k \times n$ *transition matrix*. They are all binary matrices. For more details, see <cite>WBR01</cite>.
+        where
+
+        - $\mathbf{u}_t \in \mathbb{B}^k$ is the *input block*,
+        - $\mathbf{v}_t \in \mathbb{B}^n$ is the *output block*,
+        - $\mathbf{s}_t \in \mathbb{B}^\sigma$ is the *state*,
+        - $\mathbf{A} \in \mathbb{B}^{\sigma \times \sigma}$ is the *state matrix*,
+        - $\mathbf{B} \in \mathbb{B}^{k \times \sigma}$ is the *control matrix*,
+        - $\mathbf{C} \in \mathbb{B}^{\sigma \times n}$ is the *observation matrix*,
+        - $\mathbf{D} \in \mathbb{B}^{k \times n}$ is the *transition matrix*.
 
         Returns:
             state_matrix: The state matrix $\mathbf{A}$ of the encoder.
@@ -75,7 +76,7 @@ class ConvolutionalCode(ABC):
     @abstractmethod
     def generator_matrix(self) -> npt.NDArray[np.object_]:
         r"""
-        Returns the *transform-domain generator matrix* (also known as *transfer function matrix*) $\mathbf{G}(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
+        Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $\mathbf{G}(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """
         raise NotImplementedError
 
@@ -97,25 +98,20 @@ class ConvolutionalCode(ABC):
         return MealyMachine(transitions, outputs)
 
     @cache
-    def _minors_gcd(self) -> BinaryPolynomialFraction:
-        # See [McE98, Sec. 6].
-        # Returns the rational polynomial ɑ(D) / β(D) = ɑ'(D) / β'(D).
-        # This coincides with the gcd of the k × k minors when G(D) is polynomial
+    def _minors_gcd(self) -> BinaryPolynomial:
+        # We keep this method for testing purposes.
         G_mat = self.generator_matrix()
         k, n = G_mat.shape
-        denominators: list[BinaryPolynomial] = [
-            x.denominator for row in G_mat for x in row
-        ]
-        β = reduce(domain.lcm, denominators)
-        G_prime: list[list[BinaryPolynomial]] = [
-            [(BinaryPolynomialFraction(β) * x).numerator for x in row] for row in G_mat
+        if any(x.denominator != 0b1 for row in G_mat for x in row):
+            raise ValueError("this method only works with polynomial matrices")
+        G_poly: list[list[BinaryPolynomial]] = [
+            [x.numerator for x in row] for row in G_mat
         ]
         minors: list[BinaryPolynomial] = []
         for js in combinations(range(n), k):
-            submatrix = [[row[j] for j in js] for row in G_prime]
+            submatrix = [[row[j] for j in js] for row in G_poly]
             minors.append(ring.determinant(submatrix))
-        ɑ = reduce(domain.gcd, minors)
-        return BinaryPolynomialFraction(ɑ, β)
+        return reduce(domain.gcd, minors)
 
     @cache
     @abstractmethod
@@ -123,8 +119,18 @@ class ConvolutionalCode(ABC):
         """
         Returns whether the encoder is catastrophic. A convolutional encoder is *catastrophic* if there exists an infinite-weight input sequence that generates a finite-weight output sequence.
         """
-        minors_gcd = self._minors_gcd()
-        return len(minors_gcd.numerator.exponents()) != 1
+        # See [JZ15, Secs. 2.2 and 2.3], in particular Theorem 2.10.
+        G_mat = self.generator_matrix()
+        denominators = [x.denominator for row in G_mat for x in row]
+        q = reduce(domain.lcm, denominators)
+        G_prime = np.array([
+            [(BinaryPolynomialFraction(q) * x).numerator for x in row] for row in G_mat
+        ])
+        factors = invariant_factors(G_prime)
+        if len(factors) < G_mat.shape[0]:
+            raise ValueError("generator matrix is not full rank")
+        ɑ_k = BinaryPolynomialFraction(factors[-1], q).numerator
+        return len(ɑ_k.exponents()) != 1
 
     @cache
     @abstractmethod
@@ -191,7 +197,7 @@ class ConvolutionalCode(ABC):
             raise ValueError("'initial_state' must be a 1D-array")
         if state.size != σ:
             raise ValueError(
-                "length of 'initial_state' must be 'overall_constraint_length' "
+                "length of 'initial_state' must be 'degree' "
                 f"(expected {σ}, got {state.size})"
             )
 
