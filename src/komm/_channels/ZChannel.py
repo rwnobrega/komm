@@ -4,6 +4,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .._util import global_rng
 from .._util.information_theory import (
     PMF,
     LogBase,
@@ -27,7 +28,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
     """
 
     decay_probability: float = 0.0
-    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
+    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     def __post_init__(self) -> None:
         assert_is_probability(self.decay_probability)
@@ -105,8 +106,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> rng = np.random.default_rng(seed=42)
-            >>> zc = komm.ZChannel(0.2, rng=rng)
+            >>> zc = komm.ZChannel(0.2)
             >>> zc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
         """

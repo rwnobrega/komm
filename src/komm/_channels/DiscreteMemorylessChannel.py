@@ -3,6 +3,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .._util import global_rng
 from .._util.information_theory import (
     LogBase,
     TransitionMatrix,
@@ -23,10 +24,10 @@ class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
     def __init__(
         self,
         transition_matrix: npt.ArrayLike,
-        rng: np.random.Generator = np.random.default_rng(),
+        rng: np.random.Generator | None = None,
     ):
         self._transition_matrix = TransitionMatrix(transition_matrix)
-        self.rng = rng
+        self.rng = rng or global_rng.get()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"
@@ -90,8 +91,7 @@ class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> rng = np.random.default_rng(seed=42)
-            >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]], rng=rng)
+            >>> dmc = komm.DiscreteMemorylessChannel([[0.9, 0.05, 0.05], [0.0, 0.5, 0.5]])
             >>> dmc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])
         """

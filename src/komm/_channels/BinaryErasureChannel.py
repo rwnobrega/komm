@@ -4,6 +4,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .._util import global_rng
 from .._util.information_theory import (
     PMF,
     LogBase,
@@ -23,7 +24,7 @@ class BinaryErasureChannel(base.DiscreteMemorylessChannel):
     """
 
     erasure_probability: float = 0.0
-    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
+    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     def __post_init__(self) -> None:
         assert_is_probability(self.erasure_probability)
@@ -101,8 +102,7 @@ class BinaryErasureChannel(base.DiscreteMemorylessChannel):
     def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> rng = np.random.default_rng(seed=42)
-            >>> bec = komm.BinaryErasureChannel(0.2, rng=rng)
+            >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([1, 1, 1, 0, 2, 0, 1, 0, 2, 0])
         """

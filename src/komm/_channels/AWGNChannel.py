@@ -5,6 +5,8 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from .._util import global_rng
+
 
 @dataclass
 class AWGNChannel:
@@ -27,7 +29,7 @@ class AWGNChannel:
 
     signal_power: float | Literal["measured"]
     snr: float = np.inf
-    rng: np.random.Generator = field(default=np.random.default_rng(), repr=False)
+    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     @cached_property
     def noise_power(self) -> float:
@@ -62,8 +64,7 @@ class AWGNChannel:
             output: The output signal $Y_n$.
 
         Examples:
-            >>> rng = np.random.default_rng(seed=42)
-            >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0, rng=rng)
+            >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
             >>> awgn(x).round(2)
             array([ 1.05,  2.84, -2.88, -0.85, -1.31,  0.79,  3.02,  0.95, -1.  ,  2.87])

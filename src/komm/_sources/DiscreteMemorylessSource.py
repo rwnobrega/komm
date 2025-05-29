@@ -3,6 +3,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .._util import global_rng
 from .._util.information_theory import PMF, LogBase, entropy
 
 
@@ -14,11 +15,9 @@ class DiscreteMemorylessSource:
         pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
     """
 
-    def __init__(
-        self, pmf: npt.ArrayLike, rng: np.random.Generator = np.random.default_rng()
-    ):
+    def __init__(self, pmf: npt.ArrayLike, rng: np.random.Generator | None = None):
         self.pmf = PMF(pmf)
-        self.rng = rng
+        self.rng = rng or global_rng.get()
 
     def __repr__(self) -> str:
         return f"{__class__.__name__}(pmf={self.pmf.tolist()})"
@@ -57,8 +56,7 @@ class DiscreteMemorylessSource:
             An array of shape `shape` with random samples from the source.
 
         Examples:
-            >>> rng = np.random.default_rng(seed=42)
-            >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1], rng=rng)
+            >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
             >>> dms()
             array(1)
             >>> dms(10)

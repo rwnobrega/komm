@@ -35,10 +35,7 @@ with cols[2]:
         step=2,
     )
 
-dms = komm.DiscreteMemorylessSource(
-    np.ones(4) / 4,
-    rng=np.random.default_rng(seed=42),
-)
+dms = komm.DiscreteMemorylessSource(np.ones(4) / 4)
 
 bits = dms(10)
 seq = 2 * bits - 3
