@@ -117,15 +117,15 @@ class MooreMachine:
         initial_state: int,
     ) -> tuple[npt.NDArray[np.integer], int]:
         r"""
-        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively.
+        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively.
 
         Parameters:
-            input: The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
+            input: The input sequence $x \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
 
             initial_state: The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
 
         Returns:
-            output: The output sequence $\mathbf{y} \in \mathcal{Y}^{L}$ corresponding to `input`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output: The output sequence $y \in \mathcal{Y}^{L}$ corresponding to `input`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
             final_state: The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 

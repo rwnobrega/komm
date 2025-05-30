@@ -157,15 +157,15 @@ class MealyMachine:
         initial_state: int,
     ) -> tuple[npt.NDArray[np.integer], int]:
         r"""
-        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
+        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
 
         Parameters:
-            input: The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
+            input: The input sequence $x \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
 
             initial_state: The initial state $s_\mathrm{i}$ of the machine. Should be an integer in $\mathcal{S}$.
 
         Returns:
-            output: The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to `input`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
+            output: The output sequence $y \in \mathcal{Y}^L$ corresponding to `input`, assuming the machine starts at the state given by `initial_state`. It is a 1D-array with elements in $\mathcal{Y}$.
 
             final_state: The final state $s_\mathrm{f}$ of the machine. It is an integer in $\mathcal{S}$.
 
@@ -197,17 +197,17 @@ class MealyMachine:
         initial_metrics: npt.ArrayLike | None = None,
     ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.floating]]:
         r"""
-        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
+        Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $z \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
 
         Parameters:
-            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $z \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
             initial_metrics: The initial metrics for each state. It must be a 1D-array of length $|\mathcal{S}|$. The default value is `0.0` for all states.
 
         Returns:
-            input_hat: The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.
+            input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{x}$.
 
             final_metrics: The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
@@ -247,14 +247,14 @@ class MealyMachine:
         Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
 
         Parameters:
-            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $z \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
             memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
 
         Returns:
-            input_hat: The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$
+            input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$
         """
         num_states = self.num_states
         input_hat = np.empty(len(observed), dtype=int)
@@ -292,10 +292,10 @@ class MealyMachine:
         final_state_distribution: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
-        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
 
         Parameters:
-            observed: The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.
+            observed: The observed sequence $z \in \mathcal{Z}^L$.
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
@@ -306,7 +306,7 @@ class MealyMachine:
             final_state_distribution: The pmf of the final state of the machine. It must be a 1D-array of length $|\mathcal{S}|$. The default value is uniform over all states.
 
         Returns:
-            input_posteriors: The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.
+            input_posteriors: The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid z)$.
         """
         L, num_states, num_input_symbols = (
             len(observed),

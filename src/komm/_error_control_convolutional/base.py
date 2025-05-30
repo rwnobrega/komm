@@ -50,15 +50,15 @@ class ConvolutionalCode(ABC):
         Returns the matrices $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ corresponding to the state-space representation of the encoder realization. The *state-space representation* of the encoder is given by
         $$
         \begin{aligned}
-            \mathbf{s}\_{t+1} & = \mathbf{s}_t \mathbf{A} + \mathbf{u}_t \mathbf{B}, \\\\
-            \mathbf{v}\_{t} & = \mathbf{s}_t \mathbf{C} + \mathbf{u}\_t \mathbf{D},
+            s_{t+1} & = s_t \mathbf{A} + u_t \mathbf{B}, \\\\
+            v_t & = s_t \mathbf{C} + u_t \mathbf{D},
         \end{aligned}
         $$
         where
 
-        - $\mathbf{u}_t \in \mathbb{B}^k$ is the *input block*,
-        - $\mathbf{v}_t \in \mathbb{B}^n$ is the *output block*,
-        - $\mathbf{s}_t \in \mathbb{B}^\sigma$ is the *state*,
+        - $u_t \in \mathbb{B}^k$ is the *input block*,
+        - $v_t \in \mathbb{B}^n$ is the *output block*,
+        - $s_t \in \mathbb{B}^\sigma$ is the *state*,
         - $\mathbf{A} \in \mathbb{B}^{\sigma \times \sigma}$ is the *state matrix*,
         - $\mathbf{B} \in \mathbb{B}^{k \times \sigma}$ is the *control matrix*,
         - $\mathbf{C} \in \mathbb{B}^{\sigma \times n}$ is the *observation matrix*,
@@ -76,7 +76,7 @@ class ConvolutionalCode(ABC):
     @abstractmethod
     def generator_matrix(self) -> npt.NDArray[np.object_]:
         r"""
-        Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $\mathbf{G}(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
+        Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $G(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """
         raise NotImplementedError
 

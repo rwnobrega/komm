@@ -11,21 +11,21 @@ from . import base
 
 class HighRateConvolutionalCode(base.ConvolutionalCode):
     r"""
-    High-rate convolutional encoder. It is an $(n, n-1)$ recursive systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *check row* $\mathbf{h}(D) \in \mathbb{F}_2[D]^n$ and realized in observable canonical form. By convention, the first $n - 1$ positions represent the information bits.
+    High-rate convolutional encoder. It is an $(n, n-1)$ recursive systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *check row* $h(D) \in \mathbb{F}_2[D]^n$ and realized in observable canonical form. By convention, the first $n - 1$ positions represent the information bits.
 
     Parameters:
-        h_row: The check row $\mathbf{h}(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        h_row: The check row $h(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
     Examples:
         Consider the high-rate convolutional encoder with $(n, k, \sigma) = (4, 3, 3)$ depicted below.
 
-        <figure markdown>
+        <figure markdown>/
         ![Convolutional encoder for high-rate (4, 3, 3) code.](/fig/cc_high_rate_4_3_3.svg)
         </figure>
 
         Its check row is given by
         $$
-            \mathbf{h}(D) =
+            h(D) =
             \begin{bmatrix}
                 D^3 + D  &&  D^3 + D^2 + 1  &&  D^3 + D + 1  &&  D^3 + 1
             \end{bmatrix}.
@@ -127,14 +127,14 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         r"""
         For a high-rate convolutional code with check row
         $$
-            \mathbf{h}(D) =
+            h(D) =
             \begin{bmatrix}
                 h_0(D)  &&  h_1(D)  &&  \cdots  &&  h_{n-1}(D)
             \end{bmatrix},
         $$
         the generator matrix is given by
         $$
-            \mathbf{G}(D) =
+            G(D) =
             \begin{bmatrix}
                 1      & 0      & \cdots & 0      & h_0(D) / h_{n-1}(D)     \\\\[1ex]
                 0      & 1      & \cdots & 0      & h_1(D) / h_{n-1}(D)     \\\\[1ex]
@@ -146,14 +146,14 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         Examples:
             If the check row is
             $$
-                \mathbf{h}(D) =
+                h(D) =
                 \begin{bmatrix}
                     D^3 + D  &&  D^3 + D^2 + 1  &&  D^3 + D + 1  &&  D^3 + 1
                 \end{bmatrix},
             $$
             then the generator matrix is
             $$
-                \mathbf{G}(D) =
+                G(D) =
                 \begin{bmatrix}
                     1 & 0 & 0 & \frac{D^3 + D}{D^3 + 1} \\\\[1ex]
                     0 & 1 & 0 & \frac{D^3 + D^2 + 1}{D^3 + 1} \\\\[1ex]

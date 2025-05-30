@@ -11,10 +11,10 @@ from . import base
 
 class LowRateConvolutionalCode(base.ConvolutionalCode):
     r"""
-    Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *generator row* $\mathbf{g}(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.
+    Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *generator row* $g(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.
 
     Parameters:
-        g_row: The generator row $\mathbf{g}(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        g_row: The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
     Examples:
         Consider the low-rate convolutional encoder with $(n, k, \sigma) = (2, 1, 6)$ depicted below.
@@ -25,7 +25,7 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
 
         Its generator row is given by
         $$
-            \mathbf{g}(D) =
+            g(D) =
             \begin{bmatrix}
                 D^6 + D^3 + D^2 + D + 1  &&  D^6 + D^5 + D^3 + D^2 + 1
             \end{bmatrix}.
@@ -123,7 +123,7 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
         r"""
         For a low-rate convolutional code, it is given by
         $$
-            \mathbf{G}(D) = \big[ ~ \mathbf{g}(D) ~ \big].
+            G(D) = \big[ ~ g(D) ~ \big].
         $$
 
         Examples:

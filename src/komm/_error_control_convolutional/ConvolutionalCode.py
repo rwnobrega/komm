@@ -13,12 +13,12 @@ from . import base
 
 class ConvolutionalCode(base.ConvolutionalCode):
     r"""
-    Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $\mathbf{P}(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $\mathbf{q}(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is implemented in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, and <cite>LC04, Chs. 11, 12</cite>.
+    Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is implemented in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, and <cite>LC04, Chs. 11, 12</cite>.
 
     Parameters:
-        feedforward_polynomials: The matrix of feedforward polynomials $\mathbf{P}(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        feedforward_polynomials: The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
-        feedback_polynomials: The vector of feedback polynomials $\mathbf{q}(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
+        feedback_polynomials: The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
     Examples:
         1. Consider the encoder with parameters $(n, k, \sigma) = (3, 2, 7)$ depicted below.
@@ -29,7 +29,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
 
             Its matrix of feedforward polynomials is given by
             $$
-                \mathbf{P}(D) =
+                P(D) =
                 \begin{bmatrix}
                     D^4 + D^3 + 1  &  D^4 + D^2 + D + 1  &  0 \\\\
                     0  &  D^3 + D  &  D^3 + D^2 + 1
@@ -54,14 +54,14 @@ class ConvolutionalCode(base.ConvolutionalCode):
 
             Its matrix of feedforward polynomials is given by
             $$
-                \mathbf{P}(D) =
+                P(D) =
                 \begin{bmatrix}
                     D^4 + D^2 + D + 1 && D^4 + D^3 + 1
                 \end{bmatrix},
             $$
             and its vector of feedback polynomials is given by
             $$
-                \mathbf{q}(D) =
+                q(D) =
                 \begin{bmatrix}
                     D^4 + D^2 + D + 1
                 \end{bmatrix}.
@@ -283,7 +283,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         r"""
         For a convolutional code with matrix of feedforward polynomials
         $$
-            \mathbf{P}(D) =
+            P(D) =
             \begin{bmatrix}
                 p_{0,0}(D)   & p_{0,1}(D)   & \cdots & p_{0,n-1}(D)   \\\\
                 p_{1,0}(D)   & p_{1,1}(D)   & \cdots & p_{1,n-1}(D)   \\\\
@@ -293,7 +293,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         $$
         and vector of feedback polynomials
         $$
-            \mathbf{q}(D) =
+            q(D) =
             \begin{bmatrix}
                 q_0(D)     \\\\
                 q_1(D)     \\\\
@@ -303,7 +303,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         $$
         the generator matrix is given by
         $$
-            \mathbf{G}(D) =
+            G(D) =
             \begin{bmatrix}
                 p_{0,0}(D)/q_0(D)       & p_{0,1}(D)/q_0(D)       & \cdots & p_{0,n-1}(D)/q_0(D)       \\\\
                 p_{1,0}(D)/q_1(D)       & p_{1,1}(D)/q_1(D)       & \cdots & p_{1,n-1}(D)/q_1(D)       \\\\
@@ -315,21 +315,21 @@ class ConvolutionalCode(base.ConvolutionalCode):
         Examples:
             If matrix of feedforward polynomials is
             $$
-                \mathbf{P}(D) =
+                P(D) =
                 \begin{bmatrix}
                     D^4 + D^2 + D + 1 && D^4 + D^3 + 1
                 \end{bmatrix}
             $$
             and vector of feedback polynomials is
             $$
-                \mathbf{q}(D) =
+                q(D) =
                 \begin{bmatrix}
                     D^4 + D^2 + D + 1
                 \end{bmatrix},
             $$
             then the generator matrix is given by
             $$
-                \mathbf{G}(D) =
+                G(D) =
                 \begin{bmatrix}
                     1 & \frac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
                 \end{bmatrix}.
