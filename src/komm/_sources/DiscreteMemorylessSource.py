@@ -9,13 +9,28 @@ from .._util.information_theory import PMF, LogBase, entropy
 
 class DiscreteMemorylessSource:
     r"""
-    Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = \\{ 0, 1, \ldots, |\mathcal{X}| - 1 \\}$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
+    Discrete memoryless source (DMS). It is defined by an *alphabet* $\mathcal{X}$ and a *probability mass function* (pmf) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = [0 : |\mathcal{X}|)$. The pmf $p_X$ gives the probability of the source emitting the symbol $X = x$.
 
     Parameters:
-        pmf: The source probability mass function $p_X$. The element in position $x \in \mathcal{X}$ must be equal to $p_X(x)$.
+        pmf: Either the source pmf $p_X$, in which case the element at position $x \in \mathcal{X}$ must be equal to $p_X(x)$, or an integer $n \geq 1$, in which case a uniform distribution over $n$ symbols is used.
+
+    Examples:
+        >>> komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
+        DiscreteMemorylessSource(pmf=[0.5, 0.25, 0.125, 0.125])
+
+        >>> komm.DiscreteMemorylessSource(4)
+        DiscreteMemorylessSource(pmf=[0.25, 0.25, 0.25, 0.25])
     """
 
-    def __init__(self, pmf: npt.ArrayLike, rng: np.random.Generator | None = None):
+    def __init__(
+        self,
+        pmf: npt.ArrayLike | int,
+        rng: np.random.Generator | None = None,
+    ):
+        if isinstance(pmf, int):
+            if not pmf >= 1:
+                raise ValueError("cardinality must be at least 1")
+            pmf = np.full(pmf, 1 / pmf)
         self.pmf = PMF(pmf)
         self.rng = rng or global_rng.get()
 
