@@ -19,7 +19,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
     Examples:
         Consider the high-rate convolutional encoder with $(n, k, \sigma) = (4, 3, 3)$ depicted below.
 
-        <figure markdown>/
+        <figure markdown>
         ![Convolutional encoder for high-rate (4, 3, 3) code.](/fig/cc_high_rate_4_3_3.svg)
         </figure>
 

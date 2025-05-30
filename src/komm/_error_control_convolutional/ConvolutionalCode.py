@@ -13,7 +13,7 @@ from . import base
 
 class ConvolutionalCode(base.ConvolutionalCode):
     r"""
-    Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is implemented in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, and <cite>LC04, Chs. 11, 12</cite>.
+    Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is realized in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, and <cite>LC04, Chs. 11, 12</cite>.
 
     Parameters:
         feedforward_polynomials: The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
