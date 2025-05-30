@@ -1071,6 +1071,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1110,6 +1114,46 @@
   
   <span class="md-ellipsis">
     ConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HighRateConvolutionalCode
   </span>
   
 
@@ -3468,7 +3512,7 @@
 <li>
 <p>Consider the finite-state Mealy machine whose state diagram depicted in the figure below.</p>
 <p><figure markdown>
-<img alt="Finite-state Mealy machine example." src="/figures/mealy.svg" />
+<img alt="Finite-state Mealy machine example." src="/fig/mealy.svg" />
 </figure></p>
 <p>It has set of states $\mathcal{S} = \{ 0, 1, 2, 3 \}$, input alphabet $\mathcal{X} = \{ 0, 1 \}$, output alphabet $\mathcal{Y} = \{ 0, 1, 2, 3 \}$. The transition function $T$ and output function $G$ are given by the table below.</p>
 <table>
@@ -3768,7 +3812,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $\mathbf{x} = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $\mathbf{y} = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.</p>
+        <p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3777,7 +3821,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The input sequence $\mathbf{x} \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.</p>
+          <p>The input sequence $x \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3796,7 +3840,7 @@
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The output sequence $\mathbf{y} \in \mathcal{Y}^L$ corresponding to <code>input</code>, assuming the machine starts at the state given by <code>initial_state</code>. It is a 1D-array with elements in $\mathcal{Y}$.</p>
+          <p>The output sequence $y \in \mathcal{Y}^L$ corresponding to <code>input</code>, assuming the machine starts at the state given by <code>initial_state</code>. It is a 1D-array with elements in $\mathcal{Y}$.</p>
       </div>
       </li>
       <li class="field-body">
@@ -3843,7 +3887,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $\mathbf{z} \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.1</cite>.</p>
+        <p>Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $z \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.1</cite>.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3852,7 +3896,7 @@
             <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
+          <p>The observed sequence $z \in \mathcal{Z}^L$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3879,7 +3923,7 @@
 <b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The most probable input sequence $\hat{\mathbf{x}}(s) \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{\mathbf{x}}(s)$.</p>
+          <p>The most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$. It is a 2D-array of shape $L \times |\mathcal{S}|$, in which column $s$ is equal to $\hat{x}$.</p>
       </div>
       </li>
       <li class="field-body">
@@ -3921,7 +3965,7 @@
             <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
+          <p>The observed sequence $z \in \mathcal{Z}^L$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3948,7 +3992,7 @@
 <b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The most probable input sequence $\hat{\mathbf{x}} \in \mathcal{X}^L$</p>
+          <p>The most probable input sequence $\hat{x} \in \mathcal{X}^L$</p>
       </div>
       </li>
   </ul>
@@ -3974,7 +4018,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior <abbr title="probability mass function">pmf</abbr> of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $\mathbf{z} = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior <abbr title="probability mass function">pmf</abbr> of each input may also be provided. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, 12.6</cite>.</p>
+        <p>Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior <abbr title="probability mass function">pmf</abbr> of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior <abbr title="probability mass function">pmf</abbr> of each input may also be provided. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, 12.6</cite>.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3983,7 +4027,7 @@
             <span class="doc-param-annotation">(<code><span title="collections.abc.Sequence">Sequence</span>[<span title="komm._finite_state_machine.MealyMachine.Z">Z</span>] | <span title="numpy.typing.NDArray">NDArray</span>[<span title="typing.Any">Any</span>]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The observed sequence $\mathbf{z} \in \mathcal{Z}^L$.</p>
+          <p>The observed sequence $z \in \mathcal{Z}^L$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -4026,7 +4070,7 @@
 <b><code>input_posteriors</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The posterior <abbr title="probability mass function">pmf</abbr> of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid \mathbf{z})$.</p>
+          <p>The posterior <abbr title="probability mass function">pmf</abbr> of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid z)$.</p>
       </div>
       </li>
   </ul>
@@ -4125,7 +4169,7 @@
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../js/katex.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
       

@@ -1155,6 +1155,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1194,6 +1198,46 @@
   
   <span class="md-ellipsis">
     ConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HighRateConvolutionalCode
   </span>
   
 
@@ -3696,8 +3740,7 @@ in bits, where $\Hb$ is the <a href="/ref/binary_entropy">binary entropy functio
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">BinarySymmetricChannel</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bsc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([1, 1, 1, 0, 1, 0, 1, 0, 0, 0])</span>
 </code></pre></div>
@@ -3796,7 +3839,7 @@ in bits, where $\Hb$ is the <a href="/ref/binary_entropy">binary entropy functio
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../js/katex.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
       

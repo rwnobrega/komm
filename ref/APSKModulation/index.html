@@ -1071,6 +1071,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1110,6 +1114,46 @@
   
   <span class="md-ellipsis">
     ConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HighRateConvolutionalCode
   </span>
   
 
@@ -3538,10 +3582,10 @@ which has order $M = M_0 + M_1 + \cdots + M_{K-1}$. The order $M_k$ of each ring
 <li>
 <p>The $8$-<abbr title="amplitude- and phase-shift keying">APSK</abbr> modulation with $(M_0, M_1) = (4, 4)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, 0)$ is depicted below.
     <figure markdown>
-    <img alt="(4,4)-APSK modulation." src="/figures/apsk_4_4.svg" />
+    <img alt="(4,4)-APSK modulation." src="/fig/apsk_4_4.svg" />
     </figure></p>
 <pre><code>&gt;&gt;&gt; apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))
-&gt;&gt;&gt; apsk.constellation.round(3)
+&gt;&gt;&gt; apsk.constellation
 array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j,
         2.+0.j,  0.+2.j, -2.+0.j, -0.-2.j])
 </code></pre>
@@ -3549,7 +3593,7 @@ array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j,
 <li>
 <p>The $16$-<abbr title="amplitude- and phase-shift keying">APSK</abbr> modulation with $(M_0, M_1) = (8, 8)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, \pi/8)$ is depicted below.
     <figure markdown>
-    <img alt="(8,8)-APSK modulation." src="/figures/apsk_8_8.svg" />
+    <img alt="(8,8)-APSK modulation." src="/fig/apsk_8_8.svg" />
     </figure></p>
 <pre><code>&gt;&gt;&gt; apsk = komm.APSKModulation(
 ...     orders=(8, 8),
@@ -3566,7 +3610,7 @@ array([ 1.   +0.j   ,  0.707+0.707j,  0.   +1.j   , -0.707+0.707j,
 <li>
 <p>The $16$-<abbr title="amplitude- and phase-shift keying">APSK</abbr> modulation with $(M_0, M_1) = (4, 12)$, $(A_0, A_1) = (\sqrt{2}, 3)$, and $(\phi_0, \phi_1) = (\pi/4, 0)$ is depicted below.
     <figure markdown>
-    <img alt="(4,12)-APSK modulation." src="/figures/apsk_4_12.svg" />
+    <img alt="(4,12)-APSK modulation." src="/fig/apsk_4_12.svg" />
     </figure></p>
 <pre><code>&gt;&gt;&gt; apsk = komm.APSKModulation(
 ...     orders=(4, 12),
@@ -3622,7 +3666,7 @@ array([ 1.   +1.j   , -1.   +1.j   , -1.   -1.j   ,  1.   -1.j   ,
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">APSKModulation</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">amplitudes</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span><span class="o">.</span><span class="n">constellation</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span><span class="o">.</span><span class="n">constellation</span>
 <span class="go">array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j,</span>
 <span class="go">        2.+0.j,  0.+2.j, -2.+0.j, -0.-2.j])</span>
 </code></pre></div>
@@ -3995,7 +4039,7 @@ $$</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">APSKModulation</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">amplitudes</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">apsk</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">array([ 1.+0.j, -0.-1.j,  1.+0.j])</span>
 </code></pre></div>
 
@@ -4193,7 +4237,7 @@ $$</p>
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../js/katex.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
       

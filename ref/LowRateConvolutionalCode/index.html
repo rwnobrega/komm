@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://komm.dev/ref/GoldSequence/">
+        <link rel="canonical" href="https://komm.dev/ref/LowRateConvolutionalCode/">
       
       
-        <link rel="prev" href="../LFSRSequence/">
+        <link rel="prev" href="../ConvolutionalCode/">
       
       
-        <link rel="next" href="../KasamiSequence/">
+        <link rel="next" href="../HighRateConvolutionalCode/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>GoldSequence - Komm</title>
+        <title>LowRateConvolutionalCode - Komm</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kommgoldsequence" class="md-skip">
+        <a href="#kommlowrateconvolutionalcode" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GoldSequence
+              LowRateConvolutionalCode
             
           </span>
         </div>
@@ -665,6 +665,8 @@
                 
   
   
+    
+  
   
     
     
@@ -679,13 +681,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
         
           <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
             
@@ -698,7 +700,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
             Error control
@@ -1061,6 +1063,8 @@
                 
   
   
+    
+  
   
     
     
@@ -1077,13 +1081,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" checked>
         
           <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
             
@@ -1096,7 +1100,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_4_2">
             <span class="md-nav__icon md-icon"></span>
             Convolutional codes
@@ -1127,9 +1131,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1138,6 +1162,96 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#num_input_bits" class="md-nav__link">
+    num_input_bits
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#num_output_bits" class="md-nav__link">
+    num_output_bits
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#degree" class="md-nav__link">
+    degree
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state_space_representation" class="md-nav__link">
+    state_space_representation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generator_matrix" class="md-nav__link">
+    generator_matrix()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finite_state_machine" class="md-nav__link">
+    finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is_catastrophic" class="md-nav__link">
+    is_catastrophic()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode" class="md-nav__link">
+    encode()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode_with_state" class="md-nav__link">
+    encode_with_state()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2107,8 +2221,6 @@
                 
   
   
-    
-  
   
     
     
@@ -2119,13 +2231,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
         
           <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
             
@@ -2138,7 +2250,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8">
             <span class="md-nav__icon md-icon"></span>
             Sequences
@@ -2149,8 +2261,6 @@
                 
   
   
-    
-  
   
     
     
@@ -2169,13 +2279,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_1" >
         
           <label class="md-nav__link" for="__nav_2_8_1" id="__nav_2_8_1_label" tabindex="0">
             
@@ -2188,7 +2298,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_1">
             <span class="md-nav__icon md-icon"></span>
             Binary sequences
@@ -2279,18 +2389,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../GoldSequence/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2299,7 +2400,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -3298,6 +3398,84 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#num_input_bits" class="md-nav__link">
+    num_input_bits
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#num_output_bits" class="md-nav__link">
+    num_output_bits
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#degree" class="md-nav__link">
+    degree
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state_space_representation" class="md-nav__link">
+    state_space_representation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generator_matrix" class="md-nav__link">
+    generator_matrix()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finite_state_machine" class="md-nav__link">
+    finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is_catastrophic" class="md-nav__link">
+    is_catastrophic()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode" class="md-nav__link">
+    encode()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encode_with_state" class="md-nav__link">
+    encode_with_state()
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3311,7 +3489,7 @@
                   
 
 
-<h1 id="kommgoldsequence">komm.GoldSequence</h1>
+<h1 id="kommlowrateconvolutionalcode">komm.LowRateConvolutionalCode</h1>
 
 
 <div class="doc doc-object doc-class">
@@ -3322,7 +3500,37 @@
     <div class="doc doc-contents first">
 
 
-        <p>Gold sequence [Not implemented yet].</p>
+        <p>Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic <a href="/ref/ConvolutionalCode">convolutional encoder</a> defined by a single <em>generator row</em> $g(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>g_row</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former.</p>
+        </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Consider the low-rate convolutional encoder with $(n, k, \sigma) = (2, 1, 6)$ depicted below.</p>
+<figure>
+<p><img alt="Convolutional encoder for low-rate (2, 1, 6) code." src="/fig/cc_low_rate_2_1_6.svg" /></p>
+</figure>
+<p>Its generator row is given by
+$$
+    g(D) =
+    \begin{bmatrix}
+        D^6 + D^3 + D^2 + D + 1  &amp;&amp;  D^6 + D^5 + D^3 + D^2 + 1
+    \end{bmatrix}.
+$$</p>
+<pre><code>&gt;&gt;&gt; code = komm.LowRateConvolutionalCode([0b1001111, 0b1101101])
+&gt;&gt;&gt; code = komm.LowRateConvolutionalCode([0o117, 0o155])
+</code></pre>
+        <p>Please refer to <a href="/res/convolutional-codes/#low-rate">the table of optimal low-rate convolutional codes</a>.</p>
 
 
 
@@ -3334,6 +3542,478 @@
 
   <div class="doc doc-children">
 
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="num_input_bits" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">num_input_bits</span></code><span class="doc-param-annotation"><code>  int
+</code></span>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The number of input bits per block, $k$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span>
+<span class="go">1</span>
+</code></pre></div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="num_output_bits" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">num_output_bits</span></code><span class="doc-param-annotation"><code>  int
+</code></span>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The number of output bits per block, $n$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span>
+<span class="go">2</span>
+</code></pre></div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="degree" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">degree</span></code><span class="doc-param-annotation"><code>  int
+</code></span>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The <em>degree</em> $\sigma$ of the encoder. This corresponds to the number of delay elements in the encoder realization.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">degree</span>
+<span class="go">6</span>
+</code></pre></div>
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="state_space_representation" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">state_space_representation</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the matrices $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ corresponding to the state-space representation of the encoder realization. The <em>state-space representation</em> of the encoder is given by
+$$
+\begin{aligned}
+    s_{t+1} &amp; = s_t \mathbf{A} + u_t \mathbf{B}, \\
+    v_t &amp; = s_t \mathbf{C} + u_t \mathbf{D},
+\end{aligned}
+$$
+where</p>
+<ul>
+<li>$u_t \in \mathbb{B}^k$ is the <em>input block</em>,</li>
+<li>$v_t \in \mathbb{B}^n$ is the <em>output block</em>,</li>
+<li>$s_t \in \mathbb{B}^\sigma$ is the <em>state</em>,</li>
+<li>$\mathbf{A} \in \mathbb{B}^{\sigma \times \sigma}$ is the <em>state matrix</em>,</li>
+<li>$\mathbf{B} \in \mathbb{B}^{k \times \sigma}$ is the <em>control matrix</em>,</li>
+<li>$\mathbf{C} \in \mathbb{B}^{\sigma \times n}$ is the <em>observation matrix</em>,</li>
+<li>$\mathbf{D} \in \mathbb{B}^{k \times n}$ is the <em>transition matrix</em>.</li>
+</ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>state_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The state matrix $\mathbf{A}$ of the encoder.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>control_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The control matrix $\mathbf{B}$ of the encoder.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>observation_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The observation matrix $\mathbf{C}$ of the encoder.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>transition_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The transition matrix $\mathbf{D}$ of the encoder.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span><span class="p">,</span> <span class="n">B_mat</span><span class="p">,</span> <span class="n">C_mat</span><span class="p">,</span> <span class="n">D_mat</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">state_space_representation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span>
+<span class="go">array([[0, 1, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 1, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 1],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B_mat</span>
+<span class="go">array([[1, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C_mat</span>
+<span class="go">array([[1, 0],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [0, 0],</span>
+<span class="go">       [0, 1],</span>
+<span class="go">       [1, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D_mat</span>
+<span class="go">array([[1, 1]])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="generator_matrix" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">generator_matrix</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the (transform-domain) <em>generator matrix</em> (also known as <em>transfer function matrix</em>) $G(D)$ of the encoder. This is a $k \times n$ array of <a href="/ref/BinaryPolynomialFraction">binary polynomial fractions</a>.</p>
+<p>For a low-rate convolutional code, it is given by
+$$
+    G(D) = \big[ ~ g(D) ~ \big].
+$$</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+<span class="go">[0b1001111/0b1, 0b1101101/0b1]</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="finite_state_machine" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">finite_state_machine</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the <a href="/ref/MealyMachine">finite-state (Mealy) machine</a> of the encoder.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fsm</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">fsm</span><span class="o">.</span><span class="n">num_input_symbols</span><span class="p">,</span> <span class="n">fsm</span><span class="o">.</span><span class="n">num_output_symbols</span><span class="p">,</span> <span class="n">fsm</span><span class="o">.</span><span class="n">num_states</span><span class="p">)</span>
+<span class="go">(2, 4, 64)</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="is_catastrophic" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_catastrophic</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns whether the encoder is catastrophic. A convolutional encoder is <em>catastrophic</em> if there exists an infinite-weight input sequence that generates a finite-weight output sequence.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_catastrophic</span><span class="p">()</span>
+<span class="go">False</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="free_distance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">free_distance</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the <em>free distance</em> $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all possible non-zero output sequences.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">free_distance</span><span class="p">()</span>
+<span class="go">10</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="encode" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">encode</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Encodes a given bit sequence, starting from the all-zero state.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([1, 1, 0, 1, 1, 0, 0, 1])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="encode_with_state" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">encode_with_state</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Encodes a given bit sequence, starting from a given state.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>initial_state</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The initial state. Must be a 1D-array of length $\sigma$.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><strong>Returns:</strong></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+      </div>
+      </li>
+      <li class="field-body">
+<b><code>final_state</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The final state. It is a 1D-array of length $\sigma$.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LowRateConvolutionalCode</span><span class="p">([</span><span class="mo">0o117</span><span class="p">,</span> <span class="mo">0o155</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode_with_state</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">(array([1, 1, 0, 1, 1, 0, 0, 1]), array([1, 1, 1, 1, 0, 0]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode_with_state</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">(array([0, 1, 0, 0, 1, 1, 1, 1]), array([1, 1, 1, 1, 1, 1]))</span>
+</code></pre></div>
+
+  </div>
+
+</div>
 
 
 
@@ -3364,7 +4044,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../LFSRSequence/" class="md-footer__link md-footer__link--prev" aria-label="Previous: LFSRSequence" rel="prev">
+          <a href="../ConvolutionalCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ConvolutionalCode" rel="prev">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -3374,20 +4054,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                LFSRSequence
+                ConvolutionalCode
               </div>
             </div>
           </a>
         
         
           
-          <a href="../KasamiSequence/" class="md-footer__link md-footer__link--next" aria-label="Next: KasamiSequence" rel="next">
+          <a href="../HighRateConvolutionalCode/" class="md-footer__link md-footer__link--next" aria-label="Next: HighRateConvolutionalCode" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                KasamiSequence
+                HighRateConvolutionalCode
               </div>
             </div>
             <div class="md-footer__button md-icon">

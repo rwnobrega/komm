@@ -14,7 +14,7 @@
         <link rel="prev" href="../SlepianArray/">
       
       
-        <link rel="next" href="../TerminatedConvolutionalCode/">
+        <link rel="next" href="../LowRateConvolutionalCode/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -1075,6 +1075,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -1169,22 +1173,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transfer_function_matrix" class="md-nav__link">
-    transfer_function_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#constraint_lengths" class="md-nav__link">
-    constraint_lengths
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#overall_constraint_length" class="md-nav__link">
-    overall_constraint_length
+  <a href="#degree" class="md-nav__link">
+    degree
   </a>
   
 </li>
@@ -1197,8 +1187,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#free_distance" class="md-nav__link">
-    free_distance()
+  <a href="#constraint_lengths" class="md-nav__link">
+    constraint_lengths
   </a>
   
 </li>
@@ -1211,8 +1201,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generator_matrix" class="md-nav__link">
+    generator_matrix()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#finite_state_machine" class="md-nav__link">
     finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is_catastrophic" class="md-nav__link">
+    is_catastrophic()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
   </a>
   
 </li>
@@ -1235,6 +1246,46 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HighRateConvolutionalCode
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -3382,22 +3433,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transfer_function_matrix" class="md-nav__link">
-    transfer_function_matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#constraint_lengths" class="md-nav__link">
-    constraint_lengths
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#overall_constraint_length" class="md-nav__link">
-    overall_constraint_length
+  <a href="#degree" class="md-nav__link">
+    degree
   </a>
   
 </li>
@@ -3410,8 +3447,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#free_distance" class="md-nav__link">
-    free_distance()
+  <a href="#constraint_lengths" class="md-nav__link">
+    constraint_lengths
   </a>
   
 </li>
@@ -3424,8 +3461,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#generator_matrix" class="md-nav__link">
+    generator_matrix()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#finite_state_machine" class="md-nav__link">
     finite_state_machine()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is_catastrophic" class="md-nav__link">
+    is_catastrophic()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free_distance" class="md-nav__link">
+    free_distance()
   </a>
   
 </li>
@@ -3470,7 +3528,7 @@
     <div class="doc doc-contents first">
 
 
-        <p>Binary convolutional code. It is characterized by a <em>matrix of feedforward polynomials</em> $\mathbf{P}(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $\mathbf{q}(D)$, of length $k$. The element in row $i$ and column $j$ of $\mathbf{P}(D)$ is denoted by $p_{i,j}(D)$, and the element in position $i$ of $\mathbf{q}(D)$ is denoted by $q_i(D)$; they are <a href="/ref/BinaryPolynomial">binary polynomials</a> in $D$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. For more details, see <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite> and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
+        <p>Binary convolutional encoder. It is characterized by a <em>matrix of feedforward polynomials</em> $P(D)$, of shape $k \times n$, and (optionally) by a <em>vector of feedback polynomials</em> $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is implemented in controllable canonical form. For more details, see <cite><abbr title="Robert J. McEliece. The Algebraic Theory of Convolutional Codes. Chapter 12 of Handbook of Coding Theory, Volume I (V. S. Pless and W. C. Huffman, Eds.). Elsevier, 1998. ISBN  978-0444814722.">McE98</abbr></cite>, <cite><abbr title="Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.">JZ15</abbr></cite>, and <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Chs. 11, 12</cite>.</p>
 
   <p><strong>Parameters:</strong></p>
   <ul>
@@ -3479,7 +3537,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The matrix of feedforward polynomials $\mathbf{P}(D)$, which is a $k \times n$ matrix whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former.</p>
+          <p>The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3487,7 +3545,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The vector of feedback polynomials $\mathbf{q}(D)$, which is a $k$-vector whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.</p>
+          <p>The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either <a href="/ref/BinaryPolynomial">binary polynomials</a> or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.</p>
         </div>
       </li>
   </ul>
@@ -3496,30 +3554,13 @@
 <p><span class="doc-section-title">Examples:</span></p>
     <ol>
 <li>
-<p>Consider the encoder with parameters $(n, k, \sigma) = (2, 1, 6)$ depicted below.</p>
-<p><figure markdown>
-<img alt="Convolutional encoder for (2, 1, 6) code." src="/figures/cc_2_1_6.svg" />
-</figure></p>
-<p>Its matrix of feedforward polynomials is given by
-$$
-    \mathbf{P}(D) =
-    \begin{bmatrix}
-        D^6 + D^3 + D^2 + D + 1  &amp;&amp;  D^6 + D^5 + D^3 + D^2 + 1
-    \end{bmatrix}.
-$$</p>
-<pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(
-...     feedforward_polynomials=[[0b1001111, 0b1101101]],
-... )
-</code></pre>
-</li>
-<li>
 <p>Consider the encoder with parameters $(n, k, \sigma) = (3, 2, 7)$ depicted below.</p>
 <p><figure markdown>
-<img alt="Convolutional encoder for (3, 2, 7) code." src="/figures/cc_3_2_7.svg" />
+<img alt="Convolutional encoder with parameters (3, 2, 7)." src="/fig/cc_3_2_7.svg" />
 </figure></p>
 <p>Its matrix of feedforward polynomials is given by
 $$
-    \mathbf{P}(D) =
+    P(D) =
     \begin{bmatrix}
         D^4 + D^3 + 1  &amp;  D^4 + D^2 + D + 1  &amp;  0 \\
         0  &amp;  D^3 + D  &amp;  D^3 + D^2 + 1
@@ -3531,23 +3572,26 @@ $$</p>
 ...         [      0,  0b1010, 0b1101],
 ...     ],
 ... )
+&gt;&gt;&gt; code = komm.ConvolutionalCode(
+...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
+... )
 </code></pre>
 </li>
 <li>
 <p>Consider the feedback encoder with parameters $(n, k, \sigma) = (2, 1, 4)$ depicted below.</p>
 <p><figure markdown>
-<img alt="Convolutional encoder for (2, 1, 4) feedback code." src="/figures/cc_2_1_4_fb.svg" />
+<img alt="Feedback convolutional encoder with parameters (2, 1, 4)." src="/fig/cc_2_1_4_fb.svg" />
 </figure></p>
 <p>Its matrix of feedforward polynomials is given by
 $$
-    \mathbf{P}(D) =
+    P(D) =
     \begin{bmatrix}
         D^4 + D^2 + D + 1 &amp;&amp; D^4 + D^3 + 1
     \end{bmatrix},
 $$
 and its vector of feedback polynomials is given by
 $$
-    \mathbf{q}(D) =
+    q(D) =
     \begin{bmatrix}
         D^4 + D^2 + D + 1
     \end{bmatrix}.
@@ -3556,96 +3600,13 @@ $$</p>
 ...     feedforward_polynomials=[[0b10111, 0b11001]],
 ...     feedback_polynomials=[0b10111],
 ... )
+&gt;&gt;&gt; code = komm.ConvolutionalCode(
+...     feedforward_polynomials=[[0o27, 0o31]],
+...     feedback_polynomials=[0o27],
+... )
 </code></pre>
 </li>
 </ol>
-        <h2>Tables of optimal convolutional codes</h2>
-
-<p>The tables below <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite> lists optimal convolutional codes with no feedback, for parameters $(n,k) = (2,1)$ and $(n,k) = (3,1)$, and small values of the overall constraint length $\sigma$.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Parameters $(n, k, \sigma)$</th>
-<th>Transfer function matrix $\mathbf{G}(D)$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">$(2, 1, 1)$</td>
-<td><code>[[0o1, 0o3]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 2)$</td>
-<td><code>[[0o5, 0o7]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 3)$</td>
-<td><code>[[0o13, 0o17]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 4)$</td>
-<td><code>[[0o27, 0o31]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 5)$</td>
-<td><code>[[0o53, 0o75]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 6)$</td>
-<td><code>[[0o117, 0o155]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 7)$</td>
-<td><code>[[0o247, 0o371]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(2, 1, 8)$</td>
-<td><code>[[0o561, 0o753]]</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Parameters $(n, k, \sigma)$</th>
-<th>Transfer function matrix $\mathbf{G}(D)$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">$(3, 1, 1)$</td>
-<td><code>[[0o1, 0o3, 0o3]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 2)$</td>
-<td><code>[[0o5, 0o7, 0o7]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 3)$</td>
-<td><code>[[0o13, 0o15, 0o17]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 4)$</td>
-<td><code>[[0o25, 0o33, 0o37]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 5)$</td>
-<td><code>[[0o47, 0o53, 0o75]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 6)$</td>
-<td><code>[[0o117, 0o127, 0o155]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 7)$</td>
-<td><code>[[0o255, 0o331, 0o367]]</code></td>
-</tr>
-<tr>
-<td style="text-align: center;">$(3, 1, 8)$</td>
-<td><code>[[0o575, 0o623, 0o727]]</code></td>
-</tr>
-</tbody>
-</table>
 
 
 
@@ -3687,7 +3648,7 @@ $$</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">num_input_bits</span>
 <span class="go">2</span>
@@ -3725,7 +3686,7 @@ $$</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">num_output_bits</span>
 <span class="go">3</span>
@@ -3744,8 +3705,8 @@ $$</p>
 
 
 
-<h2 id="transfer_function_matrix" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">transfer_function_matrix</span></code><span class="doc-param-annotation"><code>  NDArray[object_]
+<h2 id="degree" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">degree</span></code><span class="doc-param-annotation"><code>  int
 </code></span>
 
   <span class="doc doc-labels">
@@ -3758,111 +3719,19 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The <em>transfer function matrix</em> (also known as <em>transform-domain generator matrix</em>) $\mathbf{G}(D)$ of the code. This is a $k \times n$ array of <a href="/ref/BinaryPolynomialFraction">binary polynomial fractions</a> with element in row $i$ and column $j$ given by
+        <p>The <em>degree</em> $\sigma$ of the encoder. This corresponds to the number of delay elements in the encoder realization.</p>
+<p>It is given by
 $$
-    g_{i,j}(D) = \frac{p_{i,j}(D)}{q_{i}(D)},
+    \sigma = \sum_{i \in [0:k)} \nu_i,
 $$
-for $i \in [0 : k)$ and $j \in [0 : n)$.</p>
+where $\nu_i$ are the constraint lengths of the encoder.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">transfer_function_matrix</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
-<span class="go">[0b11001/0b1 , 0b10111/0b1 , 0b0/0b1     ]</span>
-<span class="go">[0b0/0b1     , 0b1010/0b1  , 0b1101/0b1  ]</span>
-</code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o31</span><span class="p">]],</span>
-<span class="gp">... </span>    <span class="n">feedback_polynomials</span><span class="o">=</span><span class="p">[</span><span class="mo">0o27</span><span class="p">],</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">transfer_function_matrix</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
-<span class="go">[0b1/0b1, 0b11001/0b10111]</span>
-</code></pre></div>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="constraint_lengths" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">constraint_lengths</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The <em>constraint lengths</em> $\nu_i$ of the code, defined by
-$$
-    \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},
-$$
-for $i \in [0 : k)$. This is a $k$-array of integers.</p>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">constraint_lengths</span>
-<span class="go">array([4, 3])</span>
-</code></pre></div>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="overall_constraint_length" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">overall_constraint_length</span></code><span class="doc-param-annotation"><code>  int
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The <em>overall constraint length</em> $\sigma$ of the code, defined by
-$$
-    \sigma = \sum_{i \in [0:k)} \nu_i.
-$$</p>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">overall_constraint_length</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">degree</span>
 <span class="go">7</span>
 </code></pre></div>
   </div>
@@ -3893,15 +3762,16 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>The <em>memory order</em> $\mu$ of the code, defined by
+        <p>The <em>memory order</em> $\mu$ of the encoder. It is given by
 $$
-    \mu = \max_{i \in [0:k)} \nu_i.
-$$</p>
+    \mu = \max_{i \in [0:k)} \nu_i,
+$$
+where $\nu_i$ are the constraint lengths of the encoder.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o00</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o00</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">memory_order</span>
 <span class="go">4</span>
@@ -3915,15 +3785,18 @@ $$</p>
 
 
 
-<div class="doc doc-object doc-function">
+
+<div class="doc doc-object doc-attribute">
 
 
 
-<h2 id="free_distance" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">free_distance</span><span class="p">()</span></code>      
+<h2 id="constraint_lengths" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">constraint_lengths</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
+</code></span>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h2>
@@ -3931,15 +3804,20 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>Returns the <em>free distance</em> $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all non-zero encoded bit sequences</p>
+        <p>The <em>constraint lengths</em> $\nu_i$ of the encoder, defined by
+$$
+    \nu_i = \max \{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \},
+$$
+for $i \in [0 : k)$. This is a $k$-array of integers.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">free_distance</span><span class="p">()</span>
-<span class="go">5</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">constraint_lengths</span>
+<span class="go">array([4, 3])</span>
 </code></pre></div>
-
   </div>
 
 </div>
@@ -3965,22 +3843,23 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>Returns the <em>state-space representation</em> of the code, in controller canonical form. Let
+        <p>Returns the matrices $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ corresponding to the state-space representation of the encoder realization. The <em>state-space representation</em> of the encoder is given by
 $$
 \begin{aligned}
-    \mathbf{u}_t &amp; = (u_t^{(0)}, u_t^{(1)}, \ldots, u_t^{(k-1)}), \\
-    \mathbf{v}_t &amp; = (v_t^{(0)}, v_t^{(1)}, \ldots, v_t^{(n-1)}), \\
-    \mathbf{s}_t &amp; = (s_t^{(0)}, s_t^{(1)}, \ldots, s_t^{(\sigma-1)}),
+    s_{t+1} &amp; = s_t \mathbf{A} + u_t \mathbf{B}, \\
+    v_t &amp; = s_t \mathbf{C} + u_t \mathbf{D},
 \end{aligned}
 $$
-be the input block, output block, and state, respectively, all defined at time instant $t$. Then,
-$$
-\begin{aligned}
-    \mathbf{s}_{t+1} &amp; = \mathbf{s}_t \mathbf{A} + \mathbf{u}_t \mathbf{B}, \\
-    \mathbf{v}_{t} &amp; = \mathbf{s}_t \mathbf{C} + \mathbf{u}_t \mathbf{D},
-\end{aligned}
-$$
-where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf{B}$ is the $k \times \sigma$ <em>control matrix</em>, $\mathbf{C}$ is the $\sigma \times n$ <em>observation matrix</em>, and $\mathbf{D}$ is the $k \times n$ <em>transition matrix</em>. They are all binary matrices. For more details, see <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
+where</p>
+<ul>
+<li>$u_t \in \mathbb{B}^k$ is the <em>input block</em>,</li>
+<li>$v_t \in \mathbb{B}^n$ is the <em>output block</em>,</li>
+<li>$s_t \in \mathbb{B}^\sigma$ is the <em>state</em>,</li>
+<li>$\mathbf{A} \in \mathbb{B}^{\sigma \times \sigma}$ is the <em>state matrix</em>,</li>
+<li>$\mathbf{B} \in \mathbb{B}^{k \times \sigma}$ is the <em>control matrix</em>,</li>
+<li>$\mathbf{C} \in \mathbb{B}^{\sigma \times n}$ is the <em>observation matrix</em>,</li>
+<li>$\mathbf{D} \in \mathbb{B}^{k \times n}$ is the <em>transition matrix</em>.</li>
+</ul>
 
   <p><strong>Returns:</strong></p>
   <ul>
@@ -3988,49 +3867,170 @@ where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf
 <b><code>state_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The state matrix $\mathbf{A}$ of the code.</p>
+          <p>The state matrix $\mathbf{A}$ of the encoder.</p>
       </div>
       </li>
       <li class="field-body">
 <b><code>control_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The control matrix $\mathbf{B}$ of the code.</p>
+          <p>The control matrix $\mathbf{B}$ of the encoder.</p>
       </div>
       </li>
       <li class="field-body">
 <b><code>observation_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The observation matrix $\mathbf{C}$ of the code.</p>
+          <p>The observation matrix $\mathbf{C}$ of the encoder.</p>
       </div>
       </li>
       <li class="field-body">
 <b><code>transition_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The transition matrix $\mathbf{D}$ of the code.</p>
+          <p>The transition matrix $\mathbf{D}$ of the encoder.</p>
       </div>
       </li>
   </ul>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">state_matrix</span><span class="p">,</span> <span class="n">control_matrix</span><span class="p">,</span> <span class="n">observation_matrix</span><span class="p">,</span> <span class="n">transition_matrix</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">code</span><span class="o">.</span><span class="n">state_space_representation</span><span class="p">()</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">state_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span><span class="p">,</span> <span class="n">B_mat</span><span class="p">,</span> <span class="n">C_mat</span><span class="p">,</span> <span class="n">D_mat</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">state_space_representation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span>
+<span class="go">array([[0, 1, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 1, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 1],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B_mat</span>
+<span class="go">array([[1, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 1, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C_mat</span>
+<span class="go">array([[0, 1, 0],</span>
+<span class="go">       [0, 1, 0],</span>
+<span class="go">       [1, 0, 0],</span>
+<span class="go">       [1, 1, 0],</span>
+<span class="go">       [0, 1, 0],</span>
+<span class="go">       [0, 0, 1],</span>
+<span class="go">       [0, 1, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D_mat</span>
+<span class="go">array([[1, 1, 0],</span>
+<span class="go">       [0, 0, 1]])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o31</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">feedback_polynomials</span><span class="o">=</span><span class="p">[</span><span class="mo">0o27</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span><span class="p">,</span> <span class="n">B_mat</span><span class="p">,</span> <span class="n">C_mat</span><span class="p">,</span> <span class="n">D_mat</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">state_space_representation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mat</span>
+<span class="go">array([[1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0],</span>
+<span class="go">       [0, 0, 0, 1],</span>
+<span class="go">       [1, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B_mat</span>
+<span class="go">array([[1, 0, 0, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C_mat</span>
 <span class="go">array([[0, 1],</span>
+<span class="go">       [0, 1],</span>
+<span class="go">       [0, 1],</span>
 <span class="go">       [0, 0]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">control_matrix</span>
-<span class="go">array([[1, 0]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">observation_matrix</span>
-<span class="go">array([[1, 0],</span>
-<span class="go">       [1, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transition_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D_mat</span>
 <span class="go">array([[1, 1]])</span>
 </code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="generator_matrix" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">generator_matrix</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the (transform-domain) <em>generator matrix</em> (also known as <em>transfer function matrix</em>) $G(D)$ of the encoder. This is a $k \times n$ array of <a href="/ref/BinaryPolynomialFraction">binary polynomial fractions</a>.</p>
+<p>For a convolutional code with matrix of feedforward polynomials
+$$
+    P(D) =
+    \begin{bmatrix}
+        p_{0,0}(D)   &amp; p_{0,1}(D)   &amp; \cdots &amp; p_{0,n-1}(D)   \\
+        p_{1,0}(D)   &amp; p_{1,1}(D)   &amp; \cdots &amp; p_{1,n-1}(D)   \\
+        \vdots       &amp; \vdots       &amp; \ddots &amp; \vdots         \\
+        p_{k-1,0}(D) &amp; p_{k-1,1}(D) &amp; \cdots &amp; p_{k-1,n-1}(D)
+    \end{bmatrix},
+$$
+and vector of feedback polynomials
+$$
+    q(D) =
+    \begin{bmatrix}
+        q_0(D)     \\
+        q_1(D)     \\
+        \vdots     \\
+        q_{k-1}(D)
+    \end{bmatrix},
+$$
+the generator matrix is given by
+$$
+    G(D) =
+    \begin{bmatrix}
+        p_{0,0}(D)/q_0(D)       &amp; p_{0,1}(D)/q_0(D)       &amp; \cdots &amp; p_{0,n-1}(D)/q_0(D)       \\
+        p_{1,0}(D)/q_1(D)       &amp; p_{1,1}(D)/q_1(D)       &amp; \cdots &amp; p_{1,n-1}(D)/q_1(D)       \\
+        \vdots                  &amp; \vdots                  &amp; \ddots &amp; \vdots                    \\
+        p_{k-1,0}(D)/q_{k-1}(D) &amp; p_{k-1,1}(D)/q_{k-1}(D) &amp; \cdots &amp; p_{k-1,n-1}(D)/q_{k-1}(D)
+    \end{bmatrix}.
+$$</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>If matrix of feedforward polynomials is
+$$
+    P(D) =
+    \begin{bmatrix}
+        D^4 + D^2 + D + 1 &amp;&amp; D^4 + D^3 + 1
+    \end{bmatrix}
+$$
+and vector of feedback polynomials is
+$$
+    q(D) =
+    \begin{bmatrix}
+        D^4 + D^2 + D + 1
+    \end{bmatrix},
+$$
+then the generator matrix is given by
+$$
+    G(D) =
+    \begin{bmatrix}
+        1 &amp; \frac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+    \end{bmatrix}.
+$$</p>
+<pre><code>&gt;&gt;&gt; code = komm.ConvolutionalCode(
+...     feedforward_polynomials=[[0o27, 0o31]],
+...     feedback_polynomials=[0o27],
+... )
+&gt;&gt;&gt; for row in code.generator_matrix():
+...     print("[" + ", ".join(str(x) for x in row) + "]")
+[0b1/0b1, 0b11001/0b10111]
+</code></pre>
 
   </div>
 
@@ -4057,7 +4057,7 @@ where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf
 
   <div class="doc doc-contents ">
 
-        <p>Returns the <a href="/ref/MealyMachine">finite-state (Mealy) machine</a> of the code, in controller canonical form.</p>
+        <p>Returns the <a href="/ref/MealyMachine">finite-state (Mealy) machine</a> of the encoder.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -4065,6 +4065,80 @@ where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">finite_state_machine</span><span class="p">()</span>
 <span class="go">MealyMachine(transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],</span>
 <span class="go">             outputs=[[0, 3], [1, 2], [3, 0], [2, 1]])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="is_catastrophic" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_catastrophic</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns whether the encoder is catastrophic. A convolutional encoder is <em>catastrophic</em> if there exists an infinite-weight input sequence that generates a finite-weight output sequence.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_catastrophic</span><span class="p">()</span>
+<span class="go">False</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_catastrophic</span><span class="p">()</span>
+<span class="go">True</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="free_distance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">free_distance</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the <em>free distance</em> $d_\mathrm{free}$ of the code. This is equal to the minimum Hamming weight among all possible non-zero output sequences.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">feedforward_polynomials</span><span class="o">=</span><span class="p">[[</span><span class="mo">0o31</span><span class="p">,</span> <span class="mo">0o27</span><span class="p">,</span> <span class="mo">0o0</span><span class="p">],</span> <span class="p">[</span><span class="mo">0o0</span><span class="p">,</span> <span class="mo">0o12</span><span class="p">,</span> <span class="mo">0o15</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">free_distance</span><span class="p">()</span>
+<span class="go">5</span>
 </code></pre></div>
 
   </div>
@@ -4240,13 +4314,13 @@ where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf
         
         
           
-          <a href="../TerminatedConvolutionalCode/" class="md-footer__link md-footer__link--next" aria-label="Next: TerminatedConvolutionalCode" rel="next">
+          <a href="../LowRateConvolutionalCode/" class="md-footer__link md-footer__link--next" aria-label="Next: LowRateConvolutionalCode" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                TerminatedConvolutionalCode
+                LowRateConvolutionalCode
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -4284,7 +4358,7 @@ where $\mathbf{A}$ is the $\sigma \times \sigma$ <em>state matrix</em>, $\mathbf
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../js/katex.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
       

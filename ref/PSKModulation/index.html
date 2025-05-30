@@ -1071,6 +1071,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1110,6 +1114,46 @@
   
   <span class="md-ellipsis">
     ConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LowRateConvolutionalCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HighRateConvolutionalCode
   </span>
   
 
@@ -3530,10 +3574,10 @@ where $M$ is the <em>order</em> (a power of $2$), $A$ is the <em>amplitude</em>,
 <li>
 <p>The $4$-<abbr title="phase-shift keying">PSK</abbr> modulation with base amplitude $A = 1$, phase offset $\phi = 0$, and Gray labeling is depicted below.
     <figure markdown>
-    <img alt="4-PSK modulation with Gray labeling." src="/figures/psk_4_gray.svg" />
+    <img alt="4-PSK modulation with Gray labeling." src="/fig/psk_4_gray.svg" />
     </figure></p>
 <pre><code>&gt;&gt;&gt; psk = komm.PSKModulation(4)
-&gt;&gt;&gt; psk.constellation.round(3)
+&gt;&gt;&gt; psk.constellation
 array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j])
 &gt;&gt;&gt; psk.labeling
 array([[0, 0],
@@ -3545,7 +3589,7 @@ array([[0, 0],
 <li>
 <p>The $8$-<abbr title="phase-shift keying">PSK</abbr> modulation with base amplitude $A = 0.5$, phase offset $\phi = \pi/8$, and natural labeling is depicted below.
     <figure markdown>
-    <img alt="8-PSK modulation with natural labeling." src="/figures/psk_8_natural.svg" />
+    <img alt="8-PSK modulation with natural labeling." src="/fig/psk_8_natural.svg" />
     </figure></p>
 <pre><code>&gt;&gt;&gt; psk = komm.PSKModulation(
 ...     order=8,
@@ -3609,7 +3653,7 @@ array([[0, 0, 0],
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">PSKModulation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span><span class="o">.</span><span class="n">constellation</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span><span class="o">.</span><span class="n">constellation</span>
 <span class="go">array([ 1.+0.j,  0.+1.j, -1.+0.j, -0.-1.j])</span>
 </code></pre></div>
   </div>
@@ -3982,7 +4026,7 @@ $$</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">PSKModulation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psk</span><span class="o">.</span><span class="n">modulate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">array([ 1.+0.j, -1.+0.j,  1.+0.j,  0.+1.j])</span>
 </code></pre></div>
 
@@ -4180,7 +4224,7 @@ $$</p>
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../js/katex.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
       
