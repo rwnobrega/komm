@@ -76,7 +76,7 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
 
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
-            >>> bsc.mutual_information([0.45, 0.55])
+            >>> bsc.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
             np.float64(0.2754734936803773)
         """
         input_pmf = PMF(input_pmf)
@@ -94,7 +94,7 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
 
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
-            >>> bsc.capacity()
+            >>> bsc.capacity()  # doctest: +FLOAT_CMP
             np.float64(0.2780719051126377)
         """
         p = self.crossover_probability

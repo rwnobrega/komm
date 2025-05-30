@@ -76,7 +76,7 @@ class BinaryErasureChannel(base.DiscreteMemorylessChannel):
 
         Examples:
             >>> bec = komm.BinaryErasureChannel(0.2)
-            >>> bec.mutual_information([0.45, 0.55]) # doctest: +FLOAT_CMP
+            >>> bec.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
             np.float64(0.7942195631902467)
         """
         input_pmf = PMF(input_pmf)
