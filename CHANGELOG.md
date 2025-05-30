@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.23.0 (2025-05-30)
+
+### Breaking changes
+
+- The property `transfer_function_matrix` of convolutional codes is now the method `generator_matrix()`.
+- The property `overall_constraint_length` was renamed to `degree`.
+
+### Added
+
+- Implemented [LowRateConvolutionalCode](https://komm.dev/ref/LowRateConvolutionalCode) and [HighRateConvolutionalCode](https://komm.dev/ref/LowRateConvolutionalCode)
+- Added `is_catastrophic` method to convolutional codes.
+
 ## v0.22.0 (2025-05-13)
 
 ### Breaking changes
