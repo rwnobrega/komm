@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from typeguard import TypeCheckError
 
 import komm
 
@@ -24,3 +25,14 @@ def test_encoder():
         code.encode([[1], [0]]),
         [[1, 1, 1, 1, 1], [0, 0, 0, 0, 0]],
     )
+
+
+def test_repetition_code_invalid_init():
+    with pytest.raises(ValueError, match="'n' must be a positive integer"):
+        komm.RepetitionCode(0)
+    with pytest.raises(ValueError, match="'n' must be a positive integer"):
+        komm.RepetitionCode(-1)
+    with pytest.raises(TypeCheckError):
+        komm.RepetitionCode(3.0)  # type: ignore
+    with pytest.raises(TypeCheckError):
+        komm.RepetitionCode("3")  # type: ignore

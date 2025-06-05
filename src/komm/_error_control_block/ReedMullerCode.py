@@ -1,16 +1,16 @@
-from dataclasses import dataclass
 from functools import cache, reduce
 from itertools import combinations, product
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(members=["reed_partitions"], filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class ReedMullerCode(BlockCode):
     r"""
     Reed–Muller code. Let $\mu$ and $\rho$ be two integers such that $0 \leq \rho < \mu$. The Reed–Muller code with parameters $(\rho, \mu)$ is the [linear block code](/ref/BlockCode) whose generator matrix rows are
@@ -56,15 +56,16 @@ class ReedMullerCode(BlockCode):
         4
     """
 
-    rho: int
-    mu: int
-
-    def __post_init__(self) -> None:
-        if not 0 <= self.rho < self.mu:
+    def __init__(self, rho: int, mu: int) -> None:
+        if not 0 <= rho < mu:
             raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
-        super().__init__(
-            generator_matrix=reed_muller_generator_matrix(self.rho, self.mu)
-        )
+        self.rho = rho
+        self.mu = mu
+        super().__init__(generator_matrix=reed_muller_generator_matrix(rho, mu))
+
+    def __repr__(self) -> str:
+        args = f"rho={self.rho}, mu={self.mu}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

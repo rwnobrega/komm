@@ -1,8 +1,8 @@
-from dataclasses import dataclass
 from functools import cache
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .SystematicBlockCode import SystematicBlockCode
@@ -10,7 +10,7 @@ from .util import extended_parity_submatrix
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class GolayCode(SystematicBlockCode):
     r"""
     Binary Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
@@ -59,10 +59,13 @@ class GolayCode(SystematicBlockCode):
         8
     """
 
-    extended: bool = False
+    def __init__(self, extended: bool = False) -> None:
+        self.extended = extended
+        super().__init__(parity_submatrix=golay_parity_submatrix(extended))
 
-    def __post_init__(self):
-        super().__init__(parity_submatrix=golay_parity_submatrix(self.extended))
+    def __repr__(self) -> str:
+        args = f"extended={self.extended}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

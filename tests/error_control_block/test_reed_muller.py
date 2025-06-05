@@ -1,4 +1,6 @@
 import numpy as np
+import pytest
+from typeguard import TypeCheckError
 
 import komm
 
@@ -65,3 +67,14 @@ def test_reed_muller_code_2_4_encoder():
         code.encode([0, 0, 0, 0, 0, 1]),
         np.ones(32, dtype=int),
     )
+
+
+def test_reed_muller_code_invalid_init():
+    with pytest.raises(ValueError, match="'rho' and 'mu' must satisfy 0 <= rho < mu"):
+        komm.ReedMullerCode(2, 2)
+    with pytest.raises(ValueError, match="'rho' and 'mu' must satisfy 0 <= rho < mu"):
+        komm.ReedMullerCode(-1, 3)
+    with pytest.raises(ValueError, match="'rho' and 'mu' must satisfy 0 <= rho < mu"):
+        komm.ReedMullerCode(3, 2)
+    with pytest.raises(TypeCheckError):
+        komm.ReedMullerCode(1.5, 3)  # type: ignore

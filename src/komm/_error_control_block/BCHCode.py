@@ -1,13 +1,14 @@
 import operator
-from dataclasses import dataclass
 from functools import cached_property, reduce
+
+from typeguard import typechecked
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement
 from .CyclicCode import CyclicCode
 
 
-@dataclass(eq=False)
+@typechecked
 class BCHCode(CyclicCode):
     r"""
     Bose–Ray-Chaudhuri–Hocquenghem (BCH) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *binary BCH code* is a [cyclic code](/ref/CyclicCode) with generator polynomial given by
@@ -66,29 +67,35 @@ class BCHCode(CyclicCode):
         BCHCode(mu=7, delta=43)
     """
 
-    mu: int
-    delta: int
-
-    def __post_init__(self) -> None:
-        if not self.mu >= 2:
+    def __init__(self, mu: int, delta: int) -> None:
+        if not mu >= 2:
             raise ValueError("'mu' must satisfy mu >= 2")
-        if not 2 <= self.delta <= 2**self.mu - 1:
+        if not 2 <= delta <= 2**mu - 1:
             raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
+
+        self.mu = mu
+        self.delta = delta
 
         def phi(i: int):
             return (self.alpha**i).minimal_polynomial()
 
-        lcm_set = {phi(i) for i in range(1, self.delta)}
-        if phi(self.delta) in lcm_set:
-            bose_distance = self.delta
+        lcm_set = {phi(i) for i in range(1, delta)}
+        if phi(delta) in lcm_set:
+            bose_distance = delta
             while phi(bose_distance) in lcm_set:
                 bose_distance += 1
             raise ValueError(
                 f"'delta' must be a Bose distance (the next one is {bose_distance})"
             )
-        length = 2**self.mu - 1
-        generator_polynomial = reduce(operator.mul, lcm_set)
-        super().__init__(length=length, generator_polynomial=generator_polynomial)
+
+        super().__init__(
+            length=2**mu - 1,
+            generator_polynomial=reduce(operator.mul, lcm_set),
+        )
+
+    def __repr__(self) -> str:
+        args = f"mu={self.mu}, delta={self.delta}"
+        return f"{self.__class__.__name__}({args})"
 
     @cached_property
     def field(self) -> FiniteBifield:

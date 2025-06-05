@@ -1,11 +1,12 @@
 import numpy as np
 import pytest
+from typeguard import TypeCheckError
 
-from komm import Lexicode
+import komm
 
 
 def test_lexicode_hamming74():
-    code = Lexicode(7, 3)
+    code = komm.Lexicode(7, 3)
     assert code.length == 7
     assert code.dimension == 4
     assert code.redundancy == 3
@@ -42,13 +43,15 @@ def test_lexicode_wikipedia():
 
     for n, lst in wikipedia_lexicodes_parameters.items():
         for d, k in enumerate(lst, start=1):
-            code = Lexicode(n, d)
+            code = komm.Lexicode(n, d)
             assert code.length == n
             assert code.dimension == k
             assert code.redundancy == n - k
             assert code.minimum_distance() == d
 
 
-def test_lexicode_error():
-    with pytest.raises(ValueError):
-        Lexicode(3, 4)
+def test_lexicode_invalid_init():
+    with pytest.raises(ValueError, match="'n' and 'd' must satisfy 1 <= d <= n"):
+        komm.Lexicode(3, 4)
+    with pytest.raises(TypeCheckError):
+        komm.Lexicode(7, 3.5)  # type: ignore

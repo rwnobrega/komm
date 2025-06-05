@@ -2,6 +2,7 @@ import operator
 from functools import reduce
 
 import pytest
+from typeguard import TypeCheckError
 
 import komm
 
@@ -78,3 +79,14 @@ def test_bch_syndrome():
     r = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
     r_poly = komm.BinaryPolynomial.from_coefficients(r)
     assert code.bch_syndrome(r_poly) == [alpha**2, alpha**4, alpha**7, alpha**8]
+
+
+def test_bch_code_invalid_init():
+    with pytest.raises(ValueError, match="must satisfy mu >= 2"):
+        komm.BCHCode(mu=1, delta=3)
+    with pytest.raises(ValueError, match="must satisfy 2 <= delta"):
+        komm.BCHCode(mu=3, delta=8)
+    with pytest.raises(ValueError, match="must be a Bose distance"):
+        komm.BCHCode(mu=3, delta=5)
+    with pytest.raises(TypeCheckError):
+        komm.BCHCode(mu=3, delta="5")  # type: ignore

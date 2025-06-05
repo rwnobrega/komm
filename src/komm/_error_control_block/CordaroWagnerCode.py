@@ -1,15 +1,15 @@
-from dataclasses import dataclass
 from functools import cache
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class CordaroWagnerCode(BlockCode):
     r"""
     Cordaro–Wagner code. For a given length $n \geq 2$, it is the [linear block code](/ref/BlockCode) with dimension $k = 2$ which is optimum for the [BSC](/ref/BinarySymmetricChannel) with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.
@@ -37,12 +37,15 @@ class CordaroWagnerCode(BlockCode):
         array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
     """
 
-    n: int
+    def __init__(self, n: int) -> None:
+        if not n >= 2:
+            raise ValueError("'n' must be at least 2")
+        self.n = n
+        super().__init__(generator_matrix=cordaro_wagner_generator_matrix(n))
 
-    def __post_init__(self):
-        if not self.n >= 2:
-            raise ValueError("n must be at least 2")
-        super().__init__(generator_matrix=cordaro_wagner_generator_matrix(self.n))
+    def __repr__(self) -> str:
+        args = f"n={self.n}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

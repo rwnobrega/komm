@@ -1,9 +1,9 @@
-from dataclasses import dataclass
 from functools import cache
 from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .SystematicBlockCode import SystematicBlockCode
@@ -11,7 +11,7 @@ from .util import extended_parity_submatrix
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class HammingCode(SystematicBlockCode):
     r"""
     Hamming code. For a given parameter $\mu \geq 2$, it is the [linear block code](/ref/BlockCode) with check matrix whose columns are all the $2^\mu - 1$ nonzero binary $\mu$-tuples. The Hamming code has the following parameters:
@@ -74,15 +74,16 @@ class HammingCode(SystematicBlockCode):
         4
     """
 
-    mu: int
-    extended: bool = False
-
-    def __post_init__(self):
-        if not self.mu >= 2:
+    def __init__(self, mu: int, extended: bool = False) -> None:
+        if not mu >= 2:
             raise ValueError("'mu' must be at least 2")
-        super().__init__(
-            parity_submatrix=hamming_parity_submatrix(self.mu, self.extended)
-        )
+        self.mu = mu
+        self.extended = extended
+        super().__init__(parity_submatrix=hamming_parity_submatrix(mu, extended))
+
+    def __repr__(self) -> str:
+        args = f"mu={self.mu}, extended={self.extended}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

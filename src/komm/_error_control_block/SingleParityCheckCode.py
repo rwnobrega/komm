@@ -1,16 +1,16 @@
-from dataclasses import dataclass
 from functools import cache
 from math import comb
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class SingleParityCheckCode(BlockCode):
     r"""
     Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
@@ -48,12 +48,15 @@ class SingleParityCheckCode(BlockCode):
         array([1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     """
 
-    n: int
+    def __init__(self, n: int) -> None:
+        if not n >= 1:
+            raise ValueError("'n' must be a positive integer")
+        self.n = n
+        super().__init__(check_matrix=np.ones((1, n), dtype=int))
 
-    def __post_init__(self):
-        if not self.n >= 1:
-            raise ValueError("n must be a positive integer")
-        super().__init__(check_matrix=np.ones((1, self.n), dtype=int))
+    def __repr__(self) -> str:
+        args = f"n={self.n}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

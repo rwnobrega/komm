@@ -1,4 +1,6 @@
 import numpy as np
+import pytest
+from typeguard import TypeCheckError
 
 import komm
 
@@ -79,3 +81,10 @@ def test_extended_golay_code_GH_orthogonality():
 def test_extended_golay_code_codewords():
     code = komm.GolayCode(extended=True)
     assert code.codewords().shape == (4096, 24)
+
+
+def test_golay_code_invalid_init():
+    with pytest.raises(TypeError):
+        komm.GolayCode(23, 12)  # type: ignore
+    with pytest.raises(TypeCheckError):
+        komm.GolayCode(extended=1)  # type: ignore

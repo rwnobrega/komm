@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from typeguard import TypeCheckError
 
 import komm
 
@@ -151,3 +152,12 @@ def test_extended_hamming_code_encode(u, v):
 def test_extended_hamming_code_codewords():
     code = komm.HammingCode(3, extended=True)
     assert code.codewords().shape == (16, 8)
+
+
+def test_hamming_code_invalid_init():
+    with pytest.raises(ValueError, match="'mu' must be at least 2"):
+        komm.HammingCode(1)
+    with pytest.raises(TypeCheckError):
+        komm.HammingCode(7 / 4)  # type: ignore
+    with pytest.raises(TypeCheckError):
+        komm.HammingCode(7, 4)  # type: ignore

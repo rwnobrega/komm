@@ -1,9 +1,9 @@
-from dataclasses import dataclass
 from functools import cache
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
+from typeguard import typechecked
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
@@ -11,7 +11,7 @@ from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class Lexicode(BlockCode):
     r"""
     Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code.
@@ -35,13 +35,16 @@ class Lexicode(BlockCode):
         3
     """
 
-    n: int
-    d: int
-
-    def __post_init__(self) -> None:
-        if not 1 <= self.d <= self.n:
+    def __init__(self, n: int, d: int) -> None:
+        if not 1 <= d <= n:
             raise ValueError("'n' and 'd' must satisfy 1 <= d <= n")
-        super().__init__(generator_matrix=lexicode_generator_matrix(self.n, self.d))
+        self.n = n
+        self.d = d
+        super().__init__(generator_matrix=lexicode_generator_matrix(n, d))
+
+    def __repr__(self) -> str:
+        args = f"n={self.n}, d={self.d}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

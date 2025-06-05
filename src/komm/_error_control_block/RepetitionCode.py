@@ -1,16 +1,16 @@
-from dataclasses import dataclass
 from functools import cache
 from math import comb
 
 import numpy as np
 import numpy.typing as npt
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class RepetitionCode(BlockCode):
     r"""
     Repetition code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
@@ -48,12 +48,15 @@ class RepetitionCode(BlockCode):
                    0,     0,     0,     0,     0,     0,     0,     0])
     """
 
-    n: int
+    def __init__(self, n: int) -> None:
+        if not n >= 1:
+            raise ValueError("'n' must be a positive integer")
+        self.n = n
+        super().__init__(generator_matrix=np.ones((1, n), dtype=int))
 
-    def __post_init__(self):
-        if not self.n >= 1:
-            raise ValueError("n must be a positive integer")
-        super().__init__(generator_matrix=np.ones((1, self.n), dtype=int))
+    def __repr__(self) -> str:
+        args = f"n={self.n}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:

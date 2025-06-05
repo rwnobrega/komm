@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 from functools import cache
+
+from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
 from .HammingCode import hamming_parity_submatrix
@@ -7,7 +8,7 @@ from .SystematicBlockCode import SystematicBlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@dataclass(eq=False)
+@typechecked
 class SimplexCode(SystematicBlockCode):
     r"""
     Simplex (maximum-length) code. For a given parameter $\kappa \geq 2$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^\kappa - 1$ nonzero binary $\kappa$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
@@ -68,15 +69,16 @@ class SimplexCode(SystematicBlockCode):
         4
     """
 
-    kappa: int
-    extended: bool = False
-
-    def __post_init__(self):
-        if not self.kappa >= 2:
+    def __init__(self, kappa: int, extended: bool = False) -> None:
+        if not kappa >= 2:
             raise ValueError("'kappa' must be at least 2")
-        super().__init__(
-            parity_submatrix=hamming_parity_submatrix(self.kappa, self.extended).T
-        )
+        self.kappa = kappa
+        self.extended = extended
+        super().__init__(parity_submatrix=hamming_parity_submatrix(kappa, extended).T)
+
+    def __repr__(self) -> str:
+        args = f"kappa={self.kappa}, extended={self.extended}"
+        return f"{self.__class__.__name__}({args})"
 
     @cache
     def minimum_distance(self) -> int:
