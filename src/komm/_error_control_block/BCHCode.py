@@ -1,5 +1,5 @@
 import operator
-from functools import cached_property, reduce
+from functools import reduce
 
 from typeguard import typechecked
 
@@ -61,7 +61,7 @@ class BCHCode(CyclicCode):
         >>> komm.BCHCode(mu=7, delta=32)
         Traceback (most recent call last):
         ...
-        ValueError: 'delta' must be a Bose distance (the next one is 43)
+        ValueError: 'delta' must be a Bose distance (next one is 43)
 
         >>> komm.BCHCode(mu=7, delta=43)
         BCHCode(mu=7, delta=43)
@@ -73,20 +73,23 @@ class BCHCode(CyclicCode):
         if not 2 <= delta <= 2**mu - 1:
             raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
 
-        self.mu = mu
-        self.delta = delta
+        field = FiniteBifield(mu)
+        # Since the default modulus is a primitive polynomial, alpha = X is a primitive element.
+        alpha = field(0b10)
 
         def phi(i: int):
-            return (self.alpha**i).minimal_polynomial()
+            return (alpha**i).minimal_polynomial()
 
         lcm_set = {phi(i) for i in range(1, delta)}
+
         if phi(delta) in lcm_set:
-            bose_distance = delta
-            while phi(bose_distance) in lcm_set:
-                bose_distance += 1
-            raise ValueError(
-                f"'delta' must be a Bose distance (the next one is {bose_distance})"
-            )
+            bose = next(d for d in range(delta + 1, 2**mu) if phi(d) not in lcm_set)
+            raise ValueError(f"'delta' must be a Bose distance (next one is {bose})")
+
+        self.mu = mu
+        self.delta = delta
+        self.field = field
+        self.alpha = alpha
 
         super().__init__(
             length=2**mu - 1,
@@ -96,15 +99,6 @@ class BCHCode(CyclicCode):
     def __repr__(self) -> str:
         args = f"mu={self.mu}, delta={self.delta}"
         return f"{self.__class__.__name__}({args})"
-
-    @cached_property
-    def field(self) -> FiniteBifield:
-        return FiniteBifield(self.mu)
-
-    @cached_property
-    def alpha(self) -> FiniteBifieldElement[FiniteBifield]:
-        # Since the default modulus is a primitive polynomial, alpha = X is a primitive element.
-        return self.field(0b10)
 
     def bch_syndrome(
         self, r_poly: BinaryPolynomial
