@@ -49,19 +49,19 @@ def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
     # For 'encode', last dimension of 'u' should be a multiple of the code dimension
     code.encode(np.zeros((3, 4, k)))  # Correct
     code.encode(np.zeros((3, 4, 2 * k)))  # Correct
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         code.encode(np.zeros((3, 4, k + 1)))  # Incorrect
 
     # For 'inverse_encode', last dimension of 'v' should be a multiple of the code length
     code.inverse_encode(np.zeros((3, 4, n)))  # Correct
     code.inverse_encode(np.zeros((3, 4, 2 * n)))  # Correct
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         code.inverse_encode(np.zeros((3, 4, n + 1)))  # Incorrect
 
     # For 'check', last dimension of 'r' should be a multiple of the code length
     code.check(np.zeros((3, 4, n)))  # Correct
     code.check(np.zeros((3, 4, 2 * n)))  # Correct
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         code.check(np.zeros((3, 4, n + 1)))  # Incorrect
 
 
@@ -69,6 +69,6 @@ def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
 def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect

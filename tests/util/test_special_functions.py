@@ -39,11 +39,11 @@ def test_gaussian_q_inv_array():
 
 
 def test_gaussian_q_inv_invalid_input():
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         komm.gaussian_q_inv(-1.0)
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         komm.gaussian_q_inv(2.0)
-    with np.testing.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         komm.gaussian_q_inv([[-1.0], [0.0], [1.0], [2.0]])
 
 
