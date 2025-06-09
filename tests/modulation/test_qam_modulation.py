@@ -6,7 +6,7 @@ from komm._modulation.labelings import cartesian_product
 
 
 def test_qam_constellations():
-    np.testing.assert_almost_equal(
+    np.testing.assert_allclose(
         komm.QAModulation(4).constellation,
         [
             -1.0 - 1.0j,
@@ -15,7 +15,7 @@ def test_qam_constellations():
             1.0 + 1.0j,
         ],
     )
-    np.testing.assert_almost_equal(
+    np.testing.assert_allclose(
         komm.QAModulation((4, 2)).constellation,
         [
             -3.0 - 1.0j,
@@ -28,7 +28,7 @@ def test_qam_constellations():
             3.0 + 1.0j,
         ],
     )
-    np.testing.assert_almost_equal(
+    np.testing.assert_allclose(
         komm.QAModulation(16).constellation,
         [
             -3.0 - 3.0j,
@@ -72,7 +72,7 @@ def test_qam_vs_pam(orders, base_amplitudes):
         pam_I.constellation.reshape(-1, 1), pam_Q.constellation.reshape(-1, 1)
     )
     qam_complex_1d = qam_real_2d[:, 0] + 1j * qam_real_2d[:, 1]
-    np.testing.assert_almost_equal(qam_complex_1d, qam.constellation)
+    np.testing.assert_allclose(qam_complex_1d, qam.constellation)
 
     qam_doc_formula = []
     for i in range(M_I * M_Q):
@@ -80,7 +80,7 @@ def test_qam_vs_pam(orders, base_amplitudes):
         qam_doc_formula.append(
             A_I * (2 * i_I - M_I + 1) + 1j * A_Q * (2 * i_Q - M_Q + 1)
         )
-    np.testing.assert_almost_equal(qam_doc_formula, qam.constellation)
+    np.testing.assert_allclose(qam_doc_formula, qam.constellation)
 
 
 def test_qam_invalid():

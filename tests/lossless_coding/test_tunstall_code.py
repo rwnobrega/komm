@@ -47,7 +47,7 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
         # Permute pmf and check if the rate is the same.
         pmf1 = pmf[np.random.permutation(source_cardinality)]
         code1 = komm.TunstallCode(pmf1, target_block_size)
-        np.testing.assert_almost_equal(code.rate(pmf), code1.rate(pmf1))
+        np.testing.assert_allclose(code.rate(pmf), code1.rate(pmf1))
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))

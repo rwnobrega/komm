@@ -9,25 +9,26 @@ import komm
 def test_zadoff_chu_andrews():
     # Andrews.22, Sec. III, Example 1
     s_1 = komm.ZadoffChuSequence(5, root_index=1).sequence
-    np.testing.assert_array_almost_equal(
+    np.testing.assert_allclose(
         s_1,
         # fmt: off
         [1.0, np.exp(-2j * np.pi / 5), np.exp(-6j * np.pi / 5), np.exp(-2j * np.pi / 5), 1.0],
         # fmt: on
     )
-    np.testing.assert_array_almost_equal(
+    np.testing.assert_allclose(
         np.roll(s_1, -2),
         # fmt: off
         [np.exp(-6j * np.pi / 5), np.exp(-2j * np.pi / 5), 1.0, 1.0, np.exp(-2j * np.pi / 5)],
         # fmt: on
     )
-    np.testing.assert_array_almost_equal(
+    np.testing.assert_allclose(
         np.vdot(s_1, np.roll(s_1, -2)),
         0.0,
+        atol=1e-12,
     )
 
     s_4 = komm.ZadoffChuSequence(5, root_index=4).sequence
-    np.testing.assert_array_almost_equal(
+    np.testing.assert_allclose(
         s_4,
         # fmt: off
         [1.0, np.exp(2j * np.pi / 5), np.exp(-4j * np.pi / 5), np.exp(2j * np.pi / 5), 1.0],
@@ -35,7 +36,7 @@ def test_zadoff_chu_andrews():
     )
 
     for shift in range(5):
-        np.testing.assert_array_almost_equal(
+        np.testing.assert_allclose(
             np.abs(np.vdot(s_1, np.roll(s_4, shift))),
             np.sqrt(5),
         )
@@ -45,7 +46,7 @@ def test_zadoff_chu_andrews():
 def test_zadoff_chu_constant_amplitude(length):
     for q in range(1, length):
         zc = komm.ZadoffChuSequence(length, root_index=q)
-        np.testing.assert_array_almost_equal(np.abs(zc.sequence), 1.0)
+        np.testing.assert_allclose(np.abs(zc.sequence), 1.0)
 
 
 @pytest.mark.parametrize("length", range(1, 40, 2))
@@ -56,9 +57,10 @@ def test_zadoff_chu_zero_cyclic_acorr(length):
         zc = komm.ZadoffChuSequence(length, root_index=q)
         expected_acorr = np.zeros(length)
         expected_acorr[0] = 1.0
-        np.testing.assert_array_almost_equal(
+        np.testing.assert_allclose(
             zc.cyclic_autocorrelation(normalized=True),
             expected_acorr,
+            atol=1e-12,
         )
 
 
@@ -70,7 +72,7 @@ def test_zadoff_chu_constant_cyclic_xcorr(length):
         zc1 = komm.ZadoffChuSequence(length, root_index=q1)
         zc2 = komm.ZadoffChuSequence(length, root_index=q2)
         for shift in range(length):
-            np.testing.assert_array_almost_equal(
+            np.testing.assert_allclose(
                 np.abs(np.vdot(zc1.sequence, np.roll(zc2.sequence, shift))),
                 np.sqrt(length),
             )

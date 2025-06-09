@@ -47,15 +47,15 @@ def mod(request: pytest.FixtureRequest):
 
 def test_modulation_equivalence_properties(mod: komm.abc.Modulation):
     ref = komm.Modulation(mod.constellation, mod.labeling)
-    np.testing.assert_almost_equal(ref.constellation, mod.constellation)
+    np.testing.assert_allclose(ref.constellation, mod.constellation)
     np.testing.assert_equal(ref.labeling, mod.labeling)
     np.testing.assert_equal(ref.inverse_labeling, mod.inverse_labeling)
     np.testing.assert_equal(ref.order, mod.order)
-    np.testing.assert_almost_equal(ref.bits_per_symbol, mod.bits_per_symbol)
-    np.testing.assert_almost_equal(ref.energy_per_symbol, mod.energy_per_symbol)
-    np.testing.assert_almost_equal(ref.energy_per_bit, mod.energy_per_bit)
-    np.testing.assert_almost_equal(ref.symbol_mean, mod.symbol_mean)
-    np.testing.assert_almost_equal(ref.minimum_distance, mod.minimum_distance)
+    np.testing.assert_allclose(ref.bits_per_symbol, mod.bits_per_symbol)
+    np.testing.assert_allclose(ref.energy_per_symbol, mod.energy_per_symbol)
+    np.testing.assert_allclose(ref.energy_per_bit, mod.energy_per_bit)
+    np.testing.assert_allclose(ref.symbol_mean, mod.symbol_mean, atol=1e-12)
+    np.testing.assert_allclose(ref.minimum_distance, mod.minimum_distance)
 
 
 @pytest.mark.parametrize("snr", [0.3, 1.0, 3.0, 10.0], ids=lambda x: f"snr={x}")
@@ -67,15 +67,15 @@ def test_equivalence_modulate_demodulate(mod: komm.abc.Modulation, snr):
     received = channel(symbols)
 
     symbols1 = ref.modulate(bits)
-    np.testing.assert_array_almost_equal(symbols, symbols1)
+    np.testing.assert_allclose(symbols, symbols1)
 
     demodulated_hard = mod.demodulate_hard(received)
     demodulated_hard1 = ref.demodulate_hard(received)
-    np.testing.assert_array_almost_equal(demodulated_hard, demodulated_hard1)
+    np.testing.assert_allclose(demodulated_hard, demodulated_hard1)
 
     demodulated_soft = mod.demodulate_soft(received, snr)
     demodulated_soft1 = ref.demodulate_soft(received, snr)
-    np.testing.assert_array_almost_equal(demodulated_soft, demodulated_soft1)
+    np.testing.assert_allclose(demodulated_soft, demodulated_soft1, atol=1e-12)
 
 
 def test_modulation_high_snr(mod: komm.abc.Modulation):
