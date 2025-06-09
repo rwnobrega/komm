@@ -50,8 +50,8 @@ def test_terminated_convolutional_code_parameters(
     (n, k, m) = (code.length, code.dimension, code.redundancy)
     (G, H) = code.generator_matrix, code.check_matrix
     assert (n, k, m) == parameters
-    np.testing.assert_array_equal(G, generator_matrix)
-    np.testing.assert_array_equal(G @ H.T % 2, np.zeros((k, m), dtype=int))
+    np.testing.assert_equal(G, generator_matrix)
+    np.testing.assert_equal(G @ H.T % 2, np.zeros((k, m), dtype=int))
     assert code.minimum_distance() == min_distance
 
 
@@ -94,7 +94,7 @@ def test_terminated_convolutional_code_tail_biting_lin_costello(
     convolutional_code = komm.ConvolutionalCode(*convolutional_args)
     code = komm.TerminatedConvolutionalCode(convolutional_code, *termination_args)
     assert (code.length, code.dimension, code.redundancy) == parameters
-    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_equal(code.generator_matrix, generator_matrix)
     assert code.minimum_distance() == min_distance
 
 
@@ -139,7 +139,7 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
     code2 = komm.BlockCode(generator_matrix=code.generator_matrix)
     for i in range(2**code.dimension):
         message = komm.int_to_bits(i, width=code.dimension)
-        np.testing.assert_array_equal(code.encode(message), code2.encode(message))
+        np.testing.assert_equal(code.encode(message), code2.encode(message))
 
 
 def test_terminated_convolutional_golay():
@@ -172,11 +172,11 @@ def test_terminated_convolutional_mappings(feedforward_polynomials, mode):
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
         v = code.encode(u)
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.inverse_encode(v),
             u,
         )
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.check(v),
             np.zeros((3, 4, m)),
         )

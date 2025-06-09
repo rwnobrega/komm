@@ -9,7 +9,7 @@ import komm
 @pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
 def test_walsh_hadamard_index_0(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=0)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         walsh_hadamard.polar_sequence,
         [1] * length,
     )
@@ -18,7 +18,7 @@ def test_walsh_hadamard_index_0(length):
 @pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
 def test_walsh_hadamard_index_1(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=1)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         walsh_hadamard.polar_sequence,
         [1, -1] * (length // 2),
     )
@@ -27,7 +27,7 @@ def test_walsh_hadamard_index_1(length):
 @pytest.mark.parametrize("length", (4, 8, 16, 32, 64))
 def test_walsh_hadamard_index_2(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=2)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         walsh_hadamard.polar_sequence,
         [1, 1, -1, -1] * (length // 4),
     )

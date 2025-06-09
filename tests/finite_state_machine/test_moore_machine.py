@@ -23,4 +23,4 @@ def test_moore_machine_halve(input, expected_output):
         outputs=[0, 0, 1, 1],
     )
     output, _ = machine.process(input, 0)
-    np.testing.assert_array_equal(output, expected_output)
+    np.testing.assert_equal(output, expected_output)

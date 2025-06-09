@@ -34,7 +34,7 @@ def test_lz78_literature(alphabet, message, dict_size, incomplete):
     message = [alphabet.index(char) for char in message]
     compressed = code.encode(message)
     assert len(compressed) == len_compressed(dict_size, len(alphabet), incomplete)
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.decode(compressed), message)
 
 
 def test_lz78_shor():
@@ -43,8 +43,8 @@ def test_lz78_shor():
     code = komm.LempelZiv78Code(2)
     message = [ord(char) - ord("A") for char in "AABABBBABAABABBBABBABB"]
     compressed = [int(char) for char in "01110100101001011100101100111"]
-    np.testing.assert_array_equal(code.encode(message), compressed)
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.encode(message), compressed)
+    np.testing.assert_equal(code.decode(compressed), message)
 
 
 @pytest.mark.parametrize(
@@ -69,8 +69,8 @@ def test_lz78_mackay(message, compressed):
     code = komm.LempelZiv78Code(2)
     message = [int(char) for char in message]
     compressed = [int(char) for char in compressed]
-    np.testing.assert_array_equal(code.encode(message), compressed)
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.encode(message), compressed)
+    np.testing.assert_equal(code.decode(compressed), message)
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 21))
@@ -83,16 +83,16 @@ def test_lz78_general(source_cardinality, target_cardinality):
     assert code.target_cardinality == target_cardinality
 
     # Encode and decode empty input
-    np.testing.assert_array_equal(code.encode([]), [])
-    np.testing.assert_array_equal(code.decode([]), [])
+    np.testing.assert_equal(code.encode([]), [])
+    np.testing.assert_equal(code.decode([]), [])
 
     # Single-symbol message
     for symbol in range(source_cardinality):
-        np.testing.assert_array_equal(code.decode(code.encode([symbol])), [symbol])
+        np.testing.assert_equal(code.decode(code.encode([symbol])), [symbol])
 
     # Random message
     message = np.random.randint(0, source_cardinality, 1000)
-    np.testing.assert_array_equal(code.decode(code.encode(message)), message)
+    np.testing.assert_equal(code.decode(code.encode(message)), message)
 
 
 @pytest.mark.parametrize("k", range(2, 13))
@@ -105,7 +105,7 @@ def test_lz78_zero_message(k):
     compressed = code.encode(message)
     assert len(message) == k * (k + 1) // 2
     assert len(compressed) == len_compressed(k, 2)
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.decode(compressed), message)
 
 
 @pytest.mark.parametrize("k", range(2, 13))
@@ -121,4 +121,4 @@ def test_lz78_worst_case(k):
     compressed = code.encode(message)
     assert len(message) == (k - 1) * 2 ** (k + 1) + 2
     assert len(compressed) == len_compressed(2 ** (k + 1) - 2, 2)
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.decode(compressed), message)

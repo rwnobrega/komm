@@ -6,7 +6,7 @@ import komm
 def test_exhaustive_search_hard():
     code = komm.HammingCode(3, extended=True)
     decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         decoder([
             [1, 1, 1, 1, 1, 1, 1, 0],
             [1, 1, 1, 1, 1, 1, 0, 1],
@@ -21,7 +21,7 @@ def test_exhaustive_search_hard():
 
     code = komm.SimplexCode(3)
     decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         decoder([
             [1, 0, 1, 1, 1, 1, 0],
             [0, 0, 0, 1, 0, 0, 0],
@@ -36,7 +36,7 @@ def test_exhaustive_search_hard():
 def test_exhaustive_search_soft():
     code = komm.HammingCode(3)
     decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         decoder([
             [-0.98, -0.85, 1.07, -0.78, 1.11, -0.95, -1.16],
             [-0.87, 1.11, -0.83, -0.95, 0.94, 1.07, 0.91],

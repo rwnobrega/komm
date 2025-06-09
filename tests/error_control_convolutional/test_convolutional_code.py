@@ -10,27 +10,27 @@ def test_convolutional_code_basic():
         feedforward_polynomials=[[0b1101, 0b1111]],
     )
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
-    np.testing.assert_array_equal(code.constraint_lengths, [3])
-    np.testing.assert_array_equal(code.memory_order, 3)
-    np.testing.assert_array_equal(code.degree, 3)
+    np.testing.assert_equal(code.constraint_lengths, [3])
+    np.testing.assert_equal(code.memory_order, 3)
+    np.testing.assert_equal(code.degree, 3)
 
     # Lin.Costello.04, p. 456--458.
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]],
     )
     assert (code.num_output_bits, code.num_input_bits) == (3, 2)
-    np.testing.assert_array_equal(code.constraint_lengths, [1, 1])
-    np.testing.assert_array_equal(code.memory_order, 1)
-    np.testing.assert_array_equal(code.degree, 2)
+    np.testing.assert_equal(code.constraint_lengths, [1, 1])
+    np.testing.assert_equal(code.memory_order, 1)
+    np.testing.assert_equal(code.degree, 2)
 
     # Ryan.Lin.09, p. 154.
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
-    np.testing.assert_array_equal(code.constraint_lengths, [2])
-    np.testing.assert_array_equal(code.memory_order, 2)
-    np.testing.assert_array_equal(code.degree, 2)
+    np.testing.assert_equal(code.constraint_lengths, [2])
+    np.testing.assert_equal(code.memory_order, 2)
+    np.testing.assert_equal(code.degree, 2)
 
     # Ibid.
     code = komm.ConvolutionalCode(
@@ -38,9 +38,9 @@ def test_convolutional_code_basic():
         feedback_polynomials=[0b111],
     )
     assert (code.num_output_bits, code.num_input_bits) == (2, 1)
-    np.testing.assert_array_equal(code.constraint_lengths, [2])
-    np.testing.assert_array_equal(code.memory_order, 2)
-    np.testing.assert_array_equal(code.degree, 2)
+    np.testing.assert_equal(code.constraint_lengths, [2])
+    np.testing.assert_equal(code.memory_order, 2)
+    np.testing.assert_equal(code.degree, 2)
 
 
 def test_convolutional_code_encode_books():
@@ -48,7 +48,7 @@ def test_convolutional_code_encode_books():
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([1, 0, 1, 1, 1, 0, 1, 1, 0, 0]),
         [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1],
     )
@@ -57,7 +57,7 @@ def test_convolutional_code_encode_books():
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b1101, 0b1111]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([1, 0, 1, 1, 1, 0, 0, 0]),
         [1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
     )
@@ -66,7 +66,7 @@ def test_convolutional_code_encode_books():
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([1, 1, 0, 1, 1, 0, 0, 0]),
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
     )
@@ -75,7 +75,7 @@ def test_convolutional_code_encode_books():
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([1, 0, 0, 0]),
         [1, 1, 1, 0, 1, 1, 0, 0],
     )
@@ -85,7 +85,7 @@ def test_convolutional_code_encode_books():
         feedforward_polynomials=[[0b111, 0b101]],
         feedback_polynomials=[0b111],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([1, 1, 1, 0]),
         [1, 1, 1, 0, 1, 1, 0, 0],
     )
@@ -126,30 +126,30 @@ def test_convolutional_code_encode_matlab(
     feedforward_polynomials, feedback_polynomials, message, codeword
 ):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
-    np.testing.assert_array_equal(code.encode(message), codeword)
+    np.testing.assert_equal(code.encode(message), codeword)
 
 
 def test_convolutional_code_state_space_representation():
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
-    np.testing.assert_array_equal(A_mat, [[0, 1], [0, 0]])
-    np.testing.assert_array_equal(B_mat, [[1, 0]])
-    np.testing.assert_array_equal(C_mat, [[1, 0], [1, 1]])
-    np.testing.assert_array_equal(D_mat, [[1, 1]])
+    np.testing.assert_equal(A_mat, [[0, 1], [0, 0]])
+    np.testing.assert_equal(B_mat, [[1, 0]])
+    np.testing.assert_equal(C_mat, [[1, 0], [1, 1]])
+    np.testing.assert_equal(D_mat, [[1, 1]])
 
     # Heide Gluesing-Luerssen: On the Weight Distribution of Convolutional Codes, p. 9.
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1111, 0b1101]])
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
-    np.testing.assert_array_equal(A_mat, [[0, 1, 0], [0, 0, 1], [0, 0, 0]])
-    np.testing.assert_array_equal(B_mat, [[1, 0, 0]])
-    np.testing.assert_array_equal(C_mat, [[1, 0], [1, 1], [1, 1]])
-    np.testing.assert_array_equal(D_mat, [[1, 1]])
+    np.testing.assert_equal(A_mat, [[0, 1, 0], [0, 0, 1], [0, 0, 0]])
+    np.testing.assert_equal(B_mat, [[1, 0, 0]])
+    np.testing.assert_equal(C_mat, [[1, 0], [1, 1], [1, 1]])
+    np.testing.assert_equal(D_mat, [[1, 1]])
 
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b11001, 0b10111, 0], [0, 0b1010, 0b1101]]
     )
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         A_mat,
         [
             [0, 1, 0, 0, 0, 0, 0],
@@ -161,14 +161,14 @@ def test_convolutional_code_state_space_representation():
             [0, 0, 0, 0, 0, 0, 0],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         B_mat,
         [
             [1, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         C_mat,
         [
             [0, 1, 0],
@@ -180,7 +180,7 @@ def test_convolutional_code_state_space_representation():
             [0, 1, 1],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         D_mat,
         [
             [1, 1, 0],
@@ -193,7 +193,7 @@ def test_convolutional_code_state_space_representation():
         feedback_polynomials=[0b10111],
     )
     A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         A_mat,
         [
             [1, 1, 0, 0],
@@ -202,13 +202,13 @@ def test_convolutional_code_state_space_representation():
             [1, 0, 0, 0],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         B_mat,
         [
             [1, 0, 0, 0],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         C_mat,
         [
             [0, 1],
@@ -217,7 +217,7 @@ def test_convolutional_code_state_space_representation():
             [0, 0],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         D_mat,
         [
             [1, 1],
@@ -246,7 +246,7 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
     output, _ = fsm.process(input, 0)
     v2 = komm.int_to_bits(output, width=n).ravel()
 
-    np.testing.assert_array_equal(v1, v2)
+    np.testing.assert_equal(v1, v2)
 
 
 @pytest.mark.parametrize(
@@ -313,7 +313,7 @@ def test_convolutional_code_free_distance_g_mcelice(
 ):
     # [McE98, p. 1086--1088]
     code = komm.ConvolutionalCode(feedforward_polynomials)
-    np.testing.assert_array_equal(code.constraint_lengths, forney_indices)
+    np.testing.assert_equal(code.constraint_lengths, forney_indices)
     assert code.is_catastrophic() is False
     assert code.free_distance() == free_distance
 

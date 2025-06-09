@@ -97,7 +97,7 @@ def test_pam_invalid():
 def test_pam_modulate(order, modulated):
     pam = komm.PAModulation(order)
     bits = [0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1]
-    np.testing.assert_array_equal(pam.modulate(bits), modulated)
+    np.testing.assert_equal(pam.modulate(bits), modulated)
 
 
 @pytest.mark.parametrize(

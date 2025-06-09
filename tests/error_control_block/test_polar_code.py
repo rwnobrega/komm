@@ -26,11 +26,11 @@ def test_polar_code_encode():
     Q1 = [1, 2, 3, 5, 9, 4, 6, 10, 7, 11, 13, 8, 12, 14, 15, 16]
     frozen = np.array(Q1[:8]) - 1  # 0-indexed
     active = np.array(Q1[8:]) - 1  # 0-indexed
-    np.testing.assert_array_equal(frozen, [0, 1, 2, 4, 8, 3, 5, 9])
-    np.testing.assert_array_equal(active, [6, 10, 12, 7, 11, 13, 14, 15])
+    np.testing.assert_equal(frozen, [0, 1, 2, 4, 8, 3, 5, 9])
+    np.testing.assert_equal(active, [6, 10, 12, 7, 11, 13, 14, 15])
     code = komm.PolarCode(4, frozen)
     # https://youtu.be/9b2z6bua0xY?t=885 - msg = 1 1 0 1 1 0 0 1
     u = [1, 1, 1, 1, 0, 0, 0, 1]  # reordered according to 'active'
     # https://youtu.be/9b2z6bua0xY?t=1196 - video calls the codeword "u"
     v = [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1]
-    np.testing.assert_array_equal(code.encode(u), v)
+    np.testing.assert_equal(code.encode(u), v)

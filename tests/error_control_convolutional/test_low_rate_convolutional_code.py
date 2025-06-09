@@ -59,7 +59,7 @@ def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance):
     # Test against general class
     feedforward_polynomials = [g_row]
     code1 = komm.ConvolutionalCode(feedforward_polynomials)
-    np.testing.assert_array_equal(code.generator_matrix(), code1.generator_matrix())
+    np.testing.assert_equal(code.generator_matrix(), code1.generator_matrix())
     for _ in range(100):
         input = np.random.randint(0, 2, size=50)
-        np.testing.assert_array_equal(code.encode(input), code1.encode(input))
+        np.testing.assert_equal(code.encode(input), code1.encode(input))

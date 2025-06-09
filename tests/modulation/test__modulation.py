@@ -82,19 +82,19 @@ def test_modulation_high_snr(mod: komm.abc.Modulation):
     ref = komm.Modulation(mod.constellation, mod.labeling)
     bits = np.random.randint(0, 2, size=100 * mod.bits_per_symbol, dtype=int)
     symbols = mod.modulate(bits)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         mod.demodulate_hard(symbols),
         bits,
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         ref.demodulate_hard(symbols),
         bits,
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         (mod.demodulate_soft(symbols, snr=1e4) < 0).astype(int),
         bits,
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         (ref.demodulate_soft(symbols, snr=1e4) < 0).astype(int),
         bits,
     )

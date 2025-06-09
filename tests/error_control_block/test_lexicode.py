@@ -17,13 +17,13 @@ def test_lexicode_hamming74():
         [0, 1, 0, 1, 0, 1, 0],
         [1, 0, 0, 1, 0, 1, 1],
     ]
-    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_equal(code.generator_matrix, generator_matrix)
     check_matrix = [
         [1, 1, 1, 1, 0, 0, 0],
         [1, 1, 0, 0, 1, 1, 0],
         [1, 0, 1, 0, 1, 0, 1],
     ]
-    np.testing.assert_array_equal(code.check_matrix, check_matrix)
+    np.testing.assert_equal(code.check_matrix, check_matrix)
 
 
 def test_lexicode_wikipedia():

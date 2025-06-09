@@ -23,15 +23,15 @@ def test_mappings_array_input(code: komm.abc.BlockCode):
     # Single sequence with two codewords
     u = np.concatenate([u1, u2])
     v = np.concatenate([v1, v2])
-    np.testing.assert_array_equal(code.encode(u), v)
-    np.testing.assert_array_equal(code.inverse_encode(v), u)
-    np.testing.assert_array_equal(code.check(v), np.zeros(2 * code.redundancy))
+    np.testing.assert_equal(code.encode(u), v)
+    np.testing.assert_equal(code.inverse_encode(v), u)
+    np.testing.assert_equal(code.check(v), np.zeros(2 * code.redundancy))
     # 2D array of single codewords
     u = np.array([u1, u2])
     v = np.array([v1, v2])
-    np.testing.assert_array_equal(code.encode(u), v)
-    np.testing.assert_array_equal(code.inverse_encode(v), u)
-    np.testing.assert_array_equal(code.check(v), np.zeros((2, code.redundancy)))
+    np.testing.assert_equal(code.encode(u), v)
+    np.testing.assert_equal(code.inverse_encode(v), u)
+    np.testing.assert_equal(code.check(v), np.zeros((2, code.redundancy)))
 
 
 @pytest.mark.parametrize("code", codes)
@@ -39,7 +39,7 @@ def test_mappings_array_input(code: komm.abc.BlockCode):
 def test_mappings_inverses(code: komm.abc.BlockCode):
     # Check that 'inverse_encode' is the inverse of 'encode'
     u = np.random.randint(0, 2, (3, 4, code.dimension))
-    np.testing.assert_array_equal(u, code.inverse_encode(code.encode(u)))
+    np.testing.assert_equal(u, code.inverse_encode(code.encode(u)))
 
 
 @pytest.mark.parametrize("code", codes)

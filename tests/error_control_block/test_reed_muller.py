@@ -13,7 +13,7 @@ def test_reed_muller_code_2_4_parameters():
 
 def test_reed_muller_code_2_4_generator_matrix():
     code = komm.ReedMullerCode(2, 4)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.generator_matrix,
         [
             komm.int_to_bits(i, width=16)
@@ -26,11 +26,11 @@ def test_reed_muller_code_2_4_generator_matrix():
 
 def test_reed_muller_code_2_4_weight_distributions():
     code = komm.ReedMullerCode(2, 4)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.codeword_weight_distribution(),
         [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.coset_leader_weight_distribution(),
         [1, 16, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     )
@@ -38,7 +38,7 @@ def test_reed_muller_code_2_4_weight_distributions():
 
 def test_reed_muller_code_2_4_GH_orthogonality():
     code = komm.ReedMullerCode(2, 4)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         np.dot(code.generator_matrix, code.check_matrix.T) % 2,
         np.zeros((code.dimension, code.redundancy), dtype=int),
     )
@@ -47,15 +47,15 @@ def test_reed_muller_code_2_4_GH_orthogonality():
 def test_reed_muller_code_2_4_reed_partitions():
     code = komm.ReedMullerCode(2, 4)
     reed_partitions = code.reed_partitions()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         reed_partitions[0],
         [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         reed_partitions[1],
         [[0, 1, 4, 5], [2, 3, 6, 7], [8, 9, 12, 13], [10, 11, 14, 15]],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         reed_partitions[8],
         [[0, 4], [1, 5], [2, 6], [3, 7], [8, 12], [9, 13], [10, 14], [11, 15]],
     )
@@ -63,7 +63,7 @@ def test_reed_muller_code_2_4_reed_partitions():
 
 def test_reed_muller_code_2_4_encoder():
     code = komm.ReedMullerCode(1, 5)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.encode([0, 0, 0, 0, 0, 1]),
         np.ones(32, dtype=int),
     )

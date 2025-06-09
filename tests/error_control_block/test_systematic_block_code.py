@@ -51,14 +51,12 @@ def test_systematic_block_code():
     np.testing.assert_equal(code.redundancy, 4)
     np.testing.assert_equal(code.rate, 1 / 3)
     np.testing.assert_equal(code.minimum_distance(), 4)
-    np.testing.assert_array_equal(code.generator_matrix, generator_matrix)
-    np.testing.assert_array_equal(code.check_matrix, check_matrix)
-    np.testing.assert_array_equal(code.codewords(), codewords)
-    np.testing.assert_array_equal(
-        code.codeword_weight_distribution(), [1, 0, 0, 0, 3, 0, 0]
-    )
-    np.testing.assert_array_equal(code.coset_leaders(), coset_leaders)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_equal(code.check_matrix, check_matrix)
+    np.testing.assert_equal(code.codewords(), codewords)
+    np.testing.assert_equal(code.codeword_weight_distribution(), [1, 0, 0, 0, 3, 0, 0])
+    np.testing.assert_equal(code.coset_leaders(), coset_leaders)
+    np.testing.assert_equal(
         code.coset_leader_weight_distribution(), [1, 6, 7, 2, 0, 0, 0]
     )
     np.testing.assert_equal(code.packing_radius(), 1)
@@ -72,11 +70,11 @@ def test_systematic_block_code_mappings():
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
         v = code.encode(u)
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.inverse_encode(v),
             u,
         )
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.check(v),
             np.zeros((3, 4, m)),
         )

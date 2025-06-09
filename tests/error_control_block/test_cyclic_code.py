@@ -23,8 +23,8 @@ def test_cyclic_code_non_systematic_encode():
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=False)
     u = [1, 0, 1, 0]
     v = [1, 1, 1, 0, 0, 1, 0]
-    np.testing.assert_array_equal(code.encode(u), v)
-    np.testing.assert_array_equal(code.inverse_encode(v), u)
+    np.testing.assert_equal(code.encode(u), v)
+    np.testing.assert_equal(code.inverse_encode(v), u)
 
 
 def test_cyclic_code_systematic_encode():
@@ -32,14 +32,14 @@ def test_cyclic_code_systematic_encode():
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=True)
     u = [1, 0, 0, 1]
     v = [0, 1, 1, 1, 0, 0, 1]
-    np.testing.assert_array_equal(code.encode(u), v)
-    np.testing.assert_array_equal(code.inverse_encode(v), u)
+    np.testing.assert_equal(code.encode(u), v)
+    np.testing.assert_equal(code.inverse_encode(v), u)
 
 
 def test_cyclic_code_matrices_haykin():
     # Hamming (7,4) - [Hay04, Example 10.3]
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=False)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.generator_matrix,
         [
             [1, 1, 0, 1, 0, 0, 0],
@@ -48,7 +48,7 @@ def test_cyclic_code_matrices_haykin():
             [0, 0, 0, 1, 1, 0, 1],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.check_matrix,
         [
             [1, 0, 1, 1, 1, 0, 0],
@@ -57,7 +57,7 @@ def test_cyclic_code_matrices_haykin():
         ],
     )
     code = komm.CyclicCode(length=7, generator_polynomial=0b1011, systematic=True)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.generator_matrix,
         [
             [1, 1, 0, 1, 0, 0, 0],
@@ -66,7 +66,7 @@ def test_cyclic_code_matrices_haykin():
             [1, 0, 1, 0, 0, 0, 1],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.check_matrix,
         [
             [1, 0, 0, 1, 0, 1, 1],
@@ -79,7 +79,7 @@ def test_cyclic_code_matrices_haykin():
 def test_cyclic_code_matrices_mceliece():
     # Simplex (7,3) - [McE04, Example 8.7]
     code = komm.CyclicCode(length=7, generator_polynomial=0b11101, systematic=False)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.generator_matrix,
         [
             [1, 0, 1, 1, 1, 0, 0],
@@ -87,7 +87,7 @@ def test_cyclic_code_matrices_mceliece():
             [0, 0, 1, 0, 1, 1, 1],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.check_matrix,
         [
             [1, 1, 0, 1, 0, 0, 0],
@@ -97,7 +97,7 @@ def test_cyclic_code_matrices_mceliece():
         ],
     )
     code = komm.CyclicCode(length=7, generator_polynomial=0b11101, systematic=True)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.generator_matrix,
         [
             [1, 0, 1, 1, 1, 0, 0],
@@ -105,7 +105,7 @@ def test_cyclic_code_matrices_mceliece():
             [0, 1, 1, 1, 0, 0, 1],
         ],
     )
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.check_matrix,
         [
             [1, 0, 0, 0, 1, 1, 0],
@@ -121,19 +121,19 @@ def test_cyclic_code_check():
     code = komm.CyclicCode(length=7, check_polynomial=0b10111, systematic=True)
     r = [0, 0, 1, 0, 1, 1, 0]
     s = [1, 0, 1]
-    np.testing.assert_array_equal(code.check(r), s)
+    np.testing.assert_equal(code.check(r), s)
 
 
 def test_cyclic_code_syndrome():
     # [LC04, Example 5.9]
     code = komm.CyclicCode(length=7, check_polynomial=0b10111, systematic=True)
-    np.testing.assert_array_equal(code.check([0, 0, 0, 0, 0, 0, 1]), [1, 0, 1])
-    np.testing.assert_array_equal(code.check([0, 0, 0, 0, 0, 1, 0]), [1, 1, 1])
-    np.testing.assert_array_equal(code.check([0, 0, 0, 0, 1, 0, 0]), [0, 1, 1])
-    np.testing.assert_array_equal(code.check([0, 0, 0, 1, 0, 0, 0]), [1, 1, 0])
-    np.testing.assert_array_equal(code.check([0, 0, 1, 0, 0, 0, 0]), [0, 0, 1])
-    np.testing.assert_array_equal(code.check([0, 1, 0, 0, 0, 0, 0]), [0, 1, 0])
-    np.testing.assert_array_equal(code.check([1, 0, 0, 0, 0, 0, 0]), [1, 0, 0])
+    np.testing.assert_equal(code.check([0, 0, 0, 0, 0, 0, 1]), [1, 0, 1])
+    np.testing.assert_equal(code.check([0, 0, 0, 0, 0, 1, 0]), [1, 1, 1])
+    np.testing.assert_equal(code.check([0, 0, 0, 0, 1, 0, 0]), [0, 1, 1])
+    np.testing.assert_equal(code.check([0, 0, 0, 1, 0, 0, 0]), [1, 1, 0])
+    np.testing.assert_equal(code.check([0, 0, 1, 0, 0, 0, 0]), [0, 0, 1])
+    np.testing.assert_equal(code.check([0, 1, 0, 0, 0, 0, 0]), [0, 1, 0])
+    np.testing.assert_equal(code.check([1, 0, 0, 0, 0, 0, 0]), [1, 0, 0])
 
 
 @pytest.mark.parametrize(
@@ -152,11 +152,11 @@ def test_cyclic_code_mappings(length, check_polynomial, systematic):
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
         v = code.encode(u)
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.inverse_encode(v),
             u,
         )
-        np.testing.assert_array_equal(
+        np.testing.assert_equal(
             code.check(v),
             np.zeros((3, 4, m)),
         )

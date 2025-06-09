@@ -99,7 +99,7 @@ def test_binary_polynomial_evaluation():
 def test_binary_polynomial_reciprocal():
     poly = komm.BinaryPolynomial(0b10100110111)
     assert poly.reciprocal() == komm.BinaryPolynomial(0b11101100101)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         poly.reciprocal().coefficients(),
         poly.coefficients()[::-1],
     )

@@ -23,7 +23,7 @@ def test_lzw_wikipedia():
         int(char)
         for char in "101000111100010001010111110010001110001111010100011011011101011111100100011110100000100010000000"
     ]
-    np.testing.assert_array_equal(code.encode(message), compressed)
+    np.testing.assert_equal(code.encode(message), compressed)
 
 
 @pytest.mark.parametrize(
@@ -44,7 +44,7 @@ def test_lzw_literature(alphabet, message, dict_size):
     message = [alphabet.index(char) for char in message]
     compressed = code.encode(message)
     assert len(compressed) == len_compressed(dict_size, len(alphabet))
-    np.testing.assert_array_equal(code.decode(compressed), message)
+    np.testing.assert_equal(code.decode(compressed), message)
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 21))
@@ -57,13 +57,13 @@ def test_lzw_encode_decode(source_cardinality, target_cardinality):
     assert code.target_cardinality == target_cardinality
 
     # Encode and decode empty input
-    np.testing.assert_array_equal(code.encode([]), [])
-    np.testing.assert_array_equal(code.decode([]), [])
+    np.testing.assert_equal(code.encode([]), [])
+    np.testing.assert_equal(code.decode([]), [])
 
     # Single-symbol message
     for symbol in range(source_cardinality):
-        np.testing.assert_array_equal(code.decode(code.encode([symbol])), [symbol])
+        np.testing.assert_equal(code.decode(code.encode([symbol])), [symbol])
 
     # Random message
     message = np.random.randint(0, source_cardinality, 1000)
-    np.testing.assert_array_equal(code.decode(code.encode(message)), message)
+    np.testing.assert_equal(code.decode(code.encode(message)), message)

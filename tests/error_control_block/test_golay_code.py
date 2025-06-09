@@ -13,7 +13,7 @@ def test_golay_code_parameters():
 
 def test_golay_code_codeword_weight_distribution():
     code = komm.GolayCode()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.codeword_weight_distribution(),
         # fmt: off
         [1, 0, 0, 0, 0, 0, 0, 253, 506, 0, 0, 1288, 1288, 0, 0, 506, 253, 0, 0, 0, 0, 0, 0, 1],
@@ -23,7 +23,7 @@ def test_golay_code_codeword_weight_distribution():
 
 def test_golay_code_coset_leader_weight_distribution():
     code = komm.GolayCode()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.coset_leader_weight_distribution(),
         # fmt: off
         [1, 23, 253, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -33,7 +33,7 @@ def test_golay_code_coset_leader_weight_distribution():
 
 def test_golay_code_GH_orthogonality():
     code = komm.GolayCode()
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         np.dot(code.generator_matrix, code.check_matrix.T) % 2,
         np.zeros((code.dimension, code.redundancy), dtype=int),
     )
@@ -52,7 +52,7 @@ def test_extended_golay_code_parameters():
 
 def test_extended_golay_code_codeword_weight_distribution():
     code = komm.GolayCode(extended=True)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.codeword_weight_distribution(),
         # fmt: off
         [1, 0, 0, 0, 0, 0, 0, 0, 759, 0, 0, 0, 2576, 0, 0, 0, 759, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -62,7 +62,7 @@ def test_extended_golay_code_codeword_weight_distribution():
 
 def test_extended_golay_code_coset_leader_weight_distribution():
     code = komm.GolayCode(extended=True)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         code.coset_leader_weight_distribution(),
         # fmt: off
         [1, 24, 276, 2024, 1771, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -72,7 +72,7 @@ def test_extended_golay_code_coset_leader_weight_distribution():
 
 def test_extended_golay_code_GH_orthogonality():
     code = komm.GolayCode(extended=True)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         np.dot(code.generator_matrix, code.check_matrix.T) % 2,
         np.zeros((code.dimension, code.redundancy), dtype=int),
     )

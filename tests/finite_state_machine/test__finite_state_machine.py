@@ -28,7 +28,7 @@ def test_finite_state_machine_ami(input, expected_output):
         outputs=[[0, 1], [0, 2]],
     )
     output, _ = mealy_machine.process(input, 0)
-    np.testing.assert_array_equal(output, expected_output)
+    np.testing.assert_equal(output, expected_output)
 
     # Moore machine:
     # states: 0 -> output  0, last bit 1 was -1
@@ -40,4 +40,4 @@ def test_finite_state_machine_ami(input, expected_output):
         outputs=[0, 1, 0, 2],
     )
     output, _ = moore_machine.process(input, 0)
-    np.testing.assert_array_equal(output, expected_output)
+    np.testing.assert_equal(output, expected_output)

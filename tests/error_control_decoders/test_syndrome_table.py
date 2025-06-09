@@ -6,7 +6,7 @@ import komm
 def test_syndrome_table_hamming():
     code = komm.HammingCode(3)
     decoder = komm.SyndromeTableDecoder(code)
-    np.testing.assert_array_equal(
+    np.testing.assert_equal(
         decoder([
             [0, 0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1, 1],

@@ -43,21 +43,21 @@ from komm._util.matrices import invariant_factors, pseudo_inverse, rank, rref, x
     ],
 )
 def test_rref_basic(matrix, expected):
-    np.testing.assert_array_equal(rref(matrix), expected)
+    np.testing.assert_equal(rref(matrix), expected)
 
 
 @pytest.mark.parametrize("size", range(1, 11))
 def test_rref_zero_matrix(size):
     matrix = np.zeros((size, size), dtype=int)
     expected = np.zeros((size, size), dtype=int)
-    np.testing.assert_array_equal(rref(matrix), expected)
+    np.testing.assert_equal(rref(matrix), expected)
 
 
 @pytest.mark.parametrize("size", range(1, 11))
 def test_rref_identity(size):
     matrix = np.eye(size, dtype=int)
     expected = np.eye(size, dtype=int)
-    np.testing.assert_array_equal(rref(matrix), expected)
+    np.testing.assert_equal(rref(matrix), expected)
 
 
 @pytest.mark.parametrize("size", range(1, 11))
@@ -104,7 +104,7 @@ def test_xrref_random(n_rows, n_cols):
     for _ in range(100):
         matrix = np.random.randint(0, 2, size=(n_rows, n_cols))
         row_transform, reduced, _ = xrref(matrix)
-        np.testing.assert_array_equal(np.dot(row_transform, matrix) % 2, reduced)
+        np.testing.assert_equal(np.dot(row_transform, matrix) % 2, reduced)
 
 
 @pytest.mark.parametrize("n_rows", range(1, 6))
@@ -115,14 +115,14 @@ def test_pseudo_inverse_random(n_rows, n_cols):
         p_inv = pseudo_inverse(matrix)
         assert p_inv.shape == (n_cols, n_rows)
         assert rank(matrix) == rank(p_inv)
-        np.testing.assert_array_equal((matrix @ p_inv @ matrix) % 2, matrix)
-        np.testing.assert_array_equal((p_inv @ matrix @ p_inv) % 2, p_inv)
+        np.testing.assert_equal((matrix @ p_inv @ matrix) % 2, matrix)
+        np.testing.assert_equal((p_inv @ matrix @ p_inv) % 2, p_inv)
         if rank(matrix) == n_rows:
             eye = np.eye(n_rows, dtype=int)
-            np.testing.assert_array_equal((matrix @ p_inv) % 2, eye)
+            np.testing.assert_equal((matrix @ p_inv) % 2, eye)
         if rank(matrix) == n_cols:
             eye = np.eye(n_cols, dtype=int)
-            np.testing.assert_array_equal((p_inv @ matrix) % 2, eye)
+            np.testing.assert_equal((p_inv @ matrix) % 2, eye)
 
 
 @pytest.mark.parametrize(

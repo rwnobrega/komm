@@ -8,7 +8,7 @@ import komm.abc
 def test_awgn_vectorized_input():
     awgn = komm.AWGNChannel(signal_power=5.0, snr=np.inf)  # noiseless
     x = np.random.randn(3, 4, 5)
-    np.testing.assert_array_equal(x, awgn(x))
+    np.testing.assert_equal(x, awgn(x))
 
 
 @pytest.mark.parametrize(
