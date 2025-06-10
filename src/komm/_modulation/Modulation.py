@@ -1,10 +1,11 @@
 from functools import cached_property
-from typing import TypeVar
+from typing import TypeVar, cast
 
 import numpy as np
 import numpy.typing as npt
 
 from . import base
+from .labelings import Labeling
 
 T = TypeVar("T", np.floating, np.complexfloating)
 
@@ -74,7 +75,7 @@ class Modulation(base.Modulation[T]):
 
     def __init__(self, constellation: npt.ArrayLike, labeling: npt.ArrayLike) -> None:
         self._constellation = np.asarray(constellation)
-        self._labeling = np.asarray(labeling)
+        self._labeling = cast(Labeling, np.asarray(labeling))
         super()._validate_parameters()
 
     def __repr__(self) -> str:
@@ -98,7 +99,7 @@ class Modulation(base.Modulation[T]):
         return self._constellation
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> modulation = komm.Modulation(

@@ -123,7 +123,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         )
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> qam = komm.QAModulation(16)

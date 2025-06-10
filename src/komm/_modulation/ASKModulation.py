@@ -98,7 +98,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         return constellation_ask(self._order, self._base_amplitude, self._phase_offset)
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> ask = komm.ASKModulation(4)

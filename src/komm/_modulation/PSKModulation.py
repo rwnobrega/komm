@@ -103,7 +103,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         return constellation_psk(self._order, self._amplitude, self._phase_offset)
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> psk = komm.PSKModulation(4)

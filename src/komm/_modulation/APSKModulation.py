@@ -122,7 +122,7 @@ class APSKModulation(base.Modulation[np.complexfloating]):
         return constellation_apsk(self._orders, self._amplitudes, self._phase_offsets)
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> apsk = komm.APSKModulation(orders=(4, 4), amplitudes=(1.0, 2.0))

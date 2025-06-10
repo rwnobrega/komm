@@ -94,7 +94,7 @@ class PAModulation(base.Modulation[np.floating]):
         return constellation_pam(self._order, self._base_amplitude)
 
     @cached_property
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         Examples:
             >>> pam = komm.PAModulation(4)

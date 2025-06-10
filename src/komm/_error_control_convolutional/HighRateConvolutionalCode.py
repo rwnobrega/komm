@@ -123,7 +123,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         return A_mat, B_mat, C_mat, D_mat
 
     @cache
-    def generator_matrix(self) -> npt.NDArray[np.object_]:
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
         r"""
         For a high-rate convolutional code with check row
         $$
