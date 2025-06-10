@@ -1,6 +1,7 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from functools import cached_property
-from typing import Any, TypedDict, TypeVar
+from itertools import product
+from typing import Any, TypedDict
 
 import numpy as np
 import numpy.typing as npt
@@ -9,10 +10,6 @@ import numpy.typing as npt
 class MetricMemory(TypedDict):
     paths: npt.NDArray[np.integer]
     metrics: npt.NDArray[np.floating]
-
-
-Z = TypeVar("Z")
-MetricFunction = Callable[[int, Z], float]
 
 
 class MealyMachine:
@@ -192,8 +189,8 @@ class MealyMachine:
 
     def viterbi(
         self,
-        observed: Sequence[Z] | npt.NDArray[Any],
-        metric_function: MetricFunction[Z],
+        observed: npt.ArrayLike,
+        metric_function: Callable[[int, Any], float],
         initial_metrics: npt.ArrayLike | None = None,
     ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.floating]]:
         r"""
@@ -211,7 +208,8 @@ class MealyMachine:
 
             final_metrics: The final metrics for each state. It is a 1D-array of length $|\mathcal{S}|$.
         """
-        L, num_states = len(observed), self.num_states
+        observed = np.asarray(observed)
+        L, num_states = observed.shape[0], self.num_states
         choices = np.zeros((L, num_states), dtype=int)
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
         if initial_metrics is None:
@@ -239,8 +237,8 @@ class MealyMachine:
 
     def viterbi_streaming(
         self,
-        observed: Sequence[Z] | npt.NDArray[Any],
-        metric_function: MetricFunction[Z],
+        observed: npt.ArrayLike,
+        metric_function: Callable[[int, Any], float],
         memory: MetricMemory,
     ) -> npt.NDArray[np.integer]:
         r"""
@@ -256,8 +254,9 @@ class MealyMachine:
         Returns:
             input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$
         """
-        num_states = self.num_states
-        input_hat = np.empty(len(observed), dtype=int)
+        observed = np.asarray(observed)
+        L, num_states = observed.shape[0], self.num_states
+        input_hat = np.empty(L, dtype=int)
         for t, z in enumerate(observed):
             new_metrics = np.full(num_states, fill_value=np.inf)
             choices = np.zeros(num_states, dtype=int)
@@ -285,8 +284,8 @@ class MealyMachine:
 
     def forward_backward(
         self,
-        observed: Sequence[Z] | npt.NDArray[Any],
-        metric_function: MetricFunction[Z],
+        observed: npt.ArrayLike,
+        metric_function: Callable[[int, Any], float],
         input_priors: npt.ArrayLike | None = None,
         initial_state_distribution: npt.ArrayLike | None = None,
         final_state_distribution: npt.ArrayLike | None = None,
@@ -308,11 +307,9 @@ class MealyMachine:
         Returns:
             input_posteriors: The posterior pmf of each input, given the observed sequence, of shape $L \times |\mathcal{X}|$. The element in row $t \in [0 : L)$ and column $x \in \mathcal{X}$ is $p(x_t = x \mid z)$.
         """
-        L, num_states, num_input_symbols = (
-            len(observed),
-            self.num_states,
-            self.num_input_symbols,
-        )
+        observed = np.asarray(observed)
+        L, num_states = observed.shape[0], self.num_states
+        num_input_symbols = self.num_input_symbols
 
         if input_priors is None:
             input_priors = np.ones((L, num_input_symbols)) / num_input_symbols
@@ -331,7 +328,7 @@ class MealyMachine:
             log_beta[L, :] = np.log(final_state_distribution)
 
         for t, z in enumerate(observed):
-            for x, s0 in np.ndindex(num_input_symbols, num_states):
+            for x, s0 in product(range(num_input_symbols), range(num_states)):
                 y, s1 = self.outputs[s0, x], self.transitions[s0, x]
                 log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
 
