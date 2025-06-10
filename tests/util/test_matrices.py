@@ -73,11 +73,11 @@ def test_rref_properties(size):
         assert np.all(np.logical_or(result == 0, result == 1))
 
         # Leading coefficient of a nonzero row is 1
-        nonzero_rows = np.any(result != 0, axis=1)
-        for row in result[nonzero_rows]:
-            first_nonzero = np.nonzero(row)[0]
-            if first_nonzero.size > 0:
-                assert row[first_nonzero[0]] == 1
+        for i in range(result.shape[0]):
+            leading_ones = np.flatnonzero(result[i] == 1)
+            if leading_ones.size > 0:
+                lead_col = leading_ones[0]
+                assert result[i, lead_col] == 1
 
         # All entries above and below a leading 1 are 0
         for i in range(result.shape[0]):
