@@ -74,7 +74,7 @@ class ConvolutionalCode(ABC):
 
     @cache
     @abstractmethod
-    def generator_matrix(self) -> npt.NDArray[np.object_]:
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
         r"""
         Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $G(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """

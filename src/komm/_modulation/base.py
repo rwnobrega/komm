@@ -36,7 +36,7 @@ class Modulation(ABC, Generic[T]):
 
     @cached_property
     @abstractmethod
-    def labeling(self) -> npt.NDArray[np.integer]:
+    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
         r"""
         The labeling $\mathbf{Q}$ of the modulation.
         """

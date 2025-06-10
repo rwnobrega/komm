@@ -167,7 +167,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         return int(np.max(self.constraint_lengths))
 
     @cached_property
-    def constraint_lengths(self) -> npt.NDArray[np.integer]:
+    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
         r"""
         The *constraint lengths* $\nu_i$ of the encoder, defined by
         $$
