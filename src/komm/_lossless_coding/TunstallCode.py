@@ -4,6 +4,7 @@ from heapq import heapify, heappop, heappush
 from itertools import product
 from math import ceil, log2
 
+import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 from typing_extensions import Self
@@ -91,9 +92,9 @@ def tunstall_algorithm(pmf: PMF, code_block_size: int) -> dict[Word, Word]:
     @dataclass
     class Node:
         sourceword: Word
-        probability: float
+        probability: np.floating
 
-        def __lt__(self, other: Self) -> bool:
+        def __lt__(self, other: Self) -> np.bool:
             return -self.probability < -other.probability
 
     pbar = tqdm(

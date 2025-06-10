@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from functools import cache
 from heapq import heapify, heappop, heappush
 from itertools import product
-from math import prod
 from typing import Literal
 
+import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 from typing_extensions import Self
@@ -94,7 +94,7 @@ def huffman_algorithm(
     @dataclass
     class Node:
         index: int
-        probability: float
+        probability: np.floating
         parent: int | None = None
         bit: int = -1
 
@@ -114,7 +114,7 @@ def huffman_algorithm(
 
     tree: list[Node] = []
     for index, probs in enumerate(product(pmf, repeat=source_block_size)):
-        tree.append(Node(index, prod(probs)))
+        tree.append(Node(index, np.prod(probs)))
         pbar.update()
 
     heap = tree.copy()

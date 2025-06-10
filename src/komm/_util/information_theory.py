@@ -20,7 +20,7 @@ def assert_is_probability(value: float) -> None:
         raise ValueError("probability must be between 0 and 1")
 
 
-class PMF(npt.NDArray[np.floating]):
+class PMF(np.ndarray[tuple[int], np.dtype[np.floating]]):
     def __new__(cls, values: npt.ArrayLike):
         arr = np.asarray(values, dtype=float)
         if arr.ndim != 1:

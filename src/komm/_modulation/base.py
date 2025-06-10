@@ -133,7 +133,7 @@ class Modulation(ABC, Generic[T]):
 
         @vectorize
         def modulate(bits: npt.NDArray[np.integer]) -> npt.NDArray[T]:
-            return self.constellation[self.inverse_labeling[tuple(bits)]]
+            return self.constellation[self.inverse_labeling[tuple(map(int, bits))]]
 
         input = np.asarray(input)
         if input.shape[-1] % self.bits_per_symbol != 0:
