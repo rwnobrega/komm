@@ -263,6 +263,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         D_blocks: list[npt.NDArray[np.integer]] = []
 
         for alpha, beta, nu in zip(alphas, betas, self.constraint_lengths):
+            nu = int(nu)  # FIXME: Why `np.eye` does not accept `np.integer`?
             if nu == 0:
                 A_blocks.append(np.zeros((0, 0), dtype=int))
             else:
