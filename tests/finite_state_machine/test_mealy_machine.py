@@ -5,9 +5,9 @@ import komm
 
 def test_mealy_machine_viterbi_sklar():
     # Sklar.01, p. 401-405.
-    def metric_function(y, z):
+    def metric_function(y, z) -> float:
         s = komm.int_to_bits(y, width=2)
-        return np.count_nonzero(z != s)
+        return float(np.count_nonzero(z != s))
 
     machine = komm.MealyMachine(
         transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],

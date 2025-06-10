@@ -47,7 +47,7 @@ class ViterbiDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
         self._initial_metrics[0] = 0.0
 
     def _metric_function_hard(self, y: int, z: float) -> float:
-        return np.count_nonzero(self._cache_bit[y] != z)
+        return float(np.count_nonzero(self._cache_bit[y] != z))
 
     def _metric_function_soft(self, y: int, z: int) -> float:
         return np.dot(self._cache_bit[y], z)

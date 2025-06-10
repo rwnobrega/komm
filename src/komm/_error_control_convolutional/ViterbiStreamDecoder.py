@@ -43,7 +43,7 @@ class ViterbiStreamDecoder:
 
     def metric_function(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":
-            return np.count_nonzero(self.cache_bit[y] != z)
+            return float(np.count_nonzero(self.cache_bit[y] != z))
         else:  # self.input_type == "soft"
             return np.dot(self.cache_bit[y], z)
 
