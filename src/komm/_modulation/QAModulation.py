@@ -6,6 +6,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array2D
 from . import base
 from .constellations import constellation_qam
 from .labelings import get_labeling
@@ -123,7 +124,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         )
 
     @cached_property
-    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
+    def labeling(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> qam = komm.QAModulation(16)

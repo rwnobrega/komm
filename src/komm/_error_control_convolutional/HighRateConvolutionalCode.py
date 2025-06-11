@@ -6,6 +6,7 @@ import numpy.typing as npt
 from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
 from .._finite_state_machine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
+from ..types import Array1D, Array2D
 from . import base
 
 
@@ -81,7 +82,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         return max(p.degree for p in self.h_row)
 
     @cached_property
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
+    def generator_matrix(self) -> Array2D[np.object_]:
         r"""
         For a high-rate convolutional code with check row
         $$
@@ -135,7 +136,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         return G_mat
 
     @cached_property
-    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    def constraint_lengths(self) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
@@ -144,7 +145,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         """
         ps = self.h_row[:-1]
         q = self.h_row[-1]
-        return np.array([max(p.degree, q.degree) for p in ps], dtype=int)
+        return np.array([max(p.degree, q.degree) for p in ps], dtype=int)  # type: ignore
 
     @cached_property
     def overall_constraint_length(self) -> int:

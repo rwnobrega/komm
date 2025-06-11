@@ -9,6 +9,7 @@ from typing_extensions import final
 
 from .._util.decorators import vectorize
 from .._util.information_theory import marginalize_bits
+from ..types import Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
 
@@ -36,7 +37,7 @@ class Modulation(ABC, Generic[T]):
 
     @cached_property
     @abstractmethod
-    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
+    def labeling(self) -> Array2D[np.integer]:
         r"""
         The labeling $\mathbf{Q}$ of the modulation.
         """

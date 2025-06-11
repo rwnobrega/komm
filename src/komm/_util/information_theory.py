@@ -5,6 +5,8 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D
+
 LogBase = float | Literal["e"]
 
 
@@ -20,7 +22,7 @@ def assert_is_probability(value: float) -> None:
         raise ValueError("probability must be between 0 and 1")
 
 
-class PMF(np.ndarray[tuple[int], np.dtype[np.floating]]):
+class PMF(Array1D[np.floating]):
     def __new__(cls, values: npt.ArrayLike):
         arr = np.asarray(values, dtype=float)
         if arr.ndim != 1:

@@ -4,6 +4,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array2D
 from . import base
 from .constellations import constellation_psk
 from .labelings import get_labeling
@@ -103,7 +104,7 @@ class PSKModulation(base.Modulation[np.complexfloating]):
         return constellation_psk(self._order, self._amplitude, self._phase_offset)
 
     @cached_property
-    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
+    def labeling(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> psk = komm.PSKModulation(4)

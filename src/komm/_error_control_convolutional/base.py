@@ -10,6 +10,7 @@ from .._algebra import BinaryPolynomial, BinaryPolynomialFraction, domain, ring
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import invariant_factors
+from ..types import Array1D, Array2D
 
 
 class ConvolutionalCode(ABC):
@@ -39,7 +40,7 @@ class ConvolutionalCode(ABC):
 
     @cached_property
     @abstractmethod
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
+    def generator_matrix(self) -> Array2D[np.object_]:
         r"""
         Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $G(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
         """
@@ -47,7 +48,7 @@ class ConvolutionalCode(ABC):
 
     @cached_property
     @abstractmethod
-    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    def constraint_lengths(self) -> Array1D[np.integer]:
         r"""
         The *constraint lengths* $\nu_i$ of the encoder, for $i \in [0 : k)$. These are defined by
         $$

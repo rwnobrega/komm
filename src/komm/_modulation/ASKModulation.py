@@ -4,6 +4,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array2D
 from . import base
 from .constellations import constellation_ask
 from .labelings import get_labeling
@@ -98,7 +99,7 @@ class ASKModulation(base.Modulation[np.complexfloating]):
         return constellation_ask(self._order, self._base_amplitude, self._phase_offset)
 
     @cached_property
-    def labeling(self) -> np.ndarray[tuple[int, int], np.dtype[np.integer]]:
+    def labeling(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> ask = komm.ASKModulation(4)
