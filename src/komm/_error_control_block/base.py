@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
+from ..types import Array1D, Array2D
 
 
 class BlockCode(ABC):
@@ -44,7 +45,7 @@ class BlockCode(ABC):
 
     @cached_property
     @abstractmethod
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         r"""
         The generator matrix $G \in \mathbb{B}^{k \times n}$ of the code.
         """
@@ -52,12 +53,12 @@ class BlockCode(ABC):
 
     @cached_property
     @abstractmethod
-    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
         raise NotImplementedError
 
     @cached_property
     @abstractmethod
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         r"""
         The check matrix $H \in \mathbb{B}^{m \times n}$ of the code.
         """
@@ -131,7 +132,7 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def codewords(self) -> npt.NDArray[np.integer]:
+    def codewords(self) -> Array2D[np.integer]:
         r"""
         Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (MSB in the right).
         """
@@ -153,7 +154,7 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
         """
@@ -186,7 +187,7 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def coset_leaders(self) -> npt.NDArray[np.integer]:
+    def coset_leaders(self) -> Array2D[np.integer]:
         r"""
         Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (MSB in the right), and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
         """
@@ -224,7 +225,7 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Returns the coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
         """

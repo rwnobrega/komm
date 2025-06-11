@@ -8,6 +8,7 @@ import numpy.typing as npt
 
 from .._algebra import BinaryPolynomial
 from .._util.decorators import blockwise, vectorize
+from ..types import Array1D, Array2D
 from . import base
 
 
@@ -124,15 +125,15 @@ class CyclicCode(base.BlockCode):
         return BinaryPolynomial.from_exponents([0, self.length])
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         return self._encoding_strategy.generator_matrix()
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
         raise NotImplementedError
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         return self._encoding_strategy.check_matrix()
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -172,11 +173,11 @@ class CyclicCode(base.BlockCode):
         return check(input)
 
     @cache
-    def codewords(self) -> npt.NDArray[np.integer]:
+    def codewords(self) -> Array2D[np.integer]:
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> Array1D[np.integer]:
         return super().codeword_weight_distribution()
 
     @cache
@@ -184,11 +185,11 @@ class CyclicCode(base.BlockCode):
         return super().minimum_distance()
 
     @cache
-    def coset_leaders(self) -> npt.NDArray[np.integer]:
+    def coset_leaders(self) -> Array2D[np.integer]:
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
         return super().coset_leader_weight_distribution()
 
     @cache
@@ -205,10 +206,10 @@ class EncodingStrategy(ABC):
     code: CyclicCode
 
     @abstractmethod
-    def generator_matrix(self) -> npt.NDArray[np.integer]: ...
+    def generator_matrix(self) -> Array2D[np.integer]: ...
 
     @abstractmethod
-    def check_matrix(self) -> npt.NDArray[np.integer]: ...
+    def check_matrix(self) -> Array2D[np.integer]: ...
 
     @abstractmethod
     def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial: ...
@@ -219,7 +220,7 @@ class EncodingStrategy(ABC):
 
 class SystematicStrategy(EncodingStrategy):
     # See [McE04, Sec. 8.1].
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         n, k, m = self.code.length, self.code.dimension, self.code.redundancy
         generator_matrix = np.empty((k, n), dtype=int)
         X = BinaryPolynomial(0b10)  # The polynomial X
@@ -228,7 +229,7 @@ class SystematicStrategy(EncodingStrategy):
             generator_matrix[i] = row_poly.coefficients(width=n)
         return generator_matrix
 
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         n, m = self.code.length, self.code.redundancy
         check_matrix = np.empty((m, n), dtype=int)
         X = BinaryPolynomial(0b10)
@@ -250,7 +251,7 @@ class SystematicStrategy(EncodingStrategy):
 
 class NonSystematicStrategy(EncodingStrategy):
     # See [McE04, Sec. 8.1].
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         n, k = self.code.length, self.code.dimension
         generator_matrix = np.empty((k, n), dtype=int)
         X = BinaryPolynomial(0b10)  # The polynomial X
@@ -259,7 +260,7 @@ class NonSystematicStrategy(EncodingStrategy):
             generator_matrix[i] = row_poly.coefficients(width=n)
         return generator_matrix
 
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         n, m = self.code.length, self.code.redundancy
         check_matrix = np.empty((m, n), dtype=int)
         X = BinaryPolynomial(0b10)

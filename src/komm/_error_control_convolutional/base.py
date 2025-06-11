@@ -91,10 +91,10 @@ class ConvolutionalCode(ABC):
     def state_space_representation(
         self,
     ) -> tuple[
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
     ]:
         r"""
         Returns the matrices $(\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D})$ corresponding to the state-space representation of the encoder realization. The *state-space representation* of the encoder is given by

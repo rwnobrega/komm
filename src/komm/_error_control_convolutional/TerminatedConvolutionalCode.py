@@ -11,6 +11,7 @@ from .._error_control_block.base import BlockCode
 from .._error_control_convolutional.base import ConvolutionalCode
 from .._util.decorators import blockwise, vectorize
 from .._util.matrices import null_matrix, pseudo_inverse
+from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
 
@@ -115,15 +116,15 @@ class TerminatedConvolutionalCode(BlockCode):
         return super().rate
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         return self.encode(np.eye(self.dimension))
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
         return pseudo_inverse(self.generator_matrix)
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         return null_matrix(self.generator_matrix)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -148,11 +149,11 @@ class TerminatedConvolutionalCode(BlockCode):
         return super().check(input)
 
     @cache
-    def codewords(self) -> npt.NDArray[np.integer]:
+    def codewords(self) -> Array2D[np.integer]:
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> Array1D[np.integer]:
         return super().codeword_weight_distribution()
 
     @cache
@@ -160,11 +161,11 @@ class TerminatedConvolutionalCode(BlockCode):
         return super().minimum_distance()
 
     @cache
-    def coset_leaders(self) -> npt.NDArray[np.integer]:
+    def coset_leaders(self) -> Array2D[np.integer]:
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
         return super().coset_leader_weight_distribution()
 
     @cache

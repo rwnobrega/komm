@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.decorators import blockwise
+from ..types import Array1D, Array2D
 from . import base
 
 
@@ -79,7 +80,7 @@ class SystematicBlockCode(base.BlockCode):
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
-    def parity_set(self) -> npt.NDArray[np.integer]:
+    def parity_set(self) -> Array1D[np.integer]:
         return np.setdiff1d(np.arange(self.length), self.information_set)
 
     @cached_property
@@ -123,7 +124,7 @@ class SystematicBlockCode(base.BlockCode):
         return super().rate
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
@@ -138,14 +139,14 @@ class SystematicBlockCode(base.BlockCode):
         return matrix
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
         k, n = self.dimension, self.length
         matrix = np.zeros((n, k), dtype=int)
         matrix[self.information_set] = np.eye(k, dtype=int)
         return matrix
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
@@ -245,7 +246,7 @@ class SystematicBlockCode(base.BlockCode):
         return check(input)
 
     @cache
-    def codewords(self) -> npt.NDArray[np.integer]:
+    def codewords(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
@@ -258,7 +259,7 @@ class SystematicBlockCode(base.BlockCode):
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
@@ -278,7 +279,7 @@ class SystematicBlockCode(base.BlockCode):
         return super().minimum_distance()
 
     @cache
-    def coset_leaders(self) -> npt.NDArray[np.integer]:
+    def coset_leaders(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
@@ -295,7 +296,7 @@ class SystematicBlockCode(base.BlockCode):
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])

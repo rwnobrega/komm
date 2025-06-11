@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.matrices import null_matrix, pseudo_inverse, rref
+from ..types import Array1D, Array2D
 from . import base
 
 
@@ -133,7 +134,7 @@ class BlockCode(base.BlockCode):
         return super().rate
 
     @cached_property
-    def generator_matrix(self) -> npt.NDArray[np.integer]:
+    def generator_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(check_matrix=[
@@ -150,11 +151,11 @@ class BlockCode(base.BlockCode):
         return rref(null_matrix(self.check_matrix))
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> npt.NDArray[np.integer]:
+    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
         return pseudo_inverse(self.generator_matrix)
 
     @cached_property
-    def check_matrix(self) -> npt.NDArray[np.integer]:
+    def check_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
@@ -170,7 +171,7 @@ class BlockCode(base.BlockCode):
             return self._check_matrix
         return null_matrix(self.generator_matrix)
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
@@ -240,7 +241,7 @@ class BlockCode(base.BlockCode):
         return super().check(input)
 
     @cache
-    def codewords(self) -> npt.NDArray[np.integer]:
+    def codewords(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
@@ -256,7 +257,7 @@ class BlockCode(base.BlockCode):
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
@@ -282,7 +283,7 @@ class BlockCode(base.BlockCode):
         return super().minimum_distance()
 
     @cache
-    def coset_leaders(self) -> npt.NDArray[np.integer]:
+    def coset_leaders(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
@@ -302,7 +303,7 @@ class BlockCode(base.BlockCode):
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[

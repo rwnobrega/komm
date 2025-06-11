@@ -171,10 +171,10 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
     def state_space_representation(
         self,
     ) -> tuple[
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
-        npt.NDArray[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
+        Array2D[np.integer],
     ]:
         r"""
         Examples:
