@@ -4,10 +4,9 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.bit_operations import int_to_bits
+from ..types import Array2D
 
 T = TypeVar("T", bound=npt.NDArray[np.number])
-
-from ..types import Array2D
 
 
 def cartesian_product(A: T, B: T) -> T:
