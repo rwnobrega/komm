@@ -71,12 +71,65 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
     @cached_property
     def degree(self) -> int:
         r"""
+        For a low-rate convolutional encoder realized in controllable canonical form, the degree $\sigma$ is the maximum degree of the polynomials in the generator row $g(D)$.
+
         Examples:
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
             >>> code.degree
             6
         """
         return max(p.degree for p in self.g_row)
+
+    @cached_property
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
+        r"""
+        For a low-rate convolutional code, it is given by
+        $$
+            G(D) = \big[ ~ g(D) ~ \big].
+        $$
+
+        Examples:
+            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> for row in code.generator_matrix:
+            ...     print("[" + ", ".join(str(x) for x in row) + "]")
+            [0b1001111/0b1, 0b1101101/0b1]
+        """
+        n, k = self.num_output_bits, self.num_input_bits
+        G_mat = np.empty((k, n), dtype=object)
+        for j in range(n):
+            p = BinaryPolynomialFraction(self.g_row[j])
+            G_mat[0, j] = p
+        return G_mat
+
+    @cached_property
+    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+        r"""
+        Examples:
+            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> code.constraint_lengths
+            array([6])
+        """
+        return np.array([self.degree], dtype=int)
+
+    @cached_property
+    def overall_constraint_length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> code.overall_constraint_length
+            6
+        """
+        return super().overall_constraint_length
+
+    @cached_property
+    def memory_order(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> code.memory_order
+            6
+        """
+        return super().memory_order
 
     @cache
     def state_space_representation(
@@ -117,27 +170,6 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
         C_mat = beta[1:]
         D_mat = np.array([beta[0]])
         return A_mat, B_mat, C_mat, D_mat
-
-    @cache
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
-        r"""
-        For a low-rate convolutional code, it is given by
-        $$
-            G(D) = \big[ ~ g(D) ~ \big].
-        $$
-
-        Examples:
-            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
-            >>> for row in code.generator_matrix():
-            ...     print("[" + ", ".join(str(x) for x in row) + "]")
-            [0b1001111/0b1, 0b1101101/0b1]
-        """
-        n, k = self.num_output_bits, self.num_input_bits
-        G_mat = np.empty((k, n), dtype=object)
-        for j in range(n):
-            p = BinaryPolynomialFraction(self.g_row[j])
-            G_mat[0, j] = p
-        return G_mat
 
     @cache
     def finite_state_machine(self) -> MealyMachine:

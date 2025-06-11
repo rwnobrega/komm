@@ -30,11 +30,60 @@ class ConvolutionalCode(ABC):
         raise NotImplementedError
 
     @cached_property
+    @abstractmethod
     def degree(self) -> int:
         r"""
         The *degree* $\sigma$ of the encoder. This corresponds to the number of delay elements in the encoder realization.
         """
         raise NotImplementedError
+
+    @cached_property
+    @abstractmethod
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
+        r"""
+        Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $G(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
+        """
+        raise NotImplementedError
+
+    @cached_property
+    @abstractmethod
+    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+        r"""
+        The *constraint lengths* $\nu_i$ of the encoder, for $i \in [0 : k)$. These are defined by
+        $$
+            \nu_i = \max \\{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \\},
+        $$
+        where $p_{i,j}(D) / q_i(D)$ are the entries of the $i$-th row of the generator matrix $G(D)$, satisfying
+        $$
+            \gcd(p_{i,0}(D), p_{i,1}(D), \ldots, p_{i,n-1}(D), q_i(D)) = 1.
+        $$
+        This is a $k$-array of integers.
+        """
+        raise NotImplementedError
+
+    @cached_property
+    @abstractmethod
+    def overall_constraint_length(self) -> int:
+        r"""
+        The *overall constraint length* $\nu$ of the encoder, defined by
+        $$
+            \nu = \sum_{i \in [0:k)} \nu_i,
+        $$
+        where $\nu_i$ are the constraint lengths of the encoder.
+        """
+        return int(np.sum(self.constraint_lengths))
+
+    @cached_property
+    @abstractmethod
+    def memory_order(self) -> int:
+        r"""
+        The *memory order* $\mu$ of the encoder. It is given by
+        $$
+            \mu = \max_{i \in [0:k)} \nu_i,
+        $$
+        where $\nu_i$ are the constraint lengths of the encoder.
+        """
+        return int(np.max(self.constraint_lengths))
 
     @cache
     @abstractmethod
@@ -74,14 +123,6 @@ class ConvolutionalCode(ABC):
 
     @cache
     @abstractmethod
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
-        r"""
-        Returns the (transform-domain) *generator matrix* (also known as *transfer function matrix*) $G(D)$ of the encoder. This is a $k \times n$ array of [binary polynomial fractions](/ref/BinaryPolynomialFraction).
-        """
-        raise NotImplementedError
-
-    @cache
-    @abstractmethod
     def finite_state_machine(self) -> MealyMachine:
         r"""
         Returns the [finite-state (Mealy) machine](/ref/MealyMachine) of the encoder.
@@ -100,7 +141,7 @@ class ConvolutionalCode(ABC):
     @cache
     def _minors_gcd(self) -> BinaryPolynomial:
         # We keep this method for testing purposes.
-        G_mat = self.generator_matrix()
+        G_mat = self.generator_matrix
         k, n = G_mat.shape
         if any(x.denominator != 0b1 for row in G_mat for x in row):
             raise ValueError("this method only works with polynomial matrices")
@@ -120,7 +161,7 @@ class ConvolutionalCode(ABC):
         Returns whether the encoder is catastrophic. A convolutional encoder is *catastrophic* if there exists an infinite-weight input sequence that generates a finite-weight output sequence.
         """
         # See [JZ15, Secs. 2.2 and 2.3], in particular Theorem 2.10.
-        G_mat = self.generator_matrix()
+        G_mat = self.generator_matrix
         denominators = [x.denominator for row in G_mat for x in row]
         q = reduce(domain.lcm, denominators)
         G_prime = np.array([

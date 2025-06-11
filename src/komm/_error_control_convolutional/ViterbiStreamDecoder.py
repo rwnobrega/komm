@@ -7,7 +7,7 @@ import numpy.typing as npt
 
 from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
-from .ConvolutionalCode import ConvolutionalCode
+from . import base
 
 
 @dataclass
@@ -22,7 +22,7 @@ class ViterbiStreamDecoder:
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
     """
 
-    convolutional_code: ConvolutionalCode
+    convolutional_code: base.ConvolutionalCode
     traceback_length: int
     state: int = 0
     input_type: Literal["hard", "soft"] = "hard"

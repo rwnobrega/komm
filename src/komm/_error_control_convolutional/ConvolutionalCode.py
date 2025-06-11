@@ -133,11 +133,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     @cached_property
     def degree(self) -> int:
         r"""
-        It is given by
-        $$
-            \sigma = \sum_{i \in [0:k)} \nu_i,
-        $$
-        where $\nu_i$ are the constraint lengths of the encoder.
+        For a convolutional encoder realized in controllable canonical form, the degree $\sigma$ is equal to the overall constraint length $\nu$.
 
         Examples:
             >>> code = komm.ConvolutionalCode(
@@ -146,35 +142,84 @@ class ConvolutionalCode(base.ConvolutionalCode):
             >>> code.degree
             7
         """
-        return int(np.sum(self.constraint_lengths))
+        return self.overall_constraint_length
 
     @cached_property
-    def memory_order(self) -> int:
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
         r"""
-        The *memory order* $\mu$ of the encoder. It is given by
+        For a convolutional code with matrix of feedforward polynomials
         $$
-            \mu = \max_{i \in [0:k)} \nu_i,
+            P(D) =
+            \begin{bmatrix}
+                p_{0,0}(D)   & p_{0,1}(D)   & \cdots & p_{0,n-1}(D)   \\\\
+                p_{1,0}(D)   & p_{1,1}(D)   & \cdots & p_{1,n-1}(D)   \\\\
+                \vdots       & \vdots       & \ddots & \vdots         \\\\
+                p_{k-1,0}(D) & p_{k-1,1}(D) & \cdots & p_{k-1,n-1}(D)
+            \end{bmatrix},
         $$
-        where $\nu_i$ are the constraint lengths of the encoder.
+        and vector of feedback polynomials
+        $$
+            q(D) =
+            \begin{bmatrix}
+                q_0(D)     \\\\
+                q_1(D)     \\\\
+                \vdots     \\\\
+                q_{k-1}(D)
+            \end{bmatrix},
+        $$
+        the generator matrix is given by
+        $$
+            G(D) =
+            \begin{bmatrix}
+                p_{0,0}(D)/q_0(D)       & p_{0,1}(D)/q_0(D)       & \cdots & p_{0,n-1}(D)/q_0(D)       \\\\
+                p_{1,0}(D)/q_1(D)       & p_{1,1}(D)/q_1(D)       & \cdots & p_{1,n-1}(D)/q_1(D)       \\\\
+                \vdots                  & \vdots                  & \ddots & \vdots                    \\\\
+                p_{k-1,0}(D)/q_{k-1}(D) & p_{k-1,1}(D)/q_{k-1}(D) & \cdots & p_{k-1,n-1}(D)/q_{k-1}(D)
+            \end{bmatrix}.
+        $$
 
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
-            >>> code.memory_order
-            4
+            If matrix of feedforward polynomials is
+            $$
+                P(D) =
+                \begin{bmatrix}
+                    D^4 + D^2 + D + 1 && D^4 + D^3 + 1
+                \end{bmatrix}
+            $$
+            and vector of feedback polynomials is
+            $$
+                q(D) =
+                \begin{bmatrix}
+                    D^4 + D^2 + D + 1
+                \end{bmatrix},
+            $$
+            then the generator matrix is given by
+            $$
+                G(D) =
+                \begin{bmatrix}
+                    1 & \frac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
+                \end{bmatrix}.
+            $$
+
+                >>> code = komm.ConvolutionalCode(
+                ...     feedforward_polynomials=[[0o27, 0o31]],
+                ...     feedback_polynomials=[0o27],
+                ... )
+                >>> for row in code.generator_matrix:
+                ...     print("[" + ", ".join(str(x) for x in row) + "]")
+                [0b1/0b1, 0b11001/0b10111]
         """
-        return int(np.max(self.constraint_lengths))
+        n, k = self.num_output_bits, self.num_input_bits
+        G_mat = np.empty((k, n), dtype=object)
+        for i, j in product(range(k), range(n)):
+            p = BinaryPolynomialFraction(self.feedforward_polynomials[i][j])
+            q = BinaryPolynomialFraction(self.feedback_polynomials[i])
+            G_mat[i, j] = p / q
+        return G_mat
 
     @cached_property
     def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
         r"""
-        The *constraint lengths* $\nu_i$ of the encoder, defined by
-        $$
-            \nu_i = \max \\{ \deg p_{i,0}(D), \deg p_{i,1}(D), \ldots, \deg p_{i,n-1}(D), \deg q_i(D) \\},
-        $$
-        for $i \in [0 : k)$. This is a $k$-array of integers.
-
         Examples:
             >>> code = komm.ConvolutionalCode(
             ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
@@ -188,6 +233,30 @@ class ConvolutionalCode(base.ConvolutionalCode):
             q = self.feedback_polynomials[i]
             nus[i] = max(np.amax([p.degree for p in ps]), q.degree)
         return nus
+
+    @cached_property
+    def overall_constraint_length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
+            ... )
+            >>> code.overall_constraint_length
+            7
+        """
+        return super().overall_constraint_length
+
+    @cached_property
+    def memory_order(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.ConvolutionalCode(
+            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
+            ... )
+            >>> code.memory_order
+            4
+        """
+        return super().memory_order
 
     @cache
     def state_space_representation(
@@ -278,79 +347,6 @@ class ConvolutionalCode(base.ConvolutionalCode):
         D_mat = np.vstack(D_blocks)
 
         return A_mat, B_mat, C_mat, D_mat
-
-    @cache
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
-        r"""
-        For a convolutional code with matrix of feedforward polynomials
-        $$
-            P(D) =
-            \begin{bmatrix}
-                p_{0,0}(D)   & p_{0,1}(D)   & \cdots & p_{0,n-1}(D)   \\\\
-                p_{1,0}(D)   & p_{1,1}(D)   & \cdots & p_{1,n-1}(D)   \\\\
-                \vdots       & \vdots       & \ddots & \vdots         \\\\
-                p_{k-1,0}(D) & p_{k-1,1}(D) & \cdots & p_{k-1,n-1}(D)
-            \end{bmatrix},
-        $$
-        and vector of feedback polynomials
-        $$
-            q(D) =
-            \begin{bmatrix}
-                q_0(D)     \\\\
-                q_1(D)     \\\\
-                \vdots     \\\\
-                q_{k-1}(D)
-            \end{bmatrix},
-        $$
-        the generator matrix is given by
-        $$
-            G(D) =
-            \begin{bmatrix}
-                p_{0,0}(D)/q_0(D)       & p_{0,1}(D)/q_0(D)       & \cdots & p_{0,n-1}(D)/q_0(D)       \\\\
-                p_{1,0}(D)/q_1(D)       & p_{1,1}(D)/q_1(D)       & \cdots & p_{1,n-1}(D)/q_1(D)       \\\\
-                \vdots                  & \vdots                  & \ddots & \vdots                    \\\\
-                p_{k-1,0}(D)/q_{k-1}(D) & p_{k-1,1}(D)/q_{k-1}(D) & \cdots & p_{k-1,n-1}(D)/q_{k-1}(D)
-            \end{bmatrix}.
-        $$
-
-        Examples:
-            If matrix of feedforward polynomials is
-            $$
-                P(D) =
-                \begin{bmatrix}
-                    D^4 + D^2 + D + 1 && D^4 + D^3 + 1
-                \end{bmatrix}
-            $$
-            and vector of feedback polynomials is
-            $$
-                q(D) =
-                \begin{bmatrix}
-                    D^4 + D^2 + D + 1
-                \end{bmatrix},
-            $$
-            then the generator matrix is given by
-            $$
-                G(D) =
-                \begin{bmatrix}
-                    1 & \frac{D^4 + D^3 + 1}{D^4 + D^2 + D + 1}
-                \end{bmatrix}.
-            $$
-
-                >>> code = komm.ConvolutionalCode(
-                ...     feedforward_polynomials=[[0o27, 0o31]],
-                ...     feedback_polynomials=[0o27],
-                ... )
-                >>> for row in code.generator_matrix():
-                ...     print("[" + ", ".join(str(x) for x in row) + "]")
-                [0b1/0b1, 0b11001/0b10111]
-        """
-        n, k = self.num_output_bits, self.num_input_bits
-        G_mat = np.empty((k, n), dtype=object)
-        for i, j in product(range(k), range(n)):
-            p = BinaryPolynomialFraction(self.feedforward_polynomials[i][j])
-            q = BinaryPolynomialFraction(self.feedback_polynomials[i])
-            G_mat[i, j] = p / q
-        return G_mat
 
     @cache
     def finite_state_machine(self) -> MealyMachine:

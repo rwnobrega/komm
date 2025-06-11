@@ -71,12 +71,100 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
     @cached_property
     def degree(self) -> int:
         r"""
+        For a high-rate convolutional encoder realized in observable canonical form, the degree $\sigma$ is the maximum degree of the polynomials in the check row $h(D)$.
+
         Examples:
             >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
             >>> code.degree
             3
         """
         return max(p.degree for p in self.h_row)
+
+    @cached_property
+    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
+        r"""
+        For a high-rate convolutional code with check row
+        $$
+            h(D) =
+            \begin{bmatrix}
+                h_0(D)  &&  h_1(D)  &&  \cdots  &&  h_{n-1}(D)
+            \end{bmatrix},
+        $$
+        the generator matrix is given by
+        $$
+            G(D) =
+            \begin{bmatrix}
+                1      & 0      & \cdots & 0      & h_0(D) / h_{n-1}(D)     \\\\[1ex]
+                0      & 1      & \cdots & 0      & h_1(D) / h_{n-1}(D)     \\\\[1ex]
+                \vdots & \vdots & \ddots & \vdots & \vdots                  \\\\[1ex]
+                0      & 0      & \cdots & 1      & h_{n-2}(D) / h_{n-1}(D)
+            \end{bmatrix}.
+        $$
+
+        Examples:
+            If the check row is
+            $$
+                h(D) =
+                \begin{bmatrix}
+                    D^3 + D  &&  D^3 + D^2 + 1  &&  D^3 + D + 1  &&  D^3 + 1
+                \end{bmatrix},
+            $$
+            then the generator matrix is
+            $$
+                G(D) =
+                \begin{bmatrix}
+                    1 & 0 & 0 & \frac{D^3 + D}{D^3 + 1} \\\\[1ex]
+                    0 & 1 & 0 & \frac{D^3 + D^2 + 1}{D^3 + 1} \\\\[1ex]
+                    0 & 0 & 1 & \frac{D^3 + D + 1}{D^3 + 1}
+                \end{bmatrix}.
+            $$
+
+                >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
+                >>> for row in code.generator_matrix:
+                ...     print("[" + ", ".join(str(x).ljust(12) for x in row) + "]")
+                [0b1/0b1     , 0b0/0b1     , 0b0/0b1     , 0b110/0b111 ]
+                [0b0/0b1     , 0b1/0b1     , 0b0/0b1     , 0b1101/0b1001]
+                [0b0/0b1     , 0b0/0b1     , 0b1/0b1     , 0b1011/0b1001]
+        """
+        n, k = self.num_output_bits, self.num_input_bits
+        G_mat = np.empty((k, n), dtype=object)
+        for i in range(n - 1):
+            for j in range(n - 1):
+                G_mat[i, j] = BinaryPolynomialFraction(int(i == j))
+            G_mat[i, -1] = BinaryPolynomialFraction(self.h_row[i], self.h_row[-1])
+        return G_mat
+
+    @cached_property
+    def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+        r"""
+        Examples:
+            >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
+            >>> code.constraint_lengths
+            array([3, 3, 3])
+        """
+        ps = self.h_row[:-1]
+        q = self.h_row[-1]
+        return np.array([max(p.degree, q.degree) for p in ps], dtype=int)
+
+    @cached_property
+    def overall_constraint_length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
+            >>> code.overall_constraint_length
+            9
+        """
+        return super().overall_constraint_length
+
+    @cached_property
+    def memory_order(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
+            >>> code.memory_order
+            3
+        """
+        return super().memory_order
 
     @cache
     def state_space_representation(
@@ -121,60 +209,6 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         C_mat[-1, -1] = 1
         D_mat = np.hstack([np.eye(n - 1, dtype=int), beta[:, -1:]])
         return A_mat, B_mat, C_mat, D_mat
-
-    @cache
-    def generator_matrix(self) -> np.ndarray[tuple[int, int], np.dtype[np.object_]]:
-        r"""
-        For a high-rate convolutional code with check row
-        $$
-            h(D) =
-            \begin{bmatrix}
-                h_0(D)  &&  h_1(D)  &&  \cdots  &&  h_{n-1}(D)
-            \end{bmatrix},
-        $$
-        the generator matrix is given by
-        $$
-            G(D) =
-            \begin{bmatrix}
-                1      & 0      & \cdots & 0      & h_0(D) / h_{n-1}(D)     \\\\[1ex]
-                0      & 1      & \cdots & 0      & h_1(D) / h_{n-1}(D)     \\\\[1ex]
-                \vdots & \vdots & \ddots & \vdots & \vdots                  \\\\[1ex]
-                0      & 0      & \cdots & 1      & h_{n-2}(D) / h_{n-1}(D)
-            \end{bmatrix}.
-        $$
-
-        Examples:
-            If the check row is
-            $$
-                h(D) =
-                \begin{bmatrix}
-                    D^3 + D  &&  D^3 + D^2 + 1  &&  D^3 + D + 1  &&  D^3 + 1
-                \end{bmatrix},
-            $$
-            then the generator matrix is
-            $$
-                G(D) =
-                \begin{bmatrix}
-                    1 & 0 & 0 & \frac{D^3 + D}{D^3 + 1} \\\\[1ex]
-                    0 & 1 & 0 & \frac{D^3 + D^2 + 1}{D^3 + 1} \\\\[1ex]
-                    0 & 0 & 1 & \frac{D^3 + D + 1}{D^3 + 1}
-                \end{bmatrix}.
-            $$
-
-                >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
-                >>> for row in code.generator_matrix():
-                ...     print("[" + ", ".join(str(x).ljust(12) for x in row) + "]")
-                [0b1/0b1     , 0b0/0b1     , 0b0/0b1     , 0b110/0b111 ]
-                [0b0/0b1     , 0b1/0b1     , 0b0/0b1     , 0b1101/0b1001]
-                [0b0/0b1     , 0b0/0b1     , 0b1/0b1     , 0b1011/0b1001]
-        """
-        n, k = self.num_output_bits, self.num_input_bits
-        G_mat = np.empty((k, n), dtype=object)
-        for i in range(n - 1):
-            for j in range(n - 1):
-                G_mat[i, j] = BinaryPolynomialFraction(int(i == j))
-            G_mat[i, -1] = BinaryPolynomialFraction(self.h_row[i], self.h_row[-1])
-        return G_mat
 
     @cache
     def finite_state_machine(self) -> MealyMachine:

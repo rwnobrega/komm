@@ -47,7 +47,9 @@ def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance)
         feedforward_polynomials[i, n - 1] = h_row[i]
         feedback_polynomials[i] = h_row[-1]
     code1 = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
-    np.testing.assert_equal(code.generator_matrix(), code1.generator_matrix())
+    G_mat, nus = code1.generator_matrix, code1.overall_constraint_length
+    np.testing.assert_equal(code.generator_matrix, G_mat)
+    np.testing.assert_equal(code.overall_constraint_length, nus)
     for _ in range(100):
         input = np.random.randint(0, 2, size=50 * (n - 1))
         np.testing.assert_equal(code.encode(input), code1.encode(input))
