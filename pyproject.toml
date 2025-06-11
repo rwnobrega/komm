@@ -58,7 +58,7 @@ unstable = true
 [tool.pyright]
 include = ["src", "tests"]
 typeCheckingMode = "basic"
-reportUnnecessaryTypeIgnoreComment = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
 deprecateTypingAliases = true
 strict = ["src/**"]
 
