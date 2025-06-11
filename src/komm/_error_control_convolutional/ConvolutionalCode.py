@@ -110,9 +110,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def num_input_bits(self) -> int:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.num_input_bits
             2
         """
@@ -122,9 +120,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def num_output_bits(self) -> int:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.num_output_bits
             3
         """
@@ -136,9 +132,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
         For a convolutional encoder realized in controllable canonical form, the degree $\sigma$ is equal to the overall constraint length $\nu$.
 
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.degree
             7
         """
@@ -201,10 +195,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
                 \end{bmatrix}.
             $$
 
-                >>> code = komm.ConvolutionalCode(
-                ...     feedforward_polynomials=[[0o27, 0o31]],
-                ...     feedback_polynomials=[0o27],
-                ... )
+                >>> code = komm.ConvolutionalCode([[0o27, 0o31]], [0o27])
                 >>> for row in code.generator_matrix:
                 ...     print("[" + ", ".join(str(x) for x in row) + "]")
                 [0b1/0b1, 0b11001/0b10111]
@@ -221,9 +212,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def constraint_lengths(self) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.constraint_lengths
             array([4, 3])
         """
@@ -238,9 +227,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def overall_constraint_length(self) -> int:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.overall_constraint_length
             7
         """
@@ -250,9 +237,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def memory_order(self) -> int:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.memory_order
             4
         """
@@ -269,9 +254,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     ]:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
             >>> A_mat
             array([[0, 1, 0, 0, 0, 0, 0],
@@ -296,10 +279,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
             array([[1, 1, 0],
                    [0, 0, 1]])
 
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o27, 0o31]],
-            ...     feedback_polynomials=[0o27],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o27, 0o31]], [0o27])
             >>> A_mat, B_mat, C_mat, D_mat = code.state_space_representation()
             >>> A_mat
             array([[1, 1, 0, 0],
@@ -377,9 +357,7 @@ class ConvolutionalCode(base.ConvolutionalCode):
     def free_distance(self) -> int:
         r"""
         Examples:
-            >>> code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]],
-            ... )
+            >>> code = komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]])
             >>> code.free_distance()
             5
         """
