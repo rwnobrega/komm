@@ -112,7 +112,7 @@ class Modulation(base.Modulation[T]):
                    [0, 1],
                    [0, 0]])
         """
-        return self._labeling  # type: ignore
+        return self._labeling
 
     @cached_property
     def inverse_labeling(self) -> dict[tuple[int, ...], int]:

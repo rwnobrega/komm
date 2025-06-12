@@ -82,4 +82,4 @@ def get_labeling(
         if labeling not in allowed_labelings:
             raise ValueError(f"if string, 'labeling' must be in {allowed_labelings}")
         return labelings[labeling](*args, **kwargs)
-    return np.asarray(labeling, dtype=int)  # type: ignore
+    return np.asarray(labeling, dtype=int)

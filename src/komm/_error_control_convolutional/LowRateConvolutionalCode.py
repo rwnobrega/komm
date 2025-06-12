@@ -110,7 +110,7 @@ class LowRateConvolutionalCode(base.ConvolutionalCode):
             >>> code.constraint_lengths
             array([6])
         """
-        return np.array([self.degree], dtype=int)  # type: ignore
+        return np.array([self.degree], dtype=int)
 
     @cached_property
     def overall_constraint_length(self) -> int:

@@ -145,7 +145,7 @@ class HighRateConvolutionalCode(base.ConvolutionalCode):
         """
         ps = self.h_row[:-1]
         q = self.h_row[-1]
-        return np.array([max(p.degree, q.degree) for p in ps], dtype=int)  # type: ignore
+        return np.array([max(p.degree, q.degree) for p in ps], dtype=int)
 
     @cached_property
     def overall_constraint_length(self) -> int:
