@@ -9,7 +9,7 @@ from typing_extensions import final
 
 from .._util.decorators import vectorize
 from .._util.information_theory import marginalize_bits
-from ..types import Array2D
+from ..types import Array1D, Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
 
@@ -29,7 +29,7 @@ class Modulation(ABC, Generic[T]):
 
     @cached_property
     @abstractmethod
-    def constellation(self) -> npt.NDArray[T]:
+    def constellation(self) -> Array1D[T]:
         r"""
         The constellation $\mathbf{X}$ of the modulation.
         """

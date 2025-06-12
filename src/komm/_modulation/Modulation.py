@@ -4,7 +4,7 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from ..types import Array2D
+from ..types import Array1D, Array2D
 from . import base
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -86,7 +86,7 @@ class Modulation(base.Modulation[T]):
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
-    def constellation(self) -> npt.NDArray[T]:
+    def constellation(self) -> Array1D[T]:
         r"""
         Examples:
             >>> modulation = komm.Modulation(

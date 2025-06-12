@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .._util.decorators import vectorize
 from .._util.special_functions import logcosh
-from ..types import Array2D
+from ..types import Array1D, Array2D
 from . import base
 from .constellations import constellation_pam
 from .labelings import get_labeling
@@ -85,7 +85,7 @@ class PAModulation(base.Modulation[np.floating]):
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
-    def constellation(self) -> npt.NDArray[np.floating]:
+    def constellation(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> pam = komm.PAModulation(4)
