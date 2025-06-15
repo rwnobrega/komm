@@ -52,17 +52,13 @@ Modulation:
   - PSKModulation
   - APSKModulation
 Pulse formatting:
-  Pulses:
-    - Pulse
-    - RectangularPulse
-    - ManchesterPulse
-    - SincPulse
-    - RaisedCosinePulse
-    - RootRaisedCosinePulse
-    - GaussianPulse
-  Filtering:
-    - TransmitFilter
-    - ReceiveFilter
+  - Pulse
+  - RectangularPulse
+  - ManchesterPulse
+  - SincPulse
+  - RaisedCosinePulse
+  - RootRaisedCosinePulse
+  - GaussianPulse
 Sequences:
   Binary sequences:
     - BinarySequence

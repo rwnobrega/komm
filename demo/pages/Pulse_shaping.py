@@ -35,23 +35,17 @@ with cols[2]:
         step=2,
     )
 
-dms = komm.DiscreteMemorylessSource(np.ones(4) / 4)
-
-bits = dms(10)
-seq = 2 * bits - 3
-
 pulse = komm.RaisedCosinePulse(rolloff=rolloff)
-tx_filter = komm.TransmitFilter(
-    pulse,
-    samples_per_symbol=sps,
-    truncation=truncation,
-)
-t, _ = tx_filter.axes(seq)
-yt = tx_filter(seq)
+info = np.array([3, 1, -1, 1, -3, -1, 1, -3, 3, 1])
+x = np.zeros(info.size * sps)
+x[::sps] = info
+p = pulse.taps(samples_per_symbol=sps, truncation=truncation)
+y = np.convolve(x, p)
+t = np.arange(y.size) / sps - truncation // 2
 
 fig, ax = plt.subplots(figsize=(12, 4))
-ax.stem(seq, linefmt="r", markerfmt="ro")
-ax.plot(t, yt, "o-", markersize=2)
+ax.stem(info, linefmt="r", markerfmt="ro")
+ax.plot(t, y, "o-", markersize=2)
 ax.axis((-3, 12, -4, 4))
 ax.set_xlabel("$t / T_b$")
 ax.set_ylabel("$y(t)$")
