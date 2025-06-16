@@ -59,17 +59,17 @@ def test_pulses_taps():
     pulse = komm.RectangularPulse(0.25)
     np.testing.assert_allclose(
         pulse.taps(samples_per_symbol=3),
-        np.array([1.0, 0.0, 0.0]),
+        [1.0, 0.0, 0.0, 0.0],
     )
 
     pulse = komm.SincPulse()
     np.testing.assert_allclose(
         pulse.taps(samples_per_symbol=4, truncation=4),
-        np.array([
-            [0.0, -0.128617, -0.212207, -0.180063],
-            [0.0, +0.300105, +0.636620, +0.900316],
-            [1.0, +0.900316, +0.636620, +0.300105],
-            [0.0, -0.180063, -0.212207, -0.128617],
-        ]).flatten(),
+        # fmt: off
+        [0.0, -0.128617, -0.212207, -0.180063,
+         0.0, +0.300105, +0.636620, +0.900316,
+         1.0, +0.900316, +0.636620, +0.300105,
+         0.0, -0.180063, -0.212207, -0.128617, 0.0],
+        # fmt: on
         atol=1e-6,
     )

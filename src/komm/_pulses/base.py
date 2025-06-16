@@ -73,5 +73,5 @@ class Pulse(ABC):
     ) -> npt.NDArray[np.floating]:
         sps = samples_per_symbol
         start, end = self.time_span(truncation=truncation)
-        t = np.arange(start * sps, end * sps) / sps
+        t = np.arange(start * sps, end * sps + 1) / sps
         return self.waveform(t)
