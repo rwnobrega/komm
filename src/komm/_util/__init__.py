@@ -7,6 +7,7 @@ from .information_theory import (
     entropy,
     relative_entropy,
 )
+from .signal_processing import sampling_rate_compress, sampling_rate_expand
 from .special_functions import boxplus, gaussian_q, gaussian_q_inv, marcum_q
 
 __all__ = [
@@ -19,6 +20,8 @@ __all__ = [
     "binary_entropy_inv",
     "entropy",
     "relative_entropy",
+    "sampling_rate_compress",
+    "sampling_rate_expand",
     "boxplus",
     "gaussian_q",
     "gaussian_q_inv",
