@@ -97,4 +97,27 @@ class SincPulse(base.Pulse):
 
     @cached_property
     def support(self) -> tuple[float, float]:
+        r"""
+        For the sinc pulse, the support is given by $(-\infty, \infty)$.
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.support
+            (-inf, inf)
+        """
         return (-np.inf, np.inf)
+
+    def taps(
+        self,
+        samples_per_symbol: int,
+        span: tuple[int, int] | None = None,
+    ) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.taps(samples_per_symbol=4, span=(-1, 1)).round(3)
+            array([0.   , 0.3  , 0.637, 0.9  , 1.   , 0.9  , 0.637, 0.3  , 0.   ])
+            >>> pulse.taps(samples_per_symbol=4, span=(-16, 16)).shape
+            (129,)
+        """
+        return super().taps(samples_per_symbol, span)

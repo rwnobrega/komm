@@ -105,4 +105,27 @@ class GaussianPulse(base.Pulse):
 
     @cached_property
     def support(self) -> tuple[float, float]:
+        r"""
+        For the Gaussian pulse, the support is given by $(-\infty, \infty)$.
+
+        Examples:
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
+            >>> pulse.support
+            (-inf, inf)
+        """
         return (-np.inf, np.inf)
+
+    def taps(
+        self,
+        samples_per_symbol: int,
+        span: tuple[int, int] | None = None,
+    ) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> pulse = komm.GaussianPulse(half_power_bandwidth=0.25)
+            >>> pulse.taps(samples_per_symbol=4, span=(-1, 1)).round(3)
+            array([0.169, 0.367, 0.641, 0.895, 1.   , 0.895, 0.641, 0.367, 0.169])
+            >>> pulse.taps(samples_per_symbol=4, span=(-16, 16)).shape
+            (129,)
+        """
+        return super().taps(samples_per_symbol, span)

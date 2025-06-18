@@ -129,4 +129,27 @@ class RaisedCosinePulse(base.Pulse):
 
     @cached_property
     def support(self) -> tuple[float, float]:
+        r"""
+        For the raised-cosine pulse, the support is given by $(-\infty, \infty)$.
+
+        Examples:
+            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
+            >>> pulse.support
+            (-inf, inf)
+        """
         return (-np.inf, np.inf)
+
+    def taps(
+        self,
+        samples_per_symbol: int,
+        span: tuple[int, int] | None = None,
+    ) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
+            >>> pulse.taps(samples_per_symbol=4, span=(-1, 1)).round(3)
+            array([0.   , 0.29 , 0.627, 0.897, 1.   , 0.897, 0.627, 0.29 , 0.   ])
+            >>> pulse.taps(samples_per_symbol=4, span=(-16, 16)).shape
+            (129,)
+        """
+        return super().taps(samples_per_symbol, span)

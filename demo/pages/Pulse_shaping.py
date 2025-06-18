@@ -38,7 +38,7 @@ with cols[2]:
 pulse = komm.RaisedCosinePulse(rolloff=rolloff)
 info = np.array([3, 1, -1, 1, -3, -1, 1, -3, 3, 1])
 x = komm.sampling_rate_expand(info, factor=sps)
-p = pulse.taps(samples_per_symbol=sps, truncation=truncation)
+p = pulse.taps(samples_per_symbol=sps, span=(-truncation // 2, truncation // 2))
 y = np.convolve(x, p)
 t = np.arange(y.size) / sps - truncation // 2
 

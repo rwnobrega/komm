@@ -116,4 +116,28 @@ class RootRaisedCosinePulse(base.Pulse):
 
     @cached_property
     def support(self) -> tuple[float, float]:
+        r"""
+        For the root-raised-cosine pulse, the support is given by $(-\infty, \infty)$.
+
+        Examples:
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+            >>> pulse.support
+            (-inf, inf)
+        """
         return (-np.inf, np.inf)
+
+    def taps(
+        self,
+        samples_per_symbol: int,
+        span: tuple[int, int] | None = None,
+    ) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+            >>> pulse.taps(samples_per_symbol=4, span=(-1, 1)).round(3)
+            array([-0.064,  0.238,  0.622,  0.943,  1.068,  0.943,  0.622,  0.238,
+                   -0.064])
+            >>> pulse.taps(samples_per_symbol=4, span=(-16, 16)).shape
+            (129,)
+        """
+        return super().taps(samples_per_symbol, span)

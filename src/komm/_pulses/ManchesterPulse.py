@@ -104,4 +104,27 @@ class ManchesterPulse(base.Pulse):
 
     @cached_property
     def support(self) -> tuple[float, float]:
+        r"""
+        For the Manchester pulse, the support is given by $[0, 1]$.
+
+        Examples:
+            >>> pulse = komm.ManchesterPulse()
+            >>> pulse.support
+            (0.0, 1.0)
+        """
         return (0.0, 1.0)
+
+    def taps(
+        self,
+        samples_per_symbol: int,
+        span: tuple[int, int] | None = None,
+    ) -> npt.NDArray[np.floating]:
+        r"""
+        Examples:
+            >>> pulse = komm.ManchesterPulse()
+            >>> pulse.taps(samples_per_symbol=4)  # Default span is [0, 1]
+            array([-1., -1.,  1.,  1.,  0.])
+            >>> pulse.taps(samples_per_symbol=4, span=(-1, 1))
+            array([ 0., 0., 0., 0., -1., -1.,  1.,  1.,  0.])
+        """
+        return super().taps(samples_per_symbol, span)

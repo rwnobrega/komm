@@ -45,16 +45,6 @@ def test_pulses_waveform_vs_autocorrelation(pulse: komm.abc.Pulse):
     np.testing.assert_allclose(R, pulse.autocorrelation(τs), atol=1e-3)
 
 
-def test_pulses_support_and_time_span():
-    pulse = komm.RectangularPulse(0.25)
-    assert pulse.support == (0.0, 0.25)
-    assert pulse.time_span() == (0, 1)
-
-    pulse = komm.SincPulse()
-    assert pulse.support == (-np.inf, np.inf)
-    assert pulse.time_span(truncation=4) == (-2, 2)
-
-
 def test_pulses_taps():
     pulse = komm.RectangularPulse(0.25)
     np.testing.assert_allclose(
@@ -64,7 +54,7 @@ def test_pulses_taps():
 
     pulse = komm.SincPulse()
     np.testing.assert_allclose(
-        pulse.taps(samples_per_symbol=4, truncation=4),
+        pulse.taps(samples_per_symbol=4, span=(-2, 2)),
         # fmt: off
         [0.0, -0.128617, -0.212207, -0.180063,
          0.0, +0.300105, +0.636620, +0.900316,
