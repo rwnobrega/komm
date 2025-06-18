@@ -94,6 +94,7 @@ Utilities:
   - int_to_bits
   - sampling_rate_compress
   - sampling_rate_expand
+  - fourier_transform
   - boxplus
   - gaussian_q
   - gaussian_q_inv

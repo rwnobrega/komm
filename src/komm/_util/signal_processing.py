@@ -116,3 +116,39 @@ def sampling_rate_expand(
     indexer[axis] = slice(offset, shape[axis], factor)
     output[tuple(indexer)] = input
     return output
+
+
+def fourier_transform(
+    waveform: npt.ArrayLike,
+    time_step: float,
+    nfft: int | None = None,
+    axis: int = -1,
+) -> tuple[npt.NDArray[np.complexfloating], npt.NDArray[np.floating]]:
+    r"""
+    Computes the Fourier transform. This function applies a shift to the spectrum (so that the zero frequency component is at the center) and scales the output by a given time step. Both the spectrum and the corresponding frequency bins are returned.
+
+    Note:
+        This is a simple wrapper around `numpy.fft` functions.
+
+    Parameters:
+        waveform: The input array representing the waveform to be transformed.
+        time_step: The time step between samples in the waveform.
+        nfft: The number of points in the FFT. If `None`, it defaults to the size of the input along the specified axis.
+        axis: The axis along which to compute the Fourier transform. Default is the last axis.
+
+    Returns:
+        spectrum: The spectrum correponding to the input waveform.
+        frequencies: The corresponding frequency bins.
+
+    Examples:
+        >>> spectrum, frequencies = komm.fourier_transform([1, 2, 3, 4], time_step=0.1)
+        >>> spectrum
+        array([-0.2+0.j , -0.2-0.2j,  1. +0.j , -0.2+0.2j])
+        >>> frequencies
+        array([-5. , -2.5,  0. ,  2.5])
+    """
+    waveform = np.asarray(waveform)
+    n = nfft or waveform.shape[axis]
+    spectrum = np.fft.fftshift(np.fft.fft(waveform, n=n, axis=axis)) * time_step
+    frequencies = np.fft.fftshift(np.fft.fftfreq(n=n, d=time_step))
+    return spectrum, frequencies
