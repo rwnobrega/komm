@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.24.0 (2025-06-18)
+
+### Breaking changes
+
+- Converted `generator_matrix` from method to cached property in convolutional codes.
+
+- Removed `TransmitFilter` class and moved some functionality to pulse classes. Pulse formatting should now be performed directly with NumPy's `convolve`, the new pulse `taps` method, and the new `sampling_rate_expand` helper function:
+
+  ```
+  pulse = komm.RaisedCosinePulse(rolloff=rolloff)
+  info = [3, 1, -1, 1, -3, -1, 1, -3, 3, 1]
+  x = komm.sampling_rate_expand(info, factor=sps)
+  p = pulse.taps(samples_per_symbol=sps, span=(-8, 8))
+  y = np.convolve(x, p)
+  t = np.arange(y.size) / sps
+  t -= 8  # Compensate for delay if desired
+  ```
+
+### Added
+
+- Added sampling rate [compression](https://komm.dev/ref/sampling_rate_compress) and [expansion](https://komm.dev/ref/sampling_rate_expand) helper functions.
+- Added [Fourier transform](https://komm.dev/ref/fourier_transform) helper function.
+
+### Fixed
+
+- Restored methods `constraint_lengths`, `overall_constraint_length`, and `memory_order` (according to [JZ15] definitions) in convolutional codes.
+
 ## v0.23.0 (2025-05-30)
 
 ### Breaking changes
