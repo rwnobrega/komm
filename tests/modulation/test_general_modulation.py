@@ -25,25 +25,25 @@ def test_general_modulation_invalid():
         labeling=[[0, 0], [0, 1], [1, 1], [1, 0]],
     )
     # Constellation order is not a power of 2
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="must be a power of two"):
         komm.Modulation(
             constellation=[1, 2, 3],
             labeling=[[0, 0], [0, 1], [1, 0]],
         )
     # Invalid shape of labeling
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="shape of 'labeling' must be"):
         komm.Modulation(
             constellation=[1, 2, 3, 4],
             labeling=[[0, 0], [0, 1], [1, 0]],
         )
     # Non binary labeling
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="must be either 0 or 1"):
         komm.Modulation(
             constellation=[1, 2, 3, 4],
             labeling=[[0, 0], [0, 1], [1, 2], [1, 0]],
         )
     # Non distinct labeling
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="must be distinct"):
         komm.Modulation(
             constellation=[1, 2, 3, 4],
             labeling=[[0, 0], [0, 0], [1, 1], [1, 0]],

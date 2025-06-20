@@ -78,11 +78,11 @@ def test_pam_labeling():
 
 
 def test_pam_invalid():
-    with pytest.raises(ValueError):  # Invalid order
+    with pytest.raises(ValueError, match="must be a power of two"):
         komm.PAModulation(3)
-    with pytest.raises(ValueError):  # Invalid labeling
+    with pytest.raises(ValueError, match="if string, 'labeling' must be in"):
         komm.PAModulation(4, labeling="invalid")
-    with pytest.raises(ValueError):  # Invalid labeling
+    with pytest.raises(ValueError, match="shape of 'labeling' must be"):
         komm.PAModulation(4, labeling=[[0, 0], [1, 0], [1, 1]])
 
 

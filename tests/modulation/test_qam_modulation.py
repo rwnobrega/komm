@@ -84,13 +84,13 @@ def test_qam_vs_pam(orders, base_amplitudes):
 
 
 def test_qam_invalid():
-    with pytest.raises(ValueError):  # Invalid order
+    with pytest.raises(ValueError, match="must be a square power of two"):
         komm.QAModulation(8)
-    with pytest.raises(ValueError):  # Invalid order
+    with pytest.raises(ValueError, match="must be a power of two"):
         komm.QAModulation((6, 2))
-    with pytest.raises(ValueError):  # Invalid order
+    with pytest.raises(ValueError, match="must be a power of two"):
         komm.QAModulation((3, 3))
-    with pytest.raises(ValueError):  # Invalid labeling
+    with pytest.raises(ValueError, match="if string, 'labeling' must be in"):
         komm.QAModulation(4, labeling="invalid")
-    with pytest.raises(ValueError):  # Invalid labeling
+    with pytest.raises(ValueError, match="shape of 'labeling' must be"):
         komm.QAModulation(4, labeling=[[0, 0], [1, 0], [1, 1]])

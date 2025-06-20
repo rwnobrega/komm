@@ -84,7 +84,7 @@ class QAModulation(base.Modulation[np.complexfloating]):
         else:
             if not math.isqrt(orders) ** 2 == orders:
                 raise ValueError(
-                    "when a single integer, 'orders' must be a square power of 2"
+                    "when a single integer, 'orders' must be a square power of two"
                 )
             self._orders = (math.isqrt(orders), math.isqrt(orders))
         if isinstance(base_amplitudes, Iterable):
