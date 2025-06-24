@@ -27,7 +27,7 @@ class GaussianPulse(base.Pulse):
       </span>
     </div>
 
-    Attributes:
+    Parameters:
         half_power_bandwidth: The half-power bandwidth $B$ of the pulse. The default value is `1.0`.
     """
 

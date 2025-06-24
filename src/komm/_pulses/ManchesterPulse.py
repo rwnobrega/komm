@@ -27,9 +27,9 @@ class ManchesterPulse(base.Pulse):
     ![Manchester pulse.](/fig/pulse_manchester.svg)
     </figure>
 
-    **Attributes:**
+    **Parameters:**
 
-    <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No attributes)</span>
+    <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No parameters)</span>
     """
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:

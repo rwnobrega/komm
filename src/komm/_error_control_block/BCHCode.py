@@ -42,7 +42,7 @@ class BCHCode(CyclicCode):
         - For $\delta = 3$ it reduces to the [Hamming code](/ref/HammingCode).
         - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode).
 
-    Attributes:
+    Parameters:
         mu: The parameter $\mu$ of the BCH code.
         delta: The Bose distance $\delta$ of the BCH code.
 

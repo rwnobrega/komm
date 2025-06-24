@@ -23,7 +23,7 @@ class BinarySymmetricChannel(base.DiscreteMemorylessChannel):
     $$
     where $Z_n$ are iid Bernoulli random variables with $\Pr[Z_n = 1] = p$. For more details, see <cite>CT06, Sec. 7.1.4</cite>.
 
-    Attributes:
+    Parameters:
         crossover_probability: The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
     """
 

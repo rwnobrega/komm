@@ -19,7 +19,7 @@ class CordaroWagnerCode(BlockCode):
     - Redundancy: $m = n - 2$
     - Minimum distance: $d = \left\lceil 2n / 3 \right\rceil - 1$
 
-    Attributes:
+    Parameters:
         n: The length $n$ of the code. Must satisfy $n \geq 2$.
 
     Examples:

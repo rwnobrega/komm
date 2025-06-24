@@ -36,7 +36,7 @@ class RectangularPulse(base.Pulse):
         - For $w = 1$ it is also called the _NRZ pulse_.
         - For $w = 0.5$ it is also called the _halfway RZ pulse_.
 
-    Attributes:
+    Parameters:
         width: The relative width $w$ of the pulse. Must satisfy $0 < w \leq 1$. The default value is `1.0`.
     """
 

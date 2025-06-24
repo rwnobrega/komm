@@ -29,7 +29,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
     For more details, see <cite>LC04, Sec. 12.7</cite> and <cite>WBR01</cite>.
 
-    Attributes:
+    Parameters:
         convolutional_code: The convolutional code to be terminated.
 
         num_blocks: The number $h$ of information blocks.

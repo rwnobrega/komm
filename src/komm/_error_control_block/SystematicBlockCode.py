@@ -15,7 +15,7 @@ class SystematicBlockCode(base.BlockCode):
 
     The constructor expects the parity submatrix and the information set.
 
-    Attributes:
+    Parameters:
         parity_submatrix: The parity submatrix $P$ the code, which is a $k \times m$ binary matrix.
 
         information_set: Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings `'left'` or `'right'`. The default value is `'left'`.

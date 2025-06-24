@@ -14,7 +14,7 @@ class UniformQuantizer(base.ScalarQuantizer):
     r"""
     Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels. For more details, see <cite>Say06, Sec. 9.4</cite>.
 
-    Attributes:
+    Parameters:
         num_levels: The number of quantization levels $L$. It must be greater than $1$.
 
         input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal. Default is $(-1.0, 1.0)$.

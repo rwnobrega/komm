@@ -35,7 +35,7 @@ class HammingCode(SystematicBlockCode):
         - Its dual is the [simplex code](/ref/SimplexCode).
         - Hamming codes are perfect codes.
 
-    Attributes:
+    Parameters:
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
         extended: Whether to use the extended version of the Hamming code. Default is `False`.
 

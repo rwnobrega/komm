@@ -27,7 +27,7 @@ class RootRaisedCosinePulse(base.Pulse):
 
     For more details, see [Wikipedia: Root-raised-cosine filter](https://en.wikipedia.org/wiki/Root-raised-cosine_filter).
 
-    Attributes:
+    Parameters:
         rolloff: The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `1.0`.
     """
 

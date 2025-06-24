@@ -40,7 +40,7 @@ class GolayCode(SystematicBlockCode):
     Notes:
         - The binary Golay code is a perfect code.
 
-    Attributes:
+    Parameters:
         extended: If `True`, constructs the code in extended version. The default value is `False`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.

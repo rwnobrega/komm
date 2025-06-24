@@ -23,7 +23,7 @@ class ZChannel(base.DiscreteMemorylessChannel):
     $$
     where $A_n$ are iid Bernoulli random variables with $\Pr[A_n = 0] = p$.
 
-    Attributes:
+    Parameters:
         decay_probability: The channel decay probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
     """
 

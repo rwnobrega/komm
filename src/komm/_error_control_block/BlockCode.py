@@ -14,7 +14,7 @@ class BlockCode(base.BlockCode):
 
     The constructor expects either the generator matrix or the check matrix.
 
-    Attributes:
+    Parameters:
         generator_matrix: The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.
 
         check_matrix: The check matrix $H$ of the code, which is a $m \times n$ binary matrix.

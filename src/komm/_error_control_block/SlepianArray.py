@@ -24,7 +24,7 @@ class SlepianArray:
 
     For more details, see <cite>LC04, Sec. 3.5</cite>.
 
-    Attributes:
+    Parameters:
         code: The linear block code for which the Slepian array is generated.
     """
 

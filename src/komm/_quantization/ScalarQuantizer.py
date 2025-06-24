@@ -15,7 +15,7 @@ class ScalarQuantizer(base.ScalarQuantizer):
     $$
     Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x < t_{i+1}$, where $i \in [0:L)$. For more details, see <cite>Say06, Ch. 9</cite>.
 
-    Attributes:
+    Parameters:
         levels: The quantizer levels $v_0, v_1, \ldots, v_{L-1}$. It should be a list floats of length $L$.
 
         thresholds: The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$. It should be a list of floats of length $L - 1$.

@@ -30,7 +30,7 @@ class SimplexCode(SystematicBlockCode):
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
 
-    Attributes:
+    Parameters:
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
         extended: Whether to use the extended version of the Simplex code. Default is `False`.
 

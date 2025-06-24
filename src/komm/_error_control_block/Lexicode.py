@@ -16,7 +16,7 @@ class Lexicode(BlockCode):
     r"""
     Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code.
 
-    Attributes:
+    Parameters:
         n: The length $n$ of the code.
         d: The minimum distance $d$ of the code.
 

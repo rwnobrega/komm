@@ -39,7 +39,7 @@ class RaisedCosinePulse(base.Pulse):
         - For $\alpha = 0$ it reduces to the [sinc pulse](/ref/SincPulse).
         - For $\alpha = 1$ it becomes what is known as the _full cosine roll-off pulse_.
 
-    Attributes:
+    Parameters:
         rolloff: The roll-off factor $\alpha$ of the pulse. Must satisfy $0 \leq \alpha \leq 1$. The default value is `1.0`.
     """
 

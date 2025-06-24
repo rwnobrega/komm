@@ -23,7 +23,7 @@ class SingleParityCheckCode(BlockCode):
     Notes:
         - Its dual is the [repetition code](/ref/RepetitionCode).
 
-    Attributes:
+    Parameters:
         n (int): The length $n$ of the code. Must be a positive integer.
 
     Examples:
