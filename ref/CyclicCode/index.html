@@ -3550,7 +3550,7 @@
 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 5</cite> and <cite><abbr title="Robert J. McEliece. The Theory of Information and Coding. Cambridge University Press, 2nd edition, 2004. ISBN 978-0511606267.">McE04</abbr>, Ch. 8</cite>.</p>
 <p>The constructor expects either the generator polynomial or the check polynomial.</p>
 
-  <p><strong>Attributes:</strong></p>
+  <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
         <b><code>length</code></b>
@@ -3562,7 +3562,7 @@
       </li>
       <li class="field-body">
         <b><code>generator_polynomial</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span></code>)</span>
+            <span class="doc-param-annotation">(<code><span title="typing.SupportsInt">SupportsInt</span> | None</code>)</span>
         –
         <div class="doc-md-description">
           <p>The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
@@ -3570,7 +3570,7 @@
       </li>
       <li class="field-body">
         <b><code>check_polynomial</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._algebra.BinaryPolynomial">BinaryPolynomial</span></code>)</span>
+            <span class="doc-param-annotation">(<code><span title="typing.SupportsInt">SupportsInt</span> | None</code>)</span>
         –
         <div class="doc-md-description">
           <p>The check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a <a href="/ref/BinaryPolynomial">binary polynomial</a> or as an integer to be converted to the former.</p>
@@ -3578,6 +3578,7 @@
       </li>
       <li class="field-body">
         <b><code>systematic</code></b>
+            <span class="doc-param-annotation">(<code><span title="bool">bool</span></code>)</span>
         –
         <div class="doc-md-description">
           <p>Whether the encoder is systematic. Default is <code>True</code>.</p>

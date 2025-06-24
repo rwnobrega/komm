@@ -3517,11 +3517,11 @@
         <p>General binary linear block code. It is characterized by its <em>generator matrix</em> $G \in \mathbb{B}^{k \times n}$, and by its <em>check matrix</em> $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code <em>length</em>, <em>dimension</em>, and <em>redundancy</em>, respectively, and are related by $k + m = n$. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 3</cite>.</p>
 <p>The constructor expects either the generator matrix or the check matrix.</p>
 
-  <p><strong>Attributes:</strong></p>
+  <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
         <b><code>generator_matrix</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm.types.Array2D">Array2D</span>[<span title="numpy.integer">integer</span>]</code>)</span>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span>
         –
         <div class="doc-md-description">
           <p>The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.</p>
@@ -3529,7 +3529,7 @@
       </li>
       <li class="field-body">
         <b><code>check_matrix</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm.types.Array2D">Array2D</span>[<span title="numpy.integer">integer</span>]</code>)</span>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span>
         –
         <div class="doc-md-description">
           <p>The check matrix $H$ of the code, which is a $m \times n$ binary matrix.</p>

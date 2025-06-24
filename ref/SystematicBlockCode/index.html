@@ -3517,10 +3517,11 @@
         <p>Systematic linear block code. A <em>systematic linear block code</em> is a <a href="/ref/BlockCode">linear block code</a> in which the information bits can be found in predefined positions in the codeword, called the <em>information set</em> $\mathcal{K}$, which is a $k$-sublist of $[0 : n)$; the remaining positions are called the <em>parity set</em> $\mathcal{M}$, which is a $m$-sublist of $[0 : n)$. In this case, the generator matrix then has the property that the columns indexed by $\mathcal{K}$ are equal to $I_k$, and the columns indexed by $\mathcal{M}$ are equal to $P$. The check matrix has the property that the columns indexed by $\mathcal{M}$ are equal to $I_m$, and the columns indexed by $\mathcal{K}$ are equal to $P^\transpose$. The matrix $P \in \mathbb{B}^{k \times m}$ is called the <em>parity submatrix</em> of the code.</p>
 <p>The constructor expects the parity submatrix and the information set.</p>
 
-  <p><strong>Attributes:</strong></p>
+  <p><strong>Parameters:</strong></p>
   <ul>
       <li class="field-body">
         <b><code>parity_submatrix</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
           <p>The parity submatrix $P$ the code, which is a $k \times m$ binary matrix.</p>
@@ -3528,6 +3529,7 @@
       </li>
       <li class="field-body">
         <b><code>information_set</code></b>
+            <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>[&#39;left&#39;, &#39;right&#39;] | <span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
           <p>Either an array containing the indices of the information positions, which must be a $k$-sublist of $[0 : n)$, or one of the strings <code>'left'</code> or <code>'right'</code>. The default value is <code>'left'</code>.</p>
