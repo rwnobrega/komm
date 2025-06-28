@@ -4,13 +4,13 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from ..types import Array1D, Array2D
-from . import base
 
 T = TypeVar("T", np.floating, np.complexfloating)
 
 
-class Modulation(base.Modulation[T]):
+class Modulation(abc.Modulation[T]):
     r"""
     General modulation scheme. A *modulation scheme* of *order* $M = 2^m$ is defined by a *constellation* $\mathbf{X}$, which is a real or complex vector of length $M$, and a *binary labeling* $\mathbf{Q}$, which is an $M \times m$ binary matrix whose rows are all distinct. The $i$-th element of $\mathbf{X}$, for $i \in [0:M)$, is denoted by $x_i$ and is called the $i$-th *constellation symbol*. The $i$-th row of $\mathbf{Q}$, for $i \in [0:M)$, is called the *binary representation* of the $i$-th constellation symbol. For more details, see <cite>SA15, Sec. 2.5</cite>.
 

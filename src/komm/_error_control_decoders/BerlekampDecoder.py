@@ -4,16 +4,16 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement, find_roots
-from .._error_control_block import BCHCode
+from .._error_control_block.BCHCode import BCHCode
 from .._util.decorators import blockwise, vectorize, with_pbar
-from . import base
 from .util import get_pbar
 
 
 @dataclass
-class BerlekampDecoder(base.BlockDecoder[BCHCode]):
+class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
     r"""
     Berlekamp decoder for [BCH codes](/ref/BCHCode). For more details, see <cite>LC04, Sec. 6.3</cite>.
 

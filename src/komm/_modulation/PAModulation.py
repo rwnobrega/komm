@@ -4,15 +4,15 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._util.decorators import vectorize
 from .._util.special_functions import logcosh
 from ..types import Array1D, Array2D
-from . import base
 from .constellations import constellation_pam
 from .labelings import get_labeling
 
 
-class PAModulation(base.Modulation[np.floating]):
+class PAModulation(abc.Modulation[np.floating]):
     r"""
     Pulse-amplitude modulation (PAM). It is a real [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in the real line and have zero mean. More precisely, the the $i$-th constellation symbol is given by
     $$

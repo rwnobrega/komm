@@ -3,6 +3,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._util import global_rng
 from .._util.information_theory import (
     LogBase,
@@ -10,10 +11,9 @@ from .._util.information_theory import (
     arimoto_blahut,
     mutual_information,
 )
-from . import base
 
 
-class DiscreteMemorylessChannel(base.DiscreteMemorylessChannel):
+class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
     r"""
     General discrete memoryless channel (DMC). It is defined by an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, and a *transition probability matrix* $p_{Y \mid X}$. Here, for simplicity, the input and output alphabets are always taken as $\mathcal{X} = [0 : |\mathcal{X}|)$ and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. The transition probability matrix $p_{Y \mid X}$, of size $|\mathcal{X}|$-by-$|\mathcal{Y}|$, gives the conditional probability of receiving $Y = y$ given that $X = x$ is transmitted. For more details, see <cite>CT06, Ch. 7</cite>.
 

@@ -3,8 +3,8 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._util.bit_operations import int_to_bits
-from . import base
 
 
 @dataclass
@@ -28,7 +28,7 @@ class SlepianArray:
         code: The linear block code for which the Slepian array is generated.
     """
 
-    code: base.BlockCode
+    code: abc.BlockCode
 
     def __post_init__(self) -> None:
         self._leaders = self.code.coset_leaders()

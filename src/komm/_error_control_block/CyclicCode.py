@@ -6,13 +6,13 @@ from typing import SupportsInt
 import numpy as np
 import numpy.typing as npt
 
-from .._algebra import BinaryPolynomial
+from .. import abc
+from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._util.decorators import blockwise, vectorize
 from ..types import Array1D, Array2D
-from . import base
 
 
-class CyclicCode(base.BlockCode):
+class CyclicCode(abc.BlockCode):
     r"""
     General binary cyclic code. A cyclic code is a [linear block code](/ref/BlockCode) such that, if $c$ is a codeword, then every cyclic shift of $c$ is also a codeword. It is characterized by its *generator polynomial* $g(X)$, of degree $m$ (the redundancy of the code), and by its *check polynomial* $h(X)$, of degree $k$ (the dimension of the code). Those polynomials are related by $g(X) h(X) = X^n + 1$, where $n = k + m$ is the length of the code.
 

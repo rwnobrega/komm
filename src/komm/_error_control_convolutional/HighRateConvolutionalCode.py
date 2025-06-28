@@ -3,14 +3,15 @@ from functools import cache, cached_property
 import numpy as np
 import numpy.typing as npt
 
-from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
-from .._finite_state_machine import MealyMachine
+from .. import abc
+from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
+from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
 from ..types import Array1D, Array2D
-from . import base
 
 
-class HighRateConvolutionalCode(base.ConvolutionalCode):
+class HighRateConvolutionalCode(abc.ConvolutionalCode):
     r"""
     High-rate convolutional encoder. It is an $(n, n-1)$ recursive systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *check row* $h(D) \in \mathbb{F}_2[D]^n$ and realized in observable canonical form. By convention, the first $n - 1$ positions represent the information bits.
 

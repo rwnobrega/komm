@@ -4,9 +4,9 @@ from typing import Generic, TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_block.base import BlockCode
+from .. import abc
 
-T = TypeVar("T", bound=BlockCode)
+T = TypeVar("T", bound=abc.BlockCode)
 
 
 class BlockDecoder(ABC, Generic[T]):

@@ -3,10 +3,10 @@ from functools import cache
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 
 
-class FibonacciCode(base.IntegerCode):
+class FibonacciCode(abc.IntegerCode):
     r"""
     Fibonacci code. It is an integer code. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """

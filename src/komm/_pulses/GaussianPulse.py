@@ -4,11 +4,11 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 
 
 @dataclass
-class GaussianPulse(base.Pulse):
+class GaussianPulse(abc.Pulse):
     r"""
     Gaussian pulse. It is a [pulse](/ref/Pulse) with spectrum given by
     $$

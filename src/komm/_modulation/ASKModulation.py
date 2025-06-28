@@ -4,13 +4,13 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from ..types import Array1D, Array2D
-from . import base
 from .constellations import constellation_ask
 from .labelings import get_labeling
 
 
-class ASKModulation(base.Modulation[np.complexfloating]):
+class ASKModulation(abc.Modulation[np.complexfloating]):
     r"""
     Amplitude-shift keying (ASK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the points of the constellation symbols are *uniformly arranged* in a ray. More precisely, the $i$-th constellation symbol is given by
     $$

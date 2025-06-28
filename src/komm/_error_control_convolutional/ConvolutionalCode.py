@@ -4,15 +4,16 @@ from itertools import product
 import numpy as np
 import numpy.typing as npt
 
-from .._algebra import BinaryPolynomial, BinaryPolynomialFraction
-from .._finite_state_machine import MealyMachine
+from .. import abc
+from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
+from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
 from .._util.matrices import block_diagonal
 from ..types import Array1D, Array2D
-from . import base
 
 
-class ConvolutionalCode(base.ConvolutionalCode):
+class ConvolutionalCode(abc.ConvolutionalCode):
     r"""
     Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is realized in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, and <cite>LC04, Chs. 11, 12</cite>.
 

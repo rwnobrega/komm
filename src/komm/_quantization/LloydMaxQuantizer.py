@@ -5,11 +5,11 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 
 
 @dataclass
-class LloydMaxQuantizer(base.ScalarQuantizer):
+class LloydMaxQuantizer(abc.ScalarQuantizer):
     r"""
     Lloyd–Max scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) that minimizes the mean squared error (MSE) between the input signal $X$ and its quantized version. For more details, see <cite>Say06, Sec. 9.6.1</cite>.
 

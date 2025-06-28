@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from komm._util import autocorrelation, cyclic_autocorrelation
+import komm
 
 
 @pytest.mark.parametrize(
@@ -27,24 +27,24 @@ def test_autocorrelation_general(seq, answer):
         else:
             extra = max_lag - L + 1
             expected = np.concatenate((np.zeros(extra), answer, np.zeros(extra)))
-        assert np.allclose(autocorrelation(seq, shifts), expected)
+        assert np.allclose(komm.autocorrelation(seq, shifts), expected)
 
 
 def test_autocorrelation_wikipedia():
     assert np.allclose(
-        autocorrelation([2, 3, -1]),
+        komm.autocorrelation([2, 3, -1]),
         [14, 3, -2],
     )
     assert np.allclose(
-        autocorrelation([2, 3, -1], normalized=True),
+        komm.autocorrelation([2, 3, -1], normalized=True),
         [1, 3 / 14, -1 / 7],
     )
     assert np.allclose(
-        autocorrelation([2, 3, -1], shifts=[-1, 0, 1]),
+        komm.autocorrelation([2, 3, -1], shifts=[-1, 0, 1]),
         [3, 14, 3],
     )
     assert np.allclose(
-        autocorrelation([2, 3, -1], shifts=[-11, 2, 0, 6]),
+        komm.autocorrelation([2, 3, -1], shifts=[-11, 2, 0, 6]),
         [0, -2, 14, 0],
     )
 
@@ -61,7 +61,7 @@ def test_autocorrelation_wikipedia():
 )
 def test_autocorrelation_shifts(shifts, answer):
     seq = [0.7, 0.2, 0.4]
-    assert np.allclose(autocorrelation(seq, shifts), answer)
+    assert np.allclose(komm.autocorrelation(seq, shifts), answer)
 
 
 @pytest.mark.parametrize(
@@ -91,24 +91,24 @@ def test_cyclic_autocorrelation_general(seq, answer):
             expected = np.concatenate(
                 (answer[L - extra : L], answer, answer[L - 1 : L - 1 + extra])
             )
-        assert np.allclose(cyclic_autocorrelation(seq, shifts), expected)
+        assert np.allclose(komm.cyclic_autocorrelation(seq, shifts), expected)
 
 
 def test_cyclic_autocorrelation_wikipedia():
     assert np.allclose(
-        cyclic_autocorrelation([2, 3, -1]),
+        komm.cyclic_autocorrelation([2, 3, -1]),
         [14, 1, 1],
     )
     assert np.allclose(
-        cyclic_autocorrelation([2, 3, -1], normalized=True),
+        komm.cyclic_autocorrelation([2, 3, -1], normalized=True),
         [1, 1 / 14, 1 / 14],
     )
     assert np.allclose(
-        cyclic_autocorrelation([2, 3, -1], shifts=[-1, 0, 1]),
+        komm.cyclic_autocorrelation([2, 3, -1], shifts=[-1, 0, 1]),
         [1, 14, 1],
     )
     assert np.allclose(
-        cyclic_autocorrelation([2, 3, -1], shifts=[-11, 2, 0, 6]),
+        komm.cyclic_autocorrelation([2, 3, -1], shifts=[-11, 2, 0, 6]),
         [1, 1, 14, 14],
     )
 
@@ -125,4 +125,4 @@ def test_cyclic_autocorrelation_wikipedia():
 )
 def test_cyclic_autocorrelation_shifts(shifts, answer):
     seq = [0.7, 0.2, 0.4]
-    assert np.allclose(cyclic_autocorrelation(seq, shifts), answer)
+    assert np.allclose(komm.cyclic_autocorrelation(seq, shifts), answer)

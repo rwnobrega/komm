@@ -4,13 +4,13 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_block import ReedMullerCode
+from .. import abc
+from .._error_control_block.ReedMullerCode import ReedMullerCode
 from .._util.decorators import blockwise, vectorize
-from . import base
 
 
 @dataclass
-class ReedDecoder(base.BlockDecoder[ReedMullerCode]):
+class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     r"""
     Reed decoder for [Reed-Muller codes](/ref/ReedMullerCode). It's a majority-logic decoding algorithm. For more details, see [LC04, Sec 4.3 and 10.9.1] for hard-decision decoding, and [LC04, Sec 10.9.2] for soft-decision decoding.
 

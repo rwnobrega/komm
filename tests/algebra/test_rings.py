@@ -1,7 +1,7 @@
 import pytest
 
 import komm
-from komm._algebra import BinaryPolynomial, ring
+from komm._algebra import ring
 
 
 @pytest.mark.parametrize(
@@ -15,4 +15,4 @@ from komm._algebra import BinaryPolynomial, ring
 def test_ring_determinant_binary_polynomial(matrix, determinant):
     # [McE98, p. 1104]
     matrix = [[komm.BinaryPolynomial(x) for x in row] for row in matrix]
-    assert ring.determinant(matrix) == BinaryPolynomial(determinant)
+    assert ring.determinant(matrix) == komm.BinaryPolynomial(determinant)

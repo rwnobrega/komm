@@ -5,17 +5,19 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_convolutional import TerminatedConvolutionalCode
+from .. import abc
+from .._error_control_convolutional.TerminatedConvolutionalCode import (
+    TerminatedConvolutionalCode,
+)
 from .._modulation.labelings import labeling_natural
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .._util.information_theory import marginalize_bits
-from . import base
 from .util import get_pbar
 
 
 @dataclass
-class BCJRDecoder(base.BlockDecoder[TerminatedConvolutionalCode]):
+class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     r"""
     Bahl–Cocke–Jelinek–Raviv (BCJR) decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). For more details, see <cite>LC04, Sec. 12.6</cite>.
 

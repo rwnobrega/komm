@@ -4,12 +4,12 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 from .util import raised_cosine, rect
 
 
 @dataclass
-class RaisedCosinePulse(base.Pulse):
+class RaisedCosinePulse(abc.Pulse):
     r"""
     Raised-cosine pulse. For a given *roll-off factor* $\alpha$ satisfing $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
     with spectrum given by

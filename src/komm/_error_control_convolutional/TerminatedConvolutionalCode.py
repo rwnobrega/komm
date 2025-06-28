@@ -7,8 +7,7 @@ import numpy as np
 import numpy.typing as npt
 from numpy.linalg import matrix_power
 
-from .._error_control_block.base import BlockCode
-from .._error_control_convolutional.base import ConvolutionalCode
+from .. import abc
 from .._util.decorators import blockwise, vectorize
 from .._util.matrices import null_matrix, pseudo_inverse
 from ..types import Array1D, Array2D
@@ -17,7 +16,7 @@ TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"
 
 
 @dataclass(eq=False)
-class TerminatedConvolutionalCode(BlockCode):
+class TerminatedConvolutionalCode(abc.BlockCode):
     r"""
     Terminated convolutional code. It is a [linear block code](/ref/BlockCode) obtained by terminating a $(n_0, k_0)$ [convolutional code](/ref/ConvolutionalCode). A total of $h$ information blocks (each containing $k_0$ information bits) is encoded. The dimension of the resulting block code is thus $k = h k_0$; its length depends on the termination mode employed. There are three possible termination modes:
 
@@ -80,7 +79,7 @@ class TerminatedConvolutionalCode(BlockCode):
         3
     """
 
-    convolutional_code: ConvolutionalCode
+    convolutional_code: abc.ConvolutionalCode
     num_blocks: int
     mode: TerminationMode = "zero-termination"
 
@@ -179,7 +178,7 @@ class TerminatedConvolutionalCode(BlockCode):
 
 @dataclass
 class TerminationStrategy(ABC):
-    convolutional_code: ConvolutionalCode
+    convolutional_code: abc.ConvolutionalCode
     num_blocks: int
 
     @abstractmethod

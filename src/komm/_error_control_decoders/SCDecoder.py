@@ -4,10 +4,10 @@ from typing import Literal, TypeAlias
 import numpy as np
 import numpy.typing as npt
 
-from .._error_control_block import PolarCode
+from .. import abc
+from .._error_control_block.PolarCode import PolarCode
 from .._util.decorators import blockwise, vectorize
 from .._util.special_functions import boxplus
-from . import base
 
 Belief: TypeAlias = npt.NDArray[np.floating]
 Decision: TypeAlias = npt.NDArray[np.integer]
@@ -19,7 +19,7 @@ def g(r: Belief, s: Belief, b: Decision) -> Belief:
 
 
 @dataclass
-class SCDecoder(base.BlockDecoder[PolarCode]):
+class SCDecoder(abc.BlockDecoder[PolarCode]):
     r"""
     Successive cancellation decoder for [Polar codes](/ref/PolarCode).
 

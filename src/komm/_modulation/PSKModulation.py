@@ -4,13 +4,13 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from ..types import Array1D, Array2D
-from . import base
 from .constellations import constellation_psk
 from .labelings import get_labeling
 
 
-class PSKModulation(base.Modulation[np.complexfloating]):
+class PSKModulation(abc.Modulation[np.complexfloating]):
     r"""
     Phase-shift keying (PSK) modulation. It is a complex [modulation scheme](/ref/Modulation) in which the constellation symbols are *uniformly arranged* in a circle. More precisely, the the $i$-th constellation symbol is given by
     $$

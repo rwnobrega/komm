@@ -6,7 +6,9 @@ from itertools import combinations
 import numpy as np
 import numpy.typing as npt
 
-from .._algebra import BinaryPolynomial, BinaryPolynomialFraction, domain, ring
+from .._algebra import domain, ring
+from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import invariant_factors

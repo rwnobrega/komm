@@ -4,13 +4,13 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 from .RaisedCosinePulse import RaisedCosinePulse
 from .util import raised_cosine
 
 
 @dataclass
-class RootRaisedCosinePulse(base.Pulse):
+class RootRaisedCosinePulse(abc.Pulse):
     r"""
     Root-raised-cosine pulse. It is a [pulse](/ref/Pulse) whose spectrum is given by the square root of the spectrum of the [raised cosine pulse](/ref/RaisedCosinePulse) with same roll-off factor.
 

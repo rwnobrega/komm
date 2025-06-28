@@ -1,10 +1,10 @@
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 
 
-class UnaryCode(base.IntegerCode):
+class UnaryCode(abc.IntegerCode):
     r"""
     Unary code. It is an integer code. For the definition of this code, see [Wikipedia: Unary coding](https://en.wikipedia.org/wiki/Unary_coding).
     """

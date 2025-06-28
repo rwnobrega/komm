@@ -4,12 +4,12 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 from .util import rect
 
 
 @dataclass
-class SincPulse(base.Pulse):
+class SincPulse(abc.Pulse):
     r"""
     Sinc pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$

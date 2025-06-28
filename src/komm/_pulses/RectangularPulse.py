@@ -4,12 +4,12 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from . import base
+from .. import abc
 from .util import rect, tri
 
 
 @dataclass
-class RectangularPulse(base.Pulse):
+class RectangularPulse(abc.Pulse):
     r"""
     Rectangular pulse. It is a [pulse](/ref/Pulse) with waveform given by
     $$
