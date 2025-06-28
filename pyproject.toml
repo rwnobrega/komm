@@ -55,6 +55,9 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 unstable = true
 
+[tool.isort]
+profile = "black"
+
 [tool.pyright]
 include = ["src", "tests"]
 typeCheckingMode = "basic"

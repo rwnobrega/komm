@@ -1,9 +1,15 @@
 from importlib import metadata as _metadata
 
+__version__ = _metadata.version("komm")
+
+
+# fmt: off
+# isort: off
+
 # Algebra
 from ._algebra.BinaryPolynomial import BinaryPolynomial
 from ._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
-from ._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement
+from ._algebra.FiniteBifield import FiniteBifield
 from ._algebra.Integers import Integer
 
 # Channels
@@ -34,15 +40,9 @@ from ._error_control_checksum.CyclicRedundancyCheck import CyclicRedundancyCheck
 
 # Error control - convolutional
 from ._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
-from ._error_control_convolutional.HighRateConvolutionalCode import (
-    HighRateConvolutionalCode,
-)
-from ._error_control_convolutional.LowRateConvolutionalCode import (
-    LowRateConvolutionalCode,
-)
-from ._error_control_convolutional.TerminatedConvolutionalCode import (
-    TerminatedConvolutionalCode,
-)
+from ._error_control_convolutional.HighRateConvolutionalCode import HighRateConvolutionalCode
+from ._error_control_convolutional.LowRateConvolutionalCode import LowRateConvolutionalCode
+from ._error_control_convolutional.TerminatedConvolutionalCode import TerminatedConvolutionalCode
 from ._error_control_convolutional.ViterbiStreamDecoder import ViterbiStreamDecoder
 
 # Error control - decoders
@@ -114,25 +114,19 @@ from ._sources.DiscreteMemorylessSource import DiscreteMemorylessSource
 from ._util import global_rng
 from ._util.bit_operations import bits_to_int, int_to_bits
 from ._util.correlation import autocorrelation, cyclic_autocorrelation
-from ._util.information_theory import (
-    binary_entropy,
-    binary_entropy_inv,
-    entropy,
-    relative_entropy,
-)
-from ._util.signal_processing import (
-    fourier_transform,
-    sampling_rate_compress,
-    sampling_rate_expand,
-)
+from ._util.information_theory import binary_entropy, binary_entropy_inv, entropy, relative_entropy
+from ._util.signal_processing import fourier_transform, sampling_rate_compress, sampling_rate_expand
 from ._util.special_functions import boxplus, gaussian_q, gaussian_q_inv, marcum_q
+
+# isort: on
+# fmt: on
+
 
 __all__ = [
     # _algebra
     "BinaryPolynomial",
     "BinaryPolynomialFraction",
     "FiniteBifield",
-    "FiniteBifieldElement",
     "Integer",
     # _channels
     "AWGNChannel",
@@ -236,6 +230,3 @@ __all__ = [
     "gaussian_q_inv",
     "marcum_q",
 ]
-
-
-__version__ = _metadata.version("komm")
