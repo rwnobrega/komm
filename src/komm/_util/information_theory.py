@@ -6,62 +6,20 @@ import numpy as np
 import numpy.typing as npt
 
 from ..types import Array1D
-
-LogBase = float | Literal["e"]
-
-
-def assert_is_log_base(value: float | str) -> None:
-    if (isinstance(value, str) and value != "e") or (
-        isinstance(value, float) and value <= 0.0
-    ):
-        raise ValueError("log base must be 'e' or a positive float")
+from .validators import (
+    validate_log_base,
+    validate_pmf,
+    validate_probability,
+    validate_transition_matrix,
+)
 
 
-def assert_is_probability(value: float) -> None:
-    if not 0 <= value <= 1:
-        raise ValueError("probability must be between 0 and 1")
-
-
-class PMF(Array1D[np.floating]):
-    def __new__(cls, values: npt.ArrayLike):
-        arr = np.asarray(values, dtype=float)
-        if arr.ndim != 1:
-            raise ValueError("PMF must be a 1D array")
-        if not np.all(arr >= 0.0):
-            raise ValueError("PMF must be non-negative")
-        if not np.isclose(arr.sum(), 1.0):
-            raise ValueError("PMF must sum to 1.0")
-        obj = arr.view(cls)
-        return obj
-
-    def __array_finalize__(self, obj: npt.NDArray[np.floating] | None) -> None:
-        if obj is None:
-            return
-
-
-def random_pmf(size: int) -> PMF:
+def random_pmf(size: int) -> Array1D[np.floating]:
     pmf = np.random.rand(size)
-    return PMF(pmf / pmf.sum())
+    return pmf / pmf.sum()
 
 
-class TransitionMatrix(npt.NDArray[np.floating]):
-    def __new__(cls, values: npt.ArrayLike):
-        arr = np.asarray(values, dtype=float)
-        if arr.ndim != 2:
-            raise ValueError("Transition matrix must be a 2D array")
-        if not np.all(arr >= 0.0):
-            raise ValueError("Transition matrix must be non-negative")
-        if not np.allclose(arr.sum(axis=1), 1.0):
-            raise ValueError("Rows of transition matrix must sum to 1.0")
-        obj = arr.view(cls)
-        return obj
-
-    def __array_finalize__(self, obj: npt.NDArray[np.floating] | None) -> None:
-        if obj is None:
-            return
-
-
-def entropy(pmf: npt.ArrayLike, base: LogBase = 2.0) -> float:
+def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> float:
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
@@ -87,8 +45,8 @@ def entropy(pmf: npt.ArrayLike, base: LogBase = 2.0) -> float:
         >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +FLOAT_CMP
         np.float64(0.6931471805599453)
     """
-    pmf = PMF(pmf)
-    assert_is_log_base(base)
+    pmf = validate_pmf(pmf)
+    validate_log_base(base)
     if base == "e":
         return -np.dot(pmf, np.log(pmf, where=(pmf > 0)))
     elif base == 2.0:
@@ -115,7 +73,7 @@ def binary_entropy(p: float) -> float:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +FLOAT_CMP
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
-    assert_is_probability(p)
+    validate_probability(p)
     if p in {0.0, 1.0}:
         return 0.0
     return -p * log2(p) - (1 - p) * log2(1 - p)
@@ -153,7 +111,7 @@ def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
 def relative_entropy(
     pmf: npt.ArrayLike,
     qmf: npt.ArrayLike,
-    base: LogBase = 2.0,
+    base: float | Literal["e"] = 2.0,
 ) -> float:
     r"""
     Computes the relative entropy (Kullback–Leibler divergence) between two <span>pmf</span>s. Let $p$ and $q$ be two <span>pmf</span>s over the same alphabet $\mathcal{X}$. The relative entropy of $p$ with respect to $q$ is defined as
@@ -185,9 +143,9 @@ def relative_entropy(
         >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +FLOAT_CMP
         np.float64(inf)
     """
-    pmf = PMF(pmf)
-    qmf = PMF(qmf)
-    assert_is_log_base(base)
+    pmf = validate_pmf(pmf)
+    qmf = validate_pmf(qmf)
+    validate_log_base(base)
     with np.errstate(divide="ignore"):
         if base == "e":
             return np.dot(pmf, np.log(pmf / qmf))
@@ -200,11 +158,11 @@ def relative_entropy(
 def mutual_information(
     input_pmf: npt.ArrayLike,
     transition_matrix: npt.ArrayLike,
-    base: LogBase = 2.0,
+    base: float | Literal["e"] = 2.0,
 ) -> float:
-    input_pmf = PMF(input_pmf)
-    assert_is_log_base(base)
-    transition_matrix = TransitionMatrix(transition_matrix)
+    input_pmf = validate_pmf(input_pmf)
+    validate_log_base(base)
+    transition_matrix = validate_transition_matrix(transition_matrix)
     output_pmf = np.dot(input_pmf, transition_matrix)
     entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(

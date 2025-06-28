@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import Self
 
-from .._util.information_theory import PMF
+from .._util.validators import validate_pmf
 from .util import (
     Word,
     is_prefix_free,
@@ -308,7 +308,7 @@ class FixedToVariableCode:
             >>> code.rate([1/2, 1/4, 1/4])
             np.float64(1.5)
         """
-        pmf = PMF(pmf)
+        pmf = validate_pmf(pmf)
         k = self.source_block_size
         probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
         lengths = [len(word) for word in self.codewords]

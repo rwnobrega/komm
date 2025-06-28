@@ -1,16 +1,13 @@
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util import global_rng
-from .._util.information_theory import (
-    LogBase,
-    TransitionMatrix,
-    arimoto_blahut,
-    mutual_information,
-)
+from .._util.information_theory import arimoto_blahut, mutual_information
+from .._util.validators import validate_transition_matrix
 
 
 class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
@@ -26,7 +23,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         transition_matrix: npt.ArrayLike,
         rng: np.random.Generator | None = None,
     ):
-        self._transition_matrix = TransitionMatrix(transition_matrix)
+        self._transition_matrix = validate_transition_matrix(transition_matrix)
         self.rng = rng or global_rng.get()
 
     def __repr__(self) -> str:
@@ -45,7 +42,9 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         return self._transition_matrix
 
     def mutual_information(
-        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+        self,
+        input_pmf: npt.ArrayLike,
+        base: float | Literal["e"] = 2.0,
     ) -> float:
         r"""
         The mutual information is given by
@@ -69,7 +68,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         """
         return mutual_information(input_pmf, self.transition_matrix, base)
 
-    def capacity(self, base: LogBase = 2.0) -> float:
+    def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         The channel capacity is given by
         $$

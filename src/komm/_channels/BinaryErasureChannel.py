@@ -1,17 +1,14 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util import global_rng
-from .._util.information_theory import (
-    PMF,
-    LogBase,
-    assert_is_probability,
-    binary_entropy,
-)
+from .._util.information_theory import binary_entropy
+from .._util.validators import validate_pmf, validate_probability
 
 
 @dataclass
@@ -27,7 +24,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
     rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     def __post_init__(self) -> None:
-        assert_is_probability(self.erasure_probability)
+        validate_probability(self.erasure_probability)
 
     @cached_property
     def input_cardinality(self) -> int:
@@ -65,7 +62,9 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         return np.array([[1 - epsilon, 0, epsilon], [0, 1 - epsilon, epsilon]])
 
     def mutual_information(
-        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+        self,
+        input_pmf: npt.ArrayLike,
+        base: float | Literal["e"] = 2.0,
     ) -> float:
         r"""
         For the BEC, it is given by
@@ -79,12 +78,12 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             >>> bec.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
             np.float64(0.7942195631902467)
         """
-        input_pmf = PMF(input_pmf)
+        input_pmf = validate_pmf(input_pmf)
         epsilon = self.erasure_probability
         pi = input_pmf[1]
         return (1.0 - epsilon) * binary_entropy(pi) / np.log2(base)
 
-    def capacity(self, base: LogBase = 2.0) -> float:
+    def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         For the BEC, it is given by
         $$

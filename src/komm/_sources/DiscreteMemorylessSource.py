@@ -1,10 +1,12 @@
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .._util import global_rng
-from .._util.information_theory import PMF, LogBase, entropy
+from .._util.information_theory import entropy
+from .._util.validators import validate_pmf
 
 
 class DiscreteMemorylessSource:
@@ -31,7 +33,7 @@ class DiscreteMemorylessSource:
             if not pmf >= 1:
                 raise ValueError("cardinality must be at least 1")
             pmf = np.full(pmf, 1 / pmf)
-        self.pmf = PMF(pmf)
+        self.pmf = validate_pmf(pmf)
         self.rng = rng or global_rng.get()
 
     def __repr__(self) -> str:
@@ -44,7 +46,7 @@ class DiscreteMemorylessSource:
         """
         return self.pmf.size
 
-    def entropy(self, base: LogBase = 2.0) -> float:
+    def entropy(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         Returns the source entropy $\mathrm{H}(X)$. See [`komm.entropy`](/ref/entropy) for more details.
 

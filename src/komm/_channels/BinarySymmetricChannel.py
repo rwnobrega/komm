@@ -1,17 +1,14 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util import global_rng
-from .._util.information_theory import (
-    PMF,
-    LogBase,
-    assert_is_probability,
-    binary_entropy,
-)
+from .._util.information_theory import binary_entropy
+from .._util.validators import validate_pmf, validate_probability
 
 
 @dataclass
@@ -31,7 +28,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     def __post_init__(self) -> None:
-        assert_is_probability(self.crossover_probability)
+        validate_probability(self.crossover_probability)
 
     @cached_property
     def input_cardinality(self) -> int:
@@ -65,7 +62,9 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         return np.array([[1 - p, p], [p, 1 - p]])
 
     def mutual_information(
-        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+        self,
+        input_pmf: npt.ArrayLike,
+        base: float | Literal["e"] = 2.0,
     ) -> float:
         r"""
         For the BSC, it is given by
@@ -79,12 +78,12 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             >>> bsc.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
             np.float64(0.2754734936803773)
         """
-        input_pmf = PMF(input_pmf)
+        input_pmf = validate_pmf(input_pmf)
         p = self.crossover_probability
         pi = input_pmf[1]
         return (binary_entropy(p + pi - 2 * p * pi) - binary_entropy(p)) / np.log2(base)
 
-    def capacity(self, base: LogBase = 2.0) -> float:
+    def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         For the BSC, it is given by
         $$

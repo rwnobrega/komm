@@ -10,7 +10,8 @@ from tqdm import tqdm
 from typing_extensions import Self
 
 from .._util.docs import mkdocstrings
-from .._util.information_theory import PMF
+from .._util.validators import validate_pmf
+from ..types import Array1D
 from .util import Word
 from .VariableToFixedCode import VariableToFixedCode
 
@@ -56,7 +57,7 @@ class TunstallCode(VariableToFixedCode):
         pmf: npt.ArrayLike,
         target_block_size: int | None = None,
     ) -> None:
-        self.pmf = PMF(pmf)
+        self.pmf = validate_pmf(pmf)
         if target_block_size is None:
             target_block_size = ceil(log2(self.pmf.size))
         if 2**target_block_size < self.pmf.size:
@@ -88,7 +89,9 @@ class TunstallCode(VariableToFixedCode):
         return True
 
 
-def tunstall_algorithm(pmf: PMF, code_block_size: int) -> dict[Word, Word]:
+def tunstall_algorithm(
+    pmf: Array1D[np.floating], code_block_size: int
+) -> dict[Word, Word]:
     @dataclass
     class Node:
         sourceword: Word

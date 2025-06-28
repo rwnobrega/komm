@@ -1,17 +1,14 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util import global_rng
-from .._util.information_theory import (
-    PMF,
-    LogBase,
-    assert_is_probability,
-    binary_entropy,
-)
+from .._util.information_theory import binary_entropy
+from .._util.validators import validate_pmf, validate_probability
 
 
 @dataclass
@@ -31,7 +28,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
     rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
     def __post_init__(self) -> None:
-        assert_is_probability(self.decay_probability)
+        validate_probability(self.decay_probability)
 
     @cached_property
     def input_cardinality(self) -> int:
@@ -65,7 +62,9 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         return np.array([[1, 0], [p, 1 - p]])
 
     def mutual_information(
-        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+        self,
+        input_pmf: npt.ArrayLike,
+        base: float | Literal["e"] = 2.0,
     ) -> float:
         r"""
         For the Z-channel, it is given by
@@ -79,12 +78,12 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             >>> zc.mutual_information([0.5, 0.5])  # doctest: +FLOAT_CMP
             np.float64(0.6099865470109874)
         """
-        input_pmf = PMF(input_pmf)
+        input_pmf = validate_pmf(input_pmf)
         p = self.decay_probability
         pi = input_pmf[1]
         return (binary_entropy(pi * (1 - p)) - pi * binary_entropy(p)) / np.log2(base)
 
-    def capacity(self, base: LogBase = 2.0) -> float:
+    def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         For the Z-channel, it is given by
         $$

@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-
-from .._util.information_theory import LogBase
 
 
 class DiscreteMemorylessChannel(ABC):
@@ -34,7 +33,9 @@ class DiscreteMemorylessChannel(ABC):
 
     @abstractmethod
     def mutual_information(
-        self, input_pmf: npt.ArrayLike, base: LogBase = 2.0
+        self,
+        input_pmf: npt.ArrayLike,
+        base: float | Literal["e"] = 2.0,
     ) -> float:
         r"""Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.
 
@@ -49,7 +50,7 @@ class DiscreteMemorylessChannel(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def capacity(self, base: LogBase = 2.0) -> float:
+    def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         Returns the channel capacity $C$.
 

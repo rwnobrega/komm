@@ -10,7 +10,8 @@ from tqdm import tqdm
 from typing_extensions import Self
 
 from .._util.docs import mkdocstrings
-from .._util.information_theory import PMF
+from .._util.validators import validate_pmf
+from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, empty_mapping
 
@@ -60,7 +61,7 @@ class HuffmanCode(FixedToVariableCode):
         source_block_size: int = 1,
         policy: Literal["high", "low"] = "high",
     ):
-        self.pmf = PMF(pmf)
+        self.pmf = validate_pmf(pmf)
         if not policy in {"high", "low"}:
             raise ValueError("'policy': must be in {'high', 'low'}")
         self.policy = policy
@@ -89,7 +90,7 @@ class HuffmanCode(FixedToVariableCode):
 
 
 def huffman_algorithm(
-    pmf: PMF, source_block_size: int, policy: Literal["high", "low"]
+    pmf: Array1D[np.floating], source_block_size: int, policy: Literal["high", "low"]
 ) -> dict[Word, Word]:
     @dataclass
     class Node:

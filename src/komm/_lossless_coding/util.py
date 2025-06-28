@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-from .._util.information_theory import PMF
+from ..types import Array1D
 
 Word = tuple[int, ...]
 
@@ -123,7 +123,7 @@ def parse_prefix_free(
 
 
 def extended_probabilities(
-    pmf: PMF, k: int, pbar: "tqdm[Any]"
+    pmf: Array1D[np.floating], k: int, pbar: "tqdm[Any]"
 ) -> list[tuple[Word, float]]:
     probs: list[tuple[float, Word]] = []
     for u in product(range(pmf.size), repeat=k):
