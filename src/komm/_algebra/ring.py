@@ -30,7 +30,8 @@ class Ring(Protocol[T_co]):
 
 
 def power(x: T_co, n: int) -> T_co:
-    """Compute $x^n$ using exponentiation by squaring.
+    r"""
+    Computes $x^n$ using exponentiation by squaring.
 
     Parameters:
         x: The base (a ring element)

@@ -37,7 +37,8 @@ class DiscreteMemorylessChannel(ABC):
         input_pmf: npt.ArrayLike,
         base: float | Literal["e"] = 2.0,
     ) -> float:
-        r"""Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.
+        r"""
+        Returns the mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$ of the channel.
 
         Parameters:
             input_pmf: The probability mass function $p_X$ of the channel input $X$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
