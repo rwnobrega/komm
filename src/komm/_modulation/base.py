@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
 from itertools import combinations
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, final
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import final
 
 from .._util.decorators import vectorize
 from .._util.information_theory import marginalize_bits
