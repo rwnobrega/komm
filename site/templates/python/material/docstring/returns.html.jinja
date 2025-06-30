@@ -2,7 +2,7 @@
 {% if config.docstring_section_style == "table" %}
   {% block table_style %}
   {% set name_column = section.value|selectattr("name")|any %}
-  <p><strong>{{ section.title or "Returns:" }}</strong></p>
+  <p><span class="doc-section-title">{{ section.title or "Returns:" }}</span></p>
   <table>
     <thead>
       <tr>
@@ -34,7 +34,7 @@
   {% endblock table_style %}
 {% elif config.docstring_section_style == "list" %}
   {% block list_style %}
-  <p><strong>{{ section.title or "Returns:" }}</strong></p>
+  <p><span class="doc-section-title">{{ section.title or "Returns:" }}</span></p>
   <ul>
     {% for returns in section.value %}
       <li class="field-body">

@@ -27,7 +27,7 @@ class ManchesterPulse(abc.Pulse):
     ![Manchester pulse.](/fig/pulse_manchester.svg)
     </figure>
 
-    **Parameters:**
+    <span class="doc-section-title">Parameters:</span>
 
     <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No parameters)</span>
     """

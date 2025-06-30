@@ -22,7 +22,7 @@ class SincPulse(abc.Pulse):
     ![Sinc pulse.](/fig/pulse_sinc.svg)
     </figure>
 
-    **Parameters:**
+    <span class="doc-section-title">Parameters:</span>
 
     <span style="font-size: 90%; font-style: italic; color: gray; margin-left: 1em;">(No parameters)</span>
     """
