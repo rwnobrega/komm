@@ -20,7 +20,7 @@ jobs:
         run: black --check .
       - name: Flake8
         run: flake8 src/
-      - name: Pyright
-        run: pyright
+      - name: Basedpyright
+        run: basedpyright
       - name: pytest
         run: pytest
