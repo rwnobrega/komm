@@ -3550,7 +3550,7 @@
 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 5</cite> and <cite><abbr title="Robert J. McEliece. The Theory of Information and Coding. Cambridge University Press, 2nd edition, 2004. ISBN 978-0511606267.">McE04</abbr>, Ch. 8</cite>.</p>
 <p>The constructor expects either the generator polynomial or the check polynomial.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>length</code></b>
@@ -3588,18 +3588,15 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b101011100011</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
-<span class="go">(23, 12, 11)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
-<span class="go">7</span>
+<span class="go">(7, 4, 3)</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">check_polynomial</span><span class="o">=</span><span class="mb">0b1010010011111</span><span class="p">)</span>  <span class="c1"># Golay (23, 12)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">check_polynomial</span><span class="o">=</span><span class="mb">0b10111</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
-<span class="go">(23, 12, 11)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
-<span class="go">7</span>
+<span class="go">(7, 4, 3)</span>
 </code></pre></div>
+
 
 
 
@@ -3637,6 +3634,13 @@
   <div class="doc doc-contents ">
 
         <p>The length $n$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">length</span>
+<span class="go">7</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3666,6 +3670,13 @@
   <div class="doc doc-contents ">
 
         <p>The dimension $k$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dimension</span>
+<span class="go">4</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3695,6 +3706,13 @@
   <div class="doc doc-contents ">
 
         <p>The redundancy $m$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">redundancy</span>
+<span class="go">3</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3724,6 +3742,13 @@
   <div class="doc doc-contents ">
 
         <p>The rate $R = k/n$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span>
+<span class="go">0.5714285714285714</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3753,6 +3778,16 @@
   <div class="doc doc-contents ">
 
         <p>The generator matrix $G \in \mathbb{B}^{k \times n}$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 1, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 1, 1, 0, 1, 0, 0],</span>
+<span class="go">       [1, 1, 1, 0, 0, 1, 0],</span>
+<span class="go">       [1, 0, 1, 0, 0, 0, 1]])</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3782,6 +3817,15 @@
   <div class="doc doc-contents ">
 
         <p>The check matrix $H \in \mathbb{B}^{m \times n}$ of the code.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">check_matrix</span>
+<span class="go">array([[1, 0, 0, 1, 0, 1, 1],</span>
+<span class="go">       [0, 1, 0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 0, 1, 0, 1, 1, 1]])</span>
+</code></pre></div>
   </div>
 
 </div>
@@ -3805,7 +3849,7 @@
 
         <p>Applies the encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This method takes one or more sequences of messages and returns their corresponding codeword sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3817,7 +3861,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3827,6 +3871,12 @@
       </div>
       </li>
   </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p><span style="margin-left: 1.5em; font-style: italic;">
+See <a href="/ref/BlockCode#encode"><code>BlockCode.encode</code></a> for examples.
+</span></p>
 
   </div>
 
@@ -3851,7 +3901,7 @@
 
         <p>Applies the inverse encoding partial mapping $\Enc^{-1} : \mathbb{B}^n \rightharpoonup \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3863,7 +3913,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3885,6 +3935,12 @@
           </div>
         </li>
     </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p><span style="margin-left: 1.5em; font-style: italic;">
+See <a href="/ref/BlockCode#inverse_encode"><code>BlockCode.inverse_encode</code></a> for examples.
+</span></p>
 
   </div>
 
@@ -3909,7 +3965,7 @@
 
         <p>Applies the check mapping $\mathrm{Chk} : \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3921,7 +3977,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3931,6 +3987,12 @@
       </div>
       </li>
   </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p><span style="margin-left: 1.5em; font-style: italic;">
+See <a href="/ref/BlockCode#check"><code>BlockCode.check</code></a> for examples.
+</span></p>
 
   </div>
 
@@ -3959,6 +4021,28 @@
 
         <p>Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (<abbr title="most significant bit">MSB</abbr> in the right).</p>
 
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codewords</span><span class="p">()</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [1, 1, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 1, 1, 0, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 1, 1, 0, 0],</span>
+<span class="go">       [1, 1, 1, 0, 0, 1, 0],</span>
+<span class="go">       [0, 0, 1, 1, 0, 1, 0],</span>
+<span class="go">       [1, 0, 0, 0, 1, 1, 0],</span>
+<span class="go">       [0, 1, 0, 1, 1, 1, 0],</span>
+<span class="go">       [1, 0, 1, 0, 0, 0, 1],</span>
+<span class="go">       [0, 1, 1, 1, 0, 0, 1],</span>
+<span class="go">       [1, 1, 0, 0, 1, 0, 1],</span>
+<span class="go">       [0, 0, 0, 1, 1, 0, 1],</span>
+<span class="go">       [0, 1, 0, 0, 0, 1, 1],</span>
+<span class="go">       [1, 0, 0, 1, 0, 1, 1],</span>
+<span class="go">       [0, 0, 1, 0, 1, 1, 1],</span>
+<span class="go">       [1, 1, 1, 1, 1, 1, 1]])</span>
+</code></pre></div>
+
   </div>
 
 </div>
@@ -3985,6 +4069,13 @@
   <div class="doc doc-contents ">
 
         <p>Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">codeword_weight_distribution</span><span class="p">()</span>
+<span class="go">array([1, 0, 0, 7, 7, 0, 0, 1])</span>
+</code></pre></div>
 
   </div>
 
@@ -4013,6 +4104,13 @@
 
         <p>Returns the minimum distance $d$ of the code. This is equal to the minimum Hamming weight of the non-zero codewords.</p>
 
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
+<span class="go">3</span>
+</code></pre></div>
+
   </div>
 
 </div>
@@ -4039,6 +4137,20 @@
   <div class="doc doc-contents ">
 
         <p>Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (<abbr title="most significant bit">MSB</abbr> in the right), and whose Hamming weight is minimal. This may be used as a <abbr title="lookup table">LUT</abbr> for syndrome-based decoding.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leaders</span><span class="p">()</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 1, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 1, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 0, 1],</span>
+<span class="go">       [0, 0, 0, 0, 1, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 1, 0]])</span>
+</code></pre></div>
 
   </div>
 
@@ -4067,6 +4179,13 @@
 
         <p>Returns the coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.</p>
 
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">coset_leader_weight_distribution</span><span class="p">()</span>
+<span class="go">array([1, 7, 0, 0, 0, 0, 0, 0])</span>
+</code></pre></div>
+
   </div>
 
 </div>
@@ -4094,6 +4213,13 @@
 
         <p>Returns the packing radius of the code. This is also called the <em>error-correcting capability</em> of the code, and is equal to $\lfloor (d - 1) / 2 \rfloor$.</p>
 
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">packing_radius</span><span class="p">()</span>
+<span class="go">1</span>
+</code></pre></div>
+
   </div>
 
 </div>
@@ -4120,6 +4246,13 @@
   <div class="doc doc-contents ">
 
         <p>Returns the covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">CyclicCode</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">generator_polynomial</span><span class="o">=</span><span class="mb">0b1011</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">covering_radius</span><span class="p">()</span>
+<span class="go">1</span>
+</code></pre></div>
 
   </div>
 

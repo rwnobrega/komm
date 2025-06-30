@@ -3474,7 +3474,7 @@
 
         <p>Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic <a href="/ref/ConvolutionalCode">convolutional encoder</a> defined by a single <em>generator row</em> $g(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>g_row</code></b>
@@ -3503,6 +3503,7 @@ $$</p>
 &gt;&gt;&gt; code = komm.LowRateConvolutionalCode([0o117, 0o155])
 </code></pre>
         <p>Please refer to <a href="/res/convolutional-codes/#low-rate">the table of optimal low-rate convolutional codes</a>.</p>
+
 
 
 
@@ -3828,7 +3829,7 @@ where</p>
 <li>$\mathbf{D} \in \mathbb{B}^{k \times n}$ is the <em>transition matrix</em>.</li>
 </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>state_matrix</code></b>            <span class="doc-param-annotation"> (<code><span title="komm.types.Array2D">Array2D</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -4010,7 +4011,7 @@ where</p>
 
         <p>Encodes a given bit sequence, starting from the all-zero state.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4022,7 +4023,7 @@ where</p>
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -4063,7 +4064,7 @@ where</p>
 
         <p>Encodes a given bit sequence, starting from a given state.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4083,7 +4084,7 @@ where</p>
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>

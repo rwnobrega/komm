@@ -3416,7 +3416,7 @@
 
         <p>Finite-state Mealy machine. It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an <em>output function</em> $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see <a href="https://en.wikipedia.org/wiki/Mealy_machine">Wikipedia: Mealy machine</a>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>transitions</code></b>
@@ -3512,6 +3512,7 @@
 </code></pre>
 </li>
 </ol>
+
 
 
 
@@ -3744,7 +3745,7 @@
 
         <p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3764,7 +3765,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3819,7 +3820,7 @@
 
         <p>Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $z \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.1</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>observed</code></b>
@@ -3847,7 +3848,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3888,7 +3889,7 @@
 
         <p>Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.3</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>observed</code></b>
@@ -3916,7 +3917,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>input_hat</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3950,7 +3951,7 @@
 
         <p>Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior <abbr title="probability mass function">pmf</abbr> of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior <abbr title="probability mass function">pmf</abbr> of each input may also be provided. See <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, 12.6</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>observed</code></b>
@@ -3994,7 +3995,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>input_posteriors</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>

@@ -3376,7 +3376,7 @@
 
         <p>Uniform scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> in which the separation between levels is constant, $\Delta$, and the thresholds are the mid-point between adjacent levels. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 9.4</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>num_levels</code></b>
@@ -3436,6 +3436,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([0.125, 0.375, 0.625])</span>
 </code></pre></div>
+
 
 
 
@@ -3580,7 +3581,7 @@ $$
 $$
 where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability density function">pdf</abbr> of the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input_pdf</code></b>
@@ -3608,7 +3609,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>mse</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -3661,7 +3662,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Returns the quantization indices for the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3673,7 +3674,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3714,7 +3715,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Quantizes the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3726,7 +3727,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>

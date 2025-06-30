@@ -3528,11 +3528,11 @@
 </ul>
 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.7</cite> and <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>convolutional_code</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._error_control_convolutional.base.ConvolutionalCode">ConvolutionalCode</span></code>)</span>
+            <span class="doc-param-annotation">(<code><span title="komm.abc.ConvolutionalCode">ConvolutionalCode</span></code>)</span>
         –
         <div class="doc-md-description">
           <p>The convolutional code to be terminated.</p>
@@ -3600,6 +3600,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
 <span class="go">3</span>
 </code></pre></div>
+
 
 
 
@@ -3805,7 +3806,7 @@
 
         <p>Applies the encoding mapping $\Enc : \mathbb{B}^k \to \mathbb{B}^n$ of the code. This method takes one or more sequences of messages and returns their corresponding codeword sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3817,7 +3818,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3851,7 +3852,7 @@
 
         <p>Applies the inverse encoding partial mapping $\Enc^{-1} : \mathbb{B}^n \rightharpoonup \mathbb{B}^k$ of the code. This method takes one or more sequences of codewords and returns their corresponding message sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3863,7 +3864,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3909,7 +3910,7 @@
 
         <p>Applies the check mapping $\mathrm{Chk} : \mathbb{B}^n \to \mathbb{B}^m$ of the code. This method takes one or more sequences of received words and returns their corresponding syndrome sequences.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3921,7 +3922,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>

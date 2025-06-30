@@ -3496,6 +3496,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3522,7 +3523,7 @@
 
         <p>Constructs a fixed-to-variable length code from the encoding mapping $\Enc$.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>enc_mapping</code></b>
@@ -3590,7 +3591,7 @@
 
         <p>Constructs a fixed-to-variable length code from the source cardinality $S$ and a list of codewords.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>source_cardinality</code></b>
@@ -3976,7 +3977,7 @@ $$
 $$
 where $\ell_u$ is the length of the codeword $\Enc(u)$, $T$ is the target cardinality, and $k$ is the source block size.</p>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>kraft_parameter</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -4029,7 +4030,7 @@ $$
 $$
 where $\bar{n}$ is the expected codeword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$, and $k$ is the source block size. It is measured in $T$-ary digits per source symbol.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>pmf</code></b>
@@ -4041,7 +4042,7 @@ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independe
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>rate</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -4082,7 +4083,7 @@ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independe
 
         <p>Encodes a sequence of source symbols using the code, which must be uniquely decodable.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4094,7 +4095,7 @@ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independe
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -4162,7 +4163,7 @@ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independe
   <summary>Warning</summary>
   <p>Decoding for non-prefix-free codes is not implemented yet.</p>
 </details>
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4174,7 +4175,7 @@ where $\bar{n}$ is the expected codeword length, assuming <abbr title="independe
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>

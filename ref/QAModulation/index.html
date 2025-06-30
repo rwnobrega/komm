@@ -3467,7 +3467,7 @@ $$
 $$
 where $M_\mathrm{I}$ and $M_\mathrm{Q}$ are the <em>orders</em> (powers of $2$), and $A_\mathrm{I}$ and $A_\mathrm{Q}$ are the <em>base amplitudes</em> of the in-phase and quadrature constellations, respectively. Also, $\phi$ is the <em>phase offset</em>. The order of the resulting complex-valued constellation is $M = M_\mathrm{I} M_\mathrm{Q}$, a power of $2$.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>orders</code></b>
@@ -3543,6 +3543,7 @@ array([[0, 0, 0], [0, 1, 0], [1, 0, 0], [1, 1, 0],
 </code></pre>
 </li>
 </ol>
+
 
 
 
@@ -3945,7 +3946,7 @@ $$</p>
 
         <p>Modulates one or more sequences of bits to their corresponding constellation symbols.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3957,7 +3958,7 @@ $$</p>
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.complexfloating">complexfloating</span>]</code>) </span>
@@ -3998,7 +3999,7 @@ $$</p>
 
         <p>Demodulates one or more sequences of received points to their corresponding sequences of hard bits ($\mathtt{0}$ or $\mathtt{1}$) using hard-decision decoding.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4010,7 +4011,7 @@ $$</p>
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -4044,7 +4045,7 @@ $$</p>
 
         <p>Demodulates one or more sequences of received points to their corresponding sequences of soft bits (L-values) using soft-decision decoding. The soft bits are the log-likelihood ratios of the bits, where positive values correspond to bit $\mathtt{0}$ and negative values correspond to bit $\mathtt{1}$.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4064,7 +4065,7 @@ $$</p>
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>

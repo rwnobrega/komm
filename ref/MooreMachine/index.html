@@ -3346,7 +3346,7 @@
 
         <p>Finite-state Moore machine. It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an <em>output function</em> $G : \mathcal{S} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see <a href="https://en.wikipedia.org/wiki/Moore_machine">Wikipedia: Moore machine</a>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>transitions</code></b>
@@ -3465,6 +3465,7 @@
 </code></pre>
 </li>
 </ol>
+
 
 
 
@@ -3613,7 +3614,7 @@
 
         <p>Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3633,7 +3634,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>

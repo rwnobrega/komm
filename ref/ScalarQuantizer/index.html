@@ -3366,7 +3366,7 @@ $$
 $$
 Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = v_i$ if and only if $t_i \leq x &lt; t_{i+1}$, where $i \in [0:L)$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Ch. 9</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>levels</code></b>
@@ -3404,6 +3404,7 @@ $$</p>
 <span class="gp">... </span>    <span class="n">thresholds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 </code></pre></div>
+
 
 
 
@@ -3518,7 +3519,7 @@ $$
 $$
 where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability density function">pdf</abbr> of the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input_pdf</code></b>
@@ -3546,7 +3547,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>mse</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -3594,7 +3595,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Returns the quantization indices for the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3606,7 +3607,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3650,7 +3651,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Quantizes the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3662,7 +3663,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>

@@ -3459,7 +3459,7 @@
         <p>Binary polynomial. A <em>binary polynomial</em> is a polynomial whose coefficients are elements in the finite field $\mathbb{F}_2 = \{ 0, 1 \}$.</p>
 <p>The default constructor of the class expects the following:</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>value</code></b>
@@ -3507,6 +3507,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3533,7 +3534,7 @@
 
         <p>Constructs a binary polynomial from its coefficients.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>coefficients</code></b>
@@ -3578,7 +3579,7 @@
 
         <p>Constructs a binary polynomial from its exponents.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>exponents</code></b>
@@ -3654,7 +3655,7 @@
 
         <p>Returns the coefficients of the binary polynomial.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>width</code></b>
@@ -3666,7 +3667,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>coefficients</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3709,7 +3710,7 @@
 
         <p>Returns the exponents of the binary polynomial.</p>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>exponents</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3750,7 +3751,7 @@
 
         <p>Returns the reciprocal (reflexion) of the binary polynomial. The reciprocal of a binary polynomial is the polynomial with the coefficients in reversed order, that is, the coefficient of $X^i$ becomes the coefficient of $X^{n-i}$, where $n$ is the degree of the polynomial.</p>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>result</code></b>            <span class="doc-param-annotation"> (<code><span title="komm._algebra.BinaryPolynomial.BinaryPolynomial">BinaryPolynomial</span></code>) </span>
@@ -3791,7 +3792,7 @@
 
         <p>Evaluates the binary polynomial at a given point. Uses Horner's method.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>point</code></b>
@@ -3803,7 +3804,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>result</code></b>            <span class="doc-param-annotation"> (<code><span title="RingElement">RingElement</span></code>) </span>
@@ -3845,7 +3846,7 @@
         <p>Checks whether the binary polynomial is irreducible. A binary polynomial is <em>irreducible</em> if it is not divisible by any other nonconstant binary polynomial of smaller degree.</p>
 <p>This method checks the irreducibility using <a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin's irreducibility test</a>.</p>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>result</code></b>            <span class="doc-param-annotation"> (<code><span title="bool">bool</span></code>) </span>
@@ -3889,7 +3890,7 @@
 
         <p>Checks whether the binary polynomial is primitive. A binary polynomial of degree $m$ is <em>primitive</em> if it is irreducible and if the smallest positive integer $n$ such that the polynomial divides $X^n + 1$ is $n = 2^m - 1$.</p>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>result</code></b>            <span class="doc-param-annotation"> (<code><span title="bool">bool</span></code>) </span>

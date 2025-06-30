@@ -3332,7 +3332,7 @@
 
         <p>Discrete memoryless source (<abbr title="discrete memoryless source">DMS</abbr>). It is defined by an <em>alphabet</em> $\mathcal{X}$ and a <em>probability mass function</em> (<abbr title="probability mass function">pmf</abbr>) $p_X$. Here, for simplicity, the alphabet is always taken as $\mathcal{X} = [0 : |\mathcal{X}|)$. The <abbr title="probability mass function">pmf</abbr> $p_X$ gives the probability of the source emitting the symbol $X = x$.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>pmf</code></b>
@@ -3352,6 +3352,7 @@
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">DiscreteMemorylessSource</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="go">DiscreteMemorylessSource(pmf=[0.25, 0.25, 0.25, 0.25])</span>
 </code></pre></div>
+
 
 
 
@@ -3412,11 +3413,11 @@
 
         <p>Returns the source entropy $\mathrm{H}(X)$. See <a href="/ref/entropy"><code>komm.entropy</code></a> for more details.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>base</code></b>
-            <span class="doc-param-annotation">(<code><span title="komm._util.information_theory.LogBase">LogBase</span></code>)</span>
+            <span class="doc-param-annotation">(<code><span title="float">float</span> | <span title="typing.Literal">Literal</span>[&#39;e&#39;]</code>)</span>
         –
         <div class="doc-md-description">
           <p>See <a href="/ref/entropy"><code>komm.entropy</code></a>. The default value is $2.0$.</p>
@@ -3456,7 +3457,7 @@
 
         <p>Returns random samples from the source.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>shape</code></b>
@@ -3468,7 +3469,7 @@
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
             <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>

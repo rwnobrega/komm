@@ -3496,6 +3496,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3522,7 +3523,7 @@
 
         <p>Constructs a variable-to-fixed length code from the decoding mapping $\Dec$.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>dec_mapping</code></b>
@@ -3594,7 +3595,7 @@
 
         <p>Constructs a variable-to-fixed length code from the target cardinality $T$ and a list of sourcewords.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>target_cardinality</code></b>
@@ -4034,7 +4035,7 @@ $$
 $$
 where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>pmf</code></b>
@@ -4046,7 +4047,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>rate</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -4092,7 +4093,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
   <summary>Warning</summary>
   <p>Encoding for non-prefix-free codes is not implemented yet.</p>
 </details>
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4104,7 +4105,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -4166,7 +4167,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
 
         <p>Decodes a sequence of target symbols using the code, which must be fully covering and uniquely encodable.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -4178,7 +4179,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
             <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>

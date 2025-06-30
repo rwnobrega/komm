@@ -3362,7 +3362,7 @@
 
         <p>Lloyd–Max scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> that minimizes the mean squared error (<abbr title="mean squared error">MSE</abbr>) between the input signal $X$ and its quantized version. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 9.6.1</cite>.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input_pdf</code></b>
@@ -3414,6 +3414,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([-1.748, -1.05 , -0.501,  0.   ,  0.501,  1.05 ,  1.748])</span>
 </code></pre></div>
+
 
 
 
@@ -3532,7 +3533,7 @@ $$
 $$
 where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability density function">pdf</abbr> of the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input_pdf</code></b>
@@ -3560,7 +3561,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>mse</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
@@ -3609,7 +3610,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Returns the quantization indices for the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3621,7 +3622,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
@@ -3667,7 +3668,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
 
         <p>Quantizes the input signal.</p>
 
-  <p><strong>Parameters:</strong></p>
+  <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
         <b><code>input</code></b>
@@ -3679,7 +3680,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
       </li>
   </ul>
 
-  <p><strong>Returns:</strong></p>
+  <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
