@@ -164,22 +164,9 @@ class SystematicBlockCode(abc.BlockCode):
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
-            >>> code.generator_matrix
-            array([[1, 0, 0, 1, 1],
-                   [0, 1, 1, 1, 0]])
-            >>> code.encode([0, 0])  # Sequence with single message
-            array([0, 0, 0, 0, 0])
-            >>> code.encode([0, 0, 1, 1])  # Sequence with two messages
-            array([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])
-            >>> code.encode([[0, 0],  # 2D array of single messages
-            ...              [1, 1]])
-            array([[0, 0, 0, 0, 0],
-                   [1, 1, 1, 0, 1]])
-            >>> code.encode([[0, 0, 1, 1],  # 2D array of two messages
-            ...              [1, 1, 1, 0]])
-            array([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
-                   [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.encode`](/ref/BlockCode#encode) for examples.
+            </span>
         """
 
         @blockwise(self.dimension)
@@ -202,38 +189,18 @@ class SystematicBlockCode(abc.BlockCode):
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
-            >>> code.inverse_encode([0, 0, 0, 0, 0])  # Sequence with single codeword
-            array([0, 0])
-            >>> code.inverse_encode([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])  # Sequence with two codewords
-            array([0, 0, 1, 1])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0],  # 2D array of single codewords
-            ...                      [1, 1, 1, 0, 1]])
-            array([[0, 0],
-                   [1, 1]])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],  # 2D array of two codewords
-            ...                      [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
-            array([[0, 0, 1, 1],
-                   [1, 1, 1, 0]])
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.inverse_encode`](/ref/BlockCode#inverse_encode) for examples.
+            </span>
         """
         return super().inverse_encode(input)
 
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
-            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
-            >>> code.check([1, 1, 1, 0, 1])  # Sequence with single received word
-            array([0, 0, 0])
-            >>> code.check([1, 1, 1, 0, 1, 1, 1, 1, 1, 1])  # Sequence with two received words
-            array([0, 0, 0, 0, 1, 0])
-            >>> code.check([[1, 1, 1, 0, 1],  # 2D array of single received words
-            ...             [1, 1, 1, 1, 1]])
-            array([[0, 0, 0],
-                   [0, 1, 0]])
-            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1],  # 2D array of two received words
-            ...             [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])
-            array([[0, 0, 0, 0, 1, 0],
-                   [0, 1, 0, 0, 1, 1]])
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.check`](/ref/BlockCode#check) for examples.
+            </span>
         """
 
         @blockwise(self.length)

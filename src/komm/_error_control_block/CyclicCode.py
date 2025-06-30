@@ -39,17 +39,13 @@ class CyclicCode(abc.BlockCode):
         systematic: Whether the encoder is systematic. Default is `True`.
 
     Examples:
-        >>> code = komm.CyclicCode(length=23, generator_polynomial=0b101011100011)  # Golay (23, 12)
+        >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
         >>> (code.length, code.dimension, code.redundancy)
-        (23, 12, 11)
-        >>> code.minimum_distance()
-        7
+        (7, 4, 3)
 
-        >>> code = komm.CyclicCode(length=23, check_polynomial=0b1010010011111)  # Golay (23, 12)
+        >>> code = komm.CyclicCode(length=7, check_polynomial=0b10111)
         >>> (code.length, code.dimension, code.redundancy)
-        (23, 12, 11)
-        >>> code.minimum_distance()
-        7
+        (7, 4, 3)
     """
 
     def __init__(
@@ -64,19 +60,20 @@ class CyclicCode(abc.BlockCode):
             raise ValueError(
                 "either 'generator_polynomial' or 'check_polynomial' must be provided"
             )
+        modulus = BinaryPolynomial.from_exponents([0, self.length])
         if generator_polynomial is not None and check_polynomial is None:
-            self._generator_polynomial = BinaryPolynomial(generator_polynomial)
-            quotient, remainder = divmod(self.modulus, self.generator_polynomial)
+            self.generator_polynomial = BinaryPolynomial(generator_polynomial)
+            quotient, remainder = divmod(modulus, self.generator_polynomial)
             if remainder != 0b0:
                 raise ValueError("'generator_polynomial' must be a factor of X^n + 1")
-            self._check_polynomial = quotient
+            self.check_polynomial = quotient
             self._constructed_from = "generator_polynomial"
         elif generator_polynomial is None and check_polynomial is not None:
-            self._check_polynomial = BinaryPolynomial(check_polynomial)
-            quotient, remainder = divmod(self.modulus, self.check_polynomial)
+            self.check_polynomial = BinaryPolynomial(check_polynomial)
+            quotient, remainder = divmod(modulus, self.check_polynomial)
             if remainder != 0b0:
                 raise ValueError("'check_polynomial' must be a factor of X^n + 1")
-            self._generator_polynomial = quotient
+            self.generator_polynomial = quotient
             self._constructed_from = "check_polynomial"
         self.systematic = systematic
 
@@ -98,34 +95,55 @@ class CyclicCode(abc.BlockCode):
 
     @cached_property
     def length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.length
+            7
+        """
         return self._length
 
     @cached_property
     def dimension(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.dimension
+            4
+        """
         return self.check_polynomial.degree
 
     @cached_property
     def redundancy(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.redundancy
+            3
+        """
         return self.generator_polynomial.degree
 
     @cached_property
     def rate(self) -> float:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.rate
+            0.5714285714285714
+        """
         return super().rate
 
     @cached_property
-    def generator_polynomial(self) -> BinaryPolynomial:
-        return self._generator_polynomial
-
-    @cached_property
-    def check_polynomial(self) -> BinaryPolynomial:
-        return self._check_polynomial
-
-    @cached_property
-    def modulus(self) -> BinaryPolynomial:
-        return BinaryPolynomial.from_exponents([0, self.length])
-
-    @cached_property
     def generator_matrix(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.generator_matrix
+            array([[1, 1, 0, 1, 0, 0, 0],
+                   [0, 1, 1, 0, 1, 0, 0],
+                   [1, 1, 1, 0, 0, 1, 0],
+                   [1, 0, 1, 0, 0, 0, 1]])
+        """
         return self._encoding_strategy.generator_matrix()
 
     @cached_property
@@ -134,9 +152,24 @@ class CyclicCode(abc.BlockCode):
 
     @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.check_matrix
+            array([[1, 0, 0, 1, 0, 1, 1],
+                   [0, 1, 0, 1, 1, 1, 0],
+                   [0, 0, 1, 0, 1, 1, 1]])
+        """
         return self._encoding_strategy.check_matrix()
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.encode`](/ref/BlockCode#encode) for examples.
+            </span>
+        """
+
         @blockwise(self.dimension)
         @vectorize
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
@@ -159,9 +192,22 @@ class CyclicCode(abc.BlockCode):
         return project(input)
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.inverse_encode`](/ref/BlockCode#inverse_encode) for examples.
+            </span>
+        """
         return super().inverse_encode(input)
 
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.check`](/ref/BlockCode#check) for examples.
+            </span>
+        """
+
         @blockwise(self.length)
         @vectorize
         def check(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
@@ -174,30 +220,94 @@ class CyclicCode(abc.BlockCode):
 
     @cache
     def codewords(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.codewords()
+            array([[0, 0, 0, 0, 0, 0, 0],
+                   [1, 1, 0, 1, 0, 0, 0],
+                   [0, 1, 1, 0, 1, 0, 0],
+                   [1, 0, 1, 1, 1, 0, 0],
+                   [1, 1, 1, 0, 0, 1, 0],
+                   [0, 0, 1, 1, 0, 1, 0],
+                   [1, 0, 0, 0, 1, 1, 0],
+                   [0, 1, 0, 1, 1, 1, 0],
+                   [1, 0, 1, 0, 0, 0, 1],
+                   [0, 1, 1, 1, 0, 0, 1],
+                   [1, 1, 0, 0, 1, 0, 1],
+                   [0, 0, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 0, 0, 1, 1],
+                   [1, 0, 0, 1, 0, 1, 1],
+                   [0, 0, 1, 0, 1, 1, 1],
+                   [1, 1, 1, 1, 1, 1, 1]])
+        """
         return super().codewords()
 
     @cache
     def codeword_weight_distribution(self) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.codeword_weight_distribution()
+            array([1, 0, 0, 7, 7, 0, 0, 1])
+        """
         return super().codeword_weight_distribution()
 
     @cache
     def minimum_distance(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.minimum_distance()
+            3
+        """
         return super().minimum_distance()
 
     @cache
     def coset_leaders(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.coset_leaders()
+            array([[0, 0, 0, 0, 0, 0, 0],
+                   [1, 0, 0, 0, 0, 0, 0],
+                   [0, 1, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 1, 0, 0, 0],
+                   [0, 0, 1, 0, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 1],
+                   [0, 0, 0, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 0, 1, 0]])
+        """
         return super().coset_leaders()
 
     @cache
     def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.coset_leader_weight_distribution()
+            array([1, 7, 0, 0, 0, 0, 0, 0])
+        """
         return super().coset_leader_weight_distribution()
 
     @cache
     def packing_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.packing_radius()
+            1
+        """
         return super().packing_radius()
 
     @cache
     def covering_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> code.covering_radius()
+            1
+        """
         return super().covering_radius()
 
 
