@@ -89,10 +89,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
                 f"mode '{self.mode}' is unknown\n"
                 f"supported termination modes: {set(TerminationMode.__args__)}"
             )
-
-    @cached_property
-    def strategy(self) -> "TerminationStrategy":
-        return {
+        self.strategy = {
             "direct-truncation": DirectTruncation,
             "zero-termination": ZeroTermination,
             "tail-biting": TailBiting,
