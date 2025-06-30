@@ -171,7 +171,7 @@ class BlockCode(abc.BlockCode):
             return self._check_matrix
         return null_matrix(self.generator_matrix)
 
-    def encode(self, input: npt.ArrayLike) -> Array2D[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> code = komm.BlockCode(generator_matrix=[
