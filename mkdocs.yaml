@@ -3,7 +3,7 @@ site_url: https://komm.dev/
 repo_url: https://github.com/rwnobrega/komm/
 
 docs_dir: site/docs
-site_dir: site/build
+site_dir: site/_build
 
 watch:
   - src/komm/

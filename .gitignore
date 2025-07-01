@@ -5,7 +5,7 @@ __pycache__
 build/
 dist/
 htmlcov/
-site/build/
+site/_build/
 tmp/
 pdm.lock
 .benchmarks
