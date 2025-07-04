@@ -18,9 +18,9 @@ class SlepianArray:
 
     In this implementation:
 
-    - A row's index $i$ corresponds to the $m$-bit syndrome obtained by expressing $i$ in binary (MSB on the right).
+    - A row's index $i$ corresponds to the $m$-bit syndrome obtained by expressing $i$ in binary (LSB-first).
 
-    - A column's index $j$ corresponds to the $k$-bit message obtained by expressing $j$ in binary (MSB on the right).
+    - A column's index $j$ corresponds to the $k$-bit message obtained by expressing $j$ in binary (LSB-first).
 
     For more details, see <cite>LC04, Sec. 3.5</cite>.
 

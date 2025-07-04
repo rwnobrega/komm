@@ -134,7 +134,7 @@ class BlockCode(ABC):
     @abstractmethod
     def codewords(self) -> Array2D[np.integer]:
         r"""
-        Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (MSB in the right).
+        Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (LSB-first).
         """
         k, n = self.dimension, self.length
         batch_size = 1024
@@ -189,7 +189,7 @@ class BlockCode(ABC):
     @abstractmethod
     def coset_leaders(self) -> Array2D[np.integer]:
         r"""
-        Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (MSB in the right), and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
+        Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (LSB-first), and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
         """
         m, n = self.redundancy, self.length
         H_cols = np.asarray(bits_to_int(self.check_matrix.T))

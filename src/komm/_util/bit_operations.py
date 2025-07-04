@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.integer]:
     r"""
-    Converts a bit array to its integer representation (LSB first).
+    Converts a bit array to its integer representation (LSB-first).
 
     Parameters:
         input: An $N$-dimensional array of $0$s and $1$s. The least significant bit (LSB) is the first element in the last dimension.
@@ -36,7 +36,7 @@ def bits_to_int(input: npt.ArrayLike) -> int | npt.NDArray[np.integer]:
 
 def int_to_bits(input: npt.ArrayLike, width: int) -> npt.NDArray[np.integer]:
     r"""
-    Converts an integer, or array of integers, to their bit representations (LSB first).
+    Converts an integer, or array of integers, to their bit representations (LSB-first).
 
     Parameters:
         input: An integer or an $N$-dimensional array of integers.
