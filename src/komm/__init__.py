@@ -73,7 +73,21 @@ from ._lossless_coding.ShannonCode import ShannonCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
 
-# Modulation
+# Modulation constellations
+from ._modulation_constellations.ASKConstellation import ASKConstellation
+from ._modulation_constellations.APSKConstellation import APSKConstellation
+from ._modulation_constellations.Constellation import Constellation
+from ._modulation_constellations.PAMConstellation import PAMConstellation
+from ._modulation_constellations.PSKConstellation import PSKConstellation
+from ._modulation_constellations.QAMConstellation import QAMConstellation
+
+# Modulation labelings
+from ._modulation_labelings.Labeling import Labeling
+from ._modulation_labelings.NaturalLabeling import NaturalLabeling
+from ._modulation_labelings.ProductLabeling import ProductLabeling
+from ._modulation_labelings.ReflectedLabeling import ReflectedLabeling
+
+# Deprecated modulation classes
 from ._modulation.APSKModulation import APSKModulation
 from ._modulation.ASKModulation import ASKModulation
 from ._modulation.Modulation import Modulation
@@ -181,6 +195,18 @@ __all__ = [
     "ShannonCode",
     "TunstallCode",
     "VariableToFixedCode",
+    # _modulation_constellations
+    "APSKConstellation",
+    "ASKConstellation",
+    "Constellation",
+    "PAMConstellation",
+    "PSKConstellation",
+    "QAMConstellation",
+    # _modulation_labelings
+    "Labeling",
+    "NaturalLabeling",
+    "ProductLabeling",
+    "ReflectedLabeling",
     # _modulation
     "APSKModulation",
     "ASKModulation",

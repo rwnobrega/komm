@@ -45,12 +45,25 @@ Finite-state machines:
   - MooreMachine
   - MealyMachine
 Modulation:
-  - Modulation
-  - PAModulation
-  - QAModulation
-  - ASKModulation
-  - PSKModulation
-  - APSKModulation
+  Constellations:
+    - Constellation
+    - PAMConstellation
+    - QAMConstellation
+    - ASKConstellation
+    - PSKConstellation
+    - APSKConstellation
+  Labelings:
+    - Labeling
+    - NaturalLabeling
+    - ReflectedLabeling
+    - ProductLabeling
+  (Deprecated):
+    - Modulation
+    - PAModulation
+    - QAModulation
+    - ASKModulation
+    - PSKModulation
+    - APSKModulation
 Pulse formatting:
   - Pulse
   - RectangularPulse
