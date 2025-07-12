@@ -19,6 +19,14 @@ from ._channels.BinarySymmetricChannel import BinarySymmetricChannel
 from ._channels.DiscreteMemorylessChannel import DiscreteMemorylessChannel
 from ._channels.ZChannel import ZChannel
 
+# Modulation constellations
+from ._constellations.ASKConstellation import ASKConstellation
+from ._constellations.APSKConstellation import APSKConstellation
+from ._constellations.Constellation import Constellation
+from ._constellations.PAMConstellation import PAMConstellation
+from ._constellations.PSKConstellation import PSKConstellation
+from ._constellations.QAMConstellation import QAMConstellation
+
 # Error control - block codes
 from ._error_control_block.BCHCode import BCHCode
 from ._error_control_block.BlockCode import BlockCode
@@ -63,6 +71,12 @@ from ._finite_state_machine.MooreMachine import MooreMachine
 from ._integer_coding.FibonacciCode import FibonacciCode
 from ._integer_coding.UnaryCode import UnaryCode
 
+# Labelings
+from ._labelings.Labeling import Labeling
+from ._labelings.NaturalLabeling import NaturalLabeling
+from ._labelings.ProductLabeling import ProductLabeling
+from ._labelings.ReflectedLabeling import ReflectedLabeling
+
 # Lossless coding
 from ._lossless_coding.FanoCode import FanoCode
 from ._lossless_coding.FixedToVariableCode import FixedToVariableCode
@@ -73,21 +87,7 @@ from ._lossless_coding.ShannonCode import ShannonCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
 
-# Modulation constellations
-from ._modulation_constellations.ASKConstellation import ASKConstellation
-from ._modulation_constellations.APSKConstellation import APSKConstellation
-from ._modulation_constellations.Constellation import Constellation
-from ._modulation_constellations.PAMConstellation import PAMConstellation
-from ._modulation_constellations.PSKConstellation import PSKConstellation
-from ._modulation_constellations.QAMConstellation import QAMConstellation
-
-# Modulation labelings
-from ._modulation_labelings.Labeling import Labeling
-from ._modulation_labelings.NaturalLabeling import NaturalLabeling
-from ._modulation_labelings.ProductLabeling import ProductLabeling
-from ._modulation_labelings.ReflectedLabeling import ReflectedLabeling
-
-# Deprecated modulation classes
+# Modulation (deprecated)
 from ._modulation.APSKModulation import APSKModulation
 from ._modulation.ASKModulation import ASKModulation
 from ._modulation.Modulation import Modulation
@@ -148,6 +148,13 @@ __all__ = [
     "BinarySymmetricChannel",
     "DiscreteMemorylessChannel",
     "ZChannel",
+    # _constellations
+    "APSKConstellation",
+    "ASKConstellation",
+    "Constellation",
+    "PAMConstellation",
+    "PSKConstellation",
+    "QAMConstellation",
     # _error_control_block
     "BCHCode",
     "BlockCode",
@@ -186,6 +193,11 @@ __all__ = [
     # _integer_coding
     "FibonacciCode",
     "UnaryCode",
+    # _labelings
+    "Labeling",
+    "NaturalLabeling",
+    "ProductLabeling",
+    "ReflectedLabeling",
     # _lossless_coding
     "FanoCode",
     "FixedToVariableCode",
@@ -195,18 +207,6 @@ __all__ = [
     "ShannonCode",
     "TunstallCode",
     "VariableToFixedCode",
-    # _modulation_constellations
-    "APSKConstellation",
-    "ASKConstellation",
-    "Constellation",
-    "PAMConstellation",
-    "PSKConstellation",
-    "QAMConstellation",
-    # _modulation_labelings
-    "Labeling",
-    "NaturalLabeling",
-    "ProductLabeling",
-    "ReflectedLabeling",
     # _modulation
     "APSKModulation",
     "ASKModulation",

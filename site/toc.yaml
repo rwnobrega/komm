@@ -8,6 +8,13 @@ Channels:
   - BinarySymmetricChannel
   - BinaryErasureChannel
   - ZChannel
+Constellations:
+  - Constellation
+  - PAMConstellation
+  - QAMConstellation
+  - ASKConstellation
+  - PSKConstellation
+  - APSKConstellation
 Error control:
   Block codes:
     - BlockCode
@@ -44,26 +51,11 @@ Error control:
 Finite-state machines:
   - MooreMachine
   - MealyMachine
-Modulation:
-  Constellations:
-    - Constellation
-    - PAMConstellation
-    - QAMConstellation
-    - ASKConstellation
-    - PSKConstellation
-    - APSKConstellation
-  Labelings:
-    - Labeling
-    - NaturalLabeling
-    - ReflectedLabeling
-    - ProductLabeling
-  (Deprecated):
-    - Modulation
-    - PAModulation
-    - QAModulation
-    - ASKModulation
-    - PSKModulation
-    - APSKModulation
+Labelings:
+  - Labeling
+  - NaturalLabeling
+  - ReflectedLabeling
+  - ProductLabeling
 Pulse formatting:
   - Pulse
   - RectangularPulse
@@ -118,3 +110,11 @@ Utilities:
   - binary_entropy
   - binary_entropy_inv
   - relative_entropy
+(Deprecated):
+  Modulation:
+    - Modulation
+    - PAModulation
+    - QAModulation
+    - ASKModulation
+    - PSKModulation
+    - APSKModulation

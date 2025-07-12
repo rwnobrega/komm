@@ -8,7 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._modulation_labelings.NaturalLabeling import NaturalLabeling
+from .._labelings.NaturalLabeling import NaturalLabeling
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .util import get_pbar
