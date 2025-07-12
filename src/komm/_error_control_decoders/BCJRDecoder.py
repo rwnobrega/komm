@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from functools import partial
 from typing import Literal
 
 import numpy as np
@@ -9,10 +8,9 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._modulation.labelings import labeling_natural
+from .._modulation_labelings.NaturalLabeling import NaturalLabeling
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, vectorize, with_pbar
-from .._util.information_theory import marginalize_bits
 from .util import get_pbar
 
 
@@ -40,15 +38,16 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             )
         if self.output_type not in ["hard", "soft"]:
             raise ValueError("'output_type' must be 'hard' or 'soft'")
+        n = self.code.convolutional_code.num_output_bits
+        k = self.code.convolutional_code.num_input_bits
         self._fsm = self.code.convolutional_code.finite_state_machine()
         num_states = self._fsm.num_states
         self._initial_state_distribution, self._final_state_distribution = (
             self.code.strategy.bcjr_initial_final_distributions(num_states)
         )
         self._post_process_output = self.code.strategy.bcjr_post_process_output
-        n = self.code.convolutional_code.num_output_bits
         self._cache_polar = (-1) ** int_to_bits(range(2**n), width=n)
-        self._labeling = labeling_natural(n)
+        self._labeling = NaturalLabeling(k)
 
     def _metric_function(self, y: int, z: float) -> float:
         return 0.5 * np.dot(self._cache_polar[y], z)
@@ -87,11 +86,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 final_state_distribution=self._final_state_distribution,
             )
             symbol_posteriors = self._post_process_output(symbol_posteriors)
-            lo = np.apply_along_axis(
-                func1d=partial(marginalize_bits, labeling=self._labeling),
-                axis=1,
-                arr=symbol_posteriors,
-            ).ravel()
+            lo = self._labeling.marginalize(symbol_posteriors).reshape(-1)
             return lo
 
         output = decode(input)
