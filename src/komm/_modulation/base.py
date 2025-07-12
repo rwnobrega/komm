@@ -7,7 +7,6 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.decorators import vectorize
-from .._util.information_theory import marginalize_bits
 from ..types import Array1D, Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -191,7 +190,13 @@ class Modulation(ABC, Generic[T]):
             n0 = self.energy_per_symbol / snr
             received = received.ravel()
             distances = np.abs(received - self.constellation) ** 2
-            return marginalize_bits(np.exp(-distances / n0), self.labeling)
+            metrics = np.exp(-distances / n0)
+            mask0 = self.labeling == 0
+            mask1 = self.labeling == 1
+            p0 = mask0.T @ metrics
+            p1 = mask1.T @ metrics
+            with np.errstate(divide="ignore"):
+                return np.log(p0) - np.log(p1)
 
         input = np.asarray(input)
         received = input.reshape(*input.shape[:-1], -1, 1)

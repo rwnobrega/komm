@@ -202,18 +202,3 @@ def arimoto_blahut(
         r /= np.sum(r, axis=0)
         iters += 1
     return r
-
-
-def marginalize_bits(
-    symbol_metrics: npt.NDArray[np.floating],
-    labeling: npt.NDArray[np.integer],
-) -> npt.NDArray[np.floating]:
-    r"""
-    Marginalizes symbol metrics to $L$-values of bits.
-    """
-    mask0 = labeling == 0
-    mask1 = labeling == 1
-    p0 = mask0.T @ symbol_metrics
-    p1 = mask1.T @ symbol_metrics
-    with np.errstate(divide="ignore"):
-        return np.log(p0) - np.log(p1)
