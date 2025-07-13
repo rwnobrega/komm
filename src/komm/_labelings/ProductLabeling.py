@@ -13,7 +13,7 @@ T = TypeVar("T", bound=np.generic)
 
 def cartesian_product(A: npt.NDArray[T], B: npt.NDArray[T]) -> npt.NDArray[T]:
     r"""
-    Computes the Cartesian product of two matrices. See <cite>SA15, eq. (2.2)</cite>, where it is called the 'ordered direct product' and uses a different convention.
+    Computes the Cartesian product of two matrices. See <cite>SA15, eq. (2.2)</cite>, where it is called the 'ordered direct product' and uses a transposed convention.
 
     Parameters:
         A: First input matrix, with shape (rA, cA).
@@ -27,7 +27,7 @@ def cartesian_product(A: npt.NDArray[T], B: npt.NDArray[T]) -> npt.NDArray[T]:
     product = np.zeros((rA * rB, cA + cB), dtype=A.dtype)
     for i, rowA in enumerate(A):
         for j, rowB in enumerate(B):
-            product[j * rA + i, :] = np.concatenate((rowA, rowB))
+            product[i * rB + j, :] = np.concatenate((rowA, rowB))
     return product
 
 
@@ -62,12 +62,12 @@ class ProductLabeling(abc.Labeling):
             ... )
             >>> labeling.matrix
             array([[0, 0, 1],
-                   [1, 1, 1],
-                   [1, 0, 1],
-                   [0, 1, 1],
                    [0, 0, 0],
+                   [1, 1, 1],
                    [1, 1, 0],
+                   [1, 0, 1],
                    [1, 0, 0],
+                   [0, 1, 1],
                    [0, 1, 0]])
         """
         matrix = self._labelings[0].matrix
@@ -112,12 +112,12 @@ class ProductLabeling(abc.Labeling):
             ... )
             >>> labeling.inverse_labeling
             {(0, 0, 1): 0,
-             (1, 1, 1): 1,
-             (1, 0, 1): 2,
-             (0, 1, 1): 3,
-             (0, 0, 0): 4,
-             (1, 1, 0): 5,
-             (1, 0, 0): 6,
+             (0, 0, 0): 1,
+             (1, 1, 1): 2,
+             (1, 1, 0): 3,
+             (1, 0, 1): 4,
+             (1, 0, 0): 5,
+             (0, 1, 1): 6,
              (0, 1, 0): 7}
         """
         return super().inverse_labeling
@@ -130,7 +130,7 @@ class ProductLabeling(abc.Labeling):
             ...     [[1], [0]],
             ... )
             >>> labeling.indices_to_bits([2, 0])
-            array([1, 0, 1, 0, 0, 1])
+            array([1, 1, 1, 0, 0, 1])
         """
         return super().indices_to_bits(indices)
 
@@ -141,7 +141,7 @@ class ProductLabeling(abc.Labeling):
             ...     [[0, 0], [1, 1], [1, 0], [0, 1]],
             ...     [[1], [0]],
             ... )
-            >>> labeling.bits_to_indices([1, 0, 1, 0, 0, 1])
+            >>> labeling.bits_to_indices([1, 1, 1, 0, 0, 1])
             array([2, 0])
         """
         return super().bits_to_indices(bits)
