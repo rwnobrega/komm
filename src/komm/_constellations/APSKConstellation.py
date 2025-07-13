@@ -27,7 +27,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
 
                 >>> const = komm.APSKConstellation(orders=(4, 4), amplitudes=(1.0, 2.0))
 
-        1. The $16$-APSK constellation with $(M_0, M_1) = (8, 8)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, \pi/8)$ is depicted below.
+        1. The $16$-APSK constellation with $(M_0, M_1) = (8, 8)$, $(A_0, A_1) = (1, 2)$, and $(\phi_0, \phi_1) = (0, 1/16)$ is depicted below.
             <figure markdown>
             ![(8,8)-APSK constellation.](/fig/constellation_apsk_8_8.svg)
             </figure>
@@ -35,10 +35,10 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
                 >>> const = komm.APSKConstellation(
                 ...     orders=(8, 8),
                 ...     amplitudes=(1.0, 2.0),
-                ...     phase_offsets=(0.0, np.pi/8)
+                ...     phase_offsets=(0.0, 1 / 16)
                 ... )
 
-        1. The $16$-APSK constellation with $(M_0, M_1) = (4, 12)$, $(A_0, A_1) = (\sqrt{2}, 3)$, and $(\phi_0, \phi_1) = (\pi/4, 0)$ is depicted below.
+        1. The $16$-APSK constellation with $(M_0, M_1) = (4, 12)$, $(A_0, A_1) = (\sqrt{2}, 3)$, and $(\phi_0, \phi_1) = (1/8, 0)$ is depicted below.
             <figure markdown>
             ![(4,12)-APSK constellation.](/fig/constellation_apsk_4_12.svg)
             </figure>
@@ -46,7 +46,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
                 >>> const = komm.APSKConstellation(
                 ...     orders=(4, 12),
                 ...     amplitudes=(np.sqrt(2), 3.0),
-                ...     phase_offsets=(np.pi/4, 0.0)
+                ...     phase_offsets=(1 / 8, 0.0)
                 ... )
     """
 

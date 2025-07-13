@@ -11,16 +11,16 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
     r"""
     Amplitude-shift keying (ASK) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) in which the symbols are *uniformly arranged* in a ray. More precisely, the $i$-th symbol is given by
     $$
-        x_i = iA \exp(\mathrm{j}\phi), \quad i \in [0 : M),
+        x_i = iA \exp(\mathrm{j} 2 \pi \phi), \quad i \in [0 : M),
     $$
-    where $M$ is the *order*, $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the modulation.
+    where $M$ is the *order*, $A$ is the *base amplitude*, and $\phi$ is the *phase offset* of the constellation.
 
     Parameters:
         order: The order $M$ of the constellation.
 
         base_amplitude: The base amplitude $A$ of the constellation. The default value is `1.0`.
 
-        phase_offset: The phase offset $\phi$ of the constellation. The default value is `0.0`.
+        phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
     Examples:
         1. The $4$-ASK constellation with base amplitude $A = 1$ and phase offset $\phi = 0$ is depicted below
@@ -30,7 +30,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
 
                 >>> const = komm.ASKConstellation(4)
 
-        1. The $4$-ASK constellation with base amplitude $A = 2\sqrt{2}$ and phase offset $\phi = \pi/4$ is depicted below.
+        1. The $4$-ASK constellation with base amplitude $A = 2\sqrt{2}$ and phase offset $\phi = 1/8$ is depicted below.
             <figure markdown>
             ![4-ASK constellation.](/fig/constellation_ask_4_turn.svg)
             </figure>
@@ -38,7 +38,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
                 >>> const = komm.ASKConstellation(
                 ...     order=4,
                 ...     base_amplitude=2 * np.sqrt(2),
-                ...     phase_offset=np.pi / 4,
+                ...     phase_offset=1 / 8,
                 ... )
     """
 
@@ -71,7 +71,8 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         """
         M, A, φ = self._order, self._base_amplitude, self._phase_offset
         i = np.arange(M).reshape(-1, 1)
-        return A * i * np.exp(1j * φ)
+        matrix = A * i * np.exp(2j * np.pi * φ)
+        return matrix
 
     @property
     def order(self) -> int:
@@ -109,7 +110,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         """
         if priors is None:
             M, A, φ = self._order, self._base_amplitude, self._phase_offset
-            m = 0.5 * A * (M - 1) * np.exp(1j * φ)
+            m = 0.5 * A * (M - 1) * np.exp(2j * np.pi * φ)
             return np.array([m], dtype=complex)
         return super().mean(priors)
 
@@ -163,7 +164,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
             array([3, 0])
         """
         M, A, φ = self._order, self._base_amplitude, self._phase_offset
-        normalized = np.real(np.multiply(received, np.exp(-1j * φ))) / A
+        normalized = np.real(np.multiply(received, np.exp(-2j * np.pi * φ))) / A
         indices = np.round(normalized).astype(int)
         indices = np.clip(indices, 0, M - 1)
         return indices

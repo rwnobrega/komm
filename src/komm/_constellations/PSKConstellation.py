@@ -11,31 +11,31 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
     r"""
     Phase-shift keying (PSK) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) in which the symbols are *uniformly arranged* in a circle. More precisely, the $i$-th symbol is given by
     $$
-        x_i = A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} \phi), \quad i \in [0 : M),
+        x_i = A \exp \left( \mathrm{j} \frac{2 \pi i}{M} \right) \exp(\mathrm{j} 2 \pi \phi), \quad i \in [0 : M),
     $$
-    where $M$ is the *order*, $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the modulation
+    where $M$ is the *order*, $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the constellation.
 
     Parameters:
         order: The order $M$ of the constellation.
 
         amplitude: The amplitude $A$ of the constellation. The default value is `1.0`.
 
-        phase_offset: The phase offset $\phi$ of the constellation. The default value is `0.0`.
+        phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
     Examples:
-        1. The $4$-PSK modulation with amplitude $A = 1$ and phase offset $\phi = 0$ is depicted below.
+        1. The $4$-PSK constellation with amplitude $A = 1$ and phase offset $\phi = 0$ is depicted below.
             <figure markdown>
             ![4-PSK constellation.](/fig/constellation_psk_4.svg)
             </figure>
 
-                >>> psk = komm.PSKConstellation(4)
+                >>> const = komm.PSKConstellation(4)
 
-        1. The $8$-PSK modulation with amplitude $A = 0.5$ and phase offset $\phi = \pi/8$ is depicted below.
+        1. The $8$-PSK constellation with amplitude $A = 0.5$ and phase offset $\phi = 1/16$ is depicted below.
             <figure markdown>
             ![8-PSK constellation.](/fig/constellation_psk_8.svg)
             </figure>
 
-                >>> psk = komm.PSKConstellation(8, amplitude=0.5, phase_offset=np.pi/8)
+                >>> const = komm.PSKConstellation(8, amplitude=0.5, phase_offset=1 / 16)
     """
 
     def __init__(
@@ -67,7 +67,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
         """
         M, A, φ = self._order, self._amplitude, self._phase_offset
         i = np.arange(M).reshape(-1, 1)
-        matrix = A * np.exp(2j * np.pi * i / M) * np.exp(1j * φ)
+        matrix = A * np.exp(2j * np.pi * i / M) * np.exp(2j * np.pi * φ)
         # We round to avoid sin(pi) != 0, and add 0.0 to avoid -0.0.
         return matrix.round(15) + 0.0
 
@@ -160,7 +160,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
             array([3, 0])
         """
         M, φ = self._order, self._phase_offset
-        turn = np.angle(np.multiply(received, np.exp(-1j * φ))) / (2 * np.pi)
+        turn = np.angle(np.multiply(received, np.exp(-2j * np.pi * φ))) / (2 * np.pi)
         indices = np.mod(np.around(M * turn), M).astype(int)
         return indices
 

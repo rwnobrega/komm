@@ -19,7 +19,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
 
         deltas: A tuple $(\Delta_\mathrm{I}, \Delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\Delta$, then it is assumed that $\Delta_\mathrm{I} = \Delta_\mathrm{Q} = \Delta$. The default value is `2.0`.
 
-        phase_offset: The phase offset $\phi$ of the constellation. The default value is `0.0`.
+        phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
     Examples:
         1. The square $16$-QAM constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(\Delta_\mathrm{I}, \Delta_\mathrm{Q}) = (2, 2)$ is depicted below.
@@ -65,6 +65,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         args = ", ".join([
             f"orders={tuple(map(int, self._orders))}",
             f"deltas={tuple(map(float, self._deltas))}",
+            f"phase_offset={self._phase_offset}",
         ])
         return f"{self.__class__.__name__}({args})"
 
@@ -97,7 +98,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         φ = self._phase_offset
         matrix_i = PAMConstellation(Mi, Δi).matrix
         matrix_q = PAMConstellation(Mq, Δq).matrix
-        matrix = (matrix_i + 1j * matrix_q.T) * np.exp(1j * φ)
+        matrix = (matrix_i + 1j * matrix_q.T) * np.exp(2j * np.pi * φ)
         return matrix.reshape(-1, 1)
 
     @property
@@ -205,8 +206,8 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         Δi, Δq = self._deltas
         φ = self._phase_offset
         Ai, Aq = Δi / 2, Δq / 2
-        received_i = np.real(np.multiply(received, np.exp(-1j * φ))) / Ai
-        received_q = np.imag(np.multiply(received, np.exp(-1j * φ))) / Aq
+        received_i = np.real(np.multiply(received, np.exp(-2j * np.pi * φ))) / Ai
+        received_q = np.imag(np.multiply(received, np.exp(-2j * np.pi * φ))) / Aq
         indices_i = np.clip(np.around((received_i + Mi - 1) / 2), 0, Mi - 1).astype(int)
         indices_q = np.clip(np.around((received_q + Mq - 1) / 2), 0, Mq - 1).astype(int)
         indices = indices_i * Mi + indices_q
