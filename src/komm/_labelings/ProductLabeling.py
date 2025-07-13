@@ -1,4 +1,5 @@
 from functools import cache
+from itertools import product
 from math import prod
 from typing import TypeVar
 
@@ -9,26 +10,6 @@ from .. import abc
 from .Labeling import Labeling
 
 T = TypeVar("T", bound=np.generic)
-
-
-def cartesian_product(A: npt.NDArray[T], B: npt.NDArray[T]) -> npt.NDArray[T]:
-    r"""
-    Computes the Cartesian product of two matrices. See <cite>SA15, eq. (2.2)</cite>, where it is called the 'ordered direct product' and uses a transposed convention.
-
-    Parameters:
-        A: First input matrix, with shape (rA, cA).
-        B: Second input matrix, with shape (rB, cB).
-
-    Returns:
-        The Cartesian product matrix, with shape (rA * rB, cA + cB)
-    """
-    rA, cA = A.shape
-    rB, cB = B.shape
-    product = np.zeros((rA * rB, cA + cB), dtype=A.dtype)
-    for i, rowA in enumerate(A):
-        for j, rowB in enumerate(B):
-            product[i * rB + j, :] = np.concatenate((rowA, rowB))
-    return product
 
 
 class ProductLabeling(abc.Labeling):
@@ -70,10 +51,9 @@ class ProductLabeling(abc.Labeling):
                    [0, 1, 1],
                    [0, 1, 0]])
         """
-        matrix = self._labelings[0].matrix
-        for labeling in self._labelings[1:]:
-            matrix = cartesian_product(matrix, labeling.matrix)
-        return matrix
+        matrices = [lab.matrix for lab in self._labelings]
+        rows = [np.hstack(comb) for comb in product(*matrices)]
+        return np.vstack(rows)
 
     @property
     def num_bits(self) -> int:
