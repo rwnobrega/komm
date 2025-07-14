@@ -210,7 +210,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         received_q = np.imag(np.multiply(received, np.exp(-2j * np.pi * φ))) / Aq
         indices_i = np.clip(np.around((received_i + Mi - 1) / 2), 0, Mi - 1).astype(int)
         indices_q = np.clip(np.around((received_q + Mq - 1) / 2), 0, Mq - 1).astype(int)
-        indices = indices_i * Mi + indices_q
+        indices = Mq * indices_i + indices_q
         return indices
 
     def closest_symbols(
