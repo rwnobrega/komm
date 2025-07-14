@@ -64,7 +64,7 @@ class DiscreteMemorylessChannel(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Transmits the input sequence through the channel and returns the output sequence.
 

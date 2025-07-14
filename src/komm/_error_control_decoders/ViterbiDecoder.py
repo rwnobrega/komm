@@ -54,27 +54,21 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     def _metric_function_soft(self, y: int, z: int) -> float:
         return np.dot(self._cache_bit[y], z)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
-            >>> convolutional_code = komm.ConvolutionalCode([[0b011, 0b101, 0b111]])
             >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code,
-            ...     num_blocks=5,
-            ...     mode="zero-termination",
-            ... )
-            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-            >>> decoder([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1])
-            array([1, 1, 0, 0, 1])
-
-            >>> convolutional_code = komm.ConvolutionalCode([[0b111, 0b101]])
-            >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code,
+            ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
             ...     num_blocks=4,
             ...     mode="direct-truncation",
             ... )
+
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder.decode([1, 1, 1, 1, 1, 0, 0, 0])
+            array([1, 0, 0, 0])
+
             >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
-            >>> decoder([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
+            >>> decoder.decode([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
         """
         k = self.code.convolutional_code.num_input_bits

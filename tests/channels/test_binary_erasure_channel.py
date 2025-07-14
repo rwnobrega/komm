@@ -14,13 +14,13 @@ def test_bec_invalid_erasure_probability(eps):
 def test_bec_noiseless():
     x = np.random.randint(2, size=10000)
     bec = komm.BinaryErasureChannel(0.0)
-    assert np.array_equal(bec(x), x)
+    assert np.array_equal(bec.transmit(x), x)
 
 
 def test_bec_useless():
     x = np.random.randint(2, size=10000)
     bec = komm.BinaryErasureChannel(1.0)
-    assert np.array_equal(bec(x), np.full_like(x, fill_value=2))
+    assert np.array_equal(bec.transmit(x), np.full_like(x, fill_value=2))
 
 
 @pytest.mark.parametrize(

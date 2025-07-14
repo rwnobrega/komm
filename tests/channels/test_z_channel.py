@@ -14,13 +14,13 @@ def test_zc_invalid_crossover_probability(p):
 def test_zc_noiseless():
     x = np.random.randint(2, size=10000)
     zc = komm.ZChannel(0.0)
-    assert np.array_equal(zc(x), x)
+    assert np.array_equal(zc.transmit(x), x)
 
 
 def test_zc_useless():
     x = np.random.randint(2, size=10000)
     zc = komm.ZChannel(1.0)
-    assert np.array_equal(zc(x), np.zeros_like(x))
+    assert np.array_equal(zc.transmit(x), np.zeros_like(x))
 
 
 @pytest.mark.parametrize(

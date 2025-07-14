@@ -64,7 +64,7 @@ def test_equivalence_modulate_demodulate(mod: komm.abc.Modulation, snr):
     channel = komm.AWGNChannel(signal_power=mod.energy_per_symbol, snr=snr)
     bits = np.random.randint(0, 2, size=100 * mod.bits_per_symbol, dtype=int)
     symbols = mod.modulate(bits)
-    received = channel(symbols)
+    received = channel.transmit(symbols)
 
     symbols1 = ref.modulate(bits)
     np.testing.assert_allclose(symbols, symbols1)

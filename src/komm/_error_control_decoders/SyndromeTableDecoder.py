@@ -26,12 +26,12 @@ class SyndromeTableDecoder(abc.BlockDecoder[abc.BlockCode]):
     def __post_init__(self) -> None:
         self._coset_leaders = self.code.coset_leaders()
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.SyndromeTableDecoder(code)
-            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+            >>> decoder.decode([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
             array([[1, 1, 0, 0],
                    [1, 0, 1, 1]])
         """

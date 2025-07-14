@@ -53,7 +53,7 @@ class AWGNChannel:
         """
         return 0.5 * np.log1p(self.snr) / np.log(2.0)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         Transmits the input signal through the channel and returns the output signal.
 
@@ -66,7 +66,7 @@ class AWGNChannel:
         Examples:
             >>> awgn = komm.AWGNChannel(signal_power=5.0, snr=200.0)
             >>> x = [1.0, 3.0, -3.0, -1.0, -1.0, 1.0, 3.0, 1.0, -1.0, 3.0]
-            >>> awgn(x).round(2)
+            >>> awgn.transmit(x).round(2)
             array([ 1.05,  2.84, -2.88, -0.85, -1.31,  0.79,  3.02,  0.95, -1.  ,  2.87])
         """
         input = np.array(input)

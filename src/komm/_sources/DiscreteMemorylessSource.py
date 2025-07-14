@@ -62,7 +62,7 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
-    def __call__(self, shape: int | tuple[int, ...] = ()) -> npt.NDArray[np.integer]:
+    def emit(self, shape: int | tuple[int, ...] = ()) -> npt.NDArray[np.integer]:
         r"""
         Returns random samples from the source.
 
@@ -74,11 +74,11 @@ class DiscreteMemorylessSource:
 
         Examples:
             >>> dms = komm.DiscreteMemorylessSource([0.5, 0.4, 0.1])
-            >>> dms()
+            >>> dms.emit()
             array(1)
-            >>> dms(10)
+            >>> dms.emit(10)
             array([0, 1, 1, 0, 2, 1, 1, 0, 0, 0])
-            >>> dms((2, 5))
+            >>> dms.emit((2, 5))
             array([[2, 1, 1, 0, 0],
                    [1, 0, 1, 1, 1]])
         """

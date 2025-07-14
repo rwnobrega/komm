@@ -20,7 +20,7 @@ def test_discrete_memoryless_source_init():
 )
 def test_discrete_memoryless_source_output(pmf):
     dms = komm.DiscreteMemorylessSource(pmf)
-    symbols = dms(1000)
+    symbols = dms.emit(1000)
     assert symbols.size == 1000
     assert np.all(symbols >= 0) and np.all(symbols < len(pmf))
 
@@ -48,7 +48,7 @@ def test_discrete_memoryless_source_entropy(pmf, x_entropy_base_2, x_entropy_bas
 )
 def test_discrete_memoryless_source_constant(pmf, x_symbol):
     dms = komm.DiscreteMemorylessSource(pmf)
-    assert np.all(dms(1000) == x_symbol)
+    assert np.all(dms.emit(1000) == x_symbol)
 
 
 @pytest.mark.parametrize(

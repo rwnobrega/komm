@@ -95,14 +95,14 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         )
         return mutual_information(input_pmf, self.transition_matrix, base=base)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> dmc = komm.DiscreteMemorylessChannel([
             ...     [0.9, 0.05, 0.05],
             ...     [0.0, 0.5, 0.5],
             ... ])
-            >>> dmc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            >>> dmc.transmit([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])
         """
         input = np.asarray(input)

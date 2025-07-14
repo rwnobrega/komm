@@ -28,20 +28,19 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[abc.BlockCode]):
     def __post_init__(self) -> None:
         self._codewords = self.code.codewords()
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.HammingCode(3)
+
             >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
-            >>> decoder([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
+            >>> decoder.decode([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
             array([[1, 1, 0, 0],
                    [1, 0, 1, 1]])
 
-            >>> code = komm.HammingCode(3)
             >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
-            >>> decoder([[-1, -1, +1, -1, +1, -1, -1], [-1, +1, -1, -1, +1, +1, +1]])
-            array([[1, 1, 0, 0],
-                   [1, 0, 1, 1]])
+            >>> decoder.decode([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
+            array([1, 1, 0, 0])
         """
 
         @blockwise(self.code.length)

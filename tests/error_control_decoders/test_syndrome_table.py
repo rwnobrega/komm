@@ -7,7 +7,7 @@ def test_syndrome_table_hamming():
     code = komm.HammingCode(3)
     decoder = komm.SyndromeTableDecoder(code)
     np.testing.assert_equal(
-        decoder([
+        decoder.decode([
             [0, 0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 0],
@@ -30,7 +30,7 @@ def test_syndrome_table_golay():
             r = np.zeros(23, dtype=int)
             error_locations = np.random.choice(23, w, replace=False)
             r[error_locations] ^= 1
-            u_hat = decoder(r)
+            u_hat = decoder.decode(r)
             if w <= 3:  # Golay code can correct up to 3 errors.
                 assert np.array_equal(u_hat, np.zeros(12, dtype=int))
             else:  # Golay code cannot correct more than 3 errors.

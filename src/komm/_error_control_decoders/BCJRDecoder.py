@@ -52,25 +52,21 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     def _metric_function(self, y: int, z: float) -> float:
         return 0.5 * np.dot(self._cache_polar[y], z)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
-            >>> convolutional_code = komm.ConvolutionalCode(
-            ...     feedforward_polynomials=[[0b11, 0b1]],
-            ...     feedback_polynomials=[0b11],
-            ... )
             >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code,
+            ...     convolutional_code=komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
             ...     num_blocks=3,
             ...     mode="zero-termination",
             ... )
 
             >>> decoder = komm.BCJRDecoder(code)
-            >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
+            >>> decoder.decode([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([-0.47774884, -0.61545527,  1.03018771])
 
             >>> decoder = komm.BCJRDecoder(code, output_type="hard")
-            >>> decoder([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
+            >>> decoder.decode([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([1, 1, 0])
         """
         n = self.code.convolutional_code.num_output_bits

@@ -108,7 +108,7 @@ def test_huffman_code_encode_decode(source_cardinality, source_block_size, polic
     pmf = random_pmf(source_cardinality)
     dms = komm.DiscreteMemorylessSource(pmf)
     code = komm.HuffmanCode(pmf, source_block_size=source_block_size, policy=policy)
-    x = dms(1000 * source_block_size)
+    x = dms.emit(1000 * source_block_size)
     x_hat = code.decode(code.encode(x))
     assert np.array_equal(x_hat, x)
 

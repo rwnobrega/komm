@@ -26,7 +26,7 @@ import komm
 def test_viterbi_hard(convolutional_code, num_blocks, mode, r, u_hat):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
     decoder = komm.ViterbiDecoder(code, input_type="hard")
-    assert np.array_equal(decoder(r), u_hat)
+    assert np.array_equal(decoder.decode(r), u_hat)
 
 
 @pytest.mark.parametrize(
@@ -51,4 +51,4 @@ def test_viterbi_hard(convolutional_code, num_blocks, mode, r, u_hat):
 def test_viterbi_soft(convolutional_code, num_blocks, mode, r, u_hat):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
     decoder = komm.ViterbiDecoder(code, input_type="soft")
-    assert np.array_equal(decoder(r), u_hat)
+    assert np.array_equal(decoder.decode(r), u_hat)

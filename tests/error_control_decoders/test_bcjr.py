@@ -30,4 +30,4 @@ def test_bcjr(convolutional_code, num_blocks, mode, snr, r, u_hat):
     decoder = komm.BCJRDecoder(code)
     bpsk = komm.PSKModulation(2)
     li = bpsk.demodulate_soft(r, snr=snr)
-    assert np.allclose(decoder(li), u_hat, atol=0.05)
+    assert np.allclose(decoder.decode(li), u_hat, atol=0.05)

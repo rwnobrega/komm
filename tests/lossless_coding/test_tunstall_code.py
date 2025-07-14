@@ -72,6 +72,6 @@ def test_tunstall_code_encode_decode(source_cardinality, target_block_size):
     pmf = random_pmf(source_cardinality)
     dms = komm.DiscreteMemorylessSource(pmf)
     code = komm.TunstallCode(pmf, target_block_size=target_block_size)
-    x = dms(1000)
+    x = dms.emit(1000)
     x_hat = code.decode(code.encode(x))[: len(x)]
     assert np.array_equal(x_hat, x)

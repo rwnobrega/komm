@@ -47,7 +47,7 @@ class ViterbiStreamDecoder:
         else:  # self.input_type == "soft"
             return np.dot(self.cache_bit[y], z)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Parameters:
             input: The (hard or soft) bit sequence to be decoded.
@@ -56,12 +56,16 @@ class ViterbiStreamDecoder:
             output: The decoded bit sequence.
 
         Examples:
-                >>> convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-                >>> decoder = komm.ViterbiStreamDecoder(convolutional_code, traceback_length=10)
-                >>> decoder([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1])
-                array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-                >>> decoder(np.zeros(2*10, dtype=int))
-                array([1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
+                >>> decoder = komm.ViterbiStreamDecoder(
+                ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
+                ...     traceback_length=10,
+                ... )
+                >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                array([0, 0, 0, 0, 0, 0, 0, 0])
+                >>> decoder.decode([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1])
+                array([0, 0, 0, 0, 0, 0, 0, 0])
+                >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                array([0, 0, 1, 0, 1, 1, 1, 0])
         """
         input = np.asarray(input)
         n = self.convolutional_code.num_output_bits

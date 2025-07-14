@@ -17,7 +17,7 @@ def test_reed_decoder(mu):
             r = code.encode(u)
             error_locations = np.random.choice(n, w, replace=False)
             r[error_locations] ^= 1
-            np.testing.assert_equal(decoder(r), u)
+            np.testing.assert_equal(decoder.decode(r), u)
 
 
 def test_reed_repetition_code():
@@ -27,6 +27,6 @@ def test_reed_repetition_code():
     decoder = komm.ReedDecoder(code)
     r = np.random.randint(2, size=(100, 32))
     np.testing.assert_equal(
-        decoder(r),
+        decoder.decode(r),
         (r.sum(axis=1) > 16).astype(int).reshape(-1, 1),
     )

@@ -27,7 +27,7 @@ def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class):
     decoder: komm.abc.BlockDecoder = decoder_class(code)
     k, n = code.dimension, code.length
     for b in range(1, 5):
-        u_hat = decoder(np.zeros((3, 4, b * n), dtype=int))
+        u_hat = decoder.decode(np.zeros((3, 4, b * n), dtype=int))
         assert u_hat.shape == (3, 4, b * k)
     with pytest.raises(ValueError):
-        decoder(np.zeros((3, 4, n + 1), dtype=int))
+        decoder.decode(np.zeros((3, 4, n + 1), dtype=int))

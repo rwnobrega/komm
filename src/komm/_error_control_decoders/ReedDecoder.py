@@ -29,18 +29,18 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     def __post_init__(self) -> None:
         self._reed_partitions = self.code.reed_partitions()
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.ReedMullerCode(1, 3)
+
             >>> decoder = komm.ReedDecoder(code, input_type="hard")
-            >>> decoder([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
+            >>> decoder.decode([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])
             array([[0, 0, 0, 0],
                    [0, 0, 0, 1]])
 
-            >>> code = komm.ReedMullerCode(1, 3)
             >>> decoder = komm.ReedDecoder(code, input_type="soft")
-            >>> decoder([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
+            >>> decoder.decode([+1.3, +1.0, +0.9, +0.4, -0.8, +0.2, +0.3, +0.8])
             array([0, 0, 0, 0])
         """
 

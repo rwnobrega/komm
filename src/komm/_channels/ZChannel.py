@@ -102,11 +102,11 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         q = 1 - p
         return np.log2(1 + q * p ** (p / q)) / np.log2(base)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> zc = komm.ZChannel(0.2)
-            >>> zc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            >>> zc.transmit([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
         """
         p = self.decay_probability

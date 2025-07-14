@@ -99,11 +99,11 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         p = self.crossover_probability
         return (1.0 - binary_entropy(p)) / np.log2(base)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
-            >>> bsc([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            >>> bsc.transmit([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([1, 1, 1, 0, 1, 0, 1, 0, 0, 0])
         """
         p = self.crossover_probability

@@ -98,11 +98,11 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         """
         return (1.0 - self.erasure_probability) / np.log2(base)
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> bec = komm.BinaryErasureChannel(0.2)
-            >>> bec([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
+            >>> bec.transmit([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([1, 1, 1, 0, 2, 0, 1, 0, 2, 0])
         """
         epsilon = self.erasure_probability

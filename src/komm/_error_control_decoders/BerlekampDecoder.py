@@ -27,12 +27,12 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
 
     code: BCHCode
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.BCHCode(4, 7)
             >>> decoder = komm.BerlekampDecoder(code)
-            >>> decoder([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            >>> decoder.decode([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0])
         """
 

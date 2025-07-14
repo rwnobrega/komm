@@ -13,7 +13,7 @@ def test_viterbi_stream_decoder_books():
     recvword_ = np.concatenate(
         [recvword, np.zeros(traceback_length * code.num_output_bits, dtype=int)]
     )
-    message_hat = decoder(recvword_)
+    message_hat = decoder.decode(recvword_)
     message_hat_ = message_hat[traceback_length:]
     np.testing.assert_equal(message_hat_, [1, 0, 1, 1, 1, 0, 1, 1, 0, 0])
 
@@ -59,4 +59,4 @@ def test_viterbi_stream_decoder_matlab(
     )
     decoder = komm.ViterbiStreamDecoder(code, traceback_length=tblen, input_type="hard")
     message_hat = np.pad(message_hat, (len(message_hat), 0), mode="constant")
-    np.testing.assert_equal(message_hat, decoder(recvword))
+    np.testing.assert_equal(message_hat, decoder.decode(recvword))

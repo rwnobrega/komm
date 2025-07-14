@@ -38,17 +38,17 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
     def __post_init__(self) -> None:
         self._f = boxplus
 
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.PolarCode(3, [0, 1, 2, 4])
 
             >>> decoder = komm.SCDecoder(code)
-            >>> decoder([1, -4, -3, 2, -2, 3, 4, -1])
+            >>> decoder.decode([1, -4, -3, 2, -2, 3, 4, -1])
             array([ -6.84595089,  -5.96379094,  -9.30685282, -20.        ])
 
             >>> decoder = komm.SCDecoder(code, output_type="hard")
-            >>> decoder([1, -4, -3, 2, -2, 3, 4, -1])
+            >>> decoder.decode([1, -4, -3, 2, -2, 3, 4, -1])
             array([1, 1, 1, 1])
         """
 

@@ -13,7 +13,7 @@ class BlockDecoder(ABC, Generic[T]):
     code: T
 
     @abstractmethod
-    def __call__(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Decode received words. This method takes one or more sequences of received words and returns their corresponding estimated message sequences.
 

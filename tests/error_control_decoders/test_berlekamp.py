@@ -24,7 +24,7 @@ def test_berlekamp_lin_costello():
     assert inv_roots == {alpha**12, alpha**5, alpha**3}
     e_loc = {root.logarithm(alpha) for root in inv_roots}
     assert e_loc == {3, 5, 12}
-    u_hat = decoder(r)
+    u_hat = decoder.decode(r)
     assert np.array_equal(u_hat, [0, 0, 0, 0, 0])
 
 
@@ -32,13 +32,14 @@ def test_berlekamp_lin_costello():
 def test_berlekamp_error_correcting_capability(mu, deltas):
     for delta in deltas:
         code = komm.BCHCode(mu, delta)
+        k, n = code.dimension, code.length
         decoder = komm.BerlekampDecoder(code)
         for w in range((delta - 1) // 2 + 1):
             for _ in range(10):
-                r = np.zeros(code.length, dtype=int)
-                error_locations = np.random.choice(code.length, w, replace=False)
+                r = np.zeros(n, dtype=int)
+                error_locations = np.random.choice(n, w, replace=False)
                 r[error_locations] ^= 1
-                assert np.array_equal(decoder(r), np.zeros(code.dimension, dtype=int))
+                assert np.array_equal(decoder.decode(r), np.zeros(k, dtype=int))
 
 
 def test_berlekamp_above_error_correcting_capability():
@@ -51,4 +52,4 @@ def test_berlekamp_above_error_correcting_capability():
             r = np.zeros(code.length, dtype=int)
             error_locations = np.random.choice(code.length, w, replace=False)
             r[error_locations] ^= 1
-            decoder(r)  # No exception should be raised.
+            decoder.decode(r)  # No exception should be raised.
