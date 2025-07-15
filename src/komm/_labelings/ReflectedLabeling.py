@@ -82,8 +82,7 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         indices = np.asarray(indices, dtype=int)
-        indices ^= indices >> 1
-        bits = np.flip(int_to_bits(indices, m), axis=-1)
+        bits = np.flip(int_to_bits(indices ^ indices >> 1, m), axis=-1)
         return bits.reshape(*indices.shape[:-1], -1)
 
     def bits_to_indices(self, bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
