@@ -9,7 +9,7 @@ from .._util.bit_operations import bits_to_int, int_to_bits
 
 class NaturalLabeling(abc.Labeling):
     r"""
-    Natural binary labeling. It is a [binary labeling](/ref/Labeling) in which integer $i \in [0 : 2^m)$ mapped to its base-$2$ representation (MSB-first).
+    Natural binary labeling. It is a [binary labeling](/ref/Labeling) in which integer $i \in [0 : 2^m)$ is mapped to its base-$2$ representation (MSB-first).
     """
 
     def __init__(self, num_bits: int, _pre_cache: bool = True) -> None:
