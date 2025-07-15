@@ -61,14 +61,14 @@ class NaturalLabeling(abc.Labeling):
 
     @property
     @cache
-    def inverse_labeling(self) -> dict[tuple[int, ...], int]:
+    def inverse_mapping(self) -> dict[tuple[int, ...], int]:
         r"""
         Examples:
             >>> labeling = komm.NaturalLabeling(2)
-            >>> labeling.inverse_labeling
+            >>> labeling.inverse_mapping
             {(0, 0): 0, (0, 1): 1, (1, 0): 2, (1, 1): 3}
         """
-        return super().inverse_labeling
+        return super().inverse_mapping
 
     def indices_to_bits(self, indices: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

@@ -36,9 +36,9 @@ class Labeling(ABC):
 
     @property
     @abstractmethod
-    def inverse_labeling(self) -> dict[tuple[int, ...], int]:
+    def inverse_mapping(self) -> dict[tuple[int, ...], int]:
         r"""
-        The inverse labeling of the modulation. It is a dictionary that maps each binary tuple to the corresponding index.
+        The inverse mapping of the labeling. It is a dictionary that maps each binary tuple to the corresponding index.
         """
         return {tuple(map(int, row)): i for i, row in enumerate(self.matrix)}
 
@@ -81,7 +81,7 @@ class Labeling(ABC):
         if not np.all(np.isin(bits, [0, 1])):
             raise ValueError("elements of 'bits' must be either 0 or 1")
         indices = np.apply_along_axis(
-            func1d=lambda row: self.inverse_labeling[tuple(row)],
+            func1d=lambda row: self.inverse_mapping[tuple(row)],
             axis=-1,
             arr=bits.reshape(*bits.shape[:-1], -1, m),
         ).reshape(*bits.shape[:-1], -1)

@@ -154,14 +154,14 @@ class ProductLabeling(abc.Labeling):
 
     @property
     @cache
-    def inverse_labeling(self) -> dict[tuple[int, ...], int]:
+    def inverse_mapping(self) -> dict[tuple[int, ...], int]:
         r"""
         Examples:
             >>> labeling = komm.ProductLabeling.from_matrices(
             ...     [[0, 0], [1, 1], [1, 0], [0, 1]],
             ...     [[1], [0]],
             ... )
-            >>> labeling.inverse_labeling
+            >>> labeling.inverse_mapping
             {(0, 0, 1): 0,
              (0, 0, 0): 1,
              (1, 1, 1): 2,
@@ -171,7 +171,7 @@ class ProductLabeling(abc.Labeling):
              (0, 1, 1): 6,
              (0, 1, 0): 7}
         """
-        return super().inverse_labeling
+        return super().inverse_mapping
 
     def indices_to_bits(self, indices: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
