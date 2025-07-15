@@ -55,6 +55,7 @@ Labelings:
   - Labeling
   - NaturalLabeling
   - ReflectedLabeling
+  - ReflectedRectangularLabeling
   - ProductLabeling
 Pulse formatting:
   - Pulse

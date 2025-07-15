@@ -76,6 +76,7 @@ from ._labelings.Labeling import Labeling
 from ._labelings.NaturalLabeling import NaturalLabeling
 from ._labelings.ProductLabeling import ProductLabeling
 from ._labelings.ReflectedLabeling import ReflectedLabeling
+from ._labelings.ReflectedRectangularLabeling import ReflectedRectangularLabeling
 
 # Lossless coding
 from ._lossless_coding.FanoCode import FanoCode
@@ -190,6 +191,7 @@ __all__ = [
     "NaturalLabeling",
     "ProductLabeling",
     "ReflectedLabeling",
+    "ReflectedRectangularLabeling",
     # _lossless_coding
     "FanoCode",
     "FixedToVariableCode",
