@@ -14,28 +14,68 @@ T = TypeVar("T", bound=np.generic)
 
 class ProductLabeling(abc.Labeling):
     r"""
-    Cartesian product of labelings.
+    Cartesian product of [labelings](/ref/Labeling).
 
     Parameters:
-        *labelings: Labelings to be combined. At least one labeling is required.
+        *labelings: The labelings to be combined. At least one labeling is required.
+
+        repeat: Number of times to repeat the full sequence of labelings. Must be a positive integer. Has the same semantics as `itertools.product`. The default value is `1`.
+
+    Examples:
+        >>> labeling1 = komm.Labeling([[0, 0], [1, 1], [1, 0], [0, 1]])
+        >>> labeling2 = komm.Labeling([[1], [0]])
+        >>> labeling = komm.ProductLabeling(labeling1, labeling2)
+        >>> labeling.matrix
+        array([[0, 0, 1],
+               [0, 0, 0],
+               [1, 1, 1],
+               [1, 1, 0],
+               [1, 0, 1],
+               [1, 0, 0],
+               [0, 1, 1],
+               [0, 1, 0]])
+
+        >>> labeling = komm.ProductLabeling(komm.ReflectedLabeling(2), repeat=2)
+        >>> labeling.matrix
+        array([[0, 0, 0, 0],
+               [0, 0, 0, 1],
+               [0, 0, 1, 1],
+               [0, 0, 1, 0],
+               [0, 1, 0, 0],
+               [0, 1, 0, 1],
+               [0, 1, 1, 1],
+               [0, 1, 1, 0],
+               [1, 1, 0, 0],
+               [1, 1, 0, 1],
+               [1, 1, 1, 1],
+               [1, 1, 1, 0],
+               [1, 0, 0, 0],
+               [1, 0, 0, 1],
+               [1, 0, 1, 1],
+               [1, 0, 1, 0]])
     """
 
-    def __init__(self, *labelings: abc.Labeling) -> None:
+    def __init__(self, *labelings: abc.Labeling, repeat: int = 1) -> None:
         if len(labelings) < 1:
             raise ValueError("at least one labeling is required")
-        self._labelings = labelings
+        if repeat < 1:
+            raise ValueError("'repeat' must be at least 1")
+        self._labelings = labelings * repeat
 
     @classmethod
-    def from_matrices(cls, *matrices: npt.ArrayLike) -> "ProductLabeling":
-        return cls(*(Labeling(m) for m in matrices))
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self._labelings})"
-
-    @property
-    @cache
-    def matrix(self) -> npt.NDArray[np.integer]:
+    def from_matrices(
+        cls,
+        *matrices: npt.ArrayLike,
+        repeat: int = 1,
+    ) -> "ProductLabeling":
         r"""
+        Constructs a product labeling from labeling matrices.
+
+        Parameters:
+            *matrices: The labeling matrices. At least one matrix is required. See [labeling documentation](/ref/Labeling).
+
+            repeat: Number of times to repeat the full sequence of matrices. Must be a positive integer. Has the same semantics as `itertools.product`. The default value is `1`.
+
         Examples:
             >>> labeling = komm.ProductLabeling.from_matrices(
             ...     [[0, 0], [1, 1], [1, 0], [0, 1]],
@@ -50,7 +90,38 @@ class ProductLabeling(abc.Labeling):
                    [1, 0, 0],
                    [0, 1, 1],
                    [0, 1, 0]])
+
+            >>> labeling = komm.ProductLabeling.from_matrices(
+            ...     [[1, 0], [1, 1], [0, 1], [0, 0]],
+            ...     repeat=2,
+            ... )
+            >>> labeling.matrix
+            array([[1, 0, 1, 0],
+                   [1, 0, 1, 1],
+                   [1, 0, 0, 1],
+                   [1, 0, 0, 0],
+                   [1, 1, 1, 0],
+                   [1, 1, 1, 1],
+                   [1, 1, 0, 1],
+                   [1, 1, 0, 0],
+                   [0, 1, 1, 0],
+                   [0, 1, 1, 1],
+                   [0, 1, 0, 1],
+                   [0, 1, 0, 0],
+                   [0, 0, 1, 0],
+                   [0, 0, 1, 1],
+                   [0, 0, 0, 1],
+                   [0, 0, 0, 0]])
         """
+        labelings = tuple(Labeling(m) for m in matrices)
+        return cls(*labelings, repeat=repeat)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self._labelings})"
+
+    @property
+    @cache
+    def matrix(self) -> npt.NDArray[np.integer]:
         matrices = [lab.matrix for lab in self._labelings]
         rows = [np.hstack(comb) for comb in product(*matrices)]
         return np.vstack(rows)
