@@ -97,9 +97,11 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         bits = np.asarray(bits, dtype=int)
-        indices = bits_to_int(np.flip(bits.reshape(*bits.shape[:-1], -1, m), axis=-1))
-        indices ^= indices >> 1
-        return np.asarray(indices)
+        nat_indices = np.asarray(bits_to_int(np.flip(bits.reshape(-1, m), axis=-1)))
+        indices = np.zeros_like(nat_indices)
+        for shift in range(m):
+            indices ^= nat_indices >> shift
+        return indices.reshape(*bits.shape[:-1], -1)
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

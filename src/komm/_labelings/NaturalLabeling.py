@@ -97,8 +97,8 @@ class NaturalLabeling(abc.Labeling):
         """
         m = self._num_bits
         bits = np.asarray(bits, dtype=int)
-        indices = bits_to_int(np.flip(bits.reshape(*bits.shape[:-1], -1, m), axis=-1))
-        return np.asarray(indices)
+        indices = np.asarray(bits_to_int(np.flip(bits.reshape(-1, m), axis=-1)))
+        return indices.reshape(*bits.shape[:-1], -1)
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
