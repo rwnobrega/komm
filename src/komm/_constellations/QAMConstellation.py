@@ -12,7 +12,7 @@ from .PAMConstellation import PAMConstellation
 
 class QAMConstellation(abc.Constellation[np.complexfloating]):
     r"""
-    Quadrature-amplitude modulation (QAM) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) obtained by a Cartesian product of two [PAM constellations](/ref/PAMConstellation), namely, the *in-phase constellation*, and the *quadrature constellation*. For more details, see <cite>SA15, Sec. 2.5.1</cite>.
+    Quadrature amplitude modulation (QAM) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) obtained by a Cartesian product of two [PAM constellations](/ref/PAMConstellation), namely, the *in-phase constellation*, and the *quadrature constellation*. For more details, see <cite>SA15, Sec. 2.5.1</cite>.
 
     Parameters:
         orders: A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be a perfect square.
