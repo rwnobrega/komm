@@ -19,7 +19,7 @@ from ._channels.BinarySymmetricChannel import BinarySymmetricChannel
 from ._channels.DiscreteMemorylessChannel import DiscreteMemorylessChannel
 from ._channels.ZChannel import ZChannel
 
-# Modulation constellations
+# Constellations
 from ._constellations.ASKConstellation import ASKConstellation
 from ._constellations.APSKConstellation import APSKConstellation
 from ._constellations.Constellation import Constellation
@@ -86,14 +86,6 @@ from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
 from ._lossless_coding.ShannonCode import ShannonCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
-
-# Modulation (deprecated)
-from ._modulation.APSKModulation import APSKModulation
-from ._modulation.ASKModulation import ASKModulation
-from ._modulation.Modulation import Modulation
-from ._modulation.PAModulation import PAModulation
-from ._modulation.PSKModulation import PSKModulation
-from ._modulation.QAModulation import QAModulation
 
 # Pulses
 from ._pulses.GaussianPulse import GaussianPulse
@@ -207,13 +199,6 @@ __all__ = [
     "ShannonCode",
     "TunstallCode",
     "VariableToFixedCode",
-    # _modulation
-    "APSKModulation",
-    "ASKModulation",
-    "Modulation",
-    "PAModulation",
-    "PSKModulation",
-    "QAModulation",
     # _pulses
     "GaussianPulse",
     "ManchesterPulse",

@@ -5,7 +5,6 @@ from ._error_control_convolutional.base import ConvolutionalCode
 from ._error_control_decoders.base import BlockDecoder
 from ._integer_coding.base import IntegerCode
 from ._labelings.base import Labeling
-from ._modulation.base import Modulation
 from ._pulses.base import Pulse
 from ._quantization.base import ScalarQuantizer
 
@@ -15,7 +14,6 @@ __all__ = [
     "ConvolutionalCode",
     "DiscreteMemorylessChannel",
     "IntegerCode",
-    "Modulation",
     "Constellation",
     "Labeling",
     "Pulse",
