@@ -1,10 +1,11 @@
 from functools import cache, reduce
-from itertools import combinations, product
+from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
 from typeguard import typechecked
 
+from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
@@ -96,16 +97,13 @@ class ReedMullerCode(BlockCode):
         """
         rho, mu = self.rho, self.mu
         reed_partitions: list[npt.NDArray[np.integer]] = []
-        binary_vectors = [
-            np.fliplr(np.array(list(product([0, 1], repeat=ell)), dtype=int))
-            for ell in range(mu + 1)
-        ]
+        bin_vectors = [int_to_bits(range(2**ell), width=ell) for ell in range(mu + 1)]
         for ell in range(rho, -1, -1):
             for indices in combinations(range(mu), ell):
                 setI = np.array(indices, dtype=int)
                 setE = np.setdiff1d(np.arange(mu), indices, assume_unique=True)
-                setS = np.dot(binary_vectors[ell], 2**setI)
-                setQ = np.dot(binary_vectors[mu - ell], 2**setE)
+                setS = np.dot(bin_vectors[ell], 2**setI)
+                setQ = np.dot(bin_vectors[mu - ell], 2**setE)
                 reed_partitions.append(setS[np.newaxis] + setQ[np.newaxis].T)
         return reed_partitions
 
