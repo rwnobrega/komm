@@ -36,7 +36,7 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         ints = np.arange(2**m, dtype=int)
-        return np.flip(int_to_bits(ints ^ (ints >> 1), m), axis=-1)
+        return int_to_bits(ints ^ (ints >> 1), width=m, bit_order="MSB-first")
 
     @property
     def num_bits(self) -> int:
@@ -82,7 +82,7 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         indices = np.asarray(indices, dtype=int)
-        bits = np.flip(int_to_bits(indices ^ indices >> 1, m), axis=-1)
+        bits = int_to_bits(indices ^ indices >> 1, width=m, bit_order="MSB-first")
         return bits.reshape(*indices.shape[:-1], -1)
 
     def bits_to_indices(self, bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -97,7 +97,7 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         bits = np.asarray(bits, dtype=int)
-        nat_indices = np.asarray(bits_to_int(np.flip(bits.reshape(-1, m), axis=-1)))
+        nat_indices = bits_to_int(bits.reshape(-1, m), bit_order="MSB-first")
         indices = np.zeros_like(nat_indices)
         for shift in range(m):
             indices ^= nat_indices >> shift

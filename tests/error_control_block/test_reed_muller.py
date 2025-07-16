@@ -15,12 +15,12 @@ def test_reed_muller_code_2_4_generator_matrix():
     code = komm.ReedMullerCode(2, 4)
     np.testing.assert_equal(
         code.generator_matrix,
-        [
-            komm.int_to_bits(i, width=16)
-            # fmt: off
-            for i in [0x8888, 0xA0A0, 0xAA00, 0xC0C0, 0xCC00, 0xF000, 0xAAAA, 0xCCCC, 0xF0F0, 0xFF00, 0xFFFF]
-            # fmt: on
-        ],
+        # fmt: off
+        komm.int_to_bits(
+            [0x8888, 0xA0A0, 0xAA00, 0xC0C0, 0xCC00, 0xF000, 0xAAAA, 0xCCCC, 0xF0F0, 0xFF00, 0xFFFF],
+            width=16,
+        )
+        # fmt: on
     )
 
 

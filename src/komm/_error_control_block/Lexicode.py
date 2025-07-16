@@ -60,5 +60,5 @@ def lexicode_generator_matrix(n: int, d: int) -> npt.NDArray[np.integer]:
             if len(codewords).bit_count() == 1:  # Is power of 2.
                 basis.append(i)
             codewords.append(i)
-    generator_matrix = np.array([list(reversed(int_to_bits(c, n))) for c in basis])
+    generator_matrix = int_to_bits(basis, width=n, bit_order="MSB-first")
     return generator_matrix

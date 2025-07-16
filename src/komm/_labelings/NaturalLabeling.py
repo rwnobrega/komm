@@ -1,4 +1,5 @@
 from functools import cache
+from typing import cast
 
 import numpy as np
 import numpy.typing as npt
@@ -36,7 +37,7 @@ class NaturalLabeling(abc.Labeling):
         """
         m = self._num_bits
         ints = np.arange(2**m, dtype=int)
-        return np.flip(int_to_bits(ints, m), axis=-1)
+        return int_to_bits(ints, width=m, bit_order="MSB-first")
 
     @property
     def num_bits(self) -> int:
@@ -82,7 +83,7 @@ class NaturalLabeling(abc.Labeling):
         """
         m = self._num_bits
         indices = np.asarray(indices, dtype=int)
-        bits = np.flip(int_to_bits(indices, m), axis=-1)
+        bits = int_to_bits(indices, width=m, bit_order="MSB-first")
         return bits.reshape(*indices.shape[:-1], -1)
 
     def bits_to_indices(self, bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -97,7 +98,8 @@ class NaturalLabeling(abc.Labeling):
         """
         m = self._num_bits
         bits = np.asarray(bits, dtype=int)
-        indices = np.asarray(bits_to_int(np.flip(bits.reshape(-1, m), axis=-1)))
+        indices = bits_to_int(bits.reshape(-1, m), bit_order="MSB-first")
+        indices = cast(npt.NDArray[np.integer], indices)
         return indices.reshape(*bits.shape[:-1], -1)
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
