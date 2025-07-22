@@ -92,5 +92,8 @@ def int_to_bits(
             raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
         return np.array(bit_list, dtype=int)
     input = np.asarray(input, dtype=object)
-    bits = np.array([int_to_bits(x, width, bit_order) for x in input.ravel()])
+    bits = np.array(
+        [int_to_bits(x, width=width, bit_order=bit_order) for x in input.ravel()],
+        dtype=int,
+    )
     return bits.reshape(input.shape + (width,))
