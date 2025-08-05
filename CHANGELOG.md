@@ -1,5 +1,69 @@
 # Changelog
 
+## v0.25.0 (2025-08-05)
+
+### Breaking changes
+
+- Removed modulation classes in favor of decoupled [constellation](https://komm.dev/ref/Constellation) and [labeling](https://komm.dev/ref/Labeling) classes. For example, instead of
+
+  ```
+  modulation = komm.QAModulation(16, labeling="reflected_2d")
+  ```
+
+  use
+
+  ```
+  constellation = komm.QAMConstellation(16)  # 16 symbols
+  labeling = komm.ReflectedRectangularLabeling(4)  # 4 bits per symbol
+  ```
+
+  - To recover old `modulate()` behavior: Instead of
+
+    ```
+    symbols = modulation.modulate(bits)
+    ```
+
+    use
+
+    ```
+    indices = labeling.bits_to_indices(bits)
+    symbols = constellation.indices_to_symbols(indices)
+    ```
+
+  - To recover old `demodulate_hard()` behavior: Instead of
+
+    ```
+    bits_hat = modulation.demodulate_hard(received)
+    ```
+
+    use
+
+    ```
+    indices_hat = constellation.closest_indices(received)
+    bits_hat = labeling.indices_to_bits(indices_hat)
+    ```
+
+  - To recover old `demodulate_soft()` behavior: Instead of
+
+    ```
+    l_values = modulation.demodulate_soft(received, snr=5.0)
+    ```
+
+    use
+
+    ```
+    posteriors = constellation.posteriors(received, snr=5.0)
+    l_values = labeling.marginalize(posteriors)
+    ```
+
+- The phase offset of constellations are now measured in [turns](<https://en.wikipedia.org/wiki/Turn_(angle)>) instead of radians.
+
+- Renamed `__call__` methods to `emit`, in sources; `transmit`, in channels; and `decode`, in decoders.
+
+### Added
+
+- Added flag `bit_order` to [`bits_to_int`](https://komm.dev/ref/bits_to_int) and [`int_to_bits`](https://komm.dev/ref/int_to_bits) helper functions.
+
 ## v0.24.0 (2025-06-18)
 
 ### Breaking changes
