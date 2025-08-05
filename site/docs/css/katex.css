@@ -1,3 +1,7 @@
+.katex {
+  white-space: nowrap;
+}
+
 .katex-display {
   overflow-y: hidden;
   overflow-x: auto;
