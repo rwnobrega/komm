@@ -3,7 +3,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from ..types import Array1D, Array2D
+from ..types import Array2D
 
 
 def validate_log_base(value: float | str) -> float | Literal["e"]:
@@ -20,10 +20,19 @@ def validate_probability(value: float) -> float:
     return value
 
 
-def validate_pmf(value: npt.ArrayLike) -> Array1D[np.floating]:
+def validate_pmf(
+    value: npt.ArrayLike,
+    joint: bool = False,
+) -> npt.NDArray[np.floating]:
     value = np.asarray(value, dtype=float)
-    if not value.ndim == 1:
-        raise ValueError("pmf must be a 1D array")
+    if joint:
+        if not (len(value.shape) > 0 and len(set(value.shape)) == 1):
+            raise ValueError(
+                f"pmf must have equal dimensions (got shape {value.shape})"
+            )
+    else:
+        if not value.ndim == 1:
+            raise ValueError("pmf must be a 1D-array")
     if not np.all(value >= 0.0):
         raise ValueError("pmf must be non-negative")
     if not np.isclose(value.sum(), 1.0):
@@ -31,7 +40,10 @@ def validate_pmf(value: npt.ArrayLike) -> Array1D[np.floating]:
     return value
 
 
-def validate_transition_matrix(value: npt.ArrayLike) -> Array2D[np.floating]:
+def validate_transition_matrix(
+    value: npt.ArrayLike,
+    square: bool = False,
+) -> Array2D[np.floating]:
     value = np.asarray(value, dtype=float)
     if not value.ndim == 2:
         raise ValueError("transition matrix must be a 2D array")
@@ -39,4 +51,9 @@ def validate_transition_matrix(value: npt.ArrayLike) -> Array2D[np.floating]:
         raise ValueError("transition matrix must be non-negative")
     if not np.allclose(value.sum(axis=1), 1.0):
         raise ValueError("rows of transition matrix must sum to 1.0")
+    if square and value.shape[0] != value.shape[1]:
+        raise ValueError(
+            "transition matrix must be square (got shape "
+            f"({value.shape[0]}, {value.shape[1]}))"
+        )
     return value
