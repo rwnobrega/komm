@@ -3,11 +3,10 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from ..types import Array1D, Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
-
-from .. import abc
 
 
 class Constellation(abc.Constellation[T]):
