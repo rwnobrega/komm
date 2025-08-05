@@ -19,7 +19,7 @@ def random_pmf(size: int) -> Array1D[np.floating]:
     return pmf / pmf.sum()
 
 
-def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> float:
+def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating:
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
