@@ -144,6 +144,7 @@ def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
 
 @pytest.mark.parametrize(
     "code_parameters, pmf, rate",
+    # fmt: off
     [
         (test_data[0], [0.4, 0.2, 0.2, 0.1, 0.1], 3.0),
         (test_data[0], [0.2, 0.2, 0.2, 0.2, 0.2], 3.0),
@@ -153,17 +154,12 @@ def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
         (test_data[2], [0.4, 0.6], 1.18),
         (test_data[3], [0.25, 0.25, 0.2, 0.15, 0.15], 2.3),  # [CT06, Example 5.6.1]
         (test_data[4], [0.25, 0.25, 0.2, 0.15, 0.15], 1.5),  # [CT06, Example 5.6.2]
-        (
-            test_data[5],
-            [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0],
-            1.7,
-        ),  # [CT06, Example 5.6.3]
+        (test_data[5], [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0], 1.7),  # [CT06, Example 5.6.3]
     ],
+    # fmt: on
 )
 def test_rate(code_parameters, pmf, rate):
-    source_cardinality, target_cardinality, source_block_size, codewords = (
-        code_parameters.values()
-    )
+    source_cardinality, _, _, codewords = code_parameters.values()
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
     assert np.isclose(code.rate(pmf), rate)
 
@@ -214,9 +210,9 @@ def test_invalid_decoding_input():
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
-    with pytest.raises(ValueError):  # Invalid codeword
-        code.decode([1, 1, 0, 1, 0, 1, 1, 1])
-    with pytest.raises(ValueError):  # Incomplete codeword
-        code.decode([1, 1, 0, 1, 0, 1])
-    with pytest.raises(ValueError):  # Invalid symbol
-        code.decode([1, 1, 0, 1, 0, 1, 3])
+    with pytest.raises(ValueError, match="contains invalid word"):
+        code.decode([1, 1, 0, 1, 0, 1, 1, 1])  # Invalid codeword
+    with pytest.raises(ValueError, match="contains invalid word"):
+        code.decode([1, 1, 0, 1, 0, 1])  # Incomplete codeword
+    with pytest.raises(ValueError, match="contains invalid word"):
+        code.decode([1, 1, 0, 1, 0, 1, 3])  # Invalid symbol

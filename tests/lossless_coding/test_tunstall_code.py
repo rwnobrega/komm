@@ -4,7 +4,8 @@ import numpy as np
 import pytest
 
 import komm
-from komm._util.information_theory import random_pmf
+
+from .util import random_pmf
 
 
 def test_tunstall_code():

@@ -5,18 +5,12 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from ..types import Array1D
 from .validators import (
     validate_log_base,
     validate_pmf,
     validate_probability,
     validate_transition_matrix,
 )
-
-
-def random_pmf(size: int) -> Array1D[np.floating]:
-    pmf = np.random.rand(size)
-    return pmf / pmf.sum()
 
 
 def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating:

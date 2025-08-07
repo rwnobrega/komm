@@ -6,6 +6,7 @@ import numpy.typing as npt
 from typing_extensions import Self
 
 from .._util.validators import validate_pmf
+from ..types import Array1D
 from .util import (
     Word,
     is_fully_covering,
@@ -18,7 +19,7 @@ from .util import (
 
 class VariableToFixedCode:
     r"""
-    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{T}$, *source alphabet* $\mathcal{S}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{Y}$, *source alphabet* $\mathcal{X}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec}: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. Here, for simplicity, we assume that $\mathcal{Y} = [0 : |\mathcal{Y}|)$ and $\mathcal{X} = [0 : |\mathcal{X}|)$, where $|\mathcal{Y}| \geq 2$ and $|\mathcal{X}| \geq 2$ are called the *target cardinality* and *source cardinality*, respectively. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
     """
 
     def __init__(
@@ -67,10 +68,10 @@ class VariableToFixedCode:
         Constructs a variable-to-fixed length code from the decoding mapping $\Dec$.
 
         Parameters:
-            dec_mapping: The decoding mapping $\Dec$. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are non-empty tuples of integers in $[0:S)$.
+            dec_mapping: The decoding mapping $\Dec$. Must be a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are non-empty tuples of integers in $\mathcal{X}$.
 
         Notes:
-            The target block size $n$ is inferred from the domain of the decoding mapping, and the target and source cardinalities $T$ and $S$ are inferred from the maximum values in the domain and co-domain, respectively.
+            The target block size $n$ is inferred from the domain of the decoding mapping, and the target and source cardinalities $|\mathcal{Y}|$ and $|\mathcal{X}|$ are inferred from the maximum values in the domain and co-domain, respectively.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_dec_mapping({
@@ -107,20 +108,20 @@ class VariableToFixedCode:
     @classmethod
     def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]) -> Self:
         r"""
-        Constructs a variable-to-fixed length code from the target cardinality $T$ and a list of sourcewords.
+        Constructs a variable-to-fixed length code from the target cardinality $|\mathcal{Y}|$ and a list of sourcewords.
 
         Parameters:
-            target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$.
+            target_cardinality: The target cardinality $|\mathcal{Y}|$. Must be an integer greater than or equal to $2$.
 
-            sourcewords: The sourcewords of the code. Must be a list of length at most $T^n$ containing tuples of integers in $[0:S)$, where $S$ is the source cardinality of the code. The tuple in position $i$ must be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $[0:T)^n$.
+            sourcewords: The sourcewords of the code. Must be a list of length at most $|\mathcal{Y}|^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ must be equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of $\mathcal{Y}^n$.
 
         Note:
-            The target block size $n$ is inferred from the length of the sourcewords, and the source cardinality $S$ is inferred from the maximum value in the sourcewords.
+            The target block size $n$ is inferred from the length of the sourcewords, and the source cardinality $|\mathcal{X}|$ is inferred from the maximum value in the sourcewords.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_sourcewords(
             ...     target_cardinality=2,
-            ...     sourcewords=[(0,0,0), (0,0,1), (0,1), (1,)],
+            ...     sourcewords=[(0, 0, 0), (0, 0, 1), (0, 1), (1,)],
             ... )
             >>> code.target_cardinality, code.source_cardinality, code.target_block_size
             (2, 2, 2)
@@ -132,7 +133,9 @@ class VariableToFixedCode:
 
             >>> code = komm.VariableToFixedCode.from_sourcewords(
             ...     target_cardinality=2,
-            ...     sourcewords=[(1,), (2,), (0,1), (0,2), (0,0,0), (0,0,1), (0,0,2)],
+            ...     sourcewords=[
+            ...         (1,), (2,), (0, 1), (0, 2), (0, 0, 0), (0, 0, 1), (0, 0, 2)
+            ...     ],
             ... )
             >>> code.target_cardinality, code.source_cardinality, code.target_block_size
             (2, 3, 3)
@@ -154,10 +157,10 @@ class VariableToFixedCode:
     @cached_property
     def target_cardinality(self) -> int:
         r"""
-        The target cardinality $T$ of the code. It is the number of symbols in the target alphabet.
+        The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.target_cardinality
             2
         """
@@ -166,10 +169,10 @@ class VariableToFixedCode:
     @cached_property
     def source_cardinality(self) -> int:
         r"""
-        The source cardinality $S$ of the code. It is the number of symbols in the source alphabet.
+        The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.source_cardinality
             2
         """
@@ -181,7 +184,7 @@ class VariableToFixedCode:
         The target block size $n$ of the code. It is the number of symbols in each target block.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.target_block_size
             2
         """
@@ -190,10 +193,10 @@ class VariableToFixedCode:
     @cached_property
     def size(self) -> int:
         r"""
-        The number of sourcewords in the code. It is less than or equal to $T^n$.
+        The number of sourcewords in the code. It is less than or equal to $|\mathcal{Y}|^n$.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.size
             3
         """
@@ -202,14 +205,18 @@ class VariableToFixedCode:
     @cached_property
     def dec_mapping(self) -> dict[Word, Word]:
         r"""
-        The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $T^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are the corresponding sourcewords.
+        The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.dec_mapping
             {(0, 0): (0,), (0, 1): (1,), (1, 0): (0, 1)}
         """
         return self._dec_mapping
+
+    @cached_property
+    def _inv_dec_mapping(self) -> dict[Word, Word]:
+        return {x: y for y, x in self.dec_mapping.items()}
 
     @cached_property
     def sourcewords(self) -> list[Word]:
@@ -227,29 +234,25 @@ class VariableToFixedCode:
         """
         return list(self.dec_mapping.values())
 
-    @cached_property
-    def _inv_dec_mapping(self) -> dict[Word, Word]:
-        return {v: k for k, v in self.dec_mapping.items()}
-
     @cache
     def is_fully_covering(self) -> bool:
         """
         Returns whether the code is fully covering. A code is *fully covering* if every possible source sequence has a prefix that is a sourceword.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,0), (1,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1, 0), (1, 1)])
             >>> code.is_fully_covering()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.is_fully_covering()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.is_fully_covering()  # (1,) is not covered
             False
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0, 1)])
             >>> code.is_fully_covering()  # (1,) is not covered
             False
         """
@@ -261,19 +264,19 @@ class VariableToFixedCode:
         Returns whether the code is uniquely encodable. A code is *uniquely encodable* if there is a unique way to parse any concatenation of sourcewords.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,0), (1,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1, 0), (1, 1)])
             >>> code.is_uniquely_encodable()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.is_uniquely_encodable()  # 01 can be parsed as 0|1 or 01
             False
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.is_uniquely_encodable()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0, 1)])
             >>> code.is_uniquely_encodable()
             True
         """
@@ -285,50 +288,50 @@ class VariableToFixedCode:
         Returns whether the code is prefix-free. A code is *prefix-free* if no sourceword is a prefix of any other sourceword.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,0), (1,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1, 0), (1, 1)])
             >>> code.is_prefix_free()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.is_prefix_free()
             False
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.is_prefix_free()
             True
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (0, 1)])
             >>> code.is_prefix_free()
             False
         """
         return is_prefix_free(self.sourcewords)
 
-    def rate(self, pmf: npt.ArrayLike) -> float:
+    def rate(self, pmf: npt.ArrayLike) -> np.floating:
         r"""
-        Computes the expected rate $R$ of the code, considering a given pmf. This quantity is given by
+        Computes the expected rate $R$ of the code, considering a given (first-order) pmf $p$ over $\mathcal{X}$. This quantity is given by
         $$
             R = \frac{n}{\bar{k}},
         $$
-        where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.
+        and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
 
         Parameters:
-            pmf: The (first-order) probability mass function $p_X$ to be considered.
+            pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
 
         Returns:
             rate: The expected rate $R$ of the code.
 
         Examples:
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.rate([2/3, 1/3])
             np.float64(1.3846153846153846)
         """
-        pmf = validate_pmf(pmf)
         n = self.target_block_size
-        probabilities = [np.prod([pmf[x] for x in word]) for word in self.sourcewords]
-        lengths = [len(word) for word in self.sourcewords]
+        pmf = validate_pmf(pmf)
+        probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
+        lengths = [len(x) for x in self.sourcewords]
         return n / np.dot(lengths, probabilities)
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Encodes a sequence of source symbols using the code, which must be fully covering and uniquely encodable. When the input sequence ends with symbols that form only a partial match with any sourceword, the encoder will complete this last block using any valid sourceword that starts with these remaining symbols.
 
@@ -336,10 +339,10 @@ class VariableToFixedCode:
             Encoding for non-prefix-free codes is not implemented yet.
 
         Parameters:
-            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).
+            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
 
         Returns:
-            output: The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code) with a length that is a multiple of the target block size $n$.
+            output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$ with a length that is a multiple of $n$.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_dec_mapping({
@@ -355,13 +358,13 @@ class VariableToFixedCode:
             >>> code.encode([1, 0, 0])  # Incomplete input, completed as 1|000
             array([1, 1, 0, 0])
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.encode([1, 0, 0, 0])  # Code is not fully covering
             Traceback (most recent call last):
             ...
             ValueError: code is not fully covering
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.encode([1, 0, 0, 0])  # Code is not uniquely encodable
             Traceback (most recent call last):
             ...
@@ -378,15 +381,15 @@ class VariableToFixedCode:
         input = np.asarray(input)
         return parse_prefix_free(input, self._inv_dec_mapping, allow_incomplete=True)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Decodes a sequence of target symbols using the code, which must be fully covering and uniquely encodable.
 
         Parameters:
-            input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code) and have a length that is a multiple of the target block size $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the `encode` method).
+            input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$ and have a length that is a multiple of $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the `encode` method).
 
         Returns:
-            The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).
+            The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_dec_mapping({
@@ -407,13 +410,13 @@ class VariableToFixedCode:
             ...
             ValueError: input contains invalid word
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,0), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.decode([0, 0, 0, 1])  # Code is not fully covering
             Traceback (most recent call last):
             ...
             ValueError: code is not fully covering
 
-            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0,1)])
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.decode([0, 0, 0, 1])  # Code is not uniquely encodable
             Traceback (most recent call last):
             ...

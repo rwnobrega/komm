@@ -1,5 +1,6 @@
-from functools import cache
+from functools import cache, reduce
 from math import ceil, log2
+from operator import itemgetter
 
 import numpy as np
 import numpy.typing as npt
@@ -9,53 +10,56 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, empty_mapping, extended_probabilities
+from .util import Word
 
 
 @mkdocstrings(filters=["!.*"])
 class ShannonCode(FixedToVariableCode):
     r"""
-    Binary Shannon code. It is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(u)$ for a source symbol $u \in \mathcal{S}^k$ is given by
+    Binary Shannon code. For a given pmf $p$ over $\mathcal{X}$, it is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(\mathbf{x})$ associated with a source word $\mathbf{x} \in \mathcal{X}^k$ is given by
     $$
-        \ell_u = \left\lceil \log_2 \frac{1}{p_u} \right\rceil,
+        \ell(\mathbf{x}) = \left\lceil \log_2 \frac{1}{p(\mathbf{x})} \right\rceil.
     $$
-    where $p_u$ is the probability of the source symbol $u$. This function implements the lexicographic order assignment as described in [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
+    This function implements the lexicographic order assignment as described in [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
     Notes:
         Shannon codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
 
     Parameters:
-        pmf: The probability mass function of the source.
+        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
+
         source_block_size: The source block size $k$. The default value is $k = 1$.
 
     Examples:
-        >>> pmf = [0.7, 0.15, 0.15]
+        >>> pmf = [0.8, 0.1, 0.1]
 
-        >>> code = komm.ShannonCode(pmf, 1)
+        >>> code = komm.ShannonCode(pmf)
         >>> code.enc_mapping
         {(0,): (0,),
-         (1,): (1, 0, 0),
-         (2,): (1, 0, 1)}
+         (1,): (1, 0, 0, 0),
+         (2,): (1, 0, 0, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         np.float64(1.6)
 
         >>> code = komm.ShannonCode(pmf, 2)
         >>> code.enc_mapping
-        {(0, 0): (0, 0),
-         (0, 1): (0, 1, 0, 0),
-         (0, 2): (0, 1, 0, 1),
-         (1, 0): (0, 1, 1, 0),
-         (1, 1): (1, 0, 0, 0, 0, 0),
-         (1, 2): (1, 0, 0, 0, 0, 1),
-         (2, 0): (0, 1, 1, 1),
-         (2, 1): (1, 0, 0, 0, 1, 0),
-         (2, 2): (1, 0, 0, 0, 1, 1)}
+        {(0, 0): (0,),
+         (0, 1): (1, 0, 0, 0),
+         (0, 2): (1, 0, 0, 1),
+         (1, 0): (1, 0, 1, 0),
+         (1, 1): (1, 1, 0, 0, 0, 0, 0),
+         (1, 2): (1, 1, 0, 0, 0, 0, 1),
+         (2, 0): (1, 0, 1, 1),
+         (2, 1): (1, 1, 0, 0, 0, 1, 0),
+         (2, 2): (1, 1, 0, 0, 0, 1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(1.6)
+        np.float64(1.1)
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
         self.pmf = validate_pmf(pmf)
+        if not source_block_size >= 1:
+            raise ValueError("'source_block_size' must be at least 1")
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,
@@ -90,21 +94,15 @@ def next_in_lexicographic_order(word: Word) -> Word:
 
 
 def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
-    pbar = tqdm(
-        desc="Generating Shannon code",
-        total=2 * pmf.size**source_block_size,
-        delay=2.5,
-    )
-
-    enc_mapping = empty_mapping(pmf.size, source_block_size)
-    v = ()
-    for u, pu in extended_probabilities(pmf, source_block_size, pbar):
-        if pu > 0:
-            length = max(ceil(log2(1 / pu)), 1)
-            v = next_in_lexicographic_order(v) + (0,) * (length - len(v))
-            enc_mapping[u] = v
+    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
+    pbar = tqdm(desc="Generating Shannon code", total=extended_pmf.size, delay=2.5)
+    enc_mapping: dict[Word, Word] = {x: () for x in np.ndindex(extended_pmf.shape)}
+    y = ()
+    for x, px in sorted(np.ndenumerate(extended_pmf), key=itemgetter(1), reverse=True):
+        if px > 0:
+            length = max(ceil(log2(1 / px)), 1)
+            y = next_in_lexicographic_order(y) + (0,) * (length - len(y))
+            enc_mapping[x] = y
         pbar.update()
-
     pbar.close()
-
     return enc_mapping

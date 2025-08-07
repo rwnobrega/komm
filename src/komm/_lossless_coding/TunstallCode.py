@@ -19,17 +19,18 @@ from .VariableToFixedCode import VariableToFixedCode
 @mkdocstrings(filters=["!.*"])
 class TunstallCode(VariableToFixedCode):
     r"""
-    Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given probability mass function. For more details, see <cite>Say06, Sec. 3.7</cite>.
+    Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.7</cite>.
 
     Notes:
         Tunstall codes are always [prefix-free](/ref/VariableToFixedCode/#is_prefix_free) (hence [uniquely encodable](/ref/VariableToFixedCode/#is_uniquely_encodable)) and [fully covering](/ref/VariableToFixedCode/#is_fully_covering).
 
     Parameters:
-        pmf: The probability mass function of the source.
-        target_block_size: The target block size $n$. Must satisfy $2^n \geq S$, where $S$ is the cardinality of the source alphabet, given by `len(pmf)`. The default value is $n = \lceil \log_2 S \rceil$.
+        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
+
+        target_block_size: The target block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$. The default value is $n = \lceil \log_2 |\mathcal{X}| \rceil$.
 
     Examples:
-        >>> pmf = [0.7, 0.15, 0.15]
+        >>> pmf = [0.8, 0.1, 0.1]
 
         >>> code = komm.TunstallCode(pmf)
         >>> code.dec_mapping
@@ -49,7 +50,7 @@ class TunstallCode(VariableToFixedCode):
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(1.3698630137)
+        np.float64(1.2295081967213108)
     """
 
     def __init__(
@@ -66,7 +67,7 @@ class TunstallCode(VariableToFixedCode):
             target_cardinality=2,
             source_cardinality=self.pmf.size,
             target_block_size=target_block_size,
-            dec_mapping=tunstall_algorithm(self.pmf, target_block_size),
+            dec_mapping=tunstall_code(self.pmf, target_block_size),
         )
 
     def __repr__(self) -> str:
@@ -89,9 +90,11 @@ class TunstallCode(VariableToFixedCode):
         return True
 
 
-def tunstall_algorithm(
-    pmf: Array1D[np.floating], code_block_size: int
+def tunstall_code(
+    pmf: Array1D[np.floating],
+    target_block_size: int,
 ) -> dict[Word, Word]:
+
     @dataclass
     class Node:
         sourceword: Word
@@ -100,27 +103,28 @@ def tunstall_algorithm(
         def __lt__(self, other: Self) -> np.bool:
             return -self.probability < -other.probability
 
-    pbar = tqdm(
-        desc="Generating Tunstall code",
-        total=2 ** (code_block_size - 1) - pmf.size + 1,
-        delay=2.5,
-    )
+    S, n = pmf.size, target_block_size
+    K = ceil((2**n - S) / (S - 1)) - 1  # See [Say06, p. 70]
+    size = S + K * (S - 1)
+
+    pbar = tqdm(desc="Generating Tunstall code", total=K * S + size, delay=2.5)
 
     heap = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
     heapify(heap)
-    while len(heap) + pmf.size - 1 < 2**code_block_size:
+    for _ in range(K):
         node = heappop(heap)
         for symbol, probability in enumerate(pmf):
             new_node = Node(node.sourceword + (symbol,), node.probability * probability)
             heappush(heap, new_node)
+            pbar.update()
+
+    dec_mapping: dict[Word, Word] = {}
+    for y, x in zip(
+        product([0, 1], repeat=n), sorted(node.sourceword for node in heap)
+    ):
+        dec_mapping[y] = x
         pbar.update()
 
     pbar.close()
 
-    dec_mapping = dict(
-        zip(
-            product([0, 1], repeat=code_block_size),
-            sorted(node.sourceword for node in heap),
-        )
-    )
     return dec_mapping

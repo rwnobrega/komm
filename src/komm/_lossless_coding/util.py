@@ -1,12 +1,7 @@
 from itertools import product
-from math import prod
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
-
-from ..types import Array1D
 
 Word = tuple[int, ...]
 
@@ -120,21 +115,6 @@ def parse_prefix_free(
             return np.asarray(output)
 
     raise ValueError("input contains invalid word")
-
-
-def extended_probabilities(
-    pmf: Array1D[np.floating], k: int, pbar: "tqdm[Any]"
-) -> list[tuple[Word, float]]:
-    probs: list[tuple[float, Word]] = []
-    for u in product(range(pmf.size), repeat=k):
-        pu = prod(pmf[list(u)])
-        probs.append((-pu, u))
-        pbar.update()
-    return [(u, -minus_pu) for minus_pu, u in sorted(probs)]
-
-
-def empty_mapping(cardinality: int, block_size: int) -> dict[Word, Word]:
-    return {x: () for x in product(range(cardinality), repeat=block_size)}
 
 
 def integer_to_symbols(integer: int, base: int, width: int) -> list[int]:
