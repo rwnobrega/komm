@@ -2,6 +2,7 @@
 *[CF07]: Daniel J. Costello Jr. and G. David Forney Jr. Channel coding: The road to channel capacity. Proceedings of the IEEE, 95(6):1150–1177, 2007.
 *[CT06]: Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.
 *[CW67]: Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.
+*[GS97]: Charles M. Gristead and J. Laurie Snell. Introduction to Probability. American Mathematical Society, 2nd edition, 1997. ISBN 978-0821807491.
 *[Hay04]: Simon Haykin. Communication Systems. John Wiley & Sons, 4th edition, 2004. ISBN 978-0471178699.
 *[HP03]: W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.
 *[JZ15]: Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.
@@ -15,3 +16,4 @@
 *[Say06]: Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.
 *[WBR01]: Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.
 *[XiD03]: Sebastià Xambó i Descamps. Block Error-Correcting Codes: A Computational Primer. Springer-Verlag, 2003. ISBN 978-3642189975.
+*[YG14]: Roy D. Yates and David J. Goodman. Probability and Stochastic Processes: A Friendly Introduction for Electrical and Computer Engineers. Wiley, 3rd edition, 2014. ISBN 978-1118324561.
