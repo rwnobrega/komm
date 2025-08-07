@@ -15,7 +15,7 @@ ArrayFunction = Callable[[npt.NDArray[T]], npt.NDArray[U]]
 
 def vectorize(func: ArrayFunction[T, U]):
     r"""
-    Vectorizes a function that accepts a 1D array and returns a 1D array.
+    Vectorizes a function that accepts a 1D-array and returns a 1D-array.
     """
 
     @wraps(func)

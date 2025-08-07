@@ -3,7 +3,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-from .._util.correlation import autocorrelation, cyclic_autocorrelation
+from .._util.sequences import autocorrelation, cyclic_autocorrelation
 
 
 class BinarySequence:
