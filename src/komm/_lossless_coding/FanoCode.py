@@ -9,7 +9,7 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word
+from .util import Word, lexicographical_code
 
 
 @mkdocstrings(filters=["!.*"])
@@ -78,26 +78,32 @@ class FanoCode(FixedToVariableCode):
         return True
 
 
-Group = list[tuple[Word, np.floating]]
+def fano_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
+    pbar = tqdm(desc="Generating Fano code lengths", total=pmf.size, delay=2.5)
+    lengths = np.zeros_like(pmf, dtype=int)
+    items = sorted(np.ndenumerate(pmf), key=itemgetter(1), reverse=True)
+    stack: list[tuple[int, int, int]] = [(0, pmf.size, 0)]
+    while stack:
+        lo, hi, length = stack.pop()
+        if hi - lo == 1:
+            x, _ = items[lo]
+            lengths[x] = length
+            pbar.update()
+            continue
+        probs = [p for _, p in items[lo:hi]]
+        index = int(np.argmin(np.abs(np.cumsum(probs) - np.sum(probs) / 2)))
+        mid = lo + index + 1
+        stack.append((mid, hi, length + 1))
+        stack.append((lo, mid, length + 1))
+    pbar.close()
+    return lengths
 
 
 def fano_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
     extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    pbar = tqdm(desc="Generating Fano code", total=extended_pmf.size, delay=2.5)
-    enc_mapping: dict[Word, Word] = {x: () for x in np.ndindex(extended_pmf.shape)}
-    group = sorted(np.ndenumerate(extended_pmf), key=itemgetter(1), reverse=True)
-    stack: list[tuple[Group, Word]] = [(group, ())]
-    while stack:
-        group, y = stack.pop()
-        if len(group) == 1:
-            x, _ = group[0]
-            enc_mapping[x] = y
-            pbar.update()
-            continue
-        probs = [p for _, p in group]
-        total = np.sum(probs)
-        index = np.argmin(np.abs(np.cumsum(probs) - total / 2))
-        stack.append((group[index + 1 :], y + (1,)))
-        stack.append((group[: index + 1], y + (0,)))
-    pbar.close()
+    lengths = fano_code_lengths(extended_pmf.ravel())
+    codewords = lexicographical_code(lengths)
+    enc_mapping: dict[Word, Word] = {}
+    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
+        enc_mapping[x] = c
     return enc_mapping
