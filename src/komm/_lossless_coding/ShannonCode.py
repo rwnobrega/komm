@@ -1,16 +1,13 @@
 from functools import cache, reduce
-from math import ceil, log2
-from operator import itemgetter
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word
+from .util import Word, lexicographical_code
 
 
 @mkdocstrings(filters=["!.*"])
@@ -83,26 +80,21 @@ class ShannonCode(FixedToVariableCode):
         return True
 
 
-def next_in_lexicographic_order(word: Word) -> Word:
-    word_list = list(word)
-    for i in range(len(word_list) - 1, -1, -1):
-        if word_list[i] == 0:
-            word_list[i] = 1
-            break
-        word_list[i] = 0
-    return tuple(word_list)
+def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
+    lengths = np.zeros_like(pmf, dtype=int)
+    mask = pmf > 0
+    if np.sum(pmf**2) == 1:  # Deterministic case
+        lengths[mask] = 1
+    else:
+        lengths[mask] = np.ceil(np.log2(1 / pmf[mask])).astype(int)
+    return lengths
 
 
 def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
     extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    pbar = tqdm(desc="Generating Shannon code", total=extended_pmf.size, delay=2.5)
-    enc_mapping: dict[Word, Word] = {x: () for x in np.ndindex(extended_pmf.shape)}
-    y = ()
-    for x, px in sorted(np.ndenumerate(extended_pmf), key=itemgetter(1), reverse=True):
-        if px > 0:
-            length = max(ceil(log2(1 / px)), 1)
-            y = next_in_lexicographic_order(y) + (0,) * (length - len(y))
-            enc_mapping[x] = y
-        pbar.update()
-    pbar.close()
+    lengths = shannon_code_lengths(extended_pmf.ravel())
+    codewords = lexicographical_code(lengths)
+    enc_mapping: dict[Word, Word] = {}
+    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
+        enc_mapping[x] = c
     return enc_mapping
