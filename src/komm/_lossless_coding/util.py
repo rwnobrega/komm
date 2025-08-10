@@ -1,3 +1,4 @@
+from collections import Counter
 from itertools import product
 
 import numpy as np
@@ -11,6 +12,7 @@ def is_prefix_of(w1: Word, w2: Word) -> bool:
 
 
 def is_prefix_free(words: list[Word]) -> bool:
+    words = [w for w in words if len(w) > 0]  # Ignore empty words
     words = sorted(words, key=len)
     for i, w1 in enumerate(words):
         for w2 in words[i + 1 :]:
@@ -117,12 +119,43 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
-def integer_to_symbols(integer: int, base: int, width: int) -> list[int]:
+def lexicographical_code(lengths: npt.ArrayLike) -> list[Word]:
+    r"""
+    Generates the lexicographical prefix-free symbol code based on the given lengths.
+
+    Parameters:
+        lengths: A list where the index is the symbol and the value is its codeword length.
+
+    Returns:
+        codewords: A list where the index is the symbol and the value is the bit tuple for that symbol. Symbols with zero length receive an empty tuple.
+    """
+    lengths = np.asarray(lengths, dtype=int)
+
+    if not lengths.ndim == 1:
+        raise ValueError("'lengths' must be a 1D-array")
+    if not np.all(lengths >= 0):
+        raise ValueError("'lengths' must be non-negative")
+
+    l_max = lengths.max()
+    counts = Counter(lengths)
+    integers = [0] * (l_max + 1)
+    for l in range(1, l_max + 1):
+        integers[l] = (integers[l - 1] + counts[l - 1]) * 2
+
+    codewords: list[Word] = [()] * lengths.size
+    for x, l in enumerate(lengths):
+        codewords[x] = integer_to_symbols(integers[l], base=2, width=l)
+        integers[l] += 1
+
+    return codewords
+
+
+def integer_to_symbols(integer: int, base: int, width: int) -> Word:
     symbols: list[int] = []
     for _ in range(width):
         integer, symbol = divmod(integer, base)
         symbols.append(symbol)
-    return symbols[::-1]
+    return tuple(symbols[::-1])
 
 
 def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
