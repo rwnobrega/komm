@@ -97,7 +97,7 @@ test_cases = [
 def test_lloyd_max_quantizer_sayood_table_9_6(
     input_pdf, input_range, num_levels, levels, thresholds, snr_db
 ):
-    # [Say06, Sec. 9.6.1, Table.9.6]
+    # [Say06, Sec. 9.6.1, Table 9.6]
     quantizer = komm.LloydMaxQuantizer(input_pdf, input_range, num_levels)
     assert np.allclose(quantizer.levels, levels, atol=0.0005)
     assert np.allclose(quantizer.thresholds, thresholds, atol=0.0005)
