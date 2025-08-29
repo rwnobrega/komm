@@ -5,6 +5,9 @@ import pytest
 
 import komm
 
+gaussian_pdf = lambda x: 1 / np.sqrt(2 * np.pi) * np.exp(-(x**2) / 2)
+laplacian_pdf = lambda x: 1 / np.sqrt(2) * np.exp(-np.sqrt(2) * np.abs(x))
+
 
 @pytest.mark.parametrize(
     "num_levels, input_range, choice, levels, thresholds",
@@ -87,3 +90,120 @@ def test_uniform_quantizer_snr(n_bits, peak):
     assert np.isclose(noise_power, quantizer.quantization_step**2 / 12)
     snr_db = 10 * np.log10(signal_power / noise_power)
     assert np.isclose(snr_db, 6.02059991328 * n_bits)
+
+
+@pytest.mark.parametrize(
+    "num_levels, step, mse",
+    [
+        (2, 1.596, 0.3634),
+        (3, 1.224, 0.1902),
+        (4, 0.9957, 0.1188),
+        (5, 0.8430, 0.08218),
+        (6, 0.7334, 0.06065),
+        (7, 0.6508, 0.04686),
+        (8, 0.5860, 0.03744),
+        (9, 0.5338, 0.03069),
+        (10, 0.4908, 0.02568),
+        (11, 0.4546, 0.02185),
+        (12, 0.4238, 0.01885),
+        (13, 0.3972, 0.01645),
+        (14, 0.3739, 0.01450),
+        (15, 0.3534, 0.01289),
+        (16, 0.3352, 0.01154),
+        (17, 0.3189, 0.01040),
+        (18, 0.3042, 0.009430),
+        (19, 0.2909, 0.008594),
+        (20, 0.2788, 0.007869),
+        (21, 0.2678, 0.007235),
+        (22, 0.2576, 0.006678),
+        (23, 0.2482, 0.006185),
+        (24, 0.2396, 0.005747),
+        (25, 0.2315, 0.005355),
+        (26, 0.2240, 0.005004),
+        (27, 0.2171, 0.004687),
+        (28, 0.2105, 0.004401),
+        (29, 0.2044, 0.004141),
+        (30, 0.1987, 0.003905),
+        (31, 0.1932, 0.003688),
+        (32, 0.1881, 0.003490),
+        (33, 0.1833, 0.003308),
+        (34, 0.1787, 0.003141),
+        (35, 0.1744, 0.002986),
+        (36, 0.1703, 0.002843),
+    ],
+)
+def test_uniform_quantizer_gaussian(num_levels, step, mse):
+    # Joel Max (1960):
+    # Quantizing for Minimum Distortion.
+    # Table II.
+    b = num_levels * step / 2.0
+    quantizer = komm.UniformQuantizer(
+        num_levels=num_levels,
+        input_range=(-b, b),
+        choice="mid-riser" if num_levels % 2 == 0 else "mid-tread",
+    )
+    assert np.isclose(
+        quantizer.mean_squared_error(
+            input_pdf=gaussian_pdf,
+            input_range=(-6, 6),
+        ),
+        mse,
+        atol=5e-5,
+    )
+
+
+@pytest.mark.parametrize(
+    "num_levels, step, mse",
+    [
+        (2, 1.4142, 0.5000),
+        (3, 1.4142, 0.2642),
+        (4, 1.0874, 0.1936),
+        (5, 1.0245, 0.1330),
+        (6, 0.8707, 0.1095),
+        (7, 0.8218, 0.0831),
+        (8, 0.7309, 0.0717),
+        (9, 0.6490, 0.0580),
+        (10, 0.6335, 0.0515),
+        (11, 0.6048, 0.0433),
+        (12, 0.5613, 0.0392),
+        (13, 0.5385, 0.0339),
+        (14, 0.5056, 0.0310),
+        (15, 0.4869, 0.0274),
+        (16, 0.4610, 0.0254),
+        (17, 0.4454, 0.0227),
+        (18, 0.4245, 0.0210),
+        (19, 0.4113, 0.0192),
+        (20, 0.3940, 0.0180),
+        (21, 0.3826, 0.0165),
+        (22, 0.3680, 0.0156),
+        (23, 0.3581, 0.0144),
+        (24, 0.3456, 0.0136),
+        (25, 0.3369, 0.0127),
+        (26, 0.3261, 0.0120),
+        (27, 0.3184, 0.0112),
+        (28, 0.3089, 0.0107),
+        (29, 0.3020, 0.0101),
+        (30, 0.2937, 0.0096),
+        (31, 0.2875, 0.0091),
+        (32, 0.2800, 0.0087),
+    ],
+)
+def test_uniform_quantizer_laplacian(num_levels, step, mse):
+    # W. C. Adams, Jr. & C. E. Giesler (1978):
+    # Quantizing Characteristics for Signals Having Laplacian
+    # Amplitude Probability Density Function.
+    # Table 1.
+    b = num_levels * step / 2.0
+    quantizer = komm.UniformQuantizer(
+        num_levels=num_levels,
+        input_range=(-b, b),
+        choice="mid-riser" if num_levels % 2 == 0 else "mid-tread",
+    )
+    assert np.isclose(
+        quantizer.mean_squared_error(
+            input_pdf=laplacian_pdf,
+            input_range=(-10, 10),
+        ),
+        mse,
+        atol=5e-3,
+    )
