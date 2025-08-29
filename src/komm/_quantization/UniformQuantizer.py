@@ -137,7 +137,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
             array([0, 2, 3])
         """
         input = np.asarray(input, dtype=float)
-        output = np.digitize(input, self.thresholds, right=True)
+        output = np.digitize(input, self.thresholds, right=False)
         return output
 
     def quantize(self, input: npt.ArrayLike) -> npt.NDArray[np.floating]:
