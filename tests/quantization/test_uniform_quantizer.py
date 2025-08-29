@@ -5,8 +5,7 @@ import pytest
 
 import komm
 
-gaussian_pdf = lambda x: 1 / np.sqrt(2 * np.pi) * np.exp(-(x**2) / 2)
-laplacian_pdf = lambda x: 1 / np.sqrt(2) * np.exp(-np.sqrt(2) * np.abs(x))
+from .util import gaussian_pdf, laplacian_pdf
 
 
 @pytest.mark.parametrize(
