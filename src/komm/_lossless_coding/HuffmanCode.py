@@ -92,6 +92,26 @@ class HuffmanCode(FixedToVariableCode):
         return True
 
 
+def huffman_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
+    lengths = np.zeros_like(pmf, dtype=int)
+    if np.sum(pmf**2) == 1:  # Deterministic case
+        lengths[pmf > 0] = 1
+        return lengths
+    heap: list[tuple[np.floating, list[int]]] = []
+    for i, pi in enumerate(pmf):
+        if pi > 0:
+            heappush(heap, (pi, [i]))
+    while len(heap) > 1:
+        w1, s1 = heappop(heap)
+        w2, s2 = heappop(heap)
+        for i in s1:
+            lengths[i] += 1
+        for i in s2:
+            lengths[i] += 1
+        heappush(heap, (w1 + w2, s1 + s2))
+    return lengths
+
+
 def huffman_code(
     pmf: Array1D[np.floating],
     source_block_size: int,
