@@ -27,9 +27,9 @@ class LempelZiv78Code:
 
     def __post_init__(self) -> None:
         if not self.source_cardinality >= 2:
-            raise ValueError("'source_cardinality': must be at least 2")
+            raise ValueError("'source_cardinality' must be at least 2")
         if not self.target_cardinality >= 2:
-            raise ValueError("'target_cardinality': must be at least 2")
+            raise ValueError("'target_cardinality' must be at least 2")
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

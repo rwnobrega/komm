@@ -40,11 +40,11 @@ class FixedToVariableCode:
         T = self.target_cardinality
         k = self.source_block_size
         if not S >= 2:
-            raise ValueError("'source_cardinality': must be at least 2")
+            raise ValueError("'source_cardinality' must be at least 2")
         if not T >= 2:
-            raise ValueError("'target_cardinality': must be at least 2")
+            raise ValueError("'target_cardinality' must be at least 2")
         if not k >= 1:
-            raise ValueError("'source_block_size': must be at least 1")
+            raise ValueError("'source_block_size' must be at least 1")
         if set(domain) != set(product(range(S), repeat=k)):
             raise ValueError("'enc_mapping': invalid domain")
         if not all(all(0 <= x < T for x in word) for word in codomain):

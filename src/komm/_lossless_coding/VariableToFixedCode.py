@@ -41,11 +41,11 @@ class VariableToFixedCode:
         S = self.source_cardinality
         n = self.target_block_size
         if not T >= 2:
-            raise ValueError("'target_cardinality': must be at least 2")
+            raise ValueError("'target_cardinality' must be at least 2")
         if not S >= 2:
-            raise ValueError("'source_cardinality': must be at least 2")
+            raise ValueError("'source_cardinality' must be at least 2")
         if not n >= 1:
-            raise ValueError("'target_block_size': must be at least 1")
+            raise ValueError("'target_block_size' must be at least 1")
         if not set(domain) <= set(product(range(T), repeat=n)):
             raise ValueError("'dec_mapping': invalid domain")
         if not all(
