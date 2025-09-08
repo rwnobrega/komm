@@ -62,7 +62,7 @@ class ScalarQuantizer(ABC):
         Computes the mean squared (quantization) error (MSE) of the quantizer for a given input
         probability density function (pdf). It is defined as
         $$
-            \mse = \int_{-\infty}^{\infty} (x - y)^2 f_X(x) \, dx
+            \mse = \int_{-\infty}^{\infty} (y - x)^2 f_X(x) \, dx
         $$
         where $y$ is the quantized signal and $f_X(x)$ is the pdf of the input signal.
 
@@ -82,7 +82,7 @@ class ScalarQuantizer(ABC):
             left, right = thresholds[i], thresholds[i + 1]
             x = np.linspace(left, right, num=points_per_interval, dtype=float)
             pdf = input_pdf(x)
-            integrand: npt.NDArray[np.floating] = (x - level) ** 2 * pdf
+            integrand: npt.NDArray[np.floating] = (level - x) ** 2 * pdf
             integral = np.trapezoid(integrand, x)
             mse += float(integral)
         return mse
