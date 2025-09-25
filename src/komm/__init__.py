@@ -82,6 +82,7 @@ from ._labelings.ReflectedRectangularLabeling import ReflectedRectangularLabelin
 from ._lossless_coding.FanoCode import FanoCode
 from ._lossless_coding.FixedToVariableCode import FixedToVariableCode
 from ._lossless_coding.HuffmanCode import HuffmanCode
+from ._lossless_coding.LempelZiv77Code import LempelZiv77Code
 from ._lossless_coding.LempelZiv78Code import LempelZiv78Code
 from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
 from ._lossless_coding.ShannonCode import ShannonCode
@@ -197,6 +198,7 @@ __all__ = [
     "FanoCode",
     "FixedToVariableCode",
     "HuffmanCode",
+    "LempelZiv77Code",
     "LempelZiv78Code",
     "LempelZivWelchCode",
     "ShannonCode",
