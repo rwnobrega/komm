@@ -84,6 +84,7 @@ Source coding:
     - HuffmanCode
     - VariableToFixedCode
     - TunstallCode
+    - LempelZiv77Code
     - LempelZiv78Code
     - LempelZivWelchCode
   Integer coding:
