@@ -44,13 +44,13 @@ class LempelZiv77Code:
     lookahead_size: int
 
     def __post_init__(self) -> None:
-        if self.source_cardinality < 2:
+        if not self.source_cardinality >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
-        if self.target_cardinality < 2:
+        if not self.target_cardinality >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
-        if self.window_size < 1:
+        if not self.window_size >= 1:
             raise ValueError("'window_size' must be at least 1")
-        if self.lookahead_size < 1:
+        if not self.lookahead_size >= 1:
             raise ValueError("'lookahead_size' must be at least 1")
 
         # Precompute field widths in base T.
