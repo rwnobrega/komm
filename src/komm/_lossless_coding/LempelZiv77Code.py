@@ -151,27 +151,6 @@ class _HashMatcher:
 
         return max_l, best_d
 
-    def get_hash_stats(self) -> dict[str, int]:
-        if not self._hash_table:
-            return {
-                "total_patterns": 0,
-                "total_positions": 0,
-                "max_bucket_size": 0,
-                "avg_bucket_size": 0,
-            }
-
-        total_positions: int = sum(
-            len(positions) for positions in self._hash_table.values()
-        )
-        return {
-            "total_patterns": len(self._hash_table),
-            "total_positions": total_positions,
-            "max_bucket_size": max(
-                len(positions) for positions in self._hash_table.values()
-            ),
-            "avg_bucket_size": int(total_positions / len(self._hash_table)),
-        }
-
 
 @dataclass
 class LempelZiv77Code:
@@ -467,11 +446,3 @@ class LempelZiv77Code:
             out.append(c)
 
         return np.array(out, dtype=int)
-
-    def get_hash_stats(self) -> dict[str, int]:
-        """Get hash table statistics for monitoring and debugging."""
-        return self._matcher.get_hash_stats()
-
-    def clear_hash_cache(self) -> None:
-        """Clear the hash cache - useful for processing multiple independent streams."""
-        self._matcher.clear_hash_table()
