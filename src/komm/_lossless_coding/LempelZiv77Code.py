@@ -200,7 +200,6 @@ class LempelZiv77Code:
             Lw = ceil(log(L+1, T)) symbols for l
             M = ceil(log(S,   T)) symbols for c
 
-
     Examples:
         >>> lz77 = komm.LempelZiv77Code(source_cardinality=2, target_cardinality=2, window_size=16, lookahead_size=4)
     """
@@ -238,7 +237,6 @@ class LempelZiv77Code:
 
         Args:
             input: 1D array with elements in $[0, S)$
-            verbose: If True, prints each triple (d, l, c) as it's generated
 
         Returns:
             1D array of base-$T$ symbols representing concatenated triples $(d, l, c)$.
@@ -248,15 +246,13 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ... source_cardinality=2,
-            ... target_cardinality=2,
-            ... window_size=16,
-            ... lookahead_size=4
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
+            ...     window_size=4,
+            ...     lookahead_size=2,
             ... )
-            >>> lz77.encode(np.zeros(15, dtype=int))
-            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1,
-                0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0])
-
+            >>> lz77.encode([0, 0, 0, 0, 0, 0, 0])
+            array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
         """
         triples: list[tuple[int, int, int]] = self.source_to_triples(input)
         return self.triples_to_target(triples)
@@ -272,21 +268,32 @@ class LempelZiv77Code:
             output: The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).
 
         Examples:
-            >>> message = ([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1,0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0])
             >>> lz77 = komm.LempelZiv77Code(
-            ... source_cardinality=2,
-            ... target_cardinality=2,
-            ... window_size=16,
-            ... lookahead_size=4
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
+            ...     window_size=4,
+            ...     lookahead_size=2,
             ... )
-            >>> lz77.decode(message)
-            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            >>> lz77.decode([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
+            array([0, 0, 0, 0, 0, 0, 0])
         """
         triples: list[tuple[int, int, int]] = self.target_to_triples(input)
         return self.triples_to_source(triples)
 
     def source_to_triples(self, input: npt.ArrayLike) -> list[tuple[int, int, int]]:
-        """Convert source symbols to list of LZ77 triples (d, l, c) using hash optimization."""
+        r"""
+        Convert source symbols to list of LZ77 triples (d, l, c) using hash optimization.
+
+        Examples:
+            >>> lz77 = komm.LempelZiv77Code(
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
+            ...     window_size=4,
+            ...     lookahead_size=2,
+            ... )
+            >>> lz77.source_to_triples([0, 0, 0, 0, 0, 0, 0])
+            [(0, 0, 0), (1, 2, 0), (4, 2, 0)]
+        """
         x: npt.NDArray[np.integer] = np.asarray(input, dtype=int)
         if x.ndim != 1:
             raise ValueError("'input' must be a 1D array")
@@ -347,7 +354,19 @@ class LempelZiv77Code:
     def triples_to_target(
         self, triples: list[tuple[int, int, int]]
     ) -> npt.NDArray[np.integer]:
-        """Convert list of triples to transmission symbol stream."""
+        r"""
+        Convert list of triples to transmission symbol stream.
+
+        Examples:
+            >>> lz77 = komm.LempelZiv77Code(
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
+            ...     window_size=4,
+            ...     lookahead_size=2,
+            ... )
+            >>> lz77.triples_to_target([(0, 0, 0), (1, 2, 0), (4, 2, 0)])
+            array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
+        """
         T: int = self.target_cardinality
         D: int = self._D
         Lw: int = self._Lw
@@ -362,7 +381,19 @@ class LempelZiv77Code:
         return np.array(out, dtype=int)
 
     def target_to_triples(self, input: npt.ArrayLike) -> list[tuple[int, int, int]]:
-        """Parse transmission stream back to list of triples."""
+        r"""
+        Parse transmission stream back to list of triples.
+
+        Examples:
+            >>> lz77 = komm.LempelZiv77Code(
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
+            ...     window_size=4,
+            ...     lookahead_size=2,
+            ... )
+            >>> lz77.target_to_triples([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
+            [(0, 0, 0), (1, 2, 0), (4, 2, 0)]
+        """
         T: int = self.target_cardinality
         D: int = self._D
         Lw: int = self._Lw
@@ -381,11 +412,11 @@ class LempelZiv77Code:
         triple_syms: int = D + Lw + M
 
         while i + triple_syms <= y.size:
-            d: int = symbols_to_integer(y[i : i + D], base=T)
+            d: int = int(symbols_to_integer(y[i : i + D], base=T))
             i += D
-            l: int = symbols_to_integer(y[i : i + Lw], base=T)
+            l: int = int(symbols_to_integer(y[i : i + Lw], base=T))
             i += Lw
-            c: int = symbols_to_integer(y[i : i + M], base=T)
+            c: int = int(symbols_to_integer(y[i : i + M], base=T))
             i += M
             triples.append((d, l, c))
 
@@ -399,7 +430,18 @@ class LempelZiv77Code:
     def triples_to_source(
         self, triples: list[tuple[int, int, int]]
     ) -> npt.NDArray[np.integer]:
-        """Reconstruct original message from list of triples."""
+        r"""
+        Reconstruct original message from list of triples.
+
+        >>> lz77 = komm.LempelZiv77Code(
+        ...     source_cardinality=2,
+        ...     target_cardinality=2,
+        ...     window_size=4,
+        ...     lookahead_size=2,
+        ... )
+        >>> lz77.triples_to_source([(0, 0, 0), (1, 2, 0), (4, 2, 0)])
+        array([0, 0, 0, 0, 0, 0, 0])
+        """
         S: int = self.source_cardinality
         out: list[int] = []
 
