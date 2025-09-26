@@ -11,13 +11,7 @@ from .util import integer_to_symbols, symbols_to_integer
 @dataclass
 class LempelZiv77Code:
     r"""
-    Lempel–Ziv 77 (LZ77 or LZ1) code.
-
-    It is a lossless data compression algorithm
-    that replaces repeated data with references to previous occurrences within a sliding window.
-    The algorithm achieves compression by identifying matches between the current position and
-    patterns within the search window, encoding them as (distance, length, next_symbol) triples.
-    For more details, see standard references on data compression algorithms.
+    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm that replaces repeated data with references to previous occurrences within a sliding window. The algorithm achieves compression by identifying matches between the current position and patterns within the search window, encoding them as triples `(distance, length, next_symbol)`. For more details, see <cite>Say06, Sec. 5.4.1</cite>.
 
     Parameters:
         source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
@@ -36,7 +30,12 @@ class LempelZiv77Code:
             M = ceil(log(S,   T)) symbols for c
 
     Examples:
-        >>> lz77 = komm.LempelZiv77Code(source_cardinality=2, target_cardinality=2, window_size=16, lookahead_size=4)
+        >>> lz77 = komm.LempelZiv77Code(
+        ...     source_cardinality=2,
+        ...     target_cardinality=2,
+        ...     window_size=16,
+        ...     lookahead_size=4,
+        ... )
     """
 
     source_cardinality: int
@@ -68,16 +67,13 @@ class LempelZiv77Code:
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encode a sequence of source symbols using optimized LZ77, emitting a base-T stream.
+        Encodes a sequence of source symbols using the LZ77 encoding algorithm.
 
-        Args:
-            input: 1D array with elements in $[0, S)$
+        Parameters:
+            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).
 
         Returns:
-            1D array of base-$T$ symbols representing concatenated triples $(d, l, c)$.
-
-        Raises:
-            ValueError: If input is not a 1D array or contains symbols outside valid range.
+            output: The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code).
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
@@ -89,8 +85,9 @@ class LempelZiv77Code:
             >>> lz77.encode([0, 0, 0, 0, 0, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
         """
-        triples: list[tuple[int, int, int]] = self.source_to_triples(input)
-        return self.triples_to_target(triples)
+        triples = self.source_to_triples(input)
+        output = self.triples_to_target(triples)
+        return output
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -112,8 +109,9 @@ class LempelZiv77Code:
             >>> lz77.decode([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0])
         """
-        triples: list[tuple[int, int, int]] = self.target_to_triples(input)
-        return self.triples_to_source(triples)
+        triples = self.target_to_triples(input)
+        output = self.triples_to_source(triples)
+        return output
 
     def source_to_triples(self, input: npt.ArrayLike) -> list[tuple[int, int, int]]:
         r"""
