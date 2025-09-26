@@ -8,150 +8,6 @@ import numpy.typing as npt
 from .util import integer_to_symbols, symbols_to_integer
 
 
-class _HashMatcher:
-    def __init__(
-        self,
-        min_match_length: int = 3,
-        max_hash_entries: int = 10,
-        pattern_length: int = 3,
-    ) -> None:
-        self.min_match_length: int = min_match_length
-        self.max_hash_entries: int = max_hash_entries
-        self.pattern_length: int = pattern_length
-        self._hash_table: dict[tuple[int, ...], list[int]] = defaultdict(list)
-        self._current_data: np.ndarray | None = None
-
-    def initialize(self, data: np.ndarray) -> None:
-        self._current_data = data
-        self.clear_hash_table()
-
-    def clear_hash_table(self) -> None:
-        self._hash_table.clear()
-
-    def update_hash_table(self, position: int) -> None:
-        if self._current_data is None or position + self.pattern_length > len(
-            self._current_data
-        ):
-            return
-
-        pattern: tuple[int, ...] = tuple(
-            self._current_data[position : position + self.pattern_length]
-        )
-        self._hash_table[pattern].append(position)
-
-        # Limit list size to prevent excessive memory usage
-        if len(self._hash_table[pattern]) > self.max_hash_entries:
-            self._hash_table[pattern] = self._hash_table[pattern][
-                -self.max_hash_entries :
-            ]
-
-    def find_longest_match_optimized(
-        self,
-        window: npt.NDArray[np.integer],
-        lookahead: npt.NDArray[np.integer],
-        current_absolute_pos: int,
-    ) -> tuple[int, int]:
-        n: int = window.size
-        if n == 0 or lookahead.size == 0:
-            return 0, 0
-
-        best_d: int = 0
-        max_l: int = 0
-
-        # Try hash table optimization first
-        if lookahead.size >= self.min_match_length:
-            max_l, best_d = self._try_hash_matches(
-                window, lookahead, current_absolute_pos, n
-            )
-
-        # Fallback to brute force if hash didn't find good matches
-        if max_l < self.min_match_length:
-            max_l, best_d = self._try_brute_force_matches(
-                window, lookahead, max_l, best_d
-            )
-
-        return (best_d, max_l) if max_l > 0 else (0, 0)
-
-    def _try_hash_matches(
-        self,
-        window: npt.NDArray[np.integer],
-        lookahead: npt.NDArray[np.integer],
-        current_absolute_pos: int,
-        window_size: int,
-    ) -> tuple[int, int]:
-        max_l: int = 0
-        best_d: int = 0
-
-        pattern_length: int = min(self.pattern_length, lookahead.size)
-        pattern: tuple[int, ...] = tuple(lookahead[:pattern_length])
-
-        if pattern not in self._hash_table:
-            return max_l, best_d
-
-        # Check potential matches from hash table
-        for match_pos in reversed(self._hash_table[pattern]):
-            # Convert absolute position to relative position in window
-            if (
-                match_pos < current_absolute_pos - window_size
-                or match_pos >= current_absolute_pos
-            ):
-                continue
-
-            window_pos: int = match_pos - (current_absolute_pos - window_size)
-            if window_pos < 0 or window_pos >= window_size:
-                continue
-
-            d: int = window_size - window_pos  # distance from current position
-            if d <= 0:
-                continue
-
-            # Extend match with overlap support
-            l: int = 0
-            while l < lookahead.size and window[window_pos + (l % d)] == lookahead[l]:
-                l += 1
-
-            if l >= self.min_match_length and l > max_l:
-                max_l = l
-                best_d = d
-
-                # Early termination if maximum possible match found
-                if max_l == lookahead.size:
-                    break
-
-        return max_l, best_d
-
-    def _try_brute_force_matches(
-        self,
-        window: npt.NDArray[np.integer],
-        lookahead: npt.NDArray[np.integer],
-        current_max_l: int,
-        current_best_d: int,
-    ) -> tuple[int, int]:
-        """Fallback brute force matching."""
-        max_l: int = current_max_l
-        best_d: int = current_best_d
-
-        # Try every start position in the window
-        for start in range(window.size):
-            d: int = window.size - start  # distance from current position
-            if d <= 0:
-                continue
-
-            # Compare with overlap: the source is periodic with period d
-            l: int = 0
-            while l < lookahead.size and window[start + (l % d)] == lookahead[l]:
-                l += 1
-
-            if l > max_l:
-                max_l = l
-                best_d = d
-
-            if max_l == lookahead.size:  # can't do better
-                break
-
-        return max_l, best_d
-
-
 @dataclass
 class LempelZiv77Code:
     r"""
@@ -446,3 +302,147 @@ class LempelZiv77Code:
             out.append(c)
 
         return np.array(out, dtype=int)
+
+
+class _HashMatcher:
+    def __init__(
+        self,
+        min_match_length: int = 3,
+        max_hash_entries: int = 10,
+        pattern_length: int = 3,
+    ) -> None:
+        self.min_match_length: int = min_match_length
+        self.max_hash_entries: int = max_hash_entries
+        self.pattern_length: int = pattern_length
+        self._hash_table: dict[tuple[int, ...], list[int]] = defaultdict(list)
+        self._current_data: np.ndarray | None = None
+
+    def initialize(self, data: np.ndarray) -> None:
+        self._current_data = data
+        self.clear_hash_table()
+
+    def clear_hash_table(self) -> None:
+        self._hash_table.clear()
+
+    def update_hash_table(self, position: int) -> None:
+        if self._current_data is None or position + self.pattern_length > len(
+            self._current_data
+        ):
+            return
+
+        pattern: tuple[int, ...] = tuple(
+            self._current_data[position : position + self.pattern_length]
+        )
+        self._hash_table[pattern].append(position)
+
+        # Limit list size to prevent excessive memory usage
+        if len(self._hash_table[pattern]) > self.max_hash_entries:
+            self._hash_table[pattern] = self._hash_table[pattern][
+                -self.max_hash_entries :
+            ]
+
+    def find_longest_match_optimized(
+        self,
+        window: npt.NDArray[np.integer],
+        lookahead: npt.NDArray[np.integer],
+        current_absolute_pos: int,
+    ) -> tuple[int, int]:
+        n: int = window.size
+        if n == 0 or lookahead.size == 0:
+            return 0, 0
+
+        best_d: int = 0
+        max_l: int = 0
+
+        # Try hash table optimization first
+        if lookahead.size >= self.min_match_length:
+            max_l, best_d = self._try_hash_matches(
+                window, lookahead, current_absolute_pos, n
+            )
+
+        # Fallback to brute force if hash didn't find good matches
+        if max_l < self.min_match_length:
+            max_l, best_d = self._try_brute_force_matches(
+                window, lookahead, max_l, best_d
+            )
+
+        return (best_d, max_l) if max_l > 0 else (0, 0)
+
+    def _try_hash_matches(
+        self,
+        window: npt.NDArray[np.integer],
+        lookahead: npt.NDArray[np.integer],
+        current_absolute_pos: int,
+        window_size: int,
+    ) -> tuple[int, int]:
+        max_l: int = 0
+        best_d: int = 0
+
+        pattern_length: int = min(self.pattern_length, lookahead.size)
+        pattern: tuple[int, ...] = tuple(lookahead[:pattern_length])
+
+        if pattern not in self._hash_table:
+            return max_l, best_d
+
+        # Check potential matches from hash table
+        for match_pos in reversed(self._hash_table[pattern]):
+            # Convert absolute position to relative position in window
+            if (
+                match_pos < current_absolute_pos - window_size
+                or match_pos >= current_absolute_pos
+            ):
+                continue
+
+            window_pos: int = match_pos - (current_absolute_pos - window_size)
+            if window_pos < 0 or window_pos >= window_size:
+                continue
+
+            d: int = window_size - window_pos  # distance from current position
+            if d <= 0:
+                continue
+
+            # Extend match with overlap support
+            l: int = 0
+            while l < lookahead.size and window[window_pos + (l % d)] == lookahead[l]:
+                l += 1
+
+            if l >= self.min_match_length and l > max_l:
+                max_l = l
+                best_d = d
+
+                # Early termination if maximum possible match found
+                if max_l == lookahead.size:
+                    break
+
+        return max_l, best_d
+
+    def _try_brute_force_matches(
+        self,
+        window: npt.NDArray[np.integer],
+        lookahead: npt.NDArray[np.integer],
+        current_max_l: int,
+        current_best_d: int,
+    ) -> tuple[int, int]:
+        """Fallback brute force matching."""
+        max_l: int = current_max_l
+        best_d: int = current_best_d
+
+        # Try every start position in the window
+        for start in range(window.size):
+            d: int = window.size - start  # distance from current position
+            if d <= 0:
+                continue
+
+            # Compare with overlap: the source is periodic with period d
+            l: int = 0
+            while l < lookahead.size and window[start + (l % d)] == lookahead[l]:
+                l += 1
+
+            if l > max_l:
+                max_l = l
+                best_d = d
+
+            if max_l == lookahead.size:  # can't do better
+                break
+
+        return max_l, best_d
