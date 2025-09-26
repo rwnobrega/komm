@@ -14,10 +14,10 @@ class LempelZiv77Code:
     Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm that replaces repeated data with references to previous occurrences within a sliding window. The algorithm achieves compression by identifying matches between the current position and patterns within the search window, encoding them as triples `(distance, length, next_symbol)`. For more details, see <cite>Say06, Sec. 5.4.1</cite>.
 
     Parameters:
-        source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
-        target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$. Default is $2$ (binary).
         window_size: Sliding window size $W$. Must be an integer greater than or equal to $1$.
         lookahead_size: Lookahead buffer size $L$. Must be an integer greater than or equal to $1$.
+        source_cardinality: The source cardinality $S$. Must be an integer greater than or equal to $2$.
+        target_cardinality: The target cardinality $T$. Must be an integer greater than or equal to $2$. Default is $2$ (binary).
 
     Encoding format (fixed-width per triple):
         d: distance in [0..W]  (0 means "no match")
@@ -31,27 +31,27 @@ class LempelZiv77Code:
 
     Examples:
         >>> lz77 = komm.LempelZiv77Code(
-        ...     source_cardinality=2,
-        ...     target_cardinality=2,
         ...     window_size=16,
         ...     lookahead_size=4,
+        ...     source_cardinality=256,
+        ...     target_cardinality=2,
         ... )
     """
 
-    source_cardinality: int
-    target_cardinality: int
     window_size: int
     lookahead_size: int
+    source_cardinality: int
+    target_cardinality: int = 2
 
     def __post_init__(self) -> None:
-        if not self.source_cardinality >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        if not self.target_cardinality >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
         if not self.window_size >= 1:
             raise ValueError("'window_size' must be at least 1")
         if not self.lookahead_size >= 1:
             raise ValueError("'lookahead_size' must be at least 1")
+        if not self.source_cardinality >= 2:
+            raise ValueError("'source_cardinality' must be at least 2")
+        if not self.target_cardinality >= 2:
+            raise ValueError("'target_cardinality' must be at least 2")
 
         # Precompute field widths in base T.
         T: int = self.target_cardinality
@@ -77,10 +77,10 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     source_cardinality=2,
-            ...     target_cardinality=2,
             ...     window_size=4,
             ...     lookahead_size=2,
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
             ... )
             >>> lz77.encode([0, 0, 0, 0, 0, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
@@ -101,10 +101,10 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     source_cardinality=2,
-            ...     target_cardinality=2,
             ...     window_size=4,
             ...     lookahead_size=2,
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
             ... )
             >>> lz77.decode([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0])
@@ -119,10 +119,10 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     source_cardinality=2,
-            ...     target_cardinality=2,
             ...     window_size=4,
             ...     lookahead_size=2,
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
             ... )
             >>> lz77.source_to_triples([0, 0, 0, 0, 0, 0, 0])
             [(0, 0, 0), (1, 2, 0), (4, 2, 0)]
@@ -192,10 +192,10 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     source_cardinality=2,
-            ...     target_cardinality=2,
             ...     window_size=4,
             ...     lookahead_size=2,
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
             ... )
             >>> lz77.triples_to_target([(0, 0, 0), (1, 2, 0), (4, 2, 0)])
             array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
@@ -219,10 +219,10 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     source_cardinality=2,
-            ...     target_cardinality=2,
             ...     window_size=4,
             ...     lookahead_size=2,
+            ...     source_cardinality=2,
+            ...     target_cardinality=2,
             ... )
             >>> lz77.target_to_triples([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0])
             [(0, 0, 0), (1, 2, 0), (4, 2, 0)]
@@ -267,10 +267,10 @@ class LempelZiv77Code:
         Reconstruct original message from list of triples.
 
         >>> lz77 = komm.LempelZiv77Code(
-        ...     source_cardinality=2,
-        ...     target_cardinality=2,
         ...     window_size=4,
         ...     lookahead_size=2,
+        ...     source_cardinality=2,
+        ...     target_cardinality=2,
         ... )
         >>> lz77.triples_to_source([(0, 0, 0), (1, 2, 0), (4, 2, 0)])
         array([0, 0, 0, 0, 0, 0, 0])

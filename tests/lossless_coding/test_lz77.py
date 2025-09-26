@@ -9,7 +9,10 @@ import komm
 
 def test_lz77_empty_and_single():
     code = komm.LempelZiv77Code(
-        source_cardinality=2, target_cardinality=2, window_size=16, lookahead_size=4
+        window_size=16,
+        lookahead_size=4,
+        source_cardinality=2,
+        target_cardinality=2,
     )
     assert code.encode([]).tolist() == []
     assert code.decode([]).tolist() == []
@@ -21,7 +24,9 @@ def test_lz77_empty_and_single():
 @pytest.mark.parametrize("source_cardinality", [2, 4, 8])
 def test_lz77_roundtrip_random(source_cardinality):
     code = komm.LempelZiv77Code(
-        source_cardinality, target_cardinality=2, window_size=32, lookahead_size=8
+        window_size=32,
+        lookahead_size=8,
+        source_cardinality=source_cardinality,
     )
 
     msg = np.random.randint(0, source_cardinality, size=100).tolist()
@@ -30,9 +35,7 @@ def test_lz77_roundtrip_random(source_cardinality):
 
 @pytest.mark.parametrize("k", range(2, 6))
 def test_lz77_zero_runs(k):
-    code = komm.LempelZiv77Code(
-        source_cardinality=2, target_cardinality=2, window_size=32, lookahead_size=8
-    )
+    code = komm.LempelZiv77Code(window_size=32, lookahead_size=8, source_cardinality=2)
     msg = []
     for r in range(1, k + 1):
         msg.extend([0] * r)
@@ -42,9 +45,7 @@ def test_lz77_zero_runs(k):
 
 @pytest.mark.parametrize("k", range(2, 5))
 def test_lz77_worst_case(k):
-    code = komm.LempelZiv77Code(
-        source_cardinality=2, target_cardinality=2, window_size=64, lookahead_size=16
-    )
+    code = komm.LempelZiv77Code(window_size=64, lookahead_size=16, source_cardinality=2)
     msg = []
     for r in range(1, k + 1):
         for bits in product([0, 1], repeat=r):
@@ -118,15 +119,14 @@ def test_lz77_examples(
     alphabet, message, triples, window_size, lookahead_size, len_compressed
 ):
     code = komm.LempelZiv77Code(
-        source_cardinality=len(alphabet),
-        target_cardinality=2,
         window_size=window_size,
         lookahead_size=lookahead_size,
+        source_cardinality=len(alphabet),
+        target_cardinality=2,
     )
 
     msg_indices = [alphabet.index(char) for char in message]
 
-    # Add verbose=True to see the triples being generated
     print(code.source_to_triples(msg_indices))
     np.testing.assert_equal(code.source_to_triples(msg_indices), triples)
     compressed = code.encode(msg_indices)
