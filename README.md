@@ -25,7 +25,12 @@ For library reference, please check the [project's website](https://komm.dev/).
 
 ## Installation
 
-Before you start, make sure you have [Python](https://www.python.org/) (version 3.10 or later) installed.
+Before you start, make sure you have [Python](https://www.python.org/) (version 3.10 or later) installed. Also, you may want to create and activate a [virtual environment](https://docs.python.org/3/library/venv.html) first:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
 ### From PyPI
 
@@ -48,12 +53,7 @@ git clone https://github.com/rwnobrega/komm
 cd komm
 ```
 
-Then, create and activate a virtual environment. For example, using `venv`:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
+Then, if you haven't already, create and activate a virtual environment [as before](#installation).
 
 Next, install the development dependencies. For example, using `pip`:
 
