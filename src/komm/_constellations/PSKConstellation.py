@@ -135,7 +135,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
 
         Examples:
             >>> const = komm.PSKConstellation(4)
-            >>> const.minimum_distance()
+            >>> const.minimum_distance()  # doctest: +FLOAT_CMP
             np.float64(1.414213562373095)
         """
         M, A = self._order, self._amplitude
