@@ -2505,6 +2505,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -2654,6 +2656,26 @@
   
   <span class="md-ellipsis">
     TunstallCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LempelZiv77Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZiv77Code
   </span>
   
 
@@ -2927,6 +2949,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2966,6 +2990,26 @@
   
   <span class="md-ellipsis">
     DiscreteMemorylessSource
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MarkovChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MarkovChain
   </span>
   
 
@@ -3408,11 +3452,11 @@
     <div class="doc doc-contents first">
 
 
-        <p>Binary Shannon code. It is a <a href="/ref/FixedToVariableCode">fixed-to-variable length code</a> in which the length of the codeword $\Enc(u)$ for a source symbol $u \in \mathcal{S}^k$ is given by
+        <p>Binary Shannon code. For a given <abbr title="probability mass function">pmf</abbr> $p$ over $\mathcal{X}$, it is a <a href="/ref/FixedToVariableCode">fixed-to-variable length code</a> in which the length of the codeword $\Enc(\mathbf{x})$ associated with a source word $\mathbf{x} \in \mathcal{X}^k$ is given by
 $$
-    \ell_u = \left\lceil \log_2 \frac{1}{p_u} \right\rceil,
+    \ell(\mathbf{x}) = \left\lceil \log_2 \frac{1}{p(\mathbf{x})} \right\rceil.
 $$
-where $p_u$ is the probability of the source symbol $u$. This function implements the lexicographic order assignment as described in <a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding">Wikipedia: Shannon–Fano coding</a>.</p>
+This function implements the lexicographic order assignment as described in <a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding">Wikipedia: Shannon–Fano coding</a>.</p>
 
 
 <details class="notes" open>
@@ -3426,7 +3470,7 @@ where $p_u$ is the probability of the source symbol $u$. This function implement
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The probability mass function of the source.</p>
+          <p>The <abbr title="probability mass function">pmf</abbr> $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3441,29 +3485,29 @@ where $p_u$ is the probability of the source symbol $u$. This function implement
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ShannonCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ShannonCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
 <span class="go">{(0,): (0,),</span>
-<span class="go"> (1,): (1, 0, 0),</span>
-<span class="go"> (2,): (1, 0, 1)}</span>
+<span class="go"> (1,): (1, 0, 0, 0),</span>
+<span class="go"> (2,): (1, 0, 0, 1)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
 <span class="go">np.float64(1.6)</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ShannonCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
-<span class="go">{(0, 0): (0, 0),</span>
-<span class="go"> (0, 1): (0, 1, 0, 0),</span>
-<span class="go"> (0, 2): (0, 1, 0, 1),</span>
-<span class="go"> (1, 0): (0, 1, 1, 0),</span>
-<span class="go"> (1, 1): (1, 0, 0, 0, 0, 0),</span>
-<span class="go"> (1, 2): (1, 0, 0, 0, 0, 1),</span>
-<span class="go"> (2, 0): (0, 1, 1, 1),</span>
-<span class="go"> (2, 1): (1, 0, 0, 0, 1, 0),</span>
-<span class="go"> (2, 2): (1, 0, 0, 0, 1, 1)}</span>
+<span class="go">{(0, 0): (0,),</span>
+<span class="go"> (0, 1): (1, 0, 0, 0),</span>
+<span class="go"> (0, 2): (1, 0, 0, 1),</span>
+<span class="go"> (1, 0): (1, 0, 1, 0),</span>
+<span class="go"> (1, 1): (1, 1, 0, 0, 0, 0, 0),</span>
+<span class="go"> (1, 2): (1, 1, 0, 0, 0, 0, 1),</span>
+<span class="go"> (2, 0): (1, 0, 1, 1),</span>
+<span class="go"> (2, 1): (1, 1, 0, 0, 0, 1, 0),</span>
+<span class="go"> (2, 2): (1, 1, 0, 0, 0, 1, 1)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
-<span class="go">np.float64(1.6)</span>
+<span class="go">np.float64(1.1)</span>
 </code></pre></div>
 
 

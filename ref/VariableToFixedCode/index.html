@@ -2505,6 +2505,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -2797,6 +2799,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../LempelZiv77Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZiv77Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../LempelZiv78Code/" class="md-nav__link">
         
   
@@ -3055,6 +3077,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -3094,6 +3118,26 @@
   
   <span class="md-ellipsis">
     DiscreteMemorylessSource
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MarkovChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MarkovChain
   </span>
   
 
@@ -3642,8 +3686,13 @@
     <div class="doc doc-contents first">
 
 
-        <p>General variable-to-fixed length code. A <em>variable-to-fixed length code</em> with <em>target alphabet</em> $\mathcal{T}$, <em>source alphabet</em> $\mathcal{S}$, and <em>target block size</em> $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec} : \mathcal{T}^n \rightharpoonup \mathcal{S}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{T}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{S}$. Here, we assume that $\mathcal{T} = [0:T)$ and $\mathcal{S} = [0:S)$, for integers $T \geq 2$ and $S \geq 2$. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
+        <p>General variable-to-fixed length code. A <em>variable-to-fixed length code</em> with <em>target alphabet</em> $\mathcal{Y}$, <em>source alphabet</em> $\mathcal{X}$, and <em>target block size</em> $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec}: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. The elements in the image of $\mathrm{Dec}$ are called <em>sourcewords</em>.</p>
 
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the <em>source cardinality</em> and <em>target cardinality</em>, respectively.</p>
+</details>
 
 
 
@@ -3686,7 +3735,7 @@
             <span class="doc-param-annotation">(<code><span title="dict">dict</span>[<span title="komm._lossless_coding.util.Word">Word</span>, <span title="komm._lossless_coding.util.Word">Word</span>]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The decoding mapping $\Dec$. Must be a dictionary of length at most $S^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are non-empty tuples of integers in $[0:S)$.</p>
+          <p>The decoding mapping $\Dec$. Must be a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are non-empty tuples of integers in $\mathcal{X}$.</p>
         </div>
       </li>
   </ul>
@@ -3694,7 +3743,7 @@
 
 <details class="notes" open>
   <summary>Notes</summary>
-  <p>The target block size $n$ is inferred from the domain of the decoding mapping, and the target and source cardinalities $T$ and $S$ are inferred from the maximum values in the domain and co-domain, respectively.</p>
+  <p>The target block size $n$ is inferred from the domain of the decoding mapping, and the target and source cardinalities $|\mathcal{Y}|$ and $|\mathcal{X}|$ are inferred from the maximum values in the domain and co-domain, respectively.</p>
 </details>
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3749,7 +3798,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Constructs a variable-to-fixed length code from the target cardinality $T$ and a list of sourcewords.</p>
+        <p>Constructs a variable-to-fixed length code from the target cardinality $|\mathcal{Y}|$ and a list of sourcewords.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -3758,7 +3807,7 @@
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The target cardinality $T$. Must be an integer greater than or equal to $2$.</p>
+          <p>The target cardinality $|\mathcal{Y}|$. Must be an integer greater than or equal to $2$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3766,7 +3815,7 @@
             <span class="doc-param-annotation">(<code><span title="list">list</span>[<span title="komm._lossless_coding.util.Word">Word</span>]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sourcewords of the code. Must be a list of length at most $T^n$ containing tuples of integers in $[0:S)$, where $S$ is the source cardinality of the code. The tuple in position $i$ must be equal to $\mathrm{Dec}(v)$, where $v$ is the $i$-th element in the lexicographic ordering of $[0:T)^n$.</p>
+          <p>The sourcewords of the code. Must be a list of length at most $|\mathcal{Y}|^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ must be equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of $\mathcal{Y}^n$.</p>
         </div>
       </li>
   </ul>
@@ -3774,13 +3823,13 @@
 
 <details class="note" open>
   <summary>Note</summary>
-  <p>The target block size $n$ is inferred from the length of the sourcewords, and the source cardinality $S$ is inferred from the maximum value in the sourcewords.</p>
+  <p>The target block size $n$ is inferred from the length of the sourcewords, and the source cardinality $|\mathcal{X}|$ is inferred from the maximum value in the sourcewords.</p>
 </details>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)],</span>
+<span class="gp">... </span>    <span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span>
 <span class="go">(2, 2, 2)</span>
@@ -3792,7 +3841,9 @@
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">sourcewords</span><span class="o">=</span><span class="p">[(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">sourcewords</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span>
 <span class="go">(2, 3, 3)</span>
@@ -3834,11 +3885,11 @@
 
   <div class="doc doc-contents ">
 
-        <p>The target cardinality $T$ of the code. It is the number of symbols in the target alphabet.</p>
+        <p>The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span>
 <span class="go">2</span>
 </code></pre></div>
@@ -3870,11 +3921,11 @@
 
   <div class="doc doc-contents ">
 
-        <p>The source cardinality $S$ of the code. It is the number of symbols in the source alphabet.</p>
+        <p>The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span>
 <span class="go">2</span>
 </code></pre></div>
@@ -3910,7 +3961,7 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">target_block_size</span>
 <span class="go">2</span>
 </code></pre></div>
@@ -3942,11 +3993,11 @@
 
   <div class="doc doc-contents ">
 
-        <p>The number of sourcewords in the code. It is less than or equal to $T^n$.</p>
+        <p>The number of sourcewords in the code. It is less than or equal to $|\mathcal{Y}|^n$.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">size</span>
 <span class="go">3</span>
 </code></pre></div>
@@ -3978,11 +4029,11 @@
 
   <div class="doc doc-contents ">
 
-        <p>The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $T^n$ whose keys are $n$-tuples of integers in $[0:T)$ and whose values are the corresponding sourcewords.</p>
+        <p>The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
 <span class="go">{(0, 0): (0,), (0, 1): (1,), (1, 0): (0, 1)}</span>
 </code></pre></div>
@@ -4055,19 +4106,19 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_fully_covering</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_fully_covering</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_fully_covering</span><span class="p">()</span>  <span class="c1"># (1,) is not covered</span>
 <span class="go">False</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_fully_covering</span><span class="p">()</span>  <span class="c1"># (1,) is not covered</span>
 <span class="go">False</span>
 </code></pre></div>
@@ -4101,19 +4152,19 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_encodable</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_encodable</span><span class="p">()</span>  <span class="c1"># 01 can be parsed as 0|1 or 01</span>
 <span class="go">False</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_encodable</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_uniquely_encodable</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
@@ -4147,19 +4198,19 @@
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
 <span class="go">False</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
 <span class="go">True</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">is_prefix_free</span><span class="p">()</span>
 <span class="go">False</span>
 </code></pre></div>
@@ -4185,11 +4236,11 @@
 
   <div class="doc doc-contents ">
 
-        <p>Computes the expected rate $R$ of the code, considering a given <abbr title="probability mass function">pmf</abbr>. This quantity is given by
+        <p>Computes the expected rate $R$ of the code, considering a given (first-order) <abbr title="probability mass function">pmf</abbr> $p$ over $\mathcal{X}$. This quantity is given by
 $$
     R = \frac{n}{\bar{k}},
 $$
-where $n$ is the target block size, and $\bar{k}$ is the expected sourceword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p_X$. It is measured in $T$-ary digits per source symbol.</p>
+and $\bar{k}$ is the expected sourceword length, assuming <abbr title="independent and identically distributed">iid</abbr> source symbols drawn from $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -4198,7 +4249,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The (first-order) probability mass function $p_X$ to be considered.</p>
+          <p>The <abbr title="probability mass function">pmf</abbr> $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.</p>
         </div>
       </li>
   </ul>
@@ -4206,7 +4257,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-<b><code>rate</code></b>            <span class="doc-param-annotation"> (<code><span title="float">float</span></code>) </span>
+<b><code>rate</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.floating">floating</span></code>) </span>
         –
         <div class="doc-md-description">
           <p>The expected rate $R$ of the code.</p>
@@ -4216,7 +4267,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">([</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
 <span class="go">np.float64(1.3846153846153846)</span>
 </code></pre></div>
@@ -4256,7 +4307,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).</p>
+          <p>The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.</p>
         </div>
       </li>
   </ul>
@@ -4264,10 +4315,10 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="komm.types.Array1D">Array1D</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code) with a length that is a multiple of the target block size $n$.</p>
+          <p>The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$ with a length that is a multiple of $n$.</p>
       </div>
       </li>
   </ul>
@@ -4287,13 +4338,13 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># Incomplete input, completed as 1|000</span>
 <span class="go">array([1, 1, 0, 0])</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># Code is not fully covering</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">code is not fully covering</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># Code is not uniquely encodable</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
@@ -4330,7 +4381,7 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code) and have a length that is a multiple of the target block size $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the <code>encode</code> method).</p>
+          <p>The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$ and have a length that is a multiple of $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the <code>encode</code> method).</p>
         </div>
       </li>
   </ul>
@@ -4338,10 +4389,10 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code></span>
+            <span class="doc-param-annotation"><code><span title="komm.types.Array1D">Array1D</span>[<span title="numpy.integer">integer</span>]</code></span>
         –
         <div class="doc-md-description">
-          <p>The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).</p>
+          <p>The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.</p>
       </div>
       </li>
   </ul>
@@ -4366,13 +4417,13 @@ where $n$ is the target block size, and $\bar{k}$ is the expected sourceword len
 <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">input contains invalid word</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># Code is not fully covering</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">code is not fully covering</span>
 </code></pre></div>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">VariableToFixedCode</span><span class="o">.</span><span class="n">from_sourcewords</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># Code is not uniquely encodable</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>

@@ -2501,6 +2501,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2640,6 +2642,26 @@
   
   <span class="md-ellipsis">
     TunstallCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LempelZiv77Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZiv77Code
   </span>
   
 
@@ -2913,6 +2935,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2952,6 +2976,26 @@
   
   <span class="md-ellipsis">
     DiscreteMemorylessSource
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MarkovChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MarkovChain
   </span>
   
 
@@ -3413,7 +3457,7 @@ where $\tilde{x}^*_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
-        <b><code>seq</code></b>
+        <b><code>sequence</code></b>
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
@@ -3425,7 +3469,7 @@ where $\tilde{x}^*_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span>
         –
         <div class="doc-md-description">
-          <p>A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is <code>range(len(seq))</code>, that is, $[0 : L)$.</p>
+          <p>A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is <code>range(len(sequence))</code>, that is, $[0 : L)$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3441,7 +3485,7 @@ where $\tilde{x}^*_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="komm._util.correlation.DType">DType</span>]</code></span>
+            <span class="doc-param-annotation"><code><span title="komm.types.Array1D">Array1D</span>[<span title="komm._util.sequences.DType">DType</span>]</code></span>
         –
         <div class="doc-md-description">
           <p>The cyclic autocorrelation $\tilde{R}[\ell]$ of the sequence.</p>

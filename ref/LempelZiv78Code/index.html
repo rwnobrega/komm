@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://komm.dev/ref/LempelZiv78Code/">
       
       
-        <link rel="prev" href="../TunstallCode/">
+        <link rel="prev" href="../LempelZiv77Code/">
       
       
         <link rel="next" href="../LempelZivWelchCode/">
@@ -2505,6 +2505,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -2657,6 +2659,26 @@
                 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../LempelZiv77Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZiv77Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -2703,6 +2725,34 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source_to_tokens" class="md-nav__link">
+    source_to_tokens()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens_to_source" class="md-nav__link">
+    tokens_to_source()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens_to_target" class="md-nav__link">
+    tokens_to_target()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_to_tokens" class="md-nav__link">
+    target_to_tokens()
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#encode" class="md-nav__link">
@@ -2971,6 +3021,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -3010,6 +3062,26 @@
   
   <span class="md-ellipsis">
     DiscreteMemorylessSource
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MarkovChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MarkovChain
   </span>
   
 
@@ -3435,6 +3507,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#source_to_tokens" class="md-nav__link">
+    source_to_tokens()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens_to_source" class="md-nav__link">
+    tokens_to_source()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens_to_target" class="md-nav__link">
+    tokens_to_target()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_to_tokens" class="md-nav__link">
+    target_to_tokens()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#encode" class="md-nav__link">
     encode()
   </a>
@@ -3476,6 +3576,12 @@
 
         <p>Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 5.4.2</cite> and <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 13.4.2</cite>.</p>
 
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the <em>source cardinality</em> and <em>target cardinality</em>, respectively.</p>
+</details>        <p>The token format is $(p, x)$, where $p \in \mathbb{N}$ is the index of the corresponding dictionary entry, and $x \in \mathcal{X}$ is the source symbol following the match. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \log_{|\mathcal{Y}|}(i + 1)$, and $i$ is the size of the dictionary at the moment.</p>
+
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
@@ -3483,7 +3589,7 @@
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The source cardinality $S$. Must be an integer greater than or equal to $2$.</p>
+          <p>The source cardinality $|\mathcal{X}|$. Must satisfy $|\mathcal{X}| \geq 2$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3491,7 +3597,7 @@
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The target cardinality $T$. Must be an integer greater than or equal to $2$. Default is $2$ (binary).</p>
+          <p>The target cardinality $|\mathcal{Y}|$. Must satisfy $|\mathcal{Y}| \geq 2$. The default value is $2$ (binary).</p>
         </div>
       </li>
   </ul>
@@ -3523,6 +3629,126 @@
 
 
 
+<h2 id="source_to_tokens" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">source_to_tokens</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Encodes a given sequence of source symbols to the corresponding list of tokens.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">source_to_tokens</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">[(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="tokens_to_source" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">tokens_to_source</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Decodes a given list of tokens to the corresponding sequence of source symbols.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">tokens_to_source</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">array([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="tokens_to_target" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">tokens_to_target</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the target alphabet representation corresponding to a given list of tokens.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">tokens_to_target</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="target_to_tokens" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">target_to_tokens</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the list of tokens corresponding to a given target alphabet representation.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">target_to_tokens</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">[(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
 <h2 id="encode" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">encode</span><span class="p">()</span></code>      
 
@@ -3531,7 +3757,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Encodes a sequence of source symbols using the LZ78 encoding algorithm.</p>
+        <p>Encodes a sequence of source symbols to a sequence of target symbols.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -3540,7 +3766,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sequence of symbols to be encoded. Must be a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).</p>
+          <p>The sequence of source symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.</p>
         </div>
       </li>
   </ul>
@@ -3551,7 +3777,7 @@
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The sequence of encoded symbols. It is a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code).</p>
+          <p>The sequence of encoded target symbols. It is a 1D-array with elements in $\mathcal{Y}$.</p>
       </div>
       </li>
   </ul>
@@ -3559,8 +3785,8 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
-<span class="go">array([0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
@@ -3588,7 +3814,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>Decodes a sequence of encoded symbols using the LZ78 decoding algorithm.</p>
+        <p>Decodes a sequence of target symbols to a sequence of source symbols.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -3597,7 +3823,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sequence of symbols to be decoded. Must be a 1D-array with elements in $[0:T)$ (where $T$ is the target cardinality of the code). Also, the sequence must be a valid output of the <code>encode</code> method.</p>
+          <p>The sequence of target symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the <code>encode</code> method.</p>
         </div>
       </li>
   </ul>
@@ -3608,7 +3834,7 @@
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The sequence of decoded symbols. It is a 1D-array with elements in $[0:S)$ (where $S$ is the source cardinality of the code).</p>
+          <p>The sequence of decoded source symbols. It is a 1D-array with elements in $\mathcal{X}$.</p>
       </div>
       </li>
   </ul>
@@ -3616,8 +3842,8 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv78Code</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lz78</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
@@ -3657,7 +3883,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../TunstallCode/" class="md-footer__link md-footer__link--prev" aria-label="Previous: TunstallCode" rel="prev">
+          <a href="../LempelZiv77Code/" class="md-footer__link md-footer__link--prev" aria-label="Previous: LempelZiv77Code" rel="prev">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -3667,7 +3893,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                TunstallCode
+                LempelZiv77Code
               </div>
             </div>
           </a>

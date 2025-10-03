@@ -14,7 +14,7 @@
         <link rel="prev" href="../VariableToFixedCode/">
       
       
-        <link rel="next" href="../LempelZiv78Code/">
+        <link rel="next" href="../LempelZiv77Code/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -2505,6 +2505,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -2658,6 +2660,26 @@
 
       </a>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LempelZiv77Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZiv77Code
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2927,6 +2949,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2966,6 +2990,26 @@
   
   <span class="md-ellipsis">
     DiscreteMemorylessSource
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MarkovChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MarkovChain
   </span>
   
 
@@ -3408,7 +3452,7 @@
     <div class="doc doc-contents first">
 
 
-        <p>Binary Tunstall code. It is an optimal (minimal expected rate) <a href="/ref/VariableToFixedCode">variable-to-fixed length code</a> for a given probability mass function. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 3.7</cite>.</p>
+        <p>Binary Tunstall code. It is an optimal (minimal expected rate) <a href="/ref/VariableToFixedCode">variable-to-fixed length code</a> for a given <abbr title="probability mass function">pmf</abbr> $p$ over $\mathcal{X}$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 3.7</cite>.</p>
 
 
 <details class="notes" open>
@@ -3422,7 +3466,7 @@
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The probability mass function of the source.</p>
+          <p>The <abbr title="probability mass function">pmf</abbr> $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3430,14 +3474,14 @@
             <span class="doc-param-annotation">(<code><span title="int">int</span> | None</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The target block size $n$. Must satisfy $2^n \geq S$, where $S$ is the cardinality of the source alphabet, given by <code>len(pmf)</code>. The default value is $n = \lceil \log_2 S \rceil$.</p>
+          <p>The target block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$. The default value is $n = \lceil \log_2 |\mathcal{X}| \rceil$.</p>
         </div>
       </li>
   </ul>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">]</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pmf</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TunstallCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">dec_mapping</span>
@@ -3457,7 +3501,7 @@
 <span class="go"> (1, 0, 1): (1,),</span>
 <span class="go"> (1, 1, 0): (2,)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
-<span class="go">np.float64(1.3698630137)</span>
+<span class="go">np.float64(1.2295081967213108)</span>
 </code></pre></div>
 
 
@@ -3518,13 +3562,13 @@
         
         
           
-          <a href="../LempelZiv78Code/" class="md-footer__link md-footer__link--next" aria-label="Next: LempelZiv78Code" rel="next">
+          <a href="../LempelZiv77Code/" class="md-footer__link md-footer__link--next" aria-label="Next: LempelZiv77Code" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                LempelZiv78Code
+                LempelZiv77Code
               </div>
             </div>
             <div class="md-footer__button md-icon">
