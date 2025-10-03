@@ -19,7 +19,10 @@ from .util import (
 
 class VariableToFixedCode:
     r"""
-    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{Y}$, *source alphabet* $\mathcal{X}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec}: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. Here, for simplicity, we assume that $\mathcal{Y} = [0 : |\mathcal{Y}|)$ and $\mathcal{X} = [0 : |\mathcal{X}|)$, where $|\mathcal{Y}| \geq 2$ and $|\mathcal{X}| \geq 2$ are called the *target cardinality* and *source cardinality*, respectively. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{Y}$, *source alphabet* $\mathcal{X}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec}: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+
+    Note:
+        Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
     """
 
     def __init__(
@@ -37,19 +40,18 @@ class VariableToFixedCode:
 
     def __post_init__(self) -> None:
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
-        T = self.target_cardinality
-        S = self.source_cardinality
+        calY, calX = self.target_cardinality, self.source_cardinality
         n = self.target_block_size
-        if not T >= 2:
+        if not calY >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
-        if not S >= 2:
+        if not calX >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
         if not n >= 1:
             raise ValueError("'target_block_size' must be at least 1")
-        if not set(domain) <= set(product(range(T), repeat=n)):
+        if not set(domain) <= set(product(range(calY), repeat=n)):
             raise ValueError("'dec_mapping': invalid domain")
         if not all(
-            all(0 <= x < S for x in word) and len(word) > 0 for word in codomain
+            all(0 <= x < calX for x in word) and len(word) > 0 for word in codomain
         ):
             raise ValueError("'dec_mapping': invalid co-domain")
 
@@ -100,10 +102,10 @@ class VariableToFixedCode:
             [(1,), (2,), (0, 1), (0, 2), (0, 0, 0), (0, 0, 1), (0, 0, 2)]
         """
         domain, codomain = dec_mapping.keys(), dec_mapping.values()
-        T = max(max(word) for word in domain) + 1
-        S = max(max(word) for word in codomain) + 1
+        calY = max(max(word) for word in domain) + 1
+        calX = max(max(word) for word in codomain) + 1
         n = len(next(iter(domain)))
-        return cls(T, S, n, dec_mapping)
+        return cls(calY, calX, n, dec_mapping)
 
     @classmethod
     def from_sourcewords(cls, target_cardinality: int, sourcewords: list[Word]) -> Self:
@@ -148,11 +150,11 @@ class VariableToFixedCode:
              (1, 0, 1): (0, 0, 1),
              (1, 1, 0): (0, 0, 2)}
         """
-        T = target_cardinality
-        S = max(max(word) for word in sourcewords) + 1
-        n = next(n for n in count(1) if T**n >= len(sourcewords))
-        dec_mapping = dict(zip(product(range(T), repeat=n), sourcewords))
-        return cls(T, S, n, dec_mapping)
+        calY = target_cardinality
+        calX = max(max(word) for word in sourcewords) + 1
+        n = next(n for n in count(1) if calY**n >= len(sourcewords))
+        dec_mapping = dict(zip(product(range(calY), repeat=n), sourcewords))
+        return cls(calY, calX, n, dec_mapping)
 
     @cached_property
     def target_cardinality(self) -> int:

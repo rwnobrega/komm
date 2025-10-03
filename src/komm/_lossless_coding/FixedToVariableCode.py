@@ -18,7 +18,10 @@ from .util import (
 
 class FixedToVariableCode:
     r"""
-    General fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{X}$, *target alphabet* $\mathcal{Y}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc: \mathcal{X}^k \to \mathcal{Y}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{X}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{Y}$. Here, for simplicity, we assume that $\mathcal{X} = [0 : |\mathcal{X}|)$ and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively. The elements in the image of $\Enc$ are called *codewords*.
+    General fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{X}$, *target alphabet* $\mathcal{Y}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc: \mathcal{X}^k \to \mathcal{Y}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{X}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{Y}$. The elements in the image of $\Enc$ are called *codewords*.
+
+    Note:
+        Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
     """
 
     def __init__(
@@ -36,18 +39,17 @@ class FixedToVariableCode:
 
     def __post_init__(self) -> None:
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
-        S = self.source_cardinality
-        T = self.target_cardinality
+        calX, calY = self.source_cardinality, self.target_cardinality
         k = self.source_block_size
-        if not S >= 2:
+        if not calX >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
-        if not T >= 2:
+        if not calY >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
         if not k >= 1:
             raise ValueError("'source_block_size' must be at least 1")
-        if set(domain) != set(product(range(S), repeat=k)):
+        if set(domain) != set(product(range(calX), repeat=k)):
             raise ValueError("'enc_mapping': invalid domain")
-        if not all(all(0 <= x < T for x in word) for word in codomain):
+        if not all(all(0 <= x < calY for x in word) for word in codomain):
             raise ValueError("'enc_mapping': invalid co-domain")
 
     def __repr__(self) -> str:
@@ -93,10 +95,10 @@ class FixedToVariableCode:
             [(0,), (1, 1), (1, 1, 0), (1, 0, 1)]
         """
         domain, codomain = enc_mapping.keys(), enc_mapping.values()
-        S = max(max(word) for word in domain) + 1
-        T = max(max(word) for word in codomain) + 1
+        calX = max(max(word) for word in domain) + 1
+        calY = max(max(word) for word in codomain) + 1
         k = len(next(iter(domain)))
-        return cls(S, T, k, enc_mapping)
+        return cls(calX, calY, k, enc_mapping)
 
     @classmethod
     def from_codewords(cls, source_cardinality: int, codewords: list[Word]) -> Self:
@@ -135,11 +137,11 @@ class FixedToVariableCode:
              (1, 0): (1, 1, 0),
              (1, 1): (1, 0, 1)}
         """
-        S = source_cardinality
-        T = max(max(codeword) for codeword in codewords) + 1
-        k = next(k for k in count(1) if S**k >= len(codewords))
-        enc_mapping = dict(zip(product(range(S), repeat=k), codewords))
-        return cls(S, T, k, enc_mapping)
+        calX = source_cardinality
+        calY = max(max(codeword) for codeword in codewords) + 1
+        k = next(k for k in count(1) if calX**k >= len(codewords))
+        enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
+        return cls(calX, calY, k, enc_mapping)
 
     @cached_property
     def source_cardinality(self) -> int:
@@ -225,8 +227,8 @@ class FixedToVariableCode:
 
     @cached_property
     def _codewords_lengths(self) -> npt.NDArray[np.integer]:
-        S, k = self.source_cardinality, self.source_block_size
-        lengths = np.empty((S,) * k, dtype=int)
+        calX, k = self.source_cardinality, self.source_block_size
+        lengths = np.empty((calX,) * k, dtype=int)
         for x, y in self.enc_mapping.items():
             lengths[x] = len(y)
         return lengths
@@ -305,9 +307,9 @@ class FixedToVariableCode:
             >>> code.kraft_parameter()
             np.float64(1.5)
         """
-        T = self.target_cardinality
+        calY = self.target_cardinality
         lengths = self._codewords_lengths
-        return np.sum(np.float_power(T, -lengths))
+        return np.sum(np.float_power(calY, -lengths))
 
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
