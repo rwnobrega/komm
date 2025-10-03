@@ -65,6 +65,15 @@ class LempelZiv77Code:
                     f" {self.search_size} (got {len(self.search_buffer)})"
                 )
 
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"window_size={self.window_size}",
+            f"lookahead_size={self.lookahead_size}",
+            f"source_cardinality={self.source_cardinality}",
+            f"target_cardinality={self.target_cardinality}",
+        ])
+        return f"{self.__class__.__name__}({args})"
+
     @property
     def search_size(self) -> int:
         r"""
