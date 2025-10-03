@@ -41,10 +41,37 @@ def test_lz78_shor():
     # Prof. Peter Shor: Lempel–Ziv Notes - 18.310C, Spring 2010
     # https://math.mit.edu/~shor/18.310/lempel_ziv_notes.pdf
     code = komm.LempelZiv78Code(2)
-    message = [ord(char) - ord("A") for char in "AABABBBABAABABBBABBABB"]
-    compressed = [int(char) for char in "01110100101001011100101100111"]
-    np.testing.assert_equal(code.encode(message), compressed)
-    np.testing.assert_equal(code.decode(compressed), message)
+    source = [ord(char) - ord("A") for char in "AABABBBABAABABBBABBABB"]
+    tokens = [(0, 0), (1, 1), (2, 1), (0, 1), (2, 0), (5, 1), (4, 1), (3, 0), (7, -1)]
+    target = [int(char) for char in "01110100101001011100101100111"]
+    np.testing.assert_equal(code.source_to_tokens(source), tokens)
+    np.testing.assert_equal(code.tokens_to_source(tokens), source)
+    np.testing.assert_equal(code.tokens_to_target(tokens), target)
+    np.testing.assert_equal(code.target_to_tokens(target), tokens)
+    np.testing.assert_equal(code.encode(source), target)
+    np.testing.assert_equal(code.decode(target), source)
+
+
+def test_lz78_wikipedia():
+    # [https://pt.wikipedia.org/wiki/LZ78]
+    code = komm.LempelZiv78Code(256)
+    expected = [
+        (0, "A"),
+        (0, "_"),
+        (1, "S"),
+        (1, "_"),
+        (0, "D"),
+        (4, "C"),
+        (3, "A"),
+    ]
+    source = [ord(x) for x in "A_ASA_DA_CASA"]
+    tokens = []
+    for pointer, symbol in expected:
+        tokens.append((pointer, ord(symbol)))
+    target = code.encode(source)
+    np.testing.assert_equal(code.source_to_tokens(source), tokens)
+    np.testing.assert_equal(code.tokens_to_source(tokens), source)
+    np.testing.assert_equal(code.decode(target), source)
 
 
 @pytest.mark.parametrize(

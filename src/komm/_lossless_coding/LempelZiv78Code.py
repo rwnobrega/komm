@@ -7,6 +7,8 @@ from tqdm import tqdm
 
 from .util import Word, integer_to_symbols, symbols_to_integer
 
+Token = tuple[int, int]
+
 
 @dataclass
 class LempelZiv78Code:
@@ -15,6 +17,8 @@ class LempelZiv78Code:
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
+
+    The token format is $(p, x)$, where $p \in \mathbb{N}$ is the index of the corresponding dictionary entry, and $x \in \mathcal{X}$ is the source symbol following the match. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \log_{|\mathcal{Y}|}(i + 1)$, and $i$ is the size of the dictionary at the moment.
 
     Parameters:
         source_cardinality: The source cardinality $|\mathcal{X}|$. Must satisfy $|\mathcal{X}| \geq 2$.
@@ -34,6 +38,95 @@ class LempelZiv78Code:
         if not self.target_cardinality >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
 
+    def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
+        r"""
+        Encodes a given sequence of source symbols to the corresponding list of tokens.
+
+        Examples:
+            >>> lz78 = komm.LempelZiv78Code(2)
+            >>> lz78.source_to_tokens([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
+            [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
+        """
+        source = np.asarray(source)
+        dictionary: dict[Word, int] = {(): 0}
+        tokens: list[Token] = []
+        word: Word = ()
+        for symbol in tqdm(source, "Compressing LZ78", delay=2.5):
+            if word + (symbol,) in dictionary:
+                word += (symbol,)
+                continue
+            p, x = dictionary[word], int(symbol)
+            tokens.append((p, x))
+            dictionary[word + (symbol,)] = len(dictionary)
+            word = ()
+        if word:
+            tokens.append((dictionary[word], -1))
+        return tokens
+
+    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+        r"""
+        Decodes a given list of tokens to the corresponding sequence of source symbols.
+
+        Examples:
+            >>> lz78 = komm.LempelZiv78Code(2)
+            >>> lz78.tokens_to_source([(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)])
+            array([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
+        """
+        dictionary: dict[int, Word] = {0: ()}
+        source: list[int] = []
+        for p, x in tokens:
+            word = dictionary[p]
+            source.extend(word)
+            if x >= 0:
+                source.append(x)
+            dictionary[len(dictionary)] = word + (x,)
+        return np.array(source, dtype=int)
+
+    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+        r"""
+        Returns the target alphabet representation corresponding to a given list of tokens.
+
+        Examples:
+            >>> lz78 = komm.LempelZiv78Code(2)
+            >>> lz78.tokens_to_target([(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)])
+            array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
+        """
+        calX, calY = self.source_cardinality, self.target_cardinality
+        M = ceil(log(calX, calY))
+        target: list[int] = []
+        for i, (p, x) in enumerate(tokens):
+            k = ceil(log(i + 1, calY))
+            target.extend(integer_to_symbols(p, base=calY, width=k))
+            if x >= 0:
+                target.extend(integer_to_symbols(x, base=calY, width=M))
+        return np.array(target, dtype=int)
+
+    def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
+        r"""
+        Returns the list of tokens corresponding to a given target alphabet representation.
+
+        Examples:
+            >>> lz78 = komm.LempelZiv78Code(2)
+            >>> lz78.target_to_tokens([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
+            [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
+        """
+        calX, calY = self.source_cardinality, self.target_cardinality
+        M = ceil(log(calX, calY))
+        target = np.asarray(target)
+        tokens: list[Token] = []
+        i = 0
+        while i < target.size:
+            k = ceil(log(len(tokens) + 1, calY))
+            p = int(symbols_to_integer(target[i : i + k], base=calY))
+            i += k
+            if i < target.size:
+                x = int(symbols_to_integer(target[i : i + M], base=calY))
+            else:
+                x = -1
+            tokens.append((p, x))
+            i += M
+        return tokens
+
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Encodes a sequence of source symbols to a sequence of target symbols.
@@ -46,37 +139,16 @@ class LempelZiv78Code:
 
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
-            >>> lz78.encode(np.zeros(15, dtype=int))
-            array([0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0])
+            >>> lz78.encode([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
+            array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
 
             >>> lz78 = komm.LempelZiv78Code(2, 8)
             >>> lz78.encode(np.zeros(15, dtype=int))
             array([0, 1, 0, 2, 0, 3, 0, 4, 0])
         """
-        calY = self.target_cardinality
-        M = ceil(log(self.source_cardinality, calY))
-        input = np.asarray(input)
-        dictionary: dict[Word, int] = {(): 0}
-        output: list[int] = []
-
-        word: Word = ()
-        for symbol in tqdm(input, "Compressing LZ78", delay=2.5):
-            if word + (symbol,) in dictionary:
-                word += (symbol,)
-                continue
-            k = ceil(log(len(dictionary), calY))
-            pointer = dictionary[word]
-            output.extend(integer_to_symbols(pointer, base=calY, width=k))
-            output.extend(integer_to_symbols(symbol, base=calY, width=M))
-            dictionary[word + (symbol,)] = len(dictionary)
-            word = ()
-
-        if word:
-            k = ceil(log(len(dictionary), calY))
-            pointer = dictionary[word]
-            output.extend(integer_to_symbols(pointer, base=calY, width=k))
-
-        return np.array(output, dtype=int)
+        tokens = self.source_to_tokens(input)
+        output = self.tokens_to_target(tokens)
+        return output
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -90,37 +162,13 @@ class LempelZiv78Code:
 
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
-            >>> lz78.decode([0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0])
-            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            >>> lz78.decode([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
+            array([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
 
             >>> lz78 = komm.LempelZiv78Code(2, 8)
             >>> lz78.decode([0, 1, 0, 2, 0, 3, 0, 4, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         """
-        calY = self.target_cardinality
-        M = ceil(log(self.source_cardinality, calY))
-        input = np.asarray(input)
-        dictionary: dict[int, Word] = {0: ()}
-        output: list[int] = []
-
-        pbar = tqdm(total=input.size, desc="Decompressing LZ78", delay=2.5)
-        i = 0
-        while True:
-            k = ceil(log(len(dictionary), calY))
-            if i + k > input.size:
-                break
-            pointer = symbols_to_integer(input[i : i + k], base=calY)
-            word = dictionary[pointer]
-            output.extend(word)
-            i += k
-            pbar.update(k)
-            if i + M > input.size:
-                break
-            symbol = symbols_to_integer(input[i : i + M], base=calY)
-            output.append(symbol)
-            dictionary[len(dictionary)] = word + (symbol,)
-            i += M
-            pbar.update(M)
-        pbar.close()
-
-        return np.array(output, dtype=int)
+        tokens = self.target_to_tokens(input)
+        output = self.tokens_to_source(tokens)
+        return output
