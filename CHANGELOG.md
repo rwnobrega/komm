@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.26.0 (2025-10-03)
+
+### Breaking changes
+
+- Changed the default constructor of `UniformQuantizer` to take `step` and `offset` instead of `input_range` and `choice`. Mid-tread and mid-riser uniform quantizers now have their own constructors. For example, instead of
+
+  ```
+  komm.UniformQuantizer(num_levels=4, input_range=(-1.0, 1.0), choice='mid-riser')
+  ```
+
+  use
+
+  ```
+  komm.UniformQuantizer.mid_riser(num_levels=4, step=0.5)
+  ```
+
+- Renamed method `entropy` to `entropy_rate` in `DiscreteMemorylessSource`.
+
+### Added
+
+- Implemented [finite-state Markov chains](https://komm.dev/ref/MarkovChain).
+
+- Implemented [Lempel–Ziv 77](https://komm.dev/ref/LempelZiv77Code) lossless compression code — thanks [RhenzoHideki](https://github.com/RhenzoHideki/).
+
+- Added token methods to Lempel–Ziv 78 code.
+
 ## v0.25.0 (2025-08-05)
 
 ### Breaking changes
@@ -100,7 +126,7 @@
 
 ### Added
 
-- Implemented [LowRateConvolutionalCode](https://komm.dev/ref/LowRateConvolutionalCode) and [HighRateConvolutionalCode](https://komm.dev/ref/LowRateConvolutionalCode)
+- Implemented [`LowRateConvolutionalCode`](https://komm.dev/ref/LowRateConvolutionalCode) and [`HighRateConvolutionalCode`](https://komm.dev/ref/LowRateConvolutionalCode) classes.
 - Added `is_catastrophic` method to convolutional codes.
 
 ## v0.22.0 (2025-05-13)
