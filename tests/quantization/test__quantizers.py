@@ -12,11 +12,7 @@ import komm.abc
             levels=[-7, -5, -3, -1, 1, 3, 5, 7],
             thresholds=[-6, -4, -2, 0, 2, 4, 6],
         ),
-        komm.UniformQuantizer(
-            num_levels=8,
-            input_range=(-8, 8),
-            choice="mid-riser",
-        ),
+        komm.UniformQuantizer.mid_riser(num_levels=8, step=2.0),
     ],
 )
 def test_quantizers_on_threshold(quantizer: komm.abc.ScalarQuantizer):

@@ -34,8 +34,8 @@ class ScalarQuantizer(ABC):
         Returns:
             output: The integer indices of the quantization levels for each input sample.
         """
-        tiled = np.tile(input, reps=(self.thresholds.size, 1)).transpose()
-        output = np.sum(tiled >= self.thresholds, axis=1)
+        input = np.asarray(input, dtype=float)
+        output = np.digitize(input, self.thresholds, right=False)
         return output
 
     @abstractmethod
