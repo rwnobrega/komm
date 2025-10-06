@@ -13,7 +13,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
     $$
         v_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
     $$
-    and the finite thresholds are given by
+    where $\theta \in \mathbb{R}$ is an arbitrary *offset* (normalized by $\Delta$), and the finite thresholds are given by
     $$
         t_i = \frac{v_{i-1} + v_i}{2}, \qquad i \in [1 : L).
     $$
@@ -38,6 +38,12 @@ class UniformQuantizer(abc.ScalarQuantizer):
         array([-1. , -0.5,  0. ,  0.5,  1. ])
         >>> quantizer.thresholds
         array([-0.75, -0.25,  0.25,  0.75])
+
+        >>> quantizer = komm.UniformQuantizer(num_levels=5, step=0.5, offset=2.0)
+        >>> quantizer.levels
+        array([0. , 0.5, 1. , 1.5, 2. ])
+        >>> quantizer.thresholds
+        array([0.25, 0.75, 1.25, 1.75])
     """
 
     def __init__(self, num_levels: int, step: float, offset: float = 0.0):
