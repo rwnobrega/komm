@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 from matplotlib.pylab import Axes
+
+# local import
 from utils import show_about, show_documentation
 
 import komm
 import komm.abc
-
-# local import
 
 st.set_page_config(page_title="Komm Demo: Pulses", layout="wide")
 
