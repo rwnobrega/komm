@@ -11,12 +11,10 @@ Token = tuple[int, int, int]
 
 class LempelZiv77Code:
     r"""
-    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. Also, let $W \geq 2$ be the size of the *sliding window*, $S \in [1 : W)$ be the size of the *search buffer*, and $L \in [1 : W)$ be the size of the *lookahead buffer*, with $S + L = W$. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
+    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $W \geq 2$ is the size of the *sliding window*, $S \in [1 : W)$ is the size of the *search buffer*, and $L \in [1 : W)$ is the size of the *lookahead buffer*, with $S + L = W$. The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
-
-    The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$.
 
     Parameters:
         window_size: The sliding window size $W$. Must satisfy $W \geq 2$.

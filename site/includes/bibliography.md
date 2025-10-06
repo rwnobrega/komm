@@ -7,6 +7,7 @@
 *[HP03]: W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.
 *[JZ15]: Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.
 *[LC04]: Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.
+*[MacK03]: David J. C. MacKay. Information Theory, Inference, and Learning Algorithms. Cambridge University Press, 2003. ISBN 978-0521642989.
 *[McE04]: Robert J. McEliece. The Theory of Information and Coding. Cambridge University Press, 2nd edition, 2004. ISBN 978-0511606267.
 *[McE98]: Robert J. McEliece. The Algebraic Theory of Convolutional Codes. Chapter 12 of Handbook of Coding Theory, Volume I (V. S. Pless and W. C. Huffman, Eds.). Elsevier, 1998. ISBN  978-0444814722.
 *[OS99]: Alan V. Oppenheim, Ronald W. Schaffer, with John R. Buck. Discrete-Time Signal Processing. Prentice Hall, 2nd edition, 1999. ISBN  978-0137549207.
