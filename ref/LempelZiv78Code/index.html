@@ -3574,14 +3574,13 @@
     <div class="doc doc-contents first">
 
 
-        <p>Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 5.4.2</cite> and <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 13.4.2</cite>.</p>
+        <p>Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The token format is $(p, x)$, where $p \in \mathbb{N}$ is the index of the corresponding dictionary entry, and $x \in \mathcal{X}$ is the source symbol following the match. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \log_{|\mathcal{Y}|}(i + 1)$, and $i$ is the size of the dictionary at the moment. For more details, see <cite><abbr title="David J. C. MacKay. Information Theory, Inference, and Learning Algorithms. Cambridge University Press, 2003. ISBN 978-0521642989.">MacK03</abbr>, Sec. 6.4</cite>, <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 5.4.2</cite> and <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 13.4.2</cite>.</p>
 
 
 <details class="note" open>
   <summary>Note</summary>
   <p>Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the <em>source cardinality</em> and <em>target cardinality</em>, respectively.</p>
-</details>        <p>The token format is $(p, x)$, where $p \in \mathbb{N}$ is the index of the corresponding dictionary entry, and $x \in \mathcal{X}$ is the source symbol following the match. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \log_{|\mathcal{Y}|}(i + 1)$, and $i$ is the size of the dictionary at the moment.</p>
-
+</details>
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">

@@ -3592,7 +3592,7 @@
 $$
     v_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
 $$
-and the finite thresholds are given by
+where $\theta \in \mathbb{R}$ is an arbitrary <em>offset</em> (normalized by $\Delta$), and the finite thresholds are given by
 $$
     t_i = \frac{v_{i-1} + v_i}{2}, \qquad i \in [1 : L).
 $$
@@ -3639,6 +3639,12 @@ For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Com
 <span class="go">array([-1. , -0.5,  0. ,  0.5,  1. ])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
 <span class="go">array([-0.75, -0.25,  0.25,  0.75])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">UniformQuantizer</span><span class="p">(</span><span class="n">num_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">levels</span>
+<span class="go">array([0. , 0.5, 1. , 1.5, 2. ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantizer</span><span class="o">.</span><span class="n">thresholds</span>
+<span class="go">array([0.25, 0.75, 1.25, 1.75])</span>
 </code></pre></div>
 
 
