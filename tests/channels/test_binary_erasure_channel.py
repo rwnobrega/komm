@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 import komm
-import komm.abc
 
 
 @pytest.mark.parametrize("eps", [-0.1, 1.1])
