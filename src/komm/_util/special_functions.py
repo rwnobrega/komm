@@ -19,7 +19,7 @@ def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
     $$
         \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
     $$
-    This corresponds to the complementary cumulative distribution function of the standard gaussian distribution. For more details, see [Wikipedia: Q-function](https://en.wikipedia.org/wiki/Q-function).
+    This corresponds to the complementary cumulative distribution function of the standard Gaussian distribution. For more details, see [Wikipedia: Q-function](https://en.wikipedia.org/wiki/Q-function).
 
     Parameters:
         x: The input to the function. Should be a float or array of floats.
