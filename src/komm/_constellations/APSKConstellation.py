@@ -199,13 +199,13 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_density: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
         Examples:
             >>> const = komm.APSKConstellation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> const.posteriors([0.1 - 1.1j], snr=2.0).round(3)
-            array([0.104, 0.015, 0.076, 0.516, 0.011, 0.   , 0.006, 0.272])
+            >>> const.posteriors([0.1 - 1.1j], noise_density=1.0).round(3)
+            array([0.141, 0.042, 0.115, 0.383, 0.035, 0.003, 0.023, 0.257])
         """
-        return super().posteriors(received, snr, priors)
+        return super().posteriors(received, noise_density, priors)

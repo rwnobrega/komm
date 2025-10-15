@@ -79,10 +79,16 @@ def test_constellation_equivalence_high_snr(const: komm.abc.Constellation):
     np.testing.assert_equal(const.closest_indices(symbols), indices)
     np.testing.assert_equal(ref.closest_indices(symbols), indices)
     np.testing.assert_equal(
-        np.argmax(const.posteriors(symbols, snr=1e4).reshape(-1, const.order), axis=-1),
+        np.argmax(
+            const.posteriors(symbols, noise_density=1e-6).reshape(-1, const.order),
+            axis=-1,
+        ),
         indices,
     )
     np.testing.assert_equal(
-        np.argmax(ref.posteriors(symbols, snr=1e4).reshape(-1, ref.order), axis=-1),
+        np.argmax(
+            ref.posteriors(symbols, noise_density=1e-6).reshape(-1, ref.order),
+            axis=-1,
+        ),
         indices,
     )

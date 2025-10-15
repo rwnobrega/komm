@@ -171,16 +171,16 @@ class PAMConstellation(abc.Constellation[np.floating]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_density: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
         Examples:
             >>> const = komm.PAMConstellation(4)
-            >>> const.posteriors([-0.8, 2.4], snr=2.0).round(3)
-            array([0.103, 0.7  , 0.195, 0.002, 0.   , 0.007, 0.343, 0.65 ])
-            >>> const.posteriors([[-0.8, 2.4], [0.0, 10.0]], snr=2.0).round(3)
-            array([[0.103, 0.7  , 0.195, 0.002, 0.   , 0.007, 0.343, 0.65 ],
-                   [0.02 , 0.48 , 0.48 , 0.02 , 0.   , 0.   , 0.   , 1.   ]])
+            >>> const.posteriors([-0.8, 2.4], noise_density=1.0).round(3)
+            array([0.07 , 0.773, 0.156, 0.001, 0.   , 0.003, 0.309, 0.688])
+            >>> const.posteriors([[-0.8, 2.4], [0.0, 10.0]], noise_density=1.0).round(3)
+            array([[0.07 , 0.773, 0.156, 0.001, 0.   , 0.003, 0.309, 0.688],
+                   [0.009, 0.491, 0.491, 0.009, 0.   , 0.   , 0.   , 1.   ]])
         """
-        return super().posteriors(received, snr, priors)
+        return super().posteriors(received, noise_density, priors)

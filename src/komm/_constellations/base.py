@@ -146,16 +146,16 @@ class Constellation(ABC, Generic[T]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_density: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
-        Returns the posterior probabilities of each constellation symbol given received points, the signal-to-noise ratio (SNR), and prior probabilities.
+        Returns the posterior probabilities of each constellation symbol given the received points, the noise density, and the prior probabilities.
 
         Parameters:
             received: The received points. Must be an array whose last dimension is a multiple of $N$.
 
-            snr: The signal-to-noise ratio (SNR) of the channel (linear, not decibel).
+            noise_density: The two-sided noise power spectral density $N_0/2$.
 
             priors: The prior probabilities of the symbols. Must be a 1D-array whose size is equal to $M$. If not given, uniform priors are assumed.
 
@@ -178,9 +178,8 @@ class Constellation(ABC, Generic[T]):
                 f" dimension {N} (got {received.shape[-1]})"
             )
         r = received.reshape(-1, N)
-        n0 = self.mean_energy(priors) / snr
         distances = self._squared_distances(r)
-        logp = -distances / n0 + np.log(priors)
+        logp = -distances / (2 * noise_density) + np.log(priors)
         logp -= np.max(logp, axis=-1, keepdims=True)
         p = np.exp(logp)
         p /= np.sum(p, axis=-1, keepdims=True)
