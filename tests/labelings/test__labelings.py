@@ -19,7 +19,7 @@ for args in product(num_bits):
     params.append(komm.ReflectedLabeling(*args))
 
 # Reflected rectangular
-num_bits = [4, 16, (1, 1), (1, 2), (2, 1), (1, 3), (2, 2), (3, 1)]
+num_bits = [2, 4, (1, 1), (1, 2), (2, 1), (1, 3), (2, 2), (3, 1)]
 for args in product(num_bits):
     params.append(komm.ReflectedRectangularLabeling(*args))
 

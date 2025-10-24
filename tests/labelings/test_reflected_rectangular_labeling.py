@@ -65,7 +65,7 @@ def test_labeling_reflected_retangular_tuple():
 
 def test_labeling_reflected_retangular_int():
     assert np.array_equal(
-        komm.ReflectedRectangularLabeling(1).matrix,
+        komm.ReflectedRectangularLabeling(2).matrix,
         [
             [0, 0],
             [0, 1],
@@ -99,7 +99,7 @@ def test_labeling_reflected_retangular_int():
 def test_labeling_reflected_retangular_invalid():
     with pytest.raises(ValueError, match="must contain positive integers"):
         komm.ReflectedRectangularLabeling((-1, 2))
-    with pytest.raises(ValueError, match="must be a positive perfect square"):
+    with pytest.raises(ValueError, match="must be an even number"):
         komm.ReflectedRectangularLabeling(-4)
-    with pytest.raises(ValueError, match="must be a positive perfect square"):
-        komm.ReflectedRectangularLabeling(2)
+    with pytest.raises(ValueError, match="must be an even number"):
+        komm.ReflectedRectangularLabeling(5)

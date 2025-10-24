@@ -1,5 +1,4 @@
 from functools import cache
-from math import isqrt
 
 import numpy as np
 import numpy.typing as npt
@@ -20,11 +19,11 @@ class ReflectedRectangularLabeling(abc.Labeling):
         _pre_cache: bool = True,
     ) -> None:
         if isinstance(num_bits, int):
-            if not (num_bits > 0 and isqrt(num_bits) ** 2 == num_bits):
+            if not (num_bits > 0 and num_bits % 2 == 0):
                 raise ValueError(
-                    "if a single integer, 'num_bits' must be a positive perfect square"
+                    "if a single integer, 'num_bits' must be an even number"
                 )
-            num_bits = (isqrt(num_bits), isqrt(num_bits))
+            num_bits = (num_bits // 2, num_bits // 2)
         if not (num_bits[0] >= 1 and num_bits[1] >= 1):
             raise ValueError("'num_bits' must contain positive integers")
         self._num_bits = num_bits
