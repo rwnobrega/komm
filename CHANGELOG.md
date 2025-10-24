@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.26.0 (2025-10-24)
+
+### Fixed
+
+- Fixed bug in `ReflectedRectangularLabeling`.
+
 ## v0.26.0 (2025-10-03)
 
 ### Breaking changes
