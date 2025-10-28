@@ -1,4 +1,4 @@
-from functools import cache, reduce
+from functools import cache
 from operator import itemgetter
 
 import numpy as np
@@ -9,7 +9,7 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, lexicographical_code
+from .util import Word, create_code_from_lengths
 
 
 @mkdocstrings(filters=["!.*"])
@@ -59,7 +59,9 @@ class FanoCode(FixedToVariableCode):
             source_cardinality=self.pmf.size,
             target_cardinality=2,
             source_block_size=source_block_size,
-            enc_mapping=fano_code(self.pmf, source_block_size),
+            enc_mapping=create_code_from_lengths(
+                self.pmf, source_block_size, fano_code_lengths
+            ),
         )
 
     def __repr__(self) -> str:
@@ -97,13 +99,3 @@ def fano_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
         stack.append((lo, mid, length + 1))
     pbar.close()
     return lengths
-
-
-def fano_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    lengths = fano_code_lengths(extended_pmf.ravel())
-    codewords = lexicographical_code(lengths)
-    enc_mapping: dict[Word, Word] = {}
-    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
-        enc_mapping[x] = c
-    return enc_mapping

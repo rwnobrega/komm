@@ -1,4 +1,4 @@
-from functools import cache, reduce
+from functools import cache
 
 import numpy as np
 import numpy.typing as npt
@@ -7,7 +7,7 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, lexicographical_code
+from .util import Word, create_code_from_lengths
 
 
 @mkdocstrings(filters=["!.*"])
@@ -61,7 +61,9 @@ class ShannonCode(FixedToVariableCode):
             source_cardinality=self.pmf.size,
             target_cardinality=2,
             source_block_size=source_block_size,
-            enc_mapping=shannon_code(self.pmf, source_block_size),
+            enc_mapping=create_code_from_lengths(
+                self.pmf, source_block_size, shannon_code_lengths
+            ),
         )
 
     def __repr__(self) -> str:
@@ -88,13 +90,3 @@ def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
     else:
         lengths[mask] = np.ceil(np.log2(1 / pmf[mask])).astype(int)
     return lengths
-
-
-def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    lengths = shannon_code_lengths(extended_pmf.ravel())
-    codewords = lexicographical_code(lengths)
-    enc_mapping: dict[Word, Word] = {}
-    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
-        enc_mapping[x] = c
-    return enc_mapping

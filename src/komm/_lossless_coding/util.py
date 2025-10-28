@@ -164,3 +164,24 @@ def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
     for symbol in symbols:
         integer = integer * base + symbol
     return integer
+
+
+def create_code_from_lengths(
+    pmf: npt.NDArray[np.floating],
+    source_block_size: int,
+    code_lengths_func,
+) -> dict[Word, Word]:
+    """
+    Helper function to create a code mapping from a pmf and a code lengths function.
+    
+    This reduces duplication between FanoCode and ShannonCode.
+    """
+    from functools import reduce
+
+    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
+    lengths = code_lengths_func(extended_pmf.ravel())
+    codewords = lexicographical_code(lengths)
+    enc_mapping: dict[Word, Word] = {}
+    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
+        enc_mapping[x] = c
+    return enc_mapping

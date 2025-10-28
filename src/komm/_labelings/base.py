@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import cache
 from typing import TypeVar
 
 import numpy as np
@@ -114,3 +115,37 @@ class Labeling(ABC):
         with np.errstate(divide="ignore"):
             lvalues = np.log(m @ mask0) - np.log(m @ mask1)
         return lvalues.reshape(*metrics.shape[:-1], -1)
+
+
+class BitBasedLabeling(Labeling):
+    """Base class for labelings that are defined by a number of bits."""
+
+    def __init__(self, num_bits: int, _pre_cache: bool = True) -> None:
+        if num_bits < 1:
+            raise ValueError("'m' must be a positive integer")
+        self._num_bits = num_bits
+        if _pre_cache:
+            self.matrix
+
+    @property
+    def num_bits(self) -> int:
+        r"""
+        The number $m$ of bits per index of the labeling.
+        """
+        return self._num_bits
+
+    @property
+    def cardinality(self) -> int:
+        r"""
+        The cardinality $2^m$ of the labeling.
+        """
+        m = self._num_bits
+        return 2**m
+
+    @property
+    @cache
+    def inverse_mapping(self) -> dict[tuple[int, ...], int]:
+        r"""
+        The inverse mapping of the labeling. It is a dictionary that maps each binary tuple to the corresponding index.
+        """
+        return super().inverse_mapping
