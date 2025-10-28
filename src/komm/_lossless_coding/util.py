@@ -177,7 +177,7 @@ def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
 def create_code_from_lengths(
     pmf: npt.NDArray[np.floating],
     source_block_size: int,
-    code_lengths_func,
+    code_lengths_func: Callable[[Array1D[np.floating]], Array1D[np.integer]],
 ) -> dict[Word, Word]:
     """
     Helper function to create a code mapping from a pmf and a code lengths function.
