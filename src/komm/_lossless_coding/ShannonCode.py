@@ -4,14 +4,13 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, create_code_from_lengths
+from .util import PrefixFreePMFCode
 
 
 @mkdocstrings(filters=["!.*"])
-class ShannonCode(FixedToVariableCode):
+class ShannonCode(PrefixFreePMFCode, FixedToVariableCode):
     r"""
     Binary Shannon code. For a given pmf $p$ over $\mathcal{X}$, it is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(\mathbf{x})$ associated with a source word $\mathbf{x} \in \mathcal{X}^k$ is given by
     $$
@@ -54,32 +53,7 @@ class ShannonCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
-        self.pmf = validate_pmf(pmf)
-        if not source_block_size >= 1:
-            raise ValueError("'source_block_size' must be at least 1")
-        super().__init__(
-            source_cardinality=self.pmf.size,
-            target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=create_code_from_lengths(
-                self.pmf, source_block_size, shannon_code_lengths
-            ),
-        )
-
-    def __repr__(self) -> str:
-        args = ", ".join([
-            f"pmf={self.pmf.tolist()}",
-            f"source_block_size={self.source_block_size}",
-        ])
-        return f"{self.__class__.__name__}({args})"
-
-    @cache
-    def is_uniquely_decodable(self) -> bool:
-        return True
-
-    @cache
-    def is_prefix_free(self) -> bool:
-        return True
+        super().__init__(pmf, source_block_size, shannon_code_lengths)
 
 
 def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:

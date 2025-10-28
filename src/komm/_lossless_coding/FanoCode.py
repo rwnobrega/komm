@@ -6,14 +6,13 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, create_code_from_lengths
+from .util import PrefixFreePMFCode
 
 
 @mkdocstrings(filters=["!.*"])
-class FanoCode(FixedToVariableCode):
+class FanoCode(PrefixFreePMFCode, FixedToVariableCode):
     r"""
     Binary Fano code. For a given pmf $p$ over $\mathcal{X}$, it is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the source words are first sorted in descending order of probability and then are recursively partitioned into two groups of approximately equal total probability, assigning bit $\mathtt{0}$ to one group and bit $\mathtt{1}$ to the other, until each source word is assigned a unique codeword. For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
@@ -52,32 +51,7 @@ class FanoCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
-        self.pmf = validate_pmf(pmf)
-        if not source_block_size >= 1:
-            raise ValueError("'source_block_size' must be at least 1")
-        super().__init__(
-            source_cardinality=self.pmf.size,
-            target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=create_code_from_lengths(
-                self.pmf, source_block_size, fano_code_lengths
-            ),
-        )
-
-    def __repr__(self) -> str:
-        args = ", ".join([
-            f"pmf={self.pmf.tolist()}",
-            f"source_block_size={self.source_block_size}",
-        ])
-        return f"{self.__class__.__name__}({args})"
-
-    @cache
-    def is_uniquely_decodable(self) -> bool:
-        return True
-
-    @cache
-    def is_prefix_free(self) -> bool:
-        return True
+        super().__init__(pmf, source_block_size, fano_code_lengths)
 
 
 def fano_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
