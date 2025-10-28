@@ -10,7 +10,7 @@ from .._util.validators import validate_pmf
 from ..types import Array1D
 
 if TYPE_CHECKING:
-    from .FixedToVariableCode import FixedToVariableCode
+    from .FixedToVariableCode import FixedToVariableCode  # noqa: F401
 
 Word = tuple[int, ...]
 
@@ -181,7 +181,7 @@ def create_code_from_lengths(
 ) -> dict[Word, Word]:
     """
     Helper function to create a code mapping from a pmf and a code lengths function.
-    
+
     This reduces duplication between FanoCode and ShannonCode.
     """
     from functools import reduce
@@ -198,7 +198,7 @@ def create_code_from_lengths(
 class PrefixFreePMFCode:
     """
     Base class for prefix-free codes based on a probability mass function.
-    
+
     This base class consolidates common functionality for codes like
     FanoCode, ShannonCode, and similar PMF-based prefix-free codes.
     """
@@ -210,12 +210,14 @@ class PrefixFreePMFCode:
         code_lengths_func: Callable[[Array1D[np.floating]], Array1D[np.integer]],
     ):
         # Import here to avoid circular import
-        from .FixedToVariableCode import FixedToVariableCode
+        from .FixedToVariableCode import (
+            FixedToVariableCode as _FixedToVariableCode,
+        )
 
         self.pmf = validate_pmf(pmf)
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
-        FixedToVariableCode.__init__(
+        _FixedToVariableCode.__init__(
             self,
             source_cardinality=self.pmf.size,
             target_cardinality=2,

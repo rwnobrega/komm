@@ -1,4 +1,3 @@
-from functools import cache
 from operator import itemgetter
 
 import numpy as np

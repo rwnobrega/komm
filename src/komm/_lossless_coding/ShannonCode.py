@@ -1,5 +1,3 @@
-from functools import cache
-
 import numpy as np
 import numpy.typing as npt
 
