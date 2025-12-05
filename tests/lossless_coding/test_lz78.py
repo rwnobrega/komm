@@ -149,3 +149,12 @@ def test_lz78_worst_case(k):
     assert len(message) == (k - 1) * 2 ** (k + 1) + 2
     assert len(compressed) == len_compressed(2 ** (k + 1) - 2, 2)
     np.testing.assert_equal(code.decode(compressed), message)
+
+
+def test_lz78_invalid_input():
+    code = komm.LempelZiv78Code(source_cardinality=27)
+    code.encode([0, 10, 26])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([0, 10, 27])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([-1, 10, 26])

@@ -67,3 +67,12 @@ def test_lzw_encode_decode(source_cardinality, target_cardinality):
     # Random message
     message = np.random.randint(0, source_cardinality, 1000)
     np.testing.assert_equal(code.decode(code.encode(message)), message)
+
+
+def test_lzw_invalid_input():
+    code = komm.LempelZivWelchCode(source_cardinality=27)
+    code.encode([0, 10, 26])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([0, 10, 27])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([-1, 10, 26])

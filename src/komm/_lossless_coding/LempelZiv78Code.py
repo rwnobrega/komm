@@ -5,6 +5,8 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from komm._util.validators import validate_integer_range
+
 from .util import Word, integer_to_symbols, symbols_to_integer
 
 Token = tuple[int, int]
@@ -46,7 +48,7 @@ class LempelZiv78Code:
             >>> lz78.source_to_tokens([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
-        source = np.asarray(source)
+        source = validate_integer_range(source, high=self.source_cardinality)
         dictionary: dict[Word, int] = {(): 0}
         tokens: list[Token] = []
         word: Word = ()

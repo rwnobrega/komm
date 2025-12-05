@@ -360,6 +360,11 @@ class VariableToFixedCode:
             >>> code.encode([1, 0, 0])  # Incomplete input, completed as 1|000
             array([1, 1, 0, 0])
 
+            >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
+            Traceback (most recent call last):
+            ...
+            ValueError: input contains invalid word
+
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0, 0), (0, 1)])
             >>> code.encode([1, 0, 0, 0])  # Code is not fully covering
             Traceback (most recent call last):

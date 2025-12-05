@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .._util.validators import validate_integer_range
 from .util import integer_to_symbols, symbols_to_integer
 
 Token = tuple[int, int, int]
@@ -100,7 +101,7 @@ class LempelZiv77Code:
             >>> lz77.source_to_tokens([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
             [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
         """
-        source = np.asarray(source, dtype=int)
+        source = validate_integer_range(source, high=self.source_cardinality)
         ss, ls = self.search_size, self.lookahead_size
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []

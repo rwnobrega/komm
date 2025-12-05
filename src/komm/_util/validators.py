@@ -57,3 +57,15 @@ def validate_transition_matrix(
             f"({value.shape[0]}, {value.shape[1]}))"
         )
     return value
+
+
+def validate_integer_range(
+    value: npt.ArrayLike,
+    *,
+    low: int = 0,
+    high: int = 2,
+) -> npt.NDArray[np.integer]:
+    value = np.asarray(value, dtype=int)
+    if not (np.all(value >= low) and np.all(value < high)):
+        raise ValueError(f"input contains invalid entries (expected in [{low}:{high}))")
+    return value

@@ -140,3 +140,12 @@ def test_lz77_zeros(k):
     code = komm.LempelZiv77Code(window_size=32, lookahead_size=8, source_cardinality=2)
     source = np.zeros(k, dtype=int)
     np.testing.assert_equal(code.decode(code.encode(source)), source)
+
+
+def test_lz77_invalid_input():
+    code = komm.LempelZiv77Code(window_size=32, lookahead_size=8, source_cardinality=27)
+    code.encode([0, 10, 26])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([0, 10, 27])
+    with pytest.raises(ValueError, match="invalid entries"):
+        code.encode([-1, 10, 26])

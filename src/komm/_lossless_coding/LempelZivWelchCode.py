@@ -5,6 +5,8 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from komm._util.validators import validate_integer_range
+
 from .util import Word, integer_to_symbols, symbols_to_integer
 
 
@@ -54,7 +56,7 @@ class LempelZivWelchCode:
             array([0, 2, 3, 4, 5])
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        input = np.asarray(input)
+        input = validate_integer_range(input, high=calX)
         dictionary: dict[Word, int] = {(s,): s for s in range(calX)}
         output: list[int] = []
 
