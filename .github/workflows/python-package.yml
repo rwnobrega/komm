@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[lint,test]"
       - name: Force NumPy version for type checking
-        run: pip install numpy==2.3
+        run: pip install numpy==2.3.5
       - name: Black
         run: black --check .
       - name: Flake8
