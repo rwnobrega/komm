@@ -1,6 +1,12 @@
 # Changelog
 
-## v0.26.0 (2025-10-24)
+## v0.26.2 (2025-12-06)
+
+### Added
+
+- Added input validation in lossless source coding classes.
+
+## v0.26.1 (2025-10-24)
 
 ### Fixed
 
