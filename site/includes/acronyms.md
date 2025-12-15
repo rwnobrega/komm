@@ -5,6 +5,7 @@
 *[BCJR]: Bahl–Cocke–Jelinek–Raviv
 *[BEC]: binary erasure channel
 *[BSC]: binary symmetric channel
+*[cdf]: cumulative distribution function
 *[DMC]: discrete memoryless channel
 *[DMS]: discrete memoryless source
 *[FIR]: finite impulse response

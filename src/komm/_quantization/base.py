@@ -59,15 +59,14 @@ class ScalarQuantizer(ABC):
         points_per_interval: int = 4096,
     ) -> float:
         r"""
-        Computes the mean squared (quantization) error (MSE) of the quantizer for a given input
-        probability density function (pdf). It is defined as
+        Computes the mean squared (quantization) error (MSE) of the quantizer for a given input pdf. It is defined as
         $$
             \mse = \int_{-\infty}^{\infty} (y - x)^2 f_X(x) \, dx
         $$
         where $y$ is the quantized signal and $f_X(x)$ is the pdf of the input signal.
 
         Parameters:
-            input_pdf: The probability density function $f_X(x)$ of the input signal.
+            input_pdf: The pdf $f_X(x)$ of the input signal.
             input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal.
             points_per_interval: The number of points per interval for numerical integration (default: 4096).
 

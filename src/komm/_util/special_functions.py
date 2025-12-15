@@ -19,7 +19,7 @@ def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
     $$
         \mathrm{Q}(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \mathrm{e}^{-u^2/2} \, \mathrm{d}u.
     $$
-    This corresponds to the complementary cumulative distribution function of the standard Gaussian distribution. For more details, see [Wikipedia: Q-function](https://en.wikipedia.org/wiki/Q-function).
+    This corresponds to the complementary cdf of the standard Gaussian distribution. For more details, see [Wikipedia: Q-function](https://en.wikipedia.org/wiki/Q-function).
 
     Parameters:
         x: The input to the function. Should be a float or array of floats.
@@ -96,7 +96,7 @@ def marcum_q(
     $$
         \mathrm{Q}_m(a; x) = \int_x^\infty u \left( \frac{u}{a} \right)^{m-1}  I\_{m-1}(a x) \exp \left( -\frac{u^2 + a^2}{2} \right) \mathrm{d}u,
     $$
-    where $I\_{m-1}$ is the modified Bessel function of the first kind. This corresponds to the complementary cumulative distribution function of the non-central chi distribution with $2m$ degrees of freedom and non-centrality parameter $a$. For more details, see [Wikipedia: Marcum Q-function](https://en.wikipedia.org/wiki/Marcum_Q-function).
+    where $I\_{m-1}$ is the modified Bessel function of the first kind. This corresponds to the complementary cdf of the non-central chi distribution with $2m$ degrees of freedom and non-centrality parameter $a$. For more details, see [Wikipedia: Marcum Q-function](https://en.wikipedia.org/wiki/Marcum_Q-function).
 
     Parameters:
         m: The order of the Marcum Q-function. Should be a positive integer.

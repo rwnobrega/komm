@@ -22,7 +22,7 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating
     By default, the base of the logarithm is $2$, in which case the entropy is measured in bits. For more details, see <cite>CT06, Sec. 2.1</cite>.
 
     Parameters:
-        pmf: The probability mass function $p_X$ of the random variable. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+        pmf: The pmf $p_X$ of the random variable. It must be a 1D-array of non-negative values that sum to $1$.
 
         base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
@@ -117,9 +117,9 @@ def relative_entropy(
     Note that, in general, $\mathrm{D}(p \parallel q) \neq \mathrm{D}(q \parallel p)$. For more details, see <cite>CT06, Sec. 2.3</cite>.
 
     Parameters:
-        pmf: The probability mass function $p$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+        pmf: The pmf $p$. It must be a 1D-array of non-negative values that sum to $1$.
 
-        qmf: The probability mass function $q$. It must be a valid pmf, that is, all of its values must be non-negative and sum up to $1$.
+        qmf: The pmf $q$. It must be a 1D-array of non-negative values that sum to $1$.
 
         base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
 
