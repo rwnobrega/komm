@@ -94,9 +94,9 @@ def marcum_q(
     r"""
     Computes the Marcum Q-function. It is given by
     $$
-        \mathrm{Q}_m(a; x) = \int_x^\infty u \left( \frac{u}{a} \right)^{m-1}  I\_{m-1}(a x) \exp \left( -\frac{u^2 + a^2}{2} \right) \mathrm{d}u,
+        \mathrm{Q}_{m,a}(x) = \frac{1}{a^{m-1}} \int_x^\infty u^m \exp \left( -\frac{u^2 + a^2}{2} \right) I\_{m-1}(a u) \, \mathrm{d}u,
     $$
-    where $I\_{m-1}$ is the modified Bessel function of the first kind. This corresponds to the complementary cdf of the non-central chi distribution with $2m$ degrees of freedom and non-centrality parameter $a$. For more details, see [Wikipedia: Marcum Q-function](https://en.wikipedia.org/wiki/Marcum_Q-function).
+    where $I$ is the modified Bessel function of the first kind. This corresponds to the complementary cdf of the non-central chi distribution with $2m$ degrees of freedom and non-centrality parameter $a$. For more details, see [Wikipedia: Marcum Q-function](https://en.wikipedia.org/wiki/Marcum_Q-function).
 
     Parameters:
         m: The order of the Marcum Q-function. Should be a positive integer.
@@ -104,7 +104,7 @@ def marcum_q(
         x: The input to the function. Should be a float or array of floats.
 
     Returns:
-        y: The value $y = \mathrm{Q}_m(a; x)$.
+        y: The value $y = \mathrm{Q}_{m,a}(x)$.
 
     Examples:
         >>> komm.marcum_q(1, 1, 1)
