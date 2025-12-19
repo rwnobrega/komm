@@ -149,3 +149,58 @@ def test_lz77_invalid_input():
         code.encode([0, 10, 27])
     with pytest.raises(ValueError, match="invalid entries"):
         code.encode([-1, 10, 26])
+
+
+def test_lz77_invalid_construction():
+    with pytest.raises(ValueError, match="'window_size' must be at least 2"):
+        komm.LempelZiv77Code(
+            window_size=1,
+            lookahead_size=1,
+            source_cardinality=2,
+        )
+
+    with pytest.raises(ValueError, match="'lookahead_size' must be in"):
+        komm.LempelZiv77Code(
+            window_size=8,
+            lookahead_size=0,
+            source_cardinality=2,
+        )
+
+    with pytest.raises(ValueError, match="'lookahead_size' must be in"):
+        komm.LempelZiv77Code(
+            window_size=8,
+            lookahead_size=8,
+            source_cardinality=2,
+        )
+
+    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
+        komm.LempelZiv77Code(
+            window_size=8,
+            lookahead_size=4,
+            source_cardinality=1,
+        )
+
+    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
+        komm.LempelZiv77Code(
+            window_size=8,
+            lookahead_size=4,
+            source_cardinality=2,
+            target_cardinality=1,
+        )
+
+
+def test_lz77_invalid_construction_search_buffer():
+    # search_size = 5
+    komm.LempelZiv77Code(
+        window_size=8,
+        lookahead_size=3,
+        source_cardinality=2,
+        search_buffer=[0, 0, 0, 0, 0],
+    )
+    with pytest.raises(ValueError, match="length of 'search_buffer' must"):
+        komm.LempelZiv77Code(
+            window_size=8,
+            lookahead_size=3,  # search_size = 5
+            source_cardinality=2,
+            search_buffer=[0, 0, 0, 0],
+        )
