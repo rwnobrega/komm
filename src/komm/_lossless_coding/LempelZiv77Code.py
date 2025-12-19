@@ -12,21 +12,21 @@ Token = tuple[int, int, int]
 
 class LempelZiv77Code:
     r"""
-    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $W \geq 2$ is the size of the *sliding window*, $S \in [1 : W)$ is the size of the *search buffer*, and $L \in [1 : W)$ is the size of the *lookahead buffer*, with $S + L = W$. The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
+    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $S \geq 1$ is the size of the *search buffer*, $L \geq 1$ is the size of the *lookahead buffer*, and $W = S + L$ is the size of the *sliding window*. The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
 
     Parameters:
-        window_size: The sliding window size $W$. Must satisfy $W \geq 2$.
-        lookahead_size: The lookahead buffer size $L$. Must satisfy $1 \leq L < W$.
+        search_size: The search buffer size $S$. Must satisfy $S \geq 1$.
+        lookahead_size: The lookahead buffer size $L$. Must satisfy $L \geq 1$.
         source_cardinality: The source cardinality $|\mathcal{X}|$. Must satisfy $|\mathcal{X}| \geq 2$.
         target_cardinality: The target cardinality $|\mathcal{Y}|$. Must satisfy $|\mathcal{Y}| \geq 2$. The default value is $2$ (binary).
         search_buffer: The initial state of the search buffer. Must be a 1D-array of length $S$ with elements in $\mathcal{X}$. The default value corresponds to $(0, \ldots, 0) \in \mathcal{X}^S$.
 
     Examples:
         >>> lz77 = komm.LempelZiv77Code(
-        ...     window_size=2**13,
+        ...     search_size=2**13,
         ...     lookahead_size=16,
         ...     source_cardinality=256,
         ...     target_cardinality=2,
@@ -35,21 +35,23 @@ class LempelZiv77Code:
 
     def __init__(
         self,
-        window_size: int,
+        *,
+        search_size: int,
         lookahead_size: int,
         source_cardinality: int,
         target_cardinality: int = 2,
         search_buffer: npt.ArrayLike | None = None,
     ):
-        if not window_size >= 2:
-            raise ValueError("'window_size' must be at least 2")
-        if not 1 <= lookahead_size < window_size:
-            raise ValueError("'lookahead_size' must be in [1 : window_size)")
+        if not search_size >= 1:
+            raise ValueError("'search_size' must be at least 1")
+        if not lookahead_size >= 1:
+            raise ValueError("'lookahead_size' must be at least 1")
         if not source_cardinality >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
         if not target_cardinality >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
-        self.window_size = window_size
+
+        self.search_size = search_size
         self.lookahead_size = lookahead_size
         self.source_cardinality = source_cardinality
         self.target_cardinality = target_cardinality
@@ -66,7 +68,7 @@ class LempelZiv77Code:
 
     def __repr__(self) -> str:
         args = ", ".join([
-            f"window_size={self.window_size}",
+            f"search_size={self.search_size}",
             f"lookahead_size={self.lookahead_size}",
             f"source_cardinality={self.source_cardinality}",
             f"target_cardinality={self.target_cardinality}",
@@ -74,11 +76,11 @@ class LempelZiv77Code:
         return f"{self.__class__.__name__}({args})"
 
     @property
-    def search_size(self) -> int:
+    def window_size(self) -> int:
         r"""
-        The search buffer size $S$. It is given by $S = W - L$.
+        The sliding window size $W$. It is given by $W = S + L$.
         """
-        return self.window_size - self.lookahead_size
+        return self.search_size + self.lookahead_size
 
     def _get_widths(self) -> tuple[int, int, int]:
         calY = self.target_cardinality
@@ -93,7 +95,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,
@@ -118,6 +120,7 @@ class LempelZiv77Code:
             tokens.append((p, l, buffer[i + l]))
             i += l + 1
             pbar.update(l + 1)
+
         return tokens
 
     def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
@@ -126,7 +129,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,
@@ -150,7 +153,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,
@@ -173,7 +176,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,
@@ -208,7 +211,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,
@@ -232,7 +235,7 @@ class LempelZiv77Code:
 
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
-            ...     window_size=18,
+            ...     search_size=9,
             ...     lookahead_size=9,
             ...     source_cardinality=3,
             ...     target_cardinality=3,

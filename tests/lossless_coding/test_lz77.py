@@ -6,7 +6,7 @@ import komm
 
 def test_lz77_original_paper():
     code = komm.LempelZiv77Code(
-        window_size=18,
+        search_size=9,
         lookahead_size=9,
         source_cardinality=3,
         target_cardinality=3,
@@ -24,7 +24,7 @@ def test_lz77_original_paper():
 def test_lz77_abrantes():
     # [Abrantes, p. 16]
     code = komm.LempelZiv77Code(
-        window_size=12,
+        search_size=8,
         lookahead_size=4,
         source_cardinality=3,
         search_buffer=[255] * 8,
@@ -51,7 +51,7 @@ def test_lz77_abrantes():
 def test_lz77_sayood():
     # [Sayood, p. 122]
     code = komm.LempelZiv77Code(
-        window_size=13,
+        search_size=7,
         lookahead_size=6,
         source_cardinality=256,
         search_buffer=[ord(x) for x in "cabraca"],
@@ -68,7 +68,7 @@ def test_lz77_sayood():
 
 def test_lz77_wikipedia():
     # [https://pt.wikipedia.org/wiki/LZ77]
-    code = komm.LempelZiv77Code(12, 4, 256)
+    code = komm.LempelZiv77Code(search_size=8, lookahead_size=4, source_cardinality=256)
     expected = [
         (1, 0, "A"),
         (1, 0, "_"),
@@ -97,7 +97,7 @@ def test_lz77_wikipedia():
     ],
 )
 def test_lz77_special_input(source):
-    code = komm.LempelZiv77Code(7, 3, 3)
+    code = komm.LempelZiv77Code(search_size=4, lookahead_size=3, source_cardinality=3)
     tokens = code.source_to_tokens(source)
     target = code.tokens_to_target(tokens)
     np.testing.assert_equal(code.source_to_tokens(source), tokens)
@@ -107,17 +107,21 @@ def test_lz77_special_input(source):
     np.testing.assert_equal(code.decode(code.encode(source)), source)
 
 
-@pytest.mark.parametrize("parameters", [(12, 8), (15, 8), (16, 8), (20, 17), (31, 17)])
+@pytest.mark.parametrize("parameters", [(4, 8), (8, 4), (7, 8), (8, 8), (1, 8)])
 @pytest.mark.parametrize("source_cardinality", [2, 4, 8])
 @pytest.mark.parametrize("target_cardinality", [2, 4, 8])
 def test_lz77_general(parameters, source_cardinality, target_cardinality):
-    window_size, lookahead_size = parameters
+    search_size, lookahead_size = parameters
     code = komm.LempelZiv77Code(
-        window_size, lookahead_size, source_cardinality, target_cardinality
+        search_size=search_size,
+        lookahead_size=lookahead_size,
+        source_cardinality=source_cardinality,
+        target_cardinality=target_cardinality,
     )
 
     # Check code parameters
-    assert code.window_size == window_size
+    assert code.window_size == search_size + lookahead_size
+    assert code.search_size == search_size
     assert code.lookahead_size == lookahead_size
     assert code.source_cardinality == source_cardinality
     assert code.target_cardinality == target_cardinality
@@ -137,13 +141,13 @@ def test_lz77_general(parameters, source_cardinality, target_cardinality):
 
 @pytest.mark.parametrize("k", range(100))
 def test_lz77_zeros(k):
-    code = komm.LempelZiv77Code(window_size=32, lookahead_size=8, source_cardinality=2)
+    code = komm.LempelZiv77Code(search_size=24, lookahead_size=8, source_cardinality=2)
     source = np.zeros(k, dtype=int)
     np.testing.assert_equal(code.decode(code.encode(source)), source)
 
 
 def test_lz77_invalid_input():
-    code = komm.LempelZiv77Code(window_size=32, lookahead_size=8, source_cardinality=27)
+    code = komm.LempelZiv77Code(search_size=24, lookahead_size=8, source_cardinality=27)
     code.encode([0, 10, 26])
     with pytest.raises(ValueError, match="invalid entries"):
         code.encode([0, 10, 27])
@@ -152,37 +156,30 @@ def test_lz77_invalid_input():
 
 
 def test_lz77_invalid_construction():
-    with pytest.raises(ValueError, match="'window_size' must be at least 2"):
+    with pytest.raises(ValueError, match="'search_size' must be at least 1"):
         komm.LempelZiv77Code(
-            window_size=1,
-            lookahead_size=1,
+            search_size=0,
+            lookahead_size=4,
             source_cardinality=2,
         )
 
-    with pytest.raises(ValueError, match="'lookahead_size' must be in"):
+    with pytest.raises(ValueError, match="'lookahead_size' must be at least 1"):
         komm.LempelZiv77Code(
-            window_size=8,
+            search_size=4,
             lookahead_size=0,
-            source_cardinality=2,
-        )
-
-    with pytest.raises(ValueError, match="'lookahead_size' must be in"):
-        komm.LempelZiv77Code(
-            window_size=8,
-            lookahead_size=8,
             source_cardinality=2,
         )
 
     with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
         komm.LempelZiv77Code(
-            window_size=8,
+            search_size=4,
             lookahead_size=4,
             source_cardinality=1,
         )
 
     with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
         komm.LempelZiv77Code(
-            window_size=8,
+            search_size=4,
             lookahead_size=4,
             source_cardinality=2,
             target_cardinality=1,
@@ -190,17 +187,16 @@ def test_lz77_invalid_construction():
 
 
 def test_lz77_invalid_construction_search_buffer():
-    # search_size = 5
     komm.LempelZiv77Code(
-        window_size=8,
+        search_size=4,
         lookahead_size=3,
         source_cardinality=2,
-        search_buffer=[0, 0, 0, 0, 0],
+        search_buffer=[0, 0, 0, 0],
     )
     with pytest.raises(ValueError, match="length of 'search_buffer' must"):
         komm.LempelZiv77Code(
-            window_size=8,
-            lookahead_size=3,  # search_size = 5
+            search_size=4,
+            lookahead_size=3,
             source_cardinality=2,
-            search_buffer=[0, 0, 0, 0],
+            search_buffer=[0, 0, 0],
         )
