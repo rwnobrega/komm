@@ -37,6 +37,18 @@ def test_lz78_literature(alphabet, message, dict_size, incomplete):
     np.testing.assert_equal(code.decode(compressed), message)
 
 
+def test_lz78_cover():
+    # [CT06, p. 442-443]
+    code = komm.LempelZiv78Code(2)
+    alphabet = "AB"
+    source = [alphabet.index(x) for x in "ABBABBABBBAABABAA"]
+    tokens = [(0, 0), (0, 1), (2, 0), (2, 1), (1, 1), (4, 0), (5, 0), (3, 0)]
+    np.testing.assert_equal(code.source_to_tokens(source), tokens)
+    np.testing.assert_equal(code.tokens_to_source(tokens), source)
+    np.testing.assert_equal(code.decode(code.encode(source)), source)
+
+
+#
 def test_lz78_shor():
     # Prof. Peter Shor: Lempel–Ziv Notes - 18.310C, Spring 2010
     # https://math.mit.edu/~shor/18.310/lempel_ziv_notes.pdf
