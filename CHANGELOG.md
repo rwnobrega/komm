@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.27.0 (2025-12-20)
+
+### Breaking changes
+
+- Changed the default constructor of `LempelZiv77Code` to take `search_size` and `lookahead_size` instead of `window_size` and `lookahead_size`.
+
+### Added
+
+- Implemented [LZSS](https://komm.dev/ref/LempelZivSSCode) lossless compression code.
+
 ## v0.26.2 (2025-12-06)
 
 ### Added
@@ -293,7 +303,6 @@
 - Added polynomial [irreducibility](https://komm.dev/ref/BinaryPolynomial#is_irreducible) and [primitivity](https://komm.dev/ref/BinaryPolynomial#is_primitive) tests for binary polynomials.
 
 - Restored sequence support in block code and decoders methods.
-
   - Block code methods `encode`, `inverse_encode`, `check`, and block decoders `__call__` now accept sequences spanning multiple blocks (as before v0.13.0) as well as multidimensional arrays.
 
 - Added support for multidimensional input in modulation, demodulation, and channel methods.
@@ -303,7 +312,6 @@
 ### Breaking changes
 
 - Removed `BlockEncoder` and `BlockDecoder` classes in favor of direct methods and specialized decoder classes.
-
   - Block code methods are now called directly: `code.encode(u)`, `code.inverse_encode(v)`, and `code.check(r)` (previously `enc_mapping`, `inv_enc_mapping`, and `chk_mapping`). These methods are now vetorized (i.e., support input arrays of any shape). For example, for a code with dimension $k = 2$, instead of `encoder = BlockEncoder(code); encoder([0, 1, 0, 1])`, use `code.encode([[0, 1], [0, 1]])`.
   - Decoder methods are now individual classes: `BCJRDecoder`, `BerlekampDecoder`, `ExhaustiveSearchDecoder`, `ReedDecoder`, `SyndromeTableDecoder`, `ViterbiDecoder`, and `WagnerDecoder`. For example, instead of `decoder = komm.BlockDecoder(code, method="exhaustive-search-hard")`, use `decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")`. The decoder `__call__` are now vectorized (i.e., support input arrays of any shape). For example, for a code with length $n = 3$, instead of `decoder([0, 1, 0, 1, 1, 0])`, use `decoder([[0, 1, 0], [1, 1, 0]])`.
   - The decoders `majority-logic-repetition-code` and `meggitt` were removed for now.
@@ -311,7 +319,6 @@
 - Renamed `ConvolutionalStreamDecoder` to `ViterbiStreamDecoder`.
 
 - Merged lossless source coding encoders/decoders into code classes.
-
   - Removed `FixedToVariableEncoder`, `FixedToVariableDecoder`, `VariableToFixedEncoder`, `VariableToFixedDecoder`. For example, instead of `encoder = FixedToVariableEncoder(code); output = encoder(input)`, use `output = code.encode(input)`.
 
 ## v0.12.0 (2024-12-05)
