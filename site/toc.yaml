@@ -85,6 +85,7 @@ Source coding:
     - VariableToFixedCode
     - TunstallCode
     - LempelZiv77Code
+    - LempelZivSSCode
     - LempelZiv78Code
     - LempelZivWelchCode
   Integer coding:

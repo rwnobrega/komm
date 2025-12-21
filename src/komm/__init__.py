@@ -84,6 +84,7 @@ from ._lossless_coding.FixedToVariableCode import FixedToVariableCode
 from ._lossless_coding.HuffmanCode import HuffmanCode
 from ._lossless_coding.LempelZiv77Code import LempelZiv77Code
 from ._lossless_coding.LempelZiv78Code import LempelZiv78Code
+from ._lossless_coding.LempelZivSSCode import LempelZivSSCode
 from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
 from ._lossless_coding.ShannonCode import ShannonCode
 from ._lossless_coding.TunstallCode import TunstallCode
@@ -200,6 +201,7 @@ __all__ = [
     "HuffmanCode",
     "LempelZiv77Code",
     "LempelZiv78Code",
+    "LempelZivSSCode",
     "LempelZivWelchCode",
     "ShannonCode",
     "TunstallCode",
