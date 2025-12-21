@@ -35,7 +35,7 @@ class ReflectedLabeling(abc.Labeling):
                    [1, 0]])
         """
         m = self._num_bits
-        ints = np.arange(2**m, dtype=int)
+        ints = np.arange(1 << m)
         return int_to_bits(ints ^ (ints >> 1), width=m, bit_order="MSB-first")
 
     @property

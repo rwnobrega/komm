@@ -52,7 +52,7 @@ class PolarCode(BlockCode):
             raise ValueError("frozen bits must be between 0 and 2^mu - 1")
         if self.frozen.size != np.unique(self.frozen).size:
             raise ValueError("frozen bits must be unique")
-        self.active = np.setdiff1d(np.arange(2**mu, dtype=int), self.frozen)
+        self.active = np.setdiff1d(np.arange(1 << mu), self.frozen)
         hadamard = np.array([[1]])
         for _ in range(mu):
             hadamard = np.kron(hadamard, [[1, 0], [1, 1]]).astype(int)

@@ -36,7 +36,7 @@ class NaturalLabeling(abc.Labeling):
                    [1, 1]])
         """
         m = self._num_bits
-        ints = np.arange(2**m, dtype=int)
+        ints = np.arange(1 << m)
         return int_to_bits(ints, width=m, bit_order="MSB-first")
 
     @property
