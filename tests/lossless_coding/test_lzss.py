@@ -1,5 +1,3 @@
-from bz2 import compress
-
 import numpy as np
 import pytest
 
