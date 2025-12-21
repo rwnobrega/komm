@@ -14,7 +14,7 @@
         <link rel="prev" href="../TunstallCode/">
       
       
-        <link rel="next" href="../LempelZiv78Code/">
+        <link rel="next" href="../LempelZivSSCode/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -2507,6 +2507,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -2707,8 +2709,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#search_size" class="md-nav__link">
-    search_size
+  <a href="#window_size" class="md-nav__link">
+    window_size
   </a>
   
 </li>
@@ -2759,6 +2761,26 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LempelZivSSCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LempelZivSSCode
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -3514,8 +3536,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#search_size" class="md-nav__link">
-    search_size
+  <a href="#window_size" class="md-nav__link">
+    window_size
   </a>
   
 </li>
@@ -3588,7 +3610,7 @@
     <div class="doc doc-contents first">
 
 
-        <p>Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $W \geq 2$ is the size of the <em>sliding window</em>, $S \in [1 : W)$ is the size of the <em>search buffer</em>, and $L \in [1 : W)$ is the size of the <em>lookahead buffer</em>, with $S + L = W$. The token format follows the <a href="https://doi.org/10.1109%2FTIT.1977.1055714">original LZ77 paper</a>, namely $(p, \ell, x)$, where $p \in [0 : S)$ is the <em>pointer</em> for the match, $\ell \in [0 : L)$ is the <em>length</em> of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 5.4.1</cite> and <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 13.4.1</cite>.</p>
+        <p>Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $S \geq 1$ is the size of the <em>search buffer</em>, $L \geq 1$ is the size of the <em>lookahead buffer</em>, and $W = S + L$ is the size of the <em>sliding window</em>. The token format follows the <a href="https://doi.org/10.1109%2FTIT.1977.1055714">original LZ77 paper</a>, namely $(p, \ell, x)$, where $p \in [0 : S)$ is the <em>pointer</em> for the match, $\ell \in [0 : L)$ is the <em>length</em> of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 5.4.1</cite> and <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 13.4.1</cite>.</p>
 
 
 <details class="note" open>
@@ -3598,11 +3620,11 @@
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
-        <b><code>window_size</code></b>
+        <b><code>search_size</code></b>
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The sliding window size $W$. Must satisfy $W \geq 2$.</p>
+          <p>The search buffer size $S$. Must satisfy $S \geq 1$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3610,7 +3632,7 @@
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The lookahead buffer size $L$. Must satisfy $1 \leq L &lt; W$.</p>
+          <p>The lookahead buffer size $L$. Must satisfy $L \geq 1$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3642,7 +3664,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">13</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">13</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -3671,8 +3693,8 @@
 
 
 
-<h2 id="search_size" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">search_size</span></code><span class="doc-param-annotation"><code>  int
+<h2 id="window_size" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">window_size</span></code><span class="doc-param-annotation"><code>  int
 </code></span>
 
   <span class="doc doc-labels">
@@ -3684,7 +3706,7 @@
 
   <div class="doc doc-contents ">
 
-        <p>The search buffer size $S$. It is given by $S = W - L$.</p>
+        <p>The sliding window size $W$. It is given by $W = S + L$.</p>
   </div>
 
 </div>
@@ -3711,7 +3733,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3746,7 +3768,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3781,7 +3803,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3816,7 +3838,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3874,7 +3896,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3932,7 +3954,7 @@
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">lz77</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">LempelZiv77Code</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">window_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">search_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">lookahead_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
@@ -3991,13 +4013,13 @@
         
         
           
-          <a href="../LempelZiv78Code/" class="md-footer__link md-footer__link--next" aria-label="Next: LempelZiv78Code" rel="next">
+          <a href="../LempelZivSSCode/" class="md-footer__link md-footer__link--next" aria-label="Next: LempelZivSSCode" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                LempelZiv78Code
+                LempelZivSSCode
               </div>
             </div>
             <div class="md-footer__button md-icon">
