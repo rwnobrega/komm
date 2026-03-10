@@ -187,7 +187,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
-        Examples: 
+        Examples:
             >>> const = komm.ASKConstellation(4)
             >>> const.posteriors([3.1 + 0.2j, 0.1 - 0.2j], noise_power=0.5).round(3)
             array([0.   , 0.009, 0.229, 0.761, 0.677, 0.304, 0.019, 0.   ])
