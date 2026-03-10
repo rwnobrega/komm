@@ -3,7 +3,7 @@ Algebra:
   - BinaryPolynomialFraction
   - FiniteBifield
 Channels:
-  - AWGNChannel
+  - GaussianChannel
   - DiscreteMemorylessChannel
   - BinarySymmetricChannel
   - BinaryErasureChannel

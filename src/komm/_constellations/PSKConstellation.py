@@ -178,13 +178,13 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_power: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
         Examples:
             >>> const = komm.PSKConstellation(4)
-            >>> const.posteriors([0.1 - 1.1j, 1.2 + 0.1j], snr=2.0).round(3)
+            >>> const.posteriors([0.1 - 1.1j, 1.2 + 0.1j], noise_power=0.25).round(3)
             array([0.018, 0.   , 0.008, 0.974, 0.982, 0.012, 0.   , 0.005])
         """
-        return super().posteriors(received, snr, priors)
+        return super().posteriors(received, noise_power, priors)

@@ -5,10 +5,10 @@ import komm
 import komm.abc
 
 
-def test_awgn_vectorized_input():
-    awgn = komm.AWGNChannel(signal_power=5.0, snr=np.inf)  # noiseless
+def test_gaussian_vectorized_input():
+    channel = komm.GaussianChannel()  # noiseless
     x = np.random.randn(3, 4, 5)
-    np.testing.assert_equal(x, awgn.transmit(x))
+    np.testing.assert_equal(x, channel.transmit(x))
 
 
 @pytest.mark.parametrize(

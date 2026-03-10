@@ -227,14 +227,14 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_power: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
         Examples:
             >>> const = komm.QAMConstellation(16)
-            >>> const.posteriors([-3.1 + 2.9j], snr=2.0).round(3)
-            array([0.   , 0.021, 0.219, 0.449, 0.   , 0.009, 0.091, 0.186, 0.   ,
-                   0.001, 0.008, 0.016, 0.   , 0.   , 0.   , 0.   ])
+            >>> const.posteriors([-3.1 + 2.9j], noise_power=2.0).round(3)
+            array([0.   , 0.012, 0.211, 0.519, 0.   , 0.004, 0.07 , 0.173,
+                   0.   , 0.   , 0.003, 0.008, 0.   , 0.   , 0.   , 0.   ])
         """
-        return super().posteriors(received, snr, priors)
+        return super().posteriors(received, noise_power, priors)

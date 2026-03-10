@@ -136,17 +136,17 @@ class Constellation(abc.Constellation[T]):
     def posteriors(
         self,
         received: npt.ArrayLike,
-        snr: float,
+        noise_power: float,
         priors: npt.ArrayLike | None = None,
     ) -> npt.NDArray[np.floating]:
         r"""
         Examples:
             >>> const = komm.Constellation([[0, 4], [-2, 2], [2, 2], [1, 1], [0, -2]])
-            >>> const.posteriors([0.3, 1.8, 0.0, 5.0], snr=2.0).round(4)
-            array([0.1565, 0.1408, 0.2649, 0.4253, 0.0125,
-                   0.9092, 0.0387, 0.0387, 0.0135, 0.    ])
-            >>> const.posteriors([[0.3, 1.8], [0.0, 5.0]], snr=2.0).round(4)
-            array([[0.1565, 0.1408, 0.2649, 0.4253, 0.0125],
-                   [0.9092, 0.0387, 0.0387, 0.0135, 0.    ]])
+            >>> const.posteriors([0.3, 1.8, 0.0, 5.0], noise_power=2.0).round(4)
+            array([0.1605, 0.1452, 0.2646, 0.415 , 0.0146,
+                   0.8945, 0.0445, 0.0445, 0.0164, 0.    ])
+            >>> const.posteriors([[0.3, 1.8], [0.0, 5.0]], noise_power=2.0).round(4)
+            array([[0.1605, 0.1452, 0.2646, 0.415 , 0.0146],
+                   [0.8945, 0.0445, 0.0445, 0.0164, 0.    ]])
         """
-        return super().posteriors(received, snr, priors)
+        return super().posteriors(received, noise_power, priors)

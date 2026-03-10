@@ -13,10 +13,10 @@ from ._algebra.FiniteBifield import FiniteBifield
 from ._algebra.Integers import Integer
 
 # Channels
-from ._channels.AWGNChannel import AWGNChannel
 from ._channels.BinaryErasureChannel import BinaryErasureChannel
 from ._channels.BinarySymmetricChannel import BinarySymmetricChannel
 from ._channels.DiscreteMemorylessChannel import DiscreteMemorylessChannel
+from ._channels.GaussianChannel import GaussianChannel
 from ._channels.ZChannel import ZChannel
 
 # Constellations
@@ -139,10 +139,10 @@ __all__ = [
     "FiniteBifield",
     "Integer",
     # _channels
-    "AWGNChannel",
     "BinaryErasureChannel",
     "BinarySymmetricChannel",
     "DiscreteMemorylessChannel",
+    "GaussianChannel",
     "ZChannel",
     # _constellations
     "APSKConstellation",

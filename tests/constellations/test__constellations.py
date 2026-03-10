@@ -51,10 +51,16 @@ def test_constellation_equivalence_properties(const: komm.abc.Constellation):
     np.testing.assert_allclose(ref.minimum_distance(), const.minimum_distance())
 
 
-@pytest.mark.parametrize("snr", [0.3, 1.0, 3.0, 10.0], ids=lambda x: f"snr={x}")
-def test_constellation_equivalence_mod_demod(const: komm.abc.Constellation, snr):
+@pytest.mark.parametrize(
+    "noise_power",
+    [0.01, 0.03, 0.1, 0.3, 1.0, 3.0],
+    ids=lambda x: f"noise_power={x}",
+)
+def test_constellation_equivalence_mod_demod(
+    const: komm.abc.Constellation, noise_power
+):
     ref = komm.Constellation(const.matrix)
-    channel = komm.AWGNChannel(signal_power=float(const.mean_energy()), snr=snr)
+    channel = komm.GaussianChannel(noise_power=noise_power)
     indices = np.random.randint(0, const.order, size=100)
     received = channel.transmit(const.indices_to_symbols(indices))
     np.testing.assert_allclose(
@@ -66,8 +72,8 @@ def test_constellation_equivalence_mod_demod(const: komm.abc.Constellation, snr)
         ref.closest_indices(received),
     )
     np.testing.assert_allclose(
-        const.posteriors(received, snr),
-        ref.posteriors(received, snr),
+        const.posteriors(received, noise_power),
+        ref.posteriors(received, noise_power),
         atol=1e-12,
     )
 
@@ -79,10 +85,16 @@ def test_constellation_equivalence_high_snr(const: komm.abc.Constellation):
     np.testing.assert_equal(const.closest_indices(symbols), indices)
     np.testing.assert_equal(ref.closest_indices(symbols), indices)
     np.testing.assert_equal(
-        np.argmax(const.posteriors(symbols, snr=1e4).reshape(-1, const.order), axis=-1),
+        np.argmax(
+            const.posteriors(symbols, noise_power=1e-4).reshape(-1, const.order),
+            axis=-1,
+        ),
         indices,
     )
     np.testing.assert_equal(
-        np.argmax(ref.posteriors(symbols, snr=1e4).reshape(-1, ref.order), axis=-1),
+        np.argmax(
+            ref.posteriors(symbols, noise_power=1e-4).reshape(-1, ref.order),
+            axis=-1,
+        ),
         indices,
     )
