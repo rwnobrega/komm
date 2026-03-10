@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://komm.dev/ref/AWGNChannel/">
+        <link rel="canonical" href="https://komm.dev/ref/GaussianChannel/">
       
       
         <link rel="prev" href="../FiniteBifield/">
@@ -22,7 +22,7 @@
     
     
       
-        <title>AWGNChannel - Komm</title>
+        <title>GaussianChannel - Komm</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kommawgnchannel" class="md-skip">
+        <a href="#kommgaussianchannel" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWGNChannel
+              GaussianChannel
             
           </span>
         </div>
@@ -576,7 +576,7 @@
           
   
   <span class="md-ellipsis">
-    AWGNChannel
+    GaussianChannel
   </span>
   
 
@@ -587,7 +587,7 @@
         
   
   <span class="md-ellipsis">
-    AWGNChannel
+    GaussianChannel
   </span>
   
 
@@ -607,20 +607,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#noise_power" class="md-nav__link">
-    noise_power
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#capacity" class="md-nav__link">
-    capacity()
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#transmit" class="md-nav__link">
@@ -3506,20 +3492,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#noise_power" class="md-nav__link">
-    noise_power
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#capacity" class="md-nav__link">
-    capacity()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#transmit" class="md-nav__link">
     transmit()
   </a>
@@ -3541,7 +3513,7 @@
                   
 
 
-<h1 id="kommawgnchannel">komm.AWGNChannel</h1>
+<h1 id="kommgaussianchannel">komm.GaussianChannel</h1>
 
 
 <div class="doc doc-object doc-class">
@@ -3552,32 +3524,26 @@
     <div class="doc doc-contents first">
 
 
-        <p>Additive white Gaussian noise (<abbr title="additive white Gaussian noise">AWGN</abbr>) channel. It is defined by
+        <p>Gaussian channel. It is defined by
 $$
     Y_n = X_n + Z_n,
 $$
-where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel <em>signal-to-noise ratio</em> is calculated by
+where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel is characterized by the <em>noise power</em> (variance)
 $$
-    \snr = \frac{P}{N},
-$$
-where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N = \mathrm{E}[Z^2_n]$ is the average power (and variance) of the noise. For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 9</cite>.</p>
+    \sigma_Z^2 = \mathrm{E}[Z_n^2].
+$$</p>
+<p>The channel supports real- and complex-valued signals. In the complex case, the noise is circularly symmetric complex Gaussian, with the noise power
+equally divided between the real and imaginary parts.</p>
+<p>For more details, see <cite><abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Ch. 9</cite>.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
       <li class="field-body">
-        <b><code>signal_power</code></b>
-            <span class="doc-param-annotation">(<code><span title="float">float</span> | <span title="typing.Literal">Literal</span>[&#39;measured&#39;]</code>)</span>
-        –
-        <div class="doc-md-description">
-          <p>The input signal power $P$. If equal to the string <code>'measured'</code>, then every time the channel is invoked the input signal power will be computed from the input itself (i.e., its squared Euclidean norm).</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>snr</code></b>
+        <b><code>noise_power</code></b>
             <span class="doc-param-annotation">(<code><span title="float">float</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The channel signal-to-noise ratio $\snr$ (linear, not decibel). The default value is <code>np.inf</code>, which corresponds to a noiseless channel.</p>
+          <p>The noise power (variance) $\sigma_Z^2$. The default value is <code>0.0</code>, which corresponds to a noiseless channel.</p>
         </div>
       </li>
   </ul>
@@ -3599,65 +3565,6 @@ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N =
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="noise_power" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">noise_power</span></code><span class="doc-param-annotation"><code>  float
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The noise power $N$.</p>
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="capacity" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code>      
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>Returns the channel capacity $C$. It is given by $C = \frac{1}{2}\log_2(1 + \snr)$, in bits per dimension.</p>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">signal_power</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="mf">63.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
-<span class="go">np.float64(3.0)</span>
-</code></pre></div>
-
-  </div>
-
-</div>
-
-
-
-
-
-
 <div class="doc doc-object doc-function">
 
 
@@ -3671,6 +3578,7 @@ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N =
   <div class="doc doc-contents ">
 
         <p>Transmits the input signal through the channel and returns the output signal.</p>
+<p>The input signal may be real- or complex-valued. If the input is real, the noise is real-valued Gaussian with variance equal to the noise power $\sigma_Z^2$. If the input is complex, the noise is circularly symmetric complex Gaussian, with the noise power equally divided between the real and imaginary parts, i.e., $\mathrm{E}[\mathrm{Re}\{Z_n\}^2] = \mathrm{E}[\mathrm{Im}\{Z_n\}^2] = \sigma_Z^2/2$.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -3687,7 +3595,7 @@ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N =
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code>) </span>
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span> | <span title="numpy.complexfloating">complexfloating</span>]</code>) </span>
         –
         <div class="doc-md-description">
           <p>The output signal $Y_n$.</p>
@@ -3697,10 +3605,15 @@ where $P = \mathrm{E}[X^2_n]$ is the average power of the input signal, and $N =
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">AWGNChannel</span><span class="p">(</span><span class="n">signal_power</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="mf">200.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">awgn</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">GaussianChannel</span><span class="p">(</span><span class="n">noise_power</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">transmit</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">array([ 1.05,  2.84, -2.88, -0.85, -1.31,  0.79,  3.02,  0.95, -1.  ,  2.87])</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">GaussianChannel</span><span class="p">(</span><span class="n">noise_power</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">transmit</span><span class="p">([</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span><span class="n">j</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">array([ 1.05+2.84j, -2.88-0.85j, -1.31+0.79j,  3.02+0.95j, -1.  +2.87j])</span>
 </code></pre></div>
 
   </div>

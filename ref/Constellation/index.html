@@ -561,11 +561,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWGNChannel/" class="md-nav__link">
+      <a href="../GaussianChannel/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    AWGNChannel
+    GaussianChannel
   </span>
   
 
@@ -4123,7 +4123,7 @@ $$</p>
 
   <div class="doc doc-contents ">
 
-        <p>Returns the posterior probabilities of each constellation symbol given received points, the signal-to-noise ratio (<abbr title="signal-to-noise ratio">SNR</abbr>), and prior probabilities.</p>
+        <p>Returns the posterior probabilities of each constellation symbol given received points, the noise power, and prior probabilities.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -4136,11 +4136,11 @@ $$</p>
         </div>
       </li>
       <li class="field-body">
-        <b><code>snr</code></b>
+        <b><code>noise_power</code></b>
             <span class="doc-param-annotation">(<code><span title="float">float</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The signal-to-noise ratio (<abbr title="signal-to-noise ratio">SNR</abbr>) of the channel (linear, not decibel).</p>
+          <p>The noise power (variance) $\sigma_Z^2$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -4167,12 +4167,12 @@ $$</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">const</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">Constellation</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">const</span><span class="o">.</span><span class="n">posteriors</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="n">snr</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">array([0.1565, 0.1408, 0.2649, 0.4253, 0.0125,</span>
-<span class="go">       0.9092, 0.0387, 0.0387, 0.0135, 0.    ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">const</span><span class="o">.</span><span class="n">posteriors</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]],</span> <span class="n">snr</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">array([[0.1565, 0.1408, 0.2649, 0.4253, 0.0125],</span>
-<span class="go">       [0.9092, 0.0387, 0.0387, 0.0135, 0.    ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">const</span><span class="o">.</span><span class="n">posteriors</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="n">noise_power</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([0.1605, 0.1452, 0.2646, 0.415 , 0.0146,</span>
+<span class="go">       0.8945, 0.0445, 0.0445, 0.0164, 0.    ])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">const</span><span class="o">.</span><span class="n">posteriors</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]],</span> <span class="n">noise_power</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">array([[0.1605, 0.1452, 0.2646, 0.415 , 0.0146],</span>
+<span class="go">       [0.8945, 0.0445, 0.0445, 0.0164, 0.    ]])</span>
 </code></pre></div>
 
   </div>
