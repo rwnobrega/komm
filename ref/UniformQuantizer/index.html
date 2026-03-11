@@ -3612,11 +3612,11 @@
 
         <p>Uniform scalar quantizer. It is a <a href="/ref/ScalarQuantizer">scalar quantizer</a> in which the separation between levels is a constant $\Delta$, called the <em>quantization step</em>, and the thresholds are the mid-point between adjacent levels. More precisely, the levels are given by
 $$
-    v_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
+    y_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
 $$
 where $\theta \in \mathbb{R}$ is an arbitrary <em>offset</em> (normalized by $\Delta$), and the finite thresholds are given by
 $$
-    t_i = \frac{v_{i-1} + v_i}{2}, \qquad i \in [1 : L).
+    \lambda_i = \frac{y_{i-1} + y_i}{2}, \qquad i \in [1 : L).
 $$
 For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.">Say06</abbr>, Sec. 9.4</cite>.</p>
 
@@ -3829,7 +3829,7 @@ For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Com
 
   <div class="doc doc-contents ">
 
-        <p>The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.</p>
+        <p>The quantizer levels $y_0, y_1, \ldots, y_{L-1}$.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3869,7 +3869,7 @@ For more details, see <cite><abbr title="Khalid Sayood. Introduction to Data Com
 
   <div class="doc doc-contents ">
 
-        <p>The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.</p>
+        <p>The quantizer finite thresholds $\lambda_1, \lambda_2, \ldots, \lambda_{L-1}$.</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3931,7 +3931,7 @@ where $y$ is the quantized signal and $f_X(x)$ is the <abbr title="probability d
             <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The number of points per interval for numerical integration (default: 4096).</p>
+          <p>The number of points per interval for numerical integration (default: <code>4096</code>).</p>
         </div>
       </li>
   </ul>
