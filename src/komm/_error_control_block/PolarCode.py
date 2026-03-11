@@ -21,6 +21,10 @@ class PolarCode(BlockCode):
         mu: The parameter $\mu$ of the code.
         frozen: The frozen bit indices $\mathcal{F}$ of the code.
 
+    **Resources:**
+
+    - [Reliability sequence for 5G.](/res/polar-codes/#5g-reliability)
+
     Examples:
         >>> code = komm.PolarCode(4, [0, 1, 2, 3, 4, 8])
         >>> (code.length, code.dimension, code.redundancy)
