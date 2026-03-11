@@ -3486,63 +3486,6 @@ where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a pri
 <li>Minimum distance: $d \geq \delta$</li>
 </ul>
 <p>Only <em>narrow-sense</em> and <em>primitive</em> <abbr title="Bose–Ray-Chaudhuri–Hocquenghem">BCH</abbr> codes are implemented. For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Ch. 6</cite> and <cite><abbr title="W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.">HP03</abbr>, Sec. 5.1</cite>.</p>
-<p>The table below lists the possible values of $\delta$ for $2 \leq \mu \leq 10$.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">$\mu$</th>
-<th style="text-align: center;">$n$</th>
-<th>Bose distances $\delta$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">$2$</td>
-<td style="text-align: center;">$3$</td>
-<td>$3$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$3$</td>
-<td style="text-align: center;">$7$</td>
-<td>$3$, $7$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$4$</td>
-<td style="text-align: center;">$15$</td>
-<td>$3$, $5$, $7$, $15$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$5$</td>
-<td style="text-align: center;">$31$</td>
-<td>$3$, $5$, $7$, $11$, $15$, $31$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$6$</td>
-<td style="text-align: center;">$63$</td>
-<td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $21$, $23$, $27$, $31$, $63$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$7$</td>
-<td style="text-align: center;">$127$</td>
-<td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $19$, $21$, $23$, $27$, $29$, $31$, $43$, $47$, $55$, $63$, $127$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$8$</td>
-<td style="text-align: center;">$255$</td>
-<td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $37$, $39$, $43$, $45$, $47$, $51$, $53$, $55$, $59$, $61$, $63$, $85$, $87$, $91$, $95$, $111$, $119$, $127$, $255$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$9$</td>
-<td style="text-align: center;">$511$</td>
-<td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $91$, $93$, $95$, $103$, $107$, $109$, $111$, $117$, $119$, $123$, $125$, $127$, $171$, $175$, $183$, $187$, $191$, $219$, $223$, $239$, $255$, $511$</td>
-</tr>
-<tr>
-<td style="text-align: center;">$10$</td>
-<td style="text-align: center;">$1023$</td>
-<td>$3$, $5$, $7$, $9$, $11$, $13$, $15$, $17$, $19$, $21$, $23$, $25$, $27$, $29$, $31$, $33$, $35$, $37$, $39$, $41$, $43$, $45$, $47$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $63$, $69$, $71$, $73$, $75$, $77$, $79$, $83$, $85$, $87$, $89$, $91$, $93$, $95$, $99$, $101$, $103$, $105$, $107$, $109$, $111$, $115$, $117$, $119$, $121$, $123$, $125$, $127$, $147$, $149$, $151$, $155$, $157$, $159$, $165$, $167$, $171$, $173$, $175$, $179$, $181$, $183$, $187$, $189$, $191$, $205$, $207$, $213$, $215$, $219$, $221$, $223$, $231$, $235$, $237$, $239$, $245$, $247$, $251$, $253$, $255$, $341$, $343$, $347$, $351$, $363$, $367$, $375$, $379$, $383$, $439$, $447$, $479$, $495$, $511$, $1023$</td>
-</tr>
-</tbody>
-</table>
 
 
 <details class="notes" open>
@@ -3571,6 +3514,10 @@ where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a pri
         </div>
       </li>
   </ul>
+        <p><strong>Resources:</strong></p>
+<ul>
+<li><a href="/res/bch-codes#bose-distances">Table of possible Bose distances.</a></li>
+</ul>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
