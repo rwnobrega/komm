@@ -11,7 +11,7 @@ class ScalarQuantizer(ABC):
     @abstractmethod
     def levels(self) -> npt.NDArray[np.floating]:
         r"""
-        The quantizer levels $v_0, v_1, \ldots, v_{L-1}$.
+        The quantizer levels $y_0, y_1, \ldots, y_{L-1}$.
         """
         raise NotImplementedError
 
@@ -19,7 +19,7 @@ class ScalarQuantizer(ABC):
     @abstractmethod
     def thresholds(self) -> npt.NDArray[np.floating]:
         r"""
-        The quantizer finite thresholds $t_1, t_2, \ldots, t_{L-1}$.
+        The quantizer finite thresholds $\lambda_1, \lambda_2, \ldots, \lambda_{L-1}$.
         """
         raise NotImplementedError
 
@@ -68,20 +68,17 @@ class ScalarQuantizer(ABC):
         Parameters:
             input_pdf: The pdf $f_X(x)$ of the input signal.
             input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal.
-            points_per_interval: The number of points per interval for numerical integration (default: 4096).
+            points_per_interval: The number of points per interval for numerical integration (default: `4096`).
 
         Returns:
             mse: The mean square quantization error.
         """
         # See [Say06, eq. (9.3)].
         x_min, x_max = input_range
-        thresholds = np.concatenate(([x_min], self.thresholds, [x_max]))
+        λ = np.concatenate(([x_min], self.thresholds, [x_max]))
         mse = 0.0
         for i, level in enumerate(self.levels):
-            left, right = thresholds[i], thresholds[i + 1]
-            x = np.linspace(left, right, num=points_per_interval, dtype=float)
-            pdf = input_pdf(x)
-            integrand: npt.NDArray[np.floating] = (level - x) ** 2 * pdf
-            integral = np.trapezoid(integrand, x)
-            mse += float(integral)
-        return mse
+            x = np.linspace(λ[i], λ[i + 1], num=points_per_interval, dtype=float)
+            integrand = (level - x) ** 2 * input_pdf(x)
+            mse += np.trapezoid(integrand, x)
+        return float(mse)

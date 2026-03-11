@@ -147,30 +147,22 @@ def lloyd_max_quantizer(
 ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
     # See [Say06, eqs. (9.27) and (9.28)].
     x_min, x_max = input_range
-    delta = (x_max - x_min) / num_levels
 
     # Initial guess
-    levels = np.linspace(x_min + delta / 2, x_max - delta / 2, num=num_levels)
-    thresholds = np.empty(num_levels + 1, dtype=float)
-    new_levels = np.empty_like(levels)
+    delta = (x_max - x_min) / num_levels
+    y = np.linspace(x_min + delta / 2, x_max - delta / 2, num=num_levels)
+    λ = np.concatenate([[x_min], np.empty(num_levels - 1), [x_max]])
 
     for _ in range(max_iter):
-        thresholds[0] = x_min
-        thresholds[1:-1] = 0.5 * (levels[:-1] + levels[1:])
-        thresholds[-1] = x_max
-
+        λ[1:-1] = 0.5 * (y[:-1] + y[1:])
+        y_old = y.copy()
         for i in range(num_levels):
-            left, right = thresholds[i], thresholds[i + 1]
-            x = np.linspace(left, right, num=points_per_interval, dtype=float)
+            x = np.linspace(λ[i], λ[i + 1], num=points_per_interval, dtype=float)
             pdf = input_pdf(x)
-            numerator = np.trapezoid(x * pdf, x)
             denominator = np.trapezoid(pdf, x)
             if denominator != 0:
-                new_levels[i] = numerator / denominator
-            else:  # Keep old level
-                new_levels[i] = levels[i]
-        if np.allclose(levels, new_levels):
+                y[i] = np.trapezoid(x * pdf, x) / denominator
+        if np.allclose(y, y_old):
             break
-        levels = new_levels.copy()
 
-    return new_levels, thresholds[1:-1]
+    return y, λ[1:-1]

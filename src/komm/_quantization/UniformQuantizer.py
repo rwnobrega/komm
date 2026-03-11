@@ -11,11 +11,11 @@ class UniformQuantizer(abc.ScalarQuantizer):
     r"""
     Uniform scalar quantizer. It is a [scalar quantizer](/ref/ScalarQuantizer) in which the separation between levels is a constant $\Delta$, called the *quantization step*, and the thresholds are the mid-point between adjacent levels. More precisely, the levels are given by
     $$
-        v_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
+        y_i = (i - (L - 1)/2 + \theta) \Delta, \qquad i \in [0 : L),
     $$
     where $\theta \in \mathbb{R}$ is an arbitrary *offset* (normalized by $\Delta$), and the finite thresholds are given by
     $$
-        t_i = \frac{v_{i-1} + v_i}{2}, \qquad i \in [1 : L).
+        \lambda_i = \frac{y_{i-1} + y_i}{2}, \qquad i \in [1 : L).
     $$
     For more details, see <cite>Say06, Sec. 9.4</cite>.
 
