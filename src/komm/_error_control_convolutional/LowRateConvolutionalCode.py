@@ -18,6 +18,10 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
     Parameters:
         g_row: The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
+    **Resources:**
+
+    - [Table of optimal low-rate convolutional codes.](/res/convolutional-codes/#low-rate)
+
     Examples:
         Consider the low-rate convolutional encoder with $(n, k, \sigma) = (2, 1, 6)$ depicted below.
 
@@ -35,8 +39,6 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
 
             >>> code = komm.LowRateConvolutionalCode([0b1001111, 0b1101101])
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
-
-    Please refer to [the table of optimal low-rate convolutional codes](/res/convolutional-codes/#low-rate).
     """
 
     g_row: list[BinaryPolynomial]
