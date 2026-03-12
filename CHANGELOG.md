@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.28.1 (2026-03-12)
+
+### Added
+
+- Added [convolution](https://komm.dev/ref/convolve) helper function.
+
 ## v0.28.0 (2026-03-09)
 
 ### Breaking changes
