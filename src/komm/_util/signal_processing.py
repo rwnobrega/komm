@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 import numpy.typing as npt
@@ -116,6 +116,60 @@ def sampling_rate_expand(
     indexer[axis] = slice(offset, shape[axis], factor)
     output[tuple(indexer)] = input
     return output
+
+
+def convolve(
+    input1: npt.ArrayLike,
+    input2: npt.ArrayLike,
+    axis: int = -1,
+    mode: Literal["full", "valid", "same"] = "full",
+):
+    r"""
+    Convolves two signals. This is like [`numpy.convolve`](https://numpy.org/doc/stable/reference/generated/numpy.convolve.html), but one of the inputs may be multidimensional (the other input must still be $1$-dimensional). The convolution is applied independently to each array along a specified axis.
+
+    Note:
+        This is a simple wrapper around `numpy.convolve`.
+
+    Parameters:
+        input1: The first input array.
+
+        input2: The second input array.
+
+        axis: The axis along which the convolution is applied in the multidimensional input. Default is the last axis.
+
+        mode: Convolution mode (same as `numpy.convolve`).
+
+    Examples:
+        >>> komm.convolve([1, 1], [1, 1])
+        array([1, 2, 1])
+
+        >>> komm.convolve([1, 1], [[1, 1, 0], [0, 1, 1]])
+        array([[1, 2, 1, 0],
+               [0, 1, 2, 1]])
+
+        >>> komm.convolve([[1, 1, 0], [0, 1, 1]], [1, 1])
+        array([[1, 2, 1, 0],
+               [0, 1, 2, 1]])
+
+        >>> komm.convolve([1, 1], [[1, 1, 0], [0, 1, 1]], axis=0)
+        array([[1, 1, 0],
+               [1, 2, 1],
+               [0, 1, 1]])
+
+        >>> komm.convolve([[1, 1]], [[1, 1]])
+        Traceback (most recent call last):
+        ...
+        ValueError: at least one of the inputs must be 1-dimensional
+    """
+    input1 = np.asarray(input1)
+    input2 = np.asarray(input2)
+    if input1.ndim == 1:
+        x, arr = input1, input2
+    elif input2.ndim == 1:
+        x, arr = input2, input1
+    else:
+        raise ValueError("at least one of the inputs must be 1-dimensional")
+    return np.apply_along_axis(lambda y: np.convolve(x, y, mode), axis, arr)
 
 
 def fourier_transform(
