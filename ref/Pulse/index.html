@@ -1992,6 +1992,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Pulse
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2001,6 +2012,67 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#waveform" class="md-nav__link">
+    waveform()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectrum" class="md-nav__link">
+    spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorrelation" class="md-nav__link">
+    autocorrelation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#energy_density_spectrum" class="md-nav__link">
+    energy_density_spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taps" class="md-nav__link">
+    taps()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3085,6 +3157,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -3184,6 +3258,26 @@
   
   <span class="md-ellipsis">
     sampling_rate_expand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convolve/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    convolve
   </span>
   
 
@@ -3448,6 +3542,56 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#waveform" class="md-nav__link">
+    waveform()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spectrum" class="md-nav__link">
+    spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorrelation" class="md-nav__link">
+    autocorrelation()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#energy_density_spectrum" class="md-nav__link">
+    energy_density_spectrum()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taps" class="md-nav__link">
+    taps()
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3485,6 +3629,170 @@
 
   <div class="doc doc-children">
 
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="waveform" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">waveform</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The waveform $p(t)$ of the pulse.</p>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">spectrum</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The spectrum $\hat{p}(f)$ of the pulse.</p>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="autocorrelation" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">autocorrelation</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The autocorrelation function $R(\tau)$ of the pulse.</p>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="energy_density_spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">energy_density_spectrum</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The energy density spectrum $S(f)$ of the pulse.</p>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="support" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">support</span></code><span class="doc-param-annotation"><code>  tuple[float, float]
+</code></span>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>The support of the pulse waveform $p(t)$, defined as the interval $[a, b]$ where $p(t)$ is non-zero.</p>
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="taps" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">taps</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the <abbr title="finite impulse response">FIR</abbr> taps of the pulse.</p>
+
+  <p><span class="doc-section-title">Parameters:</span></p>
+  <ul>
+      <li class="field-body">
+        <b><code>samples_per_symbol</code></b>
+            <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The number of samples per symbol.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>span</code></b>
+            <span class="doc-param-annotation">(<code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>] | None</code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The time span to consider for the taps. This parameter is optional for pulses with finite support (defaults to $[0, 1]$), but required for pulses with infinite support.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
 
 
 
