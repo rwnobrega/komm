@@ -1,6 +1,4 @@
-from typing import SupportsInt
-
-from typing_extensions import Self
+from typing import Self, SupportsInt
 
 from . import field
 from .BinaryPolynomial import BinaryPolynomial

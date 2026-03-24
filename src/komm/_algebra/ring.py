@@ -1,9 +1,8 @@
 from collections.abc import Sequence
-from typing import Any, Protocol, TypeVar, runtime_checkable
+from typing import Any, Protocol, Self, TypeVar, runtime_checkable
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Self
 
 T_co = TypeVar("T_co", bound="RingElement", covariant=True)
 

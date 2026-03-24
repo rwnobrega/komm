@@ -1,4 +1,4 @@
-from typing_extensions import Self
+from typing import Self
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
 from .BinarySequence import BinarySequence

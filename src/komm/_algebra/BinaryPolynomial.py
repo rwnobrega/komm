@@ -1,10 +1,9 @@
 import operator
 from functools import reduce
-from typing import SupportsInt, TypeVar
+from typing import Self, SupportsInt, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Self
 
 from .._util.bit_operations import bits_to_int, int_to_bits
 from . import domain, ring

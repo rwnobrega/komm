@@ -3,11 +3,11 @@ from functools import cache
 from heapq import heapify, heappop, heappush
 from itertools import product
 from math import ceil, log2
+from typing import Self
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
-from typing_extensions import Self
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf

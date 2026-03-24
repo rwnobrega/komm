@@ -1,12 +1,11 @@
 from dataclasses import dataclass
 from functools import cache, reduce
 from heapq import heapify, heappop, heappush
-from typing import Literal
+from typing import Literal, Self
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
-from typing_extensions import Self
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf

@@ -1,9 +1,9 @@
 from functools import cache, cached_property
 from itertools import count, product
+from typing import Self
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Self
 
 from .._util.validators import validate_pmf
 from ..types import Array1D

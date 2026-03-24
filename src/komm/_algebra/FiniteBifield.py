@@ -1,9 +1,8 @@
 from collections.abc import Sequence
 from functools import reduce
-from typing import Generic, SupportsInt, TypeVar
+from typing import Generic, Self, SupportsInt, TypeVar
 
 import numpy as np
-from typing_extensions import Self
 
 from . import field
 from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial

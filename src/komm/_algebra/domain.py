@@ -1,6 +1,4 @@
-from typing import Protocol, TypeVar, runtime_checkable
-
-from typing_extensions import Self
+from typing import Protocol, Self, TypeVar, runtime_checkable
 
 from . import ring
 
