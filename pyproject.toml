@@ -47,6 +47,13 @@ demo = [
     "streamlit==1.45.0",
     "matplotlib==3.10.1",
 ]
+all = [
+    "komm[lint]",
+    "komm[test]",
+    "komm[doc]",
+    "komm[debug]",
+    "komm[demo]",
+]
 
 [build-system]
 requires = ["build", "setuptools>=61.0.0", "wheel", "twine"]
