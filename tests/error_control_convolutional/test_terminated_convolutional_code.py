@@ -47,8 +47,8 @@ def test_terminated_convolutional_code_parameters(
 ):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
-    (n, k, m) = (code.length, code.dimension, code.redundancy)
-    (G, H) = code.generator_matrix, code.check_matrix
+    n, k, m = code.length, code.dimension, code.redundancy
+    G, H = code.generator_matrix, code.check_matrix
     assert (n, k, m) == parameters
     np.testing.assert_equal(G, generator_matrix)
     np.testing.assert_equal(G @ H.T % 2, np.zeros((k, m), dtype=int))
