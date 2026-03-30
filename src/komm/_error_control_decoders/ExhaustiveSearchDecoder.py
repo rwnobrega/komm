@@ -18,7 +18,7 @@ class ExhaustiveSearchDecoder(abc.BlockDecoder[abc.BlockCode]):
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
     Notes:
-        - Input type: `hard` (bits) or `soft` (either L-values or channel outputs).
+        - Input type: `hard` (bits) or `soft` (L-values).
         - Output type: `hard` (bits).
     """
 
