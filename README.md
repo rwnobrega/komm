@@ -25,7 +25,7 @@ For library reference, please check the [project's website](https://komm.dev/).
 
 ## Installation
 
-Before you start, make sure you have [Python](https://www.python.org/) (version 3.10 or later) installed. Also, you may want to create and activate a [virtual environment](https://docs.python.org/3/library/venv.html) first:
+Before you start, make sure you have [Python](https://www.python.org/) (version 3.11 or later) installed. Also, you may want to create and activate a [virtual environment](https://docs.python.org/3/library/venv.html) first:
 
 ```bash
 python3 -m venv .venv
