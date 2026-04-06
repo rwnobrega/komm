@@ -73,8 +73,8 @@ class PolarCode(BlockCode):
             n = 2**self.mu
             v = np.zeros((n,), dtype=int)
             v[self.active] = u
-            for i in range(self.mu):
-                m = 2**i
+            for d in range(self.mu):
+                m = 2**d
                 for i in range(0, n, 2 * m):
                     v[i : i + m] ^= v[i + m : i + 2 * m]
             return v
