@@ -17,6 +17,9 @@ class Pulse(abc.Pulse):
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         raise NotImplementedError
 
+    def energy(self) -> float:
+        raise NotImplementedError
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         raise NotImplementedError
 

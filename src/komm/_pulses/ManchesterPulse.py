@@ -68,6 +68,20 @@ class ManchesterPulse(abc.Pulse):
         centered = np.sinc(f / 2) * np.sin(2 * np.pi * f / 4)
         return centered.astype(complex) * cexp
 
+    def energy(self) -> float:
+        r"""
+        For the Manchester pulse, it is given by
+        $$
+            E = 1.
+        $$
+
+        Examples:
+            >>> pulse = komm.ManchesterPulse()
+            >>> pulse.energy()
+            1.0
+        """
+        return 1.0
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the Manchester pulse, it is given

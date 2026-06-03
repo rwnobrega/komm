@@ -83,6 +83,21 @@ class RaisedCosinePulse(abc.Pulse):
         spectrum[band2] = 0.5 * (1 + np.cos(np.pi * (abs(f[band2]) - f1) / α))
         return spectrum
 
+    def energy(self) -> float:
+        r"""
+        For the raised-cosine pulse, it is given by
+        $$
+            E = 1 - \frac{\alpha}{4}.
+        $$
+
+        Examples:
+            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
+            >>> pulse.energy()
+            0.9375
+        """
+        α = self.rolloff
+        return 1 - α / 4
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the raised-cosine pulse, it is given by

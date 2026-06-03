@@ -27,6 +27,11 @@ def test_pulses_spectrum_vs_energy_spectral_density(pulse: komm.abc.Pulse):
     np.testing.assert_allclose(S, pulse.energy_spectral_density(fs))
 
 
+@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()])
+def test_pulses_energy_vs_autocorrelation(pulse: komm.abc.Pulse):
+    np.testing.assert_allclose([pulse.energy()], pulse.autocorrelation([0.0]))
+
+
 @pytest.mark.parametrize("pulse", PULSES)
 def test_pulses_energy_spectral_density_vs_autocorrelation(pulse: komm.abc.Pulse):
     τs = np.linspace(-20.0, 20.0, 10001)

@@ -78,6 +78,20 @@ class RootRaisedCosinePulse(abc.Pulse):
         """
         return np.sqrt(RaisedCosinePulse(self.rolloff).spectrum(f))
 
+    def energy(self) -> float:
+        r"""
+        For the root-raised-cosine pulse, it is given by
+        $$
+            E = 1.
+        $$
+
+        Examples:
+            >>> pulse = komm.RootRaisedCosinePulse(rolloff=0.25)
+            >>> pulse.energy()
+            1.0
+        """
+        return 1.0
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the root-raised-cosine pulse, it is given by

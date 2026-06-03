@@ -92,6 +92,25 @@ class RectangularPulse(abc.Pulse):
         centered = w * np.sinc(w * f)
         return centered.astype(complex) * cexp
 
+    def energy(self) -> float:
+        r"""
+        For the rectangular pulse, it is given by
+        $$
+            E = w.
+        $$
+
+        Examples:
+            >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
+            >>> pulse.energy()
+            1.0
+
+            >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
+            >>> pulse.energy()
+            0.5
+        """
+        w = self.width
+        return w
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the rectangular pulse, it is given by

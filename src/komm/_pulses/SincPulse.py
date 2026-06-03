@@ -61,6 +61,20 @@ class SincPulse(abc.Pulse):
         f = np.asarray(f)
         return rect(f).astype(complex)
 
+    def energy(self) -> float:
+        r"""
+        For the sinc pulse, it is given by
+        $$
+            E = 1.
+        $$
+
+        Examples:
+            >>> pulse = komm.SincPulse()
+            >>> pulse.energy()
+            1.0
+        """
+        return 1.0
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the sinc pulse, it is given by

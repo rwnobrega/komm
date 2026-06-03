@@ -65,6 +65,16 @@ class GaussianPulse(abc.Pulse):
         spectrum = 1 / (np.sqrt(2 * np.pi) * b_bar) * np.exp(-0.5 * (f / b_bar) ** 2)
         return spectrum.astype(complex)
 
+    def energy(self) -> float:
+        r"""
+        For the Gaussian pulse, it is given by
+        $$
+            E = \frac{1}{2 \sqrt{\pi} \bar{B}}.
+        $$
+        """
+        b_bar = self.half_power_bandwidth / np.sqrt(np.log(2))
+        return 1 / (2 * np.sqrt(np.pi) * b_bar)
+
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the Gaussian pulse, it is given by

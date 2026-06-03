@@ -21,6 +21,13 @@ class Pulse(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def energy(self) -> float:
+        r"""
+        The energy $E$ of the pulse.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         The autocorrelation function $R(\tau)$ of the pulse.

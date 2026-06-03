@@ -2,6 +2,10 @@
 
 ## v0.29.0 (tba)
 
+### Added
+
+- Implemented method `energy` in pulse classes.
+
 ### Breaking changes
 
 - Renamed method `energy_density_spectrum` to `energy_spectral_density` in pulse classes.
