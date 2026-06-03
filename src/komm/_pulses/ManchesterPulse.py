@@ -85,7 +85,7 @@ class ManchesterPulse(abc.Pulse):
         tau = np.asarray(tau)
         return tri(2 * tau) - 0.5 * tri(2 * (tau - 0.5)) - 0.5 * tri(2 * (tau + 0.5))
 
-    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def energy_spectral_density(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the Manchester pulse, it is given by
         $$
@@ -94,7 +94,7 @@ class ManchesterPulse(abc.Pulse):
 
         Examples:
             >>> pulse = komm.ManchesterPulse()
-            >>> pulse.energy_density_spectrum(
+            >>> pulse.energy_spectral_density(
             ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
             ... ).round(3)
             array([0.405, 0.525, 0.405, 0.139, 0.   , 0.139, 0.405, 0.525, 0.405])

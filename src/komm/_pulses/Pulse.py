@@ -20,7 +20,7 @@ class Pulse(abc.Pulse):
     def autocorrelation(self, tau: npt.ArrayLike) -> npt.NDArray[np.floating]:
         raise NotImplementedError
 
-    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def energy_spectral_density(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         raise NotImplementedError
 
     @cached_property

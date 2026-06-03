@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.29.0 (tba)
+
+### Breaking changes
+
+- Renamed method `energy_density_spectrum` to `energy_spectral_density` in pulse classes.
+
 ## v0.28.1 (2026-03-12)
 
 ### Added

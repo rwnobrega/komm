@@ -115,7 +115,7 @@ for tab_idx, config in enumerate(tab_configs):
             label="Show:",
             options=[
                 "Waveform and spectrum",
-                "Autocorrelation and energy density spectrum",
+                "Autocorrelation and energy spectral density",
             ],
             horizontal=True,
             key=tab_idx,
@@ -156,7 +156,7 @@ for tab_idx, config in enumerate(tab_configs):
             ax[1].set_xlabel("$f$")
             ax[1].set_ylabel("$\\hat{p}(f)$")
             ax[1].grid()
-        elif to_show == "Autocorrelation and energy density spectrum":
+        elif to_show == "Autocorrelation and energy spectral density":
             R_axis = config["R_axis"]
             S_axis = config["S_axis"]
             τ = np.linspace(R_axis[0], R_axis[1], 512)
@@ -167,9 +167,9 @@ for tab_idx, config in enumerate(tab_configs):
             ax[0].set_xlabel("$\\tau$")
             ax[0].set_ylabel("$R(\\tau)$")
             ax[0].grid()
-            ax[1].plot(f, pulse.energy_density_spectrum(f), "C1")
+            ax[1].plot(f, pulse.energy_spectral_density(f), "C1")
             ax[1].axis(S_axis)
-            ax[1].set_title("Energy density spectrum")
+            ax[1].set_title("Energy spectral density")
             ax[1].set_xlabel("$f$")
             ax[1].set_ylabel("$S(f)$")
             ax[1].grid()

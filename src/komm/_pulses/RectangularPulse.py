@@ -116,7 +116,7 @@ class RectangularPulse(abc.Pulse):
         tau = np.asarray(tau)
         return w * tri(tau / w)
 
-    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def energy_spectral_density(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the rectangular pulse, it is given by
         $$
@@ -125,13 +125,13 @@ class RectangularPulse(abc.Pulse):
 
         Examples:
             >>> pulse = komm.RectangularPulse(width=1.0)  # NRZ pulse
-            >>> pulse.energy_density_spectrum(
+            >>> pulse.energy_spectral_density(
             ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
             ... ).round(3)
             array([0.   , 0.09 , 0.405, 0.811, 1.   , 0.811, 0.405, 0.09 , 0.   ])
 
             >>> pulse = komm.RectangularPulse(width=0.5)  # Halfway RZ pulse
-            >>> pulse.energy_density_spectrum(
+            >>> pulse.energy_spectral_density(
             ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
             ... ).round(3)
             array([0.101, 0.154, 0.203, 0.237, 0.25 , 0.237, 0.203, 0.154, 0.101])

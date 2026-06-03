@@ -107,7 +107,7 @@ class RaisedCosinePulse(abc.Pulse):
         term[singularity] = np.cos(np.pi / α) / 2
         return raised_cosine(tau, α) - α / 4 * term
 
-    def energy_density_spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    def energy_spectral_density(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the raised-cosine pulse, it is given by
         $$
@@ -120,7 +120,7 @@ class RaisedCosinePulse(abc.Pulse):
 
         Examples:
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)
-            >>> pulse.energy_density_spectrum(
+            >>> pulse.energy_spectral_density(
             ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
             ... )
             array([0.  , 0.  , 0.25, 1.  , 1.  , 1.  , 0.25, 0.  , 0.  ])
