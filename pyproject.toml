@@ -21,7 +21,7 @@ lint = [
     "basedpyright==1.38.3",
 ]
 test = [
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pytest-doctestplus==1.4.0",
     "pytest-repeat==0.9.3",
     "pytest-benchmark==5.1.0",
