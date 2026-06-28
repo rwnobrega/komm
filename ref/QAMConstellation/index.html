@@ -1525,6 +1525,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1559,11 +1561,71 @@
   
   
     <li class="md-nav__item">
-      <a href="../BCJRDecoder/" class="md-nav__link">
+      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    BCJRDecoder
+    ExhaustiveSearchDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SyndromeTableDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SyndromeTableDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SingleParityCheckDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SingleParityCheckDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WagnerDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WagnerDecoder
   </span>
   
 
@@ -1584,26 +1646,6 @@
   
   <span class="md-ellipsis">
     BerlekampDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ExhaustiveSearchDecoder
   </span>
   
 
@@ -1659,11 +1701,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../SyndromeTableDecoder/" class="md-nav__link">
+      <a href="../BCJRDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    SyndromeTableDecoder
+    BCJRDecoder
   </span>
   
 
@@ -1684,26 +1726,6 @@
   
   <span class="md-ellipsis">
     ViterbiDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../WagnerDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    WagnerDecoder
   </span>
   
 
@@ -3689,7 +3711,7 @@
             <span class="doc-param-annotation">(<code><span title="tuple">tuple</span>[<span title="float">float</span>, <span title="float">float</span>] | <span title="float">float</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>A tuple $(\Delta_\mathrm{I}, \Delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\Delta$, then it is assumed that $\Delta_\mathrm{I} = \Delta_\mathrm{Q} = \Delta$. The default value is <code>2.0</code>.</p>
+          <p>A tuple $(\delta_\mathrm{I}, \delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\delta$, then it is assumed that $\delta_\mathrm{I} = \delta_\mathrm{Q} = \delta$. The default value is <code>2.0</code>.</p>
         </div>
       </li>
       <li class="field-body">
@@ -3706,7 +3728,7 @@
 <p><span class="doc-section-title">Examples:</span></p>
     <ol>
 <li>
-<p>The square $16$-<abbr title="quadrature amplitude modulation">QAM</abbr> constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(\Delta_\mathrm{I}, \Delta_\mathrm{Q}) = (2, 2)$ is depicted below.
+<p>The square $16$-<abbr title="quadrature amplitude modulation">QAM</abbr> constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(\delta_\mathrm{I}, \delta_\mathrm{Q}) = (2, 2)$ is depicted below.
     <figure markdown>
     <img alt="16-QAM constellation." src="/fig/constellation_qam_16.svg" />
     </figure></p>
@@ -3714,7 +3736,7 @@
 </code></pre>
 </li>
 <li>
-<p>The rectangular $8$-<abbr title="quadrature amplitude modulation">QAM</abbr> constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(\Delta_\mathrm{I}, \Delta_\mathrm{Q}) = (2, 4)$ is depicted below.
+<p>The rectangular $8$-<abbr title="quadrature amplitude modulation">QAM</abbr> constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(\delta_\mathrm{I}, \delta_\mathrm{Q}) = (2, 4)$ is depicted below.
     <figure markdown>
     <img alt="8-QAM constellation." src="/fig/constellation_qam_8.svg" />
     </figure></p>
@@ -3967,11 +3989,11 @@ $$</p>
   </ul>
         <p>For uniform priors, the mean energy of the <abbr title="quadrature amplitude modulation">QAM</abbr> constellation is given by
 $$
-    E = \frac{\Delta_\mathrm{I}^2}{12}(M_\mathrm{I}^2 - 1) + \frac{\Delta_\mathrm{Q}^2}{12}(M_\mathrm{Q}^2 - 1).
+    E = \frac{\delta_\mathrm{I}^2}{12}(M_\mathrm{I}^2 - 1) + \frac{\delta_\mathrm{Q}^2}{12}(M_\mathrm{Q}^2 - 1).
 $$
 For the special case of a square <abbr title="quadrature amplitude modulation">QAM</abbr> constellation, this simplifies to
 $$
-    E = \frac{\Delta^2}{6}(M - 1).
+    E = \frac{\delta^2}{6}(M - 1).
 $$</p>
 
 
@@ -4008,7 +4030,7 @@ d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathrm{x}_i - \mat
 $$</p>
 <p>For the <abbr title="quadrature amplitude modulation">QAM</abbr> constellation, the minimum distance is given by
 $$
-    d_{\min} = \min(\Delta_\mathrm{I}, \Delta_\mathrm{Q}).
+    d_{\min} = \min(\delta_\mathrm{I}, \delta_\mathrm{Q}).
 $$</p>
 
 
