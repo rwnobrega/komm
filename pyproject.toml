@@ -43,7 +43,7 @@ debug = [
     "matplotlib>=3.8.2",
 ]
 demo = [
-    "streamlit==1.45.0",
+    "streamlit==1.54.0",
     "matplotlib==3.10.1",
 ]
 all = [
