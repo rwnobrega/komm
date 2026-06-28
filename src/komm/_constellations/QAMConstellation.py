@@ -17,19 +17,19 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         orders: A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be a perfect square.
 
-        deltas: A tuple $(\Delta_\mathrm{I}, \Delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\Delta$, then it is assumed that $\Delta_\mathrm{I} = \Delta_\mathrm{Q} = \Delta$. The default value is `2.0`.
+        deltas: A tuple $(\delta_\mathrm{I}, \delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\delta$, then it is assumed that $\delta_\mathrm{I} = \delta_\mathrm{Q} = \delta$. The default value is `2.0`.
 
         phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
     Examples:
-        1. The square $16$-QAM constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(\Delta_\mathrm{I}, \Delta_\mathrm{Q}) = (2, 2)$ is depicted below.
+        1. The square $16$-QAM constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 4)$ and $(\delta_\mathrm{I}, \delta_\mathrm{Q}) = (2, 2)$ is depicted below.
             <figure markdown>
             ![16-QAM constellation.](/fig/constellation_qam_16.svg)
             </figure>
 
                 >>> const = komm.QAMConstellation(16)
 
-        1.  The rectangular $8$-QAM constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(\Delta_\mathrm{I}, \Delta_\mathrm{Q}) = (2, 4)$ is depicted below.
+        1.  The rectangular $8$-QAM constellation with $(M_\mathrm{I}, M_\mathrm{Q}) = (4, 2)$ and $(\delta_\mathrm{I}, \delta_\mathrm{Q}) = (2, 4)$ is depicted below.
             <figure markdown>
             ![8-QAM constellation.](/fig/constellation_qam_8.svg)
             </figure>
@@ -149,11 +149,11 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         r"""
         For uniform priors, the mean energy of the QAM constellation is given by
         $$
-            E = \frac{\Delta_\mathrm{I}^2}{12}(M_\mathrm{I}^2 - 1) + \frac{\Delta_\mathrm{Q}^2}{12}(M_\mathrm{Q}^2 - 1).
+            E = \frac{\delta_\mathrm{I}^2}{12}(M_\mathrm{I}^2 - 1) + \frac{\delta_\mathrm{Q}^2}{12}(M_\mathrm{Q}^2 - 1).
         $$
         For the special case of a square QAM constellation, this simplifies to
         $$
-            E = \frac{\Delta^2}{6}(M - 1).
+            E = \frac{\delta^2}{6}(M - 1).
         $$
 
         Examples:
@@ -171,7 +171,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         r"""
         For the QAM constellation, the minimum distance is given by
         $$
-            d_{\min} = \min(\Delta_\mathrm{I}, \Delta_\mathrm{Q}).
+            d_{\min} = \min(\delta_\mathrm{I}, \delta_\mathrm{Q}).
         $$
 
         Examples:

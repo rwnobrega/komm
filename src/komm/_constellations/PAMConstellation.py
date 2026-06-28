@@ -14,17 +14,17 @@ class PAMConstellation(abc.Constellation[np.floating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        delta: The distance $\Delta$ between adjacent symbols. The default value is `2.0`.
+        delta: The distance $\delta$ between adjacent symbols. The default value is `2.0`.
 
     Examples:
-        1. The $4$-PAM constellation with $\Delta = 2$ is depicted below.
+        1. The $4$-PAM constellation with $\delta = 2$ is depicted below.
             <figure markdown>
             ![4-PAM constellation.](/fig/constellation_pam_4.svg)
             </figure>
 
                 >>> const = komm.PAMConstellation(4)
 
-        1. The $7$-PAM constellation with $\Delta = 5$ is depicted below.
+        1. The $7$-PAM constellation with $\delta = 5$ is depicted below.
             <figure markdown>
             ![7-PAM constellation.](/fig/constellation_pam_7.svg)
             </figure>
@@ -101,7 +101,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
         r"""
         For uniform priors, the mean energy of the PAM constellation is given by
         $$
-            E = \frac{\Delta^2}{12}(M^2 - 1).
+            E = \frac{\delta^2}{12}(M^2 - 1).
         $$
 
         Examples:
@@ -118,7 +118,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
         r"""
         For the PAM constellation, the minimum distance is given by
         $$
-            d_{\min} = \Delta.
+            d_{\min} = \delta.
         $$
 
         Examples:
