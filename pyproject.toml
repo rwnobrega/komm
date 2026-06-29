@@ -43,8 +43,8 @@ debug = [
     "matplotlib>=3.8.2",
 ]
 demo = [
-    "streamlit==1.45.0",
-    "matplotlib==3.10.1",
+    "streamlit==1.58.0",
+    "matplotlib==3.11.0",
 ]
 all = [
     "komm[lint]",
