@@ -22,6 +22,7 @@ from ._channels.ZChannel import ZChannel
 # Constellations
 from ._constellations.ASKConstellation import ASKConstellation
 from ._constellations.APSKConstellation import APSKConstellation
+from ._constellations.BiorthogonalConstellation import BiorthogonalConstellation
 from ._constellations.Constellation import Constellation
 from ._constellations.OrthogonalConstellation import OrthogonalConstellation
 from ._constellations.PAMConstellation import PAMConstellation
@@ -148,6 +149,7 @@ __all__ = [
     # _constellations
     "APSKConstellation",
     "ASKConstellation",
+    "BiorthogonalConstellation",
     "Constellation",
     "OrthogonalConstellation",
     "PAMConstellation",

@@ -16,6 +16,7 @@ Constellations:
   - PSKConstellation
   - APSKConstellation
   - OrthogonalConstellation
+  - BiorthogonalConstellation
 Error control:
   Block codes:
     - BlockCode
