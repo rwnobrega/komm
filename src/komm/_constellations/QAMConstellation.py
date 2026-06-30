@@ -90,10 +90,10 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
                    [ 3.+3.j]])
         """
         Mi, Mq = self._orders
-        Δi, Δq = self._deltas
+        δi, δq = self._deltas
         φ = self._phase_offset
-        matrix_i = PAMConstellation(Mi, Δi).matrix
-        matrix_q = PAMConstellation(Mq, Δq).matrix
+        matrix_i = PAMConstellation(Mi, δi).matrix
+        matrix_q = PAMConstellation(Mq, δq).matrix
         matrix = (matrix_i + 1j * matrix_q.T) * np.exp(2j * np.pi * φ)
         return matrix.reshape(-1, 1)
 
@@ -159,8 +159,8 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         """
         if priors is None:
             Mi, Mq = self._orders
-            Δi, Δq = self._deltas
-            return np.float64(Δi**2 * (Mi**2 - 1) / 12 + Δq**2 * (Mq**2 - 1) / 12)
+            δi, δq = self._deltas
+            return np.float64(δi**2 * (Mi**2 - 1) / 12 + δq**2 * (Mq**2 - 1) / 12)
         return super().mean_energy(priors)
 
     def minimum_distance(self) -> np.floating:
@@ -199,9 +199,9 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
             array([3, 0])
         """
         Mi, Mq = self._orders
-        Δi, Δq = self._deltas
+        δi, δq = self._deltas
         φ = self._phase_offset
-        Ai, Aq = Δi / 2, Δq / 2
+        Ai, Aq = δi / 2, δq / 2
         z = np.multiply(received, np.exp(-2j * np.pi * φ))
         received_i = np.real(z) / Ai
         received_q = np.imag(z) / Aq

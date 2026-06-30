@@ -55,8 +55,8 @@ class PAMConstellation(abc.Constellation[np.floating]):
                    [ 1.],
                    [ 3.]])
         """
-        M, Δ = self._order, self._delta
-        peak = (M - 1) * Δ / 2
+        M, δ = self._order, self._delta
+        peak = (M - 1) * δ / 2
         return np.linspace(-peak, peak, num=M, endpoint=True).reshape(-1, 1)
 
     @property
@@ -110,8 +110,8 @@ class PAMConstellation(abc.Constellation[np.floating]):
             np.float64(5.0)
         """
         if priors is None:
-            M, Δ = self._order, self._delta
-            return np.float64(Δ**2 * (M**2 - 1) / 12)
+            M, δ = self._order, self._delta
+            return np.float64(δ**2 * (M**2 - 1) / 12)
         return super().mean_energy(priors)
 
     def minimum_distance(self) -> np.floating:
