@@ -15,6 +15,7 @@ Constellations:
   - ASKConstellation
   - PSKConstellation
   - APSKConstellation
+  - OrthogonalConstellation
 Error control:
   Block codes:
     - BlockCode
