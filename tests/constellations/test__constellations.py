@@ -9,7 +9,7 @@ import komm.abc
 params = []
 
 # PAM
-order = [2, 4, 8]
+order = [2, 3, 4, 5, 6]
 base_amplitude = [0.5, 1.0, 2.0]
 for args in product(order, base_amplitude):
     params.append(komm.PAMConstellation(*args))
@@ -22,18 +22,36 @@ for args in product(orders, base_amplitudes, phase_offset):
     params.append(komm.QAMConstellation(*args))
 
 # PSK
-order = [2, 4, 8, 16]
+order = [2, 3, 4, 5, 6]
 amplitude = [0.5, 1.0, 2.0]
 phase_offset = [0.0, 1 / 8, 1 / 6]
 for args in product(order, amplitude, phase_offset):
     params.append(komm.PSKConstellation(*args))
 
 # ASK
-order = [2, 4, 8]
+order = [2, 3, 4, 5, 6]
 base_amplitude = [0.5, 1.0, 2.0]
 phase_offset = [0.0, np.pi / 4, np.pi / 3]
 for args in product(order, base_amplitude, phase_offset):
     params.append(komm.ASKConstellation(*args))
+
+# Orthogonal
+order = [2, 3, 4, 5, 6]
+amplitude = [0.5, 1.0, 2.0]
+for args in product(order, amplitude):
+    params.append(komm.OrthogonalConstellation(*args))
+
+# Biorthogonal
+order = [2, 4, 6, 8, 10]
+amplitude = [0.5, 1.0, 2.0]
+for args in product(order, amplitude):
+    params.append(komm.BiorthogonalConstellation(*args))
+
+# Simplex
+order = [2, 3, 4, 5, 6]
+base_amplitude = [0.5, 1.0, 2.0]
+for args in product(order, base_amplitude):
+    params.append(komm.SimplexConstellation(*args))
 
 
 @pytest.fixture(params=params, ids=lambda const: repr(const))
