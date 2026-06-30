@@ -16,7 +16,7 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
             -A \mathbf{e}\_{i - M/2}, & i \in [M/2 : M),
         \end{cases}
     $$
-    where $A$ is the *amplitude*, and $\mathbf{e}_i$ is the $i$-th standard basis vector of $\mathbb{R}^{M/2}$. For more details, see <cite>PS08, Sec. 3.2</cite>.
+    where $A$ is the *amplitude*, and $\mathbf{e}_i$ is the $i$-th standard basis vector of $\mathbb{R}^{M/2}$. For more details, see <cite>PS08, Sec. 3.2–4</cite>.
 
     Parameters:
         order: The order $M$ of the constellation. Must be an even integer.
