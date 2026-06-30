@@ -35,6 +35,28 @@ class Constellation(ABC, Generic[T]):
         """
         return self.matrix.shape[1]
 
+    def _validate_priors(self, priors: npt.ArrayLike | None) -> Array1D[np.floating]:
+        M = self.order
+        if priors is None:
+            priors = np.ones(M) / M
+        priors = validate_pmf(priors)
+        if priors.size != M:
+            raise ValueError(
+                "length of 'priors' must be equal to the constellation"
+                f" order {M} (got {priors.size})"
+            )
+        return priors
+
+    def _validate_received(self, received: npt.ArrayLike) -> npt.NDArray[T]:
+        N = self.dimension
+        received = np.asarray(received)
+        if received.shape[-1] % N != 0:
+            raise ValueError(
+                "last dimension of 'received' must be a multiple of the constellation"
+                f" dimension {N} (got {received.shape[-1]})"
+            )
+        return received
+
     @abstractmethod
     def mean(self, priors: npt.ArrayLike | None = None) -> Array1D[T]:
         r"""
@@ -49,9 +71,7 @@ class Constellation(ABC, Generic[T]):
         Returns:
             mean: The mean $\mathbf{m}$ of the constellation.
         """
-        if priors is None:
-            priors = np.ones(self.order) / self.order
-        priors = validate_pmf(priors)
+        priors = self._validate_priors(priors)
         return np.dot(priors, self.matrix)
 
     @abstractmethod
@@ -68,9 +88,7 @@ class Constellation(ABC, Generic[T]):
         Returns:
             mean_energy: The mean energy $E$ of the constellation.
         """
-        if priors is None:
-            priors = np.ones(self.order) / self.order
-        priors = validate_pmf(priors)
+        priors = self._validate_priors(priors)
         return priors @ np.sum(np.abs(self.matrix) ** 2, axis=1)
 
     @abstractmethod
@@ -116,12 +134,7 @@ class Constellation(ABC, Generic[T]):
             indices: The indices of the symbols closest to the received points. Has the same shape as `received`, but with the last dimension contracted by a factor of $N$.
         """
         N = self.dimension
-        received = np.asarray(received)
-        if received.shape[-1] % N != 0:
-            raise ValueError(
-                "last dimension of 'received' must be a multiple of the constellation"
-                f" dimension {N} (got {received.shape[-1]})"
-            )
+        received = self._validate_received(received)
         distances = self._squared_distances(received.reshape(-1, N))
         indices = np.argmin(distances, axis=-1).reshape(*received.shape[:-1], -1)
         return indices
@@ -162,21 +175,9 @@ class Constellation(ABC, Generic[T]):
         Returns:
             posteriors: The posterior probabilities of each symbol given the received points. Has the same shape as `received`, but with the last dimension changed by a factor of $M / N$.
         """
-        M, N = self.order, self.dimension
-        if priors is None:
-            priors = np.ones(M) / M
-        priors = validate_pmf(priors)
-        if priors.size != M:
-            raise ValueError(
-                "length of 'priors' must be equal to the constellation"
-                f" order {M} (got {priors.size})"
-            )
-        received = np.asarray(received)
-        if received.shape[-1] % N != 0:
-            raise ValueError(
-                "last dimension of 'received' must be a multiple of the constellation"
-                f" dimension {N} (got {received.shape[-1]})"
-            )
+        N = self.dimension
+        priors = self._validate_priors(priors)
+        received = self._validate_received(received)
         r = received.reshape(-1, N)
         distances = self._squared_distances(r)
         logp = -distances / (2 * noise_power) + np.log(priors)
