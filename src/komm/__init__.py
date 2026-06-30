@@ -28,6 +28,7 @@ from ._constellations.OrthogonalConstellation import OrthogonalConstellation
 from ._constellations.PAMConstellation import PAMConstellation
 from ._constellations.PSKConstellation import PSKConstellation
 from ._constellations.QAMConstellation import QAMConstellation
+from ._constellations.SimplexConstellation import SimplexConstellation
 
 # Error control - block codes
 from ._error_control_block.BCHCode import BCHCode
@@ -155,6 +156,7 @@ __all__ = [
     "PAMConstellation",
     "PSKConstellation",
     "QAMConstellation",
+    "SimplexConstellation",
     # _error_control_block
     "BCHCode",
     "BlockCode",
