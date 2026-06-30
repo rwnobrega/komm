@@ -37,10 +37,6 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
                 >>> const = komm.QAMConstellation(orders=(4, 2), deltas=(2.0, 4.0))
     """
 
-    _orders: tuple[int, int]
-    _deltas: tuple[float, float]
-    phase_offset: float
-
     def __init__(
         self,
         orders: tuple[int, int] | int,

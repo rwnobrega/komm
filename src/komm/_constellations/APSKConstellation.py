@@ -50,10 +50,6 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
                 ... )
     """
 
-    _orders: tuple[int, ...]
-    _amplitudes: tuple[float, ...]
-    _phase_offsets: tuple[float, ...]
-
     def __init__(
         self,
         orders: tuple[int, ...],
