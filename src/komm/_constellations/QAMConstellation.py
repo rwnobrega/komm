@@ -202,8 +202,9 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         Δi, Δq = self._deltas
         φ = self._phase_offset
         Ai, Aq = Δi / 2, Δq / 2
-        received_i = np.real(np.multiply(received, np.exp(-2j * np.pi * φ))) / Ai
-        received_q = np.imag(np.multiply(received, np.exp(-2j * np.pi * φ))) / Aq
+        z = np.multiply(received, np.exp(-2j * np.pi * φ))
+        received_i = np.real(z) / Ai
+        received_q = np.imag(z) / Aq
         indices_i = np.clip(np.around((received_i + Mi - 1) / 2), 0, Mi - 1).astype(int)
         indices_q = np.clip(np.around((received_q + Mq - 1) / 2), 0, Mq - 1).astype(int)
         indices = Mq * indices_i + indices_q
