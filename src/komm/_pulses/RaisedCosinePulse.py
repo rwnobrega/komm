@@ -11,7 +11,7 @@ from .util import raised_cosine, rect
 @dataclass
 class RaisedCosinePulse(abc.Pulse):
     r"""
-    Raised-cosine pulse. For a given *roll-off factor* $\alpha$ satisfing $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
+    Raised-cosine pulse. For a given *roll-off factor* $\alpha$ satisfying  $0 \leq \alpha \leq 1$, it is a [pulse](/ref/Pulse)
     with spectrum given by
     $$
         \hat{p}(f) = \begin{cases}

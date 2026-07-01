@@ -51,7 +51,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         $$
             \mathrm{I}(X; Y) = \mathrm{H}(X) - \mathrm{H}(X \mid Y),
         $$
-        where $\mathrm{H}(X)$ is the the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite>CT06, Ch. 2</cite>.
+        where $\mathrm{H}(X)$ is the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the conditional entropy of $X$ given $Y$. By default, the base of the logarithm is $2$, in which case the mutual information is measured in bits. See <cite>CT06, Ch. 2</cite>.
 
         Examples:
             >>> dmc = komm.DiscreteMemorylessChannel([
