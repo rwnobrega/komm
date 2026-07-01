@@ -5,7 +5,7 @@ from typeguard import TypeCheckError
 import komm
 
 
-@pytest.mark.parametrize("length,", range(2, 11))
+@pytest.mark.parametrize("length", range(2, 11))
 def test_repetition_code(length):
     code1 = komm.RepetitionCode(length)
     code2 = komm.BlockCode(generator_matrix=np.ones((1, length), dtype=int))
