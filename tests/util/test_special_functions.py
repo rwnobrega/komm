@@ -54,6 +54,36 @@ def test_gaussian_q_inverse_relation():
     np.testing.assert_allclose(komm.gaussian_q(komm.gaussian_q_inv(y)), y)
 
 
+@pytest.mark.parametrize(
+    "x, expected",
+    [
+        (5.0, 2.8665157187919391167e-07),
+        (8.0, 6.2209605742717841235e-16),
+        (9.0, 1.1285884059538406477e-19),
+        (10.0, 7.6198530241605260660e-24),
+        (12.0, 1.7764821120776789977e-33),
+        (20.0, 2.7536241186062336951e-89),
+    ],
+)
+def test_gaussian_q_tail_accuracy(x, expected):
+    computed = komm.gaussian_q(x)
+    assert computed > 0
+    np.testing.assert_allclose(computed, expected, rtol=1e-12)
+
+
+def test_gaussian_q_tail_strictly_decreasing():
+    x = np.arange(0.0, 30.0, 0.5)
+    y = np.asarray(komm.gaussian_q(x))
+    assert np.all(y > 0)
+    assert np.all(np.diff(y) < 0)
+
+
+def test_gaussian_q_inv_roundtrip_in_tail():
+    for x in [1.0, 3.0, 5.0, 8.0]:
+        y = komm.gaussian_q(x)
+        np.testing.assert_allclose(komm.gaussian_q_inv(y), x, rtol=1e-9)
+
+
 def test_marcum_q():
     # fmt: off
     xs = np.arange(0, 6, step=0.1)
