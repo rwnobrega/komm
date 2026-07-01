@@ -47,9 +47,6 @@ from ._error_control_block.SingleParityCheckCode import SingleParityCheckCode
 from ._error_control_block.SlepianArray import SlepianArray
 from ._error_control_block.SystematicBlockCode import SystematicBlockCode
 
-# Error control - checksum
-from ._error_control_checksum.CyclicRedundancyCheck import CyclicRedundancyCheck
-
 # Error control - convolutional
 from ._error_control_convolutional.ConvolutionalCode import ConvolutionalCode
 from ._error_control_convolutional.HighRateConvolutionalCode import HighRateConvolutionalCode
@@ -174,8 +171,6 @@ __all__ = [
     "SingleParityCheckCode",
     "SlepianArray",
     "SystematicBlockCode",
-    # _error_control_checksum
-    "CyclicRedundancyCheck",
     # _error_control_convolutional
     "ConvolutionalCode",
     "HighRateConvolutionalCode",
