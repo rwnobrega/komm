@@ -10,16 +10,24 @@ params = []
 
 # PAM
 order = [2, 3, 4, 5, 6]
-base_amplitude = [0.5, 1.0, 2.0]
-for args in product(order, base_amplitude):
+delta = [0.5, 1.0, 2.0]
+for args in product(order, delta):
     params.append(komm.PAMConstellation(*args))
 
 # QAM
 orders = [4, 16, (2, 4), (8, 2)]
-base_amplitudes = [0.5, 2.0, (0.5, 1.0)]
+deltas = [0.5, 2.0, (0.5, 1.0)]
 phase_offset = [0.0, 1 / 8]
-for args in product(orders, base_amplitudes, phase_offset):
+for args in product(orders, deltas, phase_offset):
     params.append(komm.QAMConstellation(*args))
+
+# Cross-QAM
+order = [32, 128, 512]
+delta = [0.5, 2.0, 1.0]
+phase_offset = [0.0, 1 / 8]
+for args in product(order, delta, phase_offset):
+    params.append(komm.CrossQAMConstellation(*args))
+
 
 # PSK
 order = [2, 3, 4, 5, 6]

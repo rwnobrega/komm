@@ -24,6 +24,7 @@ from ._constellations.ASKConstellation import ASKConstellation
 from ._constellations.APSKConstellation import APSKConstellation
 from ._constellations.BiorthogonalConstellation import BiorthogonalConstellation
 from ._constellations.Constellation import Constellation
+from ._constellations.CrossQAMConstellation import CrossQAMConstellation
 from ._constellations.OrthogonalConstellation import OrthogonalConstellation
 from ._constellations.PAMConstellation import PAMConstellation
 from ._constellations.PSKConstellation import PSKConstellation
@@ -152,6 +153,7 @@ __all__ = [
     "ASKConstellation",
     "BiorthogonalConstellation",
     "Constellation",
+    "CrossQAMConstellation",
     "OrthogonalConstellation",
     "PAMConstellation",
     "PSKConstellation",

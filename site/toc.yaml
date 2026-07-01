@@ -12,6 +12,7 @@ Constellations:
   - Constellation
   - PAMConstellation
   - QAMConstellation
+  - CrossQAMConstellation
   - ASKConstellation
   - PSKConstellation
   - APSKConstellation
