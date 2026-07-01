@@ -1,4 +1,4 @@
-from math import gamma
+from math import erfc, gamma, sqrt
 from statistics import NormalDist
 
 import numpy as np
@@ -10,7 +10,10 @@ gamma = np.vectorize(gamma)
 
 
 def _gaussian_q(x: float) -> float:
-    return norm.cdf(-x)
+    # Equivalent to `norm.cdf(-x)``, but accurate in the tail for all supported Python versions.
+    # `NormalDist.cdf`` only became erfc-based (and thus tail-accurate) in Python 3.14.
+    # See https://github.com/python/cpython/issues/132893
+    return 0.5 * erfc(x / sqrt(2))
 
 
 def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
