@@ -8,11 +8,14 @@ PULSES = [
     komm.RectangularPulse(),
     komm.ManchesterPulse(),
     # komm.SincPulse(),
-    komm.RaisedCosinePulse(0.3),
-    komm.RaisedCosinePulse(0.75),
+    komm.RaisedCosinePulse(rolloff=0.25),
+    komm.RaisedCosinePulse(rolloff=0.3),
+    komm.RaisedCosinePulse(rolloff=0.75),
+    komm.RaisedCosinePulse(rolloff=1.0),
     komm.RaisedCosinePulse(),
-    komm.RootRaisedCosinePulse(0.25),
-    komm.RootRaisedCosinePulse(0.5),
+    komm.RootRaisedCosinePulse(rolloff=0.25),
+    komm.RootRaisedCosinePulse(rolloff=0.5),
+    komm.RootRaisedCosinePulse(rolloff=1.0),
     komm.RootRaisedCosinePulse(),
     komm.GaussianPulse(0.3),
     komm.GaussianPulse(0.75),
@@ -20,19 +23,19 @@ PULSES = [
 ]
 
 
-@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()])
+@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()], ids=repr)
 def test_pulses_spectrum_vs_energy_spectral_density(pulse: komm.abc.Pulse):
     fs = np.linspace(-2.0, 2.0, 101)
     S = np.abs(pulse.spectrum(fs)) ** 2
     np.testing.assert_allclose(S, pulse.energy_spectral_density(fs))
 
 
-@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()])
+@pytest.mark.parametrize("pulse", PULSES + [komm.SincPulse()], ids=repr)
 def test_pulses_energy_vs_autocorrelation(pulse: komm.abc.Pulse):
     np.testing.assert_allclose([pulse.energy()], pulse.autocorrelation([0.0]))
 
 
-@pytest.mark.parametrize("pulse", PULSES)
+@pytest.mark.parametrize("pulse", PULSES, ids=repr)
 def test_pulses_energy_spectral_density_vs_autocorrelation(pulse: komm.abc.Pulse):
     τs = np.linspace(-20.0, 20.0, 10001)
     fs = np.linspace(-2.0, 2.0, 101)
@@ -41,7 +44,7 @@ def test_pulses_energy_spectral_density_vs_autocorrelation(pulse: komm.abc.Pulse
     np.testing.assert_allclose(S, pulse.energy_spectral_density(fs), atol=1e-3)
 
 
-@pytest.mark.parametrize("pulse", PULSES)
+@pytest.mark.parametrize("pulse", PULSES, ids=repr)
 def test_pulses_waveform_vs_autocorrelation(pulse: komm.abc.Pulse):
     ts = np.linspace(-20.0, 20.0, 10001)
     τs = np.linspace(-2.0, 2.0, 101)

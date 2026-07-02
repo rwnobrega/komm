@@ -113,14 +113,15 @@ class RaisedCosinePulse(abc.Pulse):
             array([0.06 , 0.334, 0.627, 0.853, 0.938, 0.853, 0.627, 0.334, 0.06 ])
         """
         α = self.rolloff
-        tau = np.asarray(tau)
+        tau = np.atleast_1d(np.asarray(tau, dtype=float))
         if α == 0:
-            return np.sinc(tau)
+            return np.sinc(tau)[()] if tau.ndim == 0 else np.sinc(tau)
         with np.errstate(divide="ignore", invalid="ignore"):
             term = np.sinc(α * tau) * np.cos(np.pi * tau) / (1 - (α * tau) ** 2)
         singularity = np.isclose(np.abs(tau), 1 / α)
         term[singularity] = np.cos(np.pi / α) / 2
-        return raised_cosine(tau, α) - α / 4 * term
+        result = raised_cosine(tau, α) - α / 4 * term
+        return result[()] if tau.ndim == 0 else result
 
     def energy_spectral_density(self, f: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
