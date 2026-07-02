@@ -159,5 +159,7 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating]:
     b = np.asarray(b)
     if a.shape != b.shape:
         raise ValueError("inputs must have the same shape")
-    with np.errstate(divide="ignore"):
-        return 2 * np.atanh(np.tanh(a / 2) * np.tanh(b / 2))
+    s = np.sign(a) * np.sign(b) * np.minimum(np.abs(a), np.abs(b))
+    p1 = np.exp(-np.abs(a + b))
+    p2 = np.exp(-np.abs(a - b))
+    return s + np.log1p(p1) - np.log1p(p2)

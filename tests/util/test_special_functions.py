@@ -122,3 +122,48 @@ def test_marqum_q_exponential_distribution(lamb):
     np.testing.assert_allclose(
         komm.marcum_q(1, 0.0, np.sqrt(2 * lamb * xs)), np.exp(-lamb * xs)
     )
+
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (1.0, 2.0, 0.73532566405551922471),
+        (30.0, -25.0, -24.993284651510881931),
+        (40.0, 40.0, 39.306852819440054691),
+        (100.0, -100.0, -99.306852819440054691),
+    ],
+)
+def test_boxplus_values(a, b, expected):
+    result = komm.boxplus(a, b)
+    assert np.isfinite(result)
+    np.testing.assert_allclose(result, expected, rtol=1e-12)
+
+
+def test_boxplus_finite():
+    a = np.array([1.0, 2.0, 50.0, 80.0, -120.0, 300.0])
+    b = np.array([0.0, -3.0, 50.0, -90.0, -120.0, 300.0])
+    result = komm.boxplus(a, b)
+    assert np.all(np.isfinite(result))
+
+
+def test_boxplus_inequality():
+    # Test |a ⊞ b| ≤ min(|a|, |b|)
+    a = np.array([1.0, 2.0, 50.0, 80.0, -120.0, 300.0])
+    b = np.array([0.0, -3.0, 50.0, -90.0, -120.0, 300.0])
+    result = komm.boxplus(a, b)
+    assert np.all(result <= np.minimum(np.abs(a), np.abs(b)))
+
+
+def test_boxplus_identity_and_annihilator():
+    # +inf is identity, 0 is annihilator
+    np.testing.assert_allclose(komm.boxplus(0.0, 300.0), 0.0, atol=1e-15)
+    np.testing.assert_allclose(komm.boxplus(np.inf, 3.7), 3.7, rtol=1e-12)
+    np.testing.assert_allclose(komm.boxplus(-np.inf, 3.7), -3.7, rtol=1e-12)
+
+
+def test_boxplus_commutative_and_sign():
+    rng = np.random.default_rng()
+    a = rng.normal(scale=20, size=1000)
+    b = rng.normal(scale=20, size=1000)
+    np.testing.assert_allclose(komm.boxplus(a, b), komm.boxplus(b, a))
+    np.testing.assert_array_equal(np.sign(komm.boxplus(a, b)), np.sign(a) * np.sign(b))
