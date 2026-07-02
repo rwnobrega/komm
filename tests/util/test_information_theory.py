@@ -62,6 +62,31 @@ def test_relative_entropy_wikipedia():
     )
 
 
+@pytest.mark.parametrize(
+    "pmf, qmf, expected",
+    [
+        ([0.0, 1.0], [0.5, 0.5], 1.0),
+        ([0.0, 1.0], [0.0, 1.0], 0.0),
+        ([0.0, 0.25, 0.75], [0.2, 0.3, 0.5], 0.3729632741),
+        ([0.5, 0.5], [0.0, 1.0], np.inf),
+    ],
+)
+def test_relative_entropy_with_zero_in_pmf(pmf, qmf, expected):
+    result = komm.relative_entropy(pmf, qmf)
+    np.testing.assert_allclose(result, expected)
+
+
+def test_relative_entropy_never_nan():
+    rng = np.random.default_rng()
+    for _ in range(100):
+        pmf = rng.random(5)
+        qpm = rng.random(5)
+        pmf[rng.integers(5)] = 0.0
+        pmf /= pmf.sum()
+        qpm /= qpm.sum()
+        assert not np.isnan(komm.relative_entropy(pmf, qpm))
+
+
 def test_relative_entropy_invalid_pmf():
     valid_pmf = [0.25, 0.25, 0.5]
     invalid_pmfs = [[0.5, 0.5, 0.5], [0.1, 0.1, 0.1], [0.5, -0.5, 1.0]]

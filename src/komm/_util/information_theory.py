@@ -41,14 +41,14 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating
     """
     pmf = validate_pmf(pmf)
     validate_log_base(base)
-    pmf1 = pmf[pmf > 0]
+    pmf = pmf[pmf > 0]
     if base == "e":
-        log_pmf1 = np.log(pmf1)
+        log_pmf = np.log(pmf)
     elif base == 2.0:
-        log_pmf1 = np.log2(pmf1)
+        log_pmf = np.log2(pmf)
     else:
-        log_pmf1 = np.log(pmf1) / np.log(base)
-    return -np.dot(pmf1, log_pmf1)
+        log_pmf = np.log(pmf) / np.log(base)
+    return -np.dot(pmf, log_pmf)
 
 
 def binary_entropy(p: float) -> float:
@@ -142,13 +142,18 @@ def relative_entropy(
     pmf = validate_pmf(pmf)
     qmf = validate_pmf(qmf)
     validate_log_base(base)
+    if pmf.shape != qmf.shape:
+        raise ValueError("inputs must have the same shape")
+    mask = pmf > 0
+    pmf, qmf = pmf[mask], qmf[mask]
     with np.errstate(divide="ignore"):
         if base == "e":
-            return np.dot(pmf, np.log(pmf / qmf))
+            log_quotient = np.log(pmf / qmf)
         elif base == 2.0:
-            return np.dot(pmf, np.log2(pmf / qmf))
+            log_quotient = np.log2(pmf / qmf)
         else:
-            return np.dot(pmf, np.log(pmf / qmf)) / np.log(base)
+            log_quotient = np.log(pmf / qmf) / np.log(base)
+    return np.dot(pmf, log_quotient)
 
 
 def mutual_information(
