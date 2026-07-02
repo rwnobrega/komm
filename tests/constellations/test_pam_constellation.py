@@ -79,3 +79,21 @@ def test_pam_closest_indices(order, indices):
     pam = komm.PAMConstellation(order)
     received = [-20.0, -7.1, -0.5, 1.5, 6.2, 100.0]
     np.testing.assert_allclose(pam.closest_indices(received), indices)
+
+
+@pytest.mark.parametrize(
+    "noise_power, expected",
+    [
+        (2.0, [0.00114608, 0.07590596, 0.51028037, 0.41266759]),
+        (0.2, [0.00000000, 0.00000020, 0.99109586, 0.00890394]),
+        (20.0, [0.06641188, 0.18848588, 0.32848402, 0.41661822]),
+    ],
+)
+def test_pam_posteriors(noise_power, expected):
+    const = komm.PAMConstellation(4)
+    posteriors = const.posteriors(
+        received=[1.5],
+        noise_power=noise_power,
+        priors=[0.1, 0.2, 0.3, 0.4],
+    )
+    np.testing.assert_allclose(posteriors, expected, atol=1e-8)

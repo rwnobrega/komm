@@ -165,6 +165,8 @@ class Constellation(ABC, Generic[T]):
         r"""
         Returns the posterior probabilities of each constellation symbol given received points, the noise power, and prior probabilities.
 
+        The posteriors are computed under the [Gaussian channel](/ref/GaussianChannel) model $Y = X + Z$, assuming that each received point is the transmitted symbol corrupted by additive Gaussian noise of power $\sigma_Z^2$. For real-valued constellations the noise is real Gaussian with variance $\sigma_Z^2$; for complex-valued constellations it is circularly symmetric complex Gaussian, with the noise power equally divided between the real and imaginary parts, i.e., $\mathrm{E}[\mathrm{Re}\\{Z_n\\}^2] = \mathrm{E}[\mathrm{Im}\\{Z_n\\}^2] = \sigma_Z^2/2$.
+
         Parameters:
             received: The received points. Must be an array whose last dimension is a multiple of $N$.
 
@@ -180,7 +182,8 @@ class Constellation(ABC, Generic[T]):
         received = self._validate_received(received)
         r = received.reshape(-1, N)
         distances = self._squared_distances(r)
-        logp = -distances / (2 * noise_power) + np.log(priors)
+        variance = noise_power if np.iscomplexobj(self.matrix) else 2 * noise_power
+        logp = -distances / variance + np.log(priors)
         logp -= np.max(logp, axis=-1, keepdims=True)
         p = np.exp(logp)
         p /= np.sum(p, axis=-1, keepdims=True)

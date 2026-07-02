@@ -68,3 +68,21 @@ def test_psk_parameters(params, expected):
     np.testing.assert_allclose(psk.mean_energy(), expected["mean_energy"])
     np.testing.assert_allclose(psk.mean(), 0)
     np.testing.assert_allclose(psk.minimum_distance(), expected["minimum_distance"])
+
+
+@pytest.mark.parametrize(
+    "noise_power, expected",
+    [
+        (2.0, [0.13076298, 0.28903088, 0.26295913, 0.31724702]),
+        (0.2, [0.15341041, 0.83402547, 0.00842943, 0.00413468]),
+        (20.0, [0.10301434, 0.20809930, 0.29692527, 0.39196109]),
+    ],
+)
+def test_psk_posteriors(noise_power, expected):
+    const = komm.PSKConstellation(4)
+    posteriors = const.posteriors(
+        received=[0.2 + 0.3j],
+        noise_power=noise_power,
+        priors=[0.1, 0.2, 0.3, 0.4],
+    )
+    np.testing.assert_allclose(posteriors, expected, atol=1e-8)

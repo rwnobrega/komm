@@ -189,7 +189,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         r"""
         Examples:
             >>> const = komm.ASKConstellation(4)
-            >>> const.posteriors([3.1 + 0.2j, 0.1 - 0.2j], noise_power=0.5).round(3)
+            >>> const.posteriors([3.1 + 0.2j, 0.1 - 0.2j], noise_power=1.0).round(3)
             array([0.   , 0.009, 0.229, 0.761, 0.677, 0.304, 0.019, 0.   ])
         """
         return super().posteriors(received, noise_power, priors)

@@ -124,3 +124,34 @@ def test_constellation_equivalence_high_snr(const: komm.abc.Constellation):
         ),
         indices,
     )
+
+
+@pytest.mark.parametrize(
+    "const",
+    [
+        komm.PAMConstellation(4),
+        komm.PSKConstellation(8),
+        komm.QAMConstellation(16),
+        komm.CrossQAMConstellation(32),
+        komm.ASKConstellation(4),
+        komm.OrthogonalConstellation(4),
+        komm.BiorthogonalConstellation(8),
+        komm.SimplexConstellation(4),
+    ],
+    ids=repr,
+)
+def test_posteriors_calibration_monte_carlo(const: komm.abc.Constellation):
+    # Calibration property: using exactly the GaussianChannel's noise_power,
+    # the mean confidence of the MAP decision should match the actual accuracy rate.
+    noise_power = 0.8
+    M = const.order
+    source = komm.DiscreteMemorylessSource(M)
+    channel = komm.GaussianChannel(noise_power)
+    n = 100_000
+    indices = source.emit(n)
+    symbols = const.indices_to_symbols(indices)
+    received = channel.transmit(symbols)
+    posteriors = const.posteriors(received, noise_power).reshape(n, M)
+    confidence = posteriors.max(axis=-1).mean()
+    accuracy = np.mean(posteriors.argmax(axis=-1) == indices)
+    assert abs(confidence - accuracy) < 0.01

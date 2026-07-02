@@ -207,7 +207,7 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
         r"""
         Examples:
             >>> const = komm.CrossQAMConstellation(32)
-            >>> const.posteriors([-1.1 - 0.9j], noise_power=1.0).round(3)
+            >>> const.posteriors([-1.1 - 0.9j], noise_power=2.0).round(3)
             array([0.   , 0.   , 0.   , 0.   , 0.   , 0.011, 0.101, 0.017, 0.   ,
                    0.   , 0.   , 0.068, 0.613, 0.101, 0.   , 0.   , 0.   , 0.008,
                    0.068, 0.011, 0.   , 0.   , 0.   , 0.   , 0.   , 0.   , 0.   ,

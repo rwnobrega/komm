@@ -201,7 +201,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         r"""
         Examples:
             >>> const = komm.APSKConstellation(orders=(4, 4), amplitudes=(1.0, 2.0))
-            >>> const.posteriors([0.1 - 1.1j], noise_power=0.5).round(3)
+            >>> const.posteriors([0.1 - 1.1j], noise_power=1.0).round(3)
             array([0.08 , 0.007, 0.053, 0.588, 0.005, 0.   , 0.002, 0.264])
         """
         return super().posteriors(received, noise_power, priors)

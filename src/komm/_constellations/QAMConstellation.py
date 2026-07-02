@@ -230,7 +230,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         r"""
         Examples:
             >>> const = komm.QAMConstellation(16)
-            >>> const.posteriors([-3.1 + 2.9j], noise_power=2.0).round(3)
+            >>> const.posteriors([-3.1 + 2.9j], noise_power=4.0).round(3)
             array([0.   , 0.012, 0.211, 0.519, 0.   , 0.004, 0.07 , 0.173,
                    0.   , 0.   , 0.003, 0.008, 0.   , 0.   , 0.   , 0.   ])
         """
