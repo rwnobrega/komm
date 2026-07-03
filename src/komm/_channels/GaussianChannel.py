@@ -30,6 +30,10 @@ class GaussianChannel:
     noise_power: float = 0.0
     rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
 
+    def __post_init__(self) -> None:
+        if not self.noise_power >= 0:
+            raise ValueError("'noise_power' must be non-negative")
+
     def transmit(
         self, input: npt.ArrayLike
     ) -> npt.NDArray[np.floating | np.complexfloating]:
@@ -57,7 +61,7 @@ class GaussianChannel:
         """
         input = np.array(input)
 
-        if input.dtype == complex:
+        if np.iscomplexobj(input):
             noise_ri = self.rng.normal(
                 loc=0.0,
                 scale=np.sqrt(self.noise_power / 2),
