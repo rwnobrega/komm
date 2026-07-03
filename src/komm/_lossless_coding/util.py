@@ -23,6 +23,9 @@ def is_prefix_free(words: list[Word]) -> bool:
 
 def is_uniquely_parsable(words: list[Word]) -> bool:
     # Sardinas–Patterson algorithm. See [Say06, Sec. 2.4.1].
+    words = [w for w in words if len(w) > 0]  # Ignore empty words
+    if len(set(words)) < len(words):  # Duplicated words
+        return False
     augmented_words = set(words)
     while True:
         dangling_suffixes: set[Word] = set()

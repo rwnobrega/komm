@@ -97,6 +97,16 @@ test_cases = [
         "uniquely_parsable": False,  # (101)(00111) = (1)(0100)(1)(1)(1)
         "prefix_free": False,
     },
+    {  # Regression: Duplicate words
+        "words": [(0, 1), (0, 1)],
+        "uniquely_parsable": False,
+        "prefix_free": False,
+    },
+    {  # Regression: Duplicate words
+        "words": [(0,), (0,), (1, 1)],
+        "uniquely_parsable": False,
+        "prefix_free": False,
+    },
 ]
 
 
