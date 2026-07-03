@@ -84,7 +84,7 @@ class ReflectedRectangularLabeling(abc.Labeling):
         return 2 ** (mi + mq)
 
     @property
-    # @cache
+    @cache
     def inverse_mapping(self) -> dict[tuple[int, ...], int]:
         r"""
         Examples:

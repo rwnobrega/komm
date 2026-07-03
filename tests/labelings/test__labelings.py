@@ -70,3 +70,7 @@ def test_labeling_bijective(labeling: komm.abc.Labeling):
         bits,
         labeling.indices_to_bits(labeling.bits_to_indices(bits)),
     )
+
+
+def test_inverse_mapping_is_cached(labeling):
+    assert labeling.inverse_mapping is labeling.inverse_mapping
