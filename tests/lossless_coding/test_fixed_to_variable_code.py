@@ -59,12 +59,12 @@ def test_init(code_parameters):
 
 
 def test_invalid_source_cardinality():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'source_cardinality' must be"):
         komm.FixedToVariableCode(1, 2, 1, {(0,): (1, 1)})
 
 
 def test_invalid_target_cardinality():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'target_cardinality' must be"):
         komm.FixedToVariableCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
 
 
@@ -77,7 +77,7 @@ def test_invalid_enc_mapping_domain_1():
     }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     del enc_mapping[(1, 0)]
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
         komm.FixedToVariableCode(2, 2, 2, enc_mapping)
 
 
@@ -90,7 +90,7 @@ def test_invalid_enc_mapping_domain_2():
     }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(2, 1)] = enc_mapping.pop((0, 1))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
         komm.FixedToVariableCode(2, 2, 2, enc_mapping)
 
 
@@ -103,15 +103,19 @@ def test_invalid_enc_mapping_domain_3():
     }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0,)] = enc_mapping.pop((0, 1))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
         komm.FixedToVariableCode(2, 2, 2, enc_mapping)
 
 
 def test_invalid_enc_mapping_domain_4():
-    enc_mapping: dict = {(0,): (0,), (1,): (1, 0, 0), (2,): (1, 1)}
+    enc_mapping: dict = {
+        (0,): (0,),
+        (1,): (1, 0, 0),
+        (2,): (1, 1),
+    }
     komm.FixedToVariableCode(3, 2, 1, enc_mapping)
     enc_mapping[(0, 0)] = (1, 0, 1)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
         komm.FixedToVariableCode(3, 2, 2, enc_mapping)
 
 
@@ -124,8 +128,13 @@ def test_invalid_enc_mapping_codomain():
     }
     komm.FixedToVariableCode(2, 2, 2, enc_mapping)
     enc_mapping[(0, 1)] = (1, 0, 2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="enc_mapping': invalid co-domain"):
         komm.FixedToVariableCode(2, 2, 2, enc_mapping)
+
+
+def test_invalid_codewords_empty():
+    with pytest.raises(ValueError, match="codewords' must be non-empty"):
+        komm.FixedToVariableCode.from_codewords(2, [(), (0, 1)])
 
 
 @pytest.mark.parametrize(
@@ -138,7 +147,7 @@ def test_invalid_enc_mapping_codomain():
 )
 def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
     code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="not uniquely decodable"):
         code.decode([0])
 
 
@@ -173,7 +182,7 @@ def test_rate(code_parameters, pmf, rate):
 )
 def test_rate_invalid_pmf(pmf):
     code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="pmf must"):
         code.rate(pmf)
 
 

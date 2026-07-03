@@ -137,6 +137,8 @@ class FixedToVariableCode:
              (1, 0): (1, 1, 0),
              (1, 1): (1, 0, 1)}
         """
+        if any(len(codeword) == 0 for codeword in codewords):
+            raise ValueError("'codewords' must be non-empty")
         calX = source_cardinality
         calY = max(max(codeword) for codeword in codewords) + 1
         k = next(k for k in count(1) if calX**k >= len(codewords))
