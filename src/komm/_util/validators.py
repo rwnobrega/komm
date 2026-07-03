@@ -7,10 +7,11 @@ from ..types import Array2D
 
 
 def validate_log_base(value: float | str) -> float | Literal["e"]:
-    if (isinstance(value, str) and value != "e") or (
-        isinstance(value, float) and value <= 0.0
-    ):
-        raise ValueError("log base must be 'e' or a positive float")
+    if isinstance(value, str):
+        if value != "e":
+            raise ValueError("log base must be 'e' or a positive real other than 1")
+    elif value <= 0.0 or value == 1.0:
+        raise ValueError("log base must be 'e' or a positive real other than 1")
     return value
 
 

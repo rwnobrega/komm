@@ -25,6 +25,12 @@ def test_entropy_base_3():
     assert np.allclose(komm.entropy([1 / 3, 1 / 3, 1 / 3], base=3.0), 1.0)
 
 
+def test_entropy_accepts_integer_base():
+    komm.entropy([0.5, 0.5], base=2)
+    komm.entropy([0.5, 0.5], base=3)
+    komm.entropy([0.5, 0.5], base=10)
+
+
 def test_entropy_invalid_pmf():
     with pytest.raises(ValueError):
         komm.entropy([0.5, 0.5, 0.5])
@@ -34,13 +40,13 @@ def test_entropy_invalid_pmf():
         komm.entropy([0.5, 0.5, 0.5], base="e")
 
 
-def test_entropy_invalid_base():
-    with pytest.raises(ValueError):
-        komm.entropy([0.5, 0.5], base=0.0)
-    with pytest.raises(ValueError):
-        komm.entropy([0.5, 0.5], base=-1.0)
-    with pytest.raises(ValueError):
-        komm.entropy([0.5, 0.5], base="f")  # type: ignore
+@pytest.mark.parametrize(
+    "invalid_base",
+    [0.0, 0, -1.0, -1, -2.0, -2, 1.0, 1, "f", "2", ""],
+)
+def test_entropy_invalid_base(invalid_base):
+    with pytest.raises(ValueError, match="log base must"):
+        komm.entropy([0.5, 0.5], base=invalid_base)
 
 
 def test_relative_entropy_wikipedia():
