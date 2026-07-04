@@ -135,3 +135,14 @@ class SincPulse(abc.Pulse):
             (129,)
         """
         return super().taps(samples_per_symbol, span)
+
+    def root(self) -> abc.Pulse:
+        r"""
+        For the sinc pulse, the square-root version is the sinc pulse itself, since its spectrum only takes the values $0$ and $1$.
+
+        Examples:
+            >>> pulse = komm.SincPulse().root()
+            >>> pulse
+            SincPulse()
+        """
+        return SincPulse()

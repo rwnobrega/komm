@@ -67,7 +67,6 @@ Pulse formatting:
   - ManchesterPulse
   - SincPulse
   - RaisedCosinePulse
-  - RootRaisedCosinePulse
   - GaussianPulse
 Sequences:
   Binary sequences:

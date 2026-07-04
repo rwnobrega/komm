@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .base import RootPulse
 from .util import raised_cosine, rect
 
 
@@ -33,7 +34,7 @@ class RaisedCosinePulse(abc.Pulse):
       </span>
     </div>
 
-    For more details, see [Wikipedia: Raised-cosine filter](https://en.wikipedia.org/wiki/Raised-cosine_filter).
+    For more details, see [Wikipedia: Raised-cosine filter](https://en.wikipedia.org/wiki/Raised-cosine_filter) and [Wikipedia: Root-raised-cosine filter](https://en.wikipedia.org/wiki/Root-raised-cosine_filter).
 
     Notes:
         - For $\alpha = 0$ it reduces to the [sinc pulse](/ref/SincPulse).
@@ -176,3 +177,48 @@ class RaisedCosinePulse(abc.Pulse):
             (129,)
         """
         return super().taps(samples_per_symbol, span)
+
+    def root(self) -> abc.Pulse:
+        r"""
+        For the raised-cosine pulse, the square-root version is known as the *root-raised-cosine (RRC)* pulse, whose waveform is given by
+        $$
+          p(t) = \frac{\sin \( 2 \pi f_1 t \) + 4 \alpha t \cos \( 2 \pi f_2 t \)}{\pi t \( 1 - (4 \alpha t)^2 \)}.
+        $$
+
+        Examples:
+            >>> pulse = komm.RaisedCosinePulse(rolloff=0.25).root()
+            >>> pulse.waveform(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... ).round(3)
+            array([-0.064,  0.238,  0.622,  0.943,  1.068,  0.943,  0.622,  0.238,
+                   -0.064])
+            >>> np.abs(pulse.spectrum(
+            ...     [-1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0],
+            ... )).round(3)
+            array([0.   , 0.   , 0.707, 1.   , 1.   , 1.   , 0.707, 0.   , 0.   ])
+        """
+        return _RootRaisedCosinePulse(self)
+
+
+class _RootRaisedCosinePulse(RootPulse[RaisedCosinePulse]):
+    def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
+        α = self.base_pulse.rolloff
+        t = np.asarray(t, dtype=float)
+        scalar_input = t.ndim == 0
+        t = np.atleast_1d(t)
+        if α == 0:
+            result = np.sinc(t)
+            return result[0] if scalar_input else result
+        f1 = (1 - α) / 2
+        f2 = (1 + α) / 2
+        num = np.sin(2 * np.pi * f1 * t) + 4 * α * t * np.cos(2 * np.pi * f2 * t)
+        den = np.pi * t * (1 - (4 * α * t) ** 2)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            waveform = num / den
+        singularity = np.isclose(t, 0)
+        waveform[singularity] = 1 + α * (4 / np.pi - 1)
+        singularity = np.isclose(np.abs(t), 1 / (4 * α))
+        lhs = (1 + 2 / np.pi) * np.sin(np.pi / (4 * α))
+        rhs = (1 - 2 / np.pi) * np.cos(np.pi / (4 * α))
+        waveform[singularity] = α / np.sqrt(2) * (lhs + rhs)
+        return waveform[0] if scalar_input else waveform

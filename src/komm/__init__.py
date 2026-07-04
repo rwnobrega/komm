@@ -100,7 +100,6 @@ from ._pulses.ManchesterPulse import ManchesterPulse
 from ._pulses.Pulse import Pulse
 from ._pulses.RaisedCosinePulse import RaisedCosinePulse
 from ._pulses.RectangularPulse import RectangularPulse
-from ._pulses.RootRaisedCosinePulse import RootRaisedCosinePulse
 from ._pulses.SincPulse import SincPulse
 
 # Quantization
@@ -220,7 +219,6 @@ __all__ = [
     "Pulse",
     "RaisedCosinePulse",
     "RectangularPulse",
-    "RootRaisedCosinePulse",
     "SincPulse",
     # _quantization
     "LloydMaxQuantizer",

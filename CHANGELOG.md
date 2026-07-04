@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Breaking changes
+
+- Added method `root` to `RaisedCosinePulse` and `SincPulse`, which returns the respective square-root version. Removed `RootRaisedCosinePulse`. For example, instead of `komm.RootRaisedCosinePulse(0.25)`, use `komm.RaisedCosinePulse(0.25).root()`.
+
 ## v0.30.0 (2026-07-03)
 
 ### Added

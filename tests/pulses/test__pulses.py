@@ -13,10 +13,10 @@ PULSES = [
     komm.RaisedCosinePulse(rolloff=0.75),
     komm.RaisedCosinePulse(rolloff=1.0),
     komm.RaisedCosinePulse(),
-    komm.RootRaisedCosinePulse(rolloff=0.25),
-    komm.RootRaisedCosinePulse(rolloff=0.5),
-    komm.RootRaisedCosinePulse(rolloff=1.0),
-    komm.RootRaisedCosinePulse(),
+    komm.RaisedCosinePulse(rolloff=0.25).root(),
+    komm.RaisedCosinePulse(rolloff=0.5).root(),
+    komm.RaisedCosinePulse(rolloff=1.0).root(),
+    komm.RaisedCosinePulse().root(),
     komm.GaussianPulse(0.3),
     komm.GaussianPulse(0.75),
     komm.GaussianPulse(),
@@ -98,3 +98,22 @@ def test_pulses_scalar_and_array_values_agree(pulse):
         for t, expected in zip(ts, array_result):
             scalar_result = getattr(pulse, method)(t)
             np.testing.assert_allclose(np.asarray(scalar_result), expected)
+
+
+def test_sinc_pulse_root():
+    assert komm.SincPulse().root() == komm.SincPulse()
+
+
+@pytest.mark.parametrize(
+    "pulse",
+    [
+        komm.RectangularPulse(),
+        komm.ManchesterPulse(),
+        komm.GaussianPulse(),
+        komm.RaisedCosinePulse(rolloff=0.25).root(),
+    ],
+    ids=repr,
+)
+def test_pulses_root_not_implemented(pulse: komm.abc.Pulse):
+    with pytest.raises(NotImplementedError, match="Nyquist pulses"):
+        pulse.root()
