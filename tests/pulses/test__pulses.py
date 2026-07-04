@@ -71,3 +71,30 @@ def test_pulses_taps():
         # fmt: on
         atol=1e-6,
     )
+
+
+@pytest.mark.parametrize("pulse", PULSES, ids=repr)
+@pytest.mark.parametrize("method", ["waveform", "autocorrelation"])
+def test_pulses_scalar_input_gives_scalar_output(pulse, method):
+    result = getattr(pulse, method)(0.5)
+    assert np.ndim(result) == 0
+
+
+@pytest.mark.parametrize("pulse", PULSES, ids=repr)
+@pytest.mark.parametrize("method", ["waveform", "autocorrelation"])
+def test_pulses_array_input_preserves_shape(pulse, method):
+    t = np.linspace(-2.0, 2.0, 7)
+    result = getattr(pulse, method)(t)
+    assert result.shape == t.shape
+    result_2d = getattr(pulse, method)(t.reshape(1, -1))
+    assert result_2d.shape == (1, t.size)
+
+
+@pytest.mark.parametrize("pulse", PULSES, ids=repr)
+def test_pulses_scalar_and_array_values_agree(pulse):
+    ts = [-1.0, -0.5, 0.0, 0.5, 1.0]
+    for method in ["waveform", "autocorrelation"]:
+        array_result = getattr(pulse, method)(ts)
+        for t, expected in zip(ts, array_result):
+            scalar_result = getattr(pulse, method)(t)
+            np.testing.assert_allclose(np.asarray(scalar_result), expected)

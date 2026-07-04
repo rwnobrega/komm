@@ -50,9 +50,12 @@ class RootRaisedCosinePulse(abc.Pulse):
                    -0.064])
         """
         α = self.rolloff
-        t = np.atleast_1d(np.asarray(t, dtype=float))
+        t = np.asarray(t, dtype=float)
+        scalar_input = t.ndim == 0
+        t = np.atleast_1d(t)
         if α == 0:
-            return np.sinc(t)[()] if t.ndim == 0 else np.sinc(t)
+            result = np.sinc(t)
+            return result[0] if scalar_input else result
         f1 = (1 - α) / 2
         f2 = (1 + α) / 2
         num = np.sin(2 * np.pi * f1 * t) + 4 * α * t * np.cos(2 * np.pi * f2 * t)
@@ -65,7 +68,7 @@ class RootRaisedCosinePulse(abc.Pulse):
         lhs = (1 + 2 / np.pi) * np.sin(np.pi / (4 * α))
         rhs = (1 - 2 / np.pi) * np.cos(np.pi / (4 * α))
         waveform[singularity] = α / np.sqrt(2) * (lhs + rhs)
-        return waveform[()] if t.ndim == 0 else waveform
+        return waveform[0] if scalar_input else waveform
 
     def spectrum(self, f: npt.ArrayLike) -> npt.NDArray[np.complexfloating]:
         r"""
