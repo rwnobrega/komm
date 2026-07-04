@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.30.0 (2026-07-03)
+
+### Added
+
+- Implemented [orthogonal](https://komm.dev/ref/OrthogonalConstellation), [biorthogonal](https://komm.dev/ref/BiorthogonalConstellation), and [simplex](https://komm.dev/ref/SimplexConstellation) constellations.
+
+- Implemented [cross-QAM](https://komm.dev/ref/CrossQAMConstellation) constellation.
+
+### Breaking changes
+
+- Corrected the noise variance used by `Constellation.posteriors` for complex constellations, to be consistent with the `GaussianChannel` convention. Soft-decision outputs (posteriors and L-values) for complex constellations now differ from previous versions; real constellations are unaffected.
+
+### Fixed
+
+- Fixed many issues found by Claude AI.
+
 ## v0.29.0 (2026-06-28)
 
 ### Added
