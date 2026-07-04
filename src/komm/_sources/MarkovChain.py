@@ -1,4 +1,5 @@
-from functools import cache, reduce
+from collections import deque
+from functools import cache
 from math import gcd
 
 import numpy as np
@@ -73,6 +74,19 @@ class MarkovChain:
         return self._transition_matrix.shape[0]
 
     @cache
+    def _accessible_states_from(self, state: int) -> frozenset[int]:
+        adjacency_matrix = self.transition_matrix > 0
+        accessible: set[int] = set()
+        stack: list[int] = [state]
+        while stack:
+            state = stack.pop()
+            if state in accessible:
+                continue
+            accessible.add(state)
+            neighbors = np.flatnonzero(adjacency_matrix[state])
+            stack.extend(int(j) for j in neighbors if j not in accessible)
+        return frozenset(accessible)
+
     def accessible_states_from(self, state: int) -> set[int]:
         r"""
         Computes the subset of states that are accessible from a given state. State $j \in \mathcal{S}$ is *accessible from* state $i \in \mathcal{S}$, denoted by $i \to j$, if there exists $n \geq 0$ such that $(P^n)_{i,j} > 0$.
@@ -102,19 +116,23 @@ class MarkovChain:
             >>> chain.accessible_states_from(2)
             {2}
         """
-        adjacency_matrix = self.transition_matrix > 0
-        accessible: set[int] = set()
-        stack: list[int] = [state]
-        while stack:
-            state = stack.pop()
-            if state in accessible:
-                continue
-            accessible.add(state)
-            neighbors = np.flatnonzero(adjacency_matrix[state])
-            stack.extend(int(j) for j in neighbors if j not in accessible)
-        return accessible
+        return set(self._accessible_states_from(state))
 
     @cache
+    def _communicating_classes(self) -> tuple[frozenset[int], ...]:
+        reach = [self._accessible_states_from(i) for i in range(self.num_states)]
+        classes: list[frozenset[int]] = []
+        visited: set[int] = set()
+        for i in range(self.num_states):
+            if i in visited:
+                continue
+            eq = frozenset(
+                j for j in range(self.num_states) if j in reach[i] and i in reach[j]
+            )
+            classes.append(eq)
+            visited.update(eq)
+        return tuple(classes)
+
     def communicating_classes(self) -> list[set[int]]:
         r"""
         Computes the communicating classes of the Markov chain. A *communicating class* is a subset of states such that every state in the class is accessible from every other state in the class. In other words, two states $i, j \in \mathcal{S}$ are in the same communicating class if and only if $i \to j$ and $j \to i$. The set of all communicating classes forms a partition of $\mathcal{S}$.
@@ -139,16 +157,7 @@ class MarkovChain:
             >>> chain.communicating_classes()
             [{0, 1}, {2}]
         """
-        reach = [self.accessible_states_from(i) for i in range(self.num_states)]
-        classes: list[set[int]] = []
-        visited: set[int] = set()
-        for i in range(self.num_states):
-            if i in visited:
-                continue
-            eq = {j for j in range(self.num_states) if j in reach[i] and i in reach[j]}
-            classes.append(eq)
-            visited.update(eq)
-        return classes
+        return [set(c) for c in self._communicating_classes()]
 
     @cache
     def is_irreducible(self) -> bool:
@@ -183,7 +192,7 @@ class MarkovChain:
             >>> chain.is_irreducible()
             True
         """
-        return len(self.communicating_classes()) == 1
+        return len(self._communicating_classes()) == 1
 
     @cache
     def stationary_distribution(self) -> Array1D[np.floating]:
@@ -234,6 +243,16 @@ class MarkovChain:
         return pi
 
     @cache
+    def _transient_states(self) -> frozenset[int]:
+        reach = [self._accessible_states_from(i) for i in range(self.num_states)]
+        transient: set[int] = set()
+        for i, r in enumerate(reach):
+            for j in r:
+                if i not in reach[j]:
+                    transient.add(i)
+                    break
+        return frozenset(transient)
+
     def transient_states(self) -> set[int]:
         r"""
         Returns the subset $\mathcal{T} \subseteq \mathcal{S}$ of transient states of the Markov chain. A state $i \in \mathcal{S}$ is *transient* if there exists a state $j \in \mathcal{S}$ such that $i \to j$ but $j \not\to i$.
@@ -258,16 +277,8 @@ class MarkovChain:
             >>> chain.transient_states()
             {0, 1}
         """
-        reach = [self.accessible_states_from(i) for i in range(self.num_states)]
-        transient: set[int] = set()
-        for i, r in enumerate(reach):
-            for j in r:
-                if i not in reach[j]:
-                    transient.add(i)
-                    break
-        return transient
+        return set(self._transient_states())
 
-    @cache
     def recurrent_states(self) -> set[int]:
         r"""
         Returns the subset $\mathcal{R} \subseteq \mathcal{S}$ of recurrent states of the Markov chain. A state $i \in \mathcal{S}$ is *recurrent* if it is not transient.
@@ -292,7 +303,7 @@ class MarkovChain:
             >>> chain.recurrent_states()
             {2}
         """
-        return set(range(self.num_states)) - self.transient_states()
+        return set(range(self.num_states)) - self._transient_states()
 
     @cache
     def is_regular(self) -> bool:
@@ -367,7 +378,6 @@ class MarkovChain:
             Pn = (Pn @ adjacency_matrix) > 0
         raise ValueError("chain is not regular")
 
-    @cache
     def absorbing_states(self) -> set[int]:
         r"""
         Returns the subset $\mathcal{A} \subseteq \mathcal{S}$ of absorbing states of the Markov chain. A state $i \in \mathcal{S}$ is *absorbing* if $P_{i,i} = 1$.
@@ -439,7 +449,7 @@ class MarkovChain:
         if not absorbing:
             return False
         for i in set(range(self.num_states)) - absorbing:
-            if not (absorbing & self.accessible_states_from(i)):
+            if not (absorbing & self._accessible_states_from(i)):
                 return False
         return True
 
@@ -560,18 +570,24 @@ class MarkovChain:
             >>> chain.period(0)
             3
         """
+        cls = next(c for c in self._communicating_classes() if state in c)
         adjacency_matrix = self.transition_matrix > 0
-        Pn = adjacency_matrix.copy()
-        periods: list[int] = []
-        for n in range(1, self.num_states + 1):
-            if Pn[state, state]:
-                periods.append(n)
-                if reduce(gcd, periods) == 1:
-                    return 1
-            Pn = (Pn @ adjacency_matrix) > 0
-        if not periods:
-            return 0
-        return reduce(gcd, periods)
+        levels: dict[int, int] = {state: 0}
+        queue: deque[int] = deque([state])
+        while queue:
+            u = queue.popleft()
+            for v in np.flatnonzero(adjacency_matrix[u]):
+                v = int(v)
+                if v in cls and v not in levels:
+                    levels[v] = levels[u] + 1
+                    queue.append(v)
+        d = 0
+        for u in cls:
+            for v in np.flatnonzero(adjacency_matrix[u]):
+                v = int(v)
+                if v in cls:
+                    d = gcd(d, levels[u] + 1 - levels[v])
+        return d
 
     @cache
     def is_aperiodic(self) -> bool:
@@ -673,7 +689,8 @@ class MarkovChain:
         P = self.transition_matrix
         state = initial_state
         output = [state]
-        while state in self.transient_states():
+        transient = self._transient_states()
+        while state in transient:
             state = self._rng.choice(self.num_states, p=P[state])
             output.append(state)
         return np.array(output)
