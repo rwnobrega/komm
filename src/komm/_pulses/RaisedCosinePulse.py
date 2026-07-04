@@ -45,6 +45,10 @@ class RaisedCosinePulse(abc.Pulse):
 
     rolloff: float = 1.0
 
+    def __post_init__(self) -> None:
+        if not 0 <= self.rolloff <= 1:
+            raise ValueError("'rolloff' must satisfy 0 <= rolloff <= 1")
+
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the raised-cosine pulse, it is given by

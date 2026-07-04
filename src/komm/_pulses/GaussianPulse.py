@@ -33,6 +33,10 @@ class GaussianPulse(abc.Pulse):
 
     half_power_bandwidth: float = 1.0
 
+    def __post_init__(self) -> None:
+        if not self.half_power_bandwidth > 0:
+            raise ValueError("'half_power_bandwidth' must be positive")
+
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
         For the Gaussian pulse, it is given by
