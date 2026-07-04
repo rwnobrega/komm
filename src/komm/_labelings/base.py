@@ -101,7 +101,7 @@ class Labeling(ABC):
         Returns:
             lvalues: The marginalized metrics over the bits of the labeling. Has the same shape as `metrics`, but with the last dimension changed by a factor of $m / 2^m$.
         """
-        m, M = self.num_bits, self.cardinality
+        M = self.cardinality
         metrics = np.asarray(metrics)
         if metrics.shape[-1] % M != 0:
             raise ValueError(
