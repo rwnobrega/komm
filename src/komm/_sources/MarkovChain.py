@@ -613,9 +613,9 @@ class MarkovChain:
         Returns random samples from the Markov chain.
 
         Parameters:
-            steps: The number of steps to simulate.
-
             initial_state: The state $i \in \mathcal{S}$ from which to start the simulation.
+
+            steps: The number of steps to simulate.
 
         Returns:
             output: A 1D-array of integers in $\mathcal{S}$ representing the states visited during the simulation. The length of the array is equal to `steps`.

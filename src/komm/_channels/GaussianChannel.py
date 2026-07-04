@@ -15,7 +15,7 @@ class GaussianChannel:
     $$
     where $X_n$ is the channel *input signal*, $Y_n$ is the channel *output signal*, and $Z_n$ is the *noise*, which is iid according to a Gaussian distribution with zero mean. The channel is characterized by the *noise power* (variance)
     $$
-        \sigma_Z^2 = \mathrm{E}[Z_n^2].
+        \sigma_Z^2 = \mathrm{E}[|Z_n|^2].
     $$
 
     The channel supports real- and complex-valued signals. In the complex case, the noise is circularly symmetric complex Gaussian, with the noise power

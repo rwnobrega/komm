@@ -191,7 +191,7 @@ def fourier_transform(
         axis: The axis along which to compute the Fourier transform. Default is the last axis.
 
     Returns:
-        spectrum: The spectrum correponding to the input waveform.
+        spectrum: The spectrum corresponding to the input waveform.
         frequencies: The corresponding frequency bins.
 
     Examples:

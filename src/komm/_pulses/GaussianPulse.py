@@ -79,7 +79,7 @@ class GaussianPulse(abc.Pulse):
         r"""
         For the Gaussian pulse, it is given by
         $$
-            R(\tau) = \frac{1}{2 \sqrt{\pi} \bar{B}} \mathbb{e}^{-(\pi \bar{B} \tau)^2}.
+            R(\tau) = \frac{1}{2 \sqrt{\pi} \bar{B}} \mathrm{e}^{-(\pi \bar{B} \tau)^2}.
         $$
 
         Examples:

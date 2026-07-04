@@ -18,7 +18,7 @@ def autocorrelation(
     $$
         R[\ell] = \sum_{n \in \mathbb{Z}} x[n] x^*_\ell[n],
     $$
-    where $x^\*\_\ell[n] = x^\*[n - \ell]$ is the complex conjugate of $x[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is even symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.
+    where $x^\*\_\ell[n] = x^\*[n - \ell]$ is the complex conjugate of $x[n]$ shifted by $\ell$ positions. The autocorrelation $R[\ell]$ is conjugate symmetric and satisfies $R[\ell] = 0$ for $|\ell| \geq L$, where $L$ is the length of the sequence.
 
     Parameters:
         sequence: A 1D-array containing the sequence $x[n]$, of length $L$.
@@ -59,7 +59,7 @@ def cyclic_autocorrelation(
     $$
         \tilde{R}[\ell] = \sum_{n \in [0:L)} x[n] \tilde{x}^*_\ell[n],
     $$
-    where $\tilde{x}^\*\_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is even symmetric and periodic with period $L$.
+    where $\tilde{x}^\*\_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is conjugate symmetric and periodic with period $L$.
 
     Parameters:
         sequence: A 1D-array containing the sequence $x[n]$, of length $L$.

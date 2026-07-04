@@ -88,7 +88,7 @@ class ReflectedRectangularLabeling(abc.Labeling):
     def inverse_mapping(self) -> dict[tuple[int, ...], int]:
         r"""
         Examples:
-            >>> labeling = komm.ReflectedRectangularLabeling(4  )
+            >>> labeling = komm.ReflectedRectangularLabeling(4)
             >>> labeling.inverse_mapping
             {(0, 0, 0, 0): 0,
              (0, 0, 0, 1): 1,

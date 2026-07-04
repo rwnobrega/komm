@@ -96,7 +96,7 @@ class Constellation(ABC, Generic[T]):
         r"""
         Computes the minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
         $$
-        d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathrm{x}_i - \mathrm{x}_j \rVert.
+        d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathbf{x}_i - \mathbf{x}_j \rVert.
         $$
         """
         distances = np.linalg.norm(self.matrix[:, np.newaxis] - self.matrix, axis=2)
