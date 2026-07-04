@@ -732,6 +732,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -826,6 +834,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../CrossQAMConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CrossQAMConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ASKConstellation/" class="md-nav__link">
         
   
@@ -871,6 +899,66 @@
   
   <span class="md-ellipsis">
     APSKConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OrthogonalConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OrthogonalConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BiorthogonalConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BiorthogonalConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimplexConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SimplexConstellation
   </span>
   
 
@@ -1462,8 +1550,6 @@
       
         
       
-        
-      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1498,71 +1584,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
+      <a href="../BCJRDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ExhaustiveSearchDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../SyndromeTableDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SyndromeTableDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../SingleParityCheckDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SingleParityCheckDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../WagnerDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    WagnerDecoder
+    BCJRDecoder
   </span>
   
 
@@ -1583,6 +1609,26 @@
   
   <span class="md-ellipsis">
     BerlekampDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ExhaustiveSearchDecoder
   </span>
   
 
@@ -1638,11 +1684,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../BCJRDecoder/" class="md-nav__link">
+      <a href="../SyndromeTableDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    BCJRDecoder
+    SyndromeTableDecoder
   </span>
   
 
@@ -1663,6 +1709,26 @@
   
   <span class="md-ellipsis">
     ViterbiDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WagnerDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WagnerDecoder
   </span>
   
 
@@ -3574,7 +3640,7 @@ $$
 $$
 where $X_n$ is the channel <em>input signal</em>, $Y_n$ is the channel <em>output signal</em>, and $Z_n$ is the <em>noise</em>, which is <abbr title="independent and identically distributed">iid</abbr> according to a Gaussian distribution with zero mean. The channel is characterized by the <em>noise power</em> (variance)
 $$
-    \sigma_Z^2 = \mathrm{E}[Z_n^2].
+    \sigma_Z^2 = \mathrm{E}[|Z_n|^2].
 $$</p>
 <p>The channel supports real- and complex-valued signals. In the complex case, the noise is circularly symmetric complex Gaussian, with the noise power
 equally divided between the real and imaginary parts.</p>

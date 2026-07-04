@@ -685,6 +685,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -889,6 +897,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../CrossQAMConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CrossQAMConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ASKConstellation/" class="md-nav__link">
         
   
@@ -934,6 +962,66 @@
   
   <span class="md-ellipsis">
     APSKConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OrthogonalConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OrthogonalConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BiorthogonalConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BiorthogonalConstellation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimplexConstellation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SimplexConstellation
   </span>
   
 
@@ -1525,8 +1613,6 @@
       
         
       
-        
-      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1561,71 +1647,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
+      <a href="../BCJRDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ExhaustiveSearchDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../SyndromeTableDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SyndromeTableDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../SingleParityCheckDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SingleParityCheckDecoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../WagnerDecoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    WagnerDecoder
+    BCJRDecoder
   </span>
   
 
@@ -1646,6 +1672,26 @@
   
   <span class="md-ellipsis">
     BerlekampDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ExhaustiveSearchDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ExhaustiveSearchDecoder
   </span>
   
 
@@ -1701,11 +1747,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../BCJRDecoder/" class="md-nav__link">
+      <a href="../SyndromeTableDecoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    BCJRDecoder
+    SyndromeTableDecoder
   </span>
   
 
@@ -1726,6 +1772,26 @@
   
   <span class="md-ellipsis">
     ViterbiDecoder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WagnerDecoder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    WagnerDecoder
   </span>
   
 
@@ -3998,7 +4064,7 @@ $$</p>
 
         <p>Computes the minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
 $$
-d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathrm{x}_i - \mathrm{x}_j \rVert.
+d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathbf{x}_i - \mathbf{x}_j \rVert.
 $$</p>
 <p>For the <abbr title="pulse-amplitude modulation">PAM</abbr> constellation, the minimum distance is given by
 $$
@@ -4202,6 +4268,7 @@ $$</p>
   <div class="doc doc-contents ">
 
         <p>Returns the posterior probabilities of each constellation symbol given received points, the noise power, and prior probabilities.</p>
+<p>The posteriors are computed under the <a href="/ref/GaussianChannel">Gaussian channel</a> model $Y = X + Z$, assuming that each received point is the transmitted symbol corrupted by additive Gaussian noise of power $\sigma_Z^2$. For real-valued constellations the noise is real Gaussian with variance $\sigma_Z^2$; for complex-valued constellations it is circularly symmetric complex Gaussian, with the noise power equally divided between the real and imaginary parts, i.e., $\mathrm{E}[\mathrm{Re}\{Z_n\}^2] = \mathrm{E}[\mathrm{Im}\{Z_n\}^2] = \sigma_Z^2/2$.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
