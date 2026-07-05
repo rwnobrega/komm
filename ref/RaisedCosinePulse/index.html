@@ -14,7 +14,7 @@
         <link rel="prev" href="../SincPulse/">
       
       
-        <link rel="next" href="../RootRaisedCosinePulse/">
+        <link rel="next" href="../BeaulieuPulse/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -2245,6 +2245,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    root()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2260,11 +2267,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../RootRaisedCosinePulse/" class="md-nav__link">
+      <a href="../BeaulieuPulse/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    RootRaisedCosinePulse
+    BeaulieuPulse
   </span>
   
 
@@ -3692,6 +3699,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#root" class="md-nav__link">
+    root()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3737,7 +3751,7 @@ where $f_1 = (1 - \alpha) / 2$ and $f_2 = (1 + \alpha) / 2$.</p>
   <img alt="Raised-cosine pulse with roll-off factor 0.75." src="/fig/pulse_raised_cosine_75.svg" />
   </span></p>
 </div>
-<p>For more details, see <a href="https://en.wikipedia.org/wiki/Raised-cosine_filter">Wikipedia: Raised-cosine filter</a>.</p>
+<p>For more details, see <a href="https://en.wikipedia.org/wiki/Raised-cosine_filter">Wikipedia: Raised-cosine filter</a> and <a href="https://en.wikipedia.org/wiki/Root-raised-cosine_filter">Wikipedia: Root-raised-cosine filter</a>.</p>
 
 
 <details class="notes" open>
@@ -4041,6 +4055,47 @@ $$</p>
 
 
 
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="root" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">root</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Returns the square-root version of the pulse, defined as the pulse whose spectrum is given by the square root of the spectrum of the original pulse. This method is only implemented for Nyquist pulses.</p>
+<p>For the raised-cosine pulse, the square-root version is known as the <em>root-raised-cosine (RRC)</em> pulse, whose waveform is given by
+$$
+  p(t) = \frac{\sin ( 2 \pi f_1 t ) + 4 \alpha t \cos ( 2 \pi f_2 t )}{\pi t ( 1 - (4 \alpha t)^2 )}.
+$$</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">RaisedCosinePulse</span><span class="p">(</span><span class="n">rolloff</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pulse</span><span class="o">.</span><span class="n">waveform</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([-0.064,  0.238,  0.622,  0.943,  1.068,  0.943,  0.622,  0.238,</span>
+<span class="go">       -0.064])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">spectrum</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0.   , 0.   , 0.707, 1.   , 1.   , 1.   , 0.707, 0.   , 0.   ])</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
   </div>
 
     </div>
@@ -4084,13 +4139,13 @@ $$</p>
         
         
           
-          <a href="../RootRaisedCosinePulse/" class="md-footer__link md-footer__link--next" aria-label="Next: RootRaisedCosinePulse" rel="next">
+          <a href="../BeaulieuPulse/" class="md-footer__link md-footer__link--next" aria-label="Next: BeaulieuPulse" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                RootRaisedCosinePulse
+                BeaulieuPulse
               </div>
             </div>
             <div class="md-footer__button md-icon">
