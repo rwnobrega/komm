@@ -67,6 +67,7 @@ Pulse formatting:
   - ManchesterPulse
   - SincPulse
   - RaisedCosinePulse
+  - BeaulieuPulse
   - GaussianPulse
 Sequences:
   Binary sequences:

@@ -95,6 +95,7 @@ from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
 
 # Pulses
+from ._pulses.BeaulieuPulse import BeaulieuPulse
 from ._pulses.GaussianPulse import GaussianPulse
 from ._pulses.ManchesterPulse import ManchesterPulse
 from ._pulses.Pulse import Pulse
@@ -214,6 +215,7 @@ __all__ = [
     "TunstallCode",
     "VariableToFixedCode",
     # _pulses
+    "BeaulieuPulse",
     "GaussianPulse",
     "ManchesterPulse",
     "Pulse",

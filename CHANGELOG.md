@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Implemented [Beaulieu pulse](https://komm.dev/ref/BeaulieuPulse), also known as flipped-exponential (FE) or "better than raised-cosine" (BTRC) pulse.
+
 ### Breaking changes
 
 - Added method `root` to `RaisedCosinePulse` and `SincPulse`, which returns the respective square-root version. Removed `RootRaisedCosinePulse`. For example, instead of `komm.RootRaisedCosinePulse(0.25)`, use `komm.RaisedCosinePulse(0.25).root()`.

@@ -17,6 +17,14 @@ PULSES = [
     komm.RaisedCosinePulse(rolloff=0.5).root(),
     komm.RaisedCosinePulse(rolloff=1.0).root(),
     komm.RaisedCosinePulse().root(),
+    komm.BeaulieuPulse(rolloff=0.25),
+    komm.BeaulieuPulse(rolloff=0.5),
+    komm.BeaulieuPulse(rolloff=1.0),
+    komm.BeaulieuPulse(),
+    komm.BeaulieuPulse(rolloff=0.25).root(),
+    komm.BeaulieuPulse(rolloff=0.5).root(),
+    komm.BeaulieuPulse(rolloff=1.0).root(),
+    komm.BeaulieuPulse().root(),
     komm.GaussianPulse(0.3),
     komm.GaussianPulse(0.75),
     komm.GaussianPulse(),
@@ -35,7 +43,20 @@ def test_pulses_energy_vs_autocorrelation(pulse: komm.abc.Pulse):
     np.testing.assert_allclose([pulse.energy()], pulse.autocorrelation([0.0]))
 
 
-@pytest.mark.parametrize("pulse", PULSES, ids=repr)
+def involves_beaulieu(pulse: komm.abc.Pulse) -> bool:
+    return isinstance(pulse, komm.BeaulieuPulse) or isinstance(
+        getattr(pulse, "base_pulse", None), komm.BeaulieuPulse
+    )
+
+
+# The spectrum of the Beaulieu pulse has slope discontinuities at |f| = f_1 and
+# |f| = f_2, so the autocorrelations of the pulse and of its square-root
+# version decay only as 1/τ². The windowed Fourier transform below (|τ| ≤ 20)
+# is then not accurate enough for these pulses; the identity is instead
+# verified without truncation error in test_beaulieu_pulse.py.
+@pytest.mark.parametrize(
+    "pulse", [p for p in PULSES if not involves_beaulieu(p)], ids=repr
+)
 def test_pulses_energy_spectral_density_vs_autocorrelation(pulse: komm.abc.Pulse):
     τs = np.linspace(-20.0, 20.0, 10001)
     fs = np.linspace(-2.0, 2.0, 101)
