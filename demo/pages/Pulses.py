@@ -72,8 +72,8 @@ tab_configs = [
     {
         "name": "Root-raised-cosine",
         "doc_title": "Root-raised-cosine pulse",
-        "doc_ref": "RootRaisedCosinePulse",
-        "pulse_class": komm.RootRaisedCosinePulse,
+        "doc_ref": "RaisedCosinePulse#root",
+        "pulse_class": lambda rolloff: komm.RaisedCosinePulse(rolloff).root(),
         "ht_axis": (-8.0, 8.0, -0.3, 1.3),
         "hf_axis": (-1.1, 1.1, -0.1, 1.1),
         "R_axis": (-8.0, 8.0, -0.3, 1.1),
