@@ -70,3 +70,14 @@ def validate_integer_range(
     if not (np.all(value >= low) and np.all(value < high)):
         raise ValueError(f"input contains invalid entries (expected in [{low}:{high}))")
     return value
+
+
+def validate_integer_min(
+    value: npt.ArrayLike,
+    *,
+    low: int = 0,
+) -> npt.NDArray[np.integer]:
+    value = np.asarray(value, dtype=int)
+    if not np.all(value >= low):
+        raise ValueError(f"input contains invalid entries (expected at least {low})")
+    return value
