@@ -12,7 +12,7 @@ class UnaryCode(abc.IntegerCode):
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encode the input integer array. The integers must be non-negative.
+        For the unary code, the integers must be non-negative.
 
         Examples:
             >>> code = komm.UnaryCode()

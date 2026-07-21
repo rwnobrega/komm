@@ -14,7 +14,7 @@ class FibonacciCode(abc.IntegerCode):
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encode the input integer array. The integers must be positive.
+        For the Fibonacci code, the integers must be positive.
 
         Examples:
             >>> code = komm.FibonacciCode()
