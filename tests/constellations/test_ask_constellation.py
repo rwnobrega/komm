@@ -103,3 +103,12 @@ def test_ask_closest_indices(order, indices):
     ask = komm.ASKConstellation(order)
     received = [-0.5, 0.25, 0.4, 0.65, 2.1, 10]
     assert np.allclose(ask.closest_indices(received), indices)
+
+
+@pytest.mark.parametrize("phase_offset", [0.5, 0.75, 1 / 3])
+def test_ask_no_negative_zero(phase_offset):
+    ask = komm.ASKConstellation(4, phase_offset=phase_offset)
+    origin = ask.matrix[0]
+    assert not np.any(np.signbit(origin.real))
+    assert not np.any(np.signbit(origin.imag))
+    np.testing.assert_allclose(np.angle(origin), 0.0)

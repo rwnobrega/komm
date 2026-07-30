@@ -72,6 +72,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         M, A, φ = self._order, self._base_amplitude, self._phase_offset
         i = np.arange(M).reshape(-1, 1)
         matrix = A * i * np.exp(2j * np.pi * φ)
+        matrix += 0.0  # to avoid -0.0
         return matrix
 
     @property

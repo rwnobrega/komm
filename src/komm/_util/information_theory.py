@@ -42,13 +42,14 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating
     pmf = validate_pmf(pmf)
     validate_log_base(base)
     pmf = pmf[pmf > 0]
+    # We compute log(1/p) rather than -log(p) to avoid -0.0.
     if base == "e":
-        log_pmf = np.log(pmf)
+        log_recip_pmf = np.log(1 / pmf)
     elif base == 2.0:
-        log_pmf = np.log2(pmf)
+        log_recip_pmf = np.log2(1 / pmf)
     else:
-        log_pmf = np.log(pmf) / np.log(base)
-    return -np.dot(pmf, log_pmf)
+        log_recip_pmf = np.log(1 / pmf) / np.log(base)
+    return np.dot(pmf, log_recip_pmf)
 
 
 def binary_entropy(p: float) -> float:

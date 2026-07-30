@@ -14,4 +14,5 @@ def tri(x: npt.ArrayLike) -> npt.NDArray[np.floating]:
 
 def raised_cosine(x: npt.ArrayLike, α: float) -> npt.NDArray[np.floating]:
     x = np.asarray(x)
-    return np.pi / 4 * np.sinc(x) * (np.sinc(α * x + 0.5) + np.sinc(α * x - 0.5))
+    # The two sincs may cancel exactly, so we add 0.0 to avoid -0.0.
+    return np.pi / 4 * np.sinc(x) * (np.sinc(α * x + 0.5) + np.sinc(α * x - 0.5)) + 0.0
