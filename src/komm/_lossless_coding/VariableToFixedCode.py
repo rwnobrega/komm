@@ -308,7 +308,7 @@ class VariableToFixedCode:
         """
         return is_prefix_free(self.sourcewords)
 
-    def rate(self, pmf: npt.ArrayLike) -> np.floating:
+    def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the expected rate $R$ of the code, considering a given (first-order) pmf $p$ over $\mathcal{X}$. This quantity is given by
         $$
@@ -325,13 +325,14 @@ class VariableToFixedCode:
         Examples:
             >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
             >>> code.rate([2/3, 1/3])
-            np.float64(1.3846153846153846)
+            1.3846153846153846
         """
         n = self.target_block_size
         pmf = validate_pmf(pmf)
-        probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
         lengths = [len(x) for x in self.sourcewords]
-        return n / np.dot(lengths, probabilities)
+        probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
+        rate = n / np.dot(lengths, probabilities)
+        return float(rate)
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""

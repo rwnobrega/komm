@@ -38,7 +38,7 @@ class TunstallCode(VariableToFixedCode):
          (0, 1): (1,),
          (1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(2.0)
+        2.0
 
         >>> code = komm.TunstallCode(pmf, 3)
         >>> code.dec_mapping
@@ -50,7 +50,7 @@ class TunstallCode(VariableToFixedCode):
          (1, 0, 1): (1,),
          (1, 1, 0): (2,)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(1.2295081967213108)
+        1.2295081967213108
     """
 
     def __init__(

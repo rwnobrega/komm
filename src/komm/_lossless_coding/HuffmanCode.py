@@ -38,7 +38,7 @@ class HuffmanCode(FixedToVariableCode):
          (1,): (1, 0),
          (2,): (1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(1.2)
+        1.2
 
         >>> code = komm.HuffmanCode(pmf, 2)
         >>> code.enc_mapping
@@ -52,7 +52,7 @@ class HuffmanCode(FixedToVariableCode):
          (2, 1): (1, 0, 0, 1, 1, 0),
          (2, 2): (1, 0, 0, 1, 1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(0.96)
+        0.96
     """
 
     def __init__(

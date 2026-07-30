@@ -34,7 +34,7 @@ class FanoCode(FixedToVariableCode):
          (1,): (1, 0),
          (2,): (1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(1.2)
+        1.2
 
         >>> code = komm.FanoCode(pmf, 2)
         >>> code.enc_mapping
@@ -48,7 +48,7 @@ class FanoCode(FixedToVariableCode):
          (2, 1): (1, 1, 1, 1, 1, 0),
          (2, 2): (1, 1, 1, 1, 1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        np.float64(0.96)
+        0.96
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):

@@ -293,25 +293,26 @@ class FixedToVariableCode:
             ...     codewords=[(0, 0, 0), (0, 0, 1), (0, 1, 0), (1, 0, 1), (1, 1)],
             ... )
             >>> code.kraft_parameter()
-            np.float64(0.75)
+            0.75
 
             >>> code = komm.FixedToVariableCode.from_codewords(
             ...     source_cardinality=4,
             ...     codewords=[(0,), (1, 0), (1, 1, 0), (1, 1, 1)],
             ... )
             >>> code.kraft_parameter()
-            np.float64(1.0)
+            1.0
 
             >>> code = komm.FixedToVariableCode.from_codewords(
             ...     source_cardinality=4,
             ...     codewords=[(0, 0), (1, 1), (0,), (1,)],
             ... )
             >>> code.kraft_parameter()
-            np.float64(1.5)
+            1.5
         """
         calY = self.target_cardinality
         lengths = self._codewords_lengths
-        return np.sum(np.float_power(calY, -lengths))
+        kraft_parameter = np.sum(np.float_power(calY, -lengths))
+        return float(kraft_parameter)
 
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
@@ -330,13 +331,14 @@ class FixedToVariableCode:
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
             >>> code.rate([1/2, 1/4, 1/4])
-            np.float64(1.5)
+            1.5
         """
         k = self.source_block_size
         pmf = validate_pmf(pmf)
-        probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
         lengths = [len(y) for y in self.codewords]
-        return np.dot(lengths, probabilities) / k
+        probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
+        rate = np.dot(lengths, probabilities) / k
+        return float(rate)
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
