@@ -135,7 +135,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
             return np.zeros((1,), dtype=complex)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the APSK constellation is given by
         $$
@@ -145,19 +145,19 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.APSKConstellation(orders=(4, 4), amplitudes=(1.0, 2.0))
             >>> const.mean_energy()
-            np.float64(2.5)
+            2.5
         """
         if priors is None:
             Ms, As = self._orders, self._amplitudes
-            return np.sum([M * A**2 for (M, A) in zip(Ms, As)]) / self.order
+            return sum(M * A**2 for (M, A) in zip(Ms, As)) / self.order
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         Examples:
             >>> const = komm.APSKConstellation(orders=(4, 4), amplitudes=(1.0, 2.0))
             >>> const.minimum_distance()
-            np.float64(1.0)
+            1.0
         """
         return super().minimum_distance()
 

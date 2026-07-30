@@ -1,4 +1,5 @@
 from functools import cache
+from math import sqrt
 
 import numpy as np
 import numpy.typing as npt
@@ -40,7 +41,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, amplitude: float = 1.0) -> None:
         self._order = order
-        self._amplitude = np.float64(amplitude)
+        self._amplitude = float(amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -103,7 +104,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
             return np.full(M, A / M)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the orthogonal constellation is given by
         $$
@@ -113,13 +114,13 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.OrthogonalConstellation(4)
             >>> const.mean_energy()
-            np.float64(1.0)
+            1.0
         """
         if priors is None:
             return self._amplitude**2
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the orthogonal constellation, the minimum distance is given by
         $$
@@ -129,9 +130,9 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.OrthogonalConstellation(4)
             >>> const.minimum_distance()  # doctest: +FLOAT_CMP
-            np.float64(1.4142135623730951)
+            1.4142135623730951
         """
-        return self._amplitude * np.sqrt(2)
+        return self._amplitude * sqrt(2)
 
     def indices_to_symbols(self, indices: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

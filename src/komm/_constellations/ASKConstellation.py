@@ -46,8 +46,8 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         self, order: int, base_amplitude: float = 1.0, phase_offset: float = 0.0
     ) -> None:
         self._order = order
-        self._base_amplitude = np.float64(base_amplitude)
-        self._phase_offset = np.float64(phase_offset)
+        self._base_amplitude = float(base_amplitude)
+        self._phase_offset = float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -115,7 +115,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
             return np.array([m], dtype=complex)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the ASK constellation is given by
         $$
@@ -125,14 +125,14 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.ASKConstellation(4)
             >>> const.mean_energy()
-            np.float64(3.5)
+            3.5
         """
         if priors is None:
             M, A = self._order, self._base_amplitude
             return A**2 * (M - 1) * (2 * M - 1) / 6
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the ASK constellation, the minimum distance is given by
         $$
@@ -142,7 +142,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.ASKConstellation(4)
             >>> const.minimum_distance()
-            np.float64(1.0)
+            1.0
         """
         return self._base_amplitude
 

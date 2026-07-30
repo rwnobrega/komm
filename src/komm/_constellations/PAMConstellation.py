@@ -34,7 +34,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, delta: float = 2.0) -> None:
         self._order = order
-        self._delta = np.float64(delta)
+        self._delta = float(delta)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -97,7 +97,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
             return np.zeros((1,), dtype=float)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the PAM constellation is given by
         $$
@@ -107,14 +107,14 @@ class PAMConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.PAMConstellation(4)
             >>> const.mean_energy()
-            np.float64(5.0)
+            5.0
         """
         if priors is None:
             M, δ = self._order, self._delta
-            return np.float64(δ**2 * (M**2 - 1) / 12)
+            return δ**2 * (M**2 - 1) / 12
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the PAM constellation, the minimum distance is given by
         $$
@@ -124,7 +124,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.PAMConstellation(4)
             >>> const.minimum_distance()
-            np.float64(2.0)
+            2.0
         """
         return self._delta
 

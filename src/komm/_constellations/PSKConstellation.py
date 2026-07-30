@@ -1,4 +1,5 @@
 from functools import cache
+from math import pi, sin
 
 import numpy as np
 import numpy.typing as npt
@@ -42,8 +43,8 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
         self, order: int, amplitude: float = 1.0, phase_offset: float = 0.0
     ) -> None:
         self._order = order
-        self._amplitude = np.float64(amplitude)
-        self._phase_offset = np.float64(phase_offset)
+        self._amplitude = float(amplitude)
+        self._phase_offset = float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -109,7 +110,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
             return np.zeros((1,), dtype=complex)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the PSK constellation is given by
         $$
@@ -119,14 +120,14 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.PSKConstellation(4)
             >>> const.mean_energy()
-            np.float64(1.0)
+            1.0
         """
         if priors is None:
             A = self._amplitude
             return A**2
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the PSK constellation, the minimum distance is given by
         $$
@@ -136,10 +137,10 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.PSKConstellation(4)
             >>> const.minimum_distance()  # doctest: +FLOAT_CMP
-            np.float64(1.414213562373095)
+            1.414213562373095
         """
         M, A = self._order, self._amplitude
-        return 2 * A * np.sin(np.pi / M)
+        return 2 * A * sin(pi / M)
 
     def indices_to_symbols(
         self, indices: npt.ArrayLike

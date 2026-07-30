@@ -80,21 +80,21 @@ class Constellation(abc.Constellation[T]):
         """
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         Examples:
             >>> const = komm.Constellation([[0, 4], [-2, 2], [2, 2], [1, 1], [0, -2]])
             >>> const.mean_energy()  # doctest: +FLOAT_CMP
-            np.float64(7.6)
+            7.6
         """
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         Examples:
             >>> const = komm.Constellation([[0, 4], [-2, 2], [2, 2], [1, 1], [0, -2]])
             >>> const.minimum_distance()  # doctest: +FLOAT_CMP
-            np.float64(1.4142135623730951)
+            1.4142135623730951
         """
         return super().minimum_distance()
 

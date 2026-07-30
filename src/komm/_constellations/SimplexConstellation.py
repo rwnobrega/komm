@@ -1,4 +1,5 @@
 from functools import cache
+from math import sqrt
 
 import numpy as np
 import numpy.typing as npt
@@ -40,7 +41,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, base_amplitude: float = 1.0) -> None:
         self._order = order
-        self._base_amplitude = np.float64(base_amplitude)
+        self._base_amplitude = float(base_amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -102,7 +103,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
             return np.zeros(self._order)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the simplex constellation is given by
         $$
@@ -112,14 +113,14 @@ class SimplexConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.SimplexConstellation(4)
             >>> const.mean_energy()
-            np.float64(0.75)
+            0.75
         """
         if priors is None:
             M, A = self._order, self._base_amplitude
             return A**2 * (M - 1) / M
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the simplex constellation, the minimum distance is given by
         $$
@@ -129,10 +130,10 @@ class SimplexConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.SimplexConstellation(4)
             >>> const.minimum_distance()  # doctest: +FLOAT_CMP
-            np.float64(1.4142135623730951)
+            1.4142135623730951
         """
         A = self._base_amplitude
-        return A * np.sqrt(2)
+        return A * sqrt(2)
 
     def indices_to_symbols(self, indices: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

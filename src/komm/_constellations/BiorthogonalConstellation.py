@@ -1,4 +1,5 @@
 from functools import cache
+from math import sqrt
 
 import numpy as np
 import numpy.typing as npt
@@ -45,7 +46,7 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
         if order % 2 != 0:
             raise ValueError(f"'order' must be even (got {order})")
         self._order = order
-        self._amplitude = np.float64(amplitude)
+        self._amplitude = float(amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -109,7 +110,7 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
             return np.zeros(self._order // 2)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the biorthogonal constellation is given by
         $$
@@ -119,13 +120,13 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.BiorthogonalConstellation(4)
             >>> const.mean_energy()
-            np.float64(1.0)
+            1.0
         """
         if priors is None:
             return self._amplitude**2
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the biorthogonal constellation, the minimum distance is given by
         $$
@@ -138,14 +139,14 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
         Examples:
             >>> const = komm.BiorthogonalConstellation(4)
             >>> const.minimum_distance()  # doctest: +FLOAT_CMP
-            np.float64(1.4142135623730951)
+            1.4142135623730951
 
             >>> const = komm.BiorthogonalConstellation(2)
             >>> const.minimum_distance()
-            np.float64(2.0)
+            2.0
         """
         A = self._amplitude
-        return 2 * A if self._order == 2 else A * np.sqrt(2)
+        return 2 * A if self._order == 2 else A * sqrt(2)
 
     def indices_to_symbols(self, indices: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

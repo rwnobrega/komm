@@ -141,7 +141,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
             return np.zeros((1,), dtype=complex)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the QAM constellation is given by
         $$
@@ -155,15 +155,15 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.QAMConstellation(16)
             >>> const.mean_energy()
-            np.float64(10.0)
+            10.0
         """
         if priors is None:
             Mi, Mq = self._orders
             δi, δq = self._deltas
-            return np.float64(δi**2 * (Mi**2 - 1) / 12 + δq**2 * (Mq**2 - 1) / 12)
+            return δi**2 * (Mi**2 - 1) / 12 + δq**2 * (Mq**2 - 1) / 12
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the QAM constellation, the minimum distance is given by
         $$
@@ -173,9 +173,9 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.QAMConstellation(16)
             >>> const.minimum_distance()
-            np.float64(2.0)
+            2.0
         """
-        return np.min(self._deltas)
+        return min(self._deltas)
 
     def indices_to_symbols(
         self, indices: npt.ArrayLike

@@ -75,7 +75,7 @@ class Constellation(ABC, Generic[T]):
         return np.dot(priors, self.matrix)
 
     @abstractmethod
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         Computes the mean energy $E$ of the constellation given prior probabilities $p_i$ of the constellation symbols. It is given by
         $$
@@ -89,10 +89,11 @@ class Constellation(ABC, Generic[T]):
             mean_energy: The mean energy $E$ of the constellation.
         """
         priors = self._validate_priors(priors)
-        return priors @ np.sum(np.abs(self.matrix) ** 2, axis=1)
+        mean_energy = priors @ np.sum(np.abs(self.matrix) ** 2, axis=1)
+        return float(mean_energy)
 
     @abstractmethod
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         Computes the minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
         $$
@@ -101,7 +102,8 @@ class Constellation(ABC, Generic[T]):
         """
         distances = np.linalg.norm(self.matrix[:, np.newaxis] - self.matrix, axis=2)
         np.fill_diagonal(distances, np.inf)  # Ignore self-distances
-        return np.min(distances)
+        minimum_distance = np.min(distances)
+        return float(minimum_distance)
 
     @abstractmethod
     def indices_to_symbols(self, indices: npt.ArrayLike) -> npt.NDArray[T]:

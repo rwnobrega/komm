@@ -38,8 +38,8 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
                 " (e.g., 32, 128, 512)"
             )
         self._order = order
-        self._delta = np.float64(delta)
-        self._phase_offset = np.float64(phase_offset)
+        self._delta = float(delta)
+        self._phase_offset = float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -136,7 +136,7 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
             return np.zeros((1,), dtype=complex)
         return super().mean(priors)
 
-    def mean_energy(self, priors: npt.ArrayLike | None = None) -> np.floating:
+    def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
         r"""
         For uniform priors, the mean energy of the cross-QAM constellation is given by
         $$
@@ -146,14 +146,14 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.CrossQAMConstellation(32)
             >>> const.mean_energy()
-            np.float64(20.0)
+            20.0
         """
         if priors is None:
             M, δ = self._order, self._delta
-            return np.float64(δ**2 * (31 * M - 32) / 192)
+            return δ**2 * (31 * M - 32) / 192
         return super().mean_energy(priors)
 
-    def minimum_distance(self) -> np.floating:
+    def minimum_distance(self) -> float:
         r"""
         For the cross-QAM constellation, the minimum distance is given by
         $$
@@ -163,7 +163,7 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
         Examples:
             >>> const = komm.CrossQAMConstellation(32)
             >>> const.minimum_distance()
-            np.float64(2.0)
+            2.0
         """
         return self._delta
 
