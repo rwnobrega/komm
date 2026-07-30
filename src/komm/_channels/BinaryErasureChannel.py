@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from math import e, log2
 from typing import Literal
 
 import numpy as np
@@ -8,7 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_pmf, validate_probability
+from .._util.validators import validate_log_base, validate_pmf, validate_probability
 
 
 @dataclass
@@ -76,12 +77,14 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
-            np.float64(0.7942195631902467)
+            0.7942195631902467
         """
         input_pmf = validate_pmf(input_pmf)
+        base = validate_log_base(base)
+        base = e if base == "e" else base
         epsilon = self.erasure_probability
         pi = input_pmf[1]
-        return (1.0 - epsilon) * binary_entropy(pi) / np.log2(base)
+        return (1.0 - epsilon) * binary_entropy(pi) / log2(base)
 
     def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
@@ -94,9 +97,11 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> bec = komm.BinaryErasureChannel(0.2)
             >>> bec.capacity()
-            np.float64(0.8)
+            0.8
         """
-        return (1.0 - self.erasure_probability) / np.log2(base)
+        base = validate_log_base(base)
+        base = e if base == "e" else base
+        return (1.0 - self.erasure_probability) / log2(base)
 
     def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

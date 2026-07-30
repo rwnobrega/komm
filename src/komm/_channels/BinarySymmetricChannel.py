@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from math import e, log2
 from typing import Literal
 
 import numpy as np
@@ -8,7 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_pmf, validate_probability
+from .._util.validators import validate_log_base, validate_pmf, validate_probability
 
 
 @dataclass
@@ -76,12 +77,14 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
             >>> bsc.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
-            np.float64(0.2754734936803773)
+            0.2754734936803773
         """
         input_pmf = validate_pmf(input_pmf)
+        base = validate_log_base(base)
+        base = e if base == "e" else base
         p = self.crossover_probability
         pi = input_pmf[1]
-        return (binary_entropy(p + pi - 2 * p * pi) - binary_entropy(p)) / np.log2(base)
+        return (binary_entropy(p + pi - 2 * p * pi) - binary_entropy(p)) / log2(base)
 
     def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
@@ -94,10 +97,12 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> bsc = komm.BinarySymmetricChannel(0.2)
             >>> bsc.capacity()  # doctest: +FLOAT_CMP
-            np.float64(0.2780719051126377)
+            0.2780719051126377
         """
         p = self.crossover_probability
-        return (1.0 - binary_entropy(p)) / np.log2(base)
+        base = validate_log_base(base)
+        base = e if base == "e" else base
+        return (1.0 - binary_entropy(p)) / log2(base)
 
     def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

@@ -60,11 +60,11 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
             ...     [0.5, 0.05, 0.45],
             ... ])
             >>> dmc.mutual_information([1/3, 1/3, 1/3])  # doctest: +FLOAT_CMP
-            np.float64(0.12381109879798724)
+            0.12381109879798724
             >>> dmc.mutual_information([1/3, 1/3, 1/3], base=3)  # doctest: +FLOAT_CMP
-            np.float64(0.07811610605402552)
+            0.07811610605402552
             >>> dmc.mutual_information([1/3, 1/3, 1/3], base='e')  # doctest: +FLOAT_CMP
-            np.float64(0.08581931405385379)
+            0.08581931405385379
         """
         return mutual_information(input_pmf, self.transition_matrix, base)
 
@@ -83,11 +83,11 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
             ...     [0.5, 0.05, 0.45],
             ... ])
             >>> dmc.capacity()  # doctest: +FLOAT_CMP
-            np.float64(0.1616318609548566)
+            0.1616318609548566
             >>> dmc.capacity(base=3)  # doctest: +FLOAT_CMP
-            np.float64(0.10197835020154389)
+            0.10197835020154389
             >>> dmc.capacity(base='e')  # doctest: +FLOAT_CMP
-            np.float64(0.11203466870951606)
+            0.11203466870951606
         """
         initial_guess = np.ones(self.input_cardinality) / self.input_cardinality
         input_pmf = arimoto_blahut(

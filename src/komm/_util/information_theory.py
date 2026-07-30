@@ -13,7 +13,7 @@ from .validators import (
 )
 
 
-def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating:
+def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> float:
     r"""
     Computes the entropy of a random variable with a given pmf. Let $X$ be a random variable with pmf $p_X$ and alphabet $\mathcal{X}$. Its entropy is given by
     $$
@@ -31,13 +31,13 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating
 
     Examples:
         >>> komm.entropy([1/4, 1/4, 1/4, 1/4])  # doctest: +FLOAT_CMP
-        np.float64(2.0)
+        2.0
 
         >>> komm.entropy(pmf=[1/3, 1/3, 1/3], base=3.0)  # doctest: +FLOAT_CMP
-        np.float64(1.0)
+        1.0
 
         >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +FLOAT_CMP
-        np.float64(0.6931471805599453)
+        0.6931471805599453
     """
     pmf = validate_pmf(pmf)
     validate_log_base(base)
@@ -49,7 +49,7 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> np.floating
         log_recip_pmf = np.log2(1 / pmf)
     else:
         log_recip_pmf = np.log(1 / pmf) / np.log(base)
-    return np.dot(pmf, log_recip_pmf)
+    return float(np.dot(pmf, log_recip_pmf))
 
 
 def binary_entropy(p: float) -> float:
@@ -73,7 +73,7 @@ def binary_entropy(p: float) -> float:
     validate_probability(p)
     if p in {0.0, 1.0}:
         return 0.0
-    return -p * log2(p) - (1 - p) * log2(1 - p)
+    return float(-p * log2(p) - (1 - p) * log2(1 - p))
 
 
 def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
@@ -129,16 +129,16 @@ def relative_entropy(
 
     Examples:
         >>> komm.relative_entropy([1/2, 1/2], [1/2, 1/2])  # doctest: +FLOAT_CMP
-        np.float64(0.0)
+        0.0
 
         >>> komm.relative_entropy([1/2, 1/2], [3/4, 1/4])  # doctest: +FLOAT_CMP
-        np.float64(0.20751874963942185)
+        0.20751874963942185
 
         >>> komm.relative_entropy([3/4, 1/4], [1/2, 1/2])  # doctest: +FLOAT_CMP
-        np.float64(0.18872187554086717)
+        0.18872187554086717
 
         >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +FLOAT_CMP
-        np.float64(inf)
+        inf
     """
     pmf = validate_pmf(pmf)
     qmf = validate_pmf(qmf)
@@ -154,7 +154,7 @@ def relative_entropy(
             log_quotient = np.log2(pmf / qmf)
         else:
             log_quotient = np.log(pmf / qmf) / np.log(base)
-    return np.dot(pmf, log_quotient)
+    return float(np.dot(pmf, log_quotient))
 
 
 def mutual_information(
@@ -175,7 +175,7 @@ def mutual_information(
             arr=transition_matrix,
         ),
     )
-    return entropy_output_prior - entropy_output_posterior
+    return float(entropy_output_prior - entropy_output_posterior)
 
 
 def arimoto_blahut(

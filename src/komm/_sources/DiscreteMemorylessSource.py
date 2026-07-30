@@ -68,7 +68,7 @@ class DiscreteMemorylessSource:
         """
         return self.pmf.size
 
-    def entropy_rate(self, base: float | Literal["e"] = 2.0) -> np.floating:
+    def entropy_rate(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
         Computes the source entropy rate. For a discrete memoryless source, this is simply the [entropy](/ref/entropy) of the pmf $p$.
 
@@ -81,15 +81,15 @@ class DiscreteMemorylessSource:
         Examples:
             >>> source = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
             >>> source.entropy_rate()
-            np.float64(1.75)
+            1.75
             >>> source.entropy_rate(base=4)
-            np.float64(0.875)
+            0.875
 
             >>> source = komm.DiscreteMemorylessSource(4)
             >>> source.entropy_rate()
-            np.float64(2.0)
+            2.0
             >>> source.entropy_rate(base=4)
-            np.float64(1.0)
+            1.0
         """
         return entropy(self.pmf, base)
 

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from functools import cached_property
+from math import e, log2
 from typing import Literal
 
 import numpy as np
@@ -8,7 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_pmf, validate_probability
+from .._util.validators import validate_log_base, validate_pmf, validate_probability
 
 
 @dataclass
@@ -76,12 +77,14 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> zc = komm.ZChannel(0.2)
             >>> zc.mutual_information([0.5, 0.5])  # doctest: +FLOAT_CMP
-            np.float64(0.6099865470109874)
+            0.6099865470109874
         """
         input_pmf = validate_pmf(input_pmf)
+        base = validate_log_base(base)
+        base = e if base == "e" else base
         p = self.decay_probability
-        pi = input_pmf[1]
-        return (binary_entropy(pi * (1 - p)) - pi * binary_entropy(p)) / np.log2(base)
+        pi = float(input_pmf[1])
+        return (binary_entropy(pi * (1 - p)) - pi * binary_entropy(p)) / log2(base)
 
     def capacity(self, base: float | Literal["e"] = 2.0) -> float:
         r"""
@@ -94,13 +97,15 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         Examples:
             >>> zc = komm.ZChannel(0.2)
             >>> zc.capacity()  # doctest: +FLOAT_CMP
-            np.float64(0.6182313659549211)
+            0.6182313659549211
         """
+        base = validate_log_base(base)
+        base = e if base == "e" else base
         p = self.decay_probability
         if p == 1.0:
             return 0.0
         q = 1 - p
-        return np.log2(1 + q * p ** (p / q)) / np.log2(base)
+        return log2(1 + q * p ** (p / q)) / log2(base)
 
     def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
