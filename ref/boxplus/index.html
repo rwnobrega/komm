@@ -3609,7 +3609,7 @@ If $X, Y$ are independent binary random variables, then $L(X \oplus Y) = L(X) \b
   <p><span class="doc-section-title">Returns:</span></p>
   <ul>
       <li class="field-body">
-            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>]</code></span>
+            <span class="doc-param-annotation"><code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.floating">floating</span>] | <span title="float">float</span></code></span>
         –
         <div class="doc-md-description">
           <p>The result of the boxplus operation. It has the same shape as the inputs.</p>
@@ -3620,7 +3620,7 @@ If $X, Y$ are independent binary random variables, then $L(X \oplus Y) = L(X) \b
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">boxplus</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="go">np.float64(0.735325664055519)</span>
+<span class="go">0.7353256640555192</span>
 </code></pre></div>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">boxplus</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="go">array([ 0.        , -0.43378083, -0.73532566])</span>

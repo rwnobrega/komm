@@ -3880,11 +3880,11 @@ where $\mathrm{H}(X)$ is the entropy of $X$ and $\mathrm{H}(X \mid Y)$ is the co
 <span class="gp">... </span>    <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
-<span class="go">np.float64(0.12381109879798724)</span>
+<span class="go">0.12381109879798724</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">np.float64(0.07811610605402552)</span>
+<span class="go">0.07811610605402552</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">mutual_information</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
-<span class="go">np.float64(0.08581931405385379)</span>
+<span class="go">0.08581931405385379</span>
 </code></pre></div>
 
   </div>
@@ -3946,11 +3946,11 @@ This method computes the channel capacity via the Arimoto–Blahut algorithm. Se
 <span class="gp">... </span>    <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">capacity</span><span class="p">()</span>
-<span class="go">np.float64(0.1616318609548566)</span>
+<span class="go">0.1616318609548566</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">np.float64(0.10197835020154389)</span>
+<span class="go">0.10197835020154389</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dmc</span><span class="o">.</span><span class="n">capacity</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
-<span class="go">np.float64(0.11203466870951606)</span>
+<span class="go">0.11203466870951606</span>
 </code></pre></div>
 
   </div>
