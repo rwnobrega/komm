@@ -11,7 +11,7 @@ def test_raised_cosine_pulse_repr():
     assert repr(pulse) == "RaisedCosinePulse(rolloff=0.25).root()"
 
 
-def test_raised_cosine_pulse_autocorrelation_scalar_regression():
+def test_raised_cosine_pulse_autocorrelation_scalar():
     α = 0.25
     pulse = komm.RaisedCosinePulse(rolloff=α)
     assert np.isclose(pulse.autocorrelation(1 / α), pulse.autocorrelation([1 / α])[0])
