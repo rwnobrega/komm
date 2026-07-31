@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.32.0 (2026-07-30)
+
+### Added
+
+- Added input validation in integer coding classes.
+
+### Breaking changes
+
+- Changed functions and methods that return a scalar to return a Python `float` instead of a NumPy scalar.
+
 ## v0.31.0 (2026-07-05)
 
 ### Added
