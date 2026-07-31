@@ -59,8 +59,8 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
 
     def __repr__(self) -> str:
         args = ", ".join([
-            f"orders={tuple(map(int, self._orders))}",
-            f"deltas={tuple(map(float, self._deltas))}",
+            f"orders={self._orders}",
+            f"deltas={self._deltas}",
             f"phase_offset={self._phase_offset}",
         ])
         return f"{self.__class__.__name__}({args})"
