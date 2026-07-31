@@ -16,7 +16,7 @@ def _gaussian_q(x: float) -> float:
     return 0.5 * erfc(x / sqrt(2))
 
 
-def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
+def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
     r"""
     Computes the Gaussian Q-function. It is given by
     $$
@@ -32,7 +32,7 @@ def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
 
     Examples:
         >>> komm.gaussian_q(0.0)
-        np.float64(0.5)
+        0.5
 
         >>> komm.gaussian_q([[-1.0], [0.0], [1.0]])
         array([[0.84134475],
@@ -40,7 +40,7 @@ def gaussian_q(x: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
                [0.15865525]])
     """
     result = np.vectorize(_gaussian_q)(x)
-    return result[()] if np.ndim(result) == 0 else result
+    return float(result) if np.ndim(result) == 0 else result
 
 
 def _gaussian_q_inv(y: float) -> float:
@@ -51,7 +51,7 @@ def _gaussian_q_inv(y: float) -> float:
     return -norm.inv_cdf(y)
 
 
-def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
+def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
     r"""
     Computes the inverse Gaussian Q-function.
 
@@ -63,7 +63,7 @@ def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
 
     Examples:
         >>> komm.gaussian_q_inv(0.5)
-        np.float64(0.0)
+        0.0
 
         >>> komm.gaussian_q_inv([[0.841344746], [0.5], [0.158655254]])
         array([[-1.],
@@ -71,7 +71,7 @@ def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | np.floating:
                [ 1.]])
     """
     result = np.vectorize(_gaussian_q_inv)(y) + 0.0  # + 0.0 to avoid -0.0
-    return result[()] if np.ndim(result) == 0 else result
+    return float(result) if np.ndim(result) == 0 else result
 
 
 def _auxiliary_p(
@@ -93,7 +93,7 @@ def _auxiliary_p(
 
 def marcum_q(
     m: int, a: npt.ArrayLike, x: npt.ArrayLike
-) -> npt.NDArray[np.floating] | np.floating:
+) -> npt.NDArray[np.floating] | float:
     r"""
     Computes the Marcum Q-function. It is given by
     $$
@@ -111,7 +111,7 @@ def marcum_q(
 
     Examples:
         >>> komm.marcum_q(1, 1, 1)
-        np.float64(0.7328798037968204)
+        0.7328798037968204
 
         >>> komm.marcum_q(2, 0.5, [1.2, 1.4, 1.6])
         array([0.85225816, 0.76472056, 0.66139663])
@@ -123,7 +123,7 @@ def marcum_q(
     if not np.all(a >= 0) or not np.all(x >= 0):
         raise ValueError("'a' and 'x' must be non-negative")
     result = np.vectorize(_auxiliary_p)(m, a**2 / (2 * m), x**2 / 2)
-    return result[()] if np.ndim(result) == 0 else result
+    return float(result) if np.ndim(result) == 0 else result
 
 
 def logcosh(x: npt.ArrayLike) -> np.floating:
@@ -133,7 +133,7 @@ def logcosh(x: npt.ArrayLike) -> np.floating:
     return s + np.log1p(p) - np.log(2)
 
 
-def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating]:
+def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
     r"""
     Computes the box-plus operation. It is defined by
     $$
@@ -150,7 +150,7 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating]:
 
     Examples:
         >>> komm.boxplus(1, 2)  # doctest: +FLOAT_CMP
-        np.float64(0.735325664055519)
+        0.7353256640555192
 
         >>> komm.boxplus([0, 1, 2], [1, -1, -1])
         array([ 0.        , -0.43378083, -0.73532566])
@@ -162,4 +162,5 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating]:
     s = np.sign(a) * np.sign(b) * np.minimum(np.abs(a), np.abs(b))
     p1 = np.exp(-np.abs(a + b))
     p2 = np.exp(-np.abs(a - b))
-    return s + np.log1p(p1) - np.log1p(p2)
+    result = s + np.log1p(p1) - np.log1p(p2)
+    return float(result) if np.ndim(result) == 0 else result
