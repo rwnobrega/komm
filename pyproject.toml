@@ -10,7 +10,7 @@ dependencies = [
     "tqdm>=4.67.0",
     "typeguard>=4.4.3",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 urls = { home = "https://komm.dev/", repository = "https://github.com/rwnobrega/komm/" }
 
 [project.optional-dependencies]
