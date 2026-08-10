@@ -122,15 +122,17 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
-def lexicographical_code(lengths: npt.ArrayLike) -> list[Word]:
+def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
     r"""
-    Generates the lexicographical prefix-free symbol code based on the given lengths.
+    Generates the canonical (lexicographical) prefix-free symbol code based on the given lengths.
 
     Parameters:
-        lengths: A list where the index is the symbol and the value is its codeword length.
+        lengths: A list where the index is the symbol and the value is its codeword length. Must be non-negative and satisfy the Kraft inequality (symbols with zero length are ignored).
+
+        base: The base (i.e., the target cardinality) of the code. Must be at least 2. The default value is 2.
 
     Returns:
-        codewords: A list where the index is the symbol and the value is the bit tuple for that symbol. Symbols with zero length receive an empty tuple.
+        codewords: A list where the index is the symbol and the value is the symbol tuple for that symbol. Symbols with zero length receive an empty tuple.
     """
     lengths = np.asarray(lengths, dtype=int)
 
@@ -138,16 +140,25 @@ def lexicographical_code(lengths: npt.ArrayLike) -> list[Word]:
         raise ValueError("'lengths' must be a 1D-array")
     if not np.all(lengths >= 0):
         raise ValueError("'lengths' must be non-negative")
+    if not base >= 2:
+        raise ValueError("'base' must be at least 2")
 
-    l_max = lengths.max()
-    counts = Counter(lengths)
+    lengths_list: list[int] = lengths.tolist()
+    l_max = max(lengths_list)
+    counts = Counter(l for l in lengths_list if l > 0)  # Zero lengths take no budget
     integers = [0] * (l_max + 1)
     for l in range(1, l_max + 1):
-        integers[l] = (integers[l - 1] + counts[l - 1]) * 2
+        integers[l] = (integers[l - 1] + counts[l - 1]) * base
 
-    codewords: list[Word] = [()] * lengths.size
-    for x, l in enumerate(lengths):
-        codewords[x] = integer_to_symbols(integers[l], base=2, width=l)
+    # Kraft inequality, checked exactly in (arbitrary precision) integer arithmetic.
+    # Since integers[l + 1] = (integers[l] + counts[l]) * base, a violation at any
+    # length propagates to l_max, so it suffices to check the condition there.
+    if integers[l_max] + counts[l_max] > base**l_max:
+        raise ValueError("'lengths' must satisfy Kraft inequality")
+
+    codewords: list[Word] = [()] * len(lengths_list)
+    for x, l in enumerate(lengths_list):
+        codewords[x] = integer_to_symbols(integers[l], base=base, width=l)
         integers[l] += 1
 
     return codewords

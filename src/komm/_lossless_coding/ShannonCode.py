@@ -7,7 +7,7 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word, lexicographical_code
+from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
@@ -17,7 +17,7 @@ class ShannonCode(FixedToVariableCode):
     $$
         \ell(\mathbf{x}) = \left\lceil \log_2 \frac{1}{p(\mathbf{x})} \right\rceil.
     $$
-    This function implements the lexicographic order assignment as described in [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
+    This function implements the canonical (lexicographical) order assignment as described in [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
     Notes:
         Shannon codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
@@ -93,7 +93,7 @@ def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
 def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
     extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
     lengths = shannon_code_lengths(extended_pmf.ravel())
-    codewords = lexicographical_code(lengths)
+    codewords = canonical_code(lengths)
     enc_mapping: dict[Word, Word] = {}
     for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
         enc_mapping[x] = c
