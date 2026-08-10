@@ -225,3 +225,52 @@ def test_invalid_decoding_input():
         code.decode([1, 1, 0, 1, 0, 1])  # Incomplete codeword
     with pytest.raises(ValueError, match="contains invalid word"):
         code.decode([1, 1, 0, 1, 0, 1, 3])  # Invalid symbol
+
+
+@pytest.mark.parametrize("code_parameters", test_data)
+def test_from_lengths(code_parameters):
+    source_cardinality, target_cardinality, source_block_size, codewords = (
+        code_parameters.values()
+    )
+    lengths = [len(codeword) for codeword in codewords]
+    code = komm.FixedToVariableCode.from_lengths(
+        source_cardinality, lengths, target_cardinality
+    )
+    assert code.source_cardinality == source_cardinality
+    assert code.target_cardinality == target_cardinality
+    assert code.source_block_size == source_block_size
+    assert [len(codeword) for codeword in code.codewords] == lengths
+    assert code.is_prefix_free()
+    assert code.kraft_parameter() <= 1
+
+
+@pytest.mark.parametrize("pmf", [[0.4, 0.3, 0.2, 0.1], [0.5, 0.25, 0.125, 0.125]])
+def test_from_lengths_canonical_huffman(pmf):
+    # The canonical code with the Huffman lengths is an optimal code as well.
+    huffman = komm.HuffmanCode(pmf)
+    lengths = [len(codeword) for codeword in huffman.codewords]
+    code = komm.FixedToVariableCode.from_lengths(len(pmf), lengths)
+    assert code.is_prefix_free()
+    np.testing.assert_allclose(code.rate(pmf), huffman.rate(pmf))
+
+
+@pytest.mark.parametrize("lengths", [[1, 2, 3, 3], [2, 2, 2, 2], [1, 2, 3, 4]])
+def test_from_lengths_alphabetic(lengths):
+    # Non-decreasing lengths yield an alphabetic (slice) code. See [CT06, Sec. 5.7].
+    code = komm.FixedToVariableCode.from_lengths(2, lengths)
+    assert code.codewords == sorted(code.codewords)
+
+
+def test_from_lengths_invalid():
+    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
+        komm.FixedToVariableCode.from_lengths(1, [1, 2, 2])
+    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
+        komm.FixedToVariableCode.from_lengths(3, [1, 2, 2], 1)
+    with pytest.raises(ValueError, match="'lengths' must satisfy Kraft inequality"):
+        komm.FixedToVariableCode.from_lengths(3, [1, 1, 1])
+    with pytest.raises(ValueError, match="'lengths' must be positive"):
+        komm.FixedToVariableCode.from_lengths(3, [0, 1, 2])
+    with pytest.raises(ValueError, match="'lengths' must be non-negative"):
+        komm.FixedToVariableCode.from_lengths(3, [1, -1, 2])
+    with pytest.raises(ValueError, match="'enc_mapping': invalid domain"):
+        komm.FixedToVariableCode.from_lengths(3, [1, 2, 3, 3])

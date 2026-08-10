@@ -118,7 +118,7 @@ class VariableToFixedCode:
             sourcewords: The sourcewords of the code. Must be a list of length at most $|\mathcal{Y}|^n$ containing tuples of integers in $\mathcal{X}$. The tuple in position $i$ must be equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of $\mathcal{Y}^n$.
 
         Note:
-            The target block size $n$ is inferred from the length of the sourcewords, and the source cardinality $|\mathcal{X}|$ is inferred from the maximum value in the sourcewords.
+            The target block size $n$ is inferred from the number of sourcewords, and the source cardinality $|\mathcal{X}|$ is inferred from the maximum value in the sourcewords.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_sourcewords(

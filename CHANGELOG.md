@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Implemented class method [`FixedToVariableCode.from_lengths`](https://komm.dev/ref/FixedToVariableCode/#from_lengths), which constructs the canonical prefix-free code with the given codeword lengths.
+
 ## v0.32.0 (2026-07-30)
 
 ### Added
