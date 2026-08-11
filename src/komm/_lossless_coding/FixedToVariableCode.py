@@ -140,6 +140,8 @@ class FixedToVariableCode:
         """
         if any(len(codeword) == 0 for codeword in codewords):
             raise ValueError("'codewords' must be non-empty")
+        if not source_cardinality >= 2:
+            raise ValueError("'source_cardinality' must be at least 2")
         calX = source_cardinality
         calY = max(max(codeword) for codeword in codewords) + 1
         k = next(k for k in count(1) if calX**k >= len(codewords))

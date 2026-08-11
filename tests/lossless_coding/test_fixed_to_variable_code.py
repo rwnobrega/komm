@@ -137,6 +137,11 @@ def test_invalid_codewords_empty():
         komm.FixedToVariableCode.from_codewords(2, [(), (0, 1)])
 
 
+def test_from_codewords_invalid_source_cardinality():
+    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
+        komm.FixedToVariableCode.from_codewords(1, [(0,), (1,), (0, 1)])
+
+
 @pytest.mark.parametrize(
     "source_cardinality, codewords",
     [

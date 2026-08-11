@@ -150,6 +150,10 @@ class VariableToFixedCode:
              (1, 0, 1): (0, 0, 1),
              (1, 1, 0): (0, 0, 2)}
         """
+        if any(len(sourceword) == 0 for sourceword in sourcewords):
+            raise ValueError("'sourcewords' must be non-empty")
+        if not target_cardinality >= 2:
+            raise ValueError("'target_cardinality' must be at least 2")
         calY = target_cardinality
         calX = max(max(word) for word in sourcewords) + 1
         n = next(n for n in count(1) if calY**n >= len(sourcewords))

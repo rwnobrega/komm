@@ -14,6 +14,16 @@ def test_invalid_source_cardinality():
         komm.VariableToFixedCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
 
 
+def test_from_sourcewords_invalid_target_cardinality():
+    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
+        komm.VariableToFixedCode.from_sourcewords(1, [(0,), (1,), (0, 1)])
+
+
+def test_from_sourcewords_empty():
+    with pytest.raises(ValueError, match="sourcewords' must be non-empty"):
+        komm.VariableToFixedCode.from_sourcewords(2, [(), (0, 1)])
+
+
 def test_invalid_dec_mapping_domain_1():
     dec_mapping: dict = {
         (0, 0): (0, 0, 0),
