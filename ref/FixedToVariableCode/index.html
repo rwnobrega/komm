@@ -2691,6 +2691,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#from_lengths" class="md-nav__link">
+    from_lengths()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#source_cardinality" class="md-nav__link">
     source_cardinality
   </a>
@@ -3709,6 +3716,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#from_lengths" class="md-nav__link">
+    from_lengths()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#source_cardinality" class="md-nav__link">
     source_cardinality
   </a>
@@ -3951,7 +3965,7 @@
 
 <details class="notes" open>
   <summary>Notes</summary>
-  <p>The source block size $k$ is inferred from the length of the codewords, and the target cardinality $|\mathcal{Y}|$ is inferred from the maximum value in the codewords.</p>
+  <p>The source block size $k$ is inferred from the number of codewords, and the target cardinality $|\mathcal{Y}|$ is inferred from the maximum value in the codewords.</p>
 </details>
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -3977,6 +3991,111 @@
 <span class="go"> (0, 1): (1, 1),</span>
 <span class="go"> (1, 0): (1, 1, 0),</span>
 <span class="go"> (1, 1): (1, 0, 1)}</span>
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="from_lengths" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">from_lengths</span><span class="p">()</span></code>      
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Constructs a fixed-to-variable length code from the source cardinality $|\mathcal{X}|$ and a list of codeword lengths. The codewords are assigned in lexicographic order, which yields the <em>canonical code</em> with the given lengths. The resulting code is always <a href="/ref/FixedToVariableCode/#is_prefix_free">prefix-free</a> (hence <a href="/ref/FixedToVariableCode/#is_uniquely_decodable">uniquely decodable</a>).</p>
+
+  <p><span class="doc-section-title">Parameters:</span></p>
+  <ul>
+      <li class="field-body">
+        <b><code>source_cardinality</code></b>
+            <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The source cardinality $|\mathcal{X}|$. Must be an integer greater than or equal to $2$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>lengths</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The codeword lengths of the code. Must be a list of length $|\mathcal{X}|^k$ of positive integers satisfying the <a href="/ref/FixedToVariableCode/#kraft_parameter">Kraft inequality</a>. The integer in position $i$ must be equal to $\ell(\mathbf{x})$, the length of the codeword $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>target_cardinality</code></b>
+            <span class="doc-param-annotation">(<code><span title="int">int</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The target cardinality $|\mathcal{Y}|$. Must be an integer greater than or equal to $2$. The default value is $2$ (binary code).</p>
+        </div>
+      </li>
+  </ul>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>The source block size $k$ is inferred from the number of lengths.</p>
+<p>If the lengths are non-decreasing, the resulting code is moreover <em>alphabetic</em>: the codewords preserve the lexicographic ordering of the source words. See [<abbr title="Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.">CT06</abbr>, Sec. 5.7].</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_lengths</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_block_size</span>
+<span class="go">(3, 2, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+<span class="go">{(0,): (0,),</span>
+<span class="go"> (1,): (1, 0),</span>
+<span class="go"> (2,): (1, 1)}</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_lengths</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_block_size</span>
+<span class="go">(2, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+<span class="go">{(0, 0): (0,),</span>
+<span class="go"> (0, 1): (1, 0),</span>
+<span class="go"> (1, 0): (1, 1, 0),</span>
+<span class="go"> (1, 1): (1, 1, 1)}</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_lengths</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_cardinality</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">target_cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">source_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">target_cardinality</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">source_block_size</span>
+<span class="go">(4, 3, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+<span class="go">{(0,): (0,),</span>
+<span class="go"> (1,): (1, 0),</span>
+<span class="go"> (2,): (1, 1),</span>
+<span class="go"> (3,): (1, 2)}</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">komm</span><span class="o">.</span><span class="n">FixedToVariableCode</span><span class="o">.</span><span class="n">from_lengths</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">&#39;lengths&#39; must satisfy Kraft inequality</span>
 </code></pre></div>
 
   </div>

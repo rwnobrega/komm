@@ -3588,7 +3588,7 @@
 $$
     \ell(\mathbf{x}) = \left\lceil \log_2 \frac{1}{p(\mathbf{x})} \right\rceil.
 $$
-This function implements the lexicographic order assignment as described in <a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding">Wikipedia: Shannon–Fano coding</a>.</p>
+This function implements the canonical (lexicographical) order assignment as described in <a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding">Wikipedia: Shannon–Fano coding</a>.</p>
 
 
 <details class="notes" open>
@@ -3602,7 +3602,7 @@ This function implements the lexicographic order assignment as described in <a h
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The <abbr title="probability mass function">pmf</abbr> $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.</p>
+          <p>The <abbr title="probability mass function">pmf</abbr> $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be positive and sum to $1$. Zero probabilities are not allowed, since $\ell(\mathbf{x})$ is undefined for $p(\mathbf{x}) = 0$.</p>
         </div>
       </li>
       <li class="field-body">
