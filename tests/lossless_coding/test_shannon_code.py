@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -27,3 +28,16 @@ def test_shannon_code_wikipedia_2():
         (4,): (1, 0, 0, 1),
         (5,): (1, 0, 1, 0),
     }
+
+
+@pytest.mark.parametrize("pmf", [[0.5, 0.5, 0.0], [1.0, 0.0], [0.0, 0.4, 0.6]])
+def test_shannon_code_zero_probability(pmf):
+    with pytest.raises(ValueError, match="pmf must be positive"):
+        komm.ShannonCode(pmf)
+
+
+def test_shannon_code_almost_deterministic():
+    code = komm.ShannonCode([1.0, 1e-17])
+    assert code.codewords[0] == (0,)
+    assert code.is_prefix_free()
+    assert code.kraft_parameter() <= 1

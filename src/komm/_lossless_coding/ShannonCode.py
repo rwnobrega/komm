@@ -23,7 +23,7 @@ class ShannonCode(FixedToVariableCode):
         Shannon codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
+        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be positive and sum to $1$. Zero probabilities are not allowed, since $\ell(\mathbf{x})$ is undefined for $p(\mathbf{x}) = 0$.
 
         source_block_size: The source block size $k$. The default value is $k = 1$.
 
@@ -55,6 +55,8 @@ class ShannonCode(FixedToVariableCode):
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
         self.pmf = validate_pmf(pmf)
+        if not np.all(self.pmf > 0):
+            raise ValueError("pmf must be positive")
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
         super().__init__(
@@ -81,13 +83,9 @@ class ShannonCode(FixedToVariableCode):
 
 
 def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
-    lengths = np.zeros_like(pmf, dtype=int)
-    mask = pmf > 0
-    if np.sum(pmf**2) == 1:  # Deterministic case
-        lengths[mask] = 1
-    else:
-        lengths[mask] = np.ceil(np.log2(1 / pmf[mask])).astype(int)
-    return lengths
+    # The lower bound of 1 handles the degenerate case p(x) = 1.
+    lengths = np.maximum(1, np.ceil(np.log2(1 / pmf)))
+    return lengths.astype(int)
 
 
 def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:

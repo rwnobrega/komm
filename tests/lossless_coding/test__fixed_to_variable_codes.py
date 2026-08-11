@@ -57,6 +57,8 @@ def test_fixed_to_variable_codes_encode_decode(constructor, S, k):
 @pytest.mark.parametrize("S", range(2, 7))
 @pytest.mark.parametrize("k", range(1, 4))
 def test_fixed_to_variable_codes_deterministic(constructor, S, k):
+    if constructor is komm.ShannonCode:
+        return
     for i in range(S):
         pmf = deterministic_pmf(S, i)
         code: komm.FixedToVariableCode = constructor(pmf, k)
