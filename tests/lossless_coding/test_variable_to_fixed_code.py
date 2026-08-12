@@ -5,7 +5,7 @@ import komm
 
 
 def test_lengths():
-    code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
+    code = komm.VariableToFixedCode.from_sourcewords([(0,), (1,), (0, 1)])
     assert code.lengths == [1, 1, 2]
     assert code.lengths == [len(x) for x in code.sourcewords]
 
@@ -22,12 +22,15 @@ def test_invalid_source_cardinality():
 
 def test_from_sourcewords_invalid_target_cardinality():
     with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
-        komm.VariableToFixedCode.from_sourcewords(1, [(0,), (1,), (0, 1)])
+        komm.VariableToFixedCode.from_sourcewords(
+            [(0,), (1,), (0, 1)],
+            target_cardinality=1,
+        )
 
 
 def test_from_sourcewords_empty():
     with pytest.raises(ValueError, match="sourcewords' must be non-empty"):
-        komm.VariableToFixedCode.from_sourcewords(2, [(), (0, 1)])
+        komm.VariableToFixedCode.from_sourcewords([(), (0, 1)])
 
 
 def test_invalid_dec_mapping_domain_1():
@@ -84,7 +87,7 @@ def test_invalid_dec_mapping_codomain_2():
 
 def test_rate():
     code = komm.VariableToFixedCode.from_sourcewords(
-        2, [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
+        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)], target_cardinality=2
     )
     assert np.isclose(code.rate([2 / 3, 1 / 3]), 18 / 19)
 
@@ -95,7 +98,7 @@ def test_rate():
 )
 def test_rate_invalid_pmf(pmf):
     code = komm.VariableToFixedCode.from_sourcewords(
-        2, [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
+        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
     )
     with pytest.raises(ValueError):
         code.rate(pmf)
@@ -104,7 +107,7 @@ def test_rate_invalid_pmf(pmf):
 def test_encoding_decoding():
     # [Say06, Example 3.7.1]
     code = komm.VariableToFixedCode.from_sourcewords(
-        2, [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
+        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
     )
     x = [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]
     y = [0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0]
@@ -115,7 +118,7 @@ def test_encoding_decoding():
 def test_encoding_not_fully_covering():
     # [Say06, Example 3.7.1]
     code = komm.VariableToFixedCode.from_sourcewords(
-        2, [(0, 0, 0), (0, 1, 0), (0, 1), (1,)]
+        [(0, 0, 0), (0, 1, 0), (0, 1), (1,)]
     )
     with pytest.raises(ValueError):  # Code is not fully covering
         code.encode([0])
