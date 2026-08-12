@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from functools import cache, reduce
 from heapq import heapify, heappop, heappush
-from typing import Literal, Self
+from typing import Any, Literal, Self
 
 import numpy as np
 import numpy.typing as npt
@@ -11,7 +11,7 @@ from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
-from .util import Word
+from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
@@ -27,7 +27,9 @@ class HuffmanCode(FixedToVariableCode):
 
         source_block_size: The source block size $k$. The default value is $k = 1$.
 
-        policy: The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`.
+        policy: The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`. It affects the codeword lengths only in the presence of ties.
+
+        assignment: The strategy used to assign the codewords, once the Huffman tree is built. It must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{1}$ being assigned to the less probable of the two merged nodes, as in classic textbook presentations) or `'canonical'` (the [canonical code](/ref/FixedToVariableCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [rate](/ref/FixedToVariableCode/#rate).
 
     Examples:
         >>> pmf = [0.8, 0.1, 0.1]
@@ -53,6 +55,20 @@ class HuffmanCode(FixedToVariableCode):
          (2, 2): (1, 0, 0, 1, 1, 1)}
         >>> code.rate(pmf)  # doctest: +FLOAT_CMP
         0.96
+
+        >>> code = komm.HuffmanCode(pmf, 2, assignment="canonical")
+        >>> code.enc_mapping
+        {(0, 0): (0,),
+         (0, 1): (1, 0, 0),
+         (0, 2): (1, 0, 1),
+         (1, 0): (1, 1, 0),
+         (1, 1): (1, 1, 1, 1, 0, 0),
+         (1, 2): (1, 1, 1, 1, 0, 1),
+         (2, 0): (1, 1, 1, 0),
+         (2, 1): (1, 1, 1, 1, 1, 0),
+         (2, 2): (1, 1, 1, 1, 1, 1)}
+        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
+        0.96
     """
 
     def __init__(
@@ -60,18 +76,22 @@ class HuffmanCode(FixedToVariableCode):
         pmf: npt.ArrayLike,
         source_block_size: int = 1,
         policy: Literal["high", "low"] = "high",
+        assignment: Literal["tree", "canonical"] = "tree",
     ):
         self.pmf = validate_pmf(pmf)
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
         if not policy in {"high", "low"}:
             raise ValueError("'policy' must be in {'high', 'low'}")
+        if not assignment in {"tree", "canonical"}:
+            raise ValueError("'assignment' must be in {'tree', 'canonical'}")
         self.policy = policy
+        self.assignment = assignment
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,
             source_block_size=source_block_size,
-            enc_mapping=huffman_code(self.pmf, source_block_size, policy),
+            enc_mapping=huffman_code(self.pmf, source_block_size, policy, assignment),
         )
 
     def __repr__(self) -> str:
@@ -79,6 +99,7 @@ class HuffmanCode(FixedToVariableCode):
             f"pmf={self.pmf.tolist()}",
             f"source_block_size={self.source_block_size}",
             f"policy={self.policy!r}",
+            f"assignment={self.assignment!r}",
         ])
         return f"{self.__class__.__name__}({args})"
 
@@ -91,56 +112,31 @@ class HuffmanCode(FixedToVariableCode):
         return True
 
 
-def huffman_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
-    lengths = np.zeros_like(pmf, dtype=int)
-    if np.sum(pmf**2) == 1:  # Deterministic case
-        lengths[pmf > 0] = 1
-        return lengths
-    heap: list[tuple[np.floating, list[int]]] = []
-    for i, pi in enumerate(pmf):
-        if pi > 0:
-            heappush(heap, (pi, [i]))
-    while len(heap) > 1:
-        w1, s1 = heappop(heap)
-        w2, s2 = heappop(heap)
-        for i in s1:
-            lengths[i] += 1
-        for i in s2:
-            lengths[i] += 1
-        heappush(heap, (w1 + w2, s1 + s2))
-    return lengths
+@dataclass(slots=True)
+class Node:
+    index: int
+    probability: np.floating
+    key: tuple[np.floating, int]
+    leaf: bool = True
+    parent: int = -1
+    bit: int = -1
+
+    def __lt__(self, other: Self) -> bool:
+        return self.key < other.key
 
 
-def huffman_code(
+def huffman_tree(
     pmf: Array1D[np.floating],
-    source_block_size: int,
     policy: Literal["high", "low"],
-) -> dict[Word, Word]:
-
-    @dataclass(slots=True)
-    class Node:
-        index: int
-        probability: np.floating
-        leaf: bool = True
-        parent: int = -1
-        bit: int = -1
-
-        def __lt__(self, other: Self) -> bool:
-            p0, i0 = self.probability, self.index
-            p1, i1 = other.probability, other.index
-            if policy == "high":
-                return (p0, -i0 if self.leaf else i0) < (p1, -i1 if other.leaf else i1)
-            elif policy == "low":
-                return (p0, -i0) < (p1, -i1)
-
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-
-    pbar = tqdm(desc="Generating Huffman code", total=3 * extended_pmf.size, delay=2.5)
-    pbar.update()
+    pbar: tqdm[Any],
+) -> list[Node]:
+    def node(index: int, probability: np.floating, leaf: bool) -> Node:
+        sign = 1 if policy == "high" and not leaf else -1
+        return Node(index, probability, (probability, sign * index), leaf)
 
     tree: list[Node] = []
-    for index, prob in enumerate(extended_pmf.ravel()):
-        tree.append(Node(index, prob))
+    for index, probability in enumerate(pmf):
+        tree.append(node(index, probability, leaf=True))
         pbar.update()
 
     heap = tree.copy()
@@ -148,29 +144,58 @@ def huffman_code(
     while len(heap) > 1:
         node1 = heappop(heap)
         node0 = heappop(heap)
-        node = Node(
+        parent = node(
             index=len(tree),
             probability=node0.probability + node1.probability,
             leaf=False,
         )
         node1.bit = 1
         node0.bit = 0
-        node0.parent = node1.parent = node.index
-        heappush(heap, node)
-        tree.append(node)
+        node0.parent = node1.parent = parent.index
+        heappush(heap, parent)
+        tree.append(parent)
         pbar.update()
 
-    enc_mapping: dict[Word, Word] = {x: () for x in np.ndindex(extended_pmf.shape)}
-    for index, x in enumerate(enc_mapping.keys()):
+    return tree
+
+
+def tree_lengths(tree: list[Node], size: int, pbar: tqdm[Any]) -> list[int]:
+    depths = [0] * len(tree)
+    for node in reversed(tree):
+        if node.parent >= 0:
+            depths[node.index] = depths[node.parent] + 1
+        pbar.update(node.leaf)
+    return depths[:size]
+
+
+def tree_codewords(tree: list[Node], size: int, pbar: tqdm[Any]) -> list[Word]:
+    codewords: list[Word] = []
+    for index in range(size):
         node = tree[index]
         bits: list[int] = []
         while node.parent >= 0:
             bits.append(node.bit)
             node = tree[node.parent]
-        y = tuple(reversed(bits))
-        enc_mapping[x] = y
+        codewords.append(tuple(reversed(bits)))
         pbar.update()
+    return codewords
 
+
+def huffman_code(
+    pmf: Array1D[np.floating],
+    source_block_size: int,
+    policy: Literal["high", "low"],
+    assignment: Literal["tree", "canonical"],
+) -> dict[Word, Word]:
+    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
+    size = extended_pmf.size
+
+    pbar = tqdm(desc="Generating Huffman code", total=3 * size, delay=2.5)
+    tree = huffman_tree(extended_pmf.ravel(), policy, pbar)
+    if assignment == "canonical":
+        codewords = canonical_code(tree_lengths(tree, size, pbar))
+    else:
+        codewords = tree_codewords(tree, size, pbar)
     pbar.close()
 
-    return enc_mapping
+    return dict(zip(np.ndindex(extended_pmf.shape), codewords))

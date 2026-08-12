@@ -6,6 +6,8 @@
 
 - Added property `lengths` to [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#lengths) and [`VariableToFixedCode`](https://komm.dev/ref/VariableToFixedCode/#lengths), which returns the codeword (resp. sourceword) lengths.
 
+- Added parameter `assignment` to [`HuffmanCode`](https://komm.dev/ref/HuffmanCode), which selects how the codewords are assigned once the Huffman tree is built: either `'tree'` (the default, from the paths of the tree) or `'canonical'`.
+
 ## v0.32.1 (2026-08-10)
 
 ### Added
