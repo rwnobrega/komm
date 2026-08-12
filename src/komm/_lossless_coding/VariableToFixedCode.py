@@ -240,6 +240,18 @@ class VariableToFixedCode:
         """
         return list(self.dec_mapping.values())
 
+    @cached_property
+    def lengths(self) -> list[int]:
+        r"""
+        The sourceword lengths of the code. The integer in position $i$ is the length of the $i$-th sourceword.
+
+        Examples:
+            >>> code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
+            >>> code.lengths
+            [1, 1, 2]
+        """
+        return [len(x) for x in self.sourcewords]
+
     @cache
     def is_fully_covering(self) -> bool:
         """
@@ -333,7 +345,7 @@ class VariableToFixedCode:
         """
         n = self.target_block_size
         pmf = validate_pmf(pmf)
-        lengths = [len(x) for x in self.sourcewords]
+        lengths = self.lengths
         probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
         rate = n / np.dot(lengths, probabilities)
         return float(rate)

@@ -4,6 +4,12 @@ import pytest
 import komm
 
 
+def test_lengths():
+    code = komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1,), (0, 1)])
+    assert code.lengths == [1, 1, 2]
+    assert code.lengths == [len(x) for x in code.sourcewords]
+
+
 def test_invalid_target_cardinality():
     with pytest.raises(ValueError):
         komm.VariableToFixedCode(1, 2, 1, {(0,): (0,)})
