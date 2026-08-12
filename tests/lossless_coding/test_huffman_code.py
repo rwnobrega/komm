@@ -171,6 +171,7 @@ def test_huffman_code_assignment(policy, source_cardinality, source_block_size):
     assert code_canonical.lengths == code_tree.lengths
     assert np.isclose(code_canonical.rate(pmf), code_tree.rate(pmf))
     expected = komm.FixedToVariableCode.from_lengths(
-        source_cardinality, code_tree.lengths
+        lengths=code_tree.lengths,
+        source_cardinality=source_cardinality,
     )
     assert code_canonical.enc_mapping == expected.enc_mapping

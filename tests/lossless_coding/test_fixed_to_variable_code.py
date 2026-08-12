@@ -51,7 +51,10 @@ def test_init(code_parameters):
     source_cardinality, target_cardinality, source_block_size, codewords = (
         code_parameters.values()
     )
-    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
     assert code.source_cardinality == source_cardinality
     assert code.target_cardinality == target_cardinality
     assert code.source_block_size == source_block_size
@@ -62,9 +65,14 @@ def test_init(code_parameters):
 @pytest.mark.parametrize("code_parameters", test_data)
 def test_lengths_round_trip(code_parameters):
     source_cardinality, _, _, codewords = code_parameters.values()
-    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
     canonical = komm.FixedToVariableCode.from_lengths(
-        source_cardinality, code.lengths, code.target_cardinality
+        code.lengths,
+        source_cardinality=source_cardinality,
+        target_cardinality=code.target_cardinality,
     )
     assert canonical.lengths == code.lengths
     assert canonical.is_prefix_free()
@@ -147,12 +155,15 @@ def test_invalid_enc_mapping_codomain():
 
 def test_invalid_codewords_empty():
     with pytest.raises(ValueError, match="codewords' must be non-empty"):
-        komm.FixedToVariableCode.from_codewords(2, [(), (0, 1)])
+        komm.FixedToVariableCode.from_codewords([(), (0, 1)])
 
 
 def test_from_codewords_invalid_source_cardinality():
     with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
-        komm.FixedToVariableCode.from_codewords(1, [(0,), (1,), (0, 1)])
+        komm.FixedToVariableCode.from_codewords(
+            codewords=[(0,), (1,), (0, 1)],
+            source_cardinality=1,
+        )
 
 
 @pytest.mark.parametrize(
@@ -164,7 +175,10 @@ def test_from_codewords_invalid_source_cardinality():
     ],
 )
 def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
-    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
     with pytest.raises(ValueError, match="not uniquely decodable"):
         code.decode([0])
 
@@ -187,7 +201,10 @@ def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
 )
 def test_rate(code_parameters, pmf, rate):
     source_cardinality, _, _, codewords = code_parameters.values()
-    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
     assert np.isclose(code.rate(pmf), rate)
 
 
@@ -199,7 +216,7 @@ def test_rate(code_parameters, pmf, rate):
     ],
 )
 def test_rate_invalid_pmf(pmf):
-    code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+    code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
     with pytest.raises(ValueError, match="pmf must"):
         code.rate(pmf)
 
@@ -226,13 +243,16 @@ def test_rate_invalid_pmf(pmf):
 )
 def test_encoding_decoding(code_parameters, x, y):
     source_cardinality, _, _, codewords = code_parameters.values()
-    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
     assert np.array_equal(code.encode(x), y)
     assert np.array_equal(code.decode(y), x)
 
 
 def test_invalid_decoding_input():
-    code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1, 0)])
+    code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1, 0)])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0]), [2, 1])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
@@ -252,7 +272,9 @@ def test_from_lengths(code_parameters):
     )
     lengths = [len(codeword) for codeword in codewords]
     code = komm.FixedToVariableCode.from_lengths(
-        source_cardinality, lengths, target_cardinality
+        lengths=lengths,
+        source_cardinality=source_cardinality,
+        target_cardinality=target_cardinality,
     )
     assert code.source_cardinality == source_cardinality
     assert code.target_cardinality == target_cardinality
@@ -267,7 +289,7 @@ def test_from_lengths_canonical_huffman(pmf):
     # The canonical code with the Huffman lengths is an optimal code as well.
     huffman = komm.HuffmanCode(pmf)
     lengths = [len(codeword) for codeword in huffman.codewords]
-    code = komm.FixedToVariableCode.from_lengths(len(pmf), lengths)
+    code = komm.FixedToVariableCode.from_lengths(lengths, source_cardinality=len(pmf))
     assert code.is_prefix_free()
     np.testing.assert_allclose(code.rate(pmf), huffman.rate(pmf))
 
@@ -275,20 +297,20 @@ def test_from_lengths_canonical_huffman(pmf):
 @pytest.mark.parametrize("lengths", [[1, 2, 3, 3], [2, 2, 2, 2], [1, 2, 3, 4]])
 def test_from_lengths_alphabetic(lengths):
     # Non-decreasing lengths yield an alphabetic (slice) code. See [CT06, Sec. 5.7].
-    code = komm.FixedToVariableCode.from_lengths(2, lengths)
+    code = komm.FixedToVariableCode.from_lengths(lengths, source_cardinality=2)
     assert code.codewords == sorted(code.codewords)
 
 
 def test_from_lengths_invalid():
     with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
-        komm.FixedToVariableCode.from_lengths(1, [1, 2, 2])
+        komm.FixedToVariableCode.from_lengths([1, 2, 2], source_cardinality=1)
     with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
-        komm.FixedToVariableCode.from_lengths(3, [1, 2, 2], 1)
+        komm.FixedToVariableCode.from_lengths([1, 2, 2], target_cardinality=1)
     with pytest.raises(ValueError, match="'lengths' must satisfy Kraft inequality"):
-        komm.FixedToVariableCode.from_lengths(3, [1, 1, 1])
+        komm.FixedToVariableCode.from_lengths([1, 1, 1])
     with pytest.raises(ValueError, match="'lengths' must be positive"):
-        komm.FixedToVariableCode.from_lengths(3, [0, 1, 2])
+        komm.FixedToVariableCode.from_lengths([0, 1, 2])
     with pytest.raises(ValueError, match="'lengths' must be non-negative"):
-        komm.FixedToVariableCode.from_lengths(3, [1, -1, 2])
-    with pytest.raises(ValueError, match="'enc_mapping': invalid domain"):
-        komm.FixedToVariableCode.from_lengths(3, [1, 2, 3, 3])
+        komm.FixedToVariableCode.from_lengths([1, -1, 2])
+    with pytest.raises(ValueError, match="must be a power of source cardinality"):
+        komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=3)

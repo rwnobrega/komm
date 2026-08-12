@@ -1,5 +1,5 @@
 from functools import cache, cached_property
-from itertools import count, product
+from itertools import product
 from typing import Self
 
 import numpy as np
@@ -10,6 +10,7 @@ from ..types import Array1D
 from .util import (
     Word,
     canonical_code,
+    infer_block_size,
     is_prefix_free,
     is_uniquely_parsable,
     parse_fixed_length,
@@ -102,23 +103,25 @@ class FixedToVariableCode:
         return cls(calX, calY, k, enc_mapping)
 
     @classmethod
-    def from_codewords(cls, source_cardinality: int, codewords: list[Word]) -> Self:
+    def from_codewords(
+        cls,
+        codewords: list[Word],
+        *,
+        source_cardinality: int | None = None,
+    ) -> Self:
         r"""
-        Constructs a fixed-to-variable length code from the source cardinality $|\mathcal{X}|$ and a list of codewords.
+        Constructs a fixed-to-variable length code from a list of codewords.
 
         Parameters:
-            source_cardinality: The source cardinality $|\mathcal{X}|$. Must be an integer greater than or equal to $2$.
+            codewords: The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing non-empty tuples of integers in $\mathcal{Y}$. The tuple in position $i$ must be equal to $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
-            codewords: The codewords of the code. Must be a list of length $|\mathcal{X}|^k$ containing tuples of integers in $\mathcal{Y}$. The tuple in position $i$ must be equal to $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+            source_cardinality: The source cardinality $|\mathcal{X}|$. Must be an integer greater than or equal to $2$. The default value is `len(codewords)`, which corresponds to source block size $k = 1$.
 
         Notes:
-            The source block size $k$ is inferred from the number of codewords, and the target cardinality $|\mathcal{Y}|$ is inferred from the maximum value in the codewords.
+            The source block size $k$ is inferred from the number of codewords: it is the unique integer such that $|\mathcal{X}|^k$ equals `len(codewords)`. The target cardinality $|\mathcal{Y}|$ is inferred from the maximum value in the codewords.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(
-            ...     source_cardinality=3,
-            ...     codewords=[(0,), (1, 0), (1, 1)],
-            ... )
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
             >>> code.enc_mapping
@@ -127,8 +130,8 @@ class FixedToVariableCode:
              (2,): (1, 1)}
 
             >>> code = komm.FixedToVariableCode.from_codewords(
+            ...     codewords=[(0,), (1, 1), (1, 1, 0), (1, 0, 1)],
             ...     source_cardinality=2,
-            ...     codewords=[(0,), (1, 1), (1, 1, 0), (1, 0, 1)]
             ... )
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (2, 2, 2)
@@ -137,44 +140,52 @@ class FixedToVariableCode:
              (0, 1): (1, 1),
              (1, 0): (1, 1, 0),
              (1, 1): (1, 0, 1)}
+
+            >>> komm.FixedToVariableCode.from_codewords(
+            ...     codewords=[(0,), (1, 0), (1, 1)],
+            ...     source_cardinality=2,
+            ... )
+            Traceback (most recent call last):
+            ...
+            ValueError: length of 'codewords' must be a power of source cardinality 2 (got 3)
         """
         if any(len(codeword) == 0 for codeword in codewords):
             raise ValueError("'codewords' must be non-empty")
+        if source_cardinality is None:
+            source_cardinality = len(codewords)
         if not source_cardinality >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
         calX = source_cardinality
         calY = max(max(codeword) for codeword in codewords) + 1
-        k = next(k for k in count(1) if calX**k >= len(codewords))
+        k = infer_block_size(len(codewords), calX, "codewords")
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
         return cls(calX, calY, k, enc_mapping)
 
     @classmethod
     def from_lengths(
         cls,
-        source_cardinality: int,
         lengths: npt.ArrayLike,
+        *,
+        source_cardinality: int | None = None,
         target_cardinality: int = 2,
     ) -> Self:
         r"""
-        Constructs a fixed-to-variable length code from the source cardinality $|\mathcal{X}|$ and a list of codeword lengths. The codewords are assigned in lexicographic order, which yields the *canonical code* with the given lengths. The resulting code is always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
+        Constructs a fixed-to-variable length code from a list of codeword lengths. The codewords are assigned in lexicographic order, which yields the *canonical code* with the given lengths. The resulting code is always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
 
         Parameters:
-            source_cardinality: The source cardinality $|\mathcal{X}|$. Must be an integer greater than or equal to $2$.
+            lengths: The codeword lengths of the code. Must be a 1D-array of length $|\mathcal{X}|^k$ of positive integers satisfying the [Kraft inequality](/ref/FixedToVariableCode/#kraft_parameter). The integer in position $i$ must be equal to $\ell(\mathbf{x})$, the length of the codeword $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
-            lengths: The codeword lengths of the code. Must be a list of length $|\mathcal{X}|^k$ of positive integers satisfying the [Kraft inequality](/ref/FixedToVariableCode/#kraft_parameter). The integer in position $i$ must be equal to $\ell(\mathbf{x})$, the length of the codeword $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+            source_cardinality: The source cardinality $|\mathcal{X}|$. Must be an integer greater than or equal to $2$. The default value is `len(lengths)`, which corresponds to source block size $k = 1$.
 
             target_cardinality: The target cardinality $|\mathcal{Y}|$. Must be an integer greater than or equal to $2$. The default value is $2$ (binary code).
 
         Notes:
-            The source block size $k$ is inferred from the number of lengths.
+            The source block size $k$ is inferred from the number of lengths: it is the unique integer such that $|\mathcal{X}|^k$ equals `len(lengths)`.
 
             If the lengths are non-decreasing, the resulting code is moreover *alphabetic*: the codewords preserve the lexicographic ordering of the source words. See [CT06, Sec. 5.7].
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_lengths(
-            ...     source_cardinality=3,
-            ...     lengths=[1, 2, 2],
-            ... )
+            >>> code = komm.FixedToVariableCode.from_lengths([1, 2, 2])
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (3, 2, 1)
             >>> code.enc_mapping
@@ -183,8 +194,8 @@ class FixedToVariableCode:
              (2,): (1, 1)}
 
             >>> code = komm.FixedToVariableCode.from_lengths(
-            ...     source_cardinality=2,
             ...     lengths=[1, 2, 3, 3],
+            ...     source_cardinality=2,
             ... )
             >>> code.source_cardinality, code.target_cardinality, code.source_block_size
             (2, 2, 2)
@@ -195,7 +206,6 @@ class FixedToVariableCode:
              (1, 1): (1, 1, 1)}
 
             >>> code = komm.FixedToVariableCode.from_lengths(
-            ...     source_cardinality=4,
             ...     lengths=[1, 2, 2, 2],
             ...     target_cardinality=3,
             ... )
@@ -207,20 +217,25 @@ class FixedToVariableCode:
              (2,): (1, 1),
              (3,): (1, 2)}
 
-            >>> komm.FixedToVariableCode.from_lengths(3, [1, 1, 1])
+            >>> komm.FixedToVariableCode.from_lengths([1, 1, 1])
             Traceback (most recent call last):
             ...
             ValueError: 'lengths' must satisfy Kraft inequality
         """
+        lengths = np.asarray(lengths)
+        if not lengths.ndim == 1:
+            raise ValueError("'lengths' must be a 1D-array")
+        if source_cardinality is None:
+            source_cardinality = lengths.size
         if not source_cardinality >= 2:
             raise ValueError("'source_cardinality' must be at least 2")
         if not target_cardinality >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
         calX, calY = source_cardinality, target_cardinality
+        k = infer_block_size(lengths.size, calX, "lengths")
         codewords = canonical_code(lengths, base=calY)
         if any(len(codeword) == 0 for codeword in codewords):
             raise ValueError("'lengths' must be positive")
-        k = next(k for k in count(1) if calX**k >= len(codewords))
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
         return cls(calX, calY, k, enc_mapping)
 
@@ -230,7 +245,7 @@ class FixedToVariableCode:
         The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.source_cardinality
             3
         """
@@ -242,7 +257,7 @@ class FixedToVariableCode:
         The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.target_cardinality
             2
         """
@@ -254,7 +269,7 @@ class FixedToVariableCode:
         The source block size $k$ of the code. It is the number of symbols in each source word.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.source_block_size
             1
         """
@@ -266,7 +281,7 @@ class FixedToVariableCode:
         The number of codewords in the code. It is equal to $|\mathcal{X}|^k$.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.size
             3
         """
@@ -278,7 +293,7 @@ class FixedToVariableCode:
         The encoding mapping $\Enc$ of the code. It is a dictionary of length $|\mathcal{X}|^k$ whose keys are all the $k$-tuples of integers in $\mathcal{X}$ and whose values are the corresponding codewords.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.enc_mapping
             {(0,): (0,),
              (1,): (1, 0),
@@ -312,7 +327,7 @@ class FixedToVariableCode:
         The codeword lengths of the code. The integer in position $i$ is equal to $\ell(\mathbf{x})$, the length of the codeword $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.lengths
             [1, 2, 2]
 
@@ -328,15 +343,15 @@ class FixedToVariableCode:
         Returns whether the code is uniquely decodable. A code is *uniquely decodable* if there is a unique way to parse any concatenation of codewords.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.is_uniquely_decodable()
             True
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0, 1), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 1)])
             >>> code.is_uniquely_decodable()
             True
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0, 1), (1, 0)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 0)])
             >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
             False
         """
@@ -348,15 +363,15 @@ class FixedToVariableCode:
         Returns whether the code is prefix-free. A code is *prefix-free* if no codeword is a prefix of any other codeword.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.is_prefix_free()
             True
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0, 1), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 1)])
             >>> code.is_prefix_free()
             False
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0, 1), (1, 0)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 0)])
             >>> code.is_prefix_free()
             False
         """
@@ -376,21 +391,18 @@ class FixedToVariableCode:
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_codewords(
-            ...     source_cardinality=5,
             ...     codewords=[(0, 0, 0), (0, 0, 1), (0, 1, 0), (1, 0, 1), (1, 1)],
             ... )
             >>> code.kraft_parameter()
             0.75
 
             >>> code = komm.FixedToVariableCode.from_codewords(
-            ...     source_cardinality=4,
             ...     codewords=[(0,), (1, 0), (1, 1, 0), (1, 1, 1)],
             ... )
             >>> code.kraft_parameter()
             1.0
 
             >>> code = komm.FixedToVariableCode.from_codewords(
-            ...     source_cardinality=4,
             ...     codewords=[(0, 0), (1, 1), (0,), (1,)],
             ... )
             >>> code.kraft_parameter()
@@ -415,7 +427,7 @@ class FixedToVariableCode:
             rate: The expected rate $R$ of the code.
 
         Examples:
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.rate([1/2, 1/4, 1/4])
             1.5
         """
@@ -457,7 +469,7 @@ class FixedToVariableCode:
             ...
             ValueError: input contains invalid word
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0,1), (1,0)])
             >>> code.encode([0, 1, 0])  # Code is not uniquely decodable
             Traceback (most recent call last):
             ...
@@ -497,7 +509,7 @@ class FixedToVariableCode:
             ...
             ValueError: input contains invalid word
 
-            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (0,1), (1,0)])
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0,1), (1,0)])
             >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
             Traceback (most recent call last):
             ...

@@ -122,6 +122,19 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
+def infer_block_size(size: int, cardinality: int, name: str) -> int:
+    k, power = 1, cardinality
+    while power < size:
+        power *= cardinality
+        k += 1
+    if power != size:
+        raise ValueError(
+            f"length of '{name}' must be a power of source cardinality"
+            f" {cardinality} (got {size})"
+        )
+    return k
+
+
 def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
     r"""
     Generates the canonical (lexicographical) prefix-free symbol code based on the given lengths.
