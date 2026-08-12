@@ -4,9 +4,9 @@
 
 ### Added
 
-- Added property `lengths` to [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#lengths) and [`VariableToFixedCode`](https://komm.dev/ref/VariableToFixedCode/#lengths), which returns the codeword (resp. sourceword) lengths.
+- Added property `lengths` to `FixedToVariableCode` and `VariableToFixedCode`, which returns the codeword (resp. sourceword) lengths.
 
-- Added parameter `assignment` to [`HuffmanCode`](https://komm.dev/ref/HuffmanCode), which selects how the codewords are assigned once the Huffman tree is built: either `'tree'` (the default, from the paths of the tree) or `'canonical'`.
+- Added parameter `assignment` to `HuffmanCode`, which selects how the codewords are assigned once the Huffman tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
 
 ## v0.32.1 (2026-08-10)
 
@@ -224,7 +224,7 @@
 
 ### Added
 
-- Implemented [`LowRateConvolutionalCode`](https://komm.dev/ref/LowRateConvolutionalCode) and [`HighRateConvolutionalCode`](https://komm.dev/ref/LowRateConvolutionalCode) classes.
+- Implemented [`LowRateConvolutionalCode`](https://komm.dev/ref/LowRateConvolutionalCode) and [`HighRateConvolutionalCode`](https://komm.dev/ref/HighRateConvolutionalCode) classes.
 - Added `is_catastrophic` method to convolutional codes.
 
 ## v0.22.0 (2025-05-13)
