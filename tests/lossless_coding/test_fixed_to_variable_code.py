@@ -56,6 +56,19 @@ def test_init(code_parameters):
     assert code.target_cardinality == target_cardinality
     assert code.source_block_size == source_block_size
     assert code.codewords == codewords
+    assert code.lengths == [len(codeword) for codeword in codewords]
+
+
+@pytest.mark.parametrize("code_parameters", test_data)
+def test_lengths_round_trip(code_parameters):
+    source_cardinality, _, _, codewords = code_parameters.values()
+    code = komm.FixedToVariableCode.from_codewords(source_cardinality, codewords)
+    canonical = komm.FixedToVariableCode.from_lengths(
+        source_cardinality, code.lengths, code.target_cardinality
+    )
+    assert canonical.lengths == code.lengths
+    assert canonical.is_prefix_free()
+    np.testing.assert_allclose(canonical.kraft_parameter(), code.kraft_parameter())
 
 
 def test_invalid_source_cardinality():

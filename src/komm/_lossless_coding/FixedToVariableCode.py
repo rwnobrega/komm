@@ -307,12 +307,20 @@ class FixedToVariableCode:
         return list(self.enc_mapping.values())
 
     @cached_property
-    def _codewords_lengths(self) -> npt.NDArray[np.integer]:
-        calX, k = self.source_cardinality, self.source_block_size
-        lengths = np.empty((calX,) * k, dtype=int)
-        for x, y in self.enc_mapping.items():
-            lengths[x] = len(y)
-        return lengths
+    def lengths(self) -> list[int]:
+        r"""
+        The codeword lengths of the code. The integer in position $i$ is equal to $\ell(\mathbf{x})$, the length of the codeword $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])
+            >>> code.lengths
+            [1, 2, 2]
+
+            >>> code = komm.HuffmanCode([0.8, 0.1, 0.1], 2)
+            >>> code.lengths
+            [1, 3, 3, 3, 6, 6, 4, 6, 6]
+        """
+        return [len(y) for y in self.codewords]
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -389,8 +397,7 @@ class FixedToVariableCode:
             1.5
         """
         calY = self.target_cardinality
-        lengths = self._codewords_lengths
-        kraft_parameter = np.sum(np.float_power(calY, -lengths))
+        kraft_parameter = np.sum(np.float_power(calY, -np.asarray(self.lengths)))
         return float(kraft_parameter)
 
     def rate(self, pmf: npt.ArrayLike) -> float:
@@ -414,7 +421,7 @@ class FixedToVariableCode:
         """
         k = self.source_block_size
         pmf = validate_pmf(pmf)
-        lengths = [len(y) for y in self.codewords]
+        lengths = self.lengths
         probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
         rate = np.dot(lengths, probabilities) / k
         return float(rate)

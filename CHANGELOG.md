@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added property `lengths` to [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#lengths), which returns the codeword lengths.
+
 ## v0.32.1 (2026-08-10)
 
 ### Added
