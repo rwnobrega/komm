@@ -8,6 +8,12 @@
 
 - Added parameter `assignment` to `HuffmanCode`, which selects how the codewords are assigned once the Huffman tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
 
+### Breaking changes
+
+- Changed the signature of the class methods `FixedToVariableCode.from_codewords` and `FixedToVariableCode.from_lengths`: `codewords` (resp. `lengths`) is now the only positional parameter, and `source_cardinality` became an optional keyword-only parameter, whose default value is the number of codewords (resp. lengths), corresponding to source block size $k = 1$. For example, instead of `komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])`, use `komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])`; and instead of `komm.FixedToVariableCode.from_lengths(2, [1, 2, 3, 3])`, use `komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=2)`.
+
+- Changed the signature of the class method `VariableToFixedCode.from_sourcewords`: `sourcewords` is now the only positional parameter, and `target_cardinality` became an optional keyword-only parameter, whose default value is $2$ (binary code). For example, instead of `komm.VariableToFixedCode.from_sourcewords(2, [(0,), (1, 0), (1, 1)])`, use `komm.VariableToFixedCode.from_sourcewords([(0,), (1, 0), (1, 1)])`.
+
 ## v0.32.1 (2026-08-10)
 
 ### Added
