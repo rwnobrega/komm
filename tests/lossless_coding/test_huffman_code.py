@@ -63,7 +63,7 @@ def test_huffman_code_haykin_2():
     }
     assert np.isclose(code1.rate(pmf), 3.0)
     assert np.isclose(np.var([len(c) for c in code1.enc_mapping.values()]), 0.0)
-    code2 = komm.HuffmanCode([0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1], policy="low")
+    code2 = komm.HuffmanCode(pmf, policy="low")
     assert code2.enc_mapping == {
         (0,): (1, 1, 0),
         (1,): (1, 1, 1),
@@ -87,6 +87,59 @@ def test_huffman_code_haykin_3():
     assert np.isclose(code2.rate(pmf), 1.1975)
 
 
+def test_huffman_code_haykin_1_canonical():
+    # [Hay04, p. 579]
+    pmf = [0.4, 0.2, 0.2, 0.1, 0.1]
+    code = komm.HuffmanCode(pmf, assignment="canonical")
+    assert code.enc_mapping == {
+        (0,): (0, 0),
+        (1,): (0, 1),
+        (2,): (1, 0),
+        (3,): (1, 1, 0),
+        (4,): (1, 1, 1),
+    }
+
+
+def test_huffman_code_haykin_2_canonical():
+    # [Hay04, p. 620, Problem 9.11]
+    pmf = [0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.1]
+    code1 = komm.HuffmanCode(pmf, policy="high", assignment="canonical")
+    assert code1.enc_mapping == {
+        (0,): (0, 0, 0),
+        (1,): (0, 0, 1),
+        (2,): (0, 1, 0),
+        (3,): (0, 1, 1),
+        (4,): (1, 0, 0),
+        (5,): (1, 0, 1),
+        (6,): (1, 1, 0),
+        (7,): (1, 1, 1),
+    }
+    assert np.isclose(code1.rate(pmf), 3.0)
+    assert np.isclose(np.var([len(c) for c in code1.enc_mapping.values()]), 0.0)
+    code2 = komm.HuffmanCode(pmf, policy="low", assignment="canonical")
+    assert code2.enc_mapping == {
+        (2,): (0, 0),
+        (0,): (0, 1, 0),
+        (1,): (0, 1, 1),
+        (3,): (1, 0, 0),
+        (4,): (1, 0, 1),
+        (5,): (1, 1, 0),
+        (6,): (1, 1, 1, 0),
+        (7,): (1, 1, 1, 1),
+    }
+    assert np.isclose(code2.rate(pmf), 3.0)
+    assert np.isclose(np.var([len(c) for c in code2.enc_mapping.values()]), 23 / 64)
+
+
+def test_huffman_code_tree_assignment_needs_the_tree():
+    # Same lengths, different trees: the 'tree' assignment is not a function of
+    # the lengths alone (whereas the 'canonical' one is).
+    code1 = komm.HuffmanCode([0.4, 0.2, 0.2, 0.1, 0.1])
+    code2 = komm.HuffmanCode([0.2, 0.2, 0.2, 0.2, 0.2])
+    assert code1.lengths == code2.lengths
+    assert code1.codewords != code2.codewords
+
+
 def test_huffman_code_invalid_call():
     with pytest.raises(ValueError, match="must sum to 1.0"):
         komm.HuffmanCode([0.5, 0.5, 0.1])
@@ -94,6 +147,8 @@ def test_huffman_code_invalid_call():
         komm.HuffmanCode([[0.5], [0.5]])
     with pytest.raises(ValueError, match="must be in"):
         komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore
+    with pytest.raises(ValueError, match="'assignment' must be in"):
+        komm.HuffmanCode([0.5, 0.5], assignment="unknown")  # type: ignore
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
@@ -103,3 +158,19 @@ def test_huffman_code_policy(source_cardinality, source_block_size):
     code_high = komm.HuffmanCode(pmf, source_block_size, policy="high")
     code_low = komm.HuffmanCode(pmf, source_block_size, policy="low")
     assert np.isclose(code_high.rate(pmf), code_low.rate(pmf))
+
+
+@pytest.mark.parametrize("policy", ["high", "low"])
+@pytest.mark.parametrize("source_cardinality", range(2, 7))
+@pytest.mark.parametrize("source_block_size", range(1, 4))
+def test_huffman_code_assignment(policy, source_cardinality, source_block_size):
+    # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
+    pmf = random_pmf(source_cardinality)
+    code_tree = komm.HuffmanCode(pmf, source_block_size, policy)
+    code_canonical = komm.HuffmanCode(pmf, source_block_size, policy, "canonical")
+    assert code_canonical.lengths == code_tree.lengths
+    assert np.isclose(code_canonical.rate(pmf), code_tree.rate(pmf))
+    expected = komm.FixedToVariableCode.from_lengths(
+        source_cardinality, code_tree.lengths
+    )
+    assert code_canonical.enc_mapping == expected.enc_mapping
