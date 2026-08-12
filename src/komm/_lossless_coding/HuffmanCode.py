@@ -128,7 +128,7 @@ class Node:
 def huffman_tree(
     pmf: Array1D[np.floating],
     policy: Literal["high", "low"],
-    pbar: tqdm[Any],
+    pbar: "tqdm[Any]",
 ) -> list[Node]:
     def node(index: int, probability: np.floating, leaf: bool) -> Node:
         sign = 1 if policy == "high" and not leaf else -1
@@ -159,7 +159,7 @@ def huffman_tree(
     return tree
 
 
-def tree_lengths(tree: list[Node], size: int, pbar: tqdm[Any]) -> list[int]:
+def tree_lengths(tree: list[Node], size: int, pbar: "tqdm[Any]") -> list[int]:
     depths = [0] * len(tree)
     for node in reversed(tree):
         if node.parent >= 0:
@@ -168,7 +168,7 @@ def tree_lengths(tree: list[Node], size: int, pbar: tqdm[Any]) -> list[int]:
     return depths[:size]
 
 
-def tree_codewords(tree: list[Node], size: int, pbar: tqdm[Any]) -> list[Word]:
+def tree_codewords(tree: list[Node], size: int, pbar: "tqdm[Any]") -> list[Word]:
     codewords: list[Word] = []
     for index in range(size):
         node = tree[index]
