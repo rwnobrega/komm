@@ -113,7 +113,7 @@ class LempelZiv78Code:
         """
         calX, calY = self.source_cardinality, self.target_cardinality
         M = ceil(log(calX, calY))
-        target = np.asarray(target)
+        target = np.asarray(target, dtype=int)
         tokens: list[Token] = []
         i = 0
         while i < target.size:

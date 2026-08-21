@@ -98,7 +98,7 @@ class LempelZivWelchCode:
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        input = np.asarray(input)
+        input = np.asarray(input, dtype=int)
 
         if input.size == 0:
             return np.array([], dtype=int)

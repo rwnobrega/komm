@@ -189,5 +189,7 @@ def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
     symbols = np.asarray(symbols)
     integer = 0
     for symbol in symbols:
-        integer = integer * base + symbol
+        # int() prevents numpy fixed-width scalars from contaminating the
+        # accumulator, which must remain an arbitrary-precision Python int.
+        integer = integer * base + int(symbol)
     return integer
