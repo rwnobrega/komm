@@ -12,13 +12,8 @@ def is_prefix_of(w1: Word, w2: Word) -> bool:
 
 
 def is_prefix_free(words: list[Word]) -> bool:
-    words = [w for w in words if len(w) > 0]  # Ignore empty words
-    words = sorted(words, key=len)
-    for i, w1 in enumerate(words):
-        for w2 in words[i + 1 :]:
-            if is_prefix_of(w1, w2):
-                return False
-    return True
+    words = sorted(w for w in words if len(w) > 0)  # Ignore empty words
+    return not any(is_prefix_of(w1, w2) for w1, w2 in zip(words, words[1:]))
 
 
 def is_uniquely_parsable(words: list[Word]) -> bool:
@@ -26,6 +21,8 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
     words = [w for w in words if len(w) > 0]  # Ignore empty words
     if len(set(words)) < len(words):  # Duplicated words
         return False
+    if is_prefix_free(words):  # Prefix-free implies uniquely parsable
+        return True
     augmented_words = set(words)
     while True:
         dangling_suffixes: set[Word] = set()
