@@ -2855,6 +2855,10 @@
       
         
       
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2894,6 +2898,46 @@
   
   <span class="md-ellipsis">
     UnaryCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EliasGammaCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EliasGammaCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EliasDeltaCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EliasDeltaCode
   </span>
   
 
@@ -3614,7 +3658,15 @@
             <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>[&#39;high&#39;, &#39;low&#39;]</code>)</span>
         –
         <div class="doc-md-description">
-          <p>The policy to be used when constructing the code. It must be either <code>'high'</code> (move combined symbols as high as possible) or <code>'low'</code> (move combined symbols as low as possible). The default value is <code>'high'</code>.</p>
+          <p>The policy to be used when constructing the code. It must be either <code>'high'</code> (move combined symbols as high as possible) or <code>'low'</code> (move combined symbols as low as possible). The default value is <code>'high'</code>. It affects the codeword lengths only in the presence of ties.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>assignment</code></b>
+            <span class="doc-param-annotation">(<code><span title="typing.Literal">Literal</span>[&#39;tree&#39;, &#39;canonical&#39;]</code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The strategy used to assign the codewords, once the Huffman tree is built. It must be either <code>'tree'</code> (read the codewords off the paths of the tree, bit $\mathtt{1}$ being assigned to the less probable of the two merged nodes, as in classic textbook presentations) or <code>'canonical'</code> (the <a href="/ref/FixedToVariableCode/#from_lengths">canonical code</a> with the resulting lengths). The default value is <code>'tree'</code>. It affects neither the codeword lengths nor the <a href="/ref/FixedToVariableCode/#rate">rate</a>.</p>
         </div>
       </li>
   </ul>
@@ -3642,6 +3694,20 @@
 <span class="go"> (2, 0): (1, 0, 0, 0),</span>
 <span class="go"> (2, 1): (1, 0, 0, 1, 1, 0),</span>
 <span class="go"> (2, 2): (1, 0, 0, 1, 1, 1)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
+<span class="go">0.96</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">HuffmanCode</span><span class="p">(</span><span class="n">pmf</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">assignment</span><span class="o">=</span><span class="s2">&quot;canonical&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">enc_mapping</span>
+<span class="go">{(0, 0): (0,),</span>
+<span class="go"> (0, 1): (1, 0, 0),</span>
+<span class="go"> (0, 2): (1, 0, 1),</span>
+<span class="go"> (1, 0): (1, 1, 0),</span>
+<span class="go"> (1, 1): (1, 1, 1, 1, 0, 0),</span>
+<span class="go"> (1, 2): (1, 1, 1, 1, 0, 1),</span>
+<span class="go"> (2, 0): (1, 1, 1, 0),</span>
+<span class="go"> (2, 1): (1, 1, 1, 1, 1, 0),</span>
+<span class="go"> (2, 2): (1, 1, 1, 1, 1, 1)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
 <span class="go">0.96</span>
 </code></pre></div>
