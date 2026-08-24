@@ -1,14 +1,20 @@
 # Changelog
 
-## Unreleased
+## v0.33.0 (2026-08-24)
 
 ### Added
+
+- Implemented [Elias gamma](https://komm.dev/ref/EliasGammaCode) and [Elias delta](https://komm.dev/ref/EliasDeltaCode) integer codes.
 
 - Added property `lengths` to `FixedToVariableCode` and `VariableToFixedCode`, which returns the codeword (resp. sourceword) lengths.
 
 - Added parameter `assignment` to `HuffmanCode`, which selects how the codewords are assigned once the Huffman tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
 
 ### Breaking changes
+
+- Changed the API of integer codes to work with iterators: `encode` now takes an iterable of positive integers and returns an iterator over the bits of the concatenated codewords, and `decode` now takes an iterable of bits and returns an iterator over the decoded integers. Previously, both took and returned one-dimensional NumPy arrays. Encoding and decoding are now lazy: invalid or truncated input only raises `ValueError` when the offending codeword is consumed. For example, instead of `komm.FibonacciCode().encode([4, 1, 3])`, use `list(komm.FibonacciCode().encode([4, 1, 3]))`, or `np.fromiter(..., dtype=int)` to recover an array. Also added the methods `encode_single` and `decode_single`, which encode a single integer and decode a single codeword, respectively — the latter consumes exactly the bits of one codeword, leaving the iterator at the boundary with the next one — and the method `length`, which returns the codeword length for a given positive integer.
+
+- Changed the convention of `UnaryCode` to agree with MacK03, Ch. 7: the codeword for a positive integer $n$ now consists of $n - 1$ zeros followed by a single $1$. Previously, the codeword for a non-negative integer $n$ consisted of $n$ ones followed by a single $0$. Note that the domain changed from non-negative to positive integers. For example, `komm.UnaryCode().encode([4, 1, 3])` now yields `[0, 0, 0, 1, 1, 0, 0, 1]` instead of `[1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0]`.
 
 - Changed the signature of the class methods `FixedToVariableCode.from_codewords` and `FixedToVariableCode.from_lengths`: `codewords` (resp. `lengths`) is now the only positional parameter, and `source_cardinality` became an optional keyword-only parameter, whose default value is the number of codewords (resp. lengths), corresponding to source block size $k = 1$. For example, instead of `komm.FixedToVariableCode.from_codewords(3, [(0,), (1, 0), (1, 1)])`, use `komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])`; and instead of `komm.FixedToVariableCode.from_lengths(2, [1, 2, 3, 3])`, use `komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=2)`.
 
