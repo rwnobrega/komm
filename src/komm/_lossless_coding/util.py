@@ -96,23 +96,46 @@ def parse_prefix_free(
     input: npt.NDArray[np.integer],
     dictionary: dict[Word, Word],
     allow_incomplete: bool,
+    cardinality: int = 2,
 ) -> npt.NDArray[np.integer]:
-    output: list[int] = []
-    i = 0
-    for j in range(len(input)):
-        key = tuple(map(int, input[i : j + 1]))
-        if key in dictionary:
-            output.extend(dictionary[key])
-            i = j + 1
+    # Precompute a (length, value) -> word table, where 'value' is the word
+    # folded into an integer in base 'cardinality'. Parsing is then a single
+    # pass which folds input symbols into an accumulator and probes the table.
+    lut: dict[tuple[int, int], Word] = {}
+    max_length = 0
+    for key, value in dictionary.items():
+        acc = 0
+        for symbol in key:
+            acc = cardinality * acc + symbol
+        lut[len(key), acc] = value
+        max_length = max(max_length, len(key))
 
-    if i == len(input):
+    input = np.asarray(input)
+    if input.size > 0 and (input.min() < 0 or input.max() >= cardinality):
+        raise ValueError("input contains invalid word")
+
+    output: list[int] = []
+    length = acc = 0
+    for symbol in input.tolist():  # Python ints are faster
+        acc = cardinality * acc + symbol
+        length += 1
+        if (length, acc) in lut:
+            output.extend(lut[length, acc])
+            length = acc = 0
+        elif length > max_length:
+            raise ValueError("input contains invalid word")
+
+    if length == 0:
         return np.asarray(output)
     elif not allow_incomplete:
         raise ValueError("input contains invalid word")
 
-    remainder = tuple(map(int, input[i:]))
+    remainder: list[int] = []
+    for _ in range(length):
+        acc, symbol = divmod(acc, cardinality)
+        remainder.insert(0, symbol)
     for key, value in dictionary.items():
-        if is_prefix_of(remainder, key):
+        if is_prefix_of(tuple(remainder), key):
             output.extend(value)
             return np.asarray(output)
 

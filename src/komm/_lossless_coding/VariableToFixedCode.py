@@ -415,7 +415,12 @@ class VariableToFixedCode:
                 "encoding for non-prefix-free codes is not implemented yet"
             )
         input = np.asarray(input)
-        return parse_prefix_free(input, self._inv_dec_mapping, allow_incomplete=True)
+        return parse_prefix_free(
+            input,
+            dictionary=self._inv_dec_mapping,
+            allow_incomplete=True,
+            cardinality=self.source_cardinality,
+        )
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""

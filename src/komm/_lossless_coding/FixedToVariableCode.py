@@ -522,4 +522,9 @@ class FixedToVariableCode:
                 "decoding for non-prefix-free codes is not implemented yet"
             )
         input = np.asarray(input)
-        return parse_prefix_free(input, self._inv_enc_mapping, allow_incomplete=False)
+        return parse_prefix_free(
+            input,
+            dictionary=self._inv_enc_mapping,
+            allow_incomplete=False,
+            cardinality=self.target_cardinality,
+        )
