@@ -72,6 +72,8 @@ from ._finite_state_machine.MealyMachine import MealyMachine
 from ._finite_state_machine.MooreMachine import MooreMachine
 
 # Integer coding
+from ._integer_coding.EliasDeltaCode import EliasDeltaCode
+from ._integer_coding.EliasGammaCode import EliasGammaCode
 from ._integer_coding.FibonacciCode import FibonacciCode
 from ._integer_coding.UnaryCode import UnaryCode
 
@@ -195,6 +197,8 @@ __all__ = [
     "MealyMachine",
     "MooreMachine",
     # _integer_coding
+    "EliasDeltaCode",
+    "EliasGammaCode",
     "FibonacciCode",
     "UnaryCode",
     # _labelings

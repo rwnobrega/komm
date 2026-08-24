@@ -94,6 +94,8 @@ Source coding:
     - LempelZivWelchCode
   Integer coding:
     - UnaryCode
+    - EliasGammaCode
+    - EliasDeltaCode
     - FibonacciCode
   Quantization:
     - ScalarQuantizer

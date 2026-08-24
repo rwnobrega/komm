@@ -1,0 +1,66 @@
+from collections.abc import Iterable, Iterator
+
+from .. import abc
+from .base import from_binary, take, to_binary, validate_positive
+from .EliasGammaCode import EliasGammaCode
+
+
+class EliasDeltaCode(abc.IntegerCode):
+    r"""
+    Elias delta code. It is an integer code. The codeword for a positive integer $n$ consists of the [Elias gamma codeword](/ref/EliasGammaCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias delta coding](https://en.wikipedia.org/wiki/Elias_delta_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\beta$).
+    """
+
+    gamma_code = EliasGammaCode()
+
+    def encode_single(self, integer: int) -> list[int]:
+        r"""
+        Examples:
+            >>> code = komm.EliasDeltaCode()
+            >>> code.encode_single(4)
+            [0, 1, 1, 0, 0]
+        """
+        validate_positive(integer)
+        binary = to_binary(integer)
+        return self.gamma_code.encode_single(len(binary)) + binary[1:]
+
+    def decode_single(self, bits: Iterator[int]) -> int:
+        r"""
+        Examples:
+            >>> code = komm.EliasDeltaCode()
+            >>> bits = iter([0, 1, 1, 0, 0, 1, 1])
+            >>> code.decode_single(bits)
+            4
+            >>> list(bits)  # Iterator is left at codeword boundary
+            [1, 1]
+        """
+        length = self.gamma_code.decode_single(bits)
+        return from_binary([1] + take(bits, length - 1))
+
+    def length(self, integer: int) -> int:
+        r"""
+        Examples:
+            >>> code = komm.EliasDeltaCode()
+            >>> code.length(4)
+            5
+        """
+        validate_positive(integer)
+        num_bits = integer.bit_length()
+        return self.gamma_code.length(num_bits) + num_bits - 1
+
+    def encode(self, input: Iterable[int]) -> Iterator[int]:
+        r"""
+        Examples:
+            >>> code = komm.EliasDeltaCode()
+            >>> list(code.encode([4, 1, 3]))
+            [0, 1, 1, 0, 0, 1, 0, 1, 0, 1]
+        """
+        return super().encode(input)
+
+    def decode(self, input: Iterable[int]) -> Iterator[int]:
+        r"""
+        Examples:
+            >>> code = komm.EliasDeltaCode()
+            >>> list(code.decode([0, 1, 1, 0, 0, 1, 0, 1, 0, 1]))
+            [4, 1, 3]
+        """
+        return super().decode(input)

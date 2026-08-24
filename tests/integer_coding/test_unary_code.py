@@ -18,14 +18,19 @@ def test_unary_code_length(n):
 
 
 @pytest.mark.parametrize("stream", [[1, 2, 0], [0, 5]])
-def test_unary_decode_rejects_non_binary_bits(stream):
+def test_unary_decode_rejects_non_binary(stream):
     code = komm.UnaryCode()
     with pytest.raises(ValueError, match="invalid bit"):
         list(code.decode(stream))
 
 
-@pytest.mark.parametrize("stream", [[0, 0, 0]])
-def test_unary_decode_rejects_incomplete_codeword(stream):
+def test_unary_incomplete_codeword():
     code = komm.UnaryCode()
     with pytest.raises(ValueError, match="incomplete codeword"):
-        list(code.decode(stream))
+        code.decode_single(iter([0, 0, 0]))
+
+
+def test_unary_invalid_tail_bit():
+    code = komm.UnaryCode()
+    with pytest.raises(ValueError, match="invalid bit"):
+        code.decode_single(iter([0, 0, 0, 7]))
