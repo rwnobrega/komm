@@ -1,10 +1,8 @@
+from collections.abc import Iterable, Iterator
 from functools import cache
 
-import numpy as np
-import numpy.typing as npt
-
 from .. import abc
-from .._util.validators import validate_integer_min, validate_integer_range
+from .base import validate_positive
 
 
 class FibonacciCode(abc.IntegerCode):
@@ -12,39 +10,73 @@ class FibonacciCode(abc.IntegerCode):
     Fibonacci code. It is an integer code. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        r"""
-        For the Fibonacci code, the integers must be positive.
-
-        Examples:
-            >>> code = komm.FibonacciCode()
-            >>> code.encode([4, 1, 3])
-            array([1, 0, 1, 1, 1, 1, 0, 0, 1, 1])
-        """
-        input = validate_integer_min(input, low=1)
-        if input.size == 0:
-            return np.array([], dtype=int)
-        return np.concatenate([fibonacci_encode(i) for i in input])
-
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode_single(self, integer: int) -> list[int]:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
-            >>> code.decode([1, 0, 1, 1, 1, 1, 0, 0, 1, 1])
-            array([4, 1, 3])
+            >>> code.encode_single(4)
+            [1, 0, 1, 1]
         """
-        input = validate_integer_range(input, low=0, high=2)
-        output: list[int] = []
-        i = 0
-        while i < input.size:
-            j = i
-            while j + 1 < input.size and not input[j] == input[j + 1] == 1:
-                j += 1
-            if j + 1 >= input.size:
-                raise ValueError("input contains an incomplete codeword")
-            output.append(fibonacci_decode(list(input[i : j + 2])))
-            i = j + 2
-        return np.array(output)
+        validate_positive(integer)
+        top = 2
+        while fibonacci(top + 1) <= integer:
+            top += 1
+        bits = [0] * (top - 1)
+        for i in range(top, 1, -1):
+            if fibonacci(i) <= integer:
+                bits[i - 2] = 1
+                integer -= fibonacci(i)
+        return bits + [1]
+
+    def decode_single(self, bits: Iterator[int]) -> int:
+        r"""
+        Examples:
+            >>> code = komm.FibonacciCode()
+            >>> bits = iter([1, 0, 1, 1, 0, 1])
+            >>> code.decode_single(bits)
+            4
+            >>> list(bits)  # Iterator is left at codeword boundary
+            [0, 1]
+        """
+        integer = 0
+        last = 0
+        for pos, bit in enumerate(bits):
+            if bit == 1:
+                if last == 1:
+                    return integer
+                integer += fibonacci(pos + 2)
+            elif bit != 0:
+                raise ValueError(f"invalid bit in input: {bit}")
+            last = bit
+        raise ValueError("input contains an incomplete codeword")
+
+    def length(self, integer: int) -> int:
+        r"""
+        Examples:
+            >>> code = komm.FibonacciCode()
+            >>> code.length(4)
+            4
+        """
+        validate_positive(integer)
+        return super().length(integer)
+
+    def encode(self, input: Iterable[int]) -> Iterator[int]:
+        r"""
+        Examples:
+            >>> code = komm.FibonacciCode()
+            >>> list(code.encode([4, 1, 3]))
+            [1, 0, 1, 1, 1, 1, 0, 0, 1, 1]
+        """
+        return super().encode(input)
+
+    def decode(self, input: Iterable[int]) -> Iterator[int]:
+        r"""
+        Examples:
+            >>> code = komm.FibonacciCode()
+            >>> list(code.decode([1, 0, 1, 1, 1, 1, 0, 0, 1, 1]))
+            [4, 1, 3]
+        """
+        return super().decode(input)
 
 
 @cache
@@ -52,19 +84,3 @@ def fibonacci(n: int) -> int:
     if n == 0 or n == 1:
         return n
     return fibonacci(n - 1) + fibonacci(n - 2)
-
-
-def fibonacci_encode(integer: int) -> list[int]:
-    positions: list[int] = []
-    while integer > 0:
-        i = 0
-        while fibonacci(i + 1) <= integer:
-            i += 1
-        integer -= fibonacci(i)
-        positions.append(i - 2)
-    last = max(positions) + 1
-    return [1 if i in positions else 0 for i in range(last)] + [1]
-
-
-def fibonacci_decode(bits: list[int]) -> int:
-    return sum(fibonacci(i + 2) for i, bit in enumerate(bits[:-1]) if bit)
