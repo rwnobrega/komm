@@ -93,6 +93,7 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_exponents([1, 3, 4])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
+        exponents = np.asarray(exponents, dtype=int)
         return cls(bits_to_int(np.bincount(exponents)))
 
     def __eq__(self, other: object) -> bool:
