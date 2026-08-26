@@ -87,7 +87,7 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
                     b = decisions[child_r]
                     decisions[active] = np.concatenate([a ^ b, b])
                     active = parent
-            lo = np.array([beliefs[self.code.mu, i][0] for i in self.code.active])
+            lo = np.array([beliefs[self.code.mu, int(i)][0] for i in self.code.active])
             return lo
 
         output = decode(input)
