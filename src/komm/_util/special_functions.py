@@ -1,12 +1,10 @@
-from math import erfc, gamma, sqrt
+from math import erfc, exp, gamma, sqrt
 from statistics import NormalDist
 
 import numpy as np
 import numpy.typing as npt
 
 norm = NormalDist()
-
-gamma = np.vectorize(gamma)
 
 
 def _gaussian_q(x: float) -> float:
@@ -79,12 +77,11 @@ def _auxiliary_p(
 ) -> float:
     # Auxiliary function for the Marcum Q-function
     # See [https://en.wikipedia.org/wiki/Marcum_Q-function].
-    ms = np.arange(m)
-    result = np.sum(np.exp(-b) * (b**ms) / gamma(ms + 1))
+    result = sum(exp(-b) * b**k / gamma(k + 1) for k in range(m))
     for i in range(m, max_iter):
-        ks = np.arange(i - m + 1)
-        inner_sum = np.sum(np.exp(-m * a) * ((m * a) ** ks) / gamma(ks + 1))
-        term = np.exp(-b) * (b**i) / gamma(i + 1) * (1 - inner_sum)
+        ks = range(i - m + 1)
+        inner_sum = sum(exp(-m * a) * (m * a) ** k / gamma(k + 1) for k in ks)
+        term = exp(-b) * b**i / gamma(i + 1) * (1 - inner_sum)
         result += term
         if abs(term) < tol:
             break
