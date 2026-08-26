@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Breaking changes
+
+- Changed method `emit` of `DiscreteMemorylessSource` to return a NumPy scalar when called without arguments. Previously, it returned a one-dimensional array of length $1$.
+
 ## v0.33.0 (2026-08-24)
 
 ### Added

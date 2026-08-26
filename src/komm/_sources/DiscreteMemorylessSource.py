@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Literal
+from typing import Literal, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -93,31 +93,34 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
+    @overload
+    def emit(self, shape: None = None) -> np.integer: ...
+
+    @overload
+    def emit(self, shape: tuple[int, ...] | int) -> npt.NDArray[np.integer]: ...
+
     def emit(
         self,
         shape: tuple[int, ...] | int | None = None,
-    ) -> npt.NDArray[np.integer]:
+    ) -> npt.NDArray[np.integer] | np.integer:
         r"""
         Returns random symbols from the source.
 
         Parameters:
-            shape: The shape of the output array. The default value corresponds to a single symbol.
+            shape: The shape of the output array. If `None` (default), a single symbol is returned as a numpy scalar.
 
         Returns:
-            symbols: The emitted symbols from the source. It is an array with elements in $\mathcal{X}$ and the given shape.
+            symbols: The emitted symbols from the source, with values in $\mathcal{X}$.
 
         Examples:
             >>> source = komm.DiscreteMemorylessSource([1/2, 1/4, 1/8, 1/8])
             >>> source.emit()
-            array([2])
+            np.int64(2)
             >>> source.emit(10)
             array([0, 2, 1, 0, 3, 2, 2, 0, 0, 0])
             >>> source.emit((2, 5))
             array([[3, 1, 2, 0, 0],
                    [1, 0, 2, 1, 2]])
         """
-        if shape is None:
-            shape = (1,)
-        elif isinstance(shape, int):
-            shape = (shape,)
-        return self._rng.choice(self.pmf.size, p=self.pmf, size=shape)
+        alphabet = np.arange(self.cardinality)
+        return self._rng.choice(alphabet, p=self.pmf, size=shape)
