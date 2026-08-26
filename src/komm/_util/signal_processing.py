@@ -203,7 +203,7 @@ def fourier_transform(
     """
     waveform = np.asarray(waveform)
     n = nfft or waveform.shape[axis]
-    spectrum = np.fft.fftshift(np.fft.fft(waveform, n=n, axis=axis), axes=axis)
-    spectrum = spectrum * time_step
+    spectrum: npt.NDArray[np.complexfloating] = np.fft.fft(waveform, n=n, axis=axis)
+    spectrum = np.fft.fftshift(spectrum, axes=axis) * time_step
     frequencies = np.fft.fftshift(np.fft.fftfreq(n=n, d=time_step))
     return spectrum, frequencies
