@@ -5,7 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
+        include:
+          # NumPy 2.5 dropped Python 3.11
+          - python-version: "3.11"
+            numpy-version: "2.4.6"
+          - python-version: "3.12"
+            numpy-version: "2.5.2"
+          - python-version: "3.13"
+            numpy-version: "2.5.2"
+          - python-version: "3.14"
+            numpy-version: "2.5.2"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -15,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[lint,test]"
       - name: Force NumPy version for type checking
-        run: pip install numpy==2.5.2
+        run: pip install numpy==${{ matrix.numpy-version }}
       - name: Black
         run: black --check .
       - name: Flake8
