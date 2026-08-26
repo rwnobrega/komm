@@ -14,6 +14,10 @@ Decision: TypeAlias = npt.NDArray[np.integer]
 Node: TypeAlias = tuple[int, int]  # depth, index
 
 
+def f(r: Belief, s: Belief) -> Belief:
+    return np.asarray(boxplus(r, s))
+
+
 def g(r: Belief, s: Belief, b: Decision) -> Belief:
     return s + (-1) ** b * r
 
@@ -34,9 +38,6 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
 
     code: PolarCode
     output_type: Literal["hard", "soft"] = "soft"
-
-    def __post_init__(self) -> None:
-        self._f = boxplus
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -76,7 +77,7 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
                 msg = beliefs[active]
                 M = msg.size
                 if child_l not in decisions:  # Step L:
-                    beliefs[child_l] = self._f(msg[: M // 2], msg[M // 2 :])
+                    beliefs[child_l] = f(msg[: M // 2], msg[M // 2 :])
                     active = child_l
                 elif child_r not in decisions:  # Step R:
                     side_msg = decisions[child_l]
