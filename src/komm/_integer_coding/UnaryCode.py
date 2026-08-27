@@ -6,7 +6,7 @@ from .base import validate_positive
 
 class UnaryCode(abc.IntegerCode):
     r"""
-    Unary code. It is an integer code. The codeword for a positive integer $n$ consists of $n - 1$ zeros followed by a single $1$. For more details, see <cite>MacK03, Ch. 7</cite>.
+    Unary code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of $n - 1$ zeros followed by a single $1$. For more details, see <cite>MacK03, Ch. 7</cite>.
     """
 
     def encode_single(self, integer: int) -> list[int]:

@@ -7,7 +7,7 @@ from .UnaryCode import UnaryCode
 
 class EliasGammaCode(abc.IntegerCode):
     r"""
-    Elias gamma code. It is an integer code. The codeword for a positive integer $n$ consists of the [unary codeword](/ref/UnaryCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias gamma coding](https://en.wikipedia.org/wiki/Elias_gamma_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\alpha$).
+    Elias gamma code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of the [unary codeword](/ref/UnaryCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias gamma coding](https://en.wikipedia.org/wiki/Elias_gamma_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\alpha$).
     """
 
     unary_code = UnaryCode()

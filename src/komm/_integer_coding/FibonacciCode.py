@@ -7,7 +7,7 @@ from .base import validate_positive
 
 class FibonacciCode(abc.IntegerCode):
     r"""
-    Fibonacci code. It is an integer code. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
+    Fibonacci code. It is an integer code with domain the positive integers. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """
 
     def encode_single(self, integer: int) -> list[int]:

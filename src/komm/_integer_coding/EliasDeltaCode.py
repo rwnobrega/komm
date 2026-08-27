@@ -7,7 +7,7 @@ from .EliasGammaCode import EliasGammaCode
 
 class EliasDeltaCode(abc.IntegerCode):
     r"""
-    Elias delta code. It is an integer code. The codeword for a positive integer $n$ consists of the [Elias gamma codeword](/ref/EliasGammaCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias delta coding](https://en.wikipedia.org/wiki/Elias_delta_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\beta$).
+    Elias delta code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of the [Elias gamma codeword](/ref/EliasGammaCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias delta coding](https://en.wikipedia.org/wiki/Elias_delta_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\beta$).
     """
 
     gamma_code = EliasGammaCode()
