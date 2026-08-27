@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Implemented [truncated binary](https://komm.dev/ref/TruncatedBinaryCode) integer code, whose domain is $[0 : M)$, where $M$ is a given cardinality.
+
 ### Breaking changes
 
 - Changed method `emit` of `DiscreteMemorylessSource` to return a NumPy scalar when called without arguments. Previously, it returned a one-dimensional array of length $1$.

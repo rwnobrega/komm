@@ -11,7 +11,7 @@ class IntegerCode(ABC):
         Encodes a single integer into its codeword.
 
         Parameters:
-            integer: The integer to be encoded. Must be positive.
+            integer: The integer to be encoded. Must be in the domain of the code.
 
         Returns:
             bits: The codeword of the integer, as a list of bits.
@@ -36,16 +36,16 @@ class IntegerCode(ABC):
 
     def length(self, integer: int) -> int:
         r"""
-        Returns the codeword length $\ell(n)$ for a given positive integer $n$.
+        Returns the codeword length $\ell(n)$ for a given integer $n$ in the domain of the code.
         """
         return len(self.encode_single(integer))
 
     def encode(self, input: Iterable[int]) -> Iterator[int]:
         r"""
-        Lazily encodes an iterable of positive integers.
+        Lazily encodes an iterable of integers.
 
         Parameters:
-            input: The integers to be encoded. Must all be positive.
+            input: The integers to be encoded. Must all be in the domain of the code.
 
         Returns:
             output: An iterator over the bits of the concatenated codewords.
@@ -64,7 +64,7 @@ class IntegerCode(ABC):
             input: The bits to be decoded. Must be a concatenation of codewords, possibly partial.
 
         Returns:
-            output: An iterator over the decoded positive integers.
+            output: An iterator over the decoded integers.
         """
         it = iter(input)
         for first in it:
@@ -83,9 +83,11 @@ def take(bits: Iterator[int], num: int) -> list[int]:
     return chunk
 
 
-def to_binary(integer: int) -> list[int]:
-    integer = index(integer)  # Aceita int-like (e.g. np.int64), rejeita float
-    return [(integer >> i) & 1 for i in range(integer.bit_length() - 1, -1, -1)]
+def to_binary(integer: int, width: int | None = None) -> list[int]:
+    integer = index(integer)  # Accepts int-like (e.g. np.int64), rejects float
+    if width is None:
+        width = integer.bit_length()
+    return [(integer >> i) & 1 for i in range(width - 1, -1, -1)]
 
 
 def from_binary(bits: Iterable[int]) -> int:

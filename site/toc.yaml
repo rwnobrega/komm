@@ -97,6 +97,7 @@ Source coding:
     - EliasGammaCode
     - EliasDeltaCode
     - FibonacciCode
+    - TruncatedBinaryCode
   Quantization:
     - ScalarQuantizer
     - UniformQuantizer
