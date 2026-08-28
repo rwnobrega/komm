@@ -6,6 +6,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .._util.matrices import pseudo_inverse
+from .._util.validators import validate_integer_range
 from .util import get_pbar
 
 
@@ -32,6 +33,9 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
+        Raises:
+            ValueError: If the input contains entries outside of $\\{ 0, 1, 2 \\}$.
+
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.GaussianEliminationDecoder(code)
@@ -43,6 +47,7 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
             >>> decoder.decode([2, 2, 2, 2, 2, 2, 2])  # Every position erased
             array([0, 0, 0, 0])
         """
+        input = validate_integer_range(input, low=0, high=3)
 
         @blockwise(self.code.length)
         @vectorize
