@@ -45,6 +45,7 @@ Error control:
     - BCJRDecoder
     - BerlekampDecoder
     - ExhaustiveSearchDecoder
+    - GaussianEliminationDecoder
     - ReedDecoder
     - SCDecoder
     - SyndromeTableDecoder

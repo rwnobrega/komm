@@ -6,6 +6,8 @@
 
 - Implemented [truncated binary](https://komm.dev/ref/TruncatedBinaryCode) integer code, whose domain is $[0 : M)$, where $M$ is a given cardinality.
 
+- Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder) for general block codes over the binary erasure channel.
+
 ### Breaking changes
 
 - Changed method `emit` of `DiscreteMemorylessSource` to return a NumPy scalar when called without arguments. Previously, it returned a one-dimensional array of length $1$.
