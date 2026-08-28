@@ -52,7 +52,12 @@ def test_gaussian_elimination_no_erasures(code: komm.abc.BlockCode):
 
 
 @pytest.mark.parametrize(
-    "r", [[1, 1, 0, 3, 0, 1, 1], [-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4]]
+    "r",
+    [
+        [1, 1, 0, 3, 0, 1, 1],
+        [-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4],
+        [1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4],
+    ],
 )
 def test_gaussian_elimination_invalid_input(r: list[float]):
     # Only bits and erasures are accepted.

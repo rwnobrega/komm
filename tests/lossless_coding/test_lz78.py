@@ -170,3 +170,5 @@ def test_lz78_invalid_input():
         code.encode([0, 10, 27])
     with pytest.raises(ValueError, match="invalid entries"):
         code.encode([-1, 10, 26])
+    with pytest.raises(ValueError, match="only integers"):
+        code.encode([0, 10.5, 26])
