@@ -92,7 +92,7 @@ def xrref(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt, ArrayInt]:
         if np.array_equal(col, eye[len(pivots)]):
             pivots.append(j)
 
-    return row_transform, reduced, np.array(pivots)
+    return row_transform, reduced, np.array(pivots, dtype=int)
 
 
 def rank(matrix: npt.ArrayLike) -> int:
@@ -109,8 +109,8 @@ def rank(matrix: npt.ArrayLike) -> int:
         >>> rank([[1, 1, 1], [1, 1, 0], [0, 0, 1]])
         2
     """
-    _, _, pivots = xrref(matrix)
-    return len(pivots)
+    reduced = rref(matrix)
+    return int(np.count_nonzero(reduced.any(axis=1)))
 
 
 def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
@@ -167,11 +167,12 @@ def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
     Computes a null matrix of a matrix in $\ZZ_2$.
     """
     _, reduced, pivots = xrref(matrix)
-    n_rows, n_cols = reduced.shape
-    null = np.empty((n_cols - n_rows, n_cols), dtype=int)
+    n_cols = reduced.shape[1]
+    n_pivots = pivots.size
+    null = np.empty((n_cols - n_pivots, n_cols), dtype=int)
     not_pivots = np.setdiff1d(range(n_cols), pivots)
-    null[:, not_pivots] = np.eye(n_cols - n_rows, dtype=int)
-    null[:, pivots] = reduced[:, not_pivots].T
+    null[:, not_pivots] = np.eye(n_cols - n_pivots, dtype=int)
+    null[:, pivots] = reduced[:n_pivots, not_pivots].T
     return null
 
 
