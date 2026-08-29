@@ -11,11 +11,6 @@ from komm._algebra.BinaryPolynomial import BinaryPolynomial
 ArrayInt = npt.NDArray[np.integer]
 
 
-def _pivot(row: ArrayInt) -> int:
-    f_list = np.flatnonzero(row)
-    return f_list[0] if f_list.size > 0 else row.size
-
-
 def rref(matrix: npt.ArrayLike) -> ArrayInt:
     r"""
     Computes the row-reduced echelon form of a matrix in $\ZZ_2$.
@@ -31,27 +26,26 @@ def rref(matrix: npt.ArrayLike) -> ArrayInt:
         array([[1, 1, 0],
                [0, 0, 1],
                [0, 0, 0]])
-
-    References:
-        [1] https://gist.github.com/rgov/1499136
     """
-    reduced = np.asarray(matrix, dtype=int)
+    reduced = np.asarray(matrix, dtype=bool).copy()
     n_rows, n_cols = reduced.shape
-    for r in tqdm(range(n_rows), desc="Row-reducing matrix", unit="row", delay=2.5):
-        # Choose the pivot
-        possible_pivots = [_pivot(row) for row in reduced[r:]]
-        p = np.argmin(possible_pivots) + r
-        # Swap rows
-        reduced[r], reduced[p] = reduced[p].copy(), reduced[r].copy()
-        # Pivot column
-        f = _pivot(reduced[r])
-        if f >= n_cols:
+    r = 0
+    cols = tqdm(range(n_cols), desc="Row-reducing matrix", unit="col", delay=2.5)
+    for c in cols:
+        if r == n_rows:
+            break
+        # Find a pivot in column c
+        p = r + int(np.argmax(reduced[r:, c]))
+        if not reduced[p, c]:
             continue
+        # Swap rows
+        if p != r:
+            reduced[[r, p]] = reduced[[p, r]]
         # Subtract the row from others
-        for i in range(n_rows):
-            if i != r and reduced[i, f] != 0:
-                reduced[i] = (reduced[i] + reduced[r]) % 2
-    return reduced
+        others = np.flatnonzero(reduced[:, c])
+        reduced[others[others != r]] ^= reduced[r]
+        r += 1
+    return reduced.astype(int)
 
 
 def xrref(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt, ArrayInt]:
