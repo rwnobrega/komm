@@ -6,7 +6,7 @@
 
 - Implemented [truncated binary](https://komm.dev/ref/TruncatedBinaryCode) integer code, whose domain is $[0 : M)$, where $M$ is a given cardinality.
 
-- Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder) for general block codes over the binary erasure channel.
+- Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder) and [peeling decoder](https://komm.dev/ref/PeelingDecoder) for general block codes over the binary erasure channel.
 
 ### Breaking changes
 

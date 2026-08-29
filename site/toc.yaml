@@ -46,6 +46,7 @@ Error control:
     - BerlekampDecoder
     - ExhaustiveSearchDecoder
     - GaussianEliminationDecoder
+    - PeelingDecoder
     - ReedDecoder
     - SCDecoder
     - SyndromeTableDecoder
