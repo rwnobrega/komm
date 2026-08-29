@@ -55,8 +55,21 @@ def test_peeling_stopping_set():
     dec_peeling = komm.PeelingDecoder(code)
     dec_gaussian = komm.GaussianEliminationDecoder(code)
     r = [2, 2, 0, 2, 0, 1, 1]
-    np.testing.assert_equal(dec_peeling.decode(r), [2, 2, 2, 2])
+    np.testing.assert_equal(dec_peeling.decode(r), [2, 2, 0, 2])
     np.testing.assert_equal(dec_gaussian.decode(r), [1, 1, 0, 0])
+
+
+def test_peeling_correct_bits(code: komm.abc.BlockCode):
+    # Every returned bit matches the true message.
+    dms = komm.DiscreteMemorylessSource(2)
+    bec = komm.BinaryErasureChannel(0.5)
+    decoder = komm.PeelingDecoder(code)
+    for _ in range(100):
+        u = dms.emit(code.dimension)
+        r = bec.transmit(code.encode(u))
+        u_hat = decoder.decode(r)
+        determined = u_hat != 2
+        np.testing.assert_equal(u_hat[determined], u[determined])
 
 
 @pytest.mark.parametrize(

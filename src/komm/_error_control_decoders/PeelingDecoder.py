@@ -24,7 +24,7 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
     Notes:
         - Input type: `erasure` (bits, with `2` denoting an erasure).
         - Output type: `erasure` (bits, with `2` denoting an undetermined position).
-        - Decoding fails when the erased positions contain a *stopping set*, that is, a set of columns such that every row of $H$ meets it in zero or at least two positions. In that case, every position of the output is erased. The decoder is therefore suboptimal, unlike the [Gaussian elimination decoder](/ref/GaussianEliminationDecoder).
+        - Decoding stalls when the erased positions contain a *stopping set*, that is, a set of columns such that every row of $H$ meets it in zero or at least two positions. In that case, the decoder still returns the message bits which depend only on resolved codeword positions, through the generator matrix right inverse; for systematic codes, these are the resolved systematic positions. The decoder is therefore suboptimal, unlike the [Gaussian elimination decoder](/ref/GaussianEliminationDecoder).
         - Performance depends on the check matrix, not only on the code. The check matrix derived from the generator matrix is usually dense, which is the worst case here. To get the intended behavior, build the code from a sparse check matrix, as in `komm.BlockCode(check_matrix=H)`.
     """
 
@@ -41,9 +41,9 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
             >>> decoder.decode([1, 1, 0, 2, 0, 1, 2])
             array([1, 1, 0, 0])
             >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
-            array([2, 2, 2, 2])
+            array([2, 2, 0, 2])
             >>> decoder.decode([2, 0, 1, 1, 2, 2, 0])  # Erased codeword support
-            array([2, 2, 2, 2])
+            array([2, 0, 1, 1])
             >>> decoder.decode([2, 2, 2, 2, 2, 2, 2])
             array([2, 2, 2, 2])
         """
@@ -58,11 +58,12 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
             A = H[:, erased].astype(bool)
             b = H[:, ~erased] @ r[~erased] % 2
             x, unknown, _ = peel(A, b)
-            if unknown.any():
-                return np.full(self.code.dimension, 2)
             v_hat = r.copy()
-            v_hat[erased] = x
-            u_hat = self.code.project_word(v_hat)
+            v_hat[erased] = np.where(unknown, 2, x)
+            unresolved = v_hat == 2
+            G_r_inv = self.code.generator_matrix_right_inverse
+            u_hat = np.where(unresolved, 0, v_hat) @ G_r_inv % 2
+            u_hat[unresolved.astype(int) @ G_r_inv > 0] = 2
             return u_hat
 
         return decode(input)
