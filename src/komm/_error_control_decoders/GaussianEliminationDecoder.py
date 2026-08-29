@@ -13,11 +13,11 @@ from .util import get_pbar
 @dataclass
 class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
     r"""
-    Gaussian elimination decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). Let $\mathcal{K}$ be the set of unerased positions of the received word $r$. This decoder returns a message $\hat{u}$ satisfying
+    Gaussian elimination decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). Let $\mathcal{E}$ be the set of erased positions of the received word $r$. This decoder returns a message $\hat{u}$ satisfying
     $$
-        \hat{u} G_{\mathcal{K}} = r_{\mathcal{K}},
+        \hat{u} G_{\bar{\mathcal{E}}} = r_{\bar{\mathcal{E}}},
     $$
-    where $G_{\mathcal{K}}$ is the submatrix of the generator matrix given by the columns in $\mathcal{K}$.
+    where $G_{\bar{\mathcal{E}}}$ is the submatrix of the generator matrix given by the columns not in $\mathcal{E}$.
 
     Parameters:
         code: The block code to be used for decoding.
