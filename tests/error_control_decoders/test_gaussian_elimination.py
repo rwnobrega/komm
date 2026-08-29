@@ -18,17 +18,17 @@ def code(request: pytest.FixtureRequest) -> komm.abc.BlockCode:
     return request.param
 
 
-def test_gaussian_elimination_compatible(code: komm.abc.BlockCode):
-    # The decoded codeword must agree on the unerased positions.
+def test_gaussian_elimination_correct_bits(code: komm.abc.BlockCode):
+    # Every returned bit matches the true message.
     dms = komm.DiscreteMemorylessSource(2)
     bec = komm.BinaryErasureChannel(0.5)
     decoder = komm.GaussianEliminationDecoder(code)
     for _ in range(100):
-        v = code.encode(dms.emit(code.dimension))
-        r = bec.transmit(v)
-        known = r != 2
-        v_hat = code.encode(decoder.decode(r))
-        np.testing.assert_equal(v_hat[known], v[known])
+        u = dms.emit(code.dimension)
+        r = bec.transmit(code.encode(u))
+        u_hat = decoder.decode(r)
+        determined = u_hat != 2
+        np.testing.assert_equal(u_hat[determined], u[determined])
 
 
 def test_gaussian_elimination_unique(code: komm.abc.BlockCode):

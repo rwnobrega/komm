@@ -2,7 +2,14 @@ import numpy as np
 import pytest
 
 import komm
-from komm._util.matrices import invariant_factors, pseudo_inverse, rank, rref, xrref
+from komm._util.matrices import (
+    invariant_factors,
+    left_null_matrix,
+    pseudo_inverse,
+    rank,
+    rref,
+    xrref,
+)
 
 
 @pytest.mark.parametrize(
@@ -161,3 +168,10 @@ def test_pseudo_inverse_random(n_rows, n_cols):
 )
 def test_invariant_factors(matrix, factors):
     assert invariant_factors(matrix) == [komm.BinaryPolynomial(f) for f in factors]
+
+
+def test_left_null_matrix():
+    matrix = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1]])
+    left_null = left_null_matrix(matrix)
+    assert left_null.shape == (1, 3)
+    np.testing.assert_equal(left_null @ matrix % 2, 0)

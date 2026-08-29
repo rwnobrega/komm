@@ -160,6 +160,14 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
     return p_inverse
 
 
+def left_null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
+    r"""
+    Computes a left null matrix of a matrix in $\ZZ_2$.
+    """
+    row_transform, reduced, _ = xrref(matrix)
+    return row_transform[~reduced.any(axis=1)]
+
+
 def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
     r"""
     Computes a null matrix of a matrix in $\ZZ_2$.
