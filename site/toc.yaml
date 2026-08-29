@@ -42,16 +42,16 @@ Error control:
     - TerminatedConvolutionalCode
     - ViterbiStreamDecoder
   Decoders:
-    - BCJRDecoder
-    - BerlekampDecoder
     - ExhaustiveSearchDecoder
+    - SyndromeTableDecoder
     - GaussianEliminationDecoder
     - PeelingDecoder
-    - ReedDecoder
-    - SCDecoder
-    - SyndromeTableDecoder
-    - ViterbiDecoder
     - WagnerDecoder
+    - ReedDecoder
+    - BerlekampDecoder
+    - SCDecoder
+    - ViterbiDecoder
+    - BCJRDecoder
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
