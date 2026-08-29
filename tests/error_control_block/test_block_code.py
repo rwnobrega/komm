@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 import komm
-from komm._util.matrices import rank
 
 
 def test_block_code():
@@ -67,18 +66,26 @@ def test_block_code():
 @pytest.mark.repeat(20)
 def test_block_code_mappings():
     while True:
-        code = komm.BlockCode(generator_matrix=np.random.randint(0, 2, (4, 8)))
-        if rank(code.generator_matrix) == code.dimension:
+        try:
+            code = komm.BlockCode(generator_matrix=np.random.randint(0, 2, (4, 8)))
             break
+        except ValueError:  # Rank-deficient generator matrix.
+            pass
     k, m = code.dimension, code.redundancy
     for _ in range(100):
         u = np.random.randint(0, 2, (3, 4, k))
         v = code.encode(u)
-        np.testing.assert_equal(
-            code.inverse_encode(v),
-            u,
-        )
-        np.testing.assert_equal(
-            code.check(v),
-            np.zeros((3, 4, m)),
-        )
+        np.testing.assert_equal(code.inverse_encode(v), u)
+        np.testing.assert_equal(code.check(v), np.zeros((3, 4, m)))
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"generator_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]]},
+        {"check_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]]},
+    ],
+)
+def test_block_code_reject_rank_deficient(kwargs):
+    with pytest.raises(ValueError, match="full row rank"):
+        komm.BlockCode(**kwargs)

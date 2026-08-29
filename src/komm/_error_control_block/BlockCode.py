@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.matrices import null_matrix, pseudo_inverse, rref
+from .._util.matrices import null_matrix, pseudo_inverse, rank, rref
 from ..types import Array1D, Array2D
 
 
@@ -68,11 +68,15 @@ class BlockCode(abc.BlockCode):
             self._check_matrix = None
             self._dimension, self._length = self._generator_matrix.shape
             self._redundancy = self._length - self._dimension
+            if rank(self._generator_matrix) < self._dimension:
+                raise ValueError("'generator_matrix' must have full row rank")
         else:  # check_matrix is not None
             self._generator_matrix = None
             self._check_matrix = np.asarray(check_matrix)
             self._redundancy, self._length = self._check_matrix.shape
             self._dimension = self._length - self._redundancy
+            if rank(self._check_matrix) < self._redundancy:
+                raise ValueError("'check_matrix' must have full row rank")
 
     def __repr__(self) -> str:
         if self._generator_matrix is not None:
