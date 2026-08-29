@@ -42,8 +42,10 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
             >>> decoder = komm.GaussianEliminationDecoder(code)
             >>> decoder.decode([1, 1, 0, 2, 0, 1, 2])
             array([1, 1, 0, 0])
-            >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])
+            >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
             array([1, 1, 0, 0])
+            >>> decoder.decode([2, 0, 1, 1, 2, 2, 0])  # Erased codeword support
+            array([2, 0, 1, 1])
             >>> decoder.decode([2, 2, 2, 2, 2, 2, 2])
             array([2, 2, 2, 2])
         """
