@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._error_control_block.PolarCode import PolarCode
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise
 from .._util.special_functions import boxplus
 
 Belief: TypeAlias = npt.NDArray[np.floating]
@@ -54,42 +54,46 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
         """
 
         @blockwise(self.code.length)
-        @vectorize
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             # See [Successive Cancellation(SC) Decoder for a General (N,K) Polar Code]
             # by Prof. Andrew Thangaraj (NPTEL-NOC IITM)
+            # Decode all blocks in parallel.
+            frozen = set(self.code.frozen.tolist())
             active = (0, 0)
             beliefs: dict[Node, Belief] = {(0, 0): li}
             decisions: dict[Node, Decision] = {}
+            outputs: list[Belief] = [li[..., :0]]  # In case of zero dimension
             while active[0] >= 0:
                 depth, index = active
                 parent = (depth - 1, index // 2)
                 if depth == self.code.mu:  # Leaf node
-                    if index in self.code.frozen:
-                        decisions[active] = np.array([0])
+                    if index in frozen:
+                        decisions[active] = np.zeros_like(beliefs[active], dtype=int)
                     else:
                         decisions[active] = (beliefs[active] < 0).astype(int)
+                        outputs.append(beliefs[active])
                     active = parent
                     continue
                 # Interior node
                 child_l = (depth + 1, index * 2)
                 child_r = (depth + 1, index * 2 + 1)
                 msg = beliefs[active]
-                M = msg.size
+                M = msg.shape[-1]
+                r, s = msg[..., : M // 2], msg[..., M // 2 :]
                 if child_l not in decisions:  # Step L:
-                    beliefs[child_l] = f(msg[: M // 2], msg[M // 2 :])
+                    beliefs[child_l] = f(r, s)
                     active = child_l
                 elif child_r not in decisions:  # Step R:
                     side_msg = decisions[child_l]
-                    beliefs[child_r] = g(msg[: M // 2], msg[M // 2 :], side_msg)
+                    beliefs[child_r] = g(r, s, side_msg)
                     active = child_r
                 else:  # Step U:
-                    a = decisions[child_l]
-                    b = decisions[child_r]
-                    decisions[active] = np.concatenate([a ^ b, b])
+                    a = decisions.pop(child_l)
+                    b = decisions.pop(child_r)
+                    decisions[active] = np.concatenate([a ^ b, b], axis=-1)
+                    del beliefs[child_l], beliefs[child_r]
                     active = parent
-            lo = np.array([beliefs[self.code.mu, int(i)][0] for i in self.code.active])
-            return lo
+            return np.concatenate(outputs, axis=-1)
 
         output = decode(input)
         if self.output_type == "hard":
