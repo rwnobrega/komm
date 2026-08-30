@@ -44,15 +44,15 @@ Error control:
   Decoders:
     - ExhaustiveSearchDecoder
     - SyndromeTableDecoder
-    - GaussianEliminationDecoder
-    - PeelingDecoder
-    - InactivationDecoder
     - WagnerDecoder
     - ReedDecoder
     - BerlekampDecoder
     - SCDecoder
     - ViterbiDecoder
     - BCJRDecoder
+    - GaussianEliminationDecoder
+    - PeelingDecoder
+    - InactivationDecoder
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
