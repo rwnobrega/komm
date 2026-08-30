@@ -20,16 +20,15 @@ def peel(
 ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.bool_], npt.NDArray[np.integer]]:
     x = np.zeros(A.shape[1], dtype=int)
     unknown = np.ones(A.shape[1], dtype=bool)
+    row_deg = A.sum(axis=1)
+    b = np.array(b)
     while True:
-        rows = np.flatnonzero(A[:, unknown].sum(axis=1) == 1)
+        rows = np.flatnonzero(row_deg == 1)
         if rows.size == 0:
             return x, unknown, b
-        for i in rows:
-            cols = np.flatnonzero(A[i] & unknown)
-            if cols.size != 1:  # Already solved in this pass.
-                continue
-            j = cols[0]
-            x[j] = b[i]
-            unknown[j] = False
-            if x[j]:
-                b = b ^ A[:, j]
+        cols = np.argmax(A[rows] & unknown, axis=1)
+        x[cols] = b[rows]
+        unknown[cols] = False
+        cols = np.unique(cols)
+        row_deg -= A[:, cols].sum(axis=1)
+        b ^= A[:, cols[x[cols] == 1]].sum(axis=1) % 2
