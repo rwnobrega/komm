@@ -214,18 +214,15 @@ def find_longest_match(buffer: bytes, i: int, ss: int, l_max: int) -> tuple[int,
 
 
 def integer_to_symbols(integer: int, base: int, width: int) -> Word:
-    symbols: list[int] = []
-    for _ in range(width):
-        integer, symbol = divmod(integer, base)
-        symbols.append(symbol)
-    return tuple(symbols[::-1])
+    symbols = [0] * width
+    for j in range(width - 1, -1, -1):
+        symbols[j] = integer % base
+        integer //= base
+    return tuple(symbols)
 
 
 def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
-    symbols = np.asarray(symbols)
     integer = 0
-    for symbol in symbols:
-        # int() prevents numpy fixed-width scalars from contaminating the
-        # accumulator, which must remain an arbitrary-precision Python int.
-        integer = integer * base + int(symbol)
+    for symbol in np.asarray(symbols).tolist():
+        integer = integer * base + symbol
     return integer
