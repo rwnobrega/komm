@@ -197,6 +197,22 @@ def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
     return codewords
 
 
+def find_longest_match(buffer: bytes, i: int, ss: int, l_max: int) -> tuple[int, int]:
+    # Rightmost longest match of buffer[i:] starting in buffer[i - ss : i], overlap allowed.
+    # Returns (p, l), with p relative to i - ss.
+    # Since a match of length l implies one of length l - 1, binary search on l.
+    start = i - ss
+    p, lo, hi = ss - 1, 0, l_max  # p = ss - 1 when l = 0
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        q = buffer.rfind(buffer[i : i + mid], start, i + mid - 1)
+        if q >= 0:
+            p, lo = q - start, mid
+        else:
+            hi = mid - 1
+    return p, lo
+
+
 def integer_to_symbols(integer: int, base: int, width: int) -> Word:
     symbols: list[int] = []
     for _ in range(width):

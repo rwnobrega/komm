@@ -5,7 +5,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.validators import validate_integer_range
-from .util import integer_to_symbols, symbols_to_integer
+from .util import find_longest_match, integer_to_symbols, symbols_to_integer
 
 Token = tuple[int, int, int]
 
@@ -111,12 +111,7 @@ class LempelZiv77Code:
         pbar = tqdm(total=len(buffer), initial=ss, desc="Compressing LZ77", delay=2.5)
         i = ss
         while i < len(buffer):
-            l = min(ls, len(buffer) - i) - 1
-            while True:
-                p = buffer[i - ss : i + l - 1].rfind(buffer[i : i + l])
-                if p >= 0:
-                    break
-                l -= 1
+            p, l = find_longest_match(buffer, i, ss, min(ls, len(buffer) - i) - 1)
             tokens.append((p, l, buffer[i + l]))
             i += l + 1
             pbar.update(l + 1)
