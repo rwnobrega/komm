@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.bit_operations import int_to_bits
+from .._util.bit_operations import to_binary
 
 
 @dataclass
@@ -61,7 +61,7 @@ class SlepianArray:
         """
         k = self.code.dimension
         leader = self._leaders[i]
-        message = int_to_bits(j, k)
+        message = to_binary(j, width=k)
         codeword = self.code.encode(message)
         return np.array(leader + codeword) % 2
 

@@ -10,7 +10,7 @@ from .._algebra import domain, ring
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
-from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.bit_operations import from_binary, to_binary
 from .._util.matrices import invariant_factors
 from ..types import Array1D, Array2D
 
@@ -134,11 +134,11 @@ class ConvolutionalCode(ABC):
         transitions = np.empty((2**σ, 2**k), dtype=int)
         outputs = np.empty((2**σ, 2**k), dtype=int)
         for s, x in np.ndindex(2**σ, 2**k):
-            initial_state = int_to_bits(s, width=σ)
-            u = int_to_bits(x, width=k)
+            initial_state = to_binary(s, width=σ)
+            u = to_binary(x, width=k)
             v, final_state = self.encode_with_state(u, initial_state)
-            transitions[s, x] = bits_to_int(final_state)
-            outputs[s, x] = bits_to_int(v)
+            transitions[s, x] = from_binary(final_state)
+            outputs[s, x] = from_binary(v)
         return MealyMachine(transitions, outputs)
 
     @cache
