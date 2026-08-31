@@ -5,7 +5,7 @@ from typing import Self, SupportsInt, TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.bit_operations import from_binary, to_binary
 from . import domain, ring
 from .Integers import prime_factors
 
@@ -79,7 +79,8 @@ class BinaryPolynomial:
             >>> komm.BinaryPolynomial.from_coefficients([0, 1, 0, 1, 1])  # X^4 + X^3 + X
             BinaryPolynomial(0b11010)
         """
-        return cls(bits_to_int(coefficients))
+        coefficients = np.asarray(coefficients, dtype=int)
+        return cls(from_binary(coefficients))
 
     @classmethod
     def from_exponents(cls, exponents: npt.ArrayLike) -> Self:
@@ -94,7 +95,7 @@ class BinaryPolynomial:
             BinaryPolynomial(0b11010)
         """
         exponents = np.asarray(exponents, dtype=int)
-        return cls(bits_to_int(np.bincount(exponents)))
+        return cls(from_binary(np.bincount(exponents)))
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, int):
@@ -183,7 +184,8 @@ class BinaryPolynomial:
             >>> poly.coefficients(width=8)
             array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        return int_to_bits(self.value, width=width or max(self.degree + 1, 1))
+        width = width or max(self.degree + 1, 1)
+        return np.array(to_binary(self.value, width), dtype=int)
 
     def exponents(self) -> npt.NDArray[np.integer]:
         r"""
@@ -211,7 +213,7 @@ class BinaryPolynomial:
             >>> poly.reciprocal()  # X^3 + X + 1
             BinaryPolynomial(0b1011)
         """
-        return self.__class__(bits_to_int(self.coefficients(width)[::-1]))
+        return self.__class__(from_binary(self.coefficients(width)[::-1]))
 
     def evaluate(self, point: T) -> T:
         r"""
