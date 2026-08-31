@@ -8,9 +8,15 @@
 
 - Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder), [peeling decoder](https://komm.dev/ref/PeelingDecoder), and [inactivation decoder](https://komm.dev/ref/InactivationDecoder) for general block codes over the binary erasure channel.
 
+- Added functions [`to_binary`](https://komm.dev/ref/to_binary) and [`from_binary`](https://komm.dev/ref/from_binary), which convert a single integer to and from its bit representation. Unlike [`int_to_bits`](https://komm.dev/ref/int_to_bits) and [`bits_to_int`](https://komm.dev/ref/bits_to_int), they work with Python integers of arbitrary size.
+
 ### Breaking changes
 
 - Changed method `emit` of `DiscreteMemorylessSource` to return a NumPy scalar when called without arguments. Previously, it returned a one-dimensional array of length $1$.
+
+- Changed the API of [`bits_to_int`](https://komm.dev/ref/bits_to_int) and [`int_to_bits`](https://komm.dev/ref/int_to_bits):
+  - The parameter `width` is now required in both, and both now always return a NumPy array, never a Python integer. The last dimension of the input of `bits_to_int` is split into blocks of `width` bits, and the bits produced by `int_to_bits` are concatenated along the last dimension, so that the two functions are inverses of each other. For example, instead of `komm.bits_to_int([0, 0, 0, 0, 1, 0])`, which returned `16`, use `komm.bits_to_int([0, 0, 0, 0, 1, 0], width=6)`, which returns `array([16])`; and `komm.bits_to_int([0, 0, 0, 0, 1, 0], width=3)` returns `array([0, 2])`. Likewise, `komm.int_to_bits([0, 1, 2, 3], width=2)` now returns a one-dimensional array of $8$ bits instead of a $4 \times 2$ array — append `.reshape(-1, 2)` to recover the latter.
+  - Limited the parameter `width` of `bits_to_int` to $[1 : 64)$ and that of `int_to_bits` to $[0 : 64)$, since both functions now return arrays of machine integers. For wider integers, use the new functions [`to_binary`](https://komm.dev/ref/to_binary) and [`from_binary`](https://komm.dev/ref/from_binary), which also replace the old behavior of converting a single integer to and from a bit sequence.
 
 ## v0.33.0 (2026-08-24)
 
