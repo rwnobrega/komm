@@ -192,7 +192,7 @@ class BlockCode(ABC):
         Returns the coset leaders of the code. This is a $2^m \times n$ matrix whose rows are all the coset leaders. The coset leader in row $i$ corresponds to the syndrome obtained by expressing $i$ in binary with $m$ bits (LSB-first), and whose Hamming weight is minimal. This may be used as a LUT for syndrome-based decoding.
         """
         m, n = self.redundancy, self.length
-        H_cols = np.asarray(bits_to_int(self.check_matrix.T))
+        H_cols = bits_to_int(self.check_matrix.T.ravel(), width=m)
         visited = np.zeros(2**m, dtype=bool)
         visited[0] = True
         count = 1
@@ -232,7 +232,7 @@ class BlockCode(ABC):
         m, n = self.redundancy, self.length
         if hasattr(self, "_cached_coset_leaders"):
             return np.bincount(np.sum(self.coset_leaders(), axis=1), minlength=n + 1)
-        H_cols = np.asarray(bits_to_int(self.check_matrix.T))
+        H_cols = bits_to_int(self.check_matrix.T.ravel(), width=m)
         visited = np.zeros(2**m, dtype=bool)
         visited[0] = True
         count = 1

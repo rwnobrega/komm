@@ -242,9 +242,9 @@ def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomi
     v1 = code.encode(u)
 
     fsm = code.finite_state_machine()
-    input = komm.bits_to_int(u.reshape(-1, k))
+    input = komm.bits_to_int(u, width=k)
     output, _ = fsm.process(input, 0)
-    v2 = komm.int_to_bits(output, width=n).ravel()
+    v2 = komm.int_to_bits(output, width=n)
 
     np.testing.assert_equal(v1, v2)
 

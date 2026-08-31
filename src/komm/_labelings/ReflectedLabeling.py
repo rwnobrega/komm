@@ -36,7 +36,8 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         ints = np.arange(1 << m)
-        return int_to_bits(ints ^ (ints >> 1), width=m, bit_order="MSB-first")
+        gray = ints ^ (ints >> 1)
+        return int_to_bits(gray, width=m, bit_order="MSB-first").reshape(-1, m)
 
     @property
     def num_bits(self) -> int:
@@ -82,8 +83,8 @@ class ReflectedLabeling(abc.Labeling):
         """
         m = self._num_bits
         indices = np.asarray(indices, dtype=int)
-        bits = int_to_bits(indices ^ indices >> 1, width=m, bit_order="MSB-first")
-        return bits.reshape(*indices.shape[:-1], -1)
+        gray = indices ^ indices >> 1
+        return int_to_bits(gray, width=m, bit_order="MSB-first")
 
     def bits_to_indices(self, bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -96,12 +97,11 @@ class ReflectedLabeling(abc.Labeling):
                    [3, 3]])
         """
         m = self._num_bits
-        bits = np.asarray(bits, dtype=int)
-        nat_indices = bits_to_int(bits.reshape(-1, m), bit_order="MSB-first")
+        nat_indices = bits_to_int(bits, width=m, bit_order="MSB-first")
         indices = np.zeros_like(nat_indices)
         for shift in range(m):
             indices ^= nat_indices >> shift
-        return indices.reshape(*bits.shape[:-1], -1)
+        return indices
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

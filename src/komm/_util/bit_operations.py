@@ -1,10 +1,11 @@
 from collections.abc import Iterable
-from functools import partial
 from operator import index
-from typing import Literal, cast
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
+
+from .validators import validate_integer_range
 
 
 def validate_bit_order(bit_order: str) -> None:
@@ -12,44 +13,60 @@ def validate_bit_order(bit_order: str) -> None:
         raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
 
 
+def validate_width(width: int, low: int = 0) -> int:
+    width = index(width)
+    if not low <= width <= 63:
+        raise ValueError(f"'width' must be in [{low}:64)")
+    return width
+
+
 def bits_to_int(
     input: npt.ArrayLike,
+    width: int,
     bit_order: Literal["LSB-first", "MSB-first"] = "LSB-first",
-) -> int | npt.NDArray[np.integer]:
+) -> npt.NDArray[np.integer]:
     r"""
-    Converts a bit array to its integer representation.
+    Converts a bit array to its integer representation. The last dimension of the input is split into blocks of `width` bits, each of which is converted to an integer.
+
+    For integers wider than $63$ bits, see [`from_binary`](/ref/from_binary).
 
     Parameters:
-        input: The input bit array. Must be an array with elements in the set $\\{ 0, 1 \\}$, with the bit sequences in the last axis.
+        input: The input bit array. Must be an array with elements in $\\{ 0, 1 \\}$ whose last dimension is a multiple of `width`.
+
+        width: The number of bits per integer. Must be in $[1 : 64)$.
 
         bit_order: Bit order convention. Must be either `"LSB-first"` (least significant bit in the first position) or `"MSB-first"` (most significant bit in the first position). The default value is `"LSB-first"`.
 
     Returns:
-        output: The integer representation of the input bit array. Has the same shape as the input, but with the last dimension removed.
+        output: The integer representation of the input bit array. Has the same shape as the input, but with the last dimension contracted by a factor of `width`.
 
     Examples:
-        >>> komm.bits_to_int([0, 0, 0, 0, 1, 0], bit_order="LSB-first")
-        16
+        >>> komm.bits_to_int([0, 0, 0, 0, 1, 0], width=6)
+        array([16])
 
-        >>> komm.bits_to_int([0, 0, 0, 0, 1, 0], bit_order="MSB-first")
-        2
+        >>> komm.bits_to_int([0, 0, 0, 0, 1, 0], width=6, bit_order="MSB-first")
+        array([2])
 
-        >>> komm.bits_to_int([[0, 0], [1, 0], [0, 1], [1, 1]])
-        array([0, 1, 2, 3])
+        >>> komm.bits_to_int([0, 0, 0, 0, 1, 0], width=3)
+        array([0, 2])
 
-        >>> komm.bits_to_int([[0, 0], [1, 0], [0, 1], [1, 1]], bit_order="MSB-first")
-        array([0, 2, 1, 3])
+        >>> komm.bits_to_int([[0, 0, 1, 1], [0, 1, 0, 1]], width=2)
+        array([[0, 3],
+               [2, 2]])
     """
-    if np.ndim(input) == 1:
-        if bit_order == "LSB-first":
-            input = np.asarray(input, dtype=np.uint8)
-        elif bit_order == "MSB-first":
-            input = np.flip(input, axis=-1)
-        else:
-            raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
-        packed = np.packbits(input, bitorder="little")
-        return int.from_bytes(packed, byteorder="little")
-    return np.apply_along_axis(partial(bits_to_int, bit_order=bit_order), -1, input)
+    validate_bit_order(bit_order)
+    width = validate_width(width, low=1)
+    input = validate_integer_range(input, low=0, high=2)
+    if input.shape[-1] % width != 0:
+        raise ValueError(
+            f"last dimension of 'input' must be a multiple of {width}"
+            f" (got {input.shape[-1]})"
+        )
+    weights = 1 << np.arange(width)
+    if bit_order == "MSB-first":
+        weights = weights[::-1]
+    blocks = input.reshape(*input.shape[:-1], -1, width)
+    return blocks @ weights
 
 
 def int_to_bits(
@@ -58,52 +75,42 @@ def int_to_bits(
     bit_order: Literal["LSB-first", "MSB-first"] = "LSB-first",
 ) -> npt.NDArray[np.integer]:
     r"""
-    Converts an integer, or array of integers, to their bit representations.
+    Converts an integer array to its bit representation. Each integer is converted to `width` bits, which are concatenated along the last dimension. This is the inverse of [`bits_to_int`](/ref/bits_to_int).
+
+    For integers wider than $63$ bits, see [`to_binary`](/ref/to_binary).
 
     Parameters:
-        input: The input integer, or array of integers.
+        input: The input integer array. Must be an array of integers in $[0 : 2^{\mathtt{width}})$.
 
-        width: The width of the bit representation.
+        width: The number of bits per integer. Must be in $[0 : 64)$.
 
         bit_order: Bit order convention. Must be either `"LSB-first"` (least significant bit in the first position) or `"MSB-first"` (most significant bit in the first position). The default value is `"LSB-first"`.
 
     Returns:
-        output: The bit representation of the input, with the bit sequences in the last axis. Has the same shape as the input, but with a new last dimension of size `width` appended.
+        output: The bit representation of the input integer array. Has the same shape as the input, but with the last dimension expanded by a factor of `width`.
 
     Examples:
-        >>> komm.int_to_bits(2, width=6, bit_order="LSB-first")
-        array([0, 1, 0, 0, 0, 0])
-
-        >>> komm.int_to_bits(2, width=6, bit_order="MSB-first")
+        >>> komm.int_to_bits([16], width=6)
         array([0, 0, 0, 0, 1, 0])
 
-        >>> komm.int_to_bits([0, 1, 2, 3], width=4)
-        array([[0, 0, 0, 0],
-               [1, 0, 0, 0],
-               [0, 1, 0, 0],
-               [1, 1, 0, 0]])
+        >>> komm.int_to_bits([2], width=6, bit_order="MSB-first")
+        array([0, 0, 0, 0, 1, 0])
 
-        >>> komm.int_to_bits([0, 1, 2, 3], width=4, bit_order="MSB-first")
-        array([[0, 0, 0, 0],
-               [0, 0, 0, 1],
-               [0, 0, 1, 0],
-               [0, 0, 1, 1]])
+        >>> komm.int_to_bits([0, 2], width=3)
+        array([0, 0, 0, 0, 1, 0])
+
+        >>> komm.int_to_bits([[0, 3], [2, 2]], width=2)
+        array([[0, 0, 1, 1],
+               [0, 1, 0, 1]])
     """
-    if np.ndim(input) == 0:
-        input = cast(int, input)
-        if bit_order == "LSB-first":
-            bit_list = [(input >> i) % 2 for i in range(width)]
-        elif bit_order == "MSB-first":
-            bit_list = [(input >> (width - 1 - i)) % 2 for i in range(width)]
-        else:
-            raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
-        return np.array(bit_list, dtype=int)
-    input = np.asarray(input, dtype=object)
-    bits = np.array(
-        [int_to_bits(x, width=width, bit_order=bit_order) for x in input.ravel()],
-        dtype=int,
-    )
-    return bits.reshape(input.shape + (width,))
+    validate_bit_order(bit_order)
+    width = validate_width(width)
+    input = validate_integer_range(input, low=0, high=1 << width)
+    shifts = np.arange(width)
+    if bit_order == "MSB-first":
+        shifts = shifts[::-1]
+    bits = (input[..., np.newaxis] >> shifts) & 1
+    return bits.reshape(*input.shape[:-1], -1)
 
 
 def to_binary(

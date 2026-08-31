@@ -46,7 +46,8 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             self.code.strategy.bcjr_initial_final_distributions(num_states)
         )
         self._post_process_output = self.code.strategy.bcjr_post_process_output
-        self._cache_polar = (-1) ** int_to_bits(range(2**n), width=n)
+        bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
+        self._cache_polar = (-1) ** bits
         self._labeling = NaturalLabeling(k)
 
     def _metric_function(self, y: int, z: float) -> float:

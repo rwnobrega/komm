@@ -46,7 +46,7 @@ def test_inactivation_no_erasures(code: komm.abc.BlockCode):
     # Without erasures, every message is recovered.
     decoder = komm.InactivationDecoder(code)
     k = code.dimension
-    messages = komm.int_to_bits(range(2**k), width=k)
+    messages = komm.int_to_bits(range(2**k), width=k).reshape(-1, k)
     np.testing.assert_equal(decoder.decode(code.codewords()), messages)
 
 

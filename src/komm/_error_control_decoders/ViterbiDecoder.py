@@ -44,7 +44,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         self._fsm = self.code.convolutional_code.finite_state_machine()
         self._post_process_output = self.code.strategy.viterbi_post_process_output
         n = self.code.convolutional_code.num_output_bits
-        self._cache_bit = int_to_bits(range(2**n), width=n)
+        self._cache_bit = int_to_bits(range(2**n), width=n).reshape(-1, n)
         self._initial_metrics = np.full(self._fsm.num_states, fill_value=np.inf)
         self._initial_metrics[0] = 0.0
 
@@ -84,7 +84,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 initial_metrics=self._initial_metrics,
             )
             x_hat = self._post_process_output(xs_hat, final_metrics)
-            u_hat = int_to_bits(x_hat, width=k).ravel()
+            u_hat = int_to_bits(x_hat, width=k)
             return u_hat
 
         return decode(input)

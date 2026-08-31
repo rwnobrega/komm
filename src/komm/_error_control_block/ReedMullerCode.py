@@ -97,7 +97,10 @@ class ReedMullerCode(BlockCode):
         """
         rho, mu = self.rho, self.mu
         reed_partitions: list[npt.NDArray[np.integer]] = []
-        bin_vectors = [int_to_bits(range(2**ell), width=ell) for ell in range(mu + 1)]
+        bin_vectors = [
+            int_to_bits(range(2**ell), width=ell).reshape(2**ell, ell)
+            for ell in range(mu + 1)
+        ]
         for ell in range(rho, -1, -1):
             for indices in combinations(range(mu), ell):
                 setI = np.array(indices, dtype=int)

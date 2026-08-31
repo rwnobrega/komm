@@ -35,11 +35,12 @@ class SyndromeTableDecoder(abc.BlockDecoder[abc.BlockCode]):
             array([[1, 1, 0, 0],
                    [1, 0, 1, 1]])
         """
+        m = self.code.redundancy
 
         @blockwise(self.code.length)
         def decode(r: npt.NDArray[np.integer]):
             s = self.code.check(r)
-            e_hat = self._coset_leaders[bits_to_int(s)]
+            e_hat = self._coset_leaders[bits_to_int(s, width=m)[..., 0]]
             v_hat = np.bitwise_xor(r, e_hat)
             u_hat = self.code.project_word(v_hat)
             return u_hat

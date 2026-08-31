@@ -39,7 +39,7 @@ class ViterbiStreamDecoder:
     @cached_property
     def cache_bit(self) -> npt.NDArray[np.integer]:
         n = self.convolutional_code.num_output_bits
-        return int_to_bits(range(2**n), width=n)
+        return int_to_bits(range(2**n), width=n).reshape(-1, n)
 
     def metric_function(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":
@@ -75,5 +75,5 @@ class ViterbiStreamDecoder:
             metric_function=self.metric_function,
             memory=self.memory,
         )
-        output = int_to_bits(input_hat, width=k).ravel()
+        output = int_to_bits(input_hat, width=k)
         return output
