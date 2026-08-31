@@ -111,6 +111,8 @@ Sources:
 Utilities:
   - bits_to_int
   - int_to_bits
+  - from_binary
+  - to_binary
   - sampling_rate_compress
   - sampling_rate_expand
   - convolve

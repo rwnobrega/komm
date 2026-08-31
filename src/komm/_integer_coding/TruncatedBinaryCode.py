@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from operator import index
 
 from .. import abc
-from .base import from_binary, take, to_binary
+from .._util.bit_operations import from_binary, to_binary
+from .base import take
 
 
 @dataclass
@@ -40,8 +41,8 @@ class TruncatedBinaryCode(abc.IntegerCode):
         self._validate(integer)
         u, k = self._u, self._k
         if integer < u:
-            return to_binary(integer, width=k)
-        return to_binary(integer + u, width=k + 1)
+            return to_binary(integer, width=k, bit_order="MSB-first")
+        return to_binary(integer + u, width=k + 1, bit_order="MSB-first")
 
     def decode_single(self, bits: Iterator[int]) -> int:
         r"""
@@ -54,10 +55,10 @@ class TruncatedBinaryCode(abc.IntegerCode):
             [1, 0]
         """
         u, k = self._u, self._k
-        integer = from_binary(take(bits, k))
+        integer = from_binary(take(bits, k), bit_order="MSB-first")
         if integer < u:
             return integer
-        return 2 * integer + from_binary(take(bits, 1)) - u
+        return 2 * integer + from_binary(take(bits, 1), bit_order="MSB-first") - u
 
     def length(self, integer: int) -> int:
         r"""

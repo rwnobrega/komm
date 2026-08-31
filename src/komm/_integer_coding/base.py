@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Iterator
 from itertools import chain, islice
-from operator import index
 
 
 class IntegerCode(ABC):
@@ -81,19 +80,3 @@ def take(bits: Iterator[int], num: int) -> list[int]:
     if len(chunk) < num:
         raise ValueError("input contains an incomplete codeword")
     return chunk
-
-
-def to_binary(integer: int, width: int | None = None) -> list[int]:
-    integer = index(integer)  # Accepts int-like (e.g. np.int64), rejects float
-    if width is None:
-        width = integer.bit_length()
-    return [(integer >> i) & 1 for i in range(width - 1, -1, -1)]
-
-
-def from_binary(bits: Iterable[int]) -> int:
-    integer = 0
-    for bit in bits:
-        if bit != 0 and bit != 1:
-            raise ValueError(f"invalid bit in input: {bit}")
-        integer = 2 * integer + bit
-    return integer

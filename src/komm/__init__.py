@@ -134,7 +134,7 @@ from ._sources.MarkovChain import MarkovChain
 
 # Util
 from ._util import global_rng
-from ._util.bit_operations import bits_to_int, int_to_bits
+from ._util.bit_operations import bits_to_int, from_binary, int_to_bits, to_binary
 from ._util.information_theory import binary_entropy, binary_entropy_inv, entropy, relative_entropy
 from ._util.sequences import autocorrelation, cyclic_autocorrelation
 from ._util.signal_processing import convolve, fourier_transform, sampling_rate_compress, sampling_rate_expand
@@ -257,6 +257,8 @@ __all__ = [
     "global_rng",
     "bits_to_int",
     "int_to_bits",
+    "from_binary",
+    "to_binary",
     "autocorrelation",
     "cyclic_autocorrelation",
     "binary_entropy",

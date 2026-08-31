@@ -1,8 +1,15 @@
+from collections.abc import Iterable
 from functools import partial
+from operator import index
 from typing import Literal, cast
 
 import numpy as np
 import numpy.typing as npt
+
+
+def validate_bit_order(bit_order: str) -> None:
+    if bit_order not in {"LSB-first", "MSB-first"}:
+        raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
 
 
 def bits_to_int(
@@ -97,3 +104,83 @@ def int_to_bits(
         dtype=int,
     )
     return bits.reshape(input.shape + (width,))
+
+
+def to_binary(
+    integer: int,
+    width: int | None = None,
+    bit_order: Literal["LSB-first", "MSB-first"] = "LSB-first",
+) -> list[int]:
+    r"""
+    Converts a single integer to its bit representation. Unlike [`int_to_bits`](/ref/int_to_bits), it works with Python integers of arbitrary size.
+
+    Parameters:
+        integer: The input integer. Must be non-negative.
+
+        width: The number of bits of the representation. The default value is the number of bits of the input integer.
+
+        bit_order: Bit order convention. Must be either `"LSB-first"` (least significant bit in the first position) or `"MSB-first"` (most significant bit in the first position). The default value is `"LSB-first"`.
+
+    Returns:
+        bits: The bit representation of the input integer, as a list of bits.
+
+    Examples:
+        >>> komm.to_binary(16, width=6)
+        [0, 0, 0, 0, 1, 0]
+
+        >>> komm.to_binary(16)
+        [0, 0, 0, 0, 1]
+
+        >>> komm.to_binary(16, bit_order="MSB-first")
+        [1, 0, 0, 0, 0]
+
+        >>> komm.from_binary(komm.to_binary(2**100))
+        1267650600228229401496703205376
+    """
+    validate_bit_order(bit_order)
+    integer = index(integer)  # Accepts int-like (e.g. np.int64), rejects float
+    if width is None:
+        width = integer.bit_length()
+    if not 0 <= integer < 1 << width:
+        raise ValueError(f"'integer' must be in [0:2**{width})")
+    bits = [(integer >> i) & 1 for i in range(width)]
+    if bit_order == "MSB-first":
+        bits.reverse()
+    return bits
+
+
+def from_binary(
+    bits: Iterable[int],
+    bit_order: Literal["LSB-first", "MSB-first"] = "LSB-first",
+) -> int:
+    r"""
+    Converts a bit sequence to a single integer. Unlike [`bits_to_int`](/ref/bits_to_int), it works with Python integers of arbitrary size.
+
+    Parameters:
+        bits: The input bit sequence. Must be an iterable with elements in $\\{ 0, 1 \\}$.
+
+        bit_order: Bit order convention. Must be either `"LSB-first"` (least significant bit in the first position) or `"MSB-first"` (most significant bit in the first position). The default value is `"LSB-first"`.
+
+    Returns:
+        integer: The integer represented by the input bit sequence.
+
+    Examples:
+        >>> komm.from_binary([0, 0, 0, 0, 1, 0])
+        16
+
+        >>> komm.from_binary([0, 0, 0, 0, 1, 0], bit_order="MSB-first")
+        2
+
+        >>> komm.from_binary([0] * 100 + [1])
+        1267650600228229401496703205376
+    """
+    validate_bit_order(bit_order)
+    bit_list = [index(bit) for bit in bits]
+    if bit_order == "LSB-first":
+        bit_list.reverse()
+    integer = 0
+    for bit in bit_list:
+        if bit not in {0, 1}:
+            raise ValueError(f"invalid bit in input: {bit}")
+        integer = 2 * integer + bit
+    return integer

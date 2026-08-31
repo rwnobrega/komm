@@ -1,7 +1,8 @@
 from collections.abc import Iterable, Iterator
 
 from .. import abc
-from .base import from_binary, take, to_binary, validate_positive
+from .._util.bit_operations import from_binary, to_binary
+from .base import take, validate_positive
 from .EliasGammaCode import EliasGammaCode
 
 
@@ -20,7 +21,7 @@ class EliasDeltaCode(abc.IntegerCode):
             [0, 1, 1, 0, 0]
         """
         validate_positive(integer)
-        binary = to_binary(integer)
+        binary = to_binary(integer, bit_order="MSB-first")
         return self.gamma_code.encode_single(len(binary)) + binary[1:]
 
     def decode_single(self, bits: Iterator[int]) -> int:
@@ -34,7 +35,7 @@ class EliasDeltaCode(abc.IntegerCode):
             [1, 1]
         """
         length = self.gamma_code.decode_single(bits)
-        return from_binary([1] + take(bits, length - 1))
+        return from_binary([1] + take(bits, length - 1), bit_order="MSB-first")
 
     def length(self, integer: int) -> int:
         r"""
