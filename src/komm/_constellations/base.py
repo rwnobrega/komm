@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, cast
+from typing import Generic, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -72,7 +72,7 @@ class Constellation(ABC, Generic[T]):
             mean: The mean $\mathbf{m}$ of the constellation.
         """
         priors = self._validate_priors(priors)
-        return cast(Array1D[T], np.dot(priors, self.matrix))
+        return np.dot(priors, self.matrix)
 
     @abstractmethod
     def mean_energy(self, priors: npt.ArrayLike | None = None) -> float:
