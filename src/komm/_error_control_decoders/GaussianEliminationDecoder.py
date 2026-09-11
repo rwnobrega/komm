@@ -25,9 +25,6 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
     Notes:
         - Input type: `erasure` (bits, with `2` denoting an erasure).
         - Output type: `erasure` (bits, with `2` denoting an undetermined position).
-        - Every returned bit is correct, and each undetermined position is equally likely to be `0` or `1`.
-        - To mimic maximum-likelihood decoding, fill the undetermined positions with a uniformly random solution of the system, not with independent coin flips.
-        - The system is solved in $O(n^3)$ time, whereas maximum-likelihood decoding over the [binary symmetric channel](/ref/BinarySymmetricChannel) is NP-hard.
     """
 
     code: abc.BlockCode
@@ -40,7 +37,7 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.GaussianEliminationDecoder(code)
-            >>> decoder.decode([1, 1, 0, 2, 0, 1, 2])
+            >>> decoder.decode([2, 1, 0, 2, 2, 1, 1])
             array([1, 1, 0, 0])
             >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
             array([1, 1, 0, 0])
@@ -57,7 +54,7 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
         def decode(r: npt.NDArray[np.integer]):
             known = r != 2
             G_known = self.code.generator_matrix[:, known]
-            u_hat = pseudo_inverse(G_known.T) @ r[known] % 2
+            u_hat = r[known] @ pseudo_inverse(G_known) % 2
             free = left_null_matrix(G_known).any(axis=0).astype(bool)
             u_hat[free] = 2
             return u_hat

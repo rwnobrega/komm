@@ -21,8 +21,6 @@ class InactivationDecoder(abc.BlockDecoder[abc.BlockCode]):
     Notes:
         - Input type: `erasure` (bits, with `2` denoting an erasure).
         - Output type: `erasure` (bits, with `2` denoting an undetermined position).
-        - The output is identical to that of the [Gaussian elimination decoder](/ref/GaussianEliminationDecoder), but only the inactivated unknowns reach the elimination step. For sparse check matrices, they are few, and decoding is much faster.
-        - This is the algorithm used to decode RaptorQ fountain codes.
     """
 
     code: abc.BlockCode
@@ -35,7 +33,7 @@ class InactivationDecoder(abc.BlockDecoder[abc.BlockCode]):
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.InactivationDecoder(code)
-            >>> decoder.decode([1, 1, 0, 2, 0, 1, 2])
+            >>> decoder.decode([2, 1, 0, 2, 2, 1, 1])
             array([1, 1, 0, 0])
             >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
             array([1, 1, 0, 0])

@@ -24,8 +24,6 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
     Notes:
         - Input type: `erasure` (bits, with `2` denoting an erasure).
         - Output type: `erasure` (bits, with `2` denoting an undetermined position).
-        - Decoding stalls when the erased positions contain a *stopping set*, that is, a set of columns such that every row of $H$ meets it in zero or at least two positions. In that case, the decoder still returns the message bits which depend only on resolved codeword positions, through the generator matrix right inverse; for systematic codes, these are the resolved systematic positions. The decoder is therefore suboptimal, unlike the [Gaussian elimination decoder](/ref/GaussianEliminationDecoder).
-        - Performance depends on the check matrix, not only on the code. The check matrix derived from the generator matrix is usually dense, which is the worst case here. To get the intended behavior, build the code from a sparse check matrix, as in `komm.BlockCode(check_matrix=H)`.
     """
 
     code: abc.BlockCode
@@ -38,7 +36,7 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.PeelingDecoder(code)
-            >>> decoder.decode([1, 1, 0, 2, 0, 1, 2])
+            >>> decoder.decode([2, 1, 0, 2, 2, 1, 1])
             array([1, 1, 0, 0])
             >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
             array([2, 2, 0, 2])
