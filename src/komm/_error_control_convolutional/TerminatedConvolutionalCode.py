@@ -116,10 +116,6 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         return self.encode(np.eye(self.dimension))
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
-        return pseudo_inverse(self.generator_matrix)
-
-    @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
         return null_matrix(self.generator_matrix)
 
@@ -134,9 +130,6 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             return v
 
         return encode(input)
-
-    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        return super().project_word(input)
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return super().inverse_encode(input)

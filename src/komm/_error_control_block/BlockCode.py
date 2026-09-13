@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.matrices import null_matrix, pseudo_inverse, rank, rref
+from .._util.matrices import null_matrix, rank, rref
 from ..types import Array1D, Array2D
 
 
@@ -155,10 +155,6 @@ class BlockCode(abc.BlockCode):
         return rref(null_matrix(self.check_matrix))
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
-        return pseudo_inverse(self.generator_matrix)
-
-    @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
@@ -196,9 +192,6 @@ class BlockCode(abc.BlockCode):
                    [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
         """
         return super().encode(input)
-
-    def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        return super().project_word(input)
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

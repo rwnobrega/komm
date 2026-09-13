@@ -147,10 +147,6 @@ class CyclicCode(abc.BlockCode):
         return self._encoding_strategy.generator_matrix()
 
     @cached_property
-    def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
-        raise NotImplementedError
-
-    @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:

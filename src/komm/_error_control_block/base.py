@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
+from .._util.matrices import pseudo_inverse
 from ..types import Array1D, Array2D
 
 
@@ -52,9 +53,8 @@ class BlockCode(ABC):
         raise NotImplementedError
 
     @cached_property
-    @abstractmethod
     def generator_matrix_right_inverse(self) -> Array2D[np.integer]:
-        raise NotImplementedError
+        return pseudo_inverse(self.generator_matrix)
 
     @cached_property
     @abstractmethod
@@ -83,7 +83,6 @@ class BlockCode(ABC):
 
         return encode(input)
 
-    @abstractmethod
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
         def project(v: npt.NDArray[np.integer]):
