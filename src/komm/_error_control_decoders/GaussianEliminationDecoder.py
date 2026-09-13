@@ -29,7 +29,7 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
 
     code: abc.BlockCode
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Raises:
             ValueError: If the input contains entries outside of $\\{ 0, 1, 2 \\}$.
@@ -39,9 +39,9 @@ class GaussianEliminationDecoder(abc.BlockDecoder[abc.BlockCode]):
             >>> decoder = komm.GaussianEliminationDecoder(code)
             >>> decoder.decode([2, 1, 0, 2, 2, 1, 1])
             array([1, 1, 0, 0])
-            >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set
+            >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set, but still recoverable
             array([1, 1, 0, 0])
-            >>> decoder.decode([2, 0, 1, 1, 2, 2, 0])  # Erased codeword support
+            >>> decoder.decode([2, 0, 1, 1, 2, 2, 0])  # Erased codeword support: unrecoverable
             array([2, 0, 1, 1])
             >>> decoder.decode([2, 2, 2, 2, 2, 2, 2])
             array([2, 2, 2, 2])
