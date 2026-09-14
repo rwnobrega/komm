@@ -6,7 +6,7 @@
 
 - Implemented [truncated binary](https://komm.dev/ref/TruncatedBinaryCode) integer code, whose domain is $[0 : M)$, where $M$ is a given cardinality.
 
-- Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder), [peeling decoder](https://komm.dev/ref/PeelingDecoder), and [inactivation decoder](https://komm.dev/ref/InactivationDecoder) for general block codes over the binary erasure channel.
+- Implemented [Gaussian elimination decoder](https://komm.dev/ref/GaussianEliminationDecoder) and [peeling decoder](https://komm.dev/ref/PeelingDecoder) for general block codes over the binary erasure channel.
 
 - Added functions [`to_binary`](https://komm.dev/ref/to_binary) and [`from_binary`](https://komm.dev/ref/from_binary), which convert a single integer to and from its bit representation. Unlike [`int_to_bits`](https://komm.dev/ref/int_to_bits) and [`bits_to_int`](https://komm.dev/ref/bits_to_int), they work with Python integers of arbitrary size.
 

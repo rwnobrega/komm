@@ -18,7 +18,6 @@ spc = komm.SingleParityCheckCode(3)
         [block, komm.ExhaustiveSearchDecoder],
         [block, komm.GaussianEliminationDecoder],
         [block, komm.PeelingDecoder],
-        [block, komm.InactivationDecoder],
         [terminated, komm.ViterbiDecoder],
         [terminated, komm.BCJRDecoder],
         [bch, komm.BerlekampDecoder],

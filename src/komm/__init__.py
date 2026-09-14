@@ -64,7 +64,6 @@ from ._error_control_decoders.ExhaustiveSearchDecoder import ExhaustiveSearchDec
 from ._error_control_decoders.GaussianEliminationDecoder import (
     GaussianEliminationDecoder,
 )
-from ._error_control_decoders.InactivationDecoder import InactivationDecoder
 from ._error_control_decoders.PeelingDecoder import PeelingDecoder
 from ._error_control_decoders.ReedDecoder import ReedDecoder
 from ._error_control_decoders.SCDecoder import SCDecoder
@@ -195,7 +194,6 @@ __all__ = [
     "BerlekampDecoder",
     "ExhaustiveSearchDecoder",
     "GaussianEliminationDecoder",
-    "InactivationDecoder",
     "PeelingDecoder",
     "ReedDecoder",
     "SCDecoder",

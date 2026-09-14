@@ -52,7 +52,6 @@ Error control:
     - BCJRDecoder
     - GaussianEliminationDecoder
     - PeelingDecoder
-    - InactivationDecoder
   Checksum:
     - CyclicRedundancyCheck
 Finite-state machines:
