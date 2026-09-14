@@ -68,8 +68,8 @@ def test_peeling_correct_bits(code: komm.abc.BlockCode):
         u = dms.emit(code.dimension)
         r = bec.transmit(code.encode(u))
         u_hat = decoder.decode(r)
-        determined = u_hat != 2
-        np.testing.assert_equal(u_hat[determined], u[determined])
+        known = u_hat != 2
+        np.testing.assert_equal(u_hat[known], u[known])
 
 
 @pytest.mark.parametrize(
@@ -80,7 +80,7 @@ def test_peeling_correct_bits(code: komm.abc.BlockCode):
         [1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4],
     ],
 )
-def test_peeling_invalid_input(r: list[float]):
+def test_peeling_invalid_input(r):
     # Only bits and erasures are accepted.
     decoder = komm.PeelingDecoder(komm.HammingCode(3))
     with pytest.raises(ValueError):

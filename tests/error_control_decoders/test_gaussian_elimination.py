@@ -52,8 +52,8 @@ def test_gaussian_elimination_correct_bits(code: komm.abc.BlockCode):
         u = dms.emit(code.dimension)
         r = bec.transmit(code.encode(u))
         u_hat = decoder.decode(r)
-        determined = u_hat != 2
-        np.testing.assert_equal(u_hat[determined], u[determined])
+        known = u_hat != 2
+        np.testing.assert_equal(u_hat[known], u[known])
 
 
 def test_gaussian_elimination_unique(code: komm.abc.BlockCode):
@@ -84,7 +84,7 @@ def test_gaussian_elimination_no_erasures(code: komm.abc.BlockCode):
         [1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4],
     ],
 )
-def test_gaussian_elimination_invalid_input(r: list[float]):
+def test_gaussian_elimination_invalid_input(r):
     # Only bits and erasures are accepted.
     decoder = komm.GaussianEliminationDecoder(komm.HammingCode(3))
     with pytest.raises(ValueError):
