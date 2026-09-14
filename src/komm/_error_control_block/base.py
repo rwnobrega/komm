@@ -91,6 +91,22 @@ class BlockCode(ABC):
 
         return project(input)
 
+    def project_word_with_erasures(
+        self, input: npt.ArrayLike
+    ) -> npt.NDArray[np.integer]:
+        # Conservative: a message bit is marked as erased whenever its fixed
+        # expression through G_r_inv touches an erased position, even if some
+        # other combination of the non-erased positions would determine it.
+        @blockwise(self.length)
+        def project(v: npt.NDArray[np.integer]):
+            G_r_inv = self.generator_matrix_right_inverse
+            erased = v == 2
+            u = (np.where(erased, 0, v) @ G_r_inv) % 2
+            u[erased.astype(int) @ G_r_inv > 0] = 2
+            return u
+
+        return project(input)
+
     @abstractmethod
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

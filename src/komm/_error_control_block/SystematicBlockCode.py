@@ -186,6 +186,11 @@ class SystematicBlockCode(abc.BlockCode):
 
         return project(input)
 
+    def project_word_with_erasures(
+        self, input: npt.ArrayLike
+    ) -> npt.NDArray[np.integer]:
+        return self.project_word(input)
+
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:

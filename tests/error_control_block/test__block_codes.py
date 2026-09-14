@@ -72,3 +72,40 @@ def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
     with pytest.raises(ValueError):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
+
+
+@pytest.mark.parametrize("code", codes)
+@pytest.mark.repeat(20)
+def test_project_word_with_erasures_agrees_on_codewords(code: komm.abc.BlockCode):
+    u = np.random.randint(0, 2, (3, 4, code.dimension))
+    v = code.encode(u)
+    np.testing.assert_equal(
+        code.project_word_with_erasures(v),
+        code.project_word(v),
+    )
+
+
+@pytest.mark.parametrize("code", codes)
+def test_project_word_with_erasures_all_erased(code: komm.abc.BlockCode):
+    v = np.full((2, 3, 2 * code.length), 2)
+    np.testing.assert_equal(
+        code.project_word_with_erasures(v),
+        np.full((2, 3, 2 * code.dimension), 2),
+    )
+
+
+def test_project_word_with_erasures_systematic():
+    code = komm.HammingCode(3)
+    v = [[2, 0, 1, 1, 2, 2, 0], [0, 2, 1, 2, 0, 1, 2]]
+    np.testing.assert_equal(
+        code.project_word_with_erasures(v),
+        [[2, 0, 1, 1], [0, 2, 1, 2]],
+    )
+
+
+def test_project_word_with_erasures_generic():
+    code = komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]])
+    G_r_inv = code.generator_matrix_right_inverse
+    v = np.array([1, 2, 1, 0, 1])
+    expected = np.where(G_r_inv[v == 2].any(axis=0), 2, ((v == 1) @ G_r_inv) % 2)
+    np.testing.assert_equal(code.project_word_with_erasures(v), expected)
