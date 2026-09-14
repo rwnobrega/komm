@@ -6,17 +6,13 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .._util.validators import validate_integer_range
-from .util import get_pbar, peel
+from .util import get_pbar
 
 
 @dataclass
-class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
+class PeelingDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
-    Peeling decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). Let $\mathcal{E}$ be the set of erased positions of the received word $r$. The erased bits $x$ satisfy the linear system
-    $$
-        H_{\mathcal{E}} x^\transpose = H_{\bar{\mathcal{E}}} r_{\bar{\mathcal{E}}}^\transpose,
-    $$
-    where $H_{\mathcal{E}}$ is the submatrix of the check matrix given by the columns in $\mathcal{E}$. Rows with a single unknown are solved and substituted, one at a time, until no such row is left. This is belief propagation specialized to the erasure channel.
+    Peeling decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). This decoder resolves erased positions one at a time, from parity checks with a single erased position, and stops when none is left. For more details, see <cite>RU08, Sec. 3.19</cite>.
 
     Parameters:
         code: The block code to be used for decoding.
@@ -28,10 +24,56 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
 
     code: abc.BlockCode
 
+    def __post_init__(self) -> None:
+        n, m, H = self.code.length, self.code.redundancy, self.code.check_matrix
+        self._chks_of = [frozenset(np.flatnonzero(H[:, j]).tolist()) for j in range(n)]
+        self._vars_of = [frozenset(np.flatnonzero(H[i, :]).tolist()) for i in range(m)]
+
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.PeelingDecoder(code)
+            >>> decoder.decode_to_codeword([2, 1, 0, 2, 2, 1, 1])
+            array([1, 1, 0, 0, 0, 1, 1])
+            >>> decoder.decode_to_codeword([2, 2, 0, 2, 0, 1, 1])  # Stopping set: peeling stalls
+            array([2, 2, 0, 2, 0, 1, 1])
+            >>> decoder.decode_to_codeword([1, 0, 2, 1, 2, 2, 2])
+            array([1, 0, 2, 1, 0, 2, 2])
+        """
+        input = validate_integer_range(input, low=0, high=3)
+
+        @blockwise(self.code.length)
+        @vectorize
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "peeling"))
+        def decode_to_codeword(r: npt.NDArray[np.integer]):
+            # See [RU08, Example 3.104, p. 118].
+            H = self.code.check_matrix
+            v_hat = r.copy()
+            known = v_hat != 2
+            acc = (H @ np.where(known, v_hat, 0)) % 2
+            erased = set(np.flatnonzero(~known).tolist())
+            residual = [erased & s for s in self._vars_of]
+            stack = [i for i, s in enumerate(residual) if len(s) == 1]
+            while stack:
+                i = stack.pop()
+                if len(residual[i]) != 1:
+                    continue
+                j = residual[i].pop()
+                v_hat[j] = acc[i]
+                for i0 in self._chks_of[j] - {i}:
+                    acc[i0] ^= v_hat[j]
+                    residual[i0].discard(j)
+                    if len(residual[i0]) == 1:
+                        stack.append(i0)
+            return v_hat
+
+        return decode_to_codeword(input)
+
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Raises:
-            ValueError: If the input contains entries outside of $\\{ 0, 1, 2 \\}$.
+        Note:
+            For this decoder, the message is read off from the resolved positions through a right inverse of the generator matrix; message bits that depend on an unresolved position are marked as erasures.
 
         Examples:
             >>> code = komm.HammingCode(3)
@@ -40,28 +82,7 @@ class PeelingDecoder(abc.BlockDecoder[abc.BlockCode]):
             array([1, 1, 0, 0])
             >>> decoder.decode([2, 2, 0, 2, 0, 1, 1])  # Stopping set: peeling stalls
             array([2, 2, 0, 2])
-            >>> decoder.decode([2, 0, 1, 1, 2, 2, 0])  # Erased codeword support: unrecoverable
-            array([2, 0, 1, 1])
-            >>> decoder.decode([2, 2, 2, 2, 2, 2, 2])
-            array([2, 2, 2, 2])
+            >>> decoder.decode([1, 0, 2, 1, 2, 2, 2])
+            array([1, 0, 2, 1])
         """
-        input = validate_integer_range(input, low=0, high=3)
-
-        @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "peeling"))
-        def decode(r: npt.NDArray[np.integer]):
-            H = self.code.check_matrix
-            erased = r == 2
-            A = H[:, erased].astype(bool)
-            b = H[:, ~erased] @ r[~erased] % 2
-            x, unknown, _ = peel(A, b)
-            v_hat = r.copy()
-            v_hat[erased] = np.where(unknown, 2, x)
-            unresolved = v_hat == 2
-            G_r_inv = self.code.generator_matrix_right_inverse
-            u_hat = np.where(unresolved, 0, v_hat) @ G_r_inv % 2
-            u_hat[unresolved.astype(int) @ G_r_inv > 0] = 2
-            return u_hat
-
-        return decode(input)
+        return self.code.project_word_with_erasures(self.decode_to_codeword(input))

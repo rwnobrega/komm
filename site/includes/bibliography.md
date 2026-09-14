@@ -14,6 +14,7 @@
 *[OS99]: Alan V. Oppenheim, Ronald W. Schaffer, with John R. Buck. Discrete-Time Signal Processing. Prentice Hall, 2nd edition, 1999. ISBN  978-0137549207.
 *[PS08]: John G. Proakis and Masoud Salehi. Digital Communications. McGraw-Hill, 5th edition, 2008. ISBN 978-0072957167.
 *[RL09]: William Ryan and Shu Lin. Channel Codes: Classical and Modern. Cambridge University Press, 2009. ISBN 978-0521848688.
+*[RU08]: Tom Richardson and Rüdiger Urbanke. Modern Coding Theory. Cambridge University Press, 2008. ISBN 978-0521852296.
 *[SA15]: Leszek Szczecinski, Alex Alvarado. Bit-Interleaved Coded Modulation: Fundamentals, Analysis and Design. Wiley-IEEE Press, 2015. ISBN 978-0470686171.
 *[Say06]: Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.
 *[WBR01]: Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.
