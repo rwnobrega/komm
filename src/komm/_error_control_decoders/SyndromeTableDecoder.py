@@ -8,7 +8,7 @@ from .._util.bit_operations import bits_to_int
 
 
 @dataclass
-class SyndromeTableDecoder(abc.BlockDecoder[abc.BlockCode]):
+class SyndromeTableDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
     Syndrome table decoder for general [block codes](/ref/BlockCode). This decoder implements syndrome-based hard-decision decoding using a precomputed table of coset leaders.
 
@@ -25,18 +25,34 @@ class SyndromeTableDecoder(abc.BlockDecoder[abc.BlockCode]):
     def __post_init__(self) -> None:
         self._coset_leaders = self.code.coset_leaders()
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.SyndromeTableDecoder(code)
-            >>> decoder.decode([[1, 1, 0, 1, 0, 1, 1], [1, 0, 1, 1, 0, 0, 0]])
-            array([[1, 1, 0, 0],
-                   [1, 0, 1, 1]])
+            >>> decoder.decode_to_codeword([
+            ...     [1, 1, 0, 1, 0, 1, 1],
+            ...     [1, 0, 1, 1, 0, 0, 0],
+            ... ])
+            array([[1, 1, 0, 0, 0, 1, 1],
+                   [1, 0, 1, 1, 0, 1, 0]])
         """
         r = np.asarray(input)
         s = self.code.check(r)
         e_hat = self._coset_leaders[bits_to_int(s, width=self.code.redundancy)]
         v_hat = np.bitwise_xor(r, e_hat.reshape(r.shape))
-        u_hat = self.code.project_word(v_hat)
-        return u_hat
+        return v_hat
+
+    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Examples:
+            >>> code = komm.HammingCode(3)
+            >>> decoder = komm.SyndromeTableDecoder(code)
+            >>> decoder.decode([
+            ...     [1, 1, 0, 1, 0, 1, 1],
+            ...     [1, 0, 1, 1, 0, 0, 0],
+            ... ])
+            array([[1, 1, 0, 0],
+                   [1, 0, 1, 1]])
+        """
+        return self.code.project_word(self.decode_to_codeword(input))

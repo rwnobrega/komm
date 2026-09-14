@@ -9,7 +9,7 @@ from .._util.decorators import blockwise, vectorize
 
 
 @dataclass
-class WagnerDecoder(abc.BlockDecoder[SingleParityCheckCode]):
+class WagnerDecoder(abc.CodewordDecoder[SingleParityCheckCode]):
     r"""
     Wagner decoder for [single parity-check codes](/ref/SingleParityCheckCode). For more details, see <cite>CF07, Sec. III.C</cite>.
 
@@ -23,24 +23,40 @@ class WagnerDecoder(abc.BlockDecoder[SingleParityCheckCode]):
 
     code: SingleParityCheckCode
 
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SingleParityCheckCode(4)
+            >>> decoder = komm.WagnerDecoder(code)
+            >>> decoder.decode_to_codeword([
+            ...     [1.52, -0.36, 1.56, 0.82],
+            ...     [-0.75,  1.20, -2.11, 1.73],
+            ... ])
+            array([[0, 0, 0, 0],
+                   [1, 0, 1, 0]])
+        """
+
+        @blockwise(self.code.length)
+        @vectorize
+        def decode_to_codeword(r: npt.NDArray[np.floating]):
+            v_hat = (r < 0).astype(int)
+            if np.count_nonzero(v_hat) % 2 != 0:
+                i = np.argmin(np.abs(r))
+                v_hat[i] ^= 1
+            return v_hat
+
+        return decode_to_codeword(input)
+
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
             >>> code = komm.SingleParityCheckCode(4)
             >>> decoder = komm.WagnerDecoder(code)
-            >>> decoder.decode([[1.52, -0.36, 1.56, 0.82], [-0.75,  1.20, -2.11, 1.73]])
+            >>> decoder.decode([
+            ...     [1.52, -0.36, 1.56, 0.82],
+            ...     [-0.75,  1.20, -2.11, 1.73],
+            ... ])
             array([[0, 0, 0],
                    [1, 0, 1]])
         """
-
-        @blockwise(self.code.length)
-        @vectorize
-        def decode(r: npt.NDArray[np.integer]):
-            v_hat = (r < 0).astype(int)
-            if np.count_nonzero(v_hat) % 2 != 0:
-                i = np.argmin(np.abs(r))
-                v_hat[i] ^= 1
-            u_hat = self.code.project_word(v_hat)
-            return u_hat
-
-        return decode(input)
+        return self.code.project_word(self.decode_to_codeword(input))

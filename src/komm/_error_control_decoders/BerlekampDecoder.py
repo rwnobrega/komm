@@ -13,7 +13,7 @@ from .util import get_pbar
 
 
 @dataclass
-class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
+class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
     r"""
     Berlekamp decoder for [BCH codes](/ref/BCHCode). For more details, see <cite>LC04, Sec. 6.3</cite>.
 
@@ -27,6 +27,32 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
 
     code: BCHCode
 
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.BCHCode(4, 7)
+            >>> decoder = komm.BerlekampDecoder(code)
+            >>> decoder.decode_to_codeword([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        """
+
+        @blockwise(self.code.length)
+        @vectorize
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "Berlekamp"))
+        def decode_to_codeword(r: npt.NDArray[np.integer]):
+            r_poly = BinaryPolynomial.from_coefficients(r)
+            syndrome = self.code.bch_syndrome(r_poly)
+            if all(x == self.code.field.zero for x in syndrome):
+                return r
+            sigma_poly = berlekamp_algorithm(self.code, syndrome)
+            roots = find_roots(self.code.field, sigma_poly)
+            e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
+            e_hat = np.bincount(e_loc, minlength=self.code.length)
+            v_hat = (r + e_hat) % 2
+            return v_hat
+
+        return decode_to_codeword(input)
+
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
@@ -35,24 +61,7 @@ class BerlekampDecoder(abc.BlockDecoder[BCHCode]):
             >>> decoder.decode([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0])
         """
-
-        @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "Berlekamp"))
-        def decode(r: npt.NDArray[np.integer]):
-            r_poly = BinaryPolynomial.from_coefficients(r)
-            syndrome = self.code.bch_syndrome(r_poly)
-            if all(x == self.code.field.zero for x in syndrome):
-                return self.code.project_word(r)
-            sigma_poly = berlekamp_algorithm(self.code, syndrome)
-            roots = find_roots(self.code.field, sigma_poly)
-            e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
-            e_hat = np.bincount(e_loc, minlength=self.code.length)
-            v_hat = (r + e_hat) % 2
-            u_hat = self.code.project_word(v_hat)
-            return u_hat
-
-        return decode(input)
+        return self.code.project_word(self.decode_to_codeword(input))
 
 
 def berlekamp_algorithm(

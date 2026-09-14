@@ -24,3 +24,18 @@ class BlockDecoder(ABC, Generic[T]):
             output: The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.
         """
         raise NotImplementedError
+
+
+class CodewordDecoder(BlockDecoder[T]):
+    @abstractmethod
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Decode received words to codewords. This method takes one or more sequences of received words and returns their corresponding estimated codeword sequences.
+
+        Parameters:
+            input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
+
+        Returns:
+            output: The output sequence(s). Has the same shape as the input.
+        """
+        raise NotImplementedError
