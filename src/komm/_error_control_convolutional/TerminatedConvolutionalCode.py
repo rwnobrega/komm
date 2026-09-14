@@ -97,29 +97,100 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
     @cached_property
     def length(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.length
+            6
+        """
         return self.strategy.codeword_length()
 
     @cached_property
     def dimension(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.dimension
+            3
+        """
         return self.num_blocks * self.convolutional_code.num_input_bits
 
     @cached_property
     def redundancy(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.redundancy
+            3
+        """
         return self.length - self.dimension
 
     @cached_property
     def rate(self) -> float:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.rate
+            0.5
+        """
         return super().rate
 
     @cached_property
     def generator_matrix(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.generator_matrix
+            array([[1, 1, 0, 1, 0, 0],
+                   [0, 0, 1, 1, 0, 1],
+                   [0, 1, 0, 0, 1, 1]])
+        """
         return self.encode(np.eye(self.dimension))
 
     @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.check_matrix
+            array([[1, 0, 1, 1, 0, 0],
+                   [1, 1, 0, 0, 1, 0],
+                   [1, 1, 1, 0, 0, 1]])
+        """
         return null_matrix(self.generator_matrix)
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.encode`](/ref/BlockCode#encode) for examples.
+            </span>
+        """
+
         @blockwise(self.dimension)
         @vectorize
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
@@ -132,37 +203,133 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         return encode(input)
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.inverse_encode`](/ref/BlockCode#inverse_encode) for examples.
+            </span>
+        """
         return super().inverse_encode(input)
 
     def check(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            <span style="margin-left: 1.5em; font-style: italic;">
+            See [`BlockCode.check`](/ref/BlockCode#check) for examples.
+            </span>
+        """
         return super().check(input)
 
     @cache
     def codewords(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.codewords()
+            array([[0, 0, 0, 0, 0, 0],
+                   [1, 1, 0, 1, 0, 0],
+                   [0, 0, 1, 1, 0, 1],
+                   [1, 1, 1, 0, 0, 1],
+                   [0, 1, 0, 0, 1, 1],
+                   [1, 0, 0, 1, 1, 1],
+                   [0, 1, 1, 1, 1, 0],
+                   [1, 0, 1, 0, 1, 0]])
+        """
         return super().codewords()
 
     @cache
     def codeword_weight_distribution(self) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.codeword_weight_distribution()
+            array([1, 0, 0, 4, 3, 0, 0])
+        """
         return super().codeword_weight_distribution()
 
     @cache
     def minimum_distance(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.minimum_distance()
+            3
+        """
         return super().minimum_distance()
 
     @cache
     def coset_leaders(self) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.coset_leaders()
+            array([[0, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 1, 0],
+                   [1, 0, 0, 0, 0, 1],
+                   [0, 0, 0, 0, 0, 1],
+                   [0, 0, 1, 0, 0, 0],
+                   [0, 1, 0, 0, 0, 0],
+                   [1, 0, 0, 0, 0, 0]])
+        """
         return super().coset_leaders()
 
     @cache
     def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.coset_leader_weight_distribution()
+            array([1, 6, 1, 0, 0, 0, 0])
+        """
         return super().coset_leader_weight_distribution()
 
     @cache
     def packing_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.packing_radius()
+            1
+        """
         return super().packing_radius()
 
     @cache
     def covering_radius(self) -> int:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> code.covering_radius()
+            2
+        """
         return super().covering_radius()
 
 
