@@ -41,6 +41,7 @@ def test_gaussian_elimination_exhaustive(code: komm.abc.BlockCode):
             b = np.where(mask, 2, v)
             v_hat, u_hat = exhaustive_bitwise_map_decoder(code, b)
             np.testing.assert_array_equal(decoder.decode(b), u_hat)
+            np.testing.assert_array_equal(decoder.decode_to_codeword(b), v_hat)
 
 
 def test_gaussian_elimination_correct_bits(code: komm.abc.BlockCode):
