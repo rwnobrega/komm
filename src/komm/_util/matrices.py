@@ -113,6 +113,14 @@ def rank(matrix: npt.ArrayLike) -> int:
     return int(np.count_nonzero(reduced.any(axis=1)))
 
 
+def _pseudo_inverse_and_kernel(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt]:
+    row_transform, reduced, pivots = xrref(matrix)
+    p_inverse = np.zeros_like(reduced.T)
+    p_inverse[pivots] = row_transform[: pivots.size]
+    kernel = row_transform[~reduced.any(axis=1)]
+    return p_inverse, kernel
+
+
 def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
     r"""
     Computes a pseudo inverse of a matrix in $\ZZ_2$.
@@ -145,18 +153,8 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
         >>> np.array_equal((p_inverse @ matrix @ p_inverse) % 2, p_inverse)
         True
     """
-    row_transform, reduced, pivots = xrref(matrix)
-    p_inverse = np.zeros_like(reduced.T)
-    p_inverse[pivots] = row_transform[: pivots.size]
+    p_inverse, _ = _pseudo_inverse_and_kernel(matrix)
     return p_inverse
-
-
-def left_null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
-    r"""
-    Computes a left null matrix of a matrix in $\ZZ_2$.
-    """
-    row_transform, reduced, _ = xrref(matrix)
-    return row_transform[~reduced.any(axis=1)]
 
 
 def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
@@ -171,6 +169,52 @@ def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
     null[:, not_pivots] = np.eye(n_cols - n_pivots, dtype=int)
     null[:, pivots] = reduced[:n_pivots, not_pivots].T
     return null
+
+
+def solution_set(
+    matrix: npt.ArrayLike, vector: npt.ArrayLike
+) -> tuple[ArrayInt, ArrayInt]:
+    r"""
+    Solves the linear system $x A = b$ in $\ZZ_2$.
+
+    Parameters:
+        matrix: The matrix $A$. Its elements must be `0` or `1`.
+        vector: The vector $b$. Its elements must be `0` or `1`.
+
+    Returns:
+        particular: A solution $x_0$ of the system.
+        kernel: A left null matrix of $A$, whose rows span $\{ x : x A = 0 \}$.
+
+    Together they describe every solution: $\{ x : x A = b \} = x_0 + \mathrm{span}(\text{kernel})$.
+
+    Raises:
+        ValueError: If the system has no solution.
+
+    Examples:
+        >>> matrix = np.array([[1, 0, 1], [1, 1, 1]])
+        >>> particular, kernel = solution_set(matrix, [0, 1, 0])
+        >>> particular
+        array([1, 1])
+        >>> kernel
+        array([], shape=(0, 2), dtype=int64)
+        >>> (particular @ matrix) % 2
+        array([0, 1, 0])
+
+        >>> matrix = np.array([[1, 1], [1, 1]])
+        >>> solution_set(matrix, [1, 1])
+        (array([0, 1]), array([[1, 1]]))
+        >>> solution_set(matrix, [1, 0])
+        Traceback (most recent call last):
+        ...
+        ValueError: system has no solution
+    """
+    matrix = np.asarray(matrix)
+    vector = np.asarray(vector)
+    p_inverse, kernel = _pseudo_inverse_and_kernel(matrix)
+    particular = vector @ p_inverse % 2
+    if not np.array_equal(particular @ matrix % 2, vector):
+        raise ValueError("system has no solution")
+    return particular, kernel
 
 
 def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> npt.NDArray[Any]:
