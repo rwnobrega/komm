@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.decorators import blockwise, vectorize, with_pbar
-from .._util.matrices import left_null_matrix, pseudo_inverse
+from .._util.matrices import solution_set
 from .._util.validators import validate_integer_range
 from .util import get_pbar
 
@@ -95,11 +95,11 @@ def _compatible_codewords(
     # Returns (v0, W) such that the codewords compatible with r are v0 + span(W).
     # See [RU08, Sec. 3.2, pp. 72–74].
     erased = r == 2
-    H_erased = H[:, erased]
     s = H @ np.where(erased, 0, r) % 2
+    v0_erased, W_erased = solution_set(H[:, erased].T, s)
+    # The unknowns live in E; expand them back to length n.
     v0 = r.copy()
-    v0[erased] = s @ pseudo_inverse(H_erased.T) % 2  # Particular solution.
-    W_erased = left_null_matrix(H_erased.T)  # Codewords supported on E.
+    v0[erased] = v0_erased
     W = np.zeros((W_erased.shape[0], r.size), dtype=int)
     W[:, erased] = W_erased
     return v0, W
@@ -110,7 +110,4 @@ def _compatible_messages(
 ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
     # Returns (u0, N) such that the messages compatible with r are u0 + span(N).
     known = r != 2
-    G_known = G[:, known]
-    u0 = r[known] @ pseudo_inverse(G_known) % 2  # Particular solution.
-    N = left_null_matrix(G_known)  # Messages of the codewords supported on E.
-    return u0, N
+    return solution_set(G[:, known], r[known])
