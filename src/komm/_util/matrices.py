@@ -61,7 +61,7 @@ def xrref(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt, ArrayInt]:
         pivots: The pivot indices.
 
     Examples:
-        >>> matrix = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1]])
+        >>> matrix = [[1, 1, 1], [1, 1, 0], [0, 0, 1]]
         >>> row_transform, reduced, pivots = xrref(matrix)
         >>> row_transform
         array([[0, 1, 0],
@@ -132,7 +132,7 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
         p_inverse: A pseudo inverse of the matrix.
 
     Examples:
-        >>> matrix = np.array([[1, 0, 1], [1, 1, 1]])
+        >>> matrix = [[1, 0, 1], [1, 1, 1]]
         >>> p_inverse = pseudo_inverse(matrix)
         >>> p_inverse
         array([[1, 0],
@@ -142,7 +142,7 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
         array([[1, 0],
                [0, 1]])
 
-        >>> matrix = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1]])
+        >>> matrix = [[1, 1, 1], [1, 1, 0], [0, 0, 1]]
         >>> p_inverse = pseudo_inverse(matrix)
         >>> p_inverse
         array([[0, 1, 0],
@@ -191,7 +191,7 @@ def solution_set(
         ValueError: If the system has no solution.
 
     Examples:
-        >>> matrix = np.array([[1, 0, 1], [1, 1, 1]])
+        >>> matrix = [[1, 0, 1], [1, 1, 1]]
         >>> particular, kernel = solution_set(matrix, [0, 1, 0])
         >>> particular
         array([1, 1])
@@ -200,7 +200,7 @@ def solution_set(
         >>> (particular @ matrix) % 2
         array([0, 1, 0])
 
-        >>> matrix = np.array([[1, 1], [1, 1]])
+        >>> matrix = [[1, 1], [1, 1]]
         >>> solution_set(matrix, [1, 1])
         (array([0, 1]), array([[1, 1]]))
         >>> solution_set(matrix, [1, 0])
