@@ -146,11 +146,8 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
         True
     """
     row_transform, reduced, pivots = xrref(matrix)
-    reduced_inverse = np.zeros_like(reduced.T)
-    if pivots.size == 0:
-        return reduced_inverse
-    reduced_inverse[pivots] = np.eye(pivots.size, reduced.shape[0])
-    p_inverse = np.dot(reduced_inverse, row_transform) % 2
+    p_inverse = np.zeros_like(reduced.T)
+    p_inverse[pivots] = row_transform[: pivots.size]
     return p_inverse
 
 
