@@ -38,13 +38,20 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 0, 2, 1, 0, 2, 2])
         """
         input = validate_integer_range(input, low=0, high=3)
+        G, H = self.code.generator_matrix, self.code.check_matrix
 
         @blockwise(self.code.length)
         @vectorize
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Gaussian elimination"))
         def decode_to_codeword(r: npt.NDArray[np.integer]):
-            v_hat, W = _compatible_codewords(self.code.check_matrix, r)
-            v_hat[W.any(axis=0)] = 2
+            # Solve for the erased positions or the message bits, whichever are fewer.
+            if np.count_nonzero(r == 2) < self.code.dimension:
+                v_hat, W = _compatible_codewords(H, r)
+                v_hat[W.any(axis=0)] = 2
+            else:
+                u0, N = _compatible_messages(G, r)
+                v_hat = u0 @ G % 2
+                v_hat[(N @ G % 2).any(axis=0)] = 2
             return v_hat
 
         return decode_to_codeword(input)
@@ -62,15 +69,21 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 0, 2, 1])
         """
         input = validate_integer_range(input, low=0, high=3)
+        G, H = self.code.generator_matrix, self.code.check_matrix
+        G_r_inv = self.code.generator_matrix_right_inverse
 
         @blockwise(self.code.length)
         @vectorize
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Gaussian elimination"))
         def decode(r: npt.NDArray[np.integer]):
-            c, W = _compatible_codewords(self.code.check_matrix, r)
-            G_r_inv = self.code.generator_matrix_right_inverse
-            u_hat = c @ G_r_inv % 2
-            u_hat[(W @ G_r_inv % 2).any(axis=0)] = 2
+            # Solve for the erased positions or the message bits, whichever are fewer.
+            if np.count_nonzero(r == 2) < self.code.dimension:
+                v0, W = _compatible_codewords(H, r)
+                u_hat = v0 @ G_r_inv % 2
+                u_hat[(W @ G_r_inv % 2).any(axis=0)] = 2
+            else:
+                u_hat, N = _compatible_messages(G, r)
+                u_hat[N.any(axis=0)] = 2
             return u_hat
 
         return decode(input)
@@ -79,14 +92,25 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
 def _compatible_codewords(
     H: npt.NDArray[np.integer], r: npt.NDArray[np.integer]
 ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
-    # Returns (c, W) such that the codewords compatible with r are c + span(W).
+    # Returns (v0, W) such that the codewords compatible with r are v0 + span(W).
     # See [RU08, Sec. 3.2, pp. 72–74].
     erased = r == 2
     H_erased = H[:, erased]
     s = H @ np.where(erased, 0, r) % 2
-    c = r.copy()
-    c[erased] = s @ pseudo_inverse(H_erased.T) % 2  # Particular solution.
+    v0 = r.copy()
+    v0[erased] = s @ pseudo_inverse(H_erased.T) % 2  # Particular solution.
     W_erased = left_null_matrix(H_erased.T)  # Codewords supported on E.
     W = np.zeros((W_erased.shape[0], r.size), dtype=int)
     W[:, erased] = W_erased
-    return c, W
+    return v0, W
+
+
+def _compatible_messages(
+    G: npt.NDArray[np.integer], r: npt.NDArray[np.integer]
+) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
+    # Returns (u0, N) such that the messages compatible with r are u0 + span(N).
+    known = r != 2
+    G_known = G[:, known]
+    u0 = r[known] @ pseudo_inverse(G_known) % 2  # Particular solution.
+    N = left_null_matrix(G_known)  # Messages of the codewords supported on E.
+    return u0, N
