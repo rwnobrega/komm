@@ -82,10 +82,50 @@ def test_block_code_mappings():
 @pytest.mark.parametrize(
     "kwargs",
     [
-        {"generator_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]]},
-        {"check_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]]},
+        {
+            "generator_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]],
+        },
+        {
+            "check_matrix": [[1, 0, 1], [0, 1, 1], [1, 1, 0]],
+        },
+        {
+            "generator_matrix": [[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]],
+            "check_matrix": [[0, 1, 1, 0, 0], [1, 1, 0, 1, 0], [1, 0, 1, 1, 0]],
+        },
     ],
 )
 def test_block_code_reject_rank_deficient(kwargs):
     with pytest.raises(ValueError, match="full row rank"):
         komm.BlockCode(**kwargs)
+
+
+def test_block_code_both_matrices():
+    generator_matrix = [
+        [1, 0, 0, 1, 1],
+        [0, 1, 1, 1, 0],
+    ]
+    check_matrix = [
+        [1, 0, 1, 1, 0],
+        [1, 1, 0, 1, 0],
+        [1, 0, 0, 0, 1],
+    ]
+    code = komm.BlockCode(generator_matrix=generator_matrix, check_matrix=check_matrix)
+    np.testing.assert_equal(code.generator_matrix, generator_matrix)
+    np.testing.assert_equal(code.check_matrix, check_matrix)
+    np.testing.assert_equal(code.check(code.encode([1, 1])), [0, 0, 0])
+
+
+@pytest.mark.parametrize(
+    "check_matrix, message",
+    [
+        ([[0, 1, 1, 0, 0], [1, 1, 0, 1, 0]], "compatible shapes"),
+        ([[0, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 0]], "compatible shapes"),
+        ([[0, 1, 1, 0, 0], [1, 1, 0, 1, 0], [1, 0, 0, 0, 0]], "G H\\^T = 0"),
+    ],
+)
+def test_block_code_reject_mismatched_matrices(check_matrix, message):
+    with pytest.raises(ValueError, match=message):
+        komm.BlockCode(
+            generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]],
+            check_matrix=check_matrix,
+        )

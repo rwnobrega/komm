@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added option to provide both the generator matrix and the check matrix to [`BlockCode`](https://komm.dev/ref/BlockCode), which must then satisfy $G H^\mathsf{T} = 0$.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added

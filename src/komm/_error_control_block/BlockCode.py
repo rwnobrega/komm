@@ -12,7 +12,7 @@ class BlockCode(abc.BlockCode):
     r"""
     General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
 
-    The constructor expects either the generator matrix or the check matrix.
+    The constructor expects the generator matrix, the check matrix, or both. If both are provided, they must satisfy $G H^\transpose = 0$, and each one is kept as given, rather than derived from the other.
 
     Parameters:
         generator_matrix: The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.
@@ -48,6 +48,27 @@ class BlockCode(abc.BlockCode):
         array([[0, 1, 1, 0, 0],
                [1, 1, 0, 1, 0],
                [1, 0, 0, 0, 1]])
+
+        >>> code = komm.BlockCode(
+        ...     generator_matrix=[
+        ...         [1, 0, 0, 1, 1],
+        ...         [0, 1, 1, 1, 0],
+        ...     ],
+        ...     check_matrix=[
+        ...         [1, 0, 1, 1, 0],
+        ...         [1, 1, 0, 1, 0],
+        ...         [1, 0, 0, 0, 1],
+        ...     ],
+        ... )
+        >>> (code.length, code.dimension, code.redundancy)
+        (5, 2, 3)
+        >>> code.generator_matrix
+        array([[1, 0, 0, 1, 1],
+               [0, 1, 1, 1, 0]])
+        >>> code.check_matrix
+        array([[1, 0, 1, 1, 0],
+               [1, 1, 0, 1, 0],
+               [1, 0, 0, 0, 1]])
     """
 
     def __init__(
@@ -59,30 +80,33 @@ class BlockCode(abc.BlockCode):
             raise ValueError(
                 "either 'generator_matrix' or 'check_matrix' must be provided"
             )
-        if generator_matrix is not None and check_matrix is not None:
-            raise ValueError(
-                "only one of 'generator_matrix' or 'check_matrix' must be provided"
-            )
-        if generator_matrix is not None:
-            self._generator_matrix = np.asarray(generator_matrix)
-            self._check_matrix = None
-            self._dimension, self._length = self._generator_matrix.shape
+        G = None if generator_matrix is None else np.asarray(generator_matrix)
+        H = None if check_matrix is None else np.asarray(check_matrix)
+        if G is not None and H is not None:
+            if G.shape[1] != H.shape[1] or G.shape[0] + H.shape[0] != G.shape[1]:
+                raise ValueError("matrices must have compatible shapes")
+            if np.any(G @ H.T % 2):
+                raise ValueError("matrices must satisfy 'G H^T = 0'")
+        if G is not None and rank(G) < G.shape[0]:
+            raise ValueError("'generator_matrix' must have full row rank")
+        if H is not None and rank(H) < H.shape[0]:
+            raise ValueError("'check_matrix' must have full row rank")
+        if G is not None:
+            self._dimension, self._length = G.shape
             self._redundancy = self._length - self._dimension
-            if rank(self._generator_matrix) < self._dimension:
-                raise ValueError("'generator_matrix' must have full row rank")
-        else:  # check_matrix is not None
-            self._generator_matrix = None
-            self._check_matrix = np.asarray(check_matrix)
-            self._redundancy, self._length = self._check_matrix.shape
+        elif H is not None:
+            self._redundancy, self._length = H.shape
             self._dimension = self._length - self._redundancy
-            if rank(self._check_matrix) < self._redundancy:
-                raise ValueError("'check_matrix' must have full row rank")
+        self._generator_matrix = G
+        self._check_matrix = H
 
     def __repr__(self) -> str:
+        parts: list[str] = []
         if self._generator_matrix is not None:
-            args = f"generator_matrix={self.generator_matrix.tolist()}"
-        else:  # self._check_matrix is not None
-            args = f"check_matrix={self.check_matrix.tolist()}"
+            parts.append(f"generator_matrix={self._generator_matrix.tolist()}")
+        if self._check_matrix is not None:
+            parts.append(f"check_matrix={self._check_matrix.tolist()}")
+        args = ", ".join(parts)
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
