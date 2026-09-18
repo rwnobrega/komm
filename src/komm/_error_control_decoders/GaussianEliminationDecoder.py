@@ -46,13 +46,9 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             # Solve for the erased positions or the message bits, whichever are fewer.
             if np.count_nonzero(r == 2) < self.code.dimension:
-                v_hat, W = _compatible_codewords(H, r)
-                v_hat[W.any(axis=0)] = 2
+                return _codeword_from_erased(H, r)
             else:
-                u0, N = _compatible_messages(G, r)
-                v_hat = u0 @ G % 2
-                v_hat[(N @ G % 2).any(axis=0)] = 2
-            return v_hat
+                return _codeword_from_known(G, r)
 
         return decode_to_codeword(input)
 
@@ -78,15 +74,50 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
         def decode(r: npt.NDArray[np.integer]):
             # Solve for the erased positions or the message bits, whichever are fewer.
             if np.count_nonzero(r == 2) < self.code.dimension:
-                v0, W = _compatible_codewords(H, r)
-                u_hat = v0 @ G_r_inv % 2
-                u_hat[(W @ G_r_inv % 2).any(axis=0)] = 2
+                return _message_from_erased(H, G_r_inv, r)
             else:
-                u_hat, N = _compatible_messages(G, r)
-                u_hat[N.any(axis=0)] = 2
-            return u_hat
+                return _message_from_known(G, r)
 
         return decode(input)
+
+
+def _codeword_from_erased(
+    H: npt.NDArray[np.integer],
+    r: npt.NDArray[np.integer],
+) -> npt.NDArray[np.integer]:
+    v_hat, W = _compatible_codewords(H, r)
+    v_hat[W.any(axis=0)] = 2
+    return v_hat
+
+
+def _codeword_from_known(
+    G: npt.NDArray[np.integer],
+    r: npt.NDArray[np.integer],
+) -> npt.NDArray[np.integer]:
+    u0, N = _compatible_messages(G, r)
+    v_hat = u0 @ G % 2
+    v_hat[(N @ G % 2).any(axis=0)] = 2
+    return v_hat
+
+
+def _message_from_erased(
+    H: npt.NDArray[np.integer],
+    G_r_inv: npt.NDArray[np.integer],
+    r: npt.NDArray[np.integer],
+) -> npt.NDArray[np.integer]:
+    v0, W = _compatible_codewords(H, r)
+    u_hat = v0 @ G_r_inv % 2
+    u_hat[(W @ G_r_inv % 2).any(axis=0)] = 2
+    return u_hat
+
+
+def _message_from_known(
+    G: npt.NDArray[np.integer],
+    r: npt.NDArray[np.integer],
+) -> npt.NDArray[np.integer]:
+    u_hat, N = _compatible_messages(G, r)
+    u_hat[N.any(axis=0)] = 2
+    return u_hat
 
 
 def _compatible_codewords(
