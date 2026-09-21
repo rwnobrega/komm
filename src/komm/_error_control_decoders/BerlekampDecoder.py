@@ -1,16 +1,10 @@
 from dataclasses import dataclass
-from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._algebra.FiniteBifield import (
-    FiniteBifield,
-    FiniteBifieldElement,
-    find_roots,
-    horner,
-)
+from .._algebra.FiniteBifield import FiniteBifield, find_roots, horner
 from .._error_control_block.BCHCode import BCHCode
 from .._util.decorators import blockwise
 from .util import get_pbar
@@ -52,9 +46,8 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                 pbar.update()
                 if not syndromes[i].any():
                     continue
-                syndrome = [field(s) for s in syndromes[i]]
-                sigma_poly = berlekamp_algorithm(self.code, syndrome)
-                roots = find_roots(field, sigma_poly)
+                sigma_poly = berlekamp_algorithm(field, syndromes[i])
+                roots = find_roots(field, [field(c) for c in sigma_poly])
                 if len(roots) != len(sigma_poly) - 1:
                     continue
                 e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
@@ -76,39 +69,36 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
 
 
 def berlekamp_algorithm(
-    code: BCHCode, syndrome: list[Any]
-) -> list[FiniteBifieldElement[FiniteBifield]]:
+    field: FiniteBifield, syndrome: npt.NDArray[np.integer]
+) -> npt.NDArray[np.integer]:
     # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
     # See [LC04, Sec. 6.3].
-    field = code.field
-    delta = code.delta
-    sigma = {-1: [field.one], 0: [field.one]}
-    discrepancy = {-1: field.one, 0: syndrome[0]}
+    delta = len(syndrome) + 1
+    sigma = {-1: np.array([1]), 0: np.array([1])}
+    discrepancy = {-1: 1, 0: syndrome[0]}
     degree = {-1: 0, 0: 0}
 
     # In [LC04]: μ <-> j and ρ <-> k.
     for j in range(delta - 1):
-        if discrepancy[j] == field.zero:
+        if discrepancy[j] == 0:
             degree[j + 1] = degree[j]
             sigma[j + 1] = sigma[j]
         else:
             k, max_so_far = -1, -1
             for i in range(-1, j):
-                if discrepancy[i] != field.zero and i - degree[i] > max_so_far:
+                if discrepancy[i] != 0 and i - degree[i] > max_so_far:
                     k, max_so_far = i, i - degree[i]
             degree[j + 1] = max(degree[j], degree[k] + j - k)
-            fst = [field.zero] * (degree[j + 1] + 1)
+            fst = np.zeros(degree[j + 1] + 1, dtype=int)
             fst[: degree[j] + 1] = sigma[j]
-            snd = [field.zero] * (degree[j + 1] + 1)
+            snd = np.zeros(degree[j + 1] + 1, dtype=int)
             snd[j - k : degree[k] + j - k + 1] = sigma[k]
             # See [LC04, eq. (6.25)].
-            sigma[j + 1] = [
-                fst[i] + snd[i] * discrepancy[j] / discrepancy[k]
-                for i in range(degree[j + 1] + 1)
-            ]
+            ratio = field.divide(discrepancy[j], discrepancy[k])
+            sigma[j + 1] = fst ^ field.multiply(snd, ratio)
         if j < delta - 2:
-            discrepancy[j + 1] = syndrome[j + 1]
-            for i in range(degree[j + 1]):
-                discrepancy[j + 1] += sigma[j + 1][i + 1] * syndrome[j - i]
+            i = np.arange(degree[j + 1])
+            products = field.multiply(sigma[j + 1][i + 1], syndrome[j - i])
+            discrepancy[j + 1] = syndrome[j + 1] ^ np.bitwise_xor.reduce(products)
 
     return sigma[delta - 1]

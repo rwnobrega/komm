@@ -14,11 +14,14 @@ def test_berlekamp_lin_costello():
     alpha = code.alpha
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     points = [int(alpha**i) for i in range(1, code.delta)]
-    syndrome = [field(s) for s in horner(field, r, points)]
-    assert syndrome == [field.one, field.one, alpha**10, field.one, alpha**10, alpha**5]
-    sigma = berlekamp_algorithm(code, syndrome)
-    assert sigma == [field.one, field.one, field.zero, alpha**5]
-    roots = set(find_roots(field, sigma))
+    syndrome = horner(field, r, points)
+    assert np.array_equal(
+        syndrome,
+        [1, 1, int(alpha**10), 1, int(alpha**10), int(alpha**5)],
+    )
+    sigma = berlekamp_algorithm(field, syndrome)
+    assert np.array_equal(sigma, [1, 1, 0, int(alpha**5)])
+    roots = set(find_roots(field, [field(c) for c in sigma]))
     assert roots == {alpha**3, alpha**10, alpha**12}
     inv_roots = {root.inverse() for root in roots}
     assert inv_roots == {alpha**12, alpha**5, alpha**3}
