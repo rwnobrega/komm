@@ -52,4 +52,6 @@ def test_berlekamp_above_error_correcting_capability():
             r = np.zeros(code.length, dtype=int)
             error_locations = np.random.choice(code.length, w, replace=False)
             r[error_locations] ^= 1
-            decoder.decode(r)  # No exception should be raised.
+            v_hat = decoder.decode_to_codeword(r)
+            # Either a codeword or the received word.
+            assert not np.any(code.check(v_hat)) or np.array_equal(v_hat, r)

@@ -46,6 +46,8 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                 return r
             sigma_poly = berlekamp_algorithm(self.code, syndrome)
             roots = find_roots(self.code.field, sigma_poly)
+            if len(roots) != len(sigma_poly) - 1:
+                return r
             e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
             e_hat = np.bincount(e_loc, minlength=self.code.length)
             v_hat = (r + e_hat) % 2
