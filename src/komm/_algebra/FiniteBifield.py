@@ -17,10 +17,13 @@ class FiniteBifieldElement(Generic[F]):
         self.value = BinaryPolynomial(value)
 
     def __repr__(self) -> str:
-        return bin(self.value.value)
+        return bin(int(self))
 
     def __str__(self) -> str:
-        return bin(self.value.value)
+        return bin(int(self))
+
+    def __int__(self) -> int:
+        return int(self.value)
 
     def __hash__(self) -> int:
         return hash(self.value)
@@ -91,7 +94,7 @@ class FiniteBifieldElement(Generic[F]):
         one = self.ambient.one
         monomials = [np.array([y, one], dtype=object) for y in self.conjugates()]
         coefficients: list[Self] = list(reduce(np.convolve, monomials))
-        return BinaryPolynomial.from_coefficients([c.value.value for c in coefficients])
+        return BinaryPolynomial.from_coefficients([int(c) for c in coefficients])
 
 
 class FiniteBifield:

@@ -275,3 +275,9 @@ def test_finite_bifield_element_string_representation():
     x = field(0b1011)
     assert str(x) == "0b1011"
     assert repr(x) == "0b1011"
+
+
+def test_finite_bifield_element_int():
+    field = komm.FiniteBifield(4)
+    for value in range(field.order):
+        assert int(field(value)) == value
