@@ -6,6 +6,8 @@
 
 - Added option to provide both the generator matrix and the check matrix to `BlockCode`, which must then satisfy $G H^\mathsf{T} = 0$.
 
+- Added property [`FiniteBifield.primitive_element`](https://komm.dev/ref/FiniteBifield/#primitive_element), which returns a primitive element of the finite field.
+
 ### Fixed
 
 - Changed `BerlekampDecoder` to return the received word when the error locator has too few roots.

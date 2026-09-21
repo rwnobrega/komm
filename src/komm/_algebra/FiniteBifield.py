@@ -1,11 +1,12 @@
 from collections.abc import Sequence
-from functools import reduce
+from functools import cached_property, reduce
 from typing import Generic, Self, SupportsInt, TypeVar
 
 import numpy as np
 
 from . import field
 from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
+from .Integers import mersenne_prime_factors
 
 F = TypeVar("F", bound="FiniteBifield")
 
@@ -207,6 +208,30 @@ class FiniteBifield:
         The order (number of elements) of the finite field. It is given by $2^k$.
         """
         return 2**self.degree
+
+    @cached_property
+    def primitive_element(self) -> FiniteBifieldElement[Self]:
+        r"""
+        A primitive element of the finite field. It is a generator of the field's multiplicative group.
+
+        Of all primitive elements, this property returns the one with the smallest integer representation, which is $X$ if the modulus is primitive.
+
+        Examples:
+            >>> field = komm.FiniteBifield(4)
+            >>> field.primitive_element
+            0b10
+
+            >>> field = komm.FiniteBifield(4, modulus=0b11111)
+            >>> field.primitive_element
+            0b11
+        """
+        order = self.order - 1
+        factors = set(mersenne_prime_factors(self.degree))
+        return next(
+            x
+            for x in map(self, range(1, self.order))
+            if all(x ** (order // q) != self.one for q in factors)
+        )
 
     def __repr__(self) -> str:
         if self.modulus.value == default_primitive_polynomial(self.degree):

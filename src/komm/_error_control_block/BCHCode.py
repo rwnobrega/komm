@@ -64,8 +64,7 @@ class BCHCode(CyclicCode):
             raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
 
         field = FiniteBifield(mu)
-        # Since the default modulus is a primitive polynomial, alpha = X is a primitive element.
-        alpha = field(0b10)
+        alpha = field.primitive_element
 
         def phi(i: int):
             return (alpha**i).minimal_polynomial()

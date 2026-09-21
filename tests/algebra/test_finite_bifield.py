@@ -200,6 +200,23 @@ def test_finite_bifield_logarithm_invalid_base():
         x.logarithm(field.one)
 
 
+@pytest.mark.parametrize("k", range(1, 25))
+def test_finite_bifield_primitive_element_default_modulus(k):
+    field = komm.FiniteBifield(k)
+    assert field.primitive_element == (field.one if k == 1 else field(0b10))
+
+
+@pytest.mark.parametrize(
+    "k, modulus",
+    [(4, 0b11111), (6, 0b1001001), (8, 0b100011011)],
+)
+def test_finite_bifield_primitive_element_non_primitive_modulus(k, modulus):
+    field = komm.FiniteBifield(k, modulus)
+    alpha = field.primitive_element
+    assert alpha == field(0b11)
+    assert len({alpha**i for i in range(field.order - 1)}) == field.order - 1
+
+
 def test_finite_bifield_LC_example_2_7():
     """
     Lin--Costello, Example 2.7, p. 46.
