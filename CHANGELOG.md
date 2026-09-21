@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added option to provide both the generator matrix and the check matrix to [`BlockCode`](https://komm.dev/ref/BlockCode), which must then satisfy $G H^\mathsf{T} = 0$.
+- Added option to provide both the generator matrix and the check matrix to `BlockCode`, which must then satisfy $G H^\mathsf{T} = 0$.
 
 ### Fix
 
