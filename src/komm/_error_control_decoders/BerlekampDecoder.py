@@ -5,10 +5,14 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement, find_roots
+from .._algebra.FiniteBifield import (
+    FiniteBifield,
+    FiniteBifieldElement,
+    find_roots,
+    horner,
+)
 from .._error_control_block.BCHCode import BCHCode
-from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.decorators import blockwise
 from .util import get_pbar
 
 
@@ -35,22 +39,27 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
             >>> decoder.decode_to_codeword([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         """
+        field = self.code.field
+        points = field.power(int(self.code.alpha), np.arange(1, self.code.delta))
 
         @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "Berlekamp"))
         def decode_to_codeword(r: npt.NDArray[np.integer]):
-            r_poly = BinaryPolynomial.from_coefficients(r)
-            syndrome = self.code.bch_syndrome(r_poly)
-            if all(x == self.code.field.zero for x in syndrome):
-                return r
-            sigma_poly = berlekamp_algorithm(self.code, syndrome)
-            roots = find_roots(self.code.field, sigma_poly)
-            if len(roots) != len(sigma_poly) - 1:
-                return r
-            e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
-            e_hat = np.bincount(e_loc, minlength=self.code.length)
-            v_hat = (r + e_hat) % 2
+            # See [LC04, Sec. 6.2].
+            syndromes = horner(field, r, points)
+            v_hat = r.copy()
+            pbar = get_pbar(np.size(input) // self.code.length, "Berlekamp")
+            for i in np.ndindex(r.shape[:-1]):
+                pbar.update()
+                if not syndromes[i].any():
+                    continue
+                syndrome = [field(s) for s in syndromes[i]]
+                sigma_poly = berlekamp_algorithm(self.code, syndrome)
+                roots = find_roots(field, sigma_poly)
+                if len(roots) != len(sigma_poly) - 1:
+                    continue
+                e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
+                e_hat = np.bincount(e_loc, minlength=self.code.length)
+                v_hat[i] = (r[i] + e_hat) % 2
             return v_hat
 
         return decode_to_codeword(input)
