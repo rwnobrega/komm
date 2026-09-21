@@ -5,6 +5,7 @@ import pytest
 from typeguard import TypeCheckError
 
 import komm
+from komm._algebra.FiniteBifield import horner
 
 
 def test_bch_generator_polynomial():
@@ -75,10 +76,11 @@ def test_bch_minimum_distance(mu, delta):
 def test_bch_syndrome():
     # [LC04, Example 6.4]
     code = komm.BCHCode(mu=4, delta=5)
-    alpha = code.alpha
+    field, alpha = code.field, code.alpha
     r = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-    r_poly = komm.BinaryPolynomial.from_coefficients(r)
-    assert code.bch_syndrome(r_poly) == [alpha**2, alpha**4, alpha**7, alpha**8]
+    points = [int(alpha**i) for i in range(1, code.delta)]
+    syndrome = [field(s) for s in horner(field, r, points)]
+    assert syndrome == [alpha**2, alpha**4, alpha**7, alpha**8]
 
 
 def test_bch_code_invalid_init():

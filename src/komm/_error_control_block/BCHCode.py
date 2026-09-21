@@ -3,8 +3,7 @@ from functools import reduce
 
 from typeguard import typechecked
 
-from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .._algebra.FiniteBifield import FiniteBifield, FiniteBifieldElement
+from .._algebra.FiniteBifield import FiniteBifield
 from .CyclicCode import CyclicCode
 
 
@@ -88,9 +87,3 @@ class BCHCode(CyclicCode):
     def __repr__(self) -> str:
         args = f"mu={self.mu}, delta={self.delta}"
         return f"{self.__class__.__name__}({args})"
-
-    def bch_syndrome(
-        self, r_poly: BinaryPolynomial
-    ) -> list[FiniteBifieldElement[FiniteBifield]]:
-        # BCH syndrome computation. See [LC04, p. 205–209].
-        return [r_poly.evaluate(self.alpha**i) for i in range(1, self.delta)]

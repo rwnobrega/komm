@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.FiniteBifield import find_roots
+from komm._algebra.FiniteBifield import find_roots, horner
 from komm._error_control_decoders.BerlekampDecoder import berlekamp_algorithm
 
 
@@ -13,8 +13,8 @@ def test_berlekamp_lin_costello():
     field = code.field
     alpha = code.alpha
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-    r_poly = komm.BinaryPolynomial.from_coefficients(r)
-    syndrome = code.bch_syndrome(r_poly)
+    points = [int(alpha**i) for i in range(1, code.delta)]
+    syndrome = [field(s) for s in horner(field, r, points)]
     assert syndrome == [field.one, field.one, alpha**10, field.one, alpha**10, alpha**5]
     sigma = berlekamp_algorithm(code, syndrome)
     assert sigma == [field.one, field.one, field.zero, alpha**5]
