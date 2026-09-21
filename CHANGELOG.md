@@ -8,6 +8,8 @@
 
 - Added property [`FiniteBifield.primitive_element`](https://komm.dev/ref/FiniteBifield/#primitive_element), which returns a primitive element of the finite field.
 
+- Added methods [`FiniteBifield.multiply`](https://komm.dev/ref/FiniteBifield/#multiply), [`FiniteBifield.divide`](https://komm.dev/ref/FiniteBifield/#divide), and [`FiniteBifield.power`](https://komm.dev/ref/FiniteBifield/#power), which operate elementwise on arrays of integer representations of field elements.
+
 ### Fixed
 
 - Changed `BerlekampDecoder` to return the received word when the error locator has too few roots.

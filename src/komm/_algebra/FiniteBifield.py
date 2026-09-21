@@ -3,6 +3,7 @@ from functools import cached_property, reduce
 from typing import Generic, Self, SupportsInt, TypeVar
 
 import numpy as np
+import numpy.typing as npt
 
 from . import field
 from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
@@ -228,13 +229,109 @@ class FiniteBifield:
             >>> field.primitive_element
             0b11
         """
-        order = self.order - 1
+        n = self.order - 1
         factors = set(mersenne_prime_factors(self.degree))
         return next(
             x
             for x in map(self, range(1, self.order))
-            if all(x ** (order // q) != self.one for q in factors)
+            if all(x ** (n // q) != self.one for q in factors)
         )
+
+    @cached_property
+    def _exp_table(self) -> npt.NDArray[np.integer]:
+        # alpha^i for i in [0 : 2n), avoiding mod n of indices.
+        n = self.order - 1
+        modulus, alpha = int(self.modulus), int(self.primitive_element)
+        table = np.empty(2 * n, dtype=int)
+        x = 1
+        for i in range(n):
+            table[i] = x
+            x = multiply_mod(x, alpha, modulus)
+        table[n:] = table[:n]
+        return table
+
+    @cached_property
+    def _log_table(self) -> npt.NDArray[np.integer]:
+        # log_alpha(x) for x in [1 : n], dummy at 0.
+        n = self.order - 1
+        table = np.zeros(self.order, dtype=int)
+        table[self._exp_table[:n]] = np.arange(n)
+        return table
+
+    def multiply(self, x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Multiplies elements of the finite field. The elements are given by their integer representations, in $[0 : 2^k)$. The operation is elementwise, with broadcasting.
+
+        Parameters:
+            x: The first factor.
+            y: The second factor.
+
+        Returns:
+            product: The product $x y$.
+
+        Examples:
+            >>> field = komm.FiniteBifield(4)
+            >>> field.multiply([0b1011, 0b0110], 0b1100)
+            array([13, 14])
+        """
+        x, y = np.asarray(x), np.asarray(y)
+        exp, log = self._exp_table, self._log_table
+        return np.where((x == 0) | (y == 0), 0, exp[log[x] + log[y]])
+
+    def divide(self, x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Divides elements of the finite field. The elements are given by their integer representations, in $[0 : 2^k)$. The operation is elementwise, with broadcasting.
+
+        Parameters:
+            x: The dividend.
+            y: The divisor.
+
+        Returns:
+            quotient: The quotient $x / y$.
+
+        Raises:
+            ZeroDivisionError: If the divisor is zero.
+
+        Examples:
+            >>> field = komm.FiniteBifield(4)
+            >>> field.divide([0b1011, 0b0110], 0b1100)
+            array([2, 9])
+        """
+        x, y = np.asarray(x), np.asarray(y)
+        if np.any(y == 0):
+            raise ZeroDivisionError("division by zero")
+        n = self.order - 1
+        exp, log = self._exp_table, self._log_table
+        return np.where(x == 0, 0, exp[log[x] - log[y] + n])
+
+    def power(
+        self, x: npt.ArrayLike, exponent: npt.ArrayLike
+    ) -> npt.NDArray[np.integer]:
+        r"""
+        Raises elements of the finite field to integer powers. The elements are given by their integer representations, in $[0 : 2^k)$. The operation is elementwise, with broadcasting.
+
+        Parameters:
+            x: The base.
+            exponent: The exponent.
+
+        Returns:
+            power: The power $x^{\mathtt{exponent}}$.
+
+        Raises:
+            ZeroDivisionError: If the base is zero and the exponent is negative.
+
+        Examples:
+            >>> field = komm.FiniteBifield(4)
+            >>> field.power(0b10, [0, 1, 2, 3, 4, 15, -1])
+            array([1, 2, 4, 8, 3, 1, 9])
+        """
+        x, exponent = np.asarray(x), np.asarray(exponent)
+        if np.any((x == 0) & (exponent < 0)):
+            raise ZeroDivisionError("zero cannot be raised to a negative power")
+        n = self.order - 1
+        exp, log = self._exp_table, self._log_table
+        result = exp[log[x] * (exponent % n) % n]
+        return np.where(x == 0, np.where(exponent == 0, 1, 0), result)
 
     def __repr__(self) -> str:
         if self.modulus.value == default_primitive_polynomial(self.degree):
@@ -242,6 +339,20 @@ class FiniteBifield:
         else:
             args = f"{self.degree}, modulus={self.modulus}"
         return f"{self.__class__.__name__}({args})"
+
+
+def multiply_mod(x: int, y: int, modulus: int) -> int:
+    # Field product on integer representations.
+    order = 1 << (modulus.bit_length() - 1)
+    result = 0
+    while y:
+        if y & 1:
+            result ^= x
+        y >>= 1
+        x <<= 1
+        if x >= order:
+            x ^= modulus
+    return result
 
 
 def find_roots(
