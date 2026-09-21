@@ -239,7 +239,7 @@ class FiniteBifield:
 
     @cached_property
     def _exp_table(self) -> npt.NDArray[np.integer]:
-        # alpha^i for i in [0 : 2n), avoiding mod n of indices.
+        # α^i for i in [0 : 2n), avoiding mod n of indices.
         n = self.order - 1
         modulus, alpha = int(self.modulus), int(self.primitive_element)
         table = np.empty(2 * n, dtype=int)
@@ -252,7 +252,7 @@ class FiniteBifield:
 
     @cached_property
     def _log_table(self) -> npt.NDArray[np.integer]:
-        # log_alpha(x) for x in [1 : n], dummy at 0.
+        # log_α(x) for x in [1 : n], dummy at 0.
         n = self.order - 1
         table = np.zeros(self.order, dtype=int)
         table[self._exp_table[:n]] = np.arange(n)
@@ -355,6 +355,36 @@ def multiply_mod(x: int, y: int, modulus: int) -> int:
     return result
 
 
+def horner(
+    field: FiniteBifield,
+    coefficients: npt.ArrayLike,
+    points: npt.ArrayLike,
+) -> npt.NDArray[np.integer]:
+    r"""
+    Evaluates polynomials with coefficients in a finite field, using Horner's method. Coefficients and points are given by their integer representations, in $[0 : 2^k)$.
+
+    Parameters:
+        field: Finite field.
+        coefficients: Coefficients of the polynomials, in increasing order of degree along the last dimension.
+        points: Points at which to evaluate the polynomials. Must be a 1D-array.
+
+    Returns:
+        values: Values of the polynomials at the points. Has the same shape as `coefficients`, but with the last dimension replaced by the number of points.
+
+    Examples:
+        >>> field = komm.FiniteBifield(4)
+        >>> coefficients = [1, 1, 0, 0b0110]  # 1 + X + α^5 X^3
+        >>> points = [0, 1, 0b0111, 0b1000, 0b1111]  # 0, 1, α^10, α^3, α^12
+        >>> horner(field, coefficients, points)
+        array([1, 6, 0, 0, 0])
+    """
+    coefficients, points = np.asarray(coefficients), np.asarray(points)
+    values = np.zeros(coefficients.shape[:-1] + points.shape, dtype=int)
+    for i in reversed(range(coefficients.shape[-1])):
+        values = field.multiply(values, points) ^ coefficients[..., i, np.newaxis]
+    return values
+
+
 def find_roots(
     field: F,
     coefficients: Sequence[FiniteBifieldElement[F]],
@@ -371,8 +401,8 @@ def find_roots(
 
     Examples:
         >>> field = komm.FiniteBifield(4)
-        >>> alpha = field(0b10)  # alpha = X, a primitive element
-        >>> coefficients = [field.one, field.one, field.zero, alpha**5]  # 1 + X + alpha^5 X^3
+        >>> alpha = field(0b10)  # α = X, a primitive element
+        >>> coefficients = [field.one, field.one, field.zero, alpha**5]  # 1 + X + α^5 X^3
         >>> find_roots(field, coefficients)
         [0b111, 0b1000, 0b1111]
         >>> [alpha**10, alpha**3, alpha**12]

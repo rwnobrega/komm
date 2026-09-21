@@ -5,6 +5,7 @@ import pytest
 
 import komm
 from komm._algebra.field import FieldElement
+from komm._algebra.FiniteBifield import horner
 from komm._algebra.ring import Ring, RingElement
 
 
@@ -235,6 +236,21 @@ def test_finite_bifield_vectorized_arithmetic(modulus):
         field.divide(1, 0)
     with pytest.raises(ZeroDivisionError):
         field.power(0, -1)
+
+
+@pytest.mark.parametrize("modulus", [0b10011, 0b11111])
+def test_finite_bifield_horner(modulus):
+    def naive_evaluate(field, p: list[int], x: int) -> int:
+        return int(sum((field(c) * field(x) ** i for i, c in enumerate(p)), field.zero))
+
+    field = komm.FiniteBifield(4, modulus)
+    coefficients = np.random.randint(0, 16, (3, 5))
+    points = np.arange(16)
+    expected = [
+        [naive_evaluate(field, p, x) for x in points.tolist()]
+        for p in coefficients.tolist()
+    ]
+    assert np.array_equal(horner(field, coefficients, points), expected)
 
 
 def test_finite_bifield_LC_example_2_7():
