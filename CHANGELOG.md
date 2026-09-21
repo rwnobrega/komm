@@ -6,7 +6,7 @@
 
 - Added option to provide both the generator matrix and the check matrix to `BlockCode`, which must then satisfy $G H^\mathsf{T} = 0$.
 
-### Fix
+### Fixed
 
 - Changed `BerlekampDecoder` to return the received word when the error locator has too few roots.
 
