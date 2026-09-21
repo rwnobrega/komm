@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._algebra.FiniteBifield import FiniteBifield, find_roots, horner
+from .._algebra.FiniteBifield import FiniteBifield, horner
 from .._error_control_block.BCHCode import BCHCode
 from .._util.decorators import blockwise
 from .util import get_pbar
@@ -35,6 +35,7 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
         """
         field = self.code.field
         points = field.power(int(self.code.alpha), np.arange(1, self.code.delta))
+        inverses = field.power(int(self.code.alpha), -np.arange(self.code.length))
 
         @blockwise(self.code.length)
         def decode_to_codeword(r: npt.NDArray[np.integer]):
@@ -47,10 +48,10 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                 if not syndromes[i].any():
                     continue
                 sigma_poly = berlekamp_algorithm(field, syndromes[i])
-                roots = find_roots(field, [field(c) for c in sigma_poly])
-                if len(roots) != len(sigma_poly) - 1:
+                # Chien search.
+                e_loc = np.flatnonzero(horner(field, sigma_poly, inverses) == 0)
+                if len(e_loc) != len(sigma_poly) - 1:
                     continue
-                e_loc = [e.inverse().logarithm(self.code.alpha) for e in roots]
                 e_hat = np.bincount(e_loc, minlength=self.code.length)
                 v_hat[i] = (r[i] + e_hat) % 2
             return v_hat

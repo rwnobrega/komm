@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from functools import cached_property, reduce
 from typing import Generic, Self, SupportsInt, TypeVar
 
@@ -383,39 +382,3 @@ def horner(
     for i in reversed(range(coefficients.shape[-1])):
         values = field.multiply(values, points) ^ coefficients[..., i, np.newaxis]
     return values
-
-
-def find_roots(
-    field: F,
-    coefficients: Sequence[FiniteBifieldElement[F]],
-) -> list[FiniteBifieldElement[F]]:
-    r"""
-    Returns the roots of a polynomial with coefficients in a finite field. This function uses exhaustive search to find the roots.
-
-    Parameters:
-        field: Finite field.
-        coefficients: Coefficients of the polynomial, in increasing order of degree.
-
-    Returns:
-        List of roots of the polynomial.
-
-    Examples:
-        >>> field = komm.FiniteBifield(4)
-        >>> alpha = field(0b10)  # α = X, a primitive element
-        >>> coefficients = [field.one, field.one, field.zero, alpha**5]  # 1 + X + α^5 X^3
-        >>> find_roots(field, coefficients)
-        [0b111, 0b1000, 0b1111]
-        >>> [alpha**10, alpha**3, alpha**12]
-        [0b111, 0b1000, 0b1111]
-    """
-    roots: list[FiniteBifieldElement[F]] = []
-    for i in range(field.order):
-        x = field(i)
-        evaluated = field.zero
-        for coefficient in reversed(coefficients):  # Horner's method
-            evaluated = evaluated * x + coefficient
-        if evaluated == field.zero:
-            roots.append(x)
-            if len(roots) >= len(coefficients) - 1:
-                break
-    return roots
