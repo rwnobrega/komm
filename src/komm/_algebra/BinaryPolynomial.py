@@ -7,7 +7,7 @@ import numpy.typing as npt
 
 from .._util.bit_operations import from_binary, to_binary
 from . import domain, ring
-from .Integers import prime_factors
+from .Integers import mersenne_prime_factors, prime_factors
 
 T = TypeVar("T", bound=ring.RingElement)
 
@@ -281,7 +281,7 @@ class BinaryPolynomial:
         if self == X:
             return False
         order = 2**self.degree - 1
-        for q in set(prime_factors(order)):
+        for q in set(mersenne_prime_factors(self.degree)):
             if power_mod(X, order // q, self) == BinaryPolynomial(1):
                 return False
         return True

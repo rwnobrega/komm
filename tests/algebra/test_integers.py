@@ -1,6 +1,8 @@
+from math import prod
+
 import komm
 from komm._algebra.domain import DomainElement
-from komm._algebra.Integers import Integers, prime_factors
+from komm._algebra.Integers import Integers, mersenne_prime_factors, prime_factors
 from komm._algebra.ring import Ring, RingElement
 
 
@@ -40,3 +42,8 @@ def test_prime_factors():
     assert prime_factors(2**32) == [2] * 32
     assert prime_factors(2**32 - 1) == [3, 5, 17, 257, 65_537]
     assert prime_factors(2**32 + 1) == [641, 6_700_417]
+
+
+def test_mersenne_prime_factors():
+    for k in range(1, 129):
+        assert prod(mersenne_prime_factors(k)) == 2**k - 1
