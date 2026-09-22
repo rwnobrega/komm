@@ -14,7 +14,7 @@ class BCHCode(CyclicCode):
     $$
         g(X) = \mathrm{lcm} \left\\{ \phi_1(X), \phi_2(X), \ldots, \phi_{\delta - 1}(X) \right\\},
     $$
-    where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a primitive element of $\mathrm{GF}(2^\mu)$. The parameter $\delta$ must be a *Bose distance*. The resulting code is denoted by $\bch(\mu, \delta)$, and has the following parameters, where $\delta = 2 \tau + 1$:
+    where $\phi_i(X)$ is the minimal polynomial of $\alpha^i$, and $\alpha$ is a primitive element of $\mathrm{GF}(2^\mu)$. The parameter $\delta$ must be a *Bose distance*. The resulting code has the following parameters, where $\delta = 2 \tau + 1$:
 
     - Length: $n = 2^{\mu} - 1$
     - Dimension: $k \geq n - \mu \tau$

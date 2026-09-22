@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
     macros: {
       "\\transpose": "\\mathsf{T}",
-      "\\bch": "\\mathrm{BCH}",
       "\\mse": "\\mathrm{MSE}",
       "\\snr": "\\mathrm{SNR}",
       "\\Enc": "\\mathrm{Enc}",
