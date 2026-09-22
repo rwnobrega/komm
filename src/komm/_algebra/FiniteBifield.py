@@ -193,6 +193,13 @@ class FiniteBifield:
             return NotImplemented
         return self.degree == other.degree and self.modulus == other.modulus
 
+    def __repr__(self) -> str:
+        if self.modulus.value == default_primitive_polynomial(self.degree):
+            args = f"{self.degree}"
+        else:
+            args = f"{self.degree}, modulus={self.modulus}"
+        return f"{self.__class__.__name__}({args})"
+
     @property
     def zero(self) -> FiniteBifieldElement[Self]:
         return self(0)
@@ -334,13 +341,6 @@ class FiniteBifield:
         exp, log = self._exp_table, self._log_table
         result = exp[log[x] * (exponent % n) % n]
         return np.where(x == 0, np.where(exponent == 0, 1, 0), result)
-
-    def __repr__(self) -> str:
-        if self.modulus.value == default_primitive_polynomial(self.degree):
-            args = f"{self.degree}"
-        else:
-            args = f"{self.degree}, modulus={self.modulus}"
-        return f"{self.__class__.__name__}({args})"
 
 
 def multiply_mod(x: int, y: int, modulus: int) -> int:
