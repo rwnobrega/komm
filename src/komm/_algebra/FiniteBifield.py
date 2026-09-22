@@ -185,6 +185,9 @@ class FiniteBifield:
     def __call__(self, value: int | BinaryPolynomial) -> FiniteBifieldElement[Self]:
         return FiniteBifieldElement(self, value)
 
+    def __hash__(self) -> int:
+        return hash((self.degree, self.modulus))
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return NotImplemented

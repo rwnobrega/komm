@@ -54,6 +54,14 @@ def test_finite_bifield_invalid_modulus():
         komm.FiniteBifield(3, 0b10001)  # both degree mismatch and reducible polynomial
 
 
+def test_finite_bifield_hash():
+    field1 = komm.FiniteBifield(4)
+    field2 = komm.FiniteBifield(4)
+    field3 = komm.FiniteBifield(4, 0b11001)
+    assert hash(field1) == hash(field2)
+    assert len({field1, field2, field3}) == 2
+
+
 def test_finite_bifield_element_construction():
     field = komm.FiniteBifield(4)
     x1 = field(0b1011)
