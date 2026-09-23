@@ -60,9 +60,7 @@ def test_bifield_horner(field: komm.FiniteBifield):
 
     coefficients = np.random.randint(0, field.order, (3, 5))
     points = np.arange(field.order)
-    expected = [
-        [naive_evaluate(p, x) for x in points.tolist()] for p in coefficients.tolist()
-    ]
+    expected = [[naive_evaluate(p, x) for x in points.tolist()] for p in coefficients]
     assert np.array_equal(horner(field, coefficients, points), expected)
 
 
