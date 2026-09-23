@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
-from .._util.matrices import pseudo_inverse
+from .._util.matrices import matmul, pseudo_inverse
 from ..types import Array1D, Array2D
 
 
@@ -78,7 +78,7 @@ class BlockCode(ABC):
 
         @blockwise(self.dimension)
         def encode(u: npt.NDArray[np.integer]):
-            v = u @ self.generator_matrix % 2
+            v = matmul(u, self.generator_matrix)
             return v
 
         return encode(input)
@@ -86,7 +86,7 @@ class BlockCode(ABC):
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
         def project(v: npt.NDArray[np.integer]):
-            u = v @ self.generator_matrix_right_inverse % 2
+            u = matmul(v, self.generator_matrix_right_inverse)
             return u
 
         return project(input)
@@ -101,7 +101,7 @@ class BlockCode(ABC):
         def project(v: npt.NDArray[np.integer]):
             G_r_inv = self.generator_matrix_right_inverse
             erased = v == 2
-            u = (np.where(erased, 0, v) @ G_r_inv) % 2
+            u = matmul(np.where(erased, 0, v), G_r_inv)
             u[erased.astype(int) @ G_r_inv > 0] = 2
             return u
 
@@ -140,7 +140,7 @@ class BlockCode(ABC):
 
         @blockwise(self.length)
         def check(r: npt.NDArray[np.integer]):
-            s = r @ self.check_matrix.T % 2
+            s = matmul(r, self.check_matrix.T)
             return s
 
         return check(input)

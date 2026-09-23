@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.decorators import blockwise
+from .._util.matrices import matmul
 from ..types import Array1D, Array2D
 
 
@@ -173,7 +174,7 @@ class SystematicBlockCode(abc.BlockCode):
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v = np.empty(u.shape[:-1] + (self.length,), dtype=int)
             v[..., self.information_set] = u
-            v[..., self.parity_set] = u @ self.parity_submatrix % 2
+            v[..., self.parity_set] = matmul(u, self.parity_submatrix)
             return v
 
         return encode(input)
@@ -207,15 +208,7 @@ class SystematicBlockCode(abc.BlockCode):
             See [`BlockCode.check`](/ref/BlockCode#check) for examples.
             </span>
         """
-
-        @blockwise(self.length)
-        def check(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-            r_inf = r[..., self.information_set]
-            r_par = r[..., self.parity_set]
-            s = (r_inf @ self.parity_submatrix + r_par) % 2
-            return s
-
-        return check(input)
+        return super().check(input)
 
     @cache
     def codewords(self) -> Array2D[np.integer]:

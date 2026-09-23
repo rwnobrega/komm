@@ -2,7 +2,30 @@ import numpy as np
 import pytest
 
 import komm
-from komm._util.matrices import invariant_factors, pseudo_inverse, rank, rref, xrref
+from komm._util.matrices import (
+    invariant_factors,
+    matmul,
+    pseudo_inverse,
+    rank,
+    rref,
+    xrref,
+)
+
+
+@pytest.mark.parametrize(
+    "x_shape, y_shape",
+    [
+        ((7,), (7, 3)),
+        ((4, 7), (7, 3)),
+        ((2, 3, 300), (300, 5)),
+        ((4, 0), (0, 3)),
+        ((4, 3), (3, 0)),
+    ],
+)
+def test_matmul(x_shape, y_shape):
+    x = np.random.randint(0, 2, x_shape)
+    y = np.random.randint(0, 2, y_shape)
+    np.testing.assert_equal(matmul(x, y), x @ y % 2)
 
 
 @pytest.mark.parametrize(
