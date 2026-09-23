@@ -2,7 +2,14 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.bifield import convolve, divide, horner, multiply, power
+from komm._algebra.bifield import (
+    convolve,
+    deconvolve,
+    divide,
+    horner,
+    multiply,
+    power,
+)
 
 params = []
 
@@ -52,6 +59,8 @@ def test_bifield_division_by_zero(field: komm.FiniteBifield):
         divide(field, 1, 0)
     with pytest.raises(ZeroDivisionError):
         power(field, 0, -1)
+    with pytest.raises(ZeroDivisionError):
+        deconvolve(field, [1, 1], [1, 0])
 
 
 def test_bifield_horner(field: komm.FiniteBifield):
@@ -76,3 +85,15 @@ def test_bifield_convolve(field: komm.FiniteBifield):
     y = np.random.randint(0, field.order, (4, 3))
     expected = [[naive_convolve(p, q) for q in y.tolist()] for p in x[:, 0].tolist()]
     assert np.array_equal(convolve(field, x, y), expected)
+
+
+def test_bifield_deconvolve(field: komm.FiniteBifield):
+    x = np.random.randint(0, field.order, (3, 1, 7))
+    y = np.random.randint(0, field.order, (4, 3))
+    y[:, -1] = np.random.randint(1, field.order, 4)
+    quotient, remainder = deconvolve(field, x, y)
+    assert quotient.shape == (3, 4, 5)
+    assert remainder.shape == (3, 4, 2)
+    product = convolve(field, quotient, y)
+    product[..., :2] ^= remainder
+    assert np.array_equal(product, np.broadcast_to(x, (3, 4, 7)))

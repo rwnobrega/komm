@@ -188,3 +188,42 @@ def convolve(
     for i in range(y.shape[-1]):
         product[..., i : i + x.shape[-1]] ^= multiply(field, x, y[..., i, np.newaxis])
     return product
+
+
+def deconvolve(
+    field: FiniteBifield,
+    x: npt.ArrayLike,
+    y: npt.ArrayLike,
+) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
+    r"""
+    Divides polynomials with coefficients in a finite field. Coefficients are given by their integer representations, in $[0 : 2^k)$, in increasing order of degree along the last dimension. The other dimensions are broadcast.
+
+    Parameters:
+        field: A finite field.
+        x: The coefficients of the dividend.
+        y: The coefficients of the divisor. The last one must be nonzero.
+
+    Returns:
+        quotient: The coefficients of the quotient. Its last dimension has length `x.shape[-1] - y.shape[-1] + 1`.
+        remainder: The coefficients of the remainder. Its last dimension has length `y.shape[-1] - 1`.
+
+    Raises:
+        ZeroDivisionError: If the last coefficient of the divisor is zero.
+
+    Examples:
+        >>> field = komm.FiniteBifield(4)
+        >>> x = [0b1001, 0b0110, 1]  # α^14 + α^5 X + X^2
+        >>> y = [0b0010, 1]  # α + X
+        >>> deconvolve(field, x, y)
+        (array([4, 1]), array([1]))
+    """
+    x, y = np.asarray(x), np.asarray(y)
+    shape = np.broadcast_shapes(x.shape[:-1], y.shape[:-1])
+    d = y.shape[-1] - 1  # Degree of the divisor.
+    remainder = np.broadcast_to(x, shape + x.shape[-1:]).astype(int)
+    quotient = np.zeros(shape + (x.shape[-1] - d,), dtype=int)
+    for i in reversed(range(quotient.shape[-1])):
+        q = divide(field, remainder[..., i + d], y[..., d])
+        remainder[..., i : i + d + 1] ^= multiply(field, q[..., np.newaxis], y)
+        quotient[..., i] = q
+    return quotient, remainder[..., :d]
