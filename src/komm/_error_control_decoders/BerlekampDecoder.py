@@ -48,10 +48,10 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                 pbar.update()
                 if not syndromes[i].any():
                     continue
-                sigma_poly = berlekamp_algorithm(field, syndromes[i])
+                sigma = berlekamp_algorithm(field, syndromes[i])
                 # Chien search.
-                e_loc = np.flatnonzero(bifield.horner(field, sigma_poly, inverses) == 0)
-                if len(e_loc) != len(sigma_poly) - 1:
+                e_loc = np.flatnonzero(bifield.horner(field, sigma, inverses) == 0)
+                if len(e_loc) != len(sigma) - 1:
                     continue
                 e_hat = np.bincount(e_loc, minlength=self.code.length)
                 v_hat[i] = (r[i] + e_hat) % 2
@@ -86,10 +86,8 @@ def berlekamp_algorithm(
             degree[j + 1] = degree[j]
             sigma[j + 1] = sigma[j]
         else:
-            k, max_so_far = -1, -1
-            for i in range(-1, j):
-                if discrepancy[i] != 0 and i - degree[i] > max_so_far:
-                    k, max_so_far = i, i - degree[i]
+            candidates = [i for i in range(-1, j) if discrepancy[i] != 0]
+            k = max(candidates, key=lambda i: i - degree[i])
             degree[j + 1] = max(degree[j], degree[k] + j - k)
             fst = np.zeros(degree[j + 1] + 1, dtype=int)
             fst[: degree[j] + 1] = sigma[j]
