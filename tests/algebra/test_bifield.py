@@ -2,14 +2,7 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.bifield import (
-    convolve,
-    deconvolve,
-    divide,
-    horner,
-    multiply,
-    power,
-)
+from komm._algebra.bifield import convolve, deconvolve, divide, horner, multiply, power
 
 params = []
 
