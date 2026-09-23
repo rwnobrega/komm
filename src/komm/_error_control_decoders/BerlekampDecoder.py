@@ -75,13 +75,12 @@ def berlekamp_algorithm(
 ) -> npt.NDArray[np.integer]:
     # Berlekamp's iterative procedure for finding the error-location polynomial of a BCH code.
     # See [LC04, Sec. 6.3].
-    delta = len(syndrome) + 1
     sigma = {-1: np.array([1]), 0: np.array([1])}
     discrepancy = {-1: 1}
     degree = {-1: 0, 0: 0}
 
     # In [LC04]: μ <-> j and ρ <-> k.
-    for j in range(delta - 1):
+    for j in range(len(syndrome)):
         products = bifield.multiply(field, sigma[j], syndrome[j::-1][: len(sigma[j])])
         discrepancy[j] = np.bitwise_xor.reduce(products)
         if discrepancy[j] == 0:
@@ -98,4 +97,4 @@ def berlekamp_algorithm(
         sigma[j + 1][: len(sigma[j])] = sigma[j]
         sigma[j + 1][j - k : j - k + len(correction)] ^= correction
 
-    return sigma[delta - 1]
+    return sigma[len(syndrome)]
