@@ -65,14 +65,16 @@ class BCHCode(CyclicCode):
         field = FiniteBifield(mu)
         alpha = field.primitive_element
 
-        def phi(i: int):
-            return (alpha**i).minimal_polynomial()
+        # Exponents i such that g(α^i) = 0.
+        n = 2**mu - 1
+        zeros = {i * 2**j % n for i in range(1, delta) for j in range(mu)}
 
-        lcm_set = {phi(i) for i in range(1, delta)}
-
-        if phi(delta) in lcm_set:
-            bose = next(d for d in range(delta + 1, 2**mu) if phi(d) not in lcm_set)
+        if delta in zeros:
+            bose = next(d for d in range(delta + 1, 2**mu) if d not in zeros)
             raise ValueError(f"'delta' must be a Bose distance (next one is {bose})")
+
+        # See [LC04, eq. (6.3)].
+        lcm_set = {(alpha**i).minimal_polynomial() for i in range(1, delta, 2)}
 
         self.mu = mu
         self.delta = delta
@@ -80,7 +82,7 @@ class BCHCode(CyclicCode):
         self.alpha = alpha
 
         super().__init__(
-            length=2**mu - 1,
+            length=n,
             generator_polynomial=reduce(operator.mul, lcm_set),
         )
 
