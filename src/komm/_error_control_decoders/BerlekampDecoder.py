@@ -4,7 +4,8 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._algebra.FiniteBifield import FiniteBifield, horner
+from .._algebra import bifield
+from .._algebra.FiniteBifield import FiniteBifield
 from .._error_control_block.BCHCode import BCHCode
 from .._util.decorators import blockwise
 from .util import get_pbar
@@ -33,14 +34,14 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
             >>> decoder.decode_to_codeword([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         """
-        field = self.code.field
-        points = field.power(int(self.code.alpha), np.arange(1, self.code.delta))
-        inverses = field.power(int(self.code.alpha), -np.arange(self.code.length))
+        field, alpha = self.code.field, int(self.code.alpha)
+        points = bifield.power(field, alpha, np.arange(1, self.code.delta))
+        inverses = bifield.power(field, alpha, -np.arange(self.code.length))
 
         @blockwise(self.code.length)
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             # See [LC04, Sec. 6.2].
-            syndromes = horner(field, r, points)
+            syndromes = bifield.horner(field, r, points)
             v_hat = r.copy()
             pbar = get_pbar(np.size(input) // self.code.length, "Berlekamp")
             for i in np.ndindex(r.shape[:-1]):
@@ -49,7 +50,7 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                     continue
                 sigma_poly = berlekamp_algorithm(field, syndromes[i])
                 # Chien search.
-                e_loc = np.flatnonzero(horner(field, sigma_poly, inverses) == 0)
+                e_loc = np.flatnonzero(bifield.horner(field, sigma_poly, inverses) == 0)
                 if len(e_loc) != len(sigma_poly) - 1:
                     continue
                 e_hat = np.bincount(e_loc, minlength=self.code.length)
@@ -95,11 +96,11 @@ def berlekamp_algorithm(
             snd = np.zeros(degree[j + 1] + 1, dtype=int)
             snd[j - k : degree[k] + j - k + 1] = sigma[k]
             # See [LC04, eq. (6.25)].
-            ratio = field.divide(discrepancy[j], discrepancy[k])
-            sigma[j + 1] = fst ^ field.multiply(snd, ratio)
+            ratio = bifield.divide(field, discrepancy[j], discrepancy[k])
+            sigma[j + 1] = fst ^ bifield.multiply(field, snd, ratio)
         if j < delta - 2:
             i = np.arange(degree[j + 1])
-            products = field.multiply(sigma[j + 1][i + 1], syndrome[j - i])
+            products = bifield.multiply(field, sigma[j + 1][i + 1], syndrome[j - i])
             discrepancy[j + 1] = syndrome[j + 1] ^ np.bitwise_xor.reduce(products)
 
     return sigma[delta - 1]

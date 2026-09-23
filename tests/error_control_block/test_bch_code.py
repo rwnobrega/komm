@@ -5,7 +5,7 @@ import pytest
 from typeguard import TypeCheckError
 
 import komm
-from komm._algebra.FiniteBifield import horner
+from komm._algebra.bifield import horner
 
 
 def test_bch_generator_polynomial():

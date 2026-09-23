@@ -8,8 +8,6 @@
 
 - Added property [`FiniteBifield.primitive_element`](https://komm.dev/ref/FiniteBifield/#primitive_element), which returns a primitive element of the finite field.
 
-- Added methods [`FiniteBifield.multiply`](https://komm.dev/ref/FiniteBifield/#multiply), [`FiniteBifield.divide`](https://komm.dev/ref/FiniteBifield/#divide), and [`FiniteBifield.power`](https://komm.dev/ref/FiniteBifield/#power), which operate elementwise on arrays of integer representations of field elements.
-
 ### Breaking changes
 
 - Removed method `bch_syndrome` from `BCHCode`. Instead of `code.bch_syndrome(r_poly)`, use `[r_poly.evaluate(code.alpha**i) for i in range(1, code.delta)]`.

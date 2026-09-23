@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.FiniteBifield import horner
+from komm._algebra.bifield import horner, power
 from komm._error_control_decoders.BerlekampDecoder import berlekamp_algorithm
 
 
@@ -13,15 +13,12 @@ def test_berlekamp_lin_costello():
     field = code.field
     alpha = code.alpha
     r = [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
-    points = [int(alpha**i) for i in range(1, code.delta)]
+    points = power(field, int(alpha), range(1, code.delta))
     syndrome = horner(field, r, points)
-    assert np.array_equal(
-        syndrome,
-        [1, 1, int(alpha**10), 1, int(alpha**10), int(alpha**5)],
-    )
+    assert np.array_equal(syndrome, power(field, int(alpha), [0, 0, 10, 0, 10, 5]))
     sigma = berlekamp_algorithm(field, syndrome)
     assert np.array_equal(sigma, [1, 1, 0, int(alpha**5)])
-    inverses = field.power(int(alpha), -np.arange(code.length))
+    inverses = power(field, int(alpha), -np.arange(code.length))
     e_loc = np.flatnonzero(horner(field, sigma, inverses) == 0)
     assert np.array_equal(e_loc, [3, 5, 12])
     roots = inverses[e_loc]

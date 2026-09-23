@@ -1,11 +1,9 @@
 from random import randint
 
-import numpy as np
 import pytest
 
 import komm
 from komm._algebra.field import FieldElement
-from komm._algebra.FiniteBifield import horner
 from komm._algebra.ring import Ring, RingElement
 
 
@@ -225,40 +223,6 @@ def test_finite_bifield_primitive_element_non_primitive_modulus(k, modulus):
     alpha = field.primitive_element
     assert alpha == field(0b11)
     assert len({alpha**i for i in range(field.order - 1)}) == field.order - 1
-
-
-@pytest.mark.parametrize("modulus", [0b10011, 0b11111])
-def test_finite_bifield_vectorized_arithmetic(modulus):
-    field = komm.FiniteBifield(4, modulus)
-    elements = [field(value) for value in range(field.order)]
-    x, y = np.meshgrid(range(16), range(16), indexing="ij")
-    products = [[int(a * b) for b in elements] for a in elements]
-    quotients = [[int(a / b) for b in elements[1:]] for a in elements]
-    assert np.array_equal(field.multiply(x, y), products)
-    assert np.array_equal(field.divide(x[:, 1:], y[:, 1:]), quotients)
-    x, exponent = np.meshgrid(range(1, 16), range(-3, 4), indexing="ij")
-    powers = [[int(a**e) for e in range(-3, 4)] for a in elements[1:]]
-    assert np.array_equal(field.power(x, exponent), powers)
-    assert np.array_equal(field.power(0, [0, 1, 2]), [1, 0, 0])
-    with pytest.raises(ZeroDivisionError):
-        field.divide(1, 0)
-    with pytest.raises(ZeroDivisionError):
-        field.power(0, -1)
-
-
-@pytest.mark.parametrize("modulus", [0b10011, 0b11111])
-def test_finite_bifield_horner(modulus):
-    def naive_evaluate(field, p: list[int], x: int) -> int:
-        return int(sum((field(c) * field(x) ** i for i, c in enumerate(p)), field.zero))
-
-    field = komm.FiniteBifield(4, modulus)
-    coefficients = np.random.randint(0, 16, (3, 5))
-    points = np.arange(16)
-    expected = [
-        [naive_evaluate(field, p, x) for x in points.tolist()]
-        for p in coefficients.tolist()
-    ]
-    assert np.array_equal(horner(field, coefficients, points), expected)
 
 
 def test_finite_bifield_LC_example_2_7():
