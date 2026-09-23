@@ -89,13 +89,12 @@ def berlekamp_algorithm(
             candidates = [i for i in range(-1, j) if discrepancy[i] != 0]
             k = max(candidates, key=lambda i: i - degree[i])
             degree[j + 1] = max(degree[j], degree[k] + j - k)
-            fst = np.zeros(degree[j + 1] + 1, dtype=int)
-            fst[: degree[j] + 1] = sigma[j]
-            snd = np.zeros(degree[j + 1] + 1, dtype=int)
-            snd[j - k : degree[k] + j - k + 1] = sigma[k]
             # See [LC04, eq. (6.25)].
             ratio = bifield.divide(field, discrepancy[j], discrepancy[k])
-            sigma[j + 1] = fst ^ bifield.multiply(field, snd, ratio)
+            correction = bifield.multiply(field, sigma[k], ratio)
+            sigma[j + 1] = np.zeros(degree[j + 1] + 1, dtype=int)
+            sigma[j + 1][: len(sigma[j])] = sigma[j]
+            sigma[j + 1][j - k : j - k + len(correction)] ^= correction
         if j < delta - 2:
             i = np.arange(degree[j + 1])
             products = bifield.multiply(field, sigma[j + 1][i + 1], syndrome[j - i])
