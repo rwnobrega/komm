@@ -3,6 +3,7 @@ import pytest
 
 import komm
 from komm._util.matrices import (
+    boolean_matmul,
     invariant_factors,
     matmul,
     pseudo_inverse,
@@ -26,6 +27,7 @@ def test_matmul(x_shape, y_shape):
     x = np.random.randint(0, 2, x_shape)
     y = np.random.randint(0, 2, y_shape)
     np.testing.assert_equal(matmul(x, y), x @ y % 2)
+    np.testing.assert_equal(boolean_matmul(x, y), x @ y > 0)
 
 
 @pytest.mark.parametrize(

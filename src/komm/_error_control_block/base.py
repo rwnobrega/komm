@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
-from .._util.matrices import matmul, pseudo_inverse
+from .._util.matrices import boolean_matmul, matmul, pseudo_inverse
 from ..types import Array1D, Array2D
 
 
@@ -94,15 +94,13 @@ class BlockCode(ABC):
     def project_word_with_erasures(
         self, input: npt.ArrayLike
     ) -> npt.NDArray[np.integer]:
-        # Conservative: a message bit is marked as erased whenever its fixed
-        # expression through G_r_inv touches an erased position, even if some
-        # other combination of the non-erased positions would determine it.
+        # Conservative: may erase recoverable message bits.
         @blockwise(self.length)
         def project(v: npt.NDArray[np.integer]):
             G_r_inv = self.generator_matrix_right_inverse
             erased = v == 2
             u = matmul(np.where(erased, 0, v), G_r_inv)
-            u[erased.astype(int) @ G_r_inv > 0] = 2
+            u[boolean_matmul(erased, G_r_inv)] = 2
             return u
 
         return project(input)

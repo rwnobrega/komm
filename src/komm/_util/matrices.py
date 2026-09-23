@@ -12,6 +12,13 @@ from komm._algebra.BinaryPolynomial import BinaryPolynomial
 ArrayInt = npt.NDArray[np.integer]
 
 
+def _float_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.floating]:
+    x, y = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    # One float product: BLAS, exact below 2^53.
+    rows = x.reshape(prod(x.shape[:-1]), x.shape[-1])
+    return (rows @ y).reshape(*x.shape[:-1], y.shape[-1])
+
+
 def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> ArrayInt:
     r"""
     Multiplies two matrices in $\ZZ_2$. The first factor may have extra leading dimensions, which are kept in the product.
@@ -28,10 +35,26 @@ def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> ArrayInt:
         array([[0, 1],
                [1, 0]])
     """
-    x, y = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
-    # One float product: BLAS, exact below 2^53.
-    rows = x.reshape(prod(x.shape[:-1]), x.shape[-1])
-    return (rows @ y).reshape(*x.shape[:-1], y.shape[-1]).astype(int) & 1
+    return _float_matmul(x, y).astype(int) & 1
+
+
+def boolean_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.bool_]:
+    r"""
+    Multiplies two Boolean matrices, with OR as addition and AND as multiplication. The first factor may have extra leading dimensions, which are kept in the product.
+
+    Parameters:
+        x: The first factor. Its elements must be `0` or `1`.
+        y: The second factor. Its elements must be `0` or `1`. Must be a 2D-array.
+
+    Returns:
+        product: The product of the factors.
+
+    Examples:
+        >>> boolean_matmul([[1, 1, 0], [0, 1, 1]], [[1, 0], [1, 0], [0, 0]])
+        array([[ True, False],
+               [ True, False]])
+    """
+    return _float_matmul(x, y) > 0
 
 
 def rref(matrix: npt.ArrayLike) -> ArrayInt:
