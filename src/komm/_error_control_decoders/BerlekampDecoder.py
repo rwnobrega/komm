@@ -77,27 +77,25 @@ def berlekamp_algorithm(
     # See [LC04, Sec. 6.3].
     delta = len(syndrome) + 1
     sigma = {-1: np.array([1]), 0: np.array([1])}
-    discrepancy = {-1: 1, 0: syndrome[0]}
+    discrepancy = {-1: 1}
     degree = {-1: 0, 0: 0}
 
     # In [LC04]: μ <-> j and ρ <-> k.
     for j in range(delta - 1):
+        products = bifield.multiply(field, sigma[j], syndrome[j::-1][: len(sigma[j])])
+        discrepancy[j] = np.bitwise_xor.reduce(products)
         if discrepancy[j] == 0:
             degree[j + 1] = degree[j]
             sigma[j + 1] = sigma[j]
-        else:
-            candidates = [i for i in range(-1, j) if discrepancy[i] != 0]
-            k = max(candidates, key=lambda i: i - degree[i])
-            degree[j + 1] = max(degree[j], degree[k] + j - k)
-            # See [LC04, eq. (6.25)].
-            ratio = bifield.divide(field, discrepancy[j], discrepancy[k])
-            correction = bifield.multiply(field, sigma[k], ratio)
-            sigma[j + 1] = np.zeros(degree[j + 1] + 1, dtype=int)
-            sigma[j + 1][: len(sigma[j])] = sigma[j]
-            sigma[j + 1][j - k : j - k + len(correction)] ^= correction
-        if j < delta - 2:
-            i = np.arange(degree[j + 1])
-            products = bifield.multiply(field, sigma[j + 1][i + 1], syndrome[j - i])
-            discrepancy[j + 1] = syndrome[j + 1] ^ np.bitwise_xor.reduce(products)
+            continue
+        candidates = [i for i in range(-1, j) if discrepancy[i] != 0]
+        k = max(candidates, key=lambda i: i - degree[i])
+        degree[j + 1] = max(degree[j], degree[k] + j - k)
+        # See [LC04, eq. (6.25)].
+        ratio = bifield.divide(field, discrepancy[j], discrepancy[k])
+        correction = bifield.multiply(field, sigma[k], ratio)
+        sigma[j + 1] = np.zeros(degree[j + 1] + 1, dtype=int)
+        sigma[j + 1][: len(sigma[j])] = sigma[j]
+        sigma[j + 1][j - k : j - k + len(correction)] ^= correction
 
     return sigma[delta - 1]
