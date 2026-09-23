@@ -128,6 +128,9 @@ def power(
     return np.where(b == 0, np.where(e == 0, 1, 0), result)
 
 
+# Polynomial functions
+
+
 def horner(
     field: FiniteBifield,
     coefficients: npt.ArrayLike,
@@ -156,3 +159,32 @@ def horner(
     for i in reversed(range(coefficients.shape[-1])):
         values = multiply(field, values, points) ^ coefficients[..., i, np.newaxis]
     return values
+
+
+def convolve(
+    field: FiniteBifield,
+    x: npt.ArrayLike,
+    y: npt.ArrayLike,
+) -> npt.NDArray[np.integer]:
+    r"""
+    Multiplies polynomials with coefficients in a finite field. Coefficients are given by their integer representations, in $[0 : 2^k)$, in increasing order of degree along the last dimension. The other dimensions are broadcast.
+
+    Parameters:
+        field: A finite field.
+        x: The coefficients of the first factor.
+        y: The coefficients of the second factor.
+
+    Returns:
+        product: The coefficients of the product. Its last dimension has length `x.shape[-1] + y.shape[-1] - 1`.
+
+    Examples:
+        >>> field = komm.FiniteBifield(4)
+        >>> convolve(field, [0b0010, 1], [0b0100, 1])  # (α + X)(α^2 + X)
+        array([8, 6, 1])
+    """
+    x, y = np.asarray(x), np.asarray(y)
+    shape = np.broadcast_shapes(x.shape[:-1], y.shape[:-1])
+    product = np.zeros(shape + (x.shape[-1] + y.shape[-1] - 1,), dtype=int)
+    for i in range(y.shape[-1]):
+        product[..., i : i + x.shape[-1]] ^= multiply(field, x, y[..., i, np.newaxis])
+    return product

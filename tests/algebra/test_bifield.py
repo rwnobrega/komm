@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.bifield import divide, horner, multiply, power
+from komm._algebra.bifield import convolve, divide, horner, multiply, power
 
 params = []
 
@@ -64,3 +64,17 @@ def test_bifield_horner(field: komm.FiniteBifield):
         [naive_evaluate(p, x) for x in points.tolist()] for p in coefficients.tolist()
     ]
     assert np.array_equal(horner(field, coefficients, points), expected)
+
+
+def test_bifield_convolve(field: komm.FiniteBifield):
+    def naive_convolve(p: list[int], q: list[int]) -> list[int]:
+        product = [field.zero] * (len(p) + len(q) - 1)
+        for i, a in enumerate(p):
+            for j, b in enumerate(q):
+                product[i + j] += field(a) * field(b)
+        return [int(c) for c in product]
+
+    x = np.random.randint(0, field.order, (3, 1, 5))
+    y = np.random.randint(0, field.order, (4, 3))
+    expected = [[naive_convolve(p, q) for q in y.tolist()] for p in x[:, 0].tolist()]
+    assert np.array_equal(convolve(field, x, y), expected)
