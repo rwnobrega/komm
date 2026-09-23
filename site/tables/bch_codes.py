@@ -7,7 +7,7 @@ output_file = "bch_codes.json"
 
 if not os.path.exists(output_file):
     bose = {}
-    for mu in range(2, 11):
+    for mu in range(2, 13):
         bose[mu] = []
         for delta in list(range(2, 2 ** (mu - 1))) + [2**mu - 1]:
             print(mu, delta)
