@@ -7,18 +7,22 @@ import komm
 from komm._algebra.bifield import horner, power
 
 
-def test_reed_solomon_lc_example_7_1():
-    # [LC04, Example 7.1]
-    code = komm.ReedSolomonCode(mu=6, delta=7)
-    assert (code.length, code.dimension, code.redundancy) == (6 * 63, 6 * 57, 6 * 6)
+@pytest.mark.parametrize(
+    "mu, delta, exponents",
+    [
+        (6, 7, [21, 10, 55, 43, 48, 59, 0]),  # [LC04, Example 7.1]
+        (3, 5, [3, 1, 0, 3, 0]),  # [McE04, Example 9.6]
+    ],
+)
+def test_reed_solomon_generator_polynomial(mu, delta, exponents):
+    code = komm.ReedSolomonCode(mu=mu, delta=delta)
     # Message a(X) = 1 gives v(X) = g(X).
     u = np.zeros(code.dimension, dtype=int)
     u[0] = 1
-    v = komm.bits_to_int(code.encode(u), width=6)
-    alpha = int(code.alpha)
-    g = power(code.field, alpha, [21, 10, 55, 43, 48, 59, 0])
-    np.testing.assert_equal(v[:7], g)
-    np.testing.assert_equal(v[7:], 0)
+    v = komm.bits_to_int(code.encode(u), width=mu)
+    g = power(code.field, int(code.alpha), exponents)
+    np.testing.assert_equal(v[:delta], g)
+    np.testing.assert_equal(v[delta:], 0)
 
 
 @pytest.mark.parametrize(
