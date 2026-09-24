@@ -2,7 +2,15 @@ import numpy as np
 import pytest
 
 import komm
-from komm._algebra.bifield import convolve, deconvolve, divide, horner, multiply, power
+from komm._algebra.bifield import (
+    binary_matrix,
+    convolve,
+    deconvolve,
+    divide,
+    horner,
+    multiply,
+    power,
+)
 
 params = []
 
@@ -90,3 +98,16 @@ def test_bifield_deconvolve(field: komm.FiniteBifield):
     product = convolve(field, quotient, y)
     product[..., :2] ^= remainder
     assert np.array_equal(product, np.broadcast_to(x, (3, 4, 7)))
+
+
+def test_bifield_binary_matrix(field: komm.FiniteBifield):
+    k = field.degree
+    matrix = np.random.randint(0, field.order, (3, 5))
+    binary = binary_matrix(field, matrix)
+    assert binary.shape == (3 * k, 5 * k)
+    # Check that φ(a A) = φ(a) B.
+    u = np.random.randint(0, 2, (10, 3 * k))
+    a = komm.bits_to_int(u, width=k)
+    products = multiply(field, a[:, :, np.newaxis], matrix)
+    expected = np.bitwise_xor.reduce(products, axis=1)
+    assert np.array_equal(komm.bits_to_int(u @ binary % 2, width=k), expected)

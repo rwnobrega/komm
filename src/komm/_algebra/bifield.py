@@ -3,6 +3,7 @@ from functools import cache
 import numpy as np
 import numpy.typing as npt
 
+from .._util.bit_operations import int_to_bits
 from .FiniteBifield import FiniteBifield
 
 
@@ -227,3 +228,40 @@ def deconvolve(
         remainder[..., i : i + d + 1] ^= multiply(field, q[..., np.newaxis], y)
         quotient[..., i] = q
     return quotient, remainder[..., :d]
+
+
+def binary_matrix(
+    field: FiniteBifield,
+    matrix: npt.ArrayLike,
+) -> npt.NDArray[np.integer]:
+    r"""
+    Computes the binary matrix of a matrix over a finite field. Entries are given by their integer representations, in $[0 : 2^k)$.
+
+    The binary matrix of an $r \times c$ matrix $A$ is the $kr \times kc$ binary matrix $B$ such that $\phi(a A) = \phi(a) B$ for every row vector $a$ of length $r$, where $\phi$ replaces each entry by its $k$ bits, in LSB-first order (that is, its coordinates with respect to the polynomial basis). In particular, if $A$ is a generator matrix of a code, then $B$ is a generator matrix of its binary image.
+
+    Parameters:
+        field: A finite field.
+        matrix: The matrix $A$. Must be a 2D-array.
+
+    Returns:
+        binary_matrix: The binary matrix $B$.
+
+    Examples:
+        >>> field = komm.FiniteBifield(3)
+        >>> binary_matrix(field, [[0b010]])  # α
+        array([[0, 1, 0],
+               [0, 0, 1],
+               [1, 1, 0]])
+
+        >>> field = komm.FiniteBifield(2)
+        >>> binary_matrix(field, [[0b10, 1, 0], [0b11, 0, 1]])  # [[α, 1, 0], [α^2, 0, 1]]
+        array([[0, 1, 1, 0, 0, 0],
+               [1, 1, 0, 1, 0, 0],
+               [1, 1, 0, 0, 1, 0],
+               [1, 0, 0, 0, 0, 1]])
+    """
+    matrix = np.asarray(matrix)
+    basis = 1 << np.arange(field.degree)
+    products = multiply(field, matrix[:, np.newaxis], basis[:, np.newaxis])
+    bits = int_to_bits(products, width=field.degree)
+    return bits.reshape(-1, bits.shape[-1])
