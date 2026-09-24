@@ -32,7 +32,7 @@ class ReedSolomonCode(SystematicBlockCode):
     - Redundancy: $\mu m$
     - Minimum distance: $d \geq \delta$
 
-    Only *narrow-sense* and *primitive* Reed–Solomon codes are implemented. For more details, see <cite>LC04, Sec. 7.2</cite>.
+    Only *narrow-sense* and *primitive* Reed–Solomon codes are implemented. For more details, see <cite>LC04, Sec. 7.3</cite>.
 
     Notes:
         - For $\mu = 8$ and $\delta = 33$ it is a $(255, 223)$ Reed–Solomon code, which corrects $16$ symbol errors. Its binary image is a $(2040, 1784)$ code.
