@@ -1,3 +1,5 @@
+from math import comb
+
 import numpy as np
 import pytest
 
@@ -38,12 +40,19 @@ def test_reed_solomon_codewords(mu, delta):
 
 @pytest.mark.parametrize(
     "mu, delta",
-    [(2, 2), (2, 3), (3, 4), (3, 5), (4, 13)],
+    [(2, 2), (2, 3), (3, 3), (3, 4), (3, 5), (4, 11), (4, 13)],
 )
-def test_reed_solomon_symbol_distance(mu, delta):
+def test_reed_solomon_weight_distribution(mu, delta):
+    # [LC04, eq. (7.3)], as corrected in the errata.
     code = komm.ReedSolomonCode(mu=mu, delta=delta)
-    v = komm.bits_to_int(code.codewords()[1:], width=mu)
-    assert np.count_nonzero(v, axis=1).min() == delta
+    q, m = 2**mu, delta - 1
+    expected = [1] + [0] * m
+    for i in range(delta, q):
+        s = sum((-1) ** (i + j) * comb(i, j) * (q**m - q**j) for j in range(m + 1))
+        expected.append(comb(q - 1, i) * ((q - 1) ** i + s) // q**m)
+    v = komm.bits_to_int(code.codewords(), width=mu)
+    weights = np.count_nonzero(v, axis=1)
+    np.testing.assert_equal(np.bincount(weights, minlength=q), expected)
     assert code.minimum_distance() >= delta
 
 
