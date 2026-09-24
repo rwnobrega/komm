@@ -41,6 +41,7 @@ from ._error_control_block.HammingCode import HammingCode
 from ._error_control_block.Lexicode import Lexicode
 from ._error_control_block.PolarCode import PolarCode
 from ._error_control_block.ReedMullerCode import ReedMullerCode
+from ._error_control_block.ReedSolomonCode import ReedSolomonCode
 from ._error_control_block.RepetitionCode import RepetitionCode
 from ._error_control_block.SimplexCode import SimplexCode
 from ._error_control_block.SingleParityCheckCode import SingleParityCheckCode
@@ -174,6 +175,7 @@ __all__ = [
     "Lexicode",
     "PolarCode",
     "ReedMullerCode",
+    "ReedSolomonCode",
     "RepetitionCode",
     "SimplexCode",
     "SingleParityCheckCode",

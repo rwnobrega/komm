@@ -10,6 +10,7 @@ codes = [
     komm.CyclicCode(length=23, generator_polynomial=0b101011100011),
     komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12),
     komm.PolarCode(mu=4, frozen=[0, 1, 2, 3, 4, 5, 6, 8, 9]),
+    komm.ReedSolomonCode(mu=3, delta=5),
 ]
 
 

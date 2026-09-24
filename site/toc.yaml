@@ -32,6 +32,7 @@ Error control:
     - CordaroWagnerCode
     - ReedMullerCode
     - BCHCode
+    - ReedSolomonCode
     - Lexicode
     - PolarCode
     - SlepianArray

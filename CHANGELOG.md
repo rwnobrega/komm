@@ -4,6 +4,8 @@
 
 ### Added
 
+- Implemented [Reed–Solomon codes](https://komm.dev/ref/ReedSolomonCode), represented by their binary images.
+
 - Added option to provide both the generator matrix and the check matrix to `BlockCode`, which must then satisfy $G H^\mathsf{T} = 0$.
 
 - Added property [`FiniteBifield.primitive_element`](https://komm.dev/ref/FiniteBifield/#primitive_element), which returns a primitive element of the finite field.
