@@ -7,39 +7,53 @@ from .. import abc
 from .._algebra import bifield
 from .._algebra.FiniteBifield import FiniteBifield
 from .._error_control_block.BCHCode import BCHCode
+from .._error_control_block.ReedSolomonCode import ReedSolomonCode
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.decorators import blockwise
 from .util import get_pbar
 
 
 @dataclass
-class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
+class BerlekampDecoder(abc.CodewordDecoder[BCHCode | ReedSolomonCode]):
     r"""
-    Berlekamp decoder for [BCH codes](/ref/BCHCode). For more details, see <cite>LC04, Sec. 6.3</cite>.
+    Berlekamp decoder for [BCH codes](/ref/BCHCode) and [Reed–Solomon codes](/ref/ReedSolomonCode). For more details, see <cite>LC04, Sec. 6.3</cite> and <cite>LC04, Sec. 7.4</cite>.
 
     Parameters:
-        code: The BCH code to be used for decoding.
+        code: The BCH or Reed–Solomon code to be used for decoding.
 
     Notes:
         - Input type: `hard` (bits).
         - Output type: `hard` (bits).
     """
 
-    code: BCHCode
+    code: BCHCode | ReedSolomonCode
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
             >>> code = komm.BCHCode(4, 7)
             >>> decoder = komm.BerlekampDecoder(code)
-            >>> decoder.decode_to_codeword([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            >>> decoder.decode_to_codeword(
+            ...     [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            ... )
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+            >>> code = komm.ReedSolomonCode(3, 5)
+            >>> decoder = komm.BerlekampDecoder(code)
+            >>> decoder.decode_to_codeword(
+            ...     [1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0],
+            ... )
+            array([1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
         """
         field, alpha = self.code.field, int(self.code.alpha)
+        n = field.order - 1  # Length in symbols.
+        width = self.code.mu if isinstance(self.code, ReedSolomonCode) else 1
         points = bifield.power(field, alpha, np.arange(1, self.code.delta))
-        inverses = bifield.power(field, alpha, -np.arange(self.code.length))
+        inverses = bifield.power(field, alpha, -np.arange(n))
 
         @blockwise(self.code.length)
         def decode_to_codeword(r: npt.NDArray[np.integer]):
+            r = bits_to_int(r, width=width)
             # See [LC04, Sec. 6.2].
             syndromes = bifield.horner(field, r, points)
             v_hat = r.copy()
@@ -53,9 +67,14 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
                 e_loc = np.flatnonzero(bifield.horner(field, sigma, inverses) == 0)
                 if len(e_loc) != len(sigma) - 1:
                     continue
-                e_hat = np.bincount(e_loc, minlength=self.code.length)
-                v_hat[i] = (r[i] + e_hat) % 2
-            return v_hat
+                # Error values
+                if isinstance(self.code, BCHCode):
+                    e_val = 1
+                else:
+                    roots = inverses[e_loc]
+                    e_val = forney_algorithm(field, syndromes[i], sigma, roots)
+                v_hat[i][e_loc] ^= e_val
+            return int_to_bits(v_hat, width=width)
 
         return decode_to_codeword(input)
 
@@ -64,8 +83,17 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode]):
         Examples:
             >>> code = komm.BCHCode(4, 7)
             >>> decoder = komm.BerlekampDecoder(code)
-            >>> decoder.decode([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+            >>> decoder.decode(
+            ...     [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            ... )
             array([0, 0, 0, 0, 0])
+
+            >>> code = komm.ReedSolomonCode(3, 5)
+            >>> decoder = komm.BerlekampDecoder(code)
+            >>> decoder.decode(
+            ...     [1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0],
+            ... )
+            array([0, 0, 0, 1, 1, 0, 1, 0, 0])
         """
         return self.code.project_word(self.decode_to_codeword(input))
 

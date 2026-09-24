@@ -83,3 +83,40 @@ def test_forney_error_values(mu, delta):
             sigma = berlekamp_algorithm(field, syndrome)
             values = forney_algorithm(field, syndrome, sigma, inverses[e_loc])
             assert np.array_equal(values, e[e_loc])
+
+
+@pytest.mark.parametrize(
+    "mu, delta",
+    [(2, 3), (3, 4), (3, 5), (4, 7), (4, 10), (5, 11)],
+)
+def test_berlekamp_reed_solomon_error_correcting_capability(mu, delta):
+    code = komm.ReedSolomonCode(mu, delta)
+    n, t = 2**mu - 1, (delta - 1) // 2
+    decoder = komm.BerlekampDecoder(code)
+    for w in range(t + 1):
+        for _ in range(10):
+            u = np.random.randint(0, 2, code.dimension)
+            e = np.zeros(n, dtype=int)
+            error_locations = np.random.choice(n, w, replace=False)
+            e[error_locations] = np.random.randint(1, 2**mu, w)
+            r = code.encode(u) ^ komm.int_to_bits(e, width=mu)
+            assert np.array_equal(decoder.decode(r), u)
+
+
+@pytest.mark.parametrize(
+    "mu, delta",
+    [(2, 3), (3, 4), (3, 5), (4, 7), (4, 10), (5, 11)],
+)
+def test_berlekamp_reed_solomon_above_error_correcting_capability(mu, delta):
+    code = komm.ReedSolomonCode(mu, delta)
+    n, t = 2**mu - 1, (delta - 1) // 2
+    decoder = komm.BerlekampDecoder(code)
+    for w in range(t + 1, n + 1):
+        for _ in range(10):
+            e = np.zeros(n, dtype=int)
+            error_locations = np.random.choice(n, w, replace=False)
+            e[error_locations] = np.random.randint(1, 2**mu, w)
+            r = komm.int_to_bits(e, width=mu)
+            v_hat = decoder.decode_to_codeword(r)
+            # Either a codeword or the received word.
+            assert not np.any(code.check(v_hat)) or np.array_equal(v_hat, r)

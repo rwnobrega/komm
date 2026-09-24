@@ -7,6 +7,7 @@ import komm.abc
 block = komm.HammingCode(3)
 terminated = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12)
 bch = komm.BCHCode(4, 5)
+reed_solomon = komm.ReedSolomonCode(3, 5)
 reed_muller = komm.ReedMullerCode(1, 5)
 spc = komm.SingleParityCheckCode(3)
 
@@ -21,6 +22,7 @@ spc = komm.SingleParityCheckCode(3)
         [terminated, komm.ViterbiDecoder],
         [terminated, komm.BCJRDecoder],
         [bch, komm.BerlekampDecoder],
+        [reed_solomon, komm.BerlekampDecoder],
         [reed_muller, komm.ReedDecoder],
         [spc, komm.WagnerDecoder],
     ],
