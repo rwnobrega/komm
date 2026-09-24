@@ -9,7 +9,7 @@ from komm._error_control_decoders.BerlekampDecoder import (
 )
 
 
-def test_berlekamp_lin_costello():
+def test_berlekamp_bch_lin_costello():
     # [LC04, Example 6.5]
     code = komm.BCHCode(mu=4, delta=7)
     decoder = komm.BerlekampDecoder(code)
@@ -30,34 +30,38 @@ def test_berlekamp_lin_costello():
     assert np.array_equal(u_hat, [0, 0, 0, 0, 0])
 
 
-@pytest.mark.parametrize("mu, deltas", [(2, [3]), (3, [3, 7]), (4, [3, 5, 7, 15])])
-def test_berlekamp_error_correcting_capability(mu, deltas):
-    for delta in deltas:
-        code = komm.BCHCode(mu, delta)
-        k, n = code.dimension, code.length
-        decoder = komm.BerlekampDecoder(code)
-        for w in range((delta - 1) // 2 + 1):
-            for _ in range(10):
-                r = np.zeros(n, dtype=int)
-                error_locations = np.random.choice(n, w, replace=False)
-                r[error_locations] ^= 1
-                assert np.array_equal(decoder.decode(r), np.zeros(k, dtype=int))
+@pytest.mark.parametrize(
+    "mu, delta",
+    [(2, 3), (3, 3), (3, 7), (4, 3), (4, 5), (4, 7), (4, 15)],
+)
+def test_berlekamp_bch_error_correcting_capability(mu, delta):
+    code = komm.BCHCode(mu, delta)
+    k, n = code.dimension, code.length
+    decoder = komm.BerlekampDecoder(code)
+    for w in range((delta - 1) // 2 + 1):
+        for _ in range(10):
+            r = np.zeros(n, dtype=int)
+            error_locations = np.random.choice(n, w, replace=False)
+            r[error_locations] ^= 1
+            assert np.array_equal(decoder.decode(r), np.zeros(k, dtype=int))
 
 
-@pytest.mark.parametrize("mu, deltas", [(2, [3]), (3, [3, 7]), (4, [3, 5, 7, 15])])
-def test_berlekamp_above_error_correcting_capability(mu, deltas):
-    for delta in deltas:
-        code = komm.BCHCode(mu, delta)
-        n, t = code.length, (code.delta - 1) // 2
-        decoder = komm.BerlekampDecoder(code)
-        for w in range(t + 1, n + 1):
-            for _ in range(10):
-                r = np.zeros(n, dtype=int)
-                error_locations = np.random.choice(n, w, replace=False)
-                r[error_locations] ^= 1
-                v_hat = decoder.decode_to_codeword(r)
-                # Either a codeword or the received word.
-                assert not np.any(code.check(v_hat)) or np.array_equal(v_hat, r)
+@pytest.mark.parametrize(
+    "mu, delta",
+    [(2, 3), (3, 3), (3, 7), (4, 3), (4, 5), (4, 7), (4, 15)],
+)
+def test_berlekamp_bch_above_error_correcting_capability(mu, delta):
+    code = komm.BCHCode(mu, delta)
+    n, t = code.length, (code.delta - 1) // 2
+    decoder = komm.BerlekampDecoder(code)
+    for w in range(t + 1, n + 1):
+        for _ in range(10):
+            r = np.zeros(n, dtype=int)
+            error_locations = np.random.choice(n, w, replace=False)
+            r[error_locations] ^= 1
+            v_hat = decoder.decode_to_codeword(r)
+            # Either a codeword or the received word.
+            assert not np.any(code.check(v_hat)) or np.array_equal(v_hat, r)
 
 
 @pytest.mark.parametrize(
