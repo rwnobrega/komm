@@ -98,3 +98,20 @@ def berlekamp_algorithm(
         sigma[j + 1][j - k : j - k + len(correction)] ^= correction
 
     return sigma[len(syndrome)]
+
+
+def forney_algorithm(
+    field: FiniteBifield,
+    syndrome: npt.NDArray[np.integer],
+    sigma: npt.NDArray[np.integer],
+    roots: npt.NDArray[np.integer],
+) -> npt.NDArray[np.integer]:
+    # Forney's formula, see [McE04, eq. (9.72)].
+    # E_i = ω(α^-i) / σ'(α^-i).
+    # Key equation: ω(x) = σ(x) S(x) mod x^m.
+    omega = bifield.convolve(field, syndrome, sigma)[: len(syndrome)]
+    sigma_prime = sigma[1:].copy()
+    sigma_prime[1::2] = 0  # In σ'(x), only odd powers survive.
+    numerator = bifield.horner(field, omega, roots)
+    denominator = bifield.horner(field, sigma_prime, roots)
+    return bifield.divide(field, numerator, denominator)

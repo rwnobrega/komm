@@ -3,7 +3,10 @@ import pytest
 
 import komm
 from komm._algebra.bifield import horner, power
-from komm._error_control_decoders.BerlekampDecoder import berlekamp_algorithm
+from komm._error_control_decoders.BerlekampDecoder import (
+    berlekamp_algorithm,
+    forney_algorithm,
+)
 
 
 def test_berlekamp_lin_costello():
@@ -55,3 +58,24 @@ def test_berlekamp_above_error_correcting_capability(mu, deltas):
                 v_hat = decoder.decode_to_codeword(r)
                 # Either a codeword or the received word.
                 assert not np.any(code.check(v_hat)) or np.array_equal(v_hat, r)
+
+
+@pytest.mark.parametrize(
+    "mu, delta",
+    [(2, 3), (3, 4), (3, 5), (4, 7), (4, 10), (6, 11)],
+)
+def test_forney_error_values(mu, delta):
+    code = komm.ReedSolomonCode(mu, delta)
+    field, alpha = code.field, int(code.alpha)
+    n, t = 2**mu - 1, (delta - 1) // 2
+    points = power(field, alpha, range(1, delta))
+    inverses = power(field, alpha, -np.arange(n))
+    for w in range(1, t + 1):
+        for _ in range(10):
+            e = np.zeros(n, dtype=int)
+            e_loc = np.sort(np.random.choice(n, w, replace=False))
+            e[e_loc] = np.random.randint(1, 2**mu, w)
+            syndrome = horner(field, e, points)
+            sigma = berlekamp_algorithm(field, syndrome)
+            values = forney_algorithm(field, syndrome, sigma, inverses[e_loc])
+            assert np.array_equal(values, e[e_loc])
