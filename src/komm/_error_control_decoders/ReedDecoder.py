@@ -12,10 +12,10 @@ from .._util.decorators import blockwise, vectorize
 @dataclass
 class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     r"""
-    Reed decoder for [Reed-Muller codes](/ref/ReedMullerCode). It's a majority-logic decoding algorithm. For more details, see [LC04, Sec 4.3 and 10.9.1] for hard-decision decoding, and [LC04, Sec 10.9.2] for soft-decision decoding.
+    Reed decoder for [Reed–Muller codes](/ref/ReedMullerCode). It's a majority-logic decoding algorithm. For more details, see <cite>LC04, Sec. 4.3</cite> and <cite>LC04, Sec. 10.9.1</cite> for hard-decision decoding, and <cite>LC04, Sec. 10.9.2</cite> for soft-decision decoding.
 
     Parameters:
-        code: The Reed-Muller code to be used for decoding.
+        code: The Reed–Muller code to be used for decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
 
     Notes:

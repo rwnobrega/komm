@@ -182,7 +182,7 @@ class FixedToVariableCode:
         Notes:
             The source block size $k$ is inferred from the number of lengths: it is the unique integer such that $|\mathcal{X}|^k$ equals `len(lengths)`.
 
-            If the lengths are non-decreasing, the resulting code is moreover *alphabetic*: the codewords preserve the lexicographic ordering of the source words. See [CT06, Sec. 5.7].
+            If the lengths are non-decreasing, the resulting code is moreover *alphabetic*: the codewords preserve the lexicographic ordering of the source words. See <cite>CT06, Sec. 5.7</cite>.
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_lengths([1, 2, 2])

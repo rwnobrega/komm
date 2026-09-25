@@ -49,7 +49,7 @@ class WalshHadamardSequence(BinarySequence):
     $$
     The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ sign changes.
 
-    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering. Fore more details, see [Wikipedia: Hadamard matrix](https://en.wikipedia.org/wiki/Hadamard_matrix) and [Wikipedia: Walsh matrix](https://en.wikipedia.org/wiki/Walsh_matrix).
+    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering. For more details, see [Wikipedia: Hadamard matrix](https://en.wikipedia.org/wiki/Hadamard_matrix) and [Wikipedia: Walsh matrix](https://en.wikipedia.org/wiki/Walsh_matrix).
 
     Parameters:
         length: Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.

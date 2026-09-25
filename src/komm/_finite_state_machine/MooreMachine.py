@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 class MooreMachine:
     r"""
-    Finite-state Moore machine. It is defined by a *set of states* $\mathcal{S}$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, a *transition function* $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an *output function* $G : \mathcal{S} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see [Wikipedia: Moore machine](https://en.wikipedia.org/wiki/Moore_machine).
+    Finite-state Moore machine. It is defined by a *set of states* $\mathcal{S}$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, a *transition function* $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an *output function* $G : \mathcal{S} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. For more details, see [Wikipedia: Moore machine](https://en.wikipedia.org/wiki/Moore_machine).
 
     Parameters:
         transitions: The matrix of transitions of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $T(s, x) \in \mathcal{S}$, that is, the next state of the machine given that the current state is $s$ and the input is $x$.
