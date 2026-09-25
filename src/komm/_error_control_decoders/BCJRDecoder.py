@@ -8,9 +8,10 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
+from .._finite_state_machine.trellis import TrellisSection, forward_backward
 from .._labelings.Labeling import Labeling
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.decorators import blockwise, chunkwise, with_pbar
 from .util import get_pbar
 
 
@@ -38,21 +39,22 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             )
         if self.output_type not in ["hard", "soft"]:
             raise ValueError("'output_type' must be 'hard' or 'soft'")
+        fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits
-        self._fsm = self.code.convolutional_code.finite_state_machine()
-        num_states = self._fsm.num_states
-        self._initial_state_distribution, self._final_state_distribution = (
-            self.code.strategy.initial_final_distributions(num_states)
-        )
-        self._post_process_output = self.code.strategy.bcjr_post_process_output
-        bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
-        self._cache_polar = (-1) ** bits
+        num_steps = self.code.length // n
+        section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
+        self._sections = [section] * num_steps
+        self._polar = (-1) ** int_to_bits(range(2**n), width=n).reshape(-1, n)
+        initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
+        with np.errstate(divide="ignore"):
+            self._initial_metrics = np.log(initial)
+            self._final_metrics = np.log(final)
         # Input symbols are LSB-first
         self._labeling = Labeling(int_to_bits(range(2**k), width=k).reshape(-1, k))
-
-    def _metric_function(self, y: int, z: float) -> float:
-        return 0.5 * np.dot(self._cache_polar[y], z)
+        # About 64 MiB of metrics
+        step_bytes = 8 * (fsm.num_states + 2**n + 2**k)
+        self._chunk_size = max(1, 2**26 // (num_steps * step_bytes))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -72,23 +74,23 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             array([1, 1, 0])
         """
         n = self.code.convolutional_code.num_output_bits
+        h = self.code.num_blocks
 
         @blockwise(self.code.length)
-        @vectorize
+        @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
-            symbol_posteriors = self._fsm.forward_backward(
-                observed=li.reshape(-1, n),
-                metric_function=self._metric_function,
-                initial_state_distribution=self._initial_state_distribution,
-                final_state_distribution=self._final_state_distribution,
+            log_posteriors = forward_backward(
+                sections=self._sections,
+                branch_metrics=0.5 * li.reshape(li.shape[0], -1, n) @ self._polar.T,
+                initial_metrics=self._initial_metrics,
+                final_metrics=self._final_metrics,
             )
-            symbol_posteriors = self._post_process_output(symbol_posteriors)
-            lo = self._labeling.marginalize(symbol_posteriors).reshape(-1)
+            posteriors = np.exp(log_posteriors[:, :h]).reshape(li.shape[0], -1)
+            lo = self._labeling.marginalize(posteriors)
             return lo
 
         output = decode(input)
         if self.output_type == "hard":
-            return (output < 0.0).astype(int)
-        else:  # if self.output_type == "soft":
-            return output
+            output = (output < 0.0).astype(int)
+        return output
