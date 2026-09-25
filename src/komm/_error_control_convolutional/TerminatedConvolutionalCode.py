@@ -352,11 +352,6 @@ class TerminationStrategy(ABC):
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]: ...
 
-    @abstractmethod
-    def bcjr_post_process_output(
-        self, posteriors: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.floating]: ...
-
 
 class DirectTruncation(TerminationStrategy):
     def pre_process_input(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -377,11 +372,6 @@ class DirectTruncation(TerminationStrategy):
         initial_distribution = np.eye(1, num_states, 0)
         final_distribution = np.ones(num_states) / num_states
         return initial_distribution, final_distribution
-
-    def bcjr_post_process_output(
-        self, posteriors: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.floating]:
-        return posteriors
 
 
 class ZeroTermination(TerminationStrategy):
@@ -421,12 +411,6 @@ class ZeroTermination(TerminationStrategy):
         final_distribution = np.eye(1, num_states, 0)
         return initial_distribution, final_distribution
 
-    def bcjr_post_process_output(
-        self, posteriors: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.floating]:
-        μ = self.convolutional_code.memory_order
-        return posteriors[:-μ]
-
 
 class TailBiting(TerminationStrategy):
     @cached_property
@@ -454,9 +438,4 @@ class TailBiting(TerminationStrategy):
     def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
-        raise NotImplementedError
-
-    def bcjr_post_process_output(
-        self, posteriors: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.floating]:
         raise NotImplementedError
