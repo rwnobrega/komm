@@ -144,13 +144,13 @@ def test_cyclic_code_syndrome():
     "systematic",
     [False, True],
 )
-def test_cyclic_code_mappings(length, check_polynomial, systematic):
+def test_cyclic_code_mappings(length, check_polynomial, systematic, rng):
     code = komm.CyclicCode(
         length=length, check_polynomial=check_polynomial, systematic=systematic
     )
     k, m = code.dimension, code.redundancy
     for _ in range(100):
-        u = np.random.randint(0, 2, (3, 4, k))
+        u = rng.integers(0, 2, (3, 4, k))
         v = code.encode(u)
         np.testing.assert_equal(
             code.inverse_encode(v),

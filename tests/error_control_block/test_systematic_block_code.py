@@ -64,11 +64,11 @@ def test_systematic_block_code():
 
 
 @pytest.mark.repeat(20)
-def test_systematic_block_code_mappings():
-    code = komm.SystematicBlockCode(parity_submatrix=np.random.randint(0, 2, (4, 4)))
+def test_systematic_block_code_mappings(rng):
+    code = komm.SystematicBlockCode(parity_submatrix=rng.integers(0, 2, (4, 4)))
     k, m = code.dimension, code.redundancy
     for _ in range(100):
-        u = np.random.randint(0, 2, (3, 4, k))
+        u = rng.integers(0, 2, (3, 4, k))
         v = code.encode(u)
         np.testing.assert_equal(
             code.inverse_encode(v),

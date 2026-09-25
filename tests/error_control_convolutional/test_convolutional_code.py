@@ -234,11 +234,13 @@ def test_convolutional_code_state_space_representation():
         ([[0o27, 0o31]], [0o27]),
     ],
 )
-def test_convolutional_encoder_vs_fsm(feedforward_polynomials, feedback_polynomials):
+def test_convolutional_encoder_vs_fsm(
+    feedforward_polynomials, feedback_polynomials, rng
+):
     code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
     n, k = code.num_output_bits, code.num_input_bits
 
-    u = np.random.randint(2, size=100 * k)
+    u = rng.integers(2, size=100 * k)
     v1 = code.encode(u)
 
     fsm = code.finite_state_machine()

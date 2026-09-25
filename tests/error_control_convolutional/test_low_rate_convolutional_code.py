@@ -46,7 +46,7 @@ import komm
         (13, [0o27251, 0o37363], 16),
     ],
 )
-def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance):
+def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance, rng):
     # [LC04, p. 539--540]
     code = komm.LowRateConvolutionalCode(g_row)
     n = len(g_row)
@@ -63,5 +63,5 @@ def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance):
     np.testing.assert_equal(code.generator_matrix, G_mat)
     np.testing.assert_equal(code.overall_constraint_length, nus)
     for _ in range(100):
-        input = np.random.randint(0, 2, size=50)
+        input = rng.integers(0, 2, size=50)
         np.testing.assert_equal(code.encode(input), code1.encode(input))

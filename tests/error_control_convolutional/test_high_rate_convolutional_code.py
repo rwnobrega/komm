@@ -28,7 +28,7 @@ import komm
         (9, [0o1371, 0o1157, 0o1723, 0o1475], 8),
     ],
 )
-def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance):
+def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance, rng):
     # [LC04, p. 540]
     # Note that the book displays the columns in reverse order.
     code = komm.HighRateConvolutionalCode(h_row)
@@ -51,5 +51,5 @@ def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance)
     np.testing.assert_equal(code.generator_matrix, G_mat)
     np.testing.assert_equal(code.overall_constraint_length, nus)
     for _ in range(100):
-        input = np.random.randint(0, 2, size=50 * (n - 1))
+        input = rng.integers(0, 2, size=50 * (n - 1))
         np.testing.assert_equal(code.encode(input), code1.encode(input))

@@ -29,11 +29,11 @@ def test_reed_solomon_generator_polynomial(mu, delta, exponents):
     "mu, delta",
     [(2, 2), (2, 3), (3, 4), (4, 5), (4, 14), (6, 11)],
 )
-def test_reed_solomon_codewords(mu, delta):
+def test_reed_solomon_codewords(mu, delta, rng):
     code = komm.ReedSolomonCode(mu=mu, delta=delta)
     n, k = 2**mu - 1, 2**mu - delta
     assert (code.length, code.dimension) == (mu * n, mu * k)
-    u = np.random.randint(0, 2, (100, code.dimension))
+    u = rng.integers(0, 2, (100, code.dimension))
     v = komm.bits_to_int(code.encode(u), width=mu)
     # Roots are α, α^2, ..., α^(δ - 1).
     points = power(code.field, int(code.alpha), np.arange(1, delta))

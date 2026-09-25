@@ -164,13 +164,13 @@ def test_terminated_convolutional_golay():
     "mode",
     ["zero-termination", "direct-truncation", "tail-biting"],
 )
-def test_terminated_convolutional_mappings(feedforward_polynomials, mode):
+def test_terminated_convolutional_mappings(feedforward_polynomials, mode, rng):
     code = komm.TerminatedConvolutionalCode(
         komm.ConvolutionalCode(feedforward_polynomials), num_blocks=10, mode=mode
     )
     k, m = code.dimension, code.redundancy
     for _ in range(100):
-        u = np.random.randint(0, 2, (3, 4, k))
+        u = rng.integers(0, 2, (3, 4, k))
         v = code.encode(u)
         np.testing.assert_equal(
             code.inverse_encode(v),

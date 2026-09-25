@@ -16,9 +16,9 @@ codes = [
 
 @pytest.mark.parametrize("code", codes)
 @pytest.mark.repeat(20)
-def test_mappings_array_input(code: komm.abc.BlockCode):
-    u1 = np.random.randint(0, 2, code.dimension)
-    u2 = np.random.randint(0, 2, code.dimension)
+def test_mappings_array_input(code: komm.abc.BlockCode, rng):
+    u1 = rng.integers(0, 2, code.dimension)
+    u2 = rng.integers(0, 2, code.dimension)
     v1 = code.encode(u1)
     v2 = code.encode(u2)
     # Single sequence with two codewords
@@ -37,9 +37,9 @@ def test_mappings_array_input(code: komm.abc.BlockCode):
 
 @pytest.mark.parametrize("code", codes)
 @pytest.mark.repeat(20)
-def test_mappings_inverses(code: komm.abc.BlockCode):
+def test_mappings_inverses(code: komm.abc.BlockCode, rng):
     # Check that 'inverse_encode' is the inverse of 'encode'
-    u = np.random.randint(0, 2, (3, 4, code.dimension))
+    u = rng.integers(0, 2, (3, 4, code.dimension))
     np.testing.assert_equal(u, code.inverse_encode(code.encode(u)))
 
 
@@ -77,8 +77,8 @@ def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
 
 @pytest.mark.parametrize("code", codes)
 @pytest.mark.repeat(20)
-def test_project_word_with_erasures_agrees_on_codewords(code: komm.abc.BlockCode):
-    u = np.random.randint(0, 2, (3, 4, code.dimension))
+def test_project_word_with_erasures_agrees_on_codewords(code: komm.abc.BlockCode, rng):
+    u = rng.integers(0, 2, (3, 4, code.dimension))
     v = code.encode(u)
     np.testing.assert_equal(
         code.project_word_with_erasures(v),
