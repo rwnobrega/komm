@@ -267,9 +267,6 @@ class MealyMachine:
                     new_metrics[s1] = candidate_metric
                     choices[s1] = s0, x
 
-            s_star = np.argmin(new_metrics)
-            input_hat[t] = memory["paths"][s_star, 1]  # Oldest branch in the window
-
             memory["metrics"] = np.roll(memory["metrics"], shift=-1, axis=1)
             memory["metrics"][:, -1] = new_metrics
             memory["paths"] = np.roll(memory["paths"], shift=-1, axis=1)
@@ -278,6 +275,9 @@ class MealyMachine:
             for s1, (s0, x) in enumerate(choices):
                 memory["paths"][s1, :-1] = paths_copy[s0, :-1]
                 memory["paths"][s1, -1] = x
+
+            s_star = np.argmin(new_metrics)
+            input_hat[t] = memory["paths"][s_star, 0]  # Oldest input on best survivor
 
         return input_hat
 

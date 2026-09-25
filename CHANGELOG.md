@@ -22,6 +22,8 @@
 
 - Fixed `viterbi`, `viterbi_streaming`, and `forward_backward` of `MealyMachine` (and hence `ViterbiDecoder`, `ViterbiStreamDecoder`, and `BCJRDecoder`) for machines with parallel transitions.
 
+- Fixed `viterbi_streaming` of `MealyMachine` (and hence `ViterbiStreamDecoder`) to decide on the best survivor path.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added

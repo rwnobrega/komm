@@ -62,6 +62,16 @@ def test_viterbi_stream_decoder_matlab(
     np.testing.assert_equal(message_hat, decoder.decode(recvword))
 
 
+@pytest.mark.parametrize("traceback_length", [1, 2, 3])
+def test_viterbi_stream_decoder_short_traceback(traceback_length):
+    # Noiseless input needs no long traceback
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, traceback_length=traceback_length)
+    u = np.random.randint(0, 2, 40)
+    v = code.encode(np.concatenate([u, np.zeros(traceback_length, dtype=int)]))
+    np.testing.assert_equal(decoder.decode(v)[traceback_length:], u)
+
+
 def test_viterbi_stream_decoder_parallel_transitions():
     # Second input bit has no memory
     code = komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]])
