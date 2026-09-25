@@ -73,3 +73,12 @@ def test_bcjr_exhaustive(convolutional_code, num_blocks, mode, rng):
         for j in range(code.dimension)
     ]
     np.testing.assert_allclose(decoder.decode(li), np.stack(lo, axis=-1), atol=1e-8)
+
+
+def test_bcjr_reliable_input(rng):
+    code = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 10)
+    decoder = komm.BCJRDecoder(code)
+    u = rng.integers(0, 2, (5, code.dimension))
+    lo = decoder.decode(1000.0 * (-1) ** code.encode(u))
+    assert np.all(np.isfinite(lo))
+    np.testing.assert_equal(lo < 0, u == 1)

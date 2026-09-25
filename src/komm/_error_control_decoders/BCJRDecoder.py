@@ -9,7 +9,6 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
 from .._finite_state_machine.trellis import TrellisSection, forward_backward
-from .._labelings.Labeling import Labeling
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
 from .util import get_pbar
@@ -51,7 +50,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             self._initial_metrics = np.log(initial)
             self._final_metrics = np.log(final)
         # Input symbols are LSB-first
-        self._labeling = Labeling(int_to_bits(range(2**k), width=k).reshape(-1, k))
+        self._input_bits = int_to_bits(range(2**k), width=k).reshape(-1, k)
         # About 64 MiB of metrics
         step_bytes = 8 * (fsm.num_states + 2**n + 2**k)
         self._chunk_size = max(1, 2**26 // (num_steps * step_bytes))
@@ -86,11 +85,20 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,
             )
-            posteriors = np.exp(log_posteriors[:, :h]).reshape(li.shape[0], -1)
-            lo = self._labeling.marginalize(posteriors)
-            return lo
+            lo = _marginalize(log_posteriors[:, :h], self._input_bits)
+            return lo.reshape(li.shape[0], -1)
 
         output = decode(input)
         if self.output_type == "hard":
             output = (output < 0.0).astype(int)
         return output
+
+
+def _marginalize(
+    log_posteriors: npt.NDArray[np.floating], bits: npt.NDArray[np.integer]
+) -> npt.NDArray[np.floating]:
+    # L-value of each bit, in log domain
+    metrics = log_posteriors[..., np.newaxis]
+    l0 = np.logaddexp.reduce(np.where(bits == 0, metrics, -np.inf), axis=-2)
+    l1 = np.logaddexp.reduce(np.where(bits == 1, metrics, -np.inf), axis=-2)
+    return l0 - l1
