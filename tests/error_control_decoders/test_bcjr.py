@@ -1,3 +1,5 @@
+from itertools import product
+
 import numpy as np
 import pytest
 
@@ -46,3 +48,28 @@ def test_bcjr_two_input_bits(feedforward_polynomials, rng):
     u = rng.integers(0, 2, (20, code.dimension))
     li = 10.0 * (-1) ** code.encode(u)
     np.testing.assert_equal(decoder.decode(li), u)
+
+
+@pytest.mark.parametrize(
+    "convolutional_code, num_blocks",
+    [
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 6),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3),
+        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6),
+    ],
+)
+@pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])
+def test_bcjr_exhaustive(convolutional_code, num_blocks, mode, rng):
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
+    decoder = komm.BCJRDecoder(code)
+    li = rng.standard_normal((100, code.length))
+    # Bitwise MAP over all messages
+    u = np.array(list(product([0, 1], repeat=code.dimension)))
+    metrics = 0.5 * li @ ((-1) ** code.encode(u)).T
+    lo = [
+        np.logaddexp.reduce(metrics[:, u[:, j] == 0], axis=-1)
+        - np.logaddexp.reduce(metrics[:, u[:, j] == 1], axis=-1)
+        for j in range(code.dimension)
+    ]
+    np.testing.assert_allclose(decoder.decode(li), np.stack(lo, axis=-1), atol=1e-8)
