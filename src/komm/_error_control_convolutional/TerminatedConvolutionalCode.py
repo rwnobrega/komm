@@ -353,7 +353,7 @@ class TerminationStrategy(ABC):
     ) -> npt.NDArray[np.integer]: ...
 
     @abstractmethod
-    def bcjr_initial_final_distributions(
+    def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]: ...
 
@@ -383,7 +383,7 @@ class DirectTruncation(TerminationStrategy):
         x_hat = xs_hat[:, s_hat]
         return x_hat
 
-    def bcjr_initial_final_distributions(
+    def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
         initial_distribution = np.eye(1, num_states, 0)
@@ -433,7 +433,7 @@ class ZeroTermination(TerminationStrategy):
         x_hat = xs_hat[:, 0][:-μ]
         return x_hat
 
-    def bcjr_initial_final_distributions(
+    def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
         initial_distribution = np.eye(1, num_states, 0)
@@ -475,7 +475,7 @@ class TailBiting(TerminationStrategy):
     ) -> npt.NDArray[np.integer]:
         raise NotImplementedError
 
-    def bcjr_initial_final_distributions(
+    def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
         raise NotImplementedError

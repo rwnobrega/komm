@@ -43,7 +43,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         self._fsm = self.code.convolutional_code.finite_state_machine()
         num_states = self._fsm.num_states
         self._initial_state_distribution, self._final_state_distribution = (
-            self.code.strategy.bcjr_initial_final_distributions(num_states)
+            self.code.strategy.initial_final_distributions(num_states)
         )
         self._post_process_output = self.code.strategy.bcjr_post_process_output
         bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
