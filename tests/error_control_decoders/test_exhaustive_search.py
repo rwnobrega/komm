@@ -48,13 +48,13 @@ def test_exhaustive_search_soft():
     )
 
 
-def test_exhaustive_search_hard_golay():
+def test_exhaustive_search_hard_golay(rng):
     code = komm.GolayCode()
     decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
     for w in range(code.length + 1):
         for _ in range(10):
             r = np.zeros(23, dtype=int)
-            error_locations = np.random.choice(23, w, replace=False)
+            error_locations = rng.choice(23, w, replace=False)
             r[error_locations] ^= 1
             u_hat = decoder.decode(r)
             if w <= 3:  # Golay code can correct up to 3 errors.

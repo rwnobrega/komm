@@ -39,10 +39,10 @@ def test_bcjr(convolutional_code, num_blocks, mode, snr, r, u_hat):
         [[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]],  # Parallel transitions
     ],
 )
-def test_bcjr_two_input_bits(feedforward_polynomials):
+def test_bcjr_two_input_bits(feedforward_polynomials, rng):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
     code = komm.TerminatedConvolutionalCode(convolutional_code, 6)
     decoder = komm.BCJRDecoder(code, output_type="hard")
-    u = np.random.randint(0, 2, (20, code.dimension))
+    u = rng.integers(0, 2, (20, code.dimension))
     li = 10.0 * (-1) ** code.encode(u)
     np.testing.assert_equal(decoder.decode(li), u)

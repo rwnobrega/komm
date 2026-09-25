@@ -22,13 +22,13 @@ def test_syndrome_table_hamming():
     )
 
 
-def test_syndrome_table_golay():
+def test_syndrome_table_golay(rng):
     code = komm.GolayCode()
     decoder = komm.SyndromeTableDecoder(code)
     for w in range(code.length + 1):
         for _ in range(10):
             r = np.zeros(23, dtype=int)
-            error_locations = np.random.choice(23, w, replace=False)
+            error_locations = rng.choice(23, w, replace=False)
             r[error_locations] ^= 1
             u_hat = decoder.decode(r)
             if w <= 3:  # Golay code can correct up to 3 errors.

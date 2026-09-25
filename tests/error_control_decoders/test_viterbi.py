@@ -54,10 +54,10 @@ def test_viterbi_soft(convolutional_code, num_blocks, mode, r, u_hat):
     assert np.array_equal(decoder.decode(r), u_hat)
 
 
-def test_viterbi_parallel_transitions():
+def test_viterbi_parallel_transitions(rng):
     # Second input bit has no memory
     convolutional_code = komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, 6)
     decoder = komm.ViterbiDecoder(code)
-    u = np.random.randint(0, 2, (20, code.dimension))
+    u = rng.integers(0, 2, (20, code.dimension))
     np.testing.assert_equal(decoder.decode(code.encode(u)), u)
