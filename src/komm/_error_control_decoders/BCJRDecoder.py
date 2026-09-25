@@ -8,7 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._labelings.NaturalLabeling import NaturalLabeling
+from .._labelings.Labeling import Labeling
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .util import get_pbar
@@ -48,7 +48,8 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         self._post_process_output = self.code.strategy.bcjr_post_process_output
         bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         self._cache_polar = (-1) ** bits
-        self._labeling = NaturalLabeling(k)
+        # Input symbols are LSB-first
+        self._labeling = Labeling(int_to_bits(range(2**k), width=k).reshape(-1, k))
 
     def _metric_function(self, y: int, z: float) -> float:
         return 0.5 * np.dot(self._cache_polar[y], z)

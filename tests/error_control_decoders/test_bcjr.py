@@ -30,3 +30,19 @@ def test_bcjr(convolutional_code, num_blocks, mode, snr, r, u_hat):
     decoder = komm.BCJRDecoder(code)
     li = 4 * snr * np.array(r)
     assert np.allclose(decoder.decode(li), u_hat, atol=0.05)
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials",
+    [
+        [[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]],
+        [[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]],  # Parallel transitions
+    ],
+)
+def test_bcjr_two_input_bits(feedforward_polynomials):
+    convolutional_code = komm.ConvolutionalCode(feedforward_polynomials)
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 6)
+    decoder = komm.BCJRDecoder(code, output_type="hard")
+    u = np.random.randint(0, 2, (20, code.dimension))
+    li = 10.0 * (-1) ** code.encode(u)
+    np.testing.assert_equal(decoder.decode(li), u)

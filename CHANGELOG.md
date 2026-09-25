@@ -26,6 +26,8 @@
 
 - Fixed `viterbi_streaming` of `MealyMachine` (and hence `ViterbiStreamDecoder`) to decide on the best survivor path.
 
+- Fixed the bit order of the output of `BCJRDecoder` for convolutional codes with more than one input bit.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added
