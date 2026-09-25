@@ -8,8 +8,9 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
+from .._finite_state_machine.trellis import TrellisSection, viterbi
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.decorators import blockwise, chunkwise, with_pbar
 from .util import get_pbar
 
 
@@ -35,24 +36,28 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             raise NotImplementedError(
                 "Viterbi algorithm not implemented for 'tail-biting'"
             )
-        if self.input_type == "hard":
-            self._metric_function = self._metric_function_hard
-        elif self.input_type == "soft":
-            self._metric_function = self._metric_function_soft
-        else:
+        if self.input_type not in ["hard", "soft"]:
             raise ValueError("input_type must be 'hard' or 'soft'")
-        self._fsm = self.code.convolutional_code.finite_state_machine()
-        self._post_process_output = self.code.strategy.viterbi_post_process_output
+        fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
-        self._cache_bit = int_to_bits(range(2**n), width=n).reshape(-1, n)
-        self._initial_metrics = np.full(self._fsm.num_states, fill_value=np.inf)
-        self._initial_metrics[0] = 0.0
+        num_steps = self.code.length // n
+        section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
+        self._sections = [section] * num_steps
+        self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
+        initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
+        with np.errstate(divide="ignore"):
+            self._initial_metrics = -np.log(initial)
+            self._final_metrics = -np.log(final)
+        # About 64 MiB of decisions and metrics
+        step_bytes = fsm.num_states + 8 * 2**n
+        self._chunk_size = max(1, 2**26 // (num_steps * step_bytes))
 
-    def _metric_function_hard(self, y: int, z: float) -> float:
-        return float(np.count_nonzero(self._cache_bit[y] != z))
-
-    def _metric_function_soft(self, y: int, z: int) -> float:
-        return np.dot(self._cache_bit[y], z)
+    def _branch_metrics(
+        self, r: npt.NDArray[np.integer | np.floating]
+    ) -> npt.NDArray[np.integer | np.floating]:
+        if self.input_type == "hard":
+            r = (-1) ** r  # Bits as unit L-values
+        return r @ self._bits.T
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -73,18 +78,19 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         """
         k = self.code.convolutional_code.num_input_bits
         n = self.code.convolutional_code.num_output_bits
+        h = self.code.num_blocks
 
         @blockwise(self.code.length)
-        @vectorize
+        @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Viterbi"))
-        def decode(r: npt.NDArray[np.integer]):
-            xs_hat, final_metrics = self._fsm.viterbi(
-                observed=r.reshape(-1, n),
-                metric_function=self._metric_function,
+        def decode(r: npt.NDArray[np.integer | np.floating]):
+            x_hat = viterbi(
+                sections=self._sections,
+                branch_metrics=self._branch_metrics(r.reshape(r.shape[0], -1, n)),
                 initial_metrics=self._initial_metrics,
+                final_metrics=self._final_metrics,
             )
-            x_hat = self._post_process_output(xs_hat, final_metrics)
-            u_hat = int_to_bits(x_hat, width=k)
+            u_hat = int_to_bits(x_hat[:, :h], width=k)
             return u_hat
 
         return decode(input)
