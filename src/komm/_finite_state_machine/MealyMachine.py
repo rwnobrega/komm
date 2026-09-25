@@ -104,50 +104,6 @@ class MealyMachine:
         """
         return int(np.amax(self.outputs)) + 1
 
-    @cached_property
-    def input_edges(self) -> npt.NDArray[np.integer]:
-        r"""
-        The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.
-
-        Examples:
-            >>> machine = komm.MealyMachine(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
-            ... )
-            >>> machine.input_edges
-            array([[ 0,  1, -1, -1],
-                   [-1, -1,  0,  1],
-                   [ 0,  1, -1, -1],
-                   [-1, -1,  0,  1]])
-        """
-        input_edges = np.full((self.num_states, self.num_states), fill_value=-1)
-        for state_from in range(self.num_states):
-            for x, state_to in enumerate(self.transitions[state_from, :]):
-                input_edges[state_from, state_to] = x
-        return input_edges
-
-    @cached_property
-    def output_edges(self) -> npt.NDArray[np.integer]:
-        r"""
-        The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.
-
-        Examples:
-            >>> machine = komm.MealyMachine(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
-            ... )
-            >>> machine.output_edges
-            array([[ 0,  3, -1, -1],
-                   [-1, -1,  1,  2],
-                   [ 3,  0, -1, -1],
-                   [-1, -1,  2,  1]])
-        """
-        output_edges = np.full((self.num_states, self.num_states), fill_value=-1)
-        for state_from in range(self.num_states):
-            for x, state_to in enumerate(self.transitions[state_from, :]):
-                output_edges[state_from, state_to] = self.outputs[state_from, x]
-        return output_edges
-
     def process(
         self,
         input: npt.ArrayLike,

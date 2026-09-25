@@ -16,6 +16,8 @@
 
 - Removed method `bch_syndrome` from `BCHCode`. Instead of `code.bch_syndrome(r_poly)`, use `[r_poly.evaluate(code.alpha**i) for i in range(1, code.delta)]`.
 
+- Removed properties `input_edges` and `output_edges` from `MealyMachine`, which kept a single edge per pair of states. Instead, use `inputs = np.flatnonzero(machine.transitions[s0] == s1)` for all inputs from `s0` to `s1`, and `machine.outputs[s0, inputs]` for their outputs.
+
 ### Fixed
 
 - Changed `BerlekampDecoder` to return the received word when the error locator has too few roots.
