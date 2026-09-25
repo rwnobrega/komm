@@ -1,5 +1,3 @@
-from random import choices, randint
-
 import numpy as np
 import pytest
 
@@ -81,9 +79,9 @@ def test_bit_operations_invalid():
 
 
 @pytest.mark.parametrize("width", range(1, 64))
-def test_bits_to_int_to_bits(width):
+def test_bits_to_int_to_bits(width, rng):
     for _ in range(100):
-        bits = choices([0, 1], k=3 * width)
+        bits = rng.integers(2, size=3 * width)
         np.testing.assert_equal(
             bits,
             komm.int_to_bits(komm.bits_to_int(bits, width), width),
@@ -91,9 +89,9 @@ def test_bits_to_int_to_bits(width):
 
 
 @pytest.mark.parametrize("width", range(1, 64))
-def test_int_to_bits_to_int(width):
+def test_int_to_bits_to_int(width, rng):
     for _ in range(100):
-        integers = [randint(0, 2**width - 1) for _ in range(3)]
+        integers = rng.integers(2**width, size=3)
         np.testing.assert_equal(
             integers,
             komm.bits_to_int(komm.int_to_bits(integers, width), width),
@@ -125,7 +123,7 @@ def test_binary_big_numbers(width):
 
 
 @pytest.mark.parametrize("width", [10, 100, 200])
-def test_binary_round_trip(width):
+def test_binary_round_trip(width, rng):
     for _ in range(100):
-        integer = randint(0, 2**width - 1)
+        integer = int.from_bytes(rng.bytes(width)) % 2**width
         assert komm.from_binary(komm.to_binary(integer, width=width)) == integer

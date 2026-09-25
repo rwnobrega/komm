@@ -161,8 +161,7 @@ def test_boxplus_identity_and_annihilator():
     np.testing.assert_allclose(komm.boxplus(-np.inf, 3.7), -3.7, rtol=1e-12)
 
 
-def test_boxplus_commutative_and_sign():
-    rng = np.random.default_rng()
+def test_boxplus_commutative_and_sign(rng):
     a = rng.normal(scale=20, size=1000)
     b = rng.normal(scale=20, size=1000)
     np.testing.assert_allclose(komm.boxplus(a, b), komm.boxplus(b, a))

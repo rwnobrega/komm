@@ -20,8 +20,7 @@ def test_fourier_transform_axis_0():
         np.testing.assert_allclose(spectrum[:, i], spectrum_i)
 
 
-def test_fourier_transform_3d():
-    rng = np.random.default_rng(42)
+def test_fourier_transform_3d(rng):
     waveform = rng.normal(size=(2, 3, 8))
     spectrum, _ = komm.fourier_transform(waveform, time_step=0.5)
     for i in range(2):

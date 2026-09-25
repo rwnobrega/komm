@@ -82,8 +82,7 @@ def test_relative_entropy_with_zero_in_pmf(pmf, qmf, expected):
     np.testing.assert_allclose(result, expected)
 
 
-def test_relative_entropy_never_nan():
-    rng = np.random.default_rng()
+def test_relative_entropy_never_nan(rng):
     for _ in range(100):
         pmf = rng.random(5)
         qpm = rng.random(5)

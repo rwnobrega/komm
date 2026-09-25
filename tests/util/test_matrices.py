@@ -23,9 +23,9 @@ from komm._util.matrices import (
         ((4, 3), (3, 0)),
     ],
 )
-def test_matmul(x_shape, y_shape):
-    x = np.random.randint(0, 2, x_shape)
-    y = np.random.randint(0, 2, y_shape)
+def test_matmul(x_shape, y_shape, rng):
+    x = rng.integers(0, 2, x_shape)
+    y = rng.integers(0, 2, y_shape)
     np.testing.assert_equal(matmul(x, y), x @ y % 2)
     np.testing.assert_equal(boolean_matmul(x, y), x @ y > 0)
 
@@ -86,9 +86,9 @@ def test_rref_identity(size):
 
 
 @pytest.mark.parametrize("size", range(1, 11))
-def test_rref_properties(size):
+def test_rref_properties(size, rng):
     for _ in range(10):
-        matrix = np.random.randint(0, 2, size=(size, size))
+        matrix = rng.integers(0, 2, size=(size, size))
         result = rref(matrix)
 
         # Check that the result has the same shape
@@ -125,18 +125,18 @@ def test_rref_properties(size):
 
 @pytest.mark.parametrize("n_rows", range(1, 6))
 @pytest.mark.parametrize("n_cols", range(1, 6))
-def test_xrref_random(n_rows, n_cols):
+def test_xrref_random(n_rows, n_cols, rng):
     for _ in range(100):
-        matrix = np.random.randint(0, 2, size=(n_rows, n_cols))
+        matrix = rng.integers(0, 2, size=(n_rows, n_cols))
         row_transform, reduced, _ = xrref(matrix)
         np.testing.assert_equal(np.dot(row_transform, matrix) % 2, reduced)
 
 
 @pytest.mark.parametrize("n_rows", range(1, 6))
 @pytest.mark.parametrize("n_cols", range(1, 6))
-def test_pseudo_inverse_random(n_rows, n_cols):
+def test_pseudo_inverse_random(n_rows, n_cols, rng):
     for _ in range(100):
-        matrix = np.random.randint(0, 2, size=(n_rows, n_cols))
+        matrix = rng.integers(0, 2, size=(n_rows, n_cols))
         p_inv = pseudo_inverse(matrix)
         assert p_inv.shape == (n_cols, n_rows)
         assert rank(matrix) == rank(p_inv)

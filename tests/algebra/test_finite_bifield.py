@@ -1,5 +1,3 @@
-from random import randint
-
 import pytest
 
 import komm
@@ -138,11 +136,11 @@ def test_finite_bifield_element_properties(m):
 
 
 @pytest.mark.parametrize("m", range(2, 8))
-def test_finite_bifield_element_field_properties(m):
+def test_finite_bifield_element_field_properties(m, rng):
     field = komm.FiniteBifield(m)
-    x = field(randint(0, field.order - 1))
-    y = field(randint(0, field.order - 1))
-    z = field(randint(0, field.order - 1))
+    x = field(int(rng.integers(field.order)))
+    y = field(int(rng.integers(field.order)))
+    z = field(int(rng.integers(field.order)))
 
     # Associativity
     assert (x + y) + z == x + (y + z)
