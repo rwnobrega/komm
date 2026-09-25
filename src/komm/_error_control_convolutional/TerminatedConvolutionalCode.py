@@ -9,7 +9,7 @@ from numpy.linalg import matrix_power
 
 from .. import abc
 from .._util.decorators import blockwise, vectorize
-from .._util.matrices import null_matrix, pseudo_inverse
+from .._util.matrices import null_matrix, pseudo_inverse, rank
 from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -24,7 +24,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
     - **Zero termination**. The encoder always starts and ends at state $0$. To achieve this, a sequence of $k \mu$ tail bits is appended to the information bits, where $\mu$ is the memory order of the convolutional code. The resulting block code will have length $n = (h + \mu) n_0$.
 
-    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length $n = h n_0$.
+    - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. This is possible only if $A^h + I$ is invertible, where $A$ is the state matrix of the convolutional code; this always holds for codes without feedback. The resulting block code will have length $n = h n_0$.
 
     For more details, see <cite>LC04, Sec. 12.7</cite> and <cite>WBR01</cite>.
 
@@ -412,14 +412,17 @@ class ZeroTermination(TerminationStrategy):
         return initial_distribution, final_distribution
 
 
+@dataclass
 class TailBiting(TerminationStrategy):
-    @cached_property
-    def _zs_multiplier(self) -> npt.NDArray[np.integer]:
+    def __post_init__(self) -> None:
         # See [WBR01, eq. (4)].
         h = self.num_blocks
         σ = self.convolutional_code.degree
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
-        return pseudo_inverse((matrix_power(A_mat, h) + np.eye(σ, dtype=int)) % 2)
+        matrix = (matrix_power(A_mat, h) + np.eye(σ, dtype=int)) % 2
+        if rank(matrix) < σ:
+            raise ValueError("tail-biting is impossible for this code and 'num_blocks'")
+        self._zs_multiplier = pseudo_inverse(matrix)
 
     def pre_process_input(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         return np.asarray(input)

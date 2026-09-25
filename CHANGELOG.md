@@ -32,6 +32,8 @@
 
 - Fixed `BCJRDecoder` to return finite L-values for very reliable inputs.
 
+- Changed `TerminatedConvolutionalCode` to reject tail-biting when the encoder cannot start and end at the same state.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added

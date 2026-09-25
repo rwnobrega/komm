@@ -122,6 +122,41 @@ def test_terminated_convolutional_code_zero_termination(convolutional_args):
 
 
 @pytest.mark.parametrize(
+    "convolutional_args",
+    [
+        ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]], None),
+        ([[0o7, 0o5]], [0o7]),
+    ],
+)
+def test_terminated_convolutional_code_tail_biting(convolutional_args):
+    convolutional_code = komm.ConvolutionalCode(*convolutional_args)
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 5, "tail-biting")
+    # Assert that the final state is the initial one.
+    for message_int in range(2**code.dimension):
+        message = komm.int_to_bits([message_int], width=code.dimension)
+        initial_state = code.strategy.initial_state(message)
+        _, final_state = convolutional_code.encode_with_state(message, initial_state)
+        np.testing.assert_equal(final_state, initial_state)
+
+
+@pytest.mark.parametrize(
+    "convolutional_args, num_blocks",
+    [
+        (([[0b11, 0b1]], [0b11]), 6),
+        (([[0o7, 0o5]], [0o7]), 6),
+        (([[0o27, 0o31]], [0o27]), 5),
+    ],
+)
+def test_terminated_convolutional_code_tail_biting_singular(
+    convolutional_args, num_blocks
+):
+    # Here A^h + I is singular
+    convolutional_code = komm.ConvolutionalCode(*convolutional_args)
+    with pytest.raises(ValueError):
+        komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, "tail-biting")
+
+
+@pytest.mark.parametrize(
     "feedforward_polynomials",
     [
         [[0o7, 0o5]],
