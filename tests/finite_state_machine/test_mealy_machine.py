@@ -88,3 +88,26 @@ def test_mealy_machine_forward_backward_abrantes():
     with np.errstate(divide="ignore"):
         llr = np.log(input_posteriors[:, 0] / input_posteriors[:, 1])
     assert np.allclose(-llr, [1.78, 0.24, -1.97, 5.52, -np.inf, -np.inf], atol=0.05)
+
+
+def test_mealy_machine_parallel_transitions():
+    # Two inputs lead to each next state
+    machine = komm.MealyMachine(
+        transitions=[[0, 0, 1, 1], [0, 0, 1, 1]],
+        outputs=[[0, 1, 2, 3], [3, 2, 1, 0]],
+    )
+    input = [0, 2, 1, 3, 0, 0, 2]
+    output, final_state = machine.process(input, 0)
+    input_hat, final_metrics = machine.viterbi(
+        observed=output,
+        metric_function=lambda y, z: float(y != z),
+        initial_metrics=[0.0, np.inf],
+    )
+    np.testing.assert_equal(input_hat[:, final_state], input)
+    assert final_metrics[final_state] == 0.0
+    input_posteriors = machine.forward_backward(
+        observed=output,
+        metric_function=lambda y, z: 0.0 if y == z else -np.inf,
+        initial_state_distribution=[1.0, 0.0],
+    )
+    np.testing.assert_equal(input_posteriors, np.eye(4)[input])

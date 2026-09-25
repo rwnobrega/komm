@@ -210,27 +210,27 @@ class MealyMachine:
         """
         observed = np.asarray(observed)
         L, num_states = observed.shape[0], self.num_states
-        choices = np.zeros((L, num_states), dtype=int)
+        choices = np.zeros((L, num_states, 2), dtype=int)  # State and input
         metrics = np.full((L + 1, num_states), fill_value=np.inf)
         if initial_metrics is None:
             metrics[0, :] = np.zeros(num_states, dtype=float)
         else:
             metrics[0, :] = initial_metrics
         for t, z in enumerate(observed):
-            for s0 in range(num_states):
-                for s1, y in zip(self.transitions[s0], self.outputs[s0]):
-                    candidate_metrics = metrics[t, s0] + metric_function(y, z)
-                    if candidate_metrics < metrics[t + 1, s1]:
-                        metrics[t + 1, s1] = candidate_metrics
-                        choices[t, s1] = s0
+            for s0, x in product(range(num_states), range(self.num_input_symbols)):
+                s1, y = self.transitions[s0, x], self.outputs[s0, x]
+                candidate_metrics = metrics[t, s0] + metric_function(y, z)
+                if candidate_metrics < metrics[t + 1, s1]:
+                    metrics[t + 1, s1] = candidate_metrics
+                    choices[t, s1] = s0, x
 
         # Backtrack
         input_hat = np.empty((L, num_states), dtype=int)
         for final_state in range(num_states):
             s1 = final_state
             for t in reversed(range(L)):
-                s0 = choices[t, s1]
-                input_hat[t, final_state] = self.input_edges[s0, s1]
+                s0, x = choices[t, s1]
+                input_hat[t, final_state] = x
                 s1 = s0
 
         return input_hat, metrics[L, :]
@@ -318,7 +318,7 @@ class MealyMachine:
         if final_state_distribution is None:
             final_state_distribution = np.ones(num_states) / num_states
 
-        log_gamma = np.full((L, num_states, num_states), fill_value=-np.inf)
+        log_gamma = np.empty((L, num_states, num_input_symbols))
         log_alpha = np.full((L + 1, num_states), fill_value=-np.inf)
         log_beta = np.full((L + 1, num_states), fill_value=-np.inf)
 
@@ -328,20 +328,21 @@ class MealyMachine:
             log_beta[L, :] = np.log(final_state_distribution)
 
         for t, z in enumerate(observed):
-            for x, s0 in product(range(num_input_symbols), range(num_states)):
-                y, s1 = self.outputs[s0, x], self.transitions[s0, x]
-                log_gamma[t, s0, s1] = log_input_priors[t, x] + metric_function(y, z)
+            for s0, x in product(range(num_states), range(num_input_symbols)):
+                y = self.outputs[s0, x]
+                log_gamma[t, s0, x] = log_input_priors[t, x] + metric_function(y, z)
 
         for t in range(0, L - 1):
-            for s1 in range(num_states):
-                log_alpha[t + 1, s1] = np.logaddexp.reduce(
-                    log_gamma[t, :, s1] + log_alpha[t, :]
+            for s0, x in product(range(num_states), range(num_input_symbols)):
+                s1 = self.transitions[s0, x]
+                log_alpha[t + 1, s1] = np.logaddexp(
+                    log_alpha[t + 1, s1], log_alpha[t, s0] + log_gamma[t, s0, x]
                 )
 
         for t in range(L - 1, -1, -1):
             for s0 in range(num_states):
                 log_beta[t, s0] = np.logaddexp.reduce(
-                    log_gamma[t, s0, :] + log_beta[t + 1, :]
+                    log_gamma[t, s0, :] + log_beta[t + 1, self.transitions[s0]]
                 )
 
         log_input_posteriors = np.empty((L, num_input_symbols), dtype=float)
@@ -351,7 +352,7 @@ class MealyMachine:
                 for s0 in range(num_states):
                     s1 = self.transitions[s0, x]
                     edge_labels[s0] = (
-                        log_alpha[t, s0] + log_gamma[t, s0, s1] + log_beta[t + 1, s1]
+                        log_alpha[t, s0] + log_gamma[t, s0, x] + log_beta[t + 1, s1]
                     )
                 log_input_posteriors[t, x] = np.logaddexp.reduce(edge_labels)
 
