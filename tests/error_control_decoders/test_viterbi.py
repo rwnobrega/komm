@@ -61,3 +61,32 @@ def test_viterbi_parallel_transitions(rng):
     decoder = komm.ViterbiDecoder(code)
     u = rng.integers(0, 2, (20, code.dimension))
     np.testing.assert_equal(decoder.decode(code.encode(u)), u)
+
+
+@pytest.mark.parametrize(
+    "convolutional_code, num_blocks",
+    [
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 6),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3),
+        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6),
+    ],
+)
+@pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])
+def test_viterbi_exhaustive(convolutional_code, num_blocks, mode, rng):
+    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
+    # Soft: no ties, so compare messages
+    viterbi = komm.ViterbiDecoder(code, input_type="soft")
+    exhaustive = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+    r = rng.standard_normal((100, code.length))
+    np.testing.assert_equal(viterbi.decode(r), exhaustive.decode(r))
+    # Hard: ties are common, so compare distances
+    viterbi = komm.ViterbiDecoder(code, input_type="hard")
+    exhaustive = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+    r = rng.integers(0, 2, (100, code.length))
+    v_hat = code.encode(viterbi.decode(r))
+    v_ml = exhaustive.decode_to_codeword(r)
+    np.testing.assert_equal(
+        np.count_nonzero(v_hat != r, axis=-1),
+        np.count_nonzero(v_ml != r, axis=-1),
+    )
