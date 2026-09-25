@@ -60,3 +60,12 @@ def test_viterbi_stream_decoder_matlab(
     decoder = komm.ViterbiStreamDecoder(code, traceback_length=tblen, input_type="hard")
     message_hat = np.pad(message_hat, (len(message_hat), 0), mode="constant")
     np.testing.assert_equal(message_hat, decoder.decode(recvword))
+
+
+def test_viterbi_stream_decoder_parallel_transitions():
+    # Second input bit has no memory
+    code = komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]])
+    decoder = komm.ViterbiStreamDecoder(code, traceback_length=5)
+    u = np.random.randint(0, 2, 40)
+    v = code.encode(np.concatenate([u, np.zeros(10, dtype=int)]))
+    np.testing.assert_equal(decoder.decode(v)[10:], u)

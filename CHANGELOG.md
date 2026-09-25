@@ -20,7 +20,7 @@
 
 - Changed `BerlekampDecoder` to return the received word when the error locator has too few roots.
 
-- Fixed `viterbi` and `forward_backward` of `MealyMachine` (and hence `ViterbiDecoder` and `BCJRDecoder`) for machines with parallel transitions.
+- Fixed `viterbi`, `viterbi_streaming`, and `forward_backward` of `MealyMachine` (and hence `ViterbiDecoder`, `ViterbiStreamDecoder`, and `BCJRDecoder`) for machines with parallel transitions.
 
 ## v0.34.0 (2026-09-15)
 

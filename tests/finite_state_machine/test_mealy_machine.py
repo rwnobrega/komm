@@ -111,3 +111,11 @@ def test_mealy_machine_parallel_transitions():
         initial_state_distribution=[1.0, 0.0],
     )
     np.testing.assert_equal(input_posteriors, np.eye(4)[input])
+    metrics = np.full((2, 4), np.inf)
+    metrics[0, -1] = 0.0
+    input_hat = machine.viterbi_streaming(
+        observed=output,
+        metric_function=lambda y, z: float(y != z),
+        memory={"paths": np.zeros((2, 4), dtype=int), "metrics": metrics},
+    )
+    np.testing.assert_equal(input_hat[3:], input[:-3])  # Delay of 3
