@@ -12,13 +12,13 @@ def add_namespace(doctest_namespace):
     doctest_namespace["komm"] = komm
 
 
-@pytest.fixture(scope="function", autouse=True)
-def set_global_seed():
-    komm.global_rng.set(numpy.random.default_rng(seed=42))
-
-
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def rng(request: pytest.FixtureRequest):
-    # Fixed seed per test id
-    seed = zlib.crc32(request.node.nodeid.encode())
-    return numpy.random.default_rng([42, seed])
+    # Seed per test id; 42 for doctests
+    if isinstance(request.node, pytest.Function):
+        seed = [42, zlib.crc32(request.node.nodeid.encode())]
+    else:
+        seed = 42
+    rng = numpy.random.default_rng(seed)
+    komm.global_rng.set(rng)
+    return rng
