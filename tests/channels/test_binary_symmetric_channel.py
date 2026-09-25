@@ -10,8 +10,8 @@ def test_bsc_invalid_crossover_probability(p):
         komm.BinarySymmetricChannel(p)
 
 
-def test_bsc_noiseless():
-    x = np.random.randint(2, size=10000)
+def test_bsc_noiseless(rng):
+    x = rng.integers(2, size=10000)
     bsc0 = komm.BinarySymmetricChannel(0.0)
     assert np.array_equal(bsc0.transmit(x), x)
     bsc1 = komm.BinarySymmetricChannel(1.0)

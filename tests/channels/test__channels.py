@@ -5,9 +5,9 @@ import komm
 import komm.abc
 
 
-def test_gaussian_vectorized_input():
+def test_gaussian_vectorized_input(rng):
     channel = komm.GaussianChannel()  # noiseless
-    x = np.random.randn(3, 4, 5)
+    x = rng.standard_normal((3, 4, 5))
     np.testing.assert_equal(x, channel.transmit(x))
 
 
@@ -21,8 +21,8 @@ def test_gaussian_vectorized_input():
     ],
 )
 def test_discrete_channels_vectorized_input(
-    channel: komm.abc.DiscreteMemorylessChannel,
+    channel: komm.abc.DiscreteMemorylessChannel, rng
 ):
-    x = np.random.randint(0, channel.input_cardinality, size=(3, 4, 5))
+    x = rng.integers(0, channel.input_cardinality, size=(3, 4, 5))
     y = channel.transmit(x)
     np.testing.assert_equal(x.shape, y.shape)

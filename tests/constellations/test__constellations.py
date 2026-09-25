@@ -83,11 +83,11 @@ def test_constellation_equivalence_properties(const: komm.abc.Constellation):
     ids=lambda x: f"noise_power={x}",
 )
 def test_constellation_equivalence_mod_demod(
-    const: komm.abc.Constellation, noise_power
+    const: komm.abc.Constellation, noise_power, rng
 ):
     ref = komm.Constellation(const.matrix)
     channel = komm.GaussianChannel(noise_power=noise_power)
-    indices = np.random.randint(0, const.order, size=100)
+    indices = rng.integers(0, const.order, size=100)
     received = channel.transmit(const.indices_to_symbols(indices))
     np.testing.assert_allclose(
         const.indices_to_symbols(indices),
@@ -104,9 +104,9 @@ def test_constellation_equivalence_mod_demod(
     )
 
 
-def test_constellation_equivalence_high_snr(const: komm.abc.Constellation):
+def test_constellation_equivalence_high_snr(const: komm.abc.Constellation, rng):
     ref = komm.Constellation(const.matrix)
-    indices = np.random.randint(0, const.order, size=100)
+    indices = rng.integers(0, const.order, size=100)
     symbols = const.indices_to_symbols(indices)
     np.testing.assert_equal(const.closest_indices(symbols), indices)
     np.testing.assert_equal(ref.closest_indices(symbols), indices)
