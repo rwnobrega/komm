@@ -28,6 +28,8 @@
 
 - Fixed the bit order of the output of `BCJRDecoder` for convolutional codes with more than one input bit.
 
+- Fixed channels and sources to draw from the current `global_rng` instead of the one set when they were created; equality of channels no longer depends on the generator.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added

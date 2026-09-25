@@ -24,7 +24,11 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         rng: np.random.Generator | None = None,
     ):
         self._transition_matrix = validate_transition_matrix(transition_matrix)
-        self.rng = rng or global_rng.get()
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"

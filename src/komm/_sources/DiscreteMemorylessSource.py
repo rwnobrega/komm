@@ -31,7 +31,11 @@ class DiscreteMemorylessSource:
                 raise ValueError("cardinality must be at least 1")
             pmf = np.full(pmf, 1 / pmf)
         self._pmf = validate_pmf(pmf, joint=False)
-        self._rng = rng or global_rng.get()
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     def __repr__(self) -> str:
         return f"{__class__.__name__}(pmf={self.pmf.tolist()})"
@@ -123,4 +127,4 @@ class DiscreteMemorylessSource:
                    [1, 0, 2, 1, 2]])
         """
         alphabet = np.arange(self.cardinality)
-        return self._rng.choice(alphabet, p=self.pmf, size=shape)
+        return self.rng.choice(alphabet, p=self.pmf, size=shape)

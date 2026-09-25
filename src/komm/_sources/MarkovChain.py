@@ -48,7 +48,11 @@ class MarkovChain:
         self._transition_matrix = validate_transition_matrix(
             transition_matrix, square=True
         )
-        self._rng = rng or global_rng.get()
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"
@@ -658,7 +662,7 @@ class MarkovChain:
         output = np.empty(steps, dtype=int)
         for t in range(steps):
             output[t] = state
-            state = self._rng.choice(self.num_states, p=P[state])
+            state = self.rng.choice(self.num_states, p=P[state])
         return output
 
     def simulate_until_absorption(self, initial_state: int) -> Array1D[np.integer]:
@@ -691,6 +695,6 @@ class MarkovChain:
         output = [state]
         transient = self._transient_states()
         while state in transient:
-            state = self._rng.choice(self.num_states, p=P[state])
+            state = self.rng.choice(self.num_states, p=P[state])
             output.append(state)
         return np.array(output)

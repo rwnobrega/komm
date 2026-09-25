@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
 from math import e, log2
 from typing import Literal
@@ -12,7 +12,7 @@ from .._util.information_theory import binary_entropy
 from .._util.validators import validate_log_base, validate_pmf, validate_probability
 
 
-@dataclass
+@dataclass(init=False)
 class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
     r"""
     Binary symmetric channel (BSC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input and output alphabets $\mathcal{X} = \mathcal{Y} = \\{ 0, 1 \\}$. The channel is characterized by a parameter $p$, called the *crossover probability*. With probability $1 - p$, the output symbol is identical to the input symbol, and with probability $p$, the output symbol is flipped. Equivalently, the channel can be modeled as
@@ -25,11 +25,20 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         crossover_probability: The channel crossover probability $p$. Must satisfy $0 \leq p \leq 1$. The default value is `0.0`, which corresponds to a noiseless channel.
     """
 
-    crossover_probability: float = 0.0
-    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
+    crossover_probability: float
 
-    def __post_init__(self) -> None:
-        validate_probability(self.crossover_probability)
+    def __init__(
+        self,
+        crossover_probability: float = 0.0,
+        rng: np.random.Generator | None = None,
+    ):
+        validate_probability(crossover_probability)
+        self.crossover_probability = crossover_probability
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     @cached_property
     def input_cardinality(self) -> int:

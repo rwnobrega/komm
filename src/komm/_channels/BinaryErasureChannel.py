@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
 from math import e, log2
 from typing import Literal
@@ -12,7 +12,7 @@ from .._util.information_theory import binary_entropy
 from .._util.validators import validate_log_base, validate_pmf, validate_probability
 
 
-@dataclass
+@dataclass(init=False)
 class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
     r"""
     Binary erasure channel (BEC). It is a [discrete memoryless channel](/ref/DiscreteMemorylessChannel) with input alphabet $\mathcal{X} = \\{ 0, 1 \\}$ and output alphabet $\mathcal{Y} = \\{ 0, 1, 2 \\}$. The channel is characterized by a parameter $\epsilon$, called the *erasure probability*. With probability $1 - \epsilon$, the output symbol is identical to the input symbol, and with probability $\epsilon$, the output symbol is replaced by an erasure symbol (denoted by $2$). For more details, see <cite>CT06, Sec. 7.1.5</cite>.
@@ -21,11 +21,20 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         erasure_probability: The channel erasure probability $\epsilon$. Must satisfy $0 \leq \epsilon \leq 1$. Default value is `0.0`, which corresponds to a noiseless channel.
     """
 
-    erasure_probability: float = 0.0
-    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
+    erasure_probability: float
 
-    def __post_init__(self) -> None:
-        validate_probability(self.erasure_probability)
+    def __init__(
+        self,
+        erasure_probability: float = 0.0,
+        rng: np.random.Generator | None = None,
+    ):
+        validate_probability(erasure_probability)
+        self.erasure_probability = erasure_probability
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     @cached_property
     def input_cardinality(self) -> int:

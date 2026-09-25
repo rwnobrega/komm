@@ -133,3 +133,11 @@ def test_markov_chain_index_of_primitivity_tight(n):
     P[-1, 0] = P[-1, 1] = 0.5
     chain = komm.MarkovChain(P)
     assert chain.index_of_primitivity() == n**2 - 2 * n + 2
+
+
+def test_markov_chain_follows_global_rng():
+    chain = komm.MarkovChain([[0.5, 0.5], [0.5, 0.5]])
+    komm.global_rng.set(np.random.default_rng(1))
+    x = chain.simulate(0, 100)
+    komm.global_rng.set(np.random.default_rng(1))
+    np.testing.assert_equal(chain.simulate(0, 100), x)

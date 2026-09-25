@@ -60,3 +60,11 @@ def test_discrete_memoryless_source_entropy(pmf, x_entropy_base_2, x_entropy_bas
 def test_discrete_memoryless_source_constant(pmf, x_symbol):
     source = komm.DiscreteMemorylessSource(pmf)
     assert np.all(source.emit(1000) == x_symbol)
+
+
+def test_discrete_memoryless_source_follows_global_rng():
+    source = komm.DiscreteMemorylessSource([0.5, 0.5])
+    komm.global_rng.set(np.random.default_rng(1))
+    x = source.emit(100)
+    komm.global_rng.set(np.random.default_rng(1))
+    np.testing.assert_equal(source.emit(100), x)

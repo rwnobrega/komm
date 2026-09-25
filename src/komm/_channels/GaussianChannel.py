@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
@@ -6,7 +6,7 @@ import numpy.typing as npt
 from .._util import global_rng
 
 
-@dataclass
+@dataclass(init=False)
 class GaussianChannel:
     r"""
     Gaussian channel. It is defined by
@@ -27,12 +27,21 @@ class GaussianChannel:
         noise_power: The noise power (variance) $\sigma_Z^2$. The default value is `0.0`, which corresponds to a noiseless channel.
     """
 
-    noise_power: float = 0.0
-    rng: np.random.Generator = field(default_factory=global_rng.get, repr=False)
+    noise_power: float
 
-    def __post_init__(self) -> None:
-        if not self.noise_power >= 0:
+    def __init__(
+        self,
+        noise_power: float = 0.0,
+        rng: np.random.Generator | None = None,
+    ):
+        if not noise_power >= 0:
             raise ValueError("'noise_power' must be non-negative")
+        self.noise_power = noise_power
+        self._rng = rng
+
+    @property
+    def rng(self) -> np.random.Generator:
+        return global_rng.get() if self._rng is None else self._rng
 
     def transmit(
         self, input: npt.ArrayLike
