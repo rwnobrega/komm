@@ -1,9 +1,11 @@
+from collections.abc import Sequence
 from functools import cached_property
 
 import numpy as np
 import numpy.typing as npt
 
 IntArray = npt.NDArray[np.integer]
+FloatArray = npt.NDArray[np.floating]
 
 
 class TrellisSection:
@@ -61,3 +63,58 @@ class TrellisSection:
         in_inputs[next_states, slots] = inputs
         in_outputs[next_states, slots] = self.outputs[states, inputs]
         return in_states, in_inputs, in_outputs
+
+
+def _pad(metrics: FloatArray, value: float) -> FloatArray:
+    # Extra column, reached by index -1
+    column = np.full((*metrics.shape[:-1], 1), value)
+    return np.concatenate([metrics, column], axis=-1)
+
+
+def viterbi(
+    sections: Sequence[TrellisSection],
+    branch_metrics: npt.ArrayLike,
+    initial_metrics: npt.ArrayLike,
+    final_metrics: npt.ArrayLike,
+) -> IntArray:
+    r"""
+    Finds the input sequence of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
+
+    Parameters:
+        sections: The $L$ sections of the trellis.
+
+        branch_metrics: The cost of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
+
+        initial_metrics: The cost of each initial state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+
+        final_metrics: The cost of each final state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+
+    Returns:
+        inputs: The input sequence of least cost. Has the same shape as `branch_metrics`, but with the last dimension removed.
+    """
+    branch_metrics = np.asarray(branch_metrics)
+    shape = branch_metrics.shape[:-2]
+    metrics = np.broadcast_to(initial_metrics, (*shape, sections[0].num_states))
+    choices: list[IntArray] = []
+    for t, section in enumerate(sections):
+        # Add, compare, select
+        in_states, _, in_outputs = section.incoming
+        padded, gamma = _pad(metrics, np.inf), branch_metrics[..., t, :]
+        metrics = padded[..., in_states[:, 0]] + gamma[..., in_outputs[:, 0]]
+        choice = np.zeros(metrics.shape, dtype=np.uint8)
+        for d in range(1, in_states.shape[1]):
+            candidate = padded[..., in_states[:, d]] + gamma[..., in_outputs[:, d]]
+            better = candidate < metrics
+            metrics[better] = candidate[better]
+            choice[better] = d
+        choices.append(choice)
+    # Trace back from best final state
+    final_metrics = np.broadcast_to(final_metrics, metrics.shape)
+    states = np.argmin(metrics + final_metrics, axis=-1, keepdims=True)
+    inputs = np.empty((*shape, len(sections)), dtype=int)
+    for t in reversed(range(len(sections))):
+        in_states, in_inputs, _ = sections[t].incoming
+        d = np.take_along_axis(choices[t], states, axis=-1)
+        inputs[..., t : t + 1] = in_inputs[states, d]
+        states = in_states[states, d]
+    return inputs
