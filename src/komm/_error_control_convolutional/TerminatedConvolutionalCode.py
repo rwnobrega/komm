@@ -348,11 +348,6 @@ class TerminationStrategy(ABC):
     def codeword_length(self) -> int: ...
 
     @abstractmethod
-    def viterbi_post_process_output(
-        self, xs_hat: npt.NDArray[np.integer], final_metrics: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.integer]: ...
-
-    @abstractmethod
     def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]: ...
@@ -375,13 +370,6 @@ class DirectTruncation(TerminationStrategy):
         h = self.num_blocks
         n0 = self.convolutional_code.num_output_bits
         return h * n0
-
-    def viterbi_post_process_output(
-        self, xs_hat: npt.NDArray[np.integer], final_metrics: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.integer]:
-        s_hat = np.argmin(final_metrics)
-        x_hat = xs_hat[:, s_hat]
-        return x_hat
 
     def initial_final_distributions(
         self, num_states: int
@@ -426,13 +414,6 @@ class ZeroTermination(TerminationStrategy):
         μ = self.convolutional_code.memory_order
         return (h + μ) * n0
 
-    def viterbi_post_process_output(
-        self, xs_hat: npt.NDArray[np.integer], final_metrics: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.integer]:
-        μ = self.convolutional_code.memory_order
-        x_hat = xs_hat[:, 0][:-μ]
-        return x_hat
-
     def initial_final_distributions(
         self, num_states: int
     ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
@@ -469,11 +450,6 @@ class TailBiting(TerminationStrategy):
         h = self.num_blocks
         n0 = self.convolutional_code.num_output_bits
         return h * n0
-
-    def viterbi_post_process_output(
-        self, xs_hat: npt.NDArray[np.integer], final_metrics: npt.NDArray[np.floating]
-    ) -> npt.NDArray[np.integer]:
-        raise NotImplementedError
 
     def initial_final_distributions(
         self, num_states: int
