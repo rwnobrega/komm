@@ -5,7 +5,7 @@ import pytest
 
 import komm
 
-from .util import deterministic_pmf, random_pmf, shuffle_pmf
+from .util import deterministic_pmf, random_pmf
 
 
 @pytest.fixture(
@@ -32,9 +32,9 @@ def constructor(request: pytest.FixtureRequest):
 
 @pytest.mark.parametrize("S", range(2, 7))
 @pytest.mark.parametrize("k", range(1, 4))
-def test_fixed_to_variable_codes_random_pmf(constructor, S, k):
+def test_fixed_to_variable_codes_random_pmf(constructor, S, k, rng):
     for _ in range(10):
-        pmf = random_pmf(S)
+        pmf = random_pmf(rng, S)
         entropy = komm.entropy(pmf)
         code: komm.FixedToVariableCode = constructor(pmf, k)
         rate = code.rate(pmf)
@@ -43,15 +43,15 @@ def test_fixed_to_variable_codes_random_pmf(constructor, S, k):
         assert code.is_prefix_free()
         assert code.kraft_parameter() <= 1
         assert entropy <= rate <= entropy + 1 / k
-        pmf1 = shuffle_pmf(pmf)
+        pmf1 = rng.permutation(pmf)
         code1: komm.FixedToVariableCode = constructor(pmf1, k)
         np.testing.assert_allclose(rate, code1.rate(pmf1))
 
 
 @pytest.mark.parametrize("S", range(2, 7))
 @pytest.mark.parametrize("k", range(1, 4))
-def test_fixed_to_variable_codes_encode_decode(constructor, S, k):
-    pmf = random_pmf(S)
+def test_fixed_to_variable_codes_encode_decode(constructor, S, k, rng):
+    pmf = random_pmf(rng, S)
     dms = komm.DiscreteMemorylessSource(pmf)
     code: komm.FixedToVariableCode = constructor(pmf, k)
     x = dms.emit(1000 * k)

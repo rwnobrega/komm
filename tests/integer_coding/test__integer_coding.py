@@ -26,9 +26,9 @@ def test_integer_coding_constants(code: komm.abc.IntegerCode, n: int):
         assert np.array_equal(message, list(code.decode(code.encode(message))))
 
 
-def test_integer_coding_random(code: komm.abc.IntegerCode):
+def test_integer_coding_random(code: komm.abc.IntegerCode, rng):
     for _ in range(10):
-        message = np.random.randint(1, 100, 100)
+        message = rng.integers(1, 100, 100)
         assert np.array_equal(message, list(code.decode(code.encode(message))))
 
 

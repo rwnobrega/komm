@@ -34,11 +34,11 @@ def test_tunstall_code_invalid_init():
 
 @pytest.mark.parametrize("source_cardinality", range(2, 9))
 @pytest.mark.parametrize("target_block_size", range(1, 7))
-def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
+def test_tunstall_code_random_pmf(source_cardinality, target_block_size, rng):
     if 2**target_block_size < source_cardinality:  # target block size too low
         return
     for _ in range(10):
-        pmf = random_pmf(source_cardinality)
+        pmf = random_pmf(rng, source_cardinality)
         code = komm.TunstallCode(pmf, target_block_size)
         assert code.size <= 2**target_block_size
         assert code.is_fully_covering()
@@ -46,16 +46,16 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size):
         assert code.is_prefix_free()
         assert code.rate(pmf) >= komm.entropy(pmf)
         # Permute pmf and check if the rate is the same.
-        pmf1 = pmf[np.random.permutation(source_cardinality)]
+        pmf1 = pmf[rng.permutation(source_cardinality)]
         code1 = komm.TunstallCode(pmf1, target_block_size)
         np.testing.assert_allclose(code.rate(pmf), code1.rate(pmf1))
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
-def test_tunstall_code_rate_upper_bound(source_cardinality):
+def test_tunstall_code_rate_upper_bound(source_cardinality, rng):
     # From R. Gallager - MIT 6.441 Supplementary Notes 1, 2/10/94, eq. (5).
     for _ in range(10):
-        pmf = random_pmf(source_cardinality)
+        pmf = random_pmf(rng, source_cardinality)
         min_p = np.min(pmf)
         target_block_size = ceil(log2(1 / min_p)) + 1
         code = komm.TunstallCode(pmf, target_block_size)
@@ -67,10 +67,10 @@ def test_tunstall_code_rate_upper_bound(source_cardinality):
 
 @pytest.mark.parametrize("source_cardinality", range(2, 9))
 @pytest.mark.parametrize("target_block_size", range(1, 7))
-def test_tunstall_code_encode_decode(source_cardinality, target_block_size):
+def test_tunstall_code_encode_decode(source_cardinality, target_block_size, rng):
     if 2**target_block_size < source_cardinality:  # target block size too low
         return
-    pmf = random_pmf(source_cardinality)
+    pmf = random_pmf(rng, source_cardinality)
     dms = komm.DiscreteMemorylessSource(pmf)
     code = komm.TunstallCode(pmf, target_block_size=target_block_size)
     x = dms.emit(1000)

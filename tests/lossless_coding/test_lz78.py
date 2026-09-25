@@ -114,7 +114,7 @@ def test_lz78_mackay(message, compressed):
 
 @pytest.mark.parametrize("source_cardinality", range(2, 21))
 @pytest.mark.parametrize("target_cardinality", range(2, 21))
-def test_lz78_general(source_cardinality, target_cardinality):
+def test_lz78_general(source_cardinality, target_cardinality, rng):
     code = komm.LempelZiv78Code(source_cardinality, target_cardinality)
 
     # Check code parameters
@@ -130,7 +130,7 @@ def test_lz78_general(source_cardinality, target_cardinality):
         np.testing.assert_equal(code.decode(code.encode([symbol])), [symbol])
 
     # Random message
-    message = np.random.randint(0, source_cardinality, 1000)
+    message = rng.integers(0, source_cardinality, 1000)
     np.testing.assert_equal(code.decode(code.encode(message)), message)
 
 

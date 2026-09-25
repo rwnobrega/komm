@@ -63,7 +63,7 @@ def test_lzss_tim_cogan(source, compressed_size):
 @pytest.mark.parametrize("parameters", [(4, 8), (8, 4), (7, 8), (8, 8), (1, 8)])
 @pytest.mark.parametrize("source_cardinality", [2, 4, 8])
 @pytest.mark.parametrize("target_cardinality", [2, 4, 8])
-def test_lzss_general(parameters, source_cardinality, target_cardinality):
+def test_lzss_general(parameters, source_cardinality, target_cardinality, rng):
     search_size, lookahead_size = parameters
     code = komm.LempelZivSSCode(
         search_size=search_size,
@@ -88,7 +88,7 @@ def test_lzss_general(parameters, source_cardinality, target_cardinality):
         np.testing.assert_equal(code.decode(code.encode([symbol])), [symbol])
 
     # Random message
-    source = np.random.randint(0, source_cardinality, 1000)
+    source = rng.integers(0, source_cardinality, 1000)
     np.testing.assert_equal(code.decode(code.encode(source)), source)
 
 

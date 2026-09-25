@@ -41,13 +41,13 @@ def test_canonical_code_base(lengths, base, expected):
 
 @pytest.mark.parametrize("base", range(2, 6))
 @pytest.mark.parametrize("size", range(1, 30))
-def test_canonical_code_random(base, size):
+def test_canonical_code_random(base, size, rng):
     # Lengths of a random full base-ary tree always satisfy Kraft with equality.
     lengths = [1] * base
     for _ in range(size):
-        i = np.random.randint(len(lengths))
+        i = rng.integers(len(lengths))
         lengths[i : i + 1] = [lengths[i] + 1] * base
-    np.random.shuffle(lengths)
+    rng.shuffle(lengths)
     codewords = canonical_code(lengths, base=base)
     assert is_prefix_free(codewords)
     assert [len(c) for c in codewords] == lengths

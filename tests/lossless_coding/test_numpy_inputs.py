@@ -19,9 +19,8 @@ def test_symbols_to_integer_numpy_input():
 
 
 @pytest.fixture
-def long_source():
+def long_source(rng):
     # Long enough for the LZ78/LZW dictionaries to outgrow 8-bit pointers.
-    rng = np.random.default_rng(seed=42)
     return rng.integers(0, 256, size=8192)
 
 

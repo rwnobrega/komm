@@ -153,8 +153,8 @@ def test_huffman_code_invalid_call():
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
 @pytest.mark.parametrize("source_block_size", range(1, 4))
-def test_huffman_code_policy(source_cardinality, source_block_size):
-    pmf = random_pmf(source_cardinality)
+def test_huffman_code_policy(source_cardinality, source_block_size, rng):
+    pmf = random_pmf(rng, source_cardinality)
     code_high = komm.HuffmanCode(pmf, source_block_size, policy="high")
     code_low = komm.HuffmanCode(pmf, source_block_size, policy="low")
     assert np.isclose(code_high.rate(pmf), code_low.rate(pmf))
@@ -163,9 +163,9 @@ def test_huffman_code_policy(source_cardinality, source_block_size):
 @pytest.mark.parametrize("policy", ["high", "low"])
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
 @pytest.mark.parametrize("source_block_size", range(1, 4))
-def test_huffman_code_assignment(policy, source_cardinality, source_block_size):
+def test_huffman_code_assignment(policy, source_cardinality, source_block_size, rng):
     # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
-    pmf = random_pmf(source_cardinality)
+    pmf = random_pmf(rng, source_cardinality)
     code_tree = komm.HuffmanCode(pmf, source_block_size, policy)
     code_canonical = komm.HuffmanCode(pmf, source_block_size, policy, "canonical")
     assert code_canonical.lengths == code_tree.lengths

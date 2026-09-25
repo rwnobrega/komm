@@ -34,10 +34,10 @@ def test_truncated_binary_power_of_two(k):
 
 
 @pytest.mark.parametrize("M", [2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 100])
-def test_truncated_binary_round_trip(M):
+def test_truncated_binary_round_trip(M, rng):
     code = komm.TruncatedBinaryCode(M)
     for _ in range(10):
-        message = np.random.randint(0, M, 100)
+        message = rng.integers(0, M, 100)
         assert np.array_equal(message, list(code.decode(code.encode(message))))
 
 
