@@ -48,6 +48,27 @@ def blockwise(block_size: int):
     return decorator
 
 
+def chunkwise(chunk_size: int, pbar: "tqdm[Any]"):
+    r"""
+    Vectorizes a function that accepts a 2D-array and returns a 2D-array, acting row by row. Calls it on chunks of `chunk_size` rows, updating a given tqdm progress bar after each chunk.
+    """
+
+    def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
+        @wraps(func)
+        def wrapper(arr: npt.NDArray[T]) -> npt.NDArray[U]:
+            rows = arr.reshape(-1, arr.shape[-1])
+            outputs: list[npt.NDArray[U]] = []
+            for start in range(0, rows.shape[0], chunk_size):
+                outputs.append(func(rows[start : start + chunk_size]))
+                pbar.update(outputs[-1].shape[0])
+            output = np.concatenate(outputs)
+            return output.reshape(*arr.shape[:-1], output.shape[-1])
+
+        return wrapper
+
+    return decorator
+
+
 def with_pbar(pbar: "tqdm[Any]"):
     r"""
     Updates a given tqdm progress bar after a function call.
