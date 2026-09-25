@@ -110,6 +110,15 @@ def test_truncated_binary_out_of_range(M):
         list(code.encode([0, M]))
 
 
+@pytest.mark.parametrize("integer", [2.0, 2.5])
+def test_truncated_binary_rejects_float(integer):
+    code = komm.TruncatedBinaryCode(5)
+    with pytest.raises(TypeError):
+        code.encode_single(integer)
+    with pytest.raises(TypeError):
+        code.length(integer)
+
+
 @pytest.mark.parametrize("M", [-1, 0, 1])
 def test_truncated_binary_invalid_cardinality(M):
     with pytest.raises(ValueError, match="at least 2"):

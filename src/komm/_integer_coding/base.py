@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Iterator
 from itertools import chain, islice
+from operator import index
+from typing import SupportsIndex
 
 
 class IntegerCode(ABC):
     @abstractmethod
-    def encode_single(self, integer: int) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Encodes a single integer into its codeword.
 
@@ -33,13 +35,13 @@ class IntegerCode(ABC):
         """
         raise NotImplementedError
 
-    def length(self, integer: int) -> int:
+    def length(self, integer: SupportsIndex) -> int:
         r"""
         Returns the codeword length $\ell(n)$ for a given integer $n$ in the domain of the code.
         """
         return len(self.encode_single(integer))
 
-    def encode(self, input: Iterable[int]) -> Iterator[int]:
+    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
         Lazily encodes an iterable of integers.
 
@@ -70,9 +72,11 @@ class IntegerCode(ABC):
             yield self.decode_single(chain([first], it))
 
 
-def validate_positive(integer: int) -> None:
+def validate_positive(integer: SupportsIndex) -> int:
+    integer = index(integer)
     if not integer > 0:
         raise ValueError("input contains a non-positive entry")
+    return integer
 
 
 def take(bits: Iterator[int], num: int) -> list[int]:

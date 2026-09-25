@@ -1,6 +1,7 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from operator import index
+from typing import SupportsIndex
 
 from .. import abc
 from .._util.bit_operations import from_binary, to_binary
@@ -25,11 +26,13 @@ class TruncatedBinaryCode(abc.IntegerCode):
         self._k = self.cardinality.bit_length() - 1
         self._u = 2 ** (self._k + 1) - self.cardinality
 
-    def _validate(self, integer: int) -> None:
+    def _validate(self, integer: SupportsIndex) -> int:
+        integer = index(integer)
         if not 0 <= integer < self.cardinality:
             raise ValueError("input contains an out-of-range entry")
+        return integer
 
-    def encode_single(self, integer: int) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:
             >>> code = komm.TruncatedBinaryCode(5)
@@ -38,7 +41,7 @@ class TruncatedBinaryCode(abc.IntegerCode):
             >>> code.encode_single(3)
             [1, 1, 0]
         """
-        self._validate(integer)
+        integer = self._validate(integer)
         u, k = self._u, self._k
         if integer < u:
             return to_binary(integer, width=k, bit_order="MSB-first")
@@ -60,7 +63,7 @@ class TruncatedBinaryCode(abc.IntegerCode):
             return integer
         return 2 * integer + from_binary(take(bits, 1), bit_order="MSB-first") - u
 
-    def length(self, integer: int) -> int:
+    def length(self, integer: SupportsIndex) -> int:
         r"""
         Examples:
             >>> code = komm.TruncatedBinaryCode(5)
@@ -68,10 +71,10 @@ class TruncatedBinaryCode(abc.IntegerCode):
             (2, 3)
         """
         u, k = self._u, self._k
-        self._validate(integer)
+        integer = self._validate(integer)
         return k if integer < u else k + 1
 
-    def encode(self, input: Iterable[int]) -> Iterator[int]:
+    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
         Examples:
             >>> code = komm.TruncatedBinaryCode(5)

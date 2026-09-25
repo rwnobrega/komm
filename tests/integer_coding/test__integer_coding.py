@@ -37,6 +37,11 @@ def test_integer_coding_length(code: komm.abc.IntegerCode, n: int):
     assert code.length(n) == len(code.encode_single(n))
 
 
+def test_integer_coding_length_numpy(code: komm.abc.IntegerCode):
+    for n in np.arange(1, 100):
+        assert code.length(n) == len(code.encode_single(n))
+
+
 def test_integer_coding_lazy_decode(code: komm.abc.IntegerCode):
     message = [5, 1, 9, 2, 8]
     bits = code.encode(message)
@@ -79,6 +84,14 @@ def test_integer_coding_rejects_nonpositive(code: komm.abc.IntegerCode, message)
         list(code.encode(message))
     with pytest.raises(ValueError, match="non-positive"):
         code.length(min(message))
+
+
+@pytest.mark.parametrize("integer", [4.0, 4.5])
+def test_integer_coding_rejects_float(code: komm.abc.IntegerCode, integer):
+    with pytest.raises(TypeError):
+        code.encode_single(integer)
+    with pytest.raises(TypeError):
+        code.length(integer)
 
 
 def test_integer_coding_kraft(code: komm.abc.IntegerCode):

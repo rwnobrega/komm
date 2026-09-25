@@ -1,4 +1,5 @@
 from collections.abc import Iterable, Iterator
+from typing import SupportsIndex
 
 from .. import abc
 from .base import validate_positive
@@ -9,14 +10,14 @@ class UnaryCode(abc.IntegerCode):
     Unary code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of $n - 1$ zeros followed by a single $1$. For more details, see <cite>MacK03, Ch. 7</cite>.
     """
 
-    def encode_single(self, integer: int) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:
             >>> code = komm.UnaryCode()
             >>> code.encode_single(4)
             [0, 0, 0, 1]
         """
-        validate_positive(integer)
+        integer = validate_positive(integer)
         return [0] * (integer - 1) + [1]
 
     def decode_single(self, bits: Iterator[int]) -> int:
@@ -36,17 +37,16 @@ class UnaryCode(abc.IntegerCode):
                 raise ValueError(f"invalid bit in input: {bit}")
         raise ValueError("input contains an incomplete codeword")
 
-    def length(self, integer: int) -> int:
+    def length(self, integer: SupportsIndex) -> int:
         r"""
         Examples:
             >>> code = komm.UnaryCode()
             >>> code.length(4)
             4
         """
-        validate_positive(integer)
-        return integer
+        return validate_positive(integer)
 
-    def encode(self, input: Iterable[int]) -> Iterator[int]:
+    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
         Examples:
             >>> code = komm.UnaryCode()

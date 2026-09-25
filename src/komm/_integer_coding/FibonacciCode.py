@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Iterator
 from functools import cache
+from typing import SupportsIndex
 
 from .. import abc
 from .base import validate_positive
@@ -10,14 +11,14 @@ class FibonacciCode(abc.IntegerCode):
     Fibonacci code. It is an integer code with domain the positive integers. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """
 
-    def encode_single(self, integer: int) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
             >>> code.encode_single(4)
             [1, 0, 1, 1]
         """
-        validate_positive(integer)
+        integer = validate_positive(integer)
         top = 2
         while fibonacci(top + 1) <= integer:
             top += 1
@@ -50,7 +51,7 @@ class FibonacciCode(abc.IntegerCode):
             last = bit
         raise ValueError("input contains an incomplete codeword")
 
-    def length(self, integer: int) -> int:
+    def length(self, integer: SupportsIndex) -> int:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
@@ -60,7 +61,7 @@ class FibonacciCode(abc.IntegerCode):
         validate_positive(integer)
         return super().length(integer)
 
-    def encode(self, input: Iterable[int]) -> Iterator[int]:
+    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()

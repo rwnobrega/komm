@@ -1,4 +1,5 @@
 from collections.abc import Iterable, Iterator
+from typing import SupportsIndex
 
 from .. import abc
 from .._util.bit_operations import from_binary, to_binary
@@ -13,14 +14,14 @@ class EliasDeltaCode(abc.IntegerCode):
 
     gamma_code = EliasGammaCode()
 
-    def encode_single(self, integer: int) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:
             >>> code = komm.EliasDeltaCode()
             >>> code.encode_single(4)
             [0, 1, 1, 0, 0]
         """
-        validate_positive(integer)
+        integer = validate_positive(integer)
         binary = to_binary(integer, bit_order="MSB-first")
         return self.gamma_code.encode_single(len(binary)) + binary[1:]
 
@@ -37,18 +38,18 @@ class EliasDeltaCode(abc.IntegerCode):
         length = self.gamma_code.decode_single(bits)
         return from_binary([1] + take(bits, length - 1), bit_order="MSB-first")
 
-    def length(self, integer: int) -> int:
+    def length(self, integer: SupportsIndex) -> int:
         r"""
         Examples:
             >>> code = komm.EliasDeltaCode()
             >>> code.length(4)
             5
         """
-        validate_positive(integer)
+        integer = validate_positive(integer)
         num_bits = integer.bit_length()
         return self.gamma_code.length(num_bits) + num_bits - 1
 
-    def encode(self, input: Iterable[int]) -> Iterator[int]:
+    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
         Examples:
             >>> code = komm.EliasDeltaCode()
