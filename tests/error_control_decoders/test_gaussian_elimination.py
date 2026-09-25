@@ -27,7 +27,6 @@ all_codes = small_codes + [
 ]
 
 
-@pytest.mark.parametrize("code", all_codes)
 def exhaustive_bitwise_map_decoder(code: komm.abc.BlockCode, b):
     codewords = code.codewords()
     compat_v = codewords[np.all((b == 2) | (b == codewords), axis=1)]
