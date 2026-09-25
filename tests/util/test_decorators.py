@@ -32,10 +32,9 @@ def test_blockwise():
 
 
 def test_chunkwise():
-    pbar = tqdm(total=10, file=StringIO())
     sizes = []
 
-    @chunkwise(3, pbar)
+    @chunkwise(3)
     def func(rows):
         sizes.append(rows.shape[0])
         return rows[:, ::2]
@@ -43,16 +42,16 @@ def test_chunkwise():
     arr = np.arange(40).reshape(2, 5, 4)
     np.testing.assert_equal(func(arr), arr[..., ::2])
     assert sizes == [3, 3, 3, 1]
-    assert pbar.n == 10
 
 
 def test_with_pbar():
-    pbar = tqdm(total=2, file=StringIO())
+    pbar = tqdm(total=4, file=StringIO())
 
     @with_pbar(pbar)
     def func(arr):
         return 2 * arr
 
     np.testing.assert_equal(func(np.array([1, 2])), [2, 4])
-    np.testing.assert_equal(func(np.array([3])), [6])
-    assert pbar.n == 2
+    assert pbar.n == 1
+    np.testing.assert_equal(func(np.ones((3, 2))), np.full((3, 2), 2))
+    assert pbar.n == 4

@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from functools import wraps
+from math import prod
 from typing import Any, TypeVar
 
 import numpy as np
@@ -48,19 +49,19 @@ def blockwise(block_size: int):
     return decorator
 
 
-def chunkwise(chunk_size: int, pbar: "tqdm[Any]"):
+def chunkwise(chunk_size: int):
     r"""
-    Vectorizes a function that accepts a 2D-array and returns a 2D-array, acting row by row. Calls it on chunks of `chunk_size` rows, updating a given tqdm progress bar after each chunk.
+    Vectorizes a function that accepts a 2D-array and returns a 2D-array, acting row by row. Calls it on chunks of `chunk_size` rows.
     """
 
     def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
         @wraps(func)
         def wrapper(arr: npt.NDArray[T]) -> npt.NDArray[U]:
             rows = arr.reshape(-1, arr.shape[-1])
-            outputs: list[npt.NDArray[U]] = []
-            for start in range(0, rows.shape[0], chunk_size):
-                outputs.append(func(rows[start : start + chunk_size]))
-                pbar.update(outputs[-1].shape[0])
+            outputs = [
+                func(rows[start : start + chunk_size])
+                for start in range(0, rows.shape[0], chunk_size)
+            ]
             output = np.concatenate(outputs)
             return output.reshape(*arr.shape[:-1], output.shape[-1])
 
@@ -71,14 +72,14 @@ def chunkwise(chunk_size: int, pbar: "tqdm[Any]"):
 
 def with_pbar(pbar: "tqdm[Any]"):
     r"""
-    Updates a given tqdm progress bar after a function call.
+    Updates a given tqdm progress bar after a function call, by the number of rows of the input (one, for a 1D-array).
     """
 
     def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
         @wraps(func)
-        def wrapper(*args: Any, **kwargs: Any):
-            result = func(*args, **kwargs)
-            pbar.update()
+        def wrapper(arr: npt.NDArray[T]) -> npt.NDArray[U]:
+            result = func(arr)
+            pbar.update(prod(arr.shape[:-1]))
             return result
 
         return wrapper
