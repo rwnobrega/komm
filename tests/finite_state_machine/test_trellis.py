@@ -45,8 +45,7 @@ def test_trellis_section_incoming():
 
 
 @pytest.mark.repeat(10)
-def test_trellis_viterbi_brute_force():
-    rng = np.random.default_rng()
+def test_trellis_viterbi_brute_force(rng):
     sections = random_sections(rng, 4)
     initial = rng.random(sections[0].num_states)
     final = rng.random(sections[-1].num_next_states)
@@ -61,9 +60,8 @@ def test_trellis_viterbi_brute_force():
 
 
 @pytest.mark.repeat(10)
-def test_trellis_viterbi_shapes():
+def test_trellis_viterbi_shapes(rng):
     # Leading dimensions, with broadcast end metrics
-    rng = np.random.default_rng()
     sections = random_sections(rng, 4)
     initial = rng.random((3, sections[0].num_states))
     final = rng.random((3, sections[-1].num_next_states))
@@ -76,9 +74,8 @@ def test_trellis_viterbi_shapes():
 
 
 @pytest.mark.repeat(10)
-def test_trellis_viterbi_mealy_machine():
+def test_trellis_viterbi_mealy_machine(rng):
     # Same ties as the reference implementation
-    rng = np.random.default_rng()
     transitions = rng.integers(4, size=(4, 3))
     outputs = rng.integers(4, size=(4, 3))
     machine = komm.MealyMachine(transitions, outputs)
@@ -94,8 +91,7 @@ def test_trellis_viterbi_mealy_machine():
 
 
 @pytest.mark.repeat(10)
-def test_trellis_forward_backward_brute_force():
-    rng = np.random.default_rng()
+def test_trellis_forward_backward_brute_force(rng):
     sections = random_sections(rng, 4)
     initial = rng.normal(size=sections[0].num_states)
     final = rng.normal(size=sections[-1].num_next_states)
@@ -112,9 +108,8 @@ def test_trellis_forward_backward_brute_force():
 
 
 @pytest.mark.repeat(10)
-def test_trellis_forward_backward_shapes():
+def test_trellis_forward_backward_shapes(rng):
     # Leading dimensions, with broadcast end metrics
-    rng = np.random.default_rng()
     sections = random_sections(rng, 4)
     initial = rng.normal(size=(3, sections[0].num_states))
     final = rng.normal(size=(3, sections[-1].num_next_states))
@@ -126,14 +121,13 @@ def test_trellis_forward_backward_shapes():
         np.testing.assert_allclose(log_posteriors[i, j], log_app)
 
 
-def test_trellis_single_parity_check():
+def test_trellis_single_parity_check(rng):
     # Code (3, 2); state is partial parity
     sections = [
         TrellisSection([[0, 1]], [[0, 1]], 2),
         TrellisSection([[0, 1], [1, 0]], [[0, 1], [0, 1]], 2),
         TrellisSection([[0, -1], [-1, 0]], [[0, 1], [0, 1]], 1),
     ]
-    rng = np.random.default_rng()
     r = rng.normal(size=(100, 3))
     zeros = np.zeros_like(r)
     v_hat = viterbi(sections, np.stack([zeros, r], axis=2), [0.0], [0.0])
