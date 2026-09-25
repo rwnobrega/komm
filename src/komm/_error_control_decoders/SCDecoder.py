@@ -97,6 +97,5 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
 
         output = decode(input)
         if self.output_type == "hard":
-            return (output < 0).astype(int)
-        else:
-            return output
+            output = (output < 0.0).astype(int)
+        return output
