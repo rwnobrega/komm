@@ -10,6 +10,7 @@ bch = komm.BCHCode(4, 5)
 reed_solomon = komm.ReedSolomonCode(3, 5)
 reed_muller = komm.ReedMullerCode(1, 5)
 spc = komm.SingleParityCheckCode(3)
+polar = komm.PolarCode(3, [0, 1, 2, 4])
 
 
 @pytest.mark.parametrize(
@@ -25,6 +26,7 @@ spc = komm.SingleParityCheckCode(3)
         [reed_solomon, komm.BerlekampDecoder],
         [reed_muller, komm.ReedDecoder],
         [spc, komm.WagnerDecoder],
+        [polar, komm.SCDecoder],
     ],
 )
 def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class):
