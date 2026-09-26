@@ -1007,6 +1007,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1246,6 +1248,26 @@
   
   <span class="md-ellipsis">
     BCHCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ReedSolomonCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReedSolomonCode
   </span>
   
 
@@ -1945,20 +1967,6 @@
         <li class="md-nav__item">
   <a href="#num_output_symbols" class="md-nav__link">
     num_output_symbols
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#input_edges" class="md-nav__link">
-    input_edges
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output_edges" class="md-nav__link">
-    output_edges
   </a>
   
 </li>
@@ -3833,20 +3841,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#input_edges" class="md-nav__link">
-    input_edges
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output_edges" class="md-nav__link">
-    output_edges
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#process" class="md-nav__link">
     process()
   </a>
@@ -3900,7 +3894,7 @@
     <div class="doc doc-contents first">
 
 
-        <p>Finite-state Mealy machine. It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an <em>output function</em> $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. more details, see <a href="https://en.wikipedia.org/wiki/Mealy_machine">Wikipedia: Mealy machine</a>.</p>
+        <p>Finite-state Mealy machine. It is defined by a <em>set of states</em> $\mathcal{S}$, an <em>input alphabet</em> $\mathcal{X}$, an <em>output alphabet</em> $\mathcal{Y}$, a <em>transition function</em> $T : \mathcal{S} \times \mathcal{X} \to \mathcal{S}$, and an <em>output function</em> $G : \mathcal{S} \times \mathcal{X} \to \mathcal{Y}$. Here, for simplicity, the set of states, the input alphabet, and the output alphabet are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$, respectively. For more details, see <a href="https://en.wikipedia.org/wiki/Mealy_machine">Wikipedia: Mealy machine</a>.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -4133,90 +4127,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="input_edges" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">input_edges</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The matrix of input edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the input associated with that edge (an element of $\mathcal{X}$); if there is no such edge, then the element is $-1$.</p>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
-<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">input_edges</span>
-<span class="go">array([[ 0,  1, -1, -1],</span>
-<span class="go">       [-1, -1,  0,  1],</span>
-<span class="go">       [ 0,  1, -1, -1],</span>
-<span class="go">       [-1, -1,  0,  1]])</span>
-</code></pre></div>
-  </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="output_edges" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">output_edges</span></code><span class="doc-param-annotation"><code>  NDArray[integer]
-</code></span>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-        <p>The matrix of output edges of the machine. It has shape $|\mathcal{S}| \times |\mathcal{S}|$. If there is an edge from $s_0 \in \mathcal{S}$ to $s_1 \in \mathcal{S}$, then the element in row $s_0$ and column $s_1$ is the output associated with that edge (an element of $\mathcal{Y}$); if there is no such edge, then the element is $-1$.</p>
-
-
-<p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">MealyMachine</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">transitions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
-<span class="gp">... </span>    <span class="n">outputs</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span><span class="o">.</span><span class="n">output_edges</span>
-<span class="go">array([[ 0,  3, -1, -1],</span>
-<span class="go">       [-1, -1,  1,  2],</span>
-<span class="go">       [ 3,  0, -1, -1],</span>
-<span class="go">       [-1, -1,  2,  1]])</span>
-</code></pre></div>
-  </div>
-
-</div>
-
-
-
-
-
-
 <div class="doc doc-object doc-function">
 
 
@@ -4398,7 +4308,7 @@
             <span class="doc-param-annotation">(<code><span title="komm._finite_state_machine.MealyMachine.MetricMemory">MetricMemory</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The metrics for each state. It must be a dictionary containing two keys: <code>'paths'</code>, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$; and <code>'metrics'</code>, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.</p>
+          <p>The metrics for each state. It must be a dictionary containing two keys: <code>'paths'</code>, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$, with the inputs along the survivor ending in each state; and <code>'metrics'</code>, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.</p>
         </div>
       </li>
   </ul>

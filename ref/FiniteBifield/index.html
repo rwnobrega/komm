@@ -548,6 +548,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#primitive_element" class="md-nav__link">
+    primitive_element
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1063,6 +1070,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1302,6 +1311,26 @@
   
   <span class="md-ellipsis">
     BCHCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ReedSolomonCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReedSolomonCode
   </span>
   
 
@@ -3776,6 +3805,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#primitive_element" class="md-nav__link">
+    primitive_element
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3952,6 +3988,47 @@
   <div class="doc doc-contents ">
 
         <p>The order (number of elements) of the finite field. It is given by $2^k$.</p>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="primitive_element" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">primitive_element</span></code><span class="doc-param-annotation"><code>  FiniteBifieldElement[Self]
+</code></span>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>A primitive element of the finite field. It is a generator of the field's multiplicative group.</p>
+<p>Of all primitive elements, this property returns the one with the smallest integer representation, which is $X$ if the modulus is primitive.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">primitive_element</span>
+<span class="go">0b10</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">FiniteBifield</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="mb">0b11111</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">primitive_element</span>
+<span class="go">0b11</span>
+</code></pre></div>
   </div>
 
 </div>

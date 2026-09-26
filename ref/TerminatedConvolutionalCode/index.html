@@ -1009,6 +1009,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1248,6 +1250,26 @@
   
   <span class="md-ellipsis">
     BCHCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ReedSolomonCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReedSolomonCode
   </span>
   
 
@@ -4009,7 +4031,7 @@
 <p><strong>Zero termination</strong>. The encoder always starts and ends at state $0$. To achieve this, a sequence of $k \mu$ tail bits is appended to the information bits, where $\mu$ is the memory order of the convolutional code. The resulting block code will have length $n = (h + \mu) n_0$.</p>
 </li>
 <li>
-<p><strong>Tail-biting</strong>. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. The resulting block code will have length $n = h n_0$.</p>
+<p><strong>Tail-biting</strong>. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. This is possible only if $A^h + I$ is invertible, where $A$ is the state matrix of the convolutional code; this always holds for codes without feedback. The resulting block code will have length $n = h n_0$.</p>
 </li>
 </ul>
 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.7</cite> and <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
