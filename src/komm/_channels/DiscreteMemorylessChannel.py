@@ -95,7 +95,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         """
         initial_guess = np.ones(self.input_cardinality) / self.input_cardinality
         input_pmf = arimoto_blahut(
-            self.transition_matrix, initial_guess, max_iter=1000, tol=1e-12
+            self.transition_matrix, initial_guess, max_iter=100_000, tol=1e-12
         )
         return mutual_information(input_pmf, self.transition_matrix, base=base)
 

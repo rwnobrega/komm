@@ -34,6 +34,8 @@
 
 - Changed `TerminatedConvolutionalCode` to reject tail-biting when the encoder cannot start and end at the same state.
 
+- Fixed `capacity` of `DiscreteMemorylessChannel`, which could stop too early and underestimate the capacity.
+
 ## v0.34.0 (2026-09-15)
 
 ### Added

@@ -56,6 +56,10 @@ def _get_noisy_typewriter_transition_matrix():
             [[1, 0], [0.5, 0.5]],
             komm.binary_entropy(1 / 5) - 2 / 5,
         ),
+        (  # BSC plus a mixture of its rows
+            [[0.9, 0.1], [0.1, 0.9], [0.8992, 0.1008]],
+            1 - komm.binary_entropy(0.1),
+        ),
     ],
 )
 def test_channel_capacity(transition_matrix, expected):
