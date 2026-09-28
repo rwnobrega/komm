@@ -24,7 +24,7 @@ class MarkovChain:
             ![Finite-state homogeneous discrete-time Markov chain example.](/fig/markov.svg)
             </figure>
 
-            It has set of states $\mathcal{S} = \\{ 0, 1, 2 \\}$ and transition matrix
+            It has the set of states $\mathcal{S} = \\{ 0, 1, 2 \\}$ and transition matrix
             $$
             P = \begin{bmatrix}
                 1/2 & 1/4 & 1/4 \\\\

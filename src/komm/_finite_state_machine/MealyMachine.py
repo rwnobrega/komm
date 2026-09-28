@@ -22,13 +22,13 @@ class MealyMachine:
         outputs: The matrix of outputs of the machine, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $G(s, x) \in \mathcal{Y}$, that is, the output of the machine given that the current state is $s$ and the input is $x$.
 
     Examples:
-        1. Consider the finite-state Mealy machine whose state diagram depicted in the figure below.
+        1. Consider the finite-state Mealy machine whose state diagram is depicted in the figure below.
 
             <figure markdown>
             ![Finite-state Mealy machine example.](/fig/mealy.svg)
             </figure>
 
-            It has set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$. The transition function $T$ and output function $G$ are given by the table below.
+            It has the set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$. The transition function $T$ and output function $G$ are given by the table below.
 
             | State $s$ | Input $x$ | Transition $T(s, x)$ | Output $G(s, x)$ |
             | :-------: | :-------: | :------------------: | :--------------: |
