@@ -63,7 +63,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
             for i, partition in enumerate(self._reed_partitions):
                 checksums = np.count_nonzero(bx[partition], axis=1) % 2
                 min_reliability = np.min(np.abs(r[partition]), axis=1)
-                decision_var = (1 - 2 * checksums) @ min_reliability
+                decision_var = (-1) ** checksums @ min_reliability
                 u_hat[i] = decision_var < 0
                 bx ^= u_hat[i] * self.code.generator_matrix[i]
             return u_hat
