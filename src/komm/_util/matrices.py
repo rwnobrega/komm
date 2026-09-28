@@ -1,7 +1,8 @@
 from collections.abc import Sequence
 from itertools import product
 from math import prod
-from typing import Any
+from operator import index
+from typing import Any, SupportsIndex
 
 import numpy as np
 import numpy.typing as npt
@@ -36,6 +37,38 @@ def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> ArrayInt:
                [1, 0]])
     """
     return _float_matmul(x, y).astype(int) & 1
+
+
+def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> ArrayInt:
+    r"""
+    Raises a square matrix to a nonnegative integer power in $\ZZ_2$.
+
+    Parameters:
+        matrix: The matrix. Its elements must be `0` or `1`. Must be a square 2D-array.
+        exponent: The exponent. Must be a nonnegative integer.
+
+    Returns:
+        power: The matrix raised to the given power.
+
+    Examples:
+        >>> matrix_power([[1, 1], [1, 0]], 2)
+        array([[0, 1],
+               [1, 1]])
+        >>> matrix_power([[1, 1], [1, 0]], 3)
+        array([[1, 0],
+               [0, 1]])
+    """
+    matrix = np.asarray(matrix, dtype=int)
+    exponent = index(exponent)
+    if exponent < 0:
+        raise ValueError("'exponent' must be nonnegative")
+    power = np.eye(matrix.shape[0], dtype=int)
+    while exponent > 0:  # Square and multiply
+        if exponent & 1:
+            power = matmul(power, matrix)
+        matrix = matmul(matrix, matrix)
+        exponent >>= 1
+    return power
 
 
 def boolean_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.bool_]:

@@ -5,11 +5,10 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from numpy.linalg import matrix_power
 
 from .. import abc
 from .._util.decorators import blockwise
-from .._util.matrices import matmul, null_matrix, pseudo_inverse, rank
+from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
 from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -497,7 +496,7 @@ class TailBiting(TerminationStrategy):
         h = self.num_blocks
         σ = self.convolutional_code.degree
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
-        matrix = matrix_power(A_mat, h) % 2 ^ np.eye(σ, dtype=int)
+        matrix = matrix_power(A_mat, h) ^ np.eye(σ, dtype=int)
         if rank(matrix) < σ:
             raise ValueError("tail-biting is impossible for this code and 'num_blocks'")
         self._zs_multiplier = pseudo_inverse(matrix)

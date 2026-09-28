@@ -6,6 +6,7 @@ from komm._util.matrices import (
     boolean_matmul,
     invariant_factors,
     matmul,
+    matrix_power,
     pseudo_inverse,
     rank,
     rref,
@@ -28,6 +29,23 @@ def test_matmul(x_shape, y_shape, rng):
     y = rng.integers(0, 2, y_shape)
     np.testing.assert_equal(matmul(x, y), x @ y % 2)
     np.testing.assert_equal(boolean_matmul(x, y), x @ y > 0)
+
+
+@pytest.mark.parametrize("size", range(1, 6))
+@pytest.mark.parametrize("exponent", [0, 1, 2, 3, 10, 101])
+def test_matrix_power(size, exponent, rng):
+    matrix = rng.integers(0, 2, (size, size))
+    expected = np.eye(size, dtype=int)
+    for _ in range(exponent):
+        expected = expected @ matrix % 2
+    np.testing.assert_equal(matrix_power(matrix, exponent), expected)
+
+
+def test_matrix_power_invalid_exponent():
+    with pytest.raises(ValueError):
+        matrix_power([[1, 1], [1, 0]], -1)
+    with pytest.raises(TypeError):
+        matrix_power([[1, 1], [1, 0]], 2.0)  # type: ignore
 
 
 @pytest.mark.parametrize(
