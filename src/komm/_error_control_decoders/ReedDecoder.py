@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._error_control_block.ReedMullerCode import ReedMullerCode
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise
 
 
 @dataclass
@@ -45,27 +45,26 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
         """
 
         @blockwise(self.code.length)
-        @vectorize
         def decode_hard(r: npt.NDArray[np.integer]):
-            u_hat = np.empty(self.code.dimension, dtype=int)
+            u_hat = np.empty((*r.shape[:-1], self.code.dimension), dtype=int)
             bx = r.copy()
             for i, partition in enumerate(self._reed_partitions):
-                checksums = np.count_nonzero(bx[partition], axis=1) % 2
-                u_hat[i] = np.count_nonzero(checksums) > len(checksums) // 2
-                bx ^= u_hat[i] * self.code.generator_matrix[i]
+                checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
+                votes = np.count_nonzero(checksums, axis=-1)
+                u_hat[..., i] = votes > len(partition) // 2
+                bx ^= u_hat[..., i, np.newaxis] * self.code.generator_matrix[i]
             return u_hat
 
         @blockwise(self.code.length)
-        @vectorize
         def decode_soft(r: npt.NDArray[np.floating]):
-            u_hat = np.empty(self.code.dimension, dtype=int)
+            u_hat = np.empty((*r.shape[:-1], self.code.dimension), dtype=int)
             bx = (r < 0).astype(int)
             for i, partition in enumerate(self._reed_partitions):
-                checksums = np.count_nonzero(bx[partition], axis=1) % 2
-                min_reliability = np.min(np.abs(r[partition]), axis=1)
-                decision_var = (-1) ** checksums @ min_reliability
-                u_hat[i] = decision_var < 0
-                bx ^= u_hat[i] * self.code.generator_matrix[i]
+                checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
+                min_reliability = np.min(np.abs(r[..., partition]), axis=-1)
+                decision_var = np.vecdot((-1) ** checksums, min_reliability)
+                u_hat[..., i] = decision_var < 0
+                bx ^= u_hat[..., i, np.newaxis] * self.code.generator_matrix[i]
             return u_hat
 
         if self.input_type == "hard":
