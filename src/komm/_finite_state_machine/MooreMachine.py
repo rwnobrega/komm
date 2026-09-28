@@ -117,7 +117,7 @@ class MooreMachine:
         initial_state: int,
     ) -> tuple[npt.NDArray[np.integer], int]:
         r"""
-        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively.
+        Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively. The output is $y_t = G(s_{t+1})$, where $s_0 = s_\mathrm{i}$ and $s_{t+1} = T(s_t, x_t)$.
 
         Parameters:
             input: The input sequence $x \in \mathcal{X}^L$. It should be a 1D-array with elements in $\mathcal{X}$.
