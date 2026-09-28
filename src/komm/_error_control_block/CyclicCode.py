@@ -8,7 +8,8 @@ import numpy.typing as npt
 
 from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise
+from .._util.matrices import matmul
 from ..types import Array1D, Array2D
 
 
@@ -169,11 +170,8 @@ class CyclicCode(abc.BlockCode):
 
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
-        @vectorize
         def project(v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-            v_poly = BinaryPolynomial.from_coefficients(v)
-            u_poly = self._encoding_strategy.project_word(v_poly)
-            u = u_poly.coefficients(width=self.dimension)
+            u = self._encoding_strategy.project_word(v)
             return u
 
         return project(input)
@@ -300,7 +298,7 @@ class EncodingStrategy(ABC):
     def check_matrix(self) -> Array2D[np.integer]: ...
 
     @abstractmethod
-    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial: ...
+    def project_word(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]: ...
 
 
 class SystematicStrategy(EncodingStrategy):
@@ -323,9 +321,9 @@ class SystematicStrategy(EncodingStrategy):
             check_matrix[:, j] = col_poly.coefficients(width=m)
         return check_matrix
 
-    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
-        u_poly = v_poly >> self.code.redundancy
-        return u_poly
+    def project_word(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        u = v[..., self.code.redundancy :].astype(int)
+        return u
 
 
 class NonSystematicStrategy(EncodingStrategy):
@@ -348,6 +346,6 @@ class NonSystematicStrategy(EncodingStrategy):
             check_matrix[i] = row_poly.coefficients(width=n)
         return check_matrix
 
-    def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
-        u_poly = v_poly // self.code.generator_polynomial
-        return u_poly
+    def project_word(self, v: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
+        u = matmul(v, self.code.generator_matrix_right_inverse)
+        return u
