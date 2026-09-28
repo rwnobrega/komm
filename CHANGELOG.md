@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Fixed `check` of `CyclicCode`.
+
 ## v0.36.0 (2026-09-28)
 
 ### Added

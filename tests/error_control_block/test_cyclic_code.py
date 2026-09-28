@@ -169,3 +169,14 @@ def test_cyclic_code_inverse_encode_invalid_input():
     with pytest.raises(ValueError):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
+
+
+@pytest.mark.parametrize("systematic", [False, True])
+def test_cyclic_code_check_random(systematic, rng):
+    code = komm.CyclicCode(
+        length=15,
+        generator_polynomial=0b111010001,
+        systematic=systematic,
+    )
+    r = rng.integers(0, 2, (100, code.length))
+    np.testing.assert_equal(code.check(r), r @ code.check_matrix.T % 2)

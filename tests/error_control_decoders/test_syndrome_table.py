@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -20,6 +21,22 @@ def test_syndrome_table_hamming():
             [1, 0, 1, 1],
         ],
     )
+
+
+@pytest.mark.parametrize("systematic", [False, True])
+def test_syndrome_table_cyclic(systematic, rng):
+    # BCH (15, 7), which corrects up to 2 errors.
+    code = komm.CyclicCode(
+        length=15,
+        generator_polynomial=0b111010001,
+        systematic=systematic,
+    )
+    decoder = komm.SyndromeTableDecoder(code)
+    u = rng.integers(0, 2, (100, code.dimension))
+    e = np.zeros((100, code.length), dtype=int)
+    for row in e:
+        row[rng.choice(code.length, 2, replace=False)] = 1
+    np.testing.assert_equal(decoder.decode(code.encode(u) ^ e), u)
 
 
 def test_syndrome_table_golay(rng):

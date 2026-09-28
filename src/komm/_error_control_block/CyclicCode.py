@@ -203,16 +203,7 @@ class CyclicCode(abc.BlockCode):
             See [`BlockCode.check`](/ref/BlockCode#check) for examples.
             </span>
         """
-
-        @blockwise(self.length)
-        @vectorize
-        def check(r: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-            r_poly = BinaryPolynomial.from_coefficients(r)
-            s_poly = r_poly % self.generator_polynomial
-            s = s_poly.coefficients(width=self.redundancy)
-            return s
-
-        return check(input)
+        return super().check(input)
 
     @cache
     def codewords(self) -> Array2D[np.integer]:
