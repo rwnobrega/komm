@@ -20,8 +20,8 @@ def vectorize(func: ArrayFunction[T, U]):
     """
 
     @wraps(func)
-    def wrapper(arr: npt.NDArray[T], *args: Any, **kwargs: Any):
-        return np.apply_along_axis(func, -1, arr, *args, **kwargs)
+    def wrapper(arr: npt.NDArray[T]):
+        return np.apply_along_axis(func, -1, arr)
 
     return wrapper
 
