@@ -192,6 +192,42 @@ def rank(matrix: npt.ArrayLike) -> int:
     return int(np.count_nonzero(reduced.any(axis=1)))
 
 
+def trellis_oriented_form(matrix: npt.ArrayLike) -> ArrayInt:
+    r"""
+    Computes a trellis-oriented form of a matrix in $\ZZ_2$. A matrix is in trellis-oriented form if its rows are linearly independent, no two rows have their leading one in the same column, and no two rows have their trailing one in the same column. The result has the same row space as the input.
+
+    Parameters:
+        matrix: The matrix. Its elements must be `0` or `1`.
+
+    Returns:
+        tof: A trellis-oriented form of the matrix.
+
+    Examples:
+        >>> trellis_oriented_form([[1, 1, 1, 1], [0, 1, 0, 1], [0, 0, 1, 1]])
+        array([[1, 1, 0, 0],
+               [0, 1, 1, 0],
+               [0, 0, 1, 1]])
+
+        >>> trellis_oriented_form([[1, 1, 0], [0, 1, 1], [1, 0, 1]])
+        array([[1, 1, 0],
+               [0, 1, 1]])
+    """
+    # See [LC04, Sec. 9.2]
+    tof = rref(matrix).astype(bool)
+    tof = tof[tof.any(axis=1)]
+    n_cols = tof.shape[1]
+    trailing = n_cols - 1 - np.argmax(tof[:, ::-1], axis=1)
+    for c in reversed(range(n_cols)):
+        rows = np.flatnonzero(trailing == c)
+        if rows.size < 2:
+            continue
+        # Last row has the largest leading one
+        others = rows[:-1]
+        tof[others] ^= tof[rows[-1]]
+        trailing[others] = n_cols - 1 - np.argmax(tof[others, ::-1], axis=1)
+    return tof.astype(int)
+
+
 def _pseudo_inverse_and_kernel(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt]:
     row_transform, reduced, pivots = xrref(matrix)
     p_inverse = np.zeros_like(reduced.T)

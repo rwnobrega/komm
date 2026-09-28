@@ -10,6 +10,7 @@ from komm._util.matrices import (
     pseudo_inverse,
     rank,
     rref,
+    trellis_oriented_form,
     xrref,
 )
 
@@ -166,6 +167,110 @@ def test_pseudo_inverse_random(n_rows, n_cols, rng):
         if rank(matrix) == n_cols:
             eye = np.eye(n_cols, dtype=int)
             np.testing.assert_equal((p_inv @ matrix) % 2, eye)
+
+
+def spans(matrix):
+    n_cols = matrix.shape[1]
+    leading = np.argmax(matrix, axis=1)
+    trailing = n_cols - 1 - np.argmax(matrix[:, ::-1], axis=1)
+    return leading, trailing
+
+
+def state_profile(matrix):
+    leading, trailing = spans(matrix)
+    n_cols = matrix.shape[1]
+    active = [(leading < t) & (trailing >= t) for t in range(n_cols + 1)]
+    return [int(np.count_nonzero(a)) for a in active]
+
+
+@pytest.mark.parametrize(
+    "matrix, expected, profile",
+    [
+        (  # [LC04, Examples 9.1 and 9.4]
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 1, 1, 1, 1],
+                [0, 0, 1, 1, 0, 0, 1, 1],
+                [0, 1, 0, 1, 0, 1, 0, 1],
+            ],
+            [
+                [1, 1, 1, 1, 0, 0, 0, 0],
+                [0, 1, 0, 1, 1, 0, 1, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 1, 1, 1, 1],
+            ],
+            [0, 1, 2, 3, 2, 3, 2, 1, 0],
+        ),
+        (  # [LC04, Example 9.10]
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+                [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+                [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+                [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+                [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            ],
+            [
+                [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+            ],
+            [0, 1, 2, 3, 3, 4, 4, 4, 3, 4, 4, 4, 3, 3, 2, 1, 0],
+        ),
+        (  # [MacK03, Sec. 25.4]
+            [
+                [1, 0, 0, 0, 1, 0, 1],
+                [0, 1, 0, 0, 1, 1, 0],
+                [0, 0, 1, 0, 1, 1, 1],
+                [0, 0, 0, 1, 0, 1, 1],
+            ],
+            [
+                [1, 1, 0, 1, 0, 0, 0],
+                [0, 1, 0, 0, 1, 1, 0],
+                [0, 0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 1, 0, 1, 1],
+            ],
+            [0, 1, 2, 3, 3, 2, 1, 0],
+        ),
+    ],
+)
+def test_trellis_oriented_form_books(matrix, expected, profile):
+    # The form is not unique: check row space and spans
+    tof = trellis_oriented_form(matrix)
+    expected = np.asarray(expected)
+    assert rank(np.vstack([tof, expected])) == tof.shape[0]
+    np.testing.assert_equal(spans(tof), spans(expected))
+    assert state_profile(tof) == profile
+
+
+@pytest.mark.parametrize("n_rows", range(1, 7))
+@pytest.mark.parametrize("n_cols", range(1, 9))
+def test_trellis_oriented_form_random(n_rows, n_cols, rng):
+    for _ in range(20):
+        matrix = rng.integers(0, 2, size=(n_rows, n_cols))
+        tof = trellis_oriented_form(matrix)
+        r = rank(matrix)
+        assert tof.shape == (r, n_cols)
+        assert rank(np.vstack([matrix, tof])) == r
+        leading, trailing = spans(tof)
+        assert np.unique(leading).size == r
+        assert np.unique(trailing).size == r
+        # Active rows give the minimal state profile
+        for t, active in enumerate(state_profile(tof)):
+            assert active == rank(matrix[:, :t]) + rank(matrix[:, t:]) - r
 
 
 @pytest.mark.parametrize(
