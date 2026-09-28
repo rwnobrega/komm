@@ -246,10 +246,15 @@ class ConvolutionalCode(ABC):
                 f"(expected {σ}, got {state.shape[-1]})"
             )
 
-        state = np.broadcast_to(state, (*u.shape[:-2], σ))
+        # Per step, [v_t, s_{t+1}] = [s_t, u_t] M
+        M_mat = np.block([[C_mat, A_mat], [D_mat, B_mat]])
+        su = np.empty((*u.shape[:-2], σ + k), dtype=int)
+        su[..., :σ] = state
         output = np.empty((*u.shape[:-1], n), dtype=int)
         for t in range(u.shape[-2]):
-            output[..., t, :] = matmul(state, C_mat) ^ matmul(u[..., t, :], D_mat)
-            state = matmul(state, A_mat) ^ matmul(u[..., t, :], B_mat)
+            su[..., σ:] = u[..., t, :]
+            vs = matmul(su, M_mat)
+            output[..., t, :] = vs[..., :n]
+            su[..., :σ] = vs[..., n:]
 
-        return output.reshape(*input.shape[:-1], -1), state
+        return output.reshape(*input.shape[:-1], -1), su[..., :σ]
