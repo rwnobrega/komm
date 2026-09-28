@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise
 from .._util.docs import mkdocstrings
 from .BlockCode import BlockCode
 
@@ -68,15 +68,14 @@ class PolarCode(BlockCode):
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.dimension)
-        @vectorize
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             n = 2**self.mu
-            v = np.zeros((n,), dtype=int)
-            v[self.active] = u
+            v = np.zeros((*u.shape[:-1], n), dtype=int)
+            v[..., self.active] = u
             for d in range(self.mu):
                 m = 2**d
                 for i in range(0, n, 2 * m):
-                    v[i : i + m] ^= v[i + m : i + 2 * m]
+                    v[..., i : i + m] ^= v[..., i + m : i + 2 * m]
             return v
 
         return encode(input)
