@@ -10,7 +10,7 @@ from .._algebra import domain, ring
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
-from .._util.bit_operations import from_binary, to_binary
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import invariant_factors, matmul
 from ..types import Array1D, Array2D
 
@@ -130,15 +130,16 @@ class ConvolutionalCode(ABC):
         r"""
         Returns the [finite-state (Mealy) machine](/ref/MealyMachine) of the encoder.
         """
-        k, σ = self.num_input_bits, self.degree
-        transitions = np.empty((2**σ, 2**k), dtype=int)
-        outputs = np.empty((2**σ, 2**k), dtype=int)
-        for s, x in np.ndindex(2**σ, 2**k):
-            initial_state = to_binary(s, width=σ)
-            u = to_binary(x, width=k)
-            v, final_state = self.encode_with_state(u, initial_state)
-            transitions[s, x] = from_binary(final_state)
-            outputs[s, x] = from_binary(v)
+        n, k, σ = self.num_output_bits, self.num_input_bits, self.degree
+        # All (state, input) pairs in one step
+        states = int_to_bits(range(2**σ), width=σ).reshape(2**σ, 1, σ)
+        inputs = int_to_bits(range(2**k), width=k).reshape(1, 2**k, k)
+        inputs = np.broadcast_to(inputs, (2**σ, 2**k, k))
+        v, final_states = self.encode_with_state(inputs, states)
+        transitions = np.zeros((2**σ, 2**k), dtype=int)
+        if σ > 0:  # Memoryless encoder has a single state
+            transitions = bits_to_int(final_states, width=σ).reshape(2**σ, 2**k)
+        outputs = bits_to_int(v, width=n).reshape(2**σ, 2**k)
         return MealyMachine(transitions, outputs)
 
     @cache
