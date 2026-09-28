@@ -1570,6 +1570,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#depuncture" class="md-nav__link">
+    depuncture()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#codewords" class="md-nav__link">
     codewords()
   </a>
@@ -3948,6 +3955,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#depuncture" class="md-nav__link">
+    depuncture()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#codewords" class="md-nav__link">
     codewords()
   </a>
@@ -4034,6 +4048,7 @@
 <p><strong>Tail-biting</strong>. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. This is possible only if $A^h + I$ is invertible, where $A$ is the state matrix of the convolutional code; this always holds for codes without feedback. The resulting block code will have length $n = h n_0$.</p>
 </li>
 </ul>
+<p>The code may also be <em>punctured</em>: after termination, the codeword bits are kept or deleted according to a <em>puncturing matrix</em> $\mathbf{P} \in \mathbb{B}^{n_0 \times T}$, in which the element at row $i$ and column $t$ tells whether the $i$-th output bit of block $t \bmod T$ is kept (<code>1</code>) or deleted (<code>0</code>), tail blocks included. The lengths given above are then denoted by $n_\mathrm{u}$, the length of the <em>unpunctured code</em>, and the length $n$ of the punctured code is the number of kept positions. The puncturing must not delete any nonzero codeword, so that the dimension $k$ is preserved.</p>
 <p>For more details, see <cite><abbr title="Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.">LC04</abbr>, Sec. 12.7</cite> and <cite><abbr title="Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.">WBR01</abbr></cite>.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
@@ -4060,6 +4075,14 @@
         –
         <div class="doc-md-description">
           <p>The termination mode. It must be one of <code>'direct-truncation'</code> | <code>'zero-termination'</code> | <code>'tail-biting'</code>. The default value is <code>'zero-termination'</code>.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>puncturing_matrix</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span> | None</code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The puncturing matrix $\mathbf{P}$. Must be an $n_0 \times T$ array of bits with at least one <code>1</code>, where the period $T$ divides the number $n_\mathrm{u} / n_0$ of trellis sections. The default value corresponds to no puncturing.</p>
         </div>
       </li>
   </ul>
@@ -4107,6 +4130,21 @@
 <span class="go">       [0, 1, 0, 0, 1, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
 <span class="go">3</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TerminatedConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">convolutional_code</span><span class="o">=</span><span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b1</span><span class="p">,</span> <span class="mb">0b11</span><span class="p">]]),</span>
+<span class="gp">... </span>    <span class="n">num_blocks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;zero-termination&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">puncturing_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">code</span><span class="o">.</span><span class="n">redundancy</span><span class="p">)</span>
+<span class="go">(6, 3, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">generator_matrix</span>
+<span class="go">array([[1, 1, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 1, 0],</span>
+<span class="go">       [0, 0, 0, 1, 1, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">minimum_distance</span><span class="p">()</span>
+<span class="go">2</span>
 </code></pre></div>
 
 
@@ -4528,6 +4566,74 @@ See <a href="/ref/BlockCode#inverse_encode"><code>BlockCode.inverse_encode</code
     <p><span style="margin-left: 1.5em; font-style: italic;">
 See <a href="/ref/BlockCode#check"><code>BlockCode.check</code></a> for examples.
 </span></p>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="depuncture" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">depuncture</span><span class="p">()</span></code>      
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+        <p>Undoes the puncturing, by inserting a given value at the deleted positions. This method takes one or more sequences of received words and returns their corresponding sequences in the coordinates of the unpunctured code.</p>
+
+  <p><span class="doc-section-title">Parameters:</span></p>
+  <ul>
+      <li class="field-body">
+        <b><code>input</code></b>
+            <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>fill_value</code></b>
+            <span class="doc-param-annotation">(<code><span title="float">float</span></code>)</span>
+        –
+        <div class="doc-md-description">
+          <p>The value to insert at the deleted positions, such as <code>0.0</code> for L-values or <code>2</code> for erasures.</p>
+        </div>
+      </li>
+  </ul>
+
+  <p><span class="doc-section-title">Returns:</span></p>
+  <ul>
+      <li class="field-body">
+<b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span> | <span title="numpy.floating">floating</span>]</code>) </span>
+        –
+        <div class="doc-md-description">
+          <p>The output sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n_\mathrm{u} / n$.</p>
+      </div>
+      </li>
+  </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">TerminatedConvolutionalCode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">convolutional_code</span><span class="o">=</span><span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b1</span><span class="p">,</span> <span class="mb">0b11</span><span class="p">]]),</span>
+<span class="gp">... </span>    <span class="n">num_blocks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;zero-termination&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">puncturing_matrix</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">depuncture</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">array([1, 1, 1, 2, 0, 0, 0, 2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">depuncture</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="go">array([-0.8, -0.1, -1. ,  0. ,  0.5,  1.8, -1.1,  0. ])</span>
+</code></pre></div>
 
   </div>
 

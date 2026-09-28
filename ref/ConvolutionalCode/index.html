@@ -4637,7 +4637,7 @@ where</p>
 
   <div class="doc doc-contents ">
 
-        <p>Encodes a given bit sequence, starting from the all-zero state.</p>
+        <p>Encodes bit sequences, starting from the all-zero state.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -4646,7 +4646,7 @@ where</p>
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+          <p>The bit sequence(s) to be encoded. Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.</p>
         </div>
       </li>
   </ul>
@@ -4657,7 +4657,7 @@ where</p>
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+          <p>The encoded bit sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n / k$.</p>
       </div>
       </li>
   </ul>
@@ -4667,6 +4667,9 @@ where</p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">code</span> <span class="o">=</span> <span class="n">komm</span><span class="o">.</span><span class="n">ConvolutionalCode</span><span class="p">([[</span><span class="mb">0b111</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">array([1, 1, 0, 1, 1, 0, 1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">array([[1, 1, 0, 1, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 1, 0, 1, 1, 0, 0]])</span>
 </code></pre></div>
 
   </div>
@@ -4690,7 +4693,7 @@ where</p>
 
   <div class="doc doc-contents ">
 
-        <p>Encodes a given bit sequence, starting from a given state.</p>
+        <p>Encodes bit sequences, starting from given states.</p>
 
   <p><span class="doc-section-title">Parameters:</span></p>
   <ul>
@@ -4699,7 +4702,7 @@ where</p>
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.</p>
+          <p>The bit sequence(s) to be encoded. Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.</p>
         </div>
       </li>
       <li class="field-body">
@@ -4707,7 +4710,7 @@ where</p>
             <span class="doc-param-annotation">(<code><span title="numpy.typing.ArrayLike">ArrayLike</span></code>)</span>
         –
         <div class="doc-md-description">
-          <p>The initial state. Must be a 1D-array of length $\sigma$.</p>
+          <p>The initial state(s). Must be either a 1D-array of length $\sigma$, or an array with the leading dimensions of the input and length $\sigma$ in the last dimension.</p>
         </div>
       </li>
   </ul>
@@ -4718,14 +4721,14 @@ where</p>
 <b><code>output</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.</p>
+          <p>The encoded bit sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n / k$.</p>
       </div>
       </li>
       <li class="field-body">
 <b><code>final_state</code></b>            <span class="doc-param-annotation"> (<code><span title="numpy.typing.NDArray">NDArray</span>[<span title="numpy.integer">integer</span>]</code>) </span>
         –
         <div class="doc-md-description">
-          <p>The final state. It is a 1D-array of length $\sigma$.</p>
+          <p>The final state(s). Has the same shape as the input, but with the last dimension replaced by $\sigma$.</p>
       </div>
       </li>
   </ul>
