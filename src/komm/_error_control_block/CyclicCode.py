@@ -165,16 +165,7 @@ class CyclicCode(abc.BlockCode):
             See [`BlockCode.encode`](/ref/BlockCode#encode) for examples.
             </span>
         """
-
-        @blockwise(self.dimension)
-        @vectorize
-        def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
-            u_poly = BinaryPolynomial.from_coefficients(u)
-            v_poly = self._encoding_strategy.encode(u_poly)
-            v = v_poly.coefficients(width=self.length)
-            return v
-
-        return encode(input)
+        return super().encode(input)
 
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
@@ -309,9 +300,6 @@ class EncodingStrategy(ABC):
     def check_matrix(self) -> Array2D[np.integer]: ...
 
     @abstractmethod
-    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial: ...
-
-    @abstractmethod
     def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial: ...
 
 
@@ -334,12 +322,6 @@ class SystematicStrategy(EncodingStrategy):
             col_poly = X**j % self.code.generator_polynomial
             check_matrix[:, j] = col_poly.coefficients(width=m)
         return check_matrix
-
-    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial:
-        u_poly_shifted = u_poly << self.code.redundancy
-        b_poly = u_poly_shifted % self.code.generator_polynomial
-        v_poly = u_poly_shifted + b_poly
-        return v_poly
 
     def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
         u_poly = v_poly >> self.code.redundancy
@@ -365,10 +347,6 @@ class NonSystematicStrategy(EncodingStrategy):
             row_poly = X**i * self.code.check_polynomial.reciprocal()
             check_matrix[i] = row_poly.coefficients(width=n)
         return check_matrix
-
-    def encode(self, u_poly: BinaryPolynomial) -> BinaryPolynomial:
-        v_poly = u_poly * self.code.generator_polynomial
-        return v_poly
 
     def project_word(self, v_poly: BinaryPolynomial) -> BinaryPolynomial:
         u_poly = v_poly // self.code.generator_polynomial
