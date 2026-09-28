@@ -6,6 +6,8 @@
 
 - Added puncturing to `TerminatedConvolutionalCode`.
 
+- Added support for punctured codes to `ViterbiDecoder`.
+
 ## v0.35.0 (2026-09-26)
 
 ### Added

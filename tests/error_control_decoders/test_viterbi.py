@@ -64,17 +64,28 @@ def test_viterbi_parallel_transitions(rng):
 
 
 @pytest.mark.parametrize(
-    "convolutional_code, num_blocks",
+    "convolutional_code, num_blocks, puncturing_matrix",
     [
-        (komm.ConvolutionalCode([[0o7, 0o5]]), 6),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3),
-        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6),
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 6, None),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3, None),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3, None),
+        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6, None),
+        (komm.ConvolutionalCode([[0o5, 0o7]]), 6, [[1, 0], [1, 1]]),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o7, 0o5]]),
+            4,
+            [[1, 1], [1, 1], [1, 0]],
+        ),
+        (komm.ConvolutionalCode([[0o7, 0o5]], [0o7]), 6, [[1, 0], [1, 1]]),
     ],
 )
 @pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])
-def test_viterbi_exhaustive(convolutional_code, num_blocks, mode, rng):
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
+def test_viterbi_exhaustive(
+    convolutional_code, num_blocks, puncturing_matrix, mode, rng
+):
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, num_blocks, mode, puncturing_matrix
+    )
     # Soft: no ties, so compare messages
     viterbi = komm.ViterbiDecoder(code, input_type="soft")
     exhaustive = komm.ExhaustiveSearchDecoder(code, input_type="soft")

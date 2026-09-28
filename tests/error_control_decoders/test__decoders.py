@@ -28,6 +28,7 @@ polar = komm.PolarCode(3, [0, 1, 2, 4])
         [terminated, komm.ViterbiDecoder],
         [terminated, komm.BCJRDecoder],
         [punctured, komm.ExhaustiveSearchDecoder],
+        [punctured, komm.ViterbiDecoder],
         [punctured, komm.SyndromeTableDecoder],
         [bch, komm.BerlekampDecoder],
         [reed_solomon, komm.BerlekampDecoder],

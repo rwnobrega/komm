@@ -40,7 +40,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             raise ValueError("input_type must be 'hard' or 'soft'")
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
-        num_steps = self.code.length // n
+        num_steps = self.code.strategy.codeword_length() // n
         section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
         self._sections = [section] * num_steps
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
@@ -55,9 +55,11 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     def _branch_metrics(
         self, r: npt.NDArray[np.integer | np.floating]
     ) -> npt.NDArray[np.integer | np.floating]:
+        n = self.code.convolutional_code.num_output_bits
         if self.input_type == "hard":
             r = (-1) ** r  # Bits as unit L-values
-        return r @ self._bits.T
+        r = self.code.depuncture(r, 0.0)  # Deleted bits as null L-values
+        return r.reshape(r.shape[0], -1, n) @ self._bits.T
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -75,9 +77,18 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
             >>> decoder.decode([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
+
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b101, 0b111]]),
+            ...     num_blocks=4,
+            ...     mode="zero-termination",
+            ...     puncturing_matrix=[[1, 0], [1, 1]],
+            ... )
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder.decode([1, 1, 0, 1, 1, 0, 0, 0, 0])
+            array([1, 0, 0, 0])
         """
         k = self.code.convolutional_code.num_input_bits
-        n = self.code.convolutional_code.num_output_bits
         h = self.code.num_blocks
 
         @blockwise(self.code.length)
@@ -86,7 +97,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         def decode(r: npt.NDArray[np.integer | np.floating]):
             x_hat = viterbi(
                 sections=self._sections,
-                branch_metrics=self._branch_metrics(r.reshape(r.shape[0], -1, n)),
+                branch_metrics=self._branch_metrics(r),
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,
             )
