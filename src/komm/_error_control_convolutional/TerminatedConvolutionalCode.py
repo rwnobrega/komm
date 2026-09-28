@@ -497,7 +497,7 @@ class TailBiting(TerminationStrategy):
         h = self.num_blocks
         σ = self.convolutional_code.degree
         A_mat, _, _, _ = self.convolutional_code.state_space_representation()
-        matrix = (matrix_power(A_mat, h) + np.eye(σ, dtype=int)) % 2
+        matrix = matrix_power(A_mat, h) % 2 ^ np.eye(σ, dtype=int)
         if rank(matrix) < σ:
             raise ValueError("tail-biting is impossible for this code and 'num_blocks'")
         self._zs_multiplier = pseudo_inverse(matrix)
@@ -509,7 +509,7 @@ class TailBiting(TerminationStrategy):
         σ = self.convolutional_code.degree
         zero_state = np.zeros(σ, dtype=int)
         _, state = self.convolutional_code.encode_with_state(input, zero_state)
-        return state @ self._zs_multiplier % 2
+        return matmul(state, self._zs_multiplier)
 
     def codeword_length(self) -> int:
         h = self.num_blocks
