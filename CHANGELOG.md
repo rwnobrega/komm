@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added puncturing to `TerminatedConvolutionalCode`.
+
 ## v0.35.0 (2026-09-26)
 
 ### Added

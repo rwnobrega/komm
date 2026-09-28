@@ -26,6 +26,8 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
     - **Tail-biting**. The encoder always starts and ends at the same state. To achieve this, the initial state of the encoder is chosen as a function of the information bits. This is possible only if $A^h + I$ is invertible, where $A$ is the state matrix of the convolutional code; this always holds for codes without feedback. The resulting block code will have length $n = h n_0$.
 
+    The code may also be *punctured*: after termination, the codeword bits are kept or deleted according to a *puncturing matrix* $\mathbf{P} \in \mathbb{B}^{n_0 \times T}$, in which the element at row $i$ and column $t$ tells whether the $i$-th output bit of block $t \bmod T$ is kept (`1`) or deleted (`0`), tail blocks included. The lengths given above are then denoted by $n_\mathrm{u}$, the length of the *unpunctured code*, and the length $n$ of the punctured code is the number of kept positions. The puncturing must not delete any nonzero codeword, so that the dimension $k$ is preserved.
+
     For more details, see <cite>LC04, Sec. 12.7</cite> and <cite>WBR01</cite>.
 
     Parameters:
@@ -34,6 +36,8 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         num_blocks: The number $h$ of information blocks.
 
         mode: The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
+
+        puncturing_matrix: The puncturing matrix $\mathbf{P}$. Must be an $n_0 \times T$ array of bits with at least one `1`, where the period $T$ divides the number $n_\mathrm{u} / n_0$ of trellis branches. The default value corresponds to no puncturing.
 
     Examples:
         >>> code = komm.TerminatedConvolutionalCode(
@@ -77,11 +81,27 @@ class TerminatedConvolutionalCode(abc.BlockCode):
                [0, 1, 0, 0, 1, 1]])
         >>> code.minimum_distance()
         3
+
+        >>> code = komm.TerminatedConvolutionalCode(
+        ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+        ...     num_blocks=3,
+        ...     mode='zero-termination',
+        ...     puncturing_matrix=[[1, 1], [1, 0]],
+        ... )
+        >>> (code.length, code.dimension, code.redundancy)
+        (6, 3, 3)
+        >>> code.generator_matrix
+        array([[1, 1, 0, 0, 0, 0],
+               [0, 0, 1, 0, 1, 0],
+               [0, 0, 0, 1, 1, 0]])
+        >>> code.minimum_distance()
+        2
     """
 
     convolutional_code: abc.ConvolutionalCode
     num_blocks: int
     mode: TerminationMode = "zero-termination"
+    puncturing_matrix: npt.ArrayLike | None = None
 
     def __post_init__(self):
         if not self.mode in TerminationMode.__args__:
@@ -94,6 +114,23 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             "zero-termination": ZeroTermination,
             "tail-biting": TailBiting,
         }[self.mode](self.convolutional_code, self.num_blocks)
+        n0 = self.convolutional_code.num_output_bits
+        branches = self.strategy.codeword_length() // n0
+        P_mat = np.ones((n0, 1), dtype=int)
+        if self.puncturing_matrix is not None:
+            P_mat = np.asarray(self.puncturing_matrix)
+        if not P_mat.ndim == 2 or not np.isin(P_mat, [0, 1]).all():
+            raise ValueError("'puncturing_matrix' must be a 2D-array of bits")
+        if not P_mat.shape[0] == n0:
+            raise ValueError("'puncturing_matrix' must have one row per output bit")
+        if not np.any(P_mat):
+            raise ValueError("'puncturing_matrix' must keep at least one bit")
+        period = P_mat.shape[1]
+        if not branches % period == 0:
+            raise ValueError(
+                "'puncturing_matrix' period must divide number of branches"
+            )
+        self._kept = np.flatnonzero(np.tile(P_mat.T.ravel(), branches // period))
 
     @cached_property
     def length(self) -> int:
@@ -107,7 +144,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             >>> code.length
             6
         """
-        return self.strategy.codeword_length()
+        return self._kept.size
 
     @cached_property
     def dimension(self) -> int:
@@ -198,7 +235,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
                 input=self.strategy.pre_process_input(u),
                 initial_state=self.strategy.initial_state(u),
             )
-            return v
+            return v[self._kept]
 
         return encode(input)
 
@@ -219,6 +256,45 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             </span>
         """
         return super().check(input)
+
+    def depuncture(
+        self,
+        input: npt.ArrayLike,
+        fill_value: float,
+    ) -> npt.NDArray[np.integer | np.floating]:
+        r"""
+        Undoes the puncturing, by inserting a given value at the deleted positions. This method takes one or more sequences of received words and returns their corresponding sequences in the coordinates of the unpunctured code.
+
+        Parameters:
+            input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
+
+            fill_value: The value to insert at the deleted positions, such as `0.0` for L-values or `2` for erasures.
+
+        Returns:
+            output: The output sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n_\mathrm{u} / n$.
+
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='zero-termination',
+            ...     puncturing_matrix=[[1, 1], [1, 0]],
+            ... )
+            >>> code.depuncture([1, 1, 1, 0, 0, 0], 2)
+            array([1, 1, 1, 2, 0, 0, 0, 2])
+            >>> code.depuncture([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1], 0.0)
+            array([-0.8, -0.1, -1. ,  0. ,  0.5,  1.8, -1.1,  0. ])
+        """
+        n_u = self.strategy.codeword_length()
+
+        @blockwise(self.length)
+        def depuncture(r: npt.NDArray[np.integer | np.floating]):
+            dtype = np.result_type(r, fill_value)
+            v = np.full((*r.shape[:-1], n_u), fill_value, dtype=dtype)
+            v[..., self._kept] = r
+            return v
+
+        return depuncture(input)
 
     @cache
     def codewords(self) -> Array2D[np.integer]:

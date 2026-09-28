@@ -228,3 +228,81 @@ def test_terminated_convolutional_unencode_invalid_input(mode):
     with pytest.raises(ValueError):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
+
+
+@pytest.mark.parametrize(
+    "puncturing_matrix, rate",
+    [
+        ([[1, 0], [1, 1]], 2 / 3),
+        ([[1, 0, 1], [1, 1, 0]], 3 / 4),
+    ],
+)
+def test_terminated_convolutional_code_punctured_lin_costello(puncturing_matrix, rate):
+    # Lin.Costello.04, Example 12.10.
+    convolutional_code = komm.ConvolutionalCode([[0o5, 0o7]])
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, 6, "direct-truncation", puncturing_matrix
+    )
+    assert code.rate == rate
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, 4, "zero-termination", puncturing_matrix
+    )
+    assert code.minimum_distance() == 3
+
+
+def test_terminated_convolutional_code_puncturing_matrix_of_ones():
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 4)
+    punctured = komm.TerminatedConvolutionalCode(
+        convolutional_code, 4, puncturing_matrix=[[1, 1, 1], [1, 1, 1]]
+    )
+    assert punctured.length == code.length
+    np.testing.assert_equal(punctured.generator_matrix, code.generator_matrix)
+
+
+def test_terminated_convolutional_code_depuncture(rng):
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, 4, puncturing_matrix=[[1, 1], [1, 0]]
+    )
+    n_u, positions = 12, [3, 7, 11]
+    # Bits, with erasures at the deleted positions
+    v = code.encode(rng.integers(0, 2, (3, 4, 2 * code.dimension)))
+    r = code.depuncture(v, 2)
+    assert r.shape == (3, 4, 2 * n_u)
+    np.testing.assert_equal(r.reshape(3, 4, 2, n_u)[..., positions], 2)
+    np.testing.assert_equal(
+        np.delete(r.reshape(3, 4, 2, n_u), positions, axis=-1),
+        v.reshape(3, 4, 2, -1),
+    )
+    # L-values, with null L-values at the deleted positions
+    li = rng.standard_normal((3, 4, 2 * code.length))
+    lo = code.depuncture(li, 0.0)
+    assert lo.shape == (3, 4, 2 * n_u)
+    np.testing.assert_equal(lo.reshape(3, 4, 2, n_u)[..., positions], 0.0)
+    np.testing.assert_equal(
+        np.delete(lo.reshape(3, 4, 2, n_u), positions, axis=-1),
+        li.reshape(3, 4, 2, -1),
+    )
+    # Float fill value gives floats
+    assert code.depuncture(v, 0.0).dtype == float
+
+
+@pytest.mark.parametrize(
+    "puncturing_matrix",
+    [
+        [[1, 2], [1, 1]],
+        [[0.5, 1], [1, 1]],
+        [1, 1, 1, 0],
+        [[1, 1]],
+        [[0, 0], [0, 0]],
+        [[], []],
+        [[1, 1, 0, 1, 1], [1, 1, 1, 1, 1]],
+    ],
+)
+def test_terminated_convolutional_code_puncturing_matrix_invalid(puncturing_matrix):
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(ValueError):
+        komm.TerminatedConvolutionalCode(
+            convolutional_code, 4, "zero-termination", puncturing_matrix
+        )

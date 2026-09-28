@@ -6,6 +6,11 @@ import komm.abc
 
 block = komm.HammingCode(3)
 terminated = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 12)
+punctured = komm.TerminatedConvolutionalCode(
+    komm.ConvolutionalCode([[0o7, 0o5]]),
+    num_blocks=12,
+    puncturing_matrix=[[1, 1], [1, 0]],
+)
 bch = komm.BCHCode(4, 5)
 reed_solomon = komm.ReedSolomonCode(3, 5)
 reed_muller = komm.ReedMullerCode(1, 5)
@@ -22,6 +27,8 @@ polar = komm.PolarCode(3, [0, 1, 2, 4])
         [block, komm.PeelingDecoder],
         [terminated, komm.ViterbiDecoder],
         [terminated, komm.BCJRDecoder],
+        [punctured, komm.ExhaustiveSearchDecoder],
+        [punctured, komm.SyndromeTableDecoder],
         [bch, komm.BerlekampDecoder],
         [reed_solomon, komm.BerlekampDecoder],
         [reed_muller, komm.ReedDecoder],
