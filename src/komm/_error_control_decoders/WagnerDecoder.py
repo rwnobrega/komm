@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._error_control_block.SingleParityCheckCode import SingleParityCheckCode
-from .._util.decorators import blockwise, vectorize
+from .._util.decorators import blockwise
 
 
 @dataclass
@@ -37,12 +37,11 @@ class WagnerDecoder(abc.CodewordDecoder[SingleParityCheckCode]):
         """
 
         @blockwise(self.code.length)
-        @vectorize
         def decode_to_codeword(r: npt.NDArray[np.floating]):
             v_hat = (r < 0).astype(int)
-            if np.count_nonzero(v_hat) % 2 != 0:
-                i = np.argmin(np.abs(r))
-                v_hat[i] ^= 1
+            parity = np.count_nonzero(v_hat, axis=-1, keepdims=True) % 2
+            i = np.argmin(np.abs(r), axis=-1, keepdims=True)
+            v_hat ^= parity * (np.arange(self.code.length) == i)
             return v_hat
 
         return decode_to_codeword(input)
