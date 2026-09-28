@@ -114,3 +114,18 @@ def test_gaussian_elimination_invalid_input(r):
     decoder = komm.GaussianEliminationDecoder(komm.HammingCode(3))
     with pytest.raises(ValueError):
         decoder.decode(r)
+
+
+@pytest.mark.parametrize(
+    "code, r",
+    [
+        (komm.HammingCode(3), [1, 1, 1, 1, 1, 1, 0]),  # Fewer erasures than k
+        (komm.RepetitionCode(5), [0, 1, 2, 2, 2]),  # At least k erasures
+    ],
+)
+def test_gaussian_elimination_inconsistent_input(code: komm.abc.BlockCode, r):
+    decoder = komm.GaussianEliminationDecoder(code)
+    with pytest.raises(ValueError, match="not compatible with any codeword"):
+        decoder.decode(r)
+    with pytest.raises(ValueError, match="not compatible with any codeword"):
+        decoder.decode_to_codeword(r)

@@ -36,6 +36,10 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 1, 0, 0, 0, 1, 1])
             >>> decoder.decode_to_codeword([1, 0, 2, 1, 2, 2, 2])
             array([1, 0, 2, 1, 0, 2, 2])
+            >>> decoder.decode_to_codeword([1, 1, 1, 1, 1, 1, 0])  # Not a codeword
+            Traceback (most recent call last):
+            ...
+            ValueError: input is not compatible with any codeword
         """
         input = validate_integer_range(input, low=0, high=3)
         G, H = self.code.generator_matrix, self.code.check_matrix
@@ -63,6 +67,10 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 1, 0, 0])
             >>> decoder.decode([1, 0, 2, 1, 2, 2, 2])
             array([1, 0, 2, 1])
+            >>> decoder.decode([1, 1, 1, 1, 1, 1, 0])  # Not a codeword
+            Traceback (most recent call last):
+            ...
+            ValueError: input is not compatible with any codeword
         """
         input = validate_integer_range(input, low=0, high=3)
         G, H = self.code.generator_matrix, self.code.check_matrix
@@ -127,7 +135,10 @@ def _compatible_codewords(
     # See [RU08, Sec. 3.2, pp. 72–74].
     erased = r == 2
     s = H @ np.where(erased, 0, r) % 2
-    v0_erased, W_erased = solution_set(H[:, erased].T, s)
+    try:
+        v0_erased, W_erased = solution_set(H[:, erased].T, s)
+    except ValueError:
+        raise ValueError("input is not compatible with any codeword") from None
     # The unknowns live in E; expand them back to length n.
     v0 = r.copy()
     v0[erased] = v0_erased
@@ -141,4 +152,7 @@ def _compatible_messages(
 ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
     # Returns (u0, N) such that the messages compatible with r are u0 + span(N).
     known = r != 2
-    return solution_set(G[:, known], r[known])
+    try:
+        return solution_set(G[:, known], r[known])
+    except ValueError:
+        raise ValueError("input is not compatible with any codeword") from None
