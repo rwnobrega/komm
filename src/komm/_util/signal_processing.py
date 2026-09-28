@@ -179,7 +179,7 @@ def fourier_transform(
     axis: int = -1,
 ) -> tuple[npt.NDArray[np.complexfloating], npt.NDArray[np.floating]]:
     r"""
-    Computes the Fourier transform. This function applies a shift to the spectrum (so that the zero frequency component is at the center) and scales the output by a given time step. Both the spectrum and the corresponding frequency bins are returned.
+    Computes the Fourier transform. This function applies a shift to the spectrum (so that the zero frequency component is at the center) and scales the output by a given time step. Both the spectrum and the corresponding frequency bins are returned. The first sample of the waveform is taken at time $t = 0$; for a waveform starting at $t_0$, multiply the spectrum by $\mathrm{e}^{-\mathrm{j} 2 \pi f t_0}$.
 
     Note:
         This is a simple wrapper around `numpy.fft` functions.
