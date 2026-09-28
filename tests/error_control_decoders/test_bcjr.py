@@ -51,17 +51,26 @@ def test_bcjr_two_input_bits(feedforward_polynomials, rng):
 
 
 @pytest.mark.parametrize(
-    "convolutional_code, num_blocks",
+    "convolutional_code, num_blocks, puncturing_matrix",
     [
-        (komm.ConvolutionalCode([[0o7, 0o5]]), 6),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3),
-        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6),
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 6, None),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3, None),
+        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3, None),
+        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6, None),
+        (komm.ConvolutionalCode([[0o5, 0o7]]), 6, [[1, 0], [1, 1]]),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o7, 0o5]]),
+            4,
+            [[1, 1], [1, 1], [1, 0]],
+        ),
+        (komm.ConvolutionalCode([[0o7, 0o5]], [0o7]), 6, [[1, 0], [1, 1]]),
     ],
 )
 @pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])
-def test_bcjr_exhaustive(convolutional_code, num_blocks, mode, rng):
-    code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, mode)
+def test_bcjr_exhaustive(convolutional_code, num_blocks, puncturing_matrix, mode, rng):
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, num_blocks, mode, puncturing_matrix
+    )
     decoder = komm.BCJRDecoder(code)
     li = rng.standard_normal((100, code.length))
     # Bitwise MAP over all messages

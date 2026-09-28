@@ -41,7 +41,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits
-        num_sections = self.code.length // n
+        num_sections = self.code.strategy.codeword_length() // n
         section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
         self._sections = [section] * num_sections
         self._polar = (-1) ** int_to_bits(range(2**n), width=n).reshape(-1, n)
@@ -71,6 +71,16 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             >>> decoder = komm.BCJRDecoder(code, output_type="hard")
             >>> decoder.decode([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([1, 1, 0])
+
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
+            ...     num_blocks=3,
+            ...     mode="zero-termination",
+            ...     puncturing_matrix=[[1, 1], [1, 0]],
+            ... )
+            >>> decoder = komm.BCJRDecoder(code)
+            >>> decoder.decode([-0.8, -0.1, -1.0, +1.8, -1.1, -1.6])
+            array([-0.30434446, -0.45888484,  1.45581944])
         """
         n = self.code.convolutional_code.num_output_bits
         h = self.code.num_blocks
@@ -79,9 +89,10 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
+            lu = self.code.depuncture(li, 0.0)  # Deleted bits as null L-values
             log_posteriors = forward_backward(
                 sections=self._sections,
-                branch_metrics=0.5 * li.reshape(li.shape[0], -1, n) @ self._polar.T,
+                branch_metrics=0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T,
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,
             )
