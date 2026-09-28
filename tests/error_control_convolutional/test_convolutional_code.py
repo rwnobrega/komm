@@ -412,3 +412,44 @@ def test_convolutional_code_mceliece_table_8(
     if feedback_polynomials is None:
         assert code._minors_gcd() == komm.BinaryPolynomial(delta)
     assert code.is_catastrophic() == is_catastrophic
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials, feedback_polynomials",
+    [
+        ([[0o7, 0o5]], None),
+        ([[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]], None),
+        ([[0o27, 0o31]], [0o27]),
+    ],
+)
+def test_convolutional_code_encode_batch(
+    feedforward_polynomials, feedback_polynomials, rng
+):
+    code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    k, σ = code.num_input_bits, code.degree
+    u = rng.integers(2, size=(3, 4, 10 * k))
+    s = rng.integers(2, size=(3, 4, σ))
+    # Sequences at once against one at a time
+    np.testing.assert_equal(
+        code.encode(u),
+        [[code.encode(u[i, j]) for j in range(4)] for i in range(3)],
+    )
+    v, s_final = code.encode_with_state(u, s)
+    for i, j in np.ndindex(3, 4):
+        v_ij, s_ij = code.encode_with_state(u[i, j], s[i, j])
+        np.testing.assert_equal(v[i, j], v_ij)
+        np.testing.assert_equal(s_final[i, j], s_ij)
+    # Initial state broadcast over the sequences
+    v, s_final = code.encode_with_state(u, s[0, 0])
+    for i, j in np.ndindex(3, 4):
+        v_ij, s_ij = code.encode_with_state(u[i, j], s[0, 0])
+        np.testing.assert_equal(v[i, j], v_ij)
+        np.testing.assert_equal(s_final[i, j], s_ij)
+
+
+def test_convolutional_code_encode_invalid_state():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(ValueError):
+        code.encode_with_state([1, 0, 1, 1], [0, 0, 0])
+    with pytest.raises(ValueError):
+        code.encode_with_state([1, 0, 1, 1], [[0, 0], [0, 0]])

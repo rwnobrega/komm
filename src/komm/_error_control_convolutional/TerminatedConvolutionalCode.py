@@ -8,8 +8,8 @@ import numpy.typing as npt
 from numpy.linalg import matrix_power
 
 from .. import abc
-from .._util.decorators import blockwise, vectorize
-from .._util.matrices import null_matrix, pseudo_inverse, rank
+from .._util.decorators import blockwise
+from .._util.matrices import matmul, null_matrix, pseudo_inverse, rank
 from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -229,13 +229,12 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         """
 
         @blockwise(self.dimension)
-        @vectorize
         def encode(u: npt.NDArray[np.integer]) -> npt.NDArray[np.integer]:
             v, _ = self.convolutional_code.encode_with_state(
                 input=self.strategy.pre_process_input(u),
                 initial_state=self.strategy.initial_state(u),
             )
-            return v[self._kept]
+            return v[..., self._kept]
 
         return encode(input)
 
@@ -467,8 +466,8 @@ class ZeroTermination(TerminationStrategy):
 
     def pre_process_input(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         input = np.asarray(input)
-        tail = input @ self._tail_projector % 2
-        return np.concatenate([input, tail])
+        tail = matmul(input, self._tail_projector)
+        return np.concatenate([input, tail], axis=-1)
 
     def initial_state(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         σ = self.convolutional_code.degree

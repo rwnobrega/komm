@@ -11,7 +11,7 @@ from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import from_binary, to_binary
-from .._util.matrices import invariant_factors
+from .._util.matrices import invariant_factors, matmul
 from ..types import Array1D, Array2D
 
 
@@ -202,13 +202,13 @@ class ConvolutionalCode(ABC):
     @abstractmethod
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a given bit sequence, starting from the all-zero state.
+        Encodes bit sequences, starting from the all-zero state.
 
         Parameters:
-            input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
+            input: The bit sequence(s) to be encoded. Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.
 
         Returns:
-            output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
+            output: The encoded bit sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n / k$.
         """
         σ = self.degree
         output, _ = self.encode_with_state(input, np.zeros(σ, dtype=int))
@@ -221,33 +221,35 @@ class ConvolutionalCode(ABC):
         initial_state: npt.ArrayLike,
     ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.integer]]:
         r"""
-        Encodes a given bit sequence, starting from a given state.
+        Encodes bit sequences, starting from given states.
 
         Parameters:
-            input: The bit sequence to be encoded. Must be a 1D-array of bits, with length multiple of $k$.
-            initial_state: The initial state. Must be a 1D-array of length $\sigma$.
+            input: The bit sequence(s) to be encoded. Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.
+
+            initial_state: The initial state(s). Must be either a 1D-array of length $\sigma$, or an array with the leading dimensions of the input and length $\sigma$ in the last dimension.
 
         Returns:
-            output: The encoded bit sequence. It is a 1D-array of bits, with length multiple of $n$.
-            final_state: The final state. It is a 1D-array of length $\sigma$.
+            output: The encoded bit sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n / k$.
+
+            final_state: The final state(s). Has the same shape as the input, but with the last dimension replaced by $\sigma$.
         """
         n, k, σ = self.num_output_bits, self.num_input_bits, self.degree
         A_mat, B_mat, C_mat, D_mat = self.state_space_representation()
 
-        input = np.asarray(input).reshape((-1, k))
-        state = np.asarray(initial_state)
+        input = np.asarray(input)
+        u = input.reshape(*input.shape[:-1], -1, k)
+        state = np.atleast_1d(np.asarray(initial_state))
 
-        if state.ndim != 1:
-            raise ValueError("'initial_state' must be a 1D-array")
-        if state.size != σ:
+        if state.shape[-1] != σ:
             raise ValueError(
-                "length of 'initial_state' must be 'degree' "
-                f"(expected {σ}, got {state.size})"
+                "last dimension of 'initial_state' must be 'degree' "
+                f"(expected {σ}, got {state.shape[-1]})"
             )
 
-        output = np.empty(n * input.size // k, dtype=int)
-        for t, u in enumerate(input):
-            output[t * n : (t + 1) * n] = (state @ C_mat + u @ D_mat) % 2
-            state = (state @ A_mat + u @ B_mat) % 2
+        state = np.broadcast_to(state, (*u.shape[:-2], σ))
+        output = np.empty((*u.shape[:-1], n), dtype=int)
+        for t in range(u.shape[-2]):
+            output[..., t, :] = matmul(state, C_mat) ^ matmul(u[..., t, :], D_mat)
+            state = matmul(state, A_mat) ^ matmul(u[..., t, :], B_mat)
 
-        return output, state
+        return output.reshape(*input.shape[:-1], -1), state

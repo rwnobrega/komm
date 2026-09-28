@@ -371,6 +371,9 @@ class ConvolutionalCode(abc.ConvolutionalCode):
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.encode([1, 1, 1, 1])
             array([1, 1, 0, 1, 1, 0, 1, 0])
+            >>> code.encode([[1, 1, 1, 1], [1, 0, 0, 0]])
+            array([[1, 1, 0, 1, 1, 0, 1, 0],
+                   [1, 1, 1, 0, 1, 1, 0, 0]])
         """
         return super().encode(input)
 
