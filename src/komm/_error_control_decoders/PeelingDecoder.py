@@ -12,7 +12,7 @@ from .util import get_pbar
 @dataclass
 class PeelingDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
-    Peeling decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). This decoder resolves erased positions one at a time, from parity checks with a single erased position, and stops when none is left. For more details, see <cite>RU08, Sec. 3.19</cite>.
+    Peeling decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). The non-erased bits must be correct. This decoder resolves erased positions one at a time, from parity checks with a single erased position, and stops when none is left. For more details, see <cite>RU08, Sec. 3.19</cite>.
 
     Parameters:
         code: The block code to be used for decoding.
