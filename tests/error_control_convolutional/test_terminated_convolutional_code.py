@@ -159,6 +159,7 @@ def test_terminated_convolutional_code_tail_biting_singular(
 @pytest.mark.parametrize(
     "feedforward_polynomials",
     [
+        [[0o1, 0o1]],  # μ = 0
         [[0o7, 0o5]],
         [[0o3, 0o2, 0o3], [0o2, 0o1, 0o1]],
         [[0o31, 0o27, 0o00], [0o00, 0o12, 0o15]],

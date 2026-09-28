@@ -455,6 +455,9 @@ class ZeroTermination(TerminationStrategy):
         # See [WBR01, eq. (3)]. Set x_0 = x_t = 0, and t = h + μ.
         h = self.num_blocks
         μ = self.convolutional_code.memory_order
+        if μ == 0:
+            k0 = self.convolutional_code.num_input_bits
+            return np.zeros((h * k0, 0), dtype=int)
         σ = self.convolutional_code.degree
         A_mat, B_mat, _, _ = self.convolutional_code.state_space_representation()
         A_pow = [np.eye(σ, dtype=int)]
