@@ -40,17 +40,17 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             raise ValueError("input_type must be 'hard' or 'soft'")
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
-        num_steps = self.code.strategy.codeword_length() // n
+        num_sections = self.code.strategy.codeword_length() // n
         section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
-        self._sections = [section] * num_steps
+        self._sections = [section] * num_sections
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
         with np.errstate(divide="ignore"):
             self._initial_metrics = -np.log(initial)
             self._final_metrics = -np.log(final)
         # About 64 MiB of decisions and metrics
-        step_bytes = fsm.num_states + 8 * 2**n
-        self._chunk_size = max(1, 2**26 // (num_steps * step_bytes))
+        section_bytes = fsm.num_states + 8 * 2**n
+        self._chunk_size = max(1, 2**26 // (num_sections * section_bytes))
 
     def _branch_metrics(
         self, r: npt.NDArray[np.integer | np.floating]

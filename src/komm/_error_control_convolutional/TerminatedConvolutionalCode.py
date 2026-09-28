@@ -37,7 +37,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
         mode: The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
-        puncturing_matrix: The puncturing matrix $\mathbf{P}$. Must be an $n_0 \times T$ array of bits with at least one `1`, where the period $T$ divides the number $n_\mathrm{u} / n_0$ of trellis branches. The default value corresponds to no puncturing.
+        puncturing_matrix: The puncturing matrix $\mathbf{P}$. Must be an $n_0 \times T$ array of bits with at least one `1`, where the period $T$ divides the number $n_\mathrm{u} / n_0$ of trellis sections. The default value corresponds to no puncturing.
 
     Examples:
         >>> code = komm.TerminatedConvolutionalCode(
@@ -115,7 +115,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             "tail-biting": TailBiting,
         }[self.mode](self.convolutional_code, self.num_blocks)
         n0 = self.convolutional_code.num_output_bits
-        branches = self.strategy.codeword_length() // n0
+        num_sections = self.strategy.codeword_length() // n0
         P_mat = np.ones((n0, 1), dtype=int)
         if self.puncturing_matrix is not None:
             P_mat = np.asarray(self.puncturing_matrix)
@@ -126,11 +126,11 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         if not np.any(P_mat):
             raise ValueError("'puncturing_matrix' must keep at least one bit")
         period = P_mat.shape[1]
-        if not branches % period == 0:
+        if not num_sections % period == 0:
             raise ValueError(
-                "'puncturing_matrix' period must divide number of branches"
+                "'puncturing_matrix' period must divide number of sections"
             )
-        self._kept = np.flatnonzero(np.tile(P_mat.T.ravel(), branches // period))
+        self._kept = np.flatnonzero(np.tile(P_mat.T.ravel(), num_sections // period))
 
     @cached_property
     def length(self) -> int:

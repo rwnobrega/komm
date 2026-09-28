@@ -41,9 +41,9 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits
-        num_steps = self.code.length // n
+        num_sections = self.code.length // n
         section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
-        self._sections = [section] * num_steps
+        self._sections = [section] * num_sections
         self._polar = (-1) ** int_to_bits(range(2**n), width=n).reshape(-1, n)
         initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
         with np.errstate(divide="ignore"):
@@ -52,8 +52,8 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         # Input symbols are LSB-first
         self._input_bits = int_to_bits(range(2**k), width=k).reshape(-1, k)
         # About 64 MiB of metrics
-        step_bytes = 8 * (fsm.num_states + 2**n + 2**k)
-        self._chunk_size = max(1, 2**26 // (num_steps * step_bytes))
+        section_bytes = 8 * (fsm.num_states + 2**n + 2**k)
+        self._chunk_size = max(1, 2**26 // (num_sections * section_bytes))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
