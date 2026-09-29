@@ -205,7 +205,7 @@ def deconvolve(
         y: The coefficients of the divisor. The last one must be nonzero.
 
     Returns:
-        quotient: The coefficients of the quotient. Its last dimension has length `x.shape[-1] - y.shape[-1] + 1`.
+        quotient: The coefficients of the quotient. Its last dimension has length `max(x.shape[-1] - y.shape[-1] + 1, 0)`.
         remainder: The coefficients of the remainder. Its last dimension has length `y.shape[-1] - 1`.
 
     Raises:
@@ -221,8 +221,9 @@ def deconvolve(
     x, y = np.asarray(x), np.asarray(y)
     shape = np.broadcast_shapes(x.shape[:-1], y.shape[:-1])
     d = y.shape[-1] - 1  # Degree of the divisor.
-    remainder = np.broadcast_to(x, shape + x.shape[-1:]).astype(int)
-    quotient = np.zeros(shape + (x.shape[-1] - d,), dtype=int)
+    remainder = np.zeros(shape + (max(x.shape[-1], d),), dtype=int)
+    remainder[..., : x.shape[-1]] = x
+    quotient = np.zeros(shape + (remainder.shape[-1] - d,), dtype=int)
     for i in reversed(range(quotient.shape[-1])):
         q = divide(field, remainder[..., i + d], y[..., d])
         remainder[..., i : i + d + 1] ^= multiply(field, q[..., np.newaxis], y)

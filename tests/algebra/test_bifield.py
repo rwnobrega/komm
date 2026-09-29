@@ -88,16 +88,18 @@ def test_bifield_convolve(field: komm.FiniteBifield, rng):
     assert np.array_equal(convolve(field, x, y), expected)
 
 
-def test_bifield_deconvolve(field: komm.FiniteBifield, rng):
-    x = rng.integers(0, field.order, (3, 1, 7))
+@pytest.mark.parametrize("length", [7, 3, 2, 1])
+def test_bifield_deconvolve(field: komm.FiniteBifield, rng, length):
+    x = rng.integers(0, field.order, (3, 1, length))
     y = rng.integers(0, field.order, (4, 3))
     y[:, -1] = rng.integers(1, field.order, 4)
     quotient, remainder = deconvolve(field, x, y)
-    assert quotient.shape == (3, 4, 5)
+    assert quotient.shape == (3, 4, max(length - 2, 0))
     assert remainder.shape == (3, 4, 2)
     product = convolve(field, quotient, y)
     product[..., :2] ^= remainder
-    assert np.array_equal(product, np.broadcast_to(x, (3, 4, 7)))
+    assert np.array_equal(product[..., :length], np.broadcast_to(x, (3, 4, length)))
+    assert not product[..., length:].any()
 
 
 def test_bifield_binary_matrix(field: komm.FiniteBifield, rng):
