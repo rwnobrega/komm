@@ -1,12 +1,15 @@
-from math import ceil, log
-
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
 from .. import abc
 from .._util.validators import validate_integer_range
-from .util import find_longest_match, integer_to_symbols, symbols_to_integer
+from .util import (
+    find_longest_match,
+    integer_to_symbols,
+    num_digits,
+    symbols_to_integer,
+)
 
 Token = tuple[int, int, int]
 
@@ -85,9 +88,9 @@ class LempelZiv77Code(abc.TokenCode[Token]):
 
     def _get_widths(self) -> tuple[int, int, int]:
         calY = self.target_cardinality
-        p_width = ceil(log(self.search_size, calY))
-        l_width = ceil(log(self.lookahead_size, calY))
-        x_width = ceil(log(self.source_cardinality, calY))
+        p_width = num_digits(self.search_size, calY)
+        l_width = num_digits(self.lookahead_size, calY)
+        x_width = num_digits(self.source_cardinality, calY)
         return p_width, l_width, x_width
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:

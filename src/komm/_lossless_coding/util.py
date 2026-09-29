@@ -1,5 +1,6 @@
 from collections import Counter
 from itertools import product
+from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
@@ -140,6 +141,17 @@ def parse_prefix_free(
             return np.asarray(output)
 
     raise ValueError("input contains invalid word")
+
+
+def num_digits(size: int, base: int) -> int:
+    # Smallest k with base**k >= size
+    k = ceil(log(size, base))
+    # Fix float rounding near exact powers
+    while base**k < size:
+        k += 1
+    while k > 0 and base ** (k - 1) >= size:
+        k -= 1
+    return k
 
 
 def infer_block_size(size: int, cardinality: int, name: str) -> int:

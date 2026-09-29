@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
@@ -8,7 +7,7 @@ from tqdm import tqdm
 from komm._util.validators import validate_integer_range
 
 from .. import abc
-from .util import Word, integer_to_symbols, symbols_to_integer
+from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = int
 
@@ -41,7 +40,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
 
     def _width(self, i: int) -> int:
         # Dictionary has |X| + i entries at the i-th token
-        return ceil(log(self.source_cardinality + i, self.target_cardinality))
+        return num_digits(self.source_cardinality + i, self.target_cardinality)
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""

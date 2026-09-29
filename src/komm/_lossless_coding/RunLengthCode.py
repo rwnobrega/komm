@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_integer_range
-from .util import integer_to_symbols, symbols_to_integer
+from .util import integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
 
@@ -42,8 +41,8 @@ class RunLengthCode(abc.TokenCode[Token]):
 
     def _get_widths(self) -> tuple[int, int]:
         calY = self.target_cardinality
-        x_width = ceil(log(self.source_cardinality, calY))
-        l_width = ceil(log(self.max_run_length, calY))
+        x_width = num_digits(self.source_cardinality, calY)
+        l_width = num_digits(self.max_run_length, calY)
         return x_width, l_width
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:

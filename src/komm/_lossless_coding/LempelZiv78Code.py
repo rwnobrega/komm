@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from math import ceil, log
 
 import numpy as np
 import numpy.typing as npt
@@ -8,7 +7,7 @@ from tqdm import tqdm
 from komm._util.validators import validate_integer_range
 
 from .. import abc
-from .util import Word, integer_to_symbols, symbols_to_integer
+from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
 
@@ -88,10 +87,10 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        M = ceil(log(calX, calY))
+        M = num_digits(calX, calY)
         target: list[int] = []
         for i, (p, x) in enumerate(tokens):
-            k = ceil(log(i + 1, calY))
+            k = num_digits(i + 1, calY)
             target.extend(integer_to_symbols(p, base=calY, width=k))
             if x >= 0:
                 target.extend(integer_to_symbols(x, base=calY, width=M))
@@ -105,12 +104,12 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        M = ceil(log(calX, calY))
+        M = num_digits(calX, calY)
         target = np.asarray(target, dtype=int)
         tokens: list[Token] = []
         i = 0
         while i < target.size:
-            k = ceil(log(len(tokens) + 1, calY))
+            k = num_digits(len(tokens) + 1, calY)
             p = int(symbols_to_integer(target[i : i + k], base=calY))
             i += k
             if i < target.size:
