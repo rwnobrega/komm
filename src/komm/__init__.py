@@ -96,6 +96,7 @@ from ._lossless_coding.LempelZiv77Code import LempelZiv77Code
 from ._lossless_coding.LempelZiv78Code import LempelZiv78Code
 from ._lossless_coding.LempelZivSSCode import LempelZivSSCode
 from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
+from ._lossless_coding.RunLengthCode import RunLengthCode
 from ._lossless_coding.ShannonCode import ShannonCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
@@ -223,6 +224,7 @@ __all__ = [
     "LempelZiv78Code",
     "LempelZivSSCode",
     "LempelZivWelchCode",
+    "RunLengthCode",
     "ShannonCode",
     "TunstallCode",
     "VariableToFixedCode",

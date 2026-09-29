@@ -91,6 +91,7 @@ Source coding:
     - HuffmanCode
     - VariableToFixedCode
     - TunstallCode
+    - RunLengthCode
     - LempelZiv77Code
     - LempelZivSSCode
     - LempelZiv78Code
