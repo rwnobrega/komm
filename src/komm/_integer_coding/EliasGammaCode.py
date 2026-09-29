@@ -14,6 +14,9 @@ class EliasGammaCode(abc.IntegerCode):
 
     unary_code = UnaryCode()
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:

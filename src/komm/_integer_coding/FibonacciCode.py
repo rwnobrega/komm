@@ -11,6 +11,9 @@ class FibonacciCode(abc.IntegerCode):
     Fibonacci code. It is an integer code with domain the positive integers. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
     """
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
         Examples:

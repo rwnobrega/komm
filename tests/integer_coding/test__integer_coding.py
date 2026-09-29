@@ -106,3 +106,7 @@ def test_integer_coding_composition(code: komm.abc.IntegerCode):
     num = unary.decode_single(bits)
     assert list(islice(code.decode(bits), num)) == message
     assert list(bits) == []
+
+
+def test_integer_coding_repr(code: komm.abc.IntegerCode):
+    assert repr(code) == f"{type(code).__name__}()"
