@@ -4,13 +4,14 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .. import abc
 from .._util.validators import validate_integer_range
 from .util import find_longest_match, integer_to_symbols, symbols_to_integer
 
 Token = tuple[int, int, int]
 
 
-class LempelZiv77Code:
+class LempelZiv77Code(abc.TokenCode[Token]):
     r"""
     Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $S \geq 1$ is the size of the *search buffer*, $L \geq 1$ is the size of the *lookahead buffer*, and $W = S + L$ is the size of the *sliding window*. The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \log S + \log L + \log |\mathcal{X}|$$ and all logs are to base $|\mathcal{Y}|$. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
 
@@ -91,8 +92,6 @@ class LempelZiv77Code:
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""
-        Encodes a given sequence of source symbols to the corresponding list of tokens.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -120,8 +119,6 @@ class LempelZiv77Code:
 
     def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a given list of tokens to the corresponding sequence of source symbols.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -144,8 +141,6 @@ class LempelZiv77Code:
 
     def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Returns the target alphabet representation corresponding to a given list of tokens.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -167,8 +162,6 @@ class LempelZiv77Code:
 
     def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
         r"""
-        Returns the list of tokens corresponding to a given target alphabet representation.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -196,14 +189,6 @@ class LempelZiv77Code:
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols to a sequence of target symbols.
-
-        Parameters:
-            input: The sequence of source symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
-
-        Returns:
-            output: The sequence of encoded target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -214,20 +199,10 @@ class LempelZiv77Code:
             >>> lz77.encode([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
             array([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
         """
-        tokens = self.source_to_tokens(input)
-        output = self.tokens_to_target(tokens)
-        return output
+        return super().encode(input)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a sequence of target symbols to a sequence of source symbols.
-
-        Parameters:
-            input: The sequence of target symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the `encode` method.
-
-        Returns:
-            output: The sequence of decoded source symbols. It is a 1D-array with elements in $\mathcal{X}$.
-
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
             ...     search_size=9,
@@ -238,6 +213,4 @@ class LempelZiv77Code:
             >>> lz77.decode([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
             array([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
         """
-        tokens = self.target_to_tokens(input)
-        output = self.tokens_to_source(tokens)
-        return output
+        return super().decode(input)

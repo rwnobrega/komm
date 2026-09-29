@@ -4,6 +4,7 @@ from math import ceil, log
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._util.validators import validate_integer_range
 from .util import integer_to_symbols, symbols_to_integer
 
@@ -11,7 +12,7 @@ Token = tuple[int, int]
 
 
 @dataclass
-class RunLengthCode:
+class RunLengthCode(abc.TokenCode[Token]):
     r"""
     Run-length code. It is a lossless data compression algorithm which parses the source sequence into *runs*, that is, blocks of repeated symbols. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $L \geq 1$ is the *maximum run length*. The token format is $(x, \ell)$, where $x \in \mathcal{X}$ is the repeated symbol and $\ell \in [1 : L]$ is the length of the run; runs longer than $L$ are split into two or more tokens. A token is represented as a fixed-size word in $\mathcal{Y}^n$, consisting of $x$ followed by $\ell - 1$, where $$n = \log |\mathcal{X}| + \log L$$ and all logs are to base $|\mathcal{Y}|$. For more details, see [Wikipedia: Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding).
 
@@ -47,8 +48,6 @@ class RunLengthCode:
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""
-        Encodes a given sequence of source symbols to the corresponding list of tokens.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.source_to_tokens([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
@@ -68,8 +67,6 @@ class RunLengthCode:
 
     def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a given list of tokens to the corresponding sequence of source symbols.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.tokens_to_source([(0, 3), (2, 2), (1, 4), (1, 1)])
@@ -80,8 +77,6 @@ class RunLengthCode:
 
     def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Returns the target alphabet representation corresponding to a given list of tokens.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.tokens_to_target([(0, 3), (2, 2), (1, 4), (1, 1)])
@@ -100,8 +95,6 @@ class RunLengthCode:
 
     def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
         r"""
-        Returns the list of tokens corresponding to a given target alphabet representation.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.target_to_tokens([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
@@ -122,38 +115,18 @@ class RunLengthCode:
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols to a sequence of target symbols.
-
-        Parameters:
-            input: The sequence of source symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
-
-        Returns:
-            output: The sequence of encoded target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.encode([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
             array([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
         """
-        tokens = self.source_to_tokens(input)
-        output = self.tokens_to_target(tokens)
-        return output
+        return super().encode(input)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a sequence of target symbols to a sequence of source symbols.
-
-        Parameters:
-            input: The sequence of target symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the `encode` method.
-
-        Returns:
-            output: The sequence of decoded source symbols. It is a 1D-array with elements in $\mathcal{X}$.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.decode([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
             array([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
         """
-        tokens = self.target_to_tokens(input)
-        output = self.tokens_to_source(tokens)
-        return output
+        return super().decode(input)

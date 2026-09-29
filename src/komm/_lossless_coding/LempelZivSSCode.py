@@ -5,13 +5,14 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .. import abc
 from .._util.validators import validate_integer_range
 from .util import find_longest_match, integer_to_symbols, symbols_to_integer
 
 Token = tuple[Literal[0], int] | tuple[Literal[1], int, int]
 
 
-class LempelZivSSCode:
+class LempelZivSSCode(abc.TokenCode[Token]):
     r"""
     Lempel–Ziv–Storer–Szymanski (LZSS) code. It is a lossless data compression algorithm which is a variation of the [Lempel–Ziv 77](/ref/LempelZiv77Code) algorithm. Let $\mathcal{X}$ be the source alphabet, $\mathcal{Y}$ be the target alphabet, $S \geq 1$ be the size of the *search buffer*, and $L \geq 1$ be the size of the *lookahead buffer*. The token format follows <cite>CT06, Sec. 13.4.1</cite>, where a token is either a *literal* $(0, x)$, where $x \in \mathcal{X}$ is a source symbol, or a *reference* $(1, p, \ell)$, where $p \in [1 : S]$ is the *pointer* (location of the beginning of the match, measured backward from the end of the search window), and $\ell \in [1 : L]$ is the *length* of the match. References are only encoded if they provide compression benefit (length exceeds the break-even point). For more details, see <cite>CT06, Sec. 13.4.1</cite>.
 
@@ -107,8 +108,6 @@ class LempelZivSSCode:
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""
-        Encodes a given sequence of source symbols to the corresponding list of tokens.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -142,8 +141,6 @@ class LempelZivSSCode:
 
     def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a given list of tokens to the corresponding sequence of source symbols.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -171,8 +168,6 @@ class LempelZivSSCode:
 
     def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
         r"""
-        Returns the target alphabet representation corresponding to a given list of tokens.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -202,8 +197,6 @@ class LempelZivSSCode:
 
     def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
         r"""
-        Returns the list of tokens corresponding to a given target alphabet representation.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -239,14 +232,6 @@ class LempelZivSSCode:
 
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols to a sequence of target symbols.
-
-        Parameters:
-            input: The sequence of source symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
-
-        Returns:
-            output: The sequence of encoded target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -256,20 +241,10 @@ class LempelZivSSCode:
             >>> lzss.encode([3, 0, 0, 0, 3, 2, 0, 3])
             array([0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1])
         """
-        tokens = self.source_to_tokens(input)
-        output = self.tokens_to_target(tokens)
-        return output
+        return super().encode(input)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a sequence of target symbols to a sequence of source symbols.
-
-        Parameters:
-            input: The sequence of target symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the `encode` method.
-
-        Returns:
-            output: The sequence of decoded source symbols. It is a 1D-array with elements in $\mathcal{X}$.
-
         Examples:
             >>> lzss = komm.LempelZivSSCode(
             ...     search_size=8,
@@ -279,6 +254,4 @@ class LempelZivSSCode:
             >>> lzss.decode([0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1])
             array([3, 0, 0, 0, 3, 2, 0, 3])
         """
-        tokens = self.target_to_tokens(input)
-        output = self.tokens_to_source(tokens)
-        return output
+        return super().decode(input)
