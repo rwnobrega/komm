@@ -12,6 +12,7 @@ LZ_KWARGS = dict(search_size=2**12, lookahead_size=16, source_cardinality=256)
         komm.LempelZiv77Code(**LZ_KWARGS),
         komm.LempelZivSSCode(**LZ_KWARGS),
         komm.LempelZiv78Code(source_cardinality=256),
+        komm.LempelZivWelchCode(source_cardinality=256),
         komm.RunLengthCode(source_cardinality=256, max_run_length=16),
     ],
     ids=lambda code: type(code).__name__,
@@ -22,7 +23,7 @@ def code(request: pytest.FixtureRequest):
 
 @pytest.fixture
 def long_source(rng):
-    # Long enough for the LZ78 dictionary to outgrow 8-bit pointers.
+    # Long enough for LZ78/LZW dictionaries to outgrow 8-bit pointers.
     return np.repeat(rng.integers(0, 256, 2048), rng.integers(1, 5, 2048))
 
 

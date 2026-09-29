@@ -42,6 +42,9 @@ def test_lzw_wikipedia():
 def test_lzw_literature(alphabet, message, dict_size):
     code = komm.LempelZivWelchCode(len(alphabet))
     message = [alphabet.index(char) for char in message]
+    tokens = code.source_to_tokens(message)
+    assert len(tokens) == dict_size
+    np.testing.assert_equal(code.tokens_to_source(tokens), message)
     compressed = code.encode(message)
     assert len(compressed) == len_compressed(dict_size, len(alphabet))
     np.testing.assert_equal(code.decode(compressed), message)

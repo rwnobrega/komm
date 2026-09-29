@@ -7,13 +7,16 @@ from tqdm import tqdm
 
 from komm._util.validators import validate_integer_range
 
+from .. import abc
 from .util import Word, integer_to_symbols, symbols_to_integer
+
+Token = int
 
 
 @dataclass
-class LempelZivWelchCode:
+class LempelZivWelchCode(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv–Welch (LZW) code. It is a lossless data compression algorithm which is variation of the [Lempel–Ziv 78](/ref/LempelZiv78Code) algorithm. For more details, see <cite>Say06, Sec. 5.4.2</cite>.
+    Lempel–Ziv–Welch (LZW) code. It is a lossless data compression algorithm which is variation of the [Lempel–Ziv 78](/ref/LempelZiv78Code) algorithm. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The token format is $p \in \mathbb{N}$, the index of the corresponding dictionary entry. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \log_{|\mathcal{Y}|} i$, and $i$ is the size of the dictionary at the moment. For more details, see <cite>Say06, Sec. 5.4.2</cite>.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
@@ -36,16 +39,82 @@ class LempelZivWelchCode:
         if not self.target_cardinality >= 2:
             raise ValueError("'target_cardinality' must be at least 2")
 
+    def _width(self, i: int) -> int:
+        # Dictionary has |X| + i entries at the i-th token
+        return ceil(log(self.source_cardinality + i, self.target_cardinality))
+
+    def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
+        r"""
+        Examples:
+            >>> lzw = komm.LempelZivWelchCode(2)
+            >>> lzw.source_to_tokens(np.zeros(15, dtype=int))
+            [0, 2, 3, 4, 5]
+        """
+        source = validate_integer_range(source, high=self.source_cardinality)
+        dictionary: dict[Word, int] = {(s,): s for s in range(self.source_cardinality)}
+        tokens: list[Token] = []
+        word: Word = ()
+        for symbol in tqdm(source, "Compressing LZW", delay=2.5):
+            if word + (symbol,) in dictionary:
+                word += (symbol,)
+                continue
+            tokens.append(dictionary[word])
+            dictionary[word + (symbol,)] = len(dictionary)
+            word = (symbol,)
+        if word:
+            tokens.append(dictionary[word])
+        return tokens
+
+    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> lzw = komm.LempelZivWelchCode(2)
+            >>> lzw.tokens_to_source([0, 2, 3, 4, 5])
+            array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        """
+        dictionary: dict[int, Word] = {s: (s,) for s in range(self.source_cardinality)}
+        source: list[int] = []
+        old: Word = ()
+        for pointer in tqdm(tokens, "Decompressing LZW", delay=2.5):
+            word = dictionary.get(pointer, old + old[:1])
+            source.extend(word)
+            if old:
+                dictionary[len(dictionary)] = old + word[:1]
+            old = word
+        return np.array(source, dtype=int)
+
+    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> lzw = komm.LempelZivWelchCode(2)
+            >>> lzw.tokens_to_target([0, 2, 3, 4, 5])
+            array([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
+        """
+        calY = self.target_cardinality
+        target: list[int] = []
+        for i, pointer in enumerate(tokens):
+            target.extend(integer_to_symbols(pointer, base=calY, width=self._width(i)))
+        return np.array(target, dtype=int)
+
+    def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
+        r"""
+        Examples:
+            >>> lzw = komm.LempelZivWelchCode(2)
+            >>> lzw.target_to_tokens([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
+            [0, 2, 3, 4, 5]
+        """
+        target = np.asarray(target, dtype=int)
+        calY = self.target_cardinality
+        tokens: list[Token] = []
+        i = 0
+        while i + self._width(len(tokens)) <= target.size:
+            k = self._width(len(tokens))
+            tokens.append(symbols_to_integer(target[i : i + k], base=calY))
+            i += k
+        return tokens
+
     def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Encodes a sequence of source symbols to a sequence of target symbols.
-
-        Parameters:
-            input: The sequence of source symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
-
-        Returns:
-            output: The sequence of encoded target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
-
         Examples:
             >>> lzw = komm.LempelZivWelchCode(2)
             >>> lzw.encode(np.zeros(15, dtype=int))
@@ -55,39 +124,10 @@ class LempelZivWelchCode:
             >>> lzw.encode(np.zeros(15, dtype=int))
             array([0, 2, 3, 4, 5])
         """
-        calX, calY = self.source_cardinality, self.target_cardinality
-        input = validate_integer_range(input, high=calX)
-        dictionary: dict[Word, int] = {(s,): s for s in range(calX)}
-        output: list[int] = []
-
-        word: Word = ()
-        for symbol in tqdm(input, "Compressing LZW", delay=2.5):
-            if word + (symbol,) in dictionary:
-                word += (symbol,)
-                continue
-            k = ceil(log(len(dictionary), calY))
-            pointer = dictionary[word]
-            output.extend(integer_to_symbols(pointer, base=calY, width=k))
-            dictionary[word + (symbol,)] = len(dictionary)
-            word = (symbol,)
-
-        if word:
-            k = ceil(log(len(dictionary), calY))
-            pointer = dictionary[word]
-            output.extend(integer_to_symbols(pointer, base=calY, width=k))
-
-        return np.array(output, dtype=int)
+        return super().encode(input)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
-        Decodes a sequence of target symbols to a sequence of source symbols.
-
-        Parameters:
-            input: The sequence of target symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the `encode` method.
-
-        Returns:
-            output: The sequence of decoded source symbols. It is a 1D-array with elements in $\mathcal{X}$.
-
         Examples:
             >>> lzw = komm.LempelZivWelchCode(2)
             >>> lzw.decode([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
@@ -97,33 +137,4 @@ class LempelZivWelchCode:
             >>> lzw.decode([0, 2, 3, 4, 5])
             array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         """
-        calX, calY = self.source_cardinality, self.target_cardinality
-        input = np.asarray(input, dtype=int)
-
-        if input.size == 0:
-            return np.array([], dtype=int)
-
-        dictionary: dict[int, Word] = {s: (s,) for s in range(calX)}
-        output: list[int] = []
-
-        k = ceil(log(calX, calY))
-        pointer = symbols_to_integer(input[:k], base=calY)
-        old = dictionary[pointer]
-        output.extend(old)
-
-        i = k
-        pbar = tqdm(total=input.size, desc="Decompressing LZW", delay=2.5, initial=k)
-        while True:
-            k = ceil(log(len(dictionary) + 1, calY))
-            if i + k > input.size:
-                break
-            pointer = symbols_to_integer(input[i : i + k], base=calY)
-            word = dictionary.get(pointer, old + (old[0],))
-            output.extend(word)
-            dictionary[len(dictionary)] = old + (word[0],)
-            old = word
-            i += k
-            pbar.update(k)
-        pbar.close()
-
-        return np.array(output, dtype=int)
+        return super().decode(input)
