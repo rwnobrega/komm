@@ -3,15 +3,14 @@ from dataclasses import dataclass
 from operator import index
 from typing import SupportsIndex
 
-from .. import abc
+from .._integer_coding.base import SelfDelimitingCode, take
 from .._util.bit_operations import from_binary, to_binary
-from .base import take
 
 
 @dataclass
-class TruncatedBinaryCode(abc.IntegerCode):
+class TruncatedBinaryCode(SelfDelimitingCode):
     r"""
-    Truncated binary code. It is an integer code with domain $[0 : M)$, where $M \geq 2$ is a given cardinality. Let $k = \lfloor \log_2 M \rfloor$ and $u = 2^{k+1} - M$. The codeword for an integer $n \in [0 : M)$ is the $k$-bit binary representation of $n$, if $n < u$, or the $(k + 1)$-bit binary representation of $n + u$, otherwise. If $M$ is a power of $2$, the code reduces to the fixed-length binary code. For more details, see [Wikipedia: Truncated binary encoding](https://en.wikipedia.org/wiki/Truncated_binary_encoding).
+    Truncated binary code. It is a code for integers in $[0 : M)$, where $M \geq 2$ is a given cardinality. Let $k = \lfloor \log_2 M \rfloor$ and $u = 2^{k+1} - M$. The codeword for an integer $n \in [0 : M)$ is the $k$-bit binary representation of $n$, if $n < u$, or the $(k + 1)$-bit binary representation of $n + u$, otherwise. If $M$ is a power of $2$, the code reduces to the fixed-length binary code. For more details, see [Wikipedia: Truncated binary encoding](https://en.wikipedia.org/wiki/Truncated_binary_encoding).
 
     Parameters:
         cardinality: The cardinality $M$ of the code. Must satisfy $M \geq 2$.

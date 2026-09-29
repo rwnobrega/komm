@@ -89,6 +89,7 @@ Source coding:
     - ShannonCode
     - FanoCode
     - HuffmanCode
+    - TruncatedBinaryCode
     - VariableToFixedCode
     - TunstallCode
     - RunLengthCode
@@ -101,7 +102,6 @@ Source coding:
     - EliasGammaCode
     - EliasDeltaCode
     - FibonacciCode
-    - TruncatedBinaryCode
   Quantization:
     - ScalarQuantizer
     - UniformQuantizer

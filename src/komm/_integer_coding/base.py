@@ -5,7 +5,11 @@ from operator import index
 from typing import SupportsIndex
 
 
-class IntegerCode(ABC):
+class SelfDelimitingCode(ABC):
+    r"""
+    Abstract base class for self-delimiting codes, which assign to each integer in their domain a binary codeword whose end can be recognized without knowing its length in advance.
+    """
+
     @abstractmethod
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
@@ -70,6 +74,12 @@ class IntegerCode(ABC):
         it = iter(input)
         for first in it:
             yield self.decode_single(chain([first], it))
+
+
+class IntegerCode(SelfDelimitingCode):
+    r"""
+    Abstract base class for integer codes with domain the positive integers.
+    """
 
 
 def validate_positive(integer: SupportsIndex) -> int:

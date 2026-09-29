@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 import komm
+import komm.abc
 
 
 def test_truncated_binary_basic():
@@ -123,3 +124,7 @@ def test_truncated_binary_rejects_float(integer):
 def test_truncated_binary_invalid_cardinality(M):
     with pytest.raises(ValueError, match="at least 2"):
         komm.TruncatedBinaryCode(M)
+
+
+def test_truncated_binary_not_integer_code():
+    assert not isinstance(komm.TruncatedBinaryCode(5), komm.abc.IntegerCode)

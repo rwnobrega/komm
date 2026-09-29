@@ -110,3 +110,7 @@ def test_integer_coding_composition(code: komm.abc.IntegerCode):
 
 def test_integer_coding_repr(code: komm.abc.IntegerCode):
     assert repr(code) == f"{type(code).__name__}()"
+
+
+def test_integer_coding_instance(code: komm.abc.IntegerCode):
+    assert isinstance(code, komm.abc.IntegerCode)

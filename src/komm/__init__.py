@@ -78,7 +78,6 @@ from ._finite_state_machine.MooreMachine import MooreMachine
 from ._integer_coding.EliasDeltaCode import EliasDeltaCode
 from ._integer_coding.EliasGammaCode import EliasGammaCode
 from ._integer_coding.FibonacciCode import FibonacciCode
-from ._integer_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from ._integer_coding.UnaryCode import UnaryCode
 
 # Labelings
@@ -98,6 +97,7 @@ from ._lossless_coding.LempelZivSSCode import LempelZivSSCode
 from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
 from ._lossless_coding.RunLengthCode import RunLengthCode
 from ._lossless_coding.ShannonCode import ShannonCode
+from ._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
 
@@ -208,7 +208,6 @@ __all__ = [
     "EliasDeltaCode",
     "EliasGammaCode",
     "FibonacciCode",
-    "TruncatedBinaryCode",
     "UnaryCode",
     # _labelings
     "Labeling",
@@ -226,6 +225,7 @@ __all__ = [
     "LempelZivWelchCode",
     "RunLengthCode",
     "ShannonCode",
+    "TruncatedBinaryCode",
     "TunstallCode",
     "VariableToFixedCode",
     # _pulses
