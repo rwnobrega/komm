@@ -5,6 +5,7 @@ from komm._lossless_coding.util import num_digits
 
 @pytest.mark.parametrize("base", [2, 3, 8, 10, 256])
 def test_num_digits(base):
+    assert num_digits(0, base) == 0
     assert num_digits(1, base) == 0
     for k in range(2, 70):
         power = base**k

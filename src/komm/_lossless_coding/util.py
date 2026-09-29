@@ -145,21 +145,20 @@ def parse_prefix_free(
 
 def num_digits(size: int, base: int) -> int:
     # Smallest k with base**k >= size
+    if size <= 1:
+        return 0
     k = ceil(log(size, base))
     # Fix float rounding near exact powers
     while base**k < size:
         k += 1
-    while k > 0 and base ** (k - 1) >= size:
+    while base ** (k - 1) >= size:
         k -= 1
     return k
 
 
 def infer_block_size(size: int, cardinality: int, name: str) -> int:
-    k, power = 1, cardinality
-    while power < size:
-        power *= cardinality
-        k += 1
-    if power != size:
+    k = max(num_digits(size, cardinality), 1)
+    if cardinality**k != size:
         raise ValueError(
             f"length of '{name}' must be a power of source cardinality"
             f" {cardinality} (got {size})"
