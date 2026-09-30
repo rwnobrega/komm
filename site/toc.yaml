@@ -44,6 +44,7 @@ Error control:
     - ViterbiStreamDecoder
   Decoders:
     - ExhaustiveCodewordDecoder
+    - ExhaustiveBitwiseDecoder
     - SyndromeTableDecoder
     - WagnerDecoder
     - ReedDecoder

@@ -28,9 +28,11 @@ class BlockDecoder(ABC, Generic[T]):
 
 class CodewordDecoder(BlockDecoder[T]):
     @abstractmethod
-    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode_to_codeword(
+        self, input: npt.ArrayLike
+    ) -> npt.NDArray[np.integer | np.floating]:
         r"""
-        Decode received words to codewords. This method takes one or more sequences of received words and returns their corresponding estimated codeword sequences.
+        Decode received words to codewords. This method takes one or more sequences of received words and returns their corresponding estimated codeword sequences, as bits or L-values, depending on the decoder.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.

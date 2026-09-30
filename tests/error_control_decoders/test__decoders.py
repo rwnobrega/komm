@@ -23,11 +23,13 @@ polar = komm.PolarCode(3, [0, 1, 2, 4])
     [
         [block, komm.SyndromeTableDecoder],
         [block, komm.ExhaustiveCodewordDecoder],
+        [block, komm.ExhaustiveBitwiseDecoder],
         [block, komm.GaussianEliminationDecoder],
         [block, komm.PeelingDecoder],
         [terminated, komm.ViterbiDecoder],
         [terminated, komm.BCJRDecoder],
         [punctured, komm.ExhaustiveCodewordDecoder],
+        [punctured, komm.ExhaustiveBitwiseDecoder],
         [punctured, komm.ViterbiDecoder],
         [punctured, komm.BCJRDecoder],
         [punctured, komm.SyndromeTableDecoder],

@@ -1,5 +1,3 @@
-from itertools import product
-
 import numpy as np
 import pytest
 
@@ -72,16 +70,9 @@ def test_bcjr_exhaustive(convolutional_code, num_blocks, puncturing_matrix, mode
         convolutional_code, num_blocks, mode, puncturing_matrix
     )
     decoder = komm.BCJRDecoder(code)
+    exhaustive = komm.ExhaustiveBitwiseDecoder(code)
     li = rng.standard_normal((100, code.length))
-    # Bitwise MAP over all messages
-    u = np.array(list(product([0, 1], repeat=code.dimension)))
-    metrics = 0.5 * li @ ((-1) ** code.encode(u)).T
-    lo = [
-        np.logaddexp.reduce(metrics[:, u[:, j] == 0], axis=-1)
-        - np.logaddexp.reduce(metrics[:, u[:, j] == 1], axis=-1)
-        for j in range(code.dimension)
-    ]
-    np.testing.assert_allclose(decoder.decode(li), np.stack(lo, axis=-1), atol=1e-8)
+    np.testing.assert_allclose(decoder.decode(li), exhaustive.decode(li), atol=1e-8)
 
 
 def test_bcjr_reliable_input(rng):
