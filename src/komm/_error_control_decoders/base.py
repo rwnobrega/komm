@@ -32,7 +32,7 @@ class CodewordDecoder(BlockDecoder[T]):
         self, input: npt.ArrayLike
     ) -> npt.NDArray[np.integer | np.floating]:
         r"""
-        Decode received words to codewords. This method takes one or more sequences of received words and returns their corresponding estimated codeword sequences, as bits or L-values, depending on the decoder.
+        Decode received words to estimates of the $n$ code bits. This method takes one or more sequences of received words and returns their corresponding estimated sequences. Depending on the decoder, the estimates may be bits, erasure-marked bits, or L-values, and need not form a valid codeword.
 
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
