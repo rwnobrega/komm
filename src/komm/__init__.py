@@ -61,7 +61,7 @@ from ._error_control_convolutional.ViterbiStreamDecoder import ViterbiStreamDeco
 # Error control - decoders
 from ._error_control_decoders.BCJRDecoder import BCJRDecoder
 from ._error_control_decoders.BerlekampDecoder import BerlekampDecoder
-from ._error_control_decoders.ExhaustiveSearchDecoder import ExhaustiveSearchDecoder
+from ._error_control_decoders.ExhaustiveCodewordDecoder import ExhaustiveCodewordDecoder
 from ._error_control_decoders.GaussianEliminationDecoder import GaussianEliminationDecoder
 from ._error_control_decoders.PeelingDecoder import PeelingDecoder
 from ._error_control_decoders.ReedDecoder import ReedDecoder
@@ -193,7 +193,7 @@ __all__ = [
     # _error_control_decoders
     "BCJRDecoder",
     "BerlekampDecoder",
-    "ExhaustiveSearchDecoder",
+    "ExhaustiveCodewordDecoder",
     "GaussianEliminationDecoder",
     "PeelingDecoder",
     "ReedDecoder",

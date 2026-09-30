@@ -10,6 +10,8 @@
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.
 
+- Renamed `ExhaustiveSearchDecoder` to `ExhaustiveCodewordDecoder`.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

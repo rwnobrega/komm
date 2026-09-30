@@ -9,9 +9,9 @@ from .._util.decorators import blockwise
 
 
 @dataclass
-class ExhaustiveSearchDecoder(abc.CodewordDecoder[abc.BlockCode]):
+class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
-    Exhaustive search decoder for general [block codes](/ref/BlockCode). This decoder implements a brute-force search over all possible codewords to find the one that is closest (in terms of Hamming distance, for hard-decision decoding, or Euclidean distance, for soft-decision decoding) to the received word.
+    Exhaustive codeword decoder for general [block codes](/ref/BlockCode). This decoder implements a brute-force search over all possible codewords to find the one that is closest (in terms of Hamming distance, for hard-decision decoding, or Euclidean distance, for soft-decision decoding) to the received word. This is the maximum-likelihood (ML) codeword, which is also the maximum a posteriori (MAP) codeword when messages are equiprobable. For more details, see <cite>MacK03, Sec. 25.1</cite>.
 
     Parameters:
         code: The block code to be used for decoding.
@@ -33,7 +33,7 @@ class ExhaustiveSearchDecoder(abc.CodewordDecoder[abc.BlockCode]):
         Examples:
             >>> code = komm.HammingCode(3)
 
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+            >>> decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
             >>> decoder.decode_to_codeword([
             ...     [1, 1, 0, 1, 0, 1, 1],
             ...     [1, 0, 1, 1, 0, 0, 0],
@@ -41,7 +41,7 @@ class ExhaustiveSearchDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([[1, 1, 0, 0, 0, 1, 1],
                    [1, 0, 1, 1, 0, 1, 0]])
 
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+            >>> decoder = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
             >>> decoder.decode_to_codeword([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
             array([1, 1, 0, 0, 0, 1, 1])
         """
@@ -63,7 +63,7 @@ class ExhaustiveSearchDecoder(abc.CodewordDecoder[abc.BlockCode]):
         Examples:
             >>> code = komm.HammingCode(3)
 
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+            >>> decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
             >>> decoder.decode([
             ...     [1, 1, 0, 1, 0, 1, 1],
             ...     [1, 0, 1, 1, 0, 0, 0],
@@ -71,7 +71,7 @@ class ExhaustiveSearchDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([[1, 1, 0, 0],
                    [1, 0, 1, 1]])
 
-            >>> decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+            >>> decoder = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
             >>> decoder.decode([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
             array([1, 1, 0, 0])
         """

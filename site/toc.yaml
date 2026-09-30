@@ -43,7 +43,7 @@ Error control:
     - TerminatedConvolutionalCode
     - ViterbiStreamDecoder
   Decoders:
-    - ExhaustiveSearchDecoder
+    - ExhaustiveCodewordDecoder
     - SyndromeTableDecoder
     - WagnerDecoder
     - ReedDecoder

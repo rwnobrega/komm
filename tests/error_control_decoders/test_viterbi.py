@@ -88,12 +88,12 @@ def test_viterbi_exhaustive(
     )
     # Soft: no ties, so compare messages
     viterbi = komm.ViterbiDecoder(code, input_type="soft")
-    exhaustive = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+    exhaustive = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
     r = rng.standard_normal((100, code.length))
     np.testing.assert_equal(viterbi.decode(r), exhaustive.decode(r))
     # Hard: ties are common, so compare distances
     viterbi = komm.ViterbiDecoder(code, input_type="hard")
-    exhaustive = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+    exhaustive = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
     r = rng.integers(0, 2, (100, code.length))
     v_hat = code.encode(viterbi.decode(r))
     v_ml = exhaustive.decode_to_codeword(r)

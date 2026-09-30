@@ -3,9 +3,9 @@ import numpy as np
 import komm
 
 
-def test_exhaustive_search_hard():
+def test_exhaustive_codeword_hard():
     code = komm.HammingCode(3, extended=True)
-    decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+    decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
     np.testing.assert_equal(
         decoder.decode([
             [1, 1, 1, 1, 1, 1, 1, 0],
@@ -20,7 +20,7 @@ def test_exhaustive_search_hard():
     )
 
     code = komm.SimplexCode(3)
-    decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+    decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
     np.testing.assert_equal(
         decoder.decode([
             [1, 0, 1, 1, 1, 1, 0],
@@ -33,9 +33,9 @@ def test_exhaustive_search_hard():
     )
 
 
-def test_exhaustive_search_soft():
+def test_exhaustive_codeword_soft():
     code = komm.HammingCode(3)
-    decoder = komm.ExhaustiveSearchDecoder(code, input_type="soft")
+    decoder = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
     np.testing.assert_equal(
         decoder.decode([
             [-0.98, -0.85, 1.07, -0.78, 1.11, -0.95, -1.16],
@@ -48,9 +48,9 @@ def test_exhaustive_search_soft():
     )
 
 
-def test_exhaustive_search_hard_golay(rng):
+def test_exhaustive_codeword_hard_golay(rng):
     code = komm.GolayCode()
-    decoder = komm.ExhaustiveSearchDecoder(code, input_type="hard")
+    decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
     for w in range(code.length + 1):
         for _ in range(10):
             r = np.zeros(23, dtype=int)
