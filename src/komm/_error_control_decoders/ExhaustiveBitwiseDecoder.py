@@ -6,8 +6,8 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise, chunkwise
-from .util import marginalize
+from .._util.decorators import blockwise, chunkwise, with_pbar
+from .util import get_pbar, marginalize
 
 
 @dataclass
@@ -42,6 +42,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
     ) -> npt.NDArray[np.integer | np.floating]:
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size)
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "exhaustive bitwise"))
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             metrics = 0.5 * li @ self._polar.T
             return marginalize(metrics, bits)

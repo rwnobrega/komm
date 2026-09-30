@@ -5,7 +5,8 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.decorators import blockwise
+from .._util.decorators import blockwise, chunkwise, with_pbar
+from .util import get_pbar
 
 
 @dataclass
@@ -26,7 +27,10 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
+        k = self.code.dimension
         self._codewords = self.code.codewords()
+        # About 64 MiB of metrics
+        self._chunk_size = max(1, 2**26 // (8 * 2**k * self.code.length))
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -47,6 +51,8 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
         """
 
         @blockwise(self.code.length)
+        @chunkwise(self._chunk_size)
+        @with_pbar(get_pbar(np.size(input) // self.code.length, "exhaustive codeword"))
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             if self.input_type == "hard":
                 ds = r[..., np.newaxis, :] != self._codewords
