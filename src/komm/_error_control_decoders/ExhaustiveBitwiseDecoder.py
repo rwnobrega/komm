@@ -6,7 +6,8 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise
+from .._util.decorators import blockwise, chunkwise
+from .util import marginalize
 
 
 @dataclass
@@ -33,14 +34,17 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
         self._codewords = self.code.codewords()
         self._messages = int_to_bits(range(2**k), width=k).reshape(-1, k)
         self._polar = (-1) ** self._codewords
+        # About 64 MiB of metrics
+        self._chunk_size = max(1, 2**26 // (8 * 2**k * self.code.length))
 
     def _decode(
         self, input: npt.ArrayLike, bits: npt.NDArray[np.integer]
     ) -> npt.NDArray[np.integer | np.floating]:
         @blockwise(self.code.length)
+        @chunkwise(self._chunk_size)
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             metrics = 0.5 * li @ self._polar.T
-            return _marginalize(metrics, bits)
+            return marginalize(metrics, bits)
 
         output = decode(input)
         if self.output_type == "hard":
@@ -79,15 +83,3 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 1, 0, 1])
         """
         return self._decode(input, self._messages)
-
-
-def _marginalize(
-    metrics: npt.NDArray[np.floating], bits: npt.NDArray[np.integer]
-) -> npt.NDArray[np.floating]:
-    # L-value of each bit, in log domain
-    lo = [
-        np.logaddexp.reduce(np.where(b == 0, metrics, -np.inf), axis=-1)
-        - np.logaddexp.reduce(np.where(b == 1, metrics, -np.inf), axis=-1)
-        for b in bits.T
-    ]
-    return np.stack(lo, axis=-1)

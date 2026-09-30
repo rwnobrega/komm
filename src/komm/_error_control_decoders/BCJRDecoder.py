@@ -11,7 +11,7 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 from .._finite_state_machine.trellis import TrellisSection, forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
-from .util import get_pbar
+from .util import get_pbar, marginalize
 
 
 @dataclass
@@ -96,20 +96,10 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,
             )
-            lo = _marginalize(log_posteriors[:, :h], self._input_bits)
+            lo = marginalize(log_posteriors[:, :h], self._input_bits)
             return lo.reshape(li.shape[0], -1)
 
         output = decode(input)
         if self.output_type == "hard":
             output = (output < 0.0).astype(int)
         return output
-
-
-def _marginalize(
-    log_posteriors: npt.NDArray[np.floating], bits: npt.NDArray[np.integer]
-) -> npt.NDArray[np.floating]:
-    # L-value of each bit, in log domain
-    metrics = log_posteriors[..., np.newaxis]
-    l0 = np.logaddexp.reduce(np.where(bits == 0, metrics, -np.inf), axis=-2)
-    l1 = np.logaddexp.reduce(np.where(bits == 1, metrics, -np.inf), axis=-2)
-    return l0 - l1
