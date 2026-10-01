@@ -9,6 +9,8 @@ import komm.abc
 
 @pytest.fixture(
     params=[
+        komm.UnaryCode(),
+        komm.UnaryCode(stop_bit=0),
         komm.EliasGammaCode(),
         komm.EliasDeltaCode(),
         komm.FibonacciCode(),
@@ -105,10 +107,6 @@ def test_integer_coding_composition(code: komm.abc.IntegerCode):
     num = unary.decode_single(bits)
     assert list(islice(code.decode(bits), num)) == message
     assert list(bits) == []
-
-
-def test_integer_coding_repr(code: komm.abc.IntegerCode):
-    assert repr(code) == f"{type(code).__name__}()"
 
 
 def test_integer_coding_instance(code: komm.abc.IntegerCode):

@@ -36,3 +36,7 @@ def test_fibonacci_invalid_tail_bit():
     code = komm.FibonacciCode()
     with pytest.raises(ValueError, match="invalid bit"):
         code.decode_single(iter([0, 0, 0, 1, 7]))
+
+
+def test_fibonacci_repr():
+    assert repr(komm.FibonacciCode()) == "FibonacciCode()"

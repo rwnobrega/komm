@@ -33,3 +33,7 @@ def test_elias_gamma_invalid_tail_bit():
     code = komm.EliasGammaCode()
     with pytest.raises(ValueError, match="invalid bit"):
         code.decode_single(iter([0, 0, 1, 0, 7]))
+
+
+def test_elias_gamma_repr():
+    assert repr(komm.EliasGammaCode()) == "EliasGammaCode()"

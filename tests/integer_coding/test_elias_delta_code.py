@@ -34,3 +34,7 @@ def test_elias_delta_invalid_tail_bit():
     code = komm.EliasDeltaCode()
     with pytest.raises(ValueError, match="invalid bit"):
         code.decode_single(iter([0, 1, 1, 0, 7]))
+
+
+def test_elias_delta_repr():
+    assert repr(komm.EliasDeltaCode()) == "EliasDeltaCode()"
