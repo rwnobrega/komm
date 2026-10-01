@@ -14,6 +14,9 @@ import komm.abc
         komm.EliasGammaCode(),
         komm.EliasDeltaCode(),
         komm.FibonacciCode(),
+        komm.GolombCode(1),
+        komm.GolombCode(3),
+        komm.GolombCode(4),
     ],
 )
 def code(request: pytest.FixtureRequest):
@@ -53,7 +56,7 @@ def test_integer_coding_lazy_decode(code: komm.abc.IntegerCode):
 
 @pytest.mark.parametrize("n", [1, 2, 3, 7, 8, 63, 64, 1000])
 def test_integer_coding_boundary_invariant(code: komm.abc.IntegerCode, n: int):
-    if not isinstance(code, komm.UnaryCode):
+    if not isinstance(code, (komm.UnaryCode, komm.GolombCode)):
         n = n * 10**6 + 1
     for tail in [[], [0], [1], [1, 0, 1, 1, 0]]:
         bits = iter(code.encode_single(n) + tail)

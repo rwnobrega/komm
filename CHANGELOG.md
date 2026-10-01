@@ -10,6 +10,8 @@
 
 - Added parameter `stop_bit` to `UnaryCode`, which selects the bit that ends each codeword.
 
+- Implemented [Golomb code](https://komm.dev/ref/GolombCode).
+
 ### Breaking changes
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.

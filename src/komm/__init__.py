@@ -79,6 +79,7 @@ from ._finite_state_machine.MooreMachine import MooreMachine
 from ._integer_coding.EliasDeltaCode import EliasDeltaCode
 from ._integer_coding.EliasGammaCode import EliasGammaCode
 from ._integer_coding.FibonacciCode import FibonacciCode
+from ._integer_coding.GolombCode import GolombCode
 from ._integer_coding.UnaryCode import UnaryCode
 
 # Labelings
@@ -210,6 +211,7 @@ __all__ = [
     "EliasDeltaCode",
     "EliasGammaCode",
     "FibonacciCode",
+    "GolombCode",
     "UnaryCode",
     # _labelings
     "Labeling",
