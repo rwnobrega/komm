@@ -9,7 +9,6 @@ import komm.abc
 
 @pytest.fixture(
     params=[
-        komm.UnaryCode(),
         komm.EliasGammaCode(),
         komm.EliasDeltaCode(),
         komm.FibonacciCode(),

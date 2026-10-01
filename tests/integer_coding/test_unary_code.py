@@ -34,3 +34,22 @@ def test_unary_invalid_tail_bit():
     code = komm.UnaryCode()
     with pytest.raises(ValueError, match="invalid bit"):
         code.decode_single(iter([0, 0, 0, 7]))
+
+
+def test_unary_stop_bit_zero():
+    message = [1, 2, 3, 4, 5]
+    encoded = [0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0]
+    code = komm.UnaryCode(stop_bit=0)
+    assert list(code.encode(message)) == encoded
+    assert list(code.decode(encoded)) == message
+
+
+@pytest.mark.parametrize("stop_bit", [-1, 2])
+def test_unary_invalid_stop_bit(stop_bit):
+    with pytest.raises(ValueError, match="'stop_bit'"):
+        komm.UnaryCode(stop_bit=stop_bit)
+
+
+def test_unary_repr():
+    assert repr(komm.UnaryCode()) == "UnaryCode(stop_bit=1)"
+    assert repr(komm.UnaryCode(stop_bit=0)) == "UnaryCode(stop_bit=0)"
