@@ -11,9 +11,13 @@ from .base import validate_positive
 @dataclass
 class EscapeCode(abc.IntegerCode):
     r"""
-    Escape code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *divisor*. For an integer $n$, let $q$ and $r$ be the quotient and the remainder of the division of $n - 1$ by $M$. The codeword for $n$ is a sequence of blocks, each one a [truncated binary codeword](/ref/TruncatedBinaryCode) with cardinality $M + 1$: $q$ blocks of $M$, called the *escape*, followed by the block of $r$. If $M = 1$, the code reduces to the [unary code](/ref/UnaryCode) with stop bit $0$; if $M = 2^b - 1$, all blocks have $b$ bits.
+    Escape code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *divisor*. For an integer $n$, let $q$ and $r$ be the quotient and the remainder of the division of $n - 1$ by $M$. The codeword for $n$ is a sequence of blocks, each one a [truncated binary codeword](/ref/TruncatedBinaryCode) with cardinality $M + 1$: $q$ blocks of $M$, called the *escape*, followed by the block of $r$.
 
-    The [Golomb code](/ref/GolombCode) uses the same division, but writes $q$ in unary. The [taboo code](/ref/TabooCode) uses the same blocks, but reserves the block of $0$ to end the codeword, instead of the block of $M$ to extend it.
+    Notes:
+        - For $M = 1$ it reduces to the [unary code](/ref/UnaryCode) with stop bit $0$.
+        - For $M = 2^b - 1$ all blocks have $b$ bits.
+        - The [Golomb code](/ref/GolombCode) uses the same division, but writes $q$ in unary.
+        - The [taboo code](/ref/TabooCode) uses the same blocks, but reserves the block of $0$ to end the codeword, instead of the block of $M$ to extend it.
 
     Parameters:
         divisor: The divisor $M$. Must satisfy $M \geq 1$.

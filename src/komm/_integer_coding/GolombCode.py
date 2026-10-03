@@ -12,7 +12,11 @@ from .UnaryCode import UnaryCode
 @dataclass
 class GolombCode(abc.IntegerCode):
     r"""
-    Golomb code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *divisor*. For an integer $n$, let $q$ and $r$ be the quotient and the remainder of the division of $n - 1$ by $M$. The codeword for $n$ consists of the [unary codeword](/ref/UnaryCode) of $q + 1$ with stop bit $0$ (that is, $q$ ones followed by a single zero), followed by the [truncated binary codeword](/ref/TruncatedBinaryCode) of $r$ with cardinality $M$ (empty if $M = 1$). If $M = 1$, the code reduces to the unary code with stop bit $0$; if $M$ is a power of $2$, it is also known as the *Rice code*. For more details, see <cite>Gol66</cite> or <cite>Say06, Sec. 3.5</cite>, where the domain is the non-negative integers, so that the codeword for $n$ here is their codeword for $n - 1$.
+    Golomb code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *divisor*. For an integer $n$, let $q$ and $r$ be the quotient and the remainder of the division of $n - 1$ by $M$. The codeword for $n$ consists of the [unary codeword](/ref/UnaryCode) of $q + 1$ with stop bit $0$ (that is, $q$ ones followed by a single zero), followed by the [truncated binary codeword](/ref/TruncatedBinaryCode) of $r$ with cardinality $M$ (empty if $M = 1$). For more details, see <cite>Gol66</cite> or <cite>Say06, Sec. 3.5</cite>, where the domain is the non-negative integers, so that the codeword for $n$ here is their codeword for $n - 1$.
+
+    Notes:
+        - For $M = 1$ it reduces to the [unary code](/ref/UnaryCode) with stop bit $0$.
+        - For $M$ a power of $2$ it is also known as the *Rice code*.
 
     Parameters:
         divisor: The divisor $M$. Must satisfy $M \geq 1$.

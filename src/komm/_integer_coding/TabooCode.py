@@ -11,9 +11,14 @@ from .base import validate_positive
 @dataclass
 class TabooCode(abc.IntegerCode):
     r"""
-    Taboo code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *base*. The codeword for an integer $n$ is a sequence of blocks, each one a [truncated binary codeword](/ref/TruncatedBinaryCode) with cardinality $M + 1$: the blocks of the digits of $n - 1$ in [bijective base $M$](https://en.wikipedia.org/wiki/Bijective_numeration), which range from $1$ to $M$, most significant first, followed by the block of $0$, called the *taboo*. If $M = 1$, the code reduces to the [unary code](/ref/UnaryCode) with stop bit $0$; if $M = 2$, it has the same codeword lengths as the [Elias gamma code](/ref/EliasGammaCode).
+    Taboo code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *base*. The codeword for an integer $n$ is a sequence of blocks, each one a [truncated binary codeword](/ref/TruncatedBinaryCode) with cardinality $M + 1$: the blocks of the digits of $n - 1$ in [bijective base $M$](https://en.wikipedia.org/wiki/Bijective_numeration), which range from $1$ to $M$, most significant first, followed by the block of $0$, called the *taboo*.
 
     This is a variation of the block taboo codes of <cite>SM10, Sec. 3.16</cite>, which have blocks of $b$ bits (that is, $M = 2^b - 1$) and do not use the taboo alone as a codeword. Here, the taboo alone is the codeword for $n = 1$, which makes the code complete; the codewords for $n \geq 2$ are those of <cite>SM10</cite>, in the same order. The codes $C_3$, $C_7$, and $C_{15}$ of <cite>MacK03, Ch. 7</cite> are similar, but write $n$ in the usual base $M$, without leading zeros, and are therefore not complete.
+
+    Notes:
+        - For $M = 1$ it reduces to the [unary code](/ref/UnaryCode) with stop bit $0$.
+        - For $M = 2$ it has the same codeword lengths as the [Elias gamma code](/ref/EliasGammaCode).
+        - The [escape code](/ref/EscapeCode) uses the same blocks, but reserves the block of $M$ to extend the codeword, instead of the block of $0$ to end it.
 
     Parameters:
         base: The base $M$. Must satisfy $M \geq 1$.
