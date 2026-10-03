@@ -56,13 +56,19 @@ class Lexicode(BlockCode):
 
 
 def lexicode_generator_matrix(n: int, d: int) -> npt.NDArray[np.integer]:
-    codewords = [0]
+    # Per syndrome: coset weight and smallest word.
+    weight = np.array([0], dtype=np.uint8)
+    leader = np.array([0])
     basis: list[int] = []
-    for i in tqdm(range(1, 2**n), desc="Generating lexicode", delay=2.5):
-        # Reverse checking is way faster [Wikipedia].
-        if all((c ^ i).bit_count() >= d for c in reversed(codewords)):
-            if len(codewords).bit_count() == 1:  # Is power of 2.
-                basis.append(i)
-            codewords.append(i)
+    for m in tqdm(range(n), desc="Generating lexicode", delay=2.5):
+        # Cosets at distance at least d - 1.
+        far = weight >= d - 1
+        if not far.any():  # New check bit.
+            weight = np.concatenate([weight, weight + 1])
+            leader = np.concatenate([leader, leader + 2**m])
+        else:
+            h = np.argmax(far)  # First far syndrome.
+            basis.append(2**m + int(leader[h]))
+            weight = np.minimum(weight, weight[np.arange(weight.size) ^ h] + 1)
     generator_matrix = int_to_bits(basis, width=n, bit_order="MSB-first").reshape(-1, n)
     return generator_matrix
