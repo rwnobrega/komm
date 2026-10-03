@@ -13,18 +13,18 @@ from .BlockCode import BlockCode
 @typechecked
 class SingleParityCheckCode(BlockCode):
     r"""
-    Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The repetition code has the following parameters:
+    Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The single parity-check code has the following parameters:
 
-    - Length: $n$.
-    - Dimension: $k = n - 1$.
-    - Redundancy: $m = 1$.
-    - Minimum distance: $d = 2$.
+    - Length: $n$
+    - Dimension: $k = n - 1$
+    - Redundancy: $m = 1$
+    - Minimum distance: $d = 2$
 
     Notes:
         - Its dual is the [repetition code](/ref/RepetitionCode).
 
     Parameters:
-        n (int): The length $n$ of the code. Must be a positive integer.
+        n: The length $n$ of the code. Must be a positive integer.
 
     Examples:
         >>> code = komm.SingleParityCheckCode(5)
