@@ -26,6 +26,9 @@ validation:
     absolute_links: ignore
     unrecognized_links: ignore
 
+hooks:
+  - site/hooks.py
+
 plugins:
   - search
   - gen-files:
@@ -84,8 +87,4 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.details
-  - pymdownx.snippets:
-      auto_append:
-        - site/includes/acronyms.md
-        - site/includes/bibliography.md
   - tables
