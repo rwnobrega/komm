@@ -14,13 +14,17 @@ from .BlockCode import BlockCode
 @typechecked
 class Lexicode(BlockCode):
     r"""
-    Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code.
+    Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code. For more details, see <cite>HP03, Sec. 2.11</cite>.
+
+    Notes:
+        - For $d = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $n$.
+        - For $d = n$ it reduces to the [repetition code](/ref/RepetitionCode) of length $n$.
+        - For $n = 2^\mu - 1$ and $d = 3$ it is equivalent to the [Hamming code](/ref/HammingCode); for $n = 2^\mu$ and $d = 4$, to its extended version.
+        - For $n = 23$ and $d = 7$ it is equivalent to the [Golay code](/ref/GolayCode); for $n = 24$ and $d = 8$, to its extended version.
 
     Parameters:
         n: The length $n$ of the code.
-        d: The minimum distance $d$ of the code.
-
-    For more details, see <cite>HP03, Sec. 2.11</cite>.
+        d: The minimum distance $d$ of the code. Must satisfy $1 \leq d \leq n$.
 
     Examples:
         >>> code = komm.Lexicode(7, 3)  # Hamming (7, 4)
