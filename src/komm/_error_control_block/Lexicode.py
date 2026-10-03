@@ -26,6 +26,10 @@ class Lexicode(BlockCode):
         n: The length $n$ of the code.
         d: The minimum distance $d$ of the code. Must satisfy $1 \leq d \leq n$.
 
+    **Resources:**
+
+    - [Table of dimensions.](/res/lexicodes/#dimensions)
+
     Examples:
         >>> code = komm.Lexicode(7, 3)  # Hamming (7, 4)
         >>> (code.length, code.dimension, code.redundancy)
