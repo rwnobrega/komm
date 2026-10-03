@@ -39,6 +39,7 @@ class GolayCode(SystematicBlockCode):
 
     Notes:
         - The binary Golay code is a perfect code.
+        - The extended binary Golay code is self-dual.
 
     Parameters:
         extended: If `True`, constructs the code in extended version. The default value is `False`.

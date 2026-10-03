@@ -17,6 +17,9 @@ class PolarCode(BlockCode):
     - Dimension: $k = |\mathcal{A}|$
     - Redundancy: $m = |\mathcal{F}|$
 
+    Notes:
+        - For $\mathcal{F} = \\{ i : \mathrm{w}(i) < \mu - \rho \\}$ it reduces to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\rho, \mu)$, where $\mathrm{w}(i)$ is the number of ones in the binary representation of $i$.
+
     Parameters:
         mu: The parameter $\mu$ of the code.
         frozen: The frozen bit indices $\mathcal{F}$ of the code.

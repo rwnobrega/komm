@@ -35,7 +35,7 @@ class ReedSolomonCode(SystematicBlockCode):
     Only *narrow-sense* and *primitive* Reed–Solomon codes are implemented. For more details, see <cite>LC04, Sec. 7.3</cite>.
 
     Notes:
-        - For $\mu = 8$ and $\delta = 33$ it is a $(255, 223)$ Reed–Solomon code, which corrects $16$ symbol errors. Its binary image is a $(2040, 1784)$ code.
+        - Reed–Solomon codes are maximum distance separable (MDS) codes, that is, $d = n - k + 1$, in symbols.
 
     Parameters:
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
@@ -50,7 +50,7 @@ class ReedSolomonCode(SystematicBlockCode):
         >>> code.minimum_distance()
         6
 
-        >>> code = komm.ReedSolomonCode(mu=8, delta=33)
+        >>> code = komm.ReedSolomonCode(mu=8, delta=33)  # (255, 223), corrects 16 symbol errors
         >>> (code.length, code.dimension, code.redundancy)
         (2040, 1784, 256)
     """

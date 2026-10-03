@@ -24,7 +24,7 @@ class BCHCode(CyclicCode):
     Only *narrow-sense* and *primitive* BCH codes are implemented. For more details, see <cite>LC04, Ch. 6</cite> and <cite>HP03, Sec. 5.1</cite>.
 
     Notes:
-        - For $\delta = 3$ it reduces to the [Hamming code](/ref/HammingCode).
+        - For $\delta = 3$ it is equivalent to the [Hamming code](/ref/HammingCode).
         - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode).
 
     Parameters:

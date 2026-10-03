@@ -32,6 +32,7 @@ class ReedMullerCode(BlockCode):
         - For $\rho = 1$ it reduces to a lengthened [simplex code](/ref/SimplexCode).
         - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
         - For $\rho = \mu - 1$ it reduces to a [single parity-check code](/ref/SingleParityCheckCode).
+        - The dual of the code with parameters $(\rho, \mu)$ is the code with parameters $(\mu - \rho - 1, \mu)$.
 
     Parameters:
         rho: The parameter $\rho$ of the code.
