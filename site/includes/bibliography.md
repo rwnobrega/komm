@@ -18,6 +18,7 @@
 *[RU08]: Tom Richardson and Rüdiger Urbanke. Modern Coding Theory. Cambridge University Press, 2008. ISBN 978-0521852296.
 *[SA15]: Leszek Szczecinski, Alex Alvarado. Bit-Interleaved Coded Modulation: Fundamentals, Analysis and Design. Wiley-IEEE Press, 2015. ISBN 978-0470686171.
 *[Say06]: Khalid Sayood. Introduction to Data Compression. Elsevier, 3rd edition, 2006. ISBN 978-0126208627.
+*[SM10]: David Salomon and Giovanni Motta. Handbook of Data Compression. Springer, 5th edition, 2010. ISBN 978-1848829022.
 *[WBR01]: Christian Weiß, Christian Bettstetter, and Sven Riedel. Code construction and decoding of parallel concatenated tail-biting codes. IEEE Transactions on Information Theory, 47(1):366–386, 2001.
 *[XiD03]: Sebastià Xambó i Descamps. Block Error-Correcting Codes: A Computational Primer. Springer-Verlag, 2003. ISBN 978-3642189975.
 *[YG14]: Roy D. Yates and David J. Goodman. Probability and Stochastic Processes: A Friendly Introduction for Electrical and Computer Engineers. Wiley, 3rd edition, 2014. ISBN 978-1118324561.

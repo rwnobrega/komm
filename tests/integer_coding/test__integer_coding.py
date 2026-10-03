@@ -17,6 +17,9 @@ import komm.abc
         komm.GolombCode(1),
         komm.GolombCode(3),
         komm.GolombCode(4),
+        komm.TabooCode(2),
+        komm.TabooCode(3),
+        komm.TabooCode(4),
     ],
 )
 def code(request: pytest.FixtureRequest):

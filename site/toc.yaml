@@ -104,6 +104,7 @@ Source coding:
     - EliasGammaCode
     - EliasDeltaCode
     - FibonacciCode
+    - TabooCode
   Quantization:
     - ScalarQuantizer
     - UniformQuantizer

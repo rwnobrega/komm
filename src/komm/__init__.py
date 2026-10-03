@@ -80,6 +80,7 @@ from ._integer_coding.EliasDeltaCode import EliasDeltaCode
 from ._integer_coding.EliasGammaCode import EliasGammaCode
 from ._integer_coding.FibonacciCode import FibonacciCode
 from ._integer_coding.GolombCode import GolombCode
+from ._integer_coding.TabooCode import TabooCode
 from ._integer_coding.UnaryCode import UnaryCode
 
 # Labelings
@@ -212,6 +213,7 @@ __all__ = [
     "EliasGammaCode",
     "FibonacciCode",
     "GolombCode",
+    "TabooCode",
     "UnaryCode",
     # _labelings
     "Labeling",
