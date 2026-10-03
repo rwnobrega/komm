@@ -20,6 +20,9 @@ import komm.abc
         komm.TabooCode(2),
         komm.TabooCode(3),
         komm.TabooCode(4),
+        komm.EscapeCode(2),
+        komm.EscapeCode(3),
+        komm.EscapeCode(4),
     ],
 )
 def code(request: pytest.FixtureRequest):
@@ -59,7 +62,7 @@ def test_integer_coding_lazy_decode(code: komm.abc.IntegerCode):
 
 @pytest.mark.parametrize("n", [1, 2, 3, 7, 8, 63, 64, 1000])
 def test_integer_coding_boundary_invariant(code: komm.abc.IntegerCode, n: int):
-    if not isinstance(code, (komm.UnaryCode, komm.GolombCode)):
+    if not isinstance(code, (komm.UnaryCode, komm.GolombCode, komm.EscapeCode)):
         n = n * 10**6 + 1
     for tail in [[], [0], [1], [1, 0, 1, 1, 0]]:
         bits = iter(code.encode_single(n) + tail)

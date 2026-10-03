@@ -101,6 +101,7 @@ Source coding:
   Integer coding:
     - UnaryCode
     - GolombCode
+    - EscapeCode
     - EliasGammaCode
     - EliasDeltaCode
     - FibonacciCode

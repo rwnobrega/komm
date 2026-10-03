@@ -10,9 +10,7 @@
 
 - Added parameter `stop_bit` to `UnaryCode`, which selects the bit that ends each codeword.
 
-- Implemented [Golomb code](https://komm.dev/ref/GolombCode).
-
-- Implemented [taboo code](https://komm.dev/ref/TabooCode).
+- Implemented [Golomb](https://komm.dev/ref/GolombCode), [taboo](https://komm.dev/ref/TabooCode), and [escape](https://komm.dev/ref/EscapeCode) integer codes.
 
 ### Breaking changes
 
