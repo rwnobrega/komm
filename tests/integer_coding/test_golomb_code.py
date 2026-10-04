@@ -35,7 +35,7 @@ def test_golomb_basic():
     ],
 )
 def test_golomb_paper_tables(M, codewords):
-    # Gol66, Tables I and II, shifted by one
+    # [Gol66, Tables I and II], shifted by one
     code = komm.GolombCode(M)
     for n, codeword in enumerate(codewords.split(), start=1):
         assert code.encode_single(n) == [int(bit) for bit in codeword]

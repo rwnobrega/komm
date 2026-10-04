@@ -14,7 +14,7 @@ def test_taboo_basic():
 
 
 def test_taboo_book_table():
-    # SM10, Table 3.32, shifted by two
+    # [SM10, Table 3.32], shifted by two
     code = komm.TabooCode(3)
     codewords = (
         "0100 1000 1100 "
