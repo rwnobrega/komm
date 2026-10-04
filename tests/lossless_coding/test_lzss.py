@@ -5,7 +5,7 @@ import komm
 
 
 def test_lzss_cover_exercise_13_8():
-    # [CT06,  Exercise 13.8 (c), p. 459].
+    # [CT06, Exercise 13.8 (c), p. 459]
     ws, ls = 4096, 256
     code = komm.LempelZivSSCode(
         search_size=ws - ls,

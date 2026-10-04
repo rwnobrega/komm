@@ -47,7 +47,7 @@ import komm
     ],
 )
 def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance, rng):
-    # [LC04, p. 539--540]
+    # [LC04, pp. 539–540]
     code = komm.LowRateConvolutionalCode(g_row)
     n = len(g_row)
     assert code.num_input_bits == 1

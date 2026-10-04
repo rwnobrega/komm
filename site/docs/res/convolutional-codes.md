@@ -6,7 +6,7 @@ title: Tables of convolutional codes
 
 The table below lists optimal [low-rate convolutional codes](/ref/LowRateConvolutionalCode), for $n \in \\{ 2, 3, 4 \\}$, and small values of degree $\sigma$.
 
-**Source:** <cite>LC04, Tables 12.1 (a)–(c), p. 539–540</cite>.
+**Source:** <cite>LC04, Tables 12.1 (a)–(c), pp. 539–540</cite>.
 
 | $n$ | $\sigma$ | $g(D) = [g_0(D) ~ \cdots ~ g_{n-1}(D)]$ | $d_\mathrm{free}$ |
 | :-: | :------: | --------------------------------------- | :---------------: |

@@ -38,7 +38,7 @@ def test_lz78_literature(alphabet, message, dict_size, incomplete):
 
 
 def test_lz78_cover():
-    # [CT06, p. 442-443]
+    # [CT06, pp. 442–443]
     code = komm.LempelZiv78Code(2)
     alphabet = "AB"
     source = [alphabet.index(x) for x in "ABBABBABBBAABABAA"]

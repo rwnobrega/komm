@@ -276,14 +276,14 @@ def test_trellis_oriented_form_random(n_rows, n_cols, rng):
 @pytest.mark.parametrize(
     "matrix, factors",
     [
-        (  # [McE98, p. 1128–1129]
+        (  # [McE98, pp. 1128–1129]
             [
                 [0b1, 0b111, 0b101, 0b11],
                 [0b10, 0b111, 0b100, 0b1],
             ],
             [0b1, 0b111],
         ),
-        (  # [JZ15, p. 63–65]
+        (  # [JZ15, pp. 63–65]
             [
                 [0b11, 0b10, 0b1],
                 [0b100, 0b1, 0b111],

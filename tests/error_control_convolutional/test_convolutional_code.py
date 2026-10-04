@@ -313,7 +313,7 @@ def test_convolutional_encoder_vs_fsm(
 def test_convolutional_code_free_distance_g_mcelice(
     feedforward_polynomials, free_distance, forney_indices
 ):
-    # [McE98, p. 1086--1088]
+    # [McE98, pp. 1086–1088]
     code = komm.ConvolutionalCode(feedforward_polynomials)
     np.testing.assert_equal(code.constraint_lengths, forney_indices)
     assert code.is_catastrophic() is False

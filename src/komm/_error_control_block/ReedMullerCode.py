@@ -113,7 +113,7 @@ class ReedMullerCode(BlockCode):
 
 
 def reed_muller_generator_matrix(rho: int, mu: int) -> npt.NDArray[np.integer]:
-    # See [LC04, p. 105–114]. Assumes 0 <= rho < mu.
+    # See [LC04, pp. 105–114]. Assumes 0 <= rho < mu.
     v = np.empty((mu, 2**mu), dtype=int)
     for i in range(mu):
         block = np.hstack((
