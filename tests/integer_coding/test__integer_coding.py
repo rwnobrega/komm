@@ -13,6 +13,7 @@ import komm.abc
         komm.UnaryCode(stop_bit=0),
         komm.EliasGammaCode(),
         komm.EliasDeltaCode(),
+        komm.EliasOmegaCode(),
         komm.FibonacciCode(),
         komm.GolombCode(1),
         komm.GolombCode(3),

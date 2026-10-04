@@ -78,6 +78,7 @@ from ._finite_state_machine.MooreMachine import MooreMachine
 # Integer coding
 from ._integer_coding.EliasDeltaCode import EliasDeltaCode
 from ._integer_coding.EliasGammaCode import EliasGammaCode
+from ._integer_coding.EliasOmegaCode import EliasOmegaCode
 from ._integer_coding.EscapeCode import EscapeCode
 from ._integer_coding.FibonacciCode import FibonacciCode
 from ._integer_coding.GolombCode import GolombCode
@@ -212,6 +213,7 @@ __all__ = [
     # _integer_coding
     "EliasDeltaCode",
     "EliasGammaCode",
+    "EliasOmegaCode",
     "EscapeCode",
     "FibonacciCode",
     "GolombCode",

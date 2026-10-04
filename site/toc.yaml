@@ -104,6 +104,7 @@ Source coding:
     - EscapeCode
     - EliasGammaCode
     - EliasDeltaCode
+    - EliasOmegaCode
     - FibonacciCode
     - TabooCode
   Quantization:
