@@ -5,7 +5,7 @@ import komm
 
 
 def test_convolutional_code_basic():
-    # Lin.Costello.04, p. 454--456.
+    # [LC04, pp. 454–456]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b1101, 0b1111]],
     )
@@ -14,7 +14,7 @@ def test_convolutional_code_basic():
     np.testing.assert_equal(code.memory_order, 3)
     np.testing.assert_equal(code.degree, 3)
 
-    # Lin.Costello.04, p. 456--458.
+    # [LC04, pp. 456–458]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]],
     )
@@ -23,7 +23,7 @@ def test_convolutional_code_basic():
     np.testing.assert_equal(code.memory_order, 1)
     np.testing.assert_equal(code.degree, 2)
 
-    # Ryan.Lin.09, p. 154.
+    # [RL09, p. 154]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )
@@ -44,7 +44,7 @@ def test_convolutional_code_basic():
 
 
 def test_convolutional_code_encode_books():
-    # Abrantes.10, p. 307.
+    # [Abr10, p. 307]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )
@@ -53,7 +53,7 @@ def test_convolutional_code_encode_books():
         [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1],
     )
 
-    # Lin.Costello.04, p. 454--456.
+    # [LC04, pp. 454–456]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b1101, 0b1111]],
     )
@@ -62,7 +62,7 @@ def test_convolutional_code_encode_books():
         [1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
     )
 
-    # Lin.Costello.04, p. 456--458.
+    # [LC04, pp. 456–458]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]],
     )
@@ -71,7 +71,7 @@ def test_convolutional_code_encode_books():
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
     )
 
-    # Ryan.Lin.09, p. 154.
+    # [RL09, p. 154]
     code = komm.ConvolutionalCode(
         feedforward_polynomials=[[0b111, 0b101]],
     )

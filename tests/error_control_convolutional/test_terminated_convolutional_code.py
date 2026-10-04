@@ -90,7 +90,7 @@ def test_terminated_convolutional_code_parameters(
 def test_terminated_convolutional_code_tail_biting_lin_costello(
     convolutional_args, termination_args, parameters, generator_matrix, min_distance
 ):
-    # Lin.Costello.04, p. 587--590.
+    # [LC04, pp. 587–590]
     convolutional_code = komm.ConvolutionalCode(*convolutional_args)
     code = komm.TerminatedConvolutionalCode(convolutional_code, *termination_args)
     assert (code.length, code.dimension, code.redundancy) == parameters
@@ -179,7 +179,7 @@ def test_terminated_convolutional_code_encoders(mode, feedforward_polynomials):
 
 
 def test_terminated_convolutional_golay():
-    # Lin.Costello.04, p. 602.
+    # [LC04, p. 602]
     feedforward_polynomials = [
         [3, 0, 1, 0, 3, 1, 1, 1],
         [0, 3, 1, 1, 2, 3, 1, 0],
@@ -239,7 +239,7 @@ def test_terminated_convolutional_unencode_invalid_input(mode):
     ],
 )
 def test_terminated_convolutional_code_punctured_lin_costello(puncturing_matrix, rate):
-    # Lin.Costello.04, Example 12.10.
+    # [LC04, Example 12.10]
     convolutional_code = komm.ConvolutionalCode([[0o5, 0o7]])
     code = komm.TerminatedConvolutionalCode(
         convolutional_code, 6, "direct-truncation", puncturing_matrix

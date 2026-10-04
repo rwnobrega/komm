@@ -7,7 +7,7 @@ import komm
 @pytest.mark.parametrize(
     "convolutional_code, num_blocks, mode, snr, r, u_hat",
     [
-        (  # Abrantes.10, p. 434--437.
+        (  # [Abr10, pp. 434–437]
             komm.ConvolutionalCode([[0b111, 0b101]]),
             4,
             "zero-termination",
@@ -15,7 +15,7 @@ import komm
             [-0.3, -0.1, +0.5, -0.2, -0.8, -0.5, +0.5, -0.3, -0.1, +0.7, -1.5, +0.4],
             [-1.78, -0.24, +1.97, -5.52],
         ),
-        (  # Lin.Costello.04, p. 572--575.
+        (  # [LC04, pp. 572–575]
             komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
             3,
             "zero-termination",

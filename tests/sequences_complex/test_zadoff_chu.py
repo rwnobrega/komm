@@ -7,7 +7,7 @@ import komm
 
 
 def test_zadoff_chu_andrews():
-    # Andrews.22, Sec. III, Example 1
+    # [And22, Sec. III, Example 1]
     s_1 = komm.ZadoffChuSequence(5, root_index=1).sequence
     np.testing.assert_allclose(
         s_1,

@@ -104,7 +104,7 @@ def test_lz78_wikipedia():
     ],
 )
 def test_lz78_mackay(message, compressed):
-    # David J.C. MacKay: Information Theory, Inference, and Learning Algorithms
+    # [MacK03, Sec. 6.4]
     code = komm.LempelZiv78Code(2)
     message = [int(char) for char in message]
     compressed = [int(char) for char in compressed]

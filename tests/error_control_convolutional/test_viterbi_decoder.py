@@ -5,7 +5,7 @@ import komm
 
 
 def test_viterbi_stream_decoder_books():
-    # Abrantes.10, p. 307.
+    # [Abr10, p. 307]
     code = komm.ConvolutionalCode(feedforward_polynomials=[[0b111, 0b101]])
     traceback_length = 12
     decoder = komm.ViterbiStreamDecoder(code, traceback_length, input_type="hard")

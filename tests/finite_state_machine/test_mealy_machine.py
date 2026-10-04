@@ -4,7 +4,7 @@ import komm
 
 
 def test_mealy_machine_viterbi_sklar():
-    # Sklar.01, p. 401-405.
+    # [Skl01, pp. 401–405]
     def metric_function(y, z) -> float:
         s = komm.int_to_bits(y, width=2)
         return float(np.count_nonzero(z != s))
@@ -26,7 +26,7 @@ def test_mealy_machine_viterbi_sklar():
 
 
 def test_mealy_machine_viterbi_ryan_lin():
-    # Ryan.Lin.09, p. 176-177
+    # [RL09, pp. 176–177]
     def metric_function(y, z):
         y = (-1) ** komm.int_to_bits(y, width=2)
         return -np.dot(z, y)
@@ -47,7 +47,7 @@ def test_mealy_machine_viterbi_ryan_lin():
 
 
 def test_mealy_machine_forward_backward_lin_costello():
-    # Lin.Costello.04, p. 572-575.
+    # [LC04, pp. 572–575]
     def metric_function(y, z):
         return 0.5 * np.dot(z, (-1) ** komm.int_to_bits(y, width=2))
 
@@ -64,7 +64,7 @@ def test_mealy_machine_forward_backward_lin_costello():
 
 
 def test_mealy_machine_forward_backward_abrantes():
-    # Abrantes.10, p.434-437
+    # [Abr10, pp. 434–437]
     def metric_function(y, z):
         return 2.5 * np.dot(z, (-1) ** komm.int_to_bits(y, width=2))
 

@@ -22,7 +22,7 @@ def test_lz77_original_paper():
 
 
 def test_lz77_abrantes():
-    # [Abrantes, p. 16]
+    # [Abr00, p. 16]
     code = komm.LempelZiv77Code(
         search_size=8,
         lookahead_size=4,
@@ -49,7 +49,7 @@ def test_lz77_abrantes():
 
 
 def test_lz77_sayood():
-    # [Sayood, p. 122]
+    # [Say06, p. 122]
     code = komm.LempelZiv77Code(
         search_size=7,
         lookahead_size=6,
