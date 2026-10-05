@@ -72,8 +72,8 @@ deprecateTypingAliases = true
 strict = ["src/**"]
 
 [tool.pytest]
-addopts = ["--doctest-plus"]
+addopts = ["--doctest-plus", "--doctest-glob=*.md"]
 python_files = ["test_*.py", "bench_*.py"]
 python_functions = ["test_*", "bench_*"]
 pythonpath = ["."]
-testpaths = ["src/komm", "tests"]
+testpaths = ["src/komm", "tests", "site/docs/recipes"]
