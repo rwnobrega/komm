@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="226" height="194" viewBox="0 0 226 194" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="338" height="290" viewBox="0 0 338 290" xmlns="http://www.w3.org/2000/svg" version="1.1">
 <style>
 svg { color: black; fill: currentColor; }
 @media (prefers-color-scheme: dark) { svg { color: white; } }
@@ -19,133 +19,119 @@ svg { color: black; fill: currentColor; }
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 194
-L 226 194
-L 226 0
+   <path d="M 0 290
+L 338 290
+L 338 0
 L 0 0
-L 0 194
+L 0 290
 z
 " style="fill: none"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 17 161
-L 17 161
-L 65 161
-L 65 129
-L 103.4 129
-L 103.4 97
-L 138.6 97
-L 138.6 65
-L 157.8 65
-L 157.8 33
-L 209 33
-L 209 33
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: miter"/>
+    <path d="M 25 241
+L 25 241
+L 97 241
+L 97 193
+L 154.6 193
+L 154.6 145
+L 207.4 145
+L 207.4 97
+L 236.2 97
+L 236.2 49
+L 313 49
+L 313 49
+" clip-path="url(#pba653dc404)" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
-    <path d="M 65 97
-L 65 129
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
+    <defs>
+     <path id="mf447802146" d="M 0 4
+L 0 -4
+" style="stroke: currentColor; stroke-width: 0.4"/>
+    </defs>
+    <g clip-path="url(#pba653dc404)">
+     <use xlink:href="#mf447802146" x="97" y="145" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#mf447802146" x="154.6" y="145" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#mf447802146" x="207.4" y="145" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#mf447802146" x="236.2" y="145" style="stroke: currentColor; stroke-width: 0.4"/>
+    </g>
    </g>
    <g id="line2d_2">
-    <path d="M 65 101
-L 65 93
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+    <defs>
+     <path id="md6f2178f88" d="M 4 0
+L -4 -0
+" style="stroke: currentColor; stroke-width: 0.4"/>
+    </defs>
+    <g clip-path="url(#pba653dc404)">
+     <use xlink:href="#md6f2178f88" x="169" y="241" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#md6f2178f88" x="169" y="193" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#md6f2178f88" x="169" y="97" style="stroke: currentColor; stroke-width: 0.4"/>
+     <use xlink:href="#md6f2178f88" x="169" y="49" style="stroke: currentColor; stroke-width: 0.4"/>
+    </g>
    </g>
    <g id="line2d_3">
-    <path d="M 103.4 97
-L 103.4 97
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 97 145
+L 97 193
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_4">
-    <path d="M 103.4 101
-L 103.4 93
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 154.6 145
+L 154.6 145
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_5">
-    <path d="M 138.6 97
-L 138.6 97
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 207.4 145
+L 207.4 145
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_6">
-    <path d="M 138.6 101
-L 138.6 93
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 236.2 145
+L 236.2 97
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_7">
-    <path d="M 157.8 97
-L 157.8 65
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 169 241
+L 97 241
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_8">
-    <path d="M 157.8 101
-L 157.8 93
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 169 193
+L 154.6 193
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_9">
-    <path d="M 113 161
-L 65 161
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 169 97
+L 207.4 97
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="line2d_10">
-    <path d="M 109 161
-L 117 161
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_11">
-    <path d="M 113 129
-L 103.4 129
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_12">
-    <path d="M 109 129
-L 117 129
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_13">
-    <path d="M 113 65
-L 138.6 65
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_14">
-    <path d="M 109 65
-L 117 65
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_15">
-    <path d="M 113 33
-L 157.8 33
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
-   </g>
-   <g id="line2d_16">
-    <path d="M 109 33
-L 117 33
-" clip-path="url(#p7941cccc96)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+    <path d="M 169 49
+L 236.2 49
+" clip-path="url(#pba653dc404)" style="fill: none; stroke-dasharray: 4,4; stroke-dashoffset: 0; stroke: currentColor; stroke-width: 0.4"/>
    </g>
    <g id="patch_3">
-    <path d="M 1 97
-Q 113 97 224.36673 97
+    <path d="M 1 145
+Q 169 145 336.36673 145
 " style="fill: none; stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
-    <path d="M 217.36673 94.67
-L 224.36673 97
-L 217.36673 99.33
+    <path d="M 329.36673 142.67
+L 336.36673 145
+L 329.36673 147.33
 z
 " style="stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
-    <path d="M 113 193
-Q 113 97 113 1.63327
+    <path d="M 169 289
+Q 169 145 169 1.63327
 " style="fill: none; stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
-    <path d="M 110.67 8.63327
-L 113 1.63327
-L 115.33 8.63327
+    <path d="M 166.67 8.63327
+L 169 1.63327
+L 171.33 8.63327
 z
 " style="stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <!-- $-1.5\phantom{-}$ -->
-    <g transform="translate(50.8 87.939453) scale(0.1 -0.1)">
+    <g transform="translate(76.552 135.032813) scale(0.144 -0.144)">
      <defs>
       <path id="Cmsy10-11" d="M 653 1472
 Q 600 1472 565 1512
@@ -250,7 +236,7 @@ z
    </g>
    <g id="text_2">
     <!-- $-0.3\phantom{-}$ -->
-    <g transform="translate(89.2 87.939453) scale(0.1 -0.1)">
+    <g transform="translate(134.152 135.032813) scale(0.144 -0.144)">
      <defs>
       <path id="Cmr10-28" d="M 1600 -141
 Q 816 -141 533 504
@@ -349,7 +335,7 @@ z
    </g>
    <g id="text_3">
     <!-- $0.8$ -->
-    <g transform="translate(132.2 111.050781) scale(0.1 -0.1)">
+    <g transform="translate(198.184 162.153125) scale(0.144 -0.144)">
      <defs>
       <path id="Cmr10-4d" d="M 269 972
 Q 269 1356 522 1651
@@ -411,7 +397,7 @@ z
    </g>
    <g id="text_4">
     <!-- $1.4$ -->
-    <g transform="translate(151.4 111.050781) scale(0.1 -0.1)">
+    <g transform="translate(226.984 162.153125) scale(0.144 -0.144)">
      <defs>
       <path id="Cmr10-3b" d="M 178 1056
 L 178 1281
@@ -448,7 +434,7 @@ z
    </g>
    <g id="text_5">
     <!-- $-2$ -->
-    <g transform="translate(120 163.495117) scale(0.1 -0.1)">
+    <g transform="translate(176 244.592969) scale(0.144 -0.144)">
      <defs>
       <path id="Cmr10-31" d="M 319 0
 L 319 172
@@ -498,28 +484,28 @@ z
    </g>
    <g id="text_6">
     <!-- $-1$ -->
-    <g transform="translate(120 131.495117) scale(0.1 -0.1)">
+    <g transform="translate(176 196.592969) scale(0.144 -0.144)">
      <use xlink:href="#Cmsy10-11" transform="translate(0 0.390625)"/>
      <use xlink:href="#Cmr10-64" transform="translate(77.685547 0.390625)"/>
     </g>
    </g>
    <g id="text_7">
     <!-- $1$ -->
-    <g transform="translate(101 67.495117) scale(0.1 -0.1)">
+    <g transform="translate(154.8 100.592969) scale(0.144 -0.144)">
      <use xlink:href="#Cmr10-64" transform="translate(0 0.390625)"/>
     </g>
    </g>
    <g id="text_8">
     <!-- $2$ -->
-    <g transform="translate(101 35.495117) scale(0.1 -0.1)">
+    <g transform="translate(154.8 52.592969) scale(0.144 -0.144)">
      <use xlink:href="#Cmr10-31" transform="translate(0 0.390625)"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p7941cccc96">
-   <rect x="1" y="1" width="224" height="192"/>
+  <clipPath id="pba653dc404">
+   <rect x="1" y="1" width="336" height="288"/>
   </clipPath>
  </defs>
 </svg>

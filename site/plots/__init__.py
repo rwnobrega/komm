@@ -6,7 +6,7 @@ plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["cmr10"],
     "axes.formatter.use_mathtext": True,  # Asked by cmr10
-    "font.size": 10,
+    "font.size": 14.4,  # \Large, as in the Ipe figures
     "mathtext.fontset": "cm",
     "lines.scale_dashes": False,
     "lines.solid_capstyle": "butt",
@@ -14,7 +14,6 @@ plt.rcParams.update({
     "svg.hashsalt": "komm",
 })
 
-SCALE = 32  # points per unit
 THIN = 0.4
 THICK = 2.0
 DASHES = (4, 4)
@@ -28,8 +27,9 @@ SIDES = {
 }
 
 
-def canvas(xlim, ylim):
-    size = (np.ptp(xlim) * SCALE / 72, np.ptp(ylim) * SCALE / 72)
+def canvas(xlim, ylim, scale):
+    # Scale in points per unit
+    size = (np.ptp(xlim) * scale[0] / 72, np.ptp(ylim) * scale[1] / 72)
     fig = plt.figure(figsize=size)
     ax = fig.add_axes((0, 0, 1, 1), xlim=xlim, ylim=ylim)
     ax.set_axis_off()
@@ -46,6 +46,14 @@ def arrow(ax, start, end):
 
 def line(ax, start, end, **kwargs):
     ax.plot(*zip(start, end), color="black", lw=THIN, **kwargs)
+
+
+def xticks(ax, xs):
+    ax.plot(xs, np.zeros_like(xs), "|", color="black", ms=8, mew=THIN)
+
+
+def yticks(ax, ys):
+    ax.plot(np.zeros_like(ys), ys, "_", color="black", ms=8, mew=THIN)
 
 
 def label(ax, xy, value, side):
