@@ -45,7 +45,6 @@ from ._error_control_block.ReedSolomonCode import ReedSolomonCode
 from ._error_control_block.RepetitionCode import RepetitionCode
 from ._error_control_block.SimplexCode import SimplexCode
 from ._error_control_block.SingleParityCheckCode import SingleParityCheckCode
-from ._error_control_block.SlepianArray import SlepianArray
 from ._error_control_block.SystematicBlockCode import SystematicBlockCode
 
 # Error control - checksum
@@ -185,7 +184,6 @@ __all__ = [
     "RepetitionCode",
     "SimplexCode",
     "SingleParityCheckCode",
-    "SlepianArray",
     "SystematicBlockCode",
     # _error_control_checksum
     "CyclicRedundancyCheck",

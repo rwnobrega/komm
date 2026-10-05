@@ -18,6 +18,8 @@
 
 - Renamed `ExhaustiveSearchDecoder` to `ExhaustiveCodewordDecoder`.
 
+- Removed `SlepianArray`. Instead of `komm.SlepianArray(code)`, use `code.coset_leaders()[:, np.newaxis] ^ code.codewords()`, as in the [standard array recipe](https://komm.dev/recipes/standard-array).
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.
@@ -516,7 +518,7 @@
 ### Added
 
 - Implemented [relative entropy](https://komm.dev/ref/relative_entropy) (KL divergence) function.
-- Implemented [Slepian array](https://komm.dev/ref/SlepianArray).
+- Implemented Slepian array.
 - Implemented [Lloyd-Max quantizer](https://komm.dev/ref/LloydMaxQuantizer).
 - Implemented [Z-Channel](https://komm.dev/ref/ZChannel).
 - Implemented [lexicodes](https://komm.dev/ref/Lexicode).
