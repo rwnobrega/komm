@@ -25,18 +25,21 @@ SIDES = {
     "left": ((-GAP, 0), "right", "center"),
     "right": ((GAP, 0), "left", "center"),
     "above left": ((-GAP / 2, 0), "right", "bottom"),
+    "above right": ((GAP / 2, GAP / 2), "left", "bottom"),
     "below right": ((GAP / 2, -GAP), "left", "top"),
 }
 
 
-def canvas(xlim, ylim, scale):
+def canvas(xlim, ylim, scale, xaxis=True, yaxis=True):
     # Scale in points per unit
     size = (np.ptp(xlim) * scale[0] / 72, np.ptp(ylim) * scale[1] / 72)
     fig = plt.figure(figsize=size)
     ax = fig.add_axes((0, 0, 1, 1), xlim=xlim, ylim=ylim)
     ax.set_axis_off()
-    arrow(ax, (xlim[0], 0), (xlim[1], 0))
-    arrow(ax, (0, ylim[0]), (0, ylim[1]))
+    if xaxis:
+        arrow(ax, (xlim[0], 0), (xlim[1], 0))
+    if yaxis:
+        arrow(ax, (0, ylim[0]), (0, ylim[1]))
     return fig, ax
 
 
