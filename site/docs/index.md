@@ -22,4 +22,6 @@ For more installation options and source code, please visit the [project's devel
 
 ### Documentation
 
-Check out our [library reference](/ref) for information on the classes and functions available.
+- [Library reference](/ref): the classes and functions available.
+- [Recipes](/recipes): short examples of common tasks.
+- [Tables](/tables): reference data for some Komm objects.

@@ -1,20 +1,18 @@
 # Komm
 
-_A Python library for communication systems_.
+_A Python library for communication systems._
 
 [![PyPI page](https://badge.fury.io/py/komm.svg)](https://pypi.org/project/komm/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/rwnobrega/komm/issues)
 
-Welcome to **Komm**!
-
 <!--intro-start-->
 
-**Komm** is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems. This project is inspired by many other communication systems libraries, such as [MATLAB® Communications System Toolbox™](https://www.mathworks.com/help/comm/), [GNU Radio](https://gnuradio.org/), [CommPy](http://veeresht.info/CommPy/), and [SageMath](https://www.sagemath.org/). **Komm** is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+**Komm** is an open-source library for Python 3 providing tools for analysis and simulation of analog and digital communication systems. This project is inspired by many other communication systems libraries, such as [MATLAB® Communications System Toolbox™](https://www.mathworks.com/help/comm/), [GNU Radio](https://gnuradio.org/), [CommPy](http://veeresht.info/CommPy/), and [SageMath](https://www.sagemath.org/). Komm is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 <!--intro-end-->
 
-For library reference, please check the [project's website](https://komm.dev/).
+The [project's website](https://komm.dev/) has the [library reference](https://komm.dev/ref/), [recipes](https://komm.dev/recipes/), and [tables](https://komm.dev/tables/).
 
 <!--notes-start-->
 
