@@ -36,7 +36,7 @@ def save(fig, path):
 
 def main():
     site = Path(__file__).parent
-    # Skip __init__.py
+    # Skip helpers, like __init__.py
     for path in sorted(site.glob("plots/[!_]*.py")):
         module = importlib.import_module(f"plots.{path.stem}")
         save(module.plot(), site / "docs" / "fig" / f"{path.stem}.svg")

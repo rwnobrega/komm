@@ -24,6 +24,8 @@ SIDES = {
     "below": ((0, -GAP), "center", "top"),
     "left": ((-GAP, 0), "right", "center"),
     "right": ((GAP, 0), "left", "center"),
+    "above left": ((-GAP / 2, 0), "right", "bottom"),
+    "below right": ((GAP / 2, -GAP), "left", "top"),
 }
 
 
@@ -56,9 +58,12 @@ def yticks(ax, ys):
     ax.plot(np.zeros_like(ys), ys, "_", color="black", ms=8, mew=THIN)
 
 
-def label(ax, xy, value, side):
+def text(ax, xy, string, side):
     offset, ha, va = SIDES[side]
+    ax.annotate(string, xy, offset, textcoords="offset points", ha=ha, va=va)
+
+
+def label(ax, xy, value, side):
     # Minus sign hangs when centered
-    hang = r"\phantom{-}" if value < 0 and ha == "center" else ""
-    text = f"${value:g}{hang}$"
-    ax.annotate(text, xy, offset, textcoords="offset points", ha=ha, va=va)
+    hang = r"\phantom{-}" if value < 0 and side in ["above", "below"] else ""
+    text(ax, xy, f"${value:g}{hang}$", side)
