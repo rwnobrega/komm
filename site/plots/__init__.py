@@ -10,8 +10,6 @@ plt.rcParams.update({
     "mathtext.fontset": "cm",
     "lines.scale_dashes": False,
     "lines.solid_capstyle": "butt",
-    "svg.fonttype": "path",
-    "svg.hashsalt": "komm",
 })
 
 THIN = 0.4
