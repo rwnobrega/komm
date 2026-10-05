@@ -32,7 +32,7 @@ class ReedSolomonCode(SystematicBlockCode):
     - Redundancy: $\mu m$
     - Minimum distance: $d \geq \delta$
 
-    Only *narrow-sense* and *primitive* Reed–Solomon codes are implemented. For more details, see <cite>LC04, Sec. 7.3</cite>.
+    Only *narrow-sense* and *primitive* Reed–Solomon codes are implemented. For more details, see <cite>LC04, Sec. 7.3</cite> and the [Error Correction Zoo](https://errorcorrectionzoo.org/c/reed_solomon).
 
     Notes:
         - Reed–Solomon codes are maximum distance separable (MDS) codes, that is, $d = n - k + 1$, in symbols.

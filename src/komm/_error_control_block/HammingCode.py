@@ -28,7 +28,7 @@ class HammingCode(SystematicBlockCode):
     - Redundancy: $m = \mu + 1$
     - Minimum distance: $d = 4$
 
-    For more details, see <cite>LC04, Sec. 4.1</cite>.
+    For more details, see <cite>LC04, Sec. 4.1</cite> and the [Error Correction Zoo](https://errorcorrectionzoo.org/c/hamming).
 
     Notes:
         - For $\mu = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.

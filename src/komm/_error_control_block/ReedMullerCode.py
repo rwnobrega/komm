@@ -25,7 +25,7 @@ class ReedMullerCode(BlockCode):
     - Redundancy: $m = 1 + {\mu \choose 1} + \cdots + {\mu \choose \mu - \rho - 1}$
     - Minimum distance: $d = 2^{\mu - \rho}$
 
-    For more details, see <cite>LC04, Sec. 4.3</cite>.
+    For more details, see <cite>LC04, Sec. 4.3</cite> and the [Error Correction Zoo](https://errorcorrectionzoo.org/c/reed_muller).
 
     Notes:
         - For $\rho = 0$ it reduces to a [repetition code](/ref/RepetitionCode).

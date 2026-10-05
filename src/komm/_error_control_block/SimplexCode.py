@@ -29,6 +29,7 @@ class SimplexCode(SystematicBlockCode):
         - For $\kappa = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).
         - Simplex codes are constant-weight codes.
+        - For more details, see the [Error Correction Zoo](https://errorcorrectionzoo.org/c/simplex).
 
     Parameters:
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.

@@ -22,6 +22,7 @@ class RepetitionCode(BlockCode):
 
     Notes:
         - Its dual is the [single parity-check code](/ref/SingleParityCheckCode).
+        - For more details, see the [Error Correction Zoo](https://errorcorrectionzoo.org/c/repetition).
 
     Parameters:
         n: The length $n$ of the code. Must be a positive integer.
