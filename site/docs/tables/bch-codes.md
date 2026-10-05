@@ -1,5 +1,5 @@
 ---
-title: Tables for BCH codes
+title: BCH codes
 ---
 
 <h2 markdown id="bose-distances">Possible Bose distances</h2>

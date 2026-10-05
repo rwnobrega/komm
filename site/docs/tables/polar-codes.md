@@ -1,5 +1,5 @@
 ---
-title: Tables for polar codes
+title: Polar codes
 ---
 
 <h2 markdown id="5g-reliability">Reliability sequence for 5G</h2>

@@ -1,5 +1,5 @@
 ---
-title: Tables of convolutional codes
+title: Convolutional codes
 ---
 
 <h2 markdown id="low-rate">Optimal low-rate convolutional codes</h2>

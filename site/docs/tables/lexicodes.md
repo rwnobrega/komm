@@ -1,5 +1,5 @@
 ---
-title: Tables for lexicodes
+title: Lexicodes
 ---
 
 <h2 markdown id="dimensions">Dimensions</h2>
