@@ -12,8 +12,8 @@ def axes(xlim, ylim, xscale):
 
 
 def smooth(pulse, step):
-    # Four ticks per side, 32 points apart
-    fig, ax = axes((-5 * step, 5 * step), (-0.5, 1.5), 32 / step)
+    # Four ticks per side, 28 points apart
+    fig, ax = axes((-5 * step, 5 * step), (-0.5, 1.5), 28 / step)
     t = np.linspace(-4.5 * step, 4.5 * step, 1001)
     ax.plot(t, pulse.waveform(t), color="black", lw=THICK)
     label(ax, (0, 1), 1, "above left")
