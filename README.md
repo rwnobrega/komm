@@ -56,7 +56,7 @@ Then, if you haven't already, create and activate a virtual environment [as befo
 Next, install the development dependencies. For example, using `pip`:
 
 ```bash
-pip install -e .[lint,test,doc,debug,demo]
+pip install -e .[lint,test,doc,debug]
 ```
 
 ### Testing
@@ -73,14 +73,6 @@ The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Mat
 
 ```bash
 mkdocs serve
-```
-
-### Run demos
-
-There are some demos available in the `demo` directory. They are written using [Streamlit](https://streamlit.io/). To run them, execute:
-
-```bash
-streamlit run demo/index.py
 ```
 
 ## Changelog

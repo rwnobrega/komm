@@ -42,16 +42,11 @@ debug = [
     "ipykernel>=6.28.0",
     "matplotlib>=3.8.2",
 ]
-demo = [
-    "streamlit==1.58.0",
-    "matplotlib==3.11.0",
-]
 all = [
     "komm[lint]",
     "komm[test]",
     "komm[doc]",
     "komm[debug]",
-    "komm[demo]",
 ]
 
 [build-system]
