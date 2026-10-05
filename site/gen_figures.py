@@ -1,5 +1,6 @@
-import os
+import subprocess
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 
 def is_black_rgb(value: str) -> bool:
@@ -48,29 +49,26 @@ def patch_svg(path):
 
 
 def main():
-    os.system("mkdir -p docs/fig")
-    for filename in os.listdir("figures"):
-        if filename.endswith(".pdf"):
-            src_path = f"figures/{filename}"
-            dst_path = f"docs/fig/{filename}".replace(".pdf", ".svg")
-            # Check if destination file is older than source file
-            if os.path.exists(dst_path) and os.path.getmtime(
-                dst_path
-            ) > os.path.getmtime(src_path):
-                continue
-            os.system(f"iperender -svg {src_path} {dst_path}")
-            print(f"Generated {dst_path}")
-            patch_svg(dst_path)
+    site = Path(__file__).parent
+    pdfs = site / "figures"
+    svgs = site / "docs" / "fig"
+    svgs.mkdir(parents=True, exist_ok=True)
+    for pdf in sorted(pdfs.glob("*.pdf")):
+        svg = svgs / f"{pdf.stem}.svg"
+        # Check if destination file is older than source file
+        if svg.exists() and svg.stat().st_mtime > pdf.stat().st_mtime:
+            continue
+        subprocess.run(["iperender", "-svg", pdf, svg], check=True)
+        print(f"Generated {svg.name}")
+        patch_svg(svg)
 
     # Now, delete svg files that don't have a corresponding pdf or plot
-    for filename in os.listdir("docs/fig"):
-        if filename.endswith(".svg"):
-            src_path = f"docs/fig/{filename}"
-            dst_path = f"figures/{filename}".replace(".svg", ".pdf")
-            plot_path = f"plots/{filename}".replace(".svg", ".py")
-            if not os.path.exists(dst_path) and not os.path.exists(plot_path):
-                os.remove(src_path)
-                print(f"Deleted {src_path}")
+    for svg in sorted(svgs.glob("*.svg")):
+        pdf = pdfs / f"{svg.stem}.pdf"
+        plot = site / "plots" / f"{svg.stem}.py"
+        if not pdf.exists() and not plot.exists():
+            svg.unlink()
+            print(f"Deleted {svg.name}")
 
 
 if __name__ == "__main__":
