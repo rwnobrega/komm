@@ -1,9 +1,8 @@
-div .centered {
-  text-align: center;
-}
-
-div .centered span {
-  margin: 1em;
+div .centered p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
 }
 
 .md-typeset cite::before {
