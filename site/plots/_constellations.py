@@ -1,6 +1,7 @@
 import numpy as np
+from matplotlib.patches import Arc, Circle
 
-from . import DASHES, canvas, label, line, text, xticks, yticks
+from . import DASHES, GAP, THIN, canvas, label, line, text, xticks, yticks
 
 
 def plane(xlim, ylim, scale):
@@ -10,10 +11,31 @@ def plane(xlim, ylim, scale):
     return fig, ax
 
 
-def dots(ax, points, sides):
+def dots(ax, points, sides, symbol="x"):
     ax.plot(points.real, points.imag, "o", color="black", ms=6, mew=0)
     for i, (z, side) in enumerate(zip(points, sides)):
-        text(ax, (z.real, z.imag), f"$x_{{{i}}}$", side)
+        text(ax, (z.real, z.imag), f"${symbol}_{{{i}}}$", side)
+
+
+def outward(z, flip=False):
+    u = z / abs(z)
+    # Off the axes, diagonally
+    if np.isclose(u.imag, 0):
+        u += -1j if flip else 1j
+    elif np.isclose(u.real, 0):
+        u += 1 if flip else -1
+    u /= abs(u)
+    ha = "left" if u.real > 0.3 else "right" if u.real < -0.3 else "center"
+    va = "bottom" if u.imag > 0.3 else "top" if u.imag < -0.3 else "center"
+    return (GAP * u.real, GAP * u.imag), ha, va
+
+
+def angle(ax, z, radius, string):
+    line(ax, (0, 0), (z.real, z.imag), dashes=DASHES)
+    theta = np.angle(z, deg=True)
+    ax.add_patch(Arc((0, 0), 2 * radius, 2 * radius, theta2=theta, lw=THIN))
+    w = radius * np.exp(1j * np.angle(z) / 2)
+    text(ax, (w.real, w.imag), string, outward(w))
 
 
 def pam(const):
@@ -51,3 +73,21 @@ def grid(const):
     for y in np.unique(ys):
         label(ax, (xs.min() - 0.25, y), y, "left")
     return fig
+
+
+def rings(const, ticks):
+    points = const.matrix.ravel()
+    radii = np.unique(np.abs(points).round(9))
+    edge = 4 / 3 * radii.max()
+    fig, ax = plane((-edge, edge), (-edge, edge), 96 / radii.max())
+    for radius in radii:
+        circle = Circle((0, 0), radius, fill=False, lw=THIN, ls=(0, DASHES))
+        ax.add_patch(circle)
+    xticks(ax, np.append(np.negative(ticks), ticks))
+    yticks(ax, np.append(np.negative(ticks), ticks))
+    dots(ax, points, [outward(z) for z in points])
+    for radius in np.intersect1d(radii, ticks):
+        for z in radius * np.array([1, 1j, -1, -1j]):
+            value = z.real + z.imag
+            text(ax, (z.real, z.imag), f"${value:g}$", outward(z, flip=True))
+    return fig, ax

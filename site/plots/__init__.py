@@ -62,7 +62,8 @@ def yticks(ax, ys):
 
 
 def text(ax, xy, string, side):
-    offset, ha, va = SIDES[side]
+    # Side as a name or as (offset, ha, va)
+    offset, ha, va = SIDES[side] if isinstance(side, str) else side
     ax.annotate(string, xy, offset, textcoords="offset points", ha=ha, va=va)
 
 
