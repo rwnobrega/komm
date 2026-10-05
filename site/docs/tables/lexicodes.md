@@ -1,6 +1,5 @@
 ---
 title: Tables for lexicodes
-hide: toc
 ---
 
 <h2 markdown id="dimensions">Dimensions</h2>

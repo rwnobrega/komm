@@ -18,9 +18,9 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
     Parameters:
         h_row: The check row $h(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
 
-    **Resources:**
+    **Tables:**
 
-    - [Table of optimal high-rate convolutional codes.](/res/convolutional-codes/#high-rate)
+    - [Table of optimal high-rate convolutional codes.](/tables/convolutional-codes/#high-rate)
 
     Examples:
         Consider the high-rate convolutional encoder with $(n, k, \sigma) = (4, 3, 3)$ depicted below.

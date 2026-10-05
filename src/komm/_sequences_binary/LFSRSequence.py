@@ -60,7 +60,7 @@ class LFSRSequence(BinarySequence):
         cls, degree: int, start_state_polynomial: BinaryPolynomial | int = 0b1
     ) -> Self:
         r"""
-        Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen from [the list of default primitive polynomials](/res/primitive-polynomials).
+        Constructs a maximum-length sequences of a given degree. The feedback polynomial $p(X)$ is chosen from [the list of default primitive polynomials](/tables/primitive-polynomials).
 
         Parameters:
             degree: The degree $n$ of the maximum-length-sequence. Only degrees in the range $[1 : 24]$ are implemented.

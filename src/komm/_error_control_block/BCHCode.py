@@ -31,9 +31,9 @@ class BCHCode(CyclicCode):
         mu: The parameter $\mu$ of the BCH code.
         delta: The Bose distance $\delta$ of the BCH code.
 
-    **Resources:**
+    **Tables:**
 
-    - [Table of possible Bose distances.](/res/bch-codes#bose-distances)
+    - [Table of possible Bose distances.](/tables/bch-codes#bose-distances)
 
     Examples:
         >>> code = komm.BCHCode(mu=5, delta=7)
