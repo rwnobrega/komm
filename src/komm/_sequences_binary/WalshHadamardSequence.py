@@ -59,16 +59,16 @@ class WalshHadamardSequence(BinarySequence):
         index: Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
 
     Examples:
-        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='natural', index=5)
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='natural', index=5)
         >>> walsh_hadamard.polar_sequence
         array([ 1, -1,  1, -1, -1,  1, -1,  1])
 
 
-        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='sequency', index=5)
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='sequency', index=5)
         >>> walsh_hadamard.polar_sequence
         array([ 1, -1, -1,  1, -1,  1,  1, -1])
 
-        >>> walsh_hadamard = komm.WalshHadamardSequence(length=8, ordering='dyadic', index=5)
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='dyadic', index=5)
         Traceback (most recent call last):
         ...
         NotImplementedError

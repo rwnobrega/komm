@@ -50,7 +50,7 @@ class ReedSolomonCode(SystematicBlockCode):
         >>> code.minimum_distance()
         6
 
-        >>> code = komm.ReedSolomonCode(mu=8, delta=33)  # (255, 223), corrects 16 symbol errors
+        >>> code = komm.ReedSolomonCode(mu=8, delta=33)  # (255, 223) in symbols
         >>> (code.length, code.dimension, code.redundancy)
         (2040, 1784, 256)
     """

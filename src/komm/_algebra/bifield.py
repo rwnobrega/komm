@@ -255,7 +255,8 @@ def binary_matrix(
                [1, 1, 0]])
 
         >>> field = komm.FiniteBifield(2)
-        >>> binary_matrix(field, [[0b10, 1, 0], [0b11, 0, 1]])  # [[α, 1, 0], [α^2, 0, 1]]
+        >>> matrix = [[0b10, 1, 0], [0b11, 0, 1]]  # [[α, 1, 0], [α^2, 0, 1]]
+        >>> binary_matrix(field, matrix)
         array([[0, 1, 1, 0, 0, 0],
                [1, 1, 0, 1, 0, 0],
                [1, 1, 0, 0, 1, 0],

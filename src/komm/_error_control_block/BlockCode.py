@@ -202,15 +202,15 @@ class BlockCode(abc.BlockCode):
             ...     [1, 0, 0, 1, 1],
             ...     [0, 1, 1, 1, 0],
             ... ])
-            >>> code.encode([0, 0])  # Sequence with single message
+            >>> code.encode([0, 0])  # One message
             array([0, 0, 0, 0, 0])
-            >>> code.encode([0, 0, 1, 1])  # Sequence with two messages
+            >>> code.encode([0, 0, 1, 1])  # Two messages
             array([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])
-            >>> code.encode([[0, 0],  # 2D array of single messages
+            >>> code.encode([[0, 0],  # One per row
             ...              [1, 1]])
             array([[0, 0, 0, 0, 0],
                    [1, 1, 1, 0, 1]])
-            >>> code.encode([[0, 0, 1, 1],  # 2D array of two messages
+            >>> code.encode([[0, 0, 1, 1],  # Two per row
             ...              [1, 1, 1, 0]])
             array([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
                    [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
@@ -224,15 +224,15 @@ class BlockCode(abc.BlockCode):
             ...     [1, 0, 0, 1, 1],
             ...     [0, 1, 1, 1, 0],
             ... ])
-            >>> code.inverse_encode([0, 0, 0, 0, 0])  # Sequence with single codeword
+            >>> code.inverse_encode([0, 0, 0, 0, 0])  # One codeword
             array([0, 0])
-            >>> code.inverse_encode([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])  # Sequence with two codewords
+            >>> code.inverse_encode([0, 0, 0, 0, 0, 1, 1, 1, 0, 1])  # Two codewords
             array([0, 0, 1, 1])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0],  # 2D array of single codewords
+            >>> code.inverse_encode([[0, 0, 0, 0, 0],  # One per row
             ...                      [1, 1, 1, 0, 1]])
             array([[0, 0],
                    [1, 1]])
-            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],  # 2D array of two codewords
+            >>> code.inverse_encode([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],  # Two per row
             ...                      [1, 1, 1, 0, 1, 1, 0, 0, 1, 1]])
             array([[0, 0, 1, 1],
                    [1, 1, 1, 0]])
@@ -246,15 +246,15 @@ class BlockCode(abc.BlockCode):
             ...     [1, 0, 0, 1, 1],
             ...     [0, 1, 1, 1, 0],
             ... ])
-            >>> code.check([1, 1, 1, 0, 1])  # Sequence with single received word
+            >>> code.check([1, 1, 1, 0, 1])  # One received word
             array([0, 0, 0])
-            >>> code.check([1, 1, 1, 0, 1, 1, 1, 1, 1, 1])  # Sequence with two received words
+            >>> code.check([1, 1, 1, 0, 1, 1, 1, 1, 1, 1])  # Two received words
             array([0, 0, 0, 0, 1, 0])
-            >>> code.check([[1, 1, 1, 0, 1],  # 2D array of single received words
+            >>> code.check([[1, 1, 1, 0, 1],  # One per row
             ...             [1, 1, 1, 1, 1]])
             array([[0, 0, 0],
                    [0, 1, 0]])
-            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1],  # 2D array of two received words
+            >>> code.check([[1, 1, 1, 0, 1, 1, 1, 1, 1, 1],  # Two per row
             ...             [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])
             array([[0, 0, 0, 0, 1, 0],
                    [0, 1, 0, 0, 1, 1]])

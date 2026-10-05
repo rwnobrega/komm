@@ -39,7 +39,8 @@ class ZadoffChuSequence(ComplexSequence):
     Examples:
         >>> zadoff_chu = komm.ZadoffChuSequence(5, root_index=1)
         >>> zadoff_chu.sequence.round(6)
-        array([ 1.      +0.j      ,  0.309017-0.951057j, -0.809017+0.587785j,  0.309017-0.951057j,  1.      +0.j      ])
+        array([ 1.      +0.j      ,  0.309017-0.951057j, -0.809017+0.587785j,
+                0.309017-0.951057j,  1.      +0.j      ])
         >>> zadoff_chu.cyclic_autocorrelation(normalized=True).round(15) + 0.0
         array([1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j])
     """

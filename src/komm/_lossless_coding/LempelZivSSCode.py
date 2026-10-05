@@ -208,7 +208,9 @@ class LempelZivSSCode(abc.TokenCode[Token]):
             ...     lookahead_size=4,
             ...     source_cardinality=4,
             ... )
-            >>> lzss.target_to_tokens([0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1])
+            >>> lzss.target_to_tokens(
+            ...     [0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1]
+            ... )
             [(0, 3), (1, 4, 4), (0, 2), (1, 3, 2)]
         """
         target = np.asarray(target, dtype=int)

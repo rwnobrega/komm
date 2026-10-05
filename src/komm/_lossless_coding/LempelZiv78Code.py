@@ -100,7 +100,9 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         r"""
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
-            >>> lz78.target_to_tokens([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
+            >>> lz78.target_to_tokens(
+            ...     [1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0]
+            ... )
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
         calX, calY = self.source_cardinality, self.target_cardinality

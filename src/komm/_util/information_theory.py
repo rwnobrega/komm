@@ -67,7 +67,7 @@ def binary_entropy(p: float) -> float:
         The value of the binary entropy function $\Hb(p)$.
 
     Examples:
-        >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]  # doctest: +FLOAT_CMP
+        >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
     validate_probability(p)
