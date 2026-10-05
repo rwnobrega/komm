@@ -30,6 +30,7 @@ test = [
 doc = [
     "griffe==1.7.3",
     "griffe-inherited-docstrings==1.1.1",
+    "matplotlib==3.11.2",
     "mkdocs==1.6.1",
     "mkdocs-material==9.7.7",
     "mkdocstrings==0.29.1",

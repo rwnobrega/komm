@@ -62,12 +62,13 @@ def main():
             print(f"Generated {dst_path}")
             patch_svg(dst_path)
 
-    # Now, delete svg files that don't have a corresponding pdf
+    # Now, delete svg files that don't have a corresponding pdf or plot
     for filename in os.listdir("docs/fig"):
         if filename.endswith(".svg"):
             src_path = f"docs/fig/{filename}"
             dst_path = f"figures/{filename}".replace(".svg", ".pdf")
-            if not os.path.exists(dst_path):
+            plot_path = f"plots/{filename}".replace(".svg", ".py")
+            if not os.path.exists(dst_path) and not os.path.exists(plot_path):
                 os.remove(src_path)
                 print(f"Deleted {src_path}")
 

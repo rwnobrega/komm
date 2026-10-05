@@ -33,3 +33,19 @@ jobs:
         run: basedpyright
       - name: pytest
         run: pytest
+  plots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: pip install -e ".[doc]"
+      - name: Check plots
+        working-directory: site
+        run: |
+          python gen_plots.py
+          git add --intent-to-add docs/fig  # Also catch new files
+          git diff --exit-code docs/fig
