@@ -166,9 +166,9 @@ def test_lz78_worst_case(k):
 def test_lz78_invalid_input():
     code = komm.LempelZiv78Code(source_cardinality=27)
     code.encode([0, 10, 26])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([0, 10, 27])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([-1, 10, 26])
-    with pytest.raises(ValueError, match="only integers"):
+    with pytest.raises(TypeError, match="'source' must contain only integers"):
         code.encode([0, 10.5, 26])

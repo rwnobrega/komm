@@ -52,27 +52,6 @@ def validate_transition_matrix(
     return value
 
 
-def validate_integer_array(value: npt.ArrayLike) -> npt.NDArray[np.integer]:
-    value = np.asarray(value)
-    if np.issubdtype(value.dtype, np.integer):
-        return value
-    if not np.all(np.isfinite(value) & (value == np.floor(value))):
-        raise ValueError("input must contain only integers")
-    return value.astype(int)
-
-
-def validate_integer_range(
-    value: npt.ArrayLike,
-    *,
-    low: int = 0,
-    high: int,
-) -> npt.NDArray[np.integer]:
-    value = validate_integer_array(value)
-    if not (np.all(value >= low) and np.all(value < high)):
-        raise ValueError(f"input contains invalid entries (expected in [{low}:{high}))")
-    return value
-
-
 def validate_integer(
     value: SupportsIndex,
     name: str,
@@ -90,3 +69,26 @@ def validate_integer(
     if high is not None and not low <= integer < high:
         raise ValueError(f"'{name}' must be in [{low}:{high})")
     return integer
+
+
+def validate_integer_array(
+    value: npt.ArrayLike,
+    name: str,
+    *,
+    low: int | None = None,
+    high: int | None = None,
+) -> npt.NDArray[np.integer]:
+    value = np.asarray(value)
+    # Accept bools and empty arrays
+    if value.dtype == bool or value.size == 0:
+        value = value.astype(int)
+    if not np.issubdtype(value.dtype, np.integer):
+        raise TypeError(f"'{name}' must contain only integers (got {value.dtype})")
+    if low is not None and high is not None:
+        if not np.all((value >= low) & (value < high)):
+            raise ValueError(f"elements of '{name}' must be in [{low}:{high})")
+    elif low is not None and not np.all(value >= low):
+        raise ValueError(f"elements of '{name}' must be at least {low}")
+    elif high is not None and not np.all(value < high):
+        raise ValueError(f"elements of '{name}' must be less than {high}")
+    return value

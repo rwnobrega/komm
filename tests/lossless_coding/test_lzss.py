@@ -102,9 +102,9 @@ def test_lzss_zeros(k):
 def test_lzss_invalid_input():
     code = komm.LempelZivSSCode(search_size=24, lookahead_size=8, source_cardinality=27)
     code.encode([0, 10, 26])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([0, 10, 27])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([-1, 10, 26])
 
 

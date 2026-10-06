@@ -6,7 +6,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise, vectorize, with_pbar
 from .._util.matrices import solution_set
-from .._util.validators import validate_integer_range
+from .._util.validators import validate_integer_array
 from .util import get_pbar
 
 
@@ -41,7 +41,7 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             ...
             ValueError: input is not compatible with any codeword
         """
-        input = validate_integer_range(input, low=0, high=3)
+        input = validate_integer_array(input, "input", low=0, high=3)
         G, H = self.code.generator_matrix, self.code.check_matrix
 
         @blockwise(self.code.length)
@@ -72,7 +72,7 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
             ...
             ValueError: input is not compatible with any codeword
         """
-        input = validate_integer_range(input, low=0, high=3)
+        input = validate_integer_array(input, "input", low=0, high=3)
         G, H = self.code.generator_matrix, self.code.check_matrix
         G_r_inv = self.code.generator_matrix_right_inverse
 

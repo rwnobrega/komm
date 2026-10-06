@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from komm._util.validators import validate_integer
+from komm._util.validators import validate_integer, validate_integer_array
 
 
 @pytest.mark.parametrize(
@@ -44,3 +44,61 @@ def test_validate_integer_high():
     for value in [-1, 2]:
         with pytest.raises(ValueError, match=r"'x' must be in \[0:2\)"):
             validate_integer(value, "x", high=2)
+
+
+@pytest.mark.parametrize("dtype", [np.int64, np.uint8])
+def test_validate_integer_array(dtype):
+    value = np.array([0, 1, 2], dtype=dtype)
+    array = validate_integer_array(value, "x")
+    assert array.dtype == dtype
+    np.testing.assert_equal(array, [0, 1, 2])
+
+
+def test_validate_integer_array_bool_and_empty():
+    array = validate_integer_array([True, False], "x")
+    assert np.issubdtype(array.dtype, np.integer)
+    np.testing.assert_equal(array, [1, 0])
+    array = validate_integer_array([], "x")
+    assert np.issubdtype(array.dtype, np.integer)
+    assert array.size == 0
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ([1.0, 2.0], "float64"),
+        ([1.5, 2.0], "float64"),
+        (["1", "0"], "<U1"),
+        ([1, 2**70], "object"),
+    ],
+)
+def test_validate_integer_array_not_integer(value, got):
+    with pytest.raises(
+        TypeError, match=rf"'x' must contain only integers \(got {got}\)"
+    ):
+        validate_integer_array(value, "x")
+
+
+def test_validate_integer_array_no_bounds():
+    np.testing.assert_equal(validate_integer_array([-5, 0, 5], "x"), [-5, 0, 5])
+
+
+def test_validate_integer_array_low():
+    validate_integer_array([0, 1], "x", low=0)
+    with pytest.raises(ValueError, match="elements of 'x' must be at least 0"):
+        validate_integer_array([0, -1], "x", low=0)
+    with pytest.raises(ValueError, match="elements of 'x' must be at least 1"):
+        validate_integer_array([0, 1], "x", low=1)
+
+
+def test_validate_integer_array_high():
+    validate_integer_array([-1, 1], "x", high=2)
+    with pytest.raises(ValueError, match="elements of 'x' must be less than 2"):
+        validate_integer_array([0, 2], "x", high=2)
+
+
+def test_validate_integer_array_low_high():
+    validate_integer_array([[0, 1], [1, 0]], "x", low=0, high=2)
+    for value in [[0, -1], [0, 2]]:
+        with pytest.raises(ValueError, match=r"elements of 'x' must be in \[0:2\)"):
+            validate_integer_array(value, "x", low=0, high=2)

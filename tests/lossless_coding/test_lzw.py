@@ -75,7 +75,7 @@ def test_lzw_encode_decode(source_cardinality, target_cardinality, rng):
 def test_lzw_invalid_input():
     code = komm.LempelZivWelchCode(source_cardinality=27)
     code.encode([0, 10, 26])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([0, 10, 27])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([-1, 10, 26])

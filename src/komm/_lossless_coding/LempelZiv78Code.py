@@ -5,7 +5,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .. import abc
-from .._util.validators import validate_integer_range
+from .._util.validators import validate_integer_array
 from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
@@ -44,7 +44,8 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             >>> lz78.source_to_tokens([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
-        source = validate_integer_range(source, high=self.source_cardinality)
+        calX = self.source_cardinality
+        source = validate_integer_array(source, "source", low=0, high=calX)
         dictionary: dict[Word, int] = {(): 0}
         tokens: list[Token] = []
         word: Word = ()

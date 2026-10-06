@@ -93,9 +93,9 @@ def test_run_length_invalid_tokens(tokens):
 
 def test_run_length_invalid_input():
     code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:3\)"):
         code.source_to_tokens([0, 1, 3])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:3\)"):
         code.source_to_tokens([-1, 1, 2])
 
 

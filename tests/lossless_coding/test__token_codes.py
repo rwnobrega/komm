@@ -56,7 +56,7 @@ def test_token_codes_narrow_dtype(code: komm.abc.TokenCode, long_source):
 
 
 def test_token_codes_invalid_input(code: komm.abc.TokenCode):
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match="elements of 'source' must be in"):
         code.encode([0, 256])
-    with pytest.raises(ValueError, match="invalid entries"):
+    with pytest.raises(ValueError, match="elements of 'source' must be in"):
         code.encode([-1, 0])

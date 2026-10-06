@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer_range
+from .._util.validators import validate_integer_array
 from .util import integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
@@ -52,7 +52,8 @@ class RunLengthCode(abc.TokenCode[Token]):
             >>> code.source_to_tokens([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
             [(0, 3), (2, 2), (1, 4), (1, 1)]
         """
-        source = validate_integer_range(source, high=self.source_cardinality)
+        calX = self.source_cardinality
+        source = validate_integer_array(source, "source", low=0, high=calX)
         L = self.max_run_length
         starts = np.flatnonzero(np.diff(source, prepend=-1))
         lengths = np.diff(starts, append=source.size)

@@ -3,7 +3,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .. import abc
-from .._util.validators import validate_integer_range
+from .._util.validators import validate_integer_array
 from .util import (
     find_longest_match,
     integer_to_symbols,
@@ -105,7 +105,8 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             >>> lz77.source_to_tokens([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
             [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
         """
-        source = validate_integer_range(source, high=self.source_cardinality)
+        calX = self.source_cardinality
+        source = validate_integer_array(source, "source", low=0, high=calX)
         ss, ls = self.search_size, self.lookahead_size
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []

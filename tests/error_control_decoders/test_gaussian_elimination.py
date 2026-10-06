@@ -102,17 +102,18 @@ def test_gaussian_elimination_no_erasures(code: komm.abc.BlockCode):
 
 
 @pytest.mark.parametrize(
-    "r",
+    "r, error",
     [
-        [1, 1, 0, 3, 0, 1, 1],
-        [-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4],
-        [1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4],
+        ([1, 1, 0, 3, 0, 1, 1], ValueError),
+        ([-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4], TypeError),
+        ([1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4], TypeError),
+        ([1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0], TypeError),
     ],
 )
-def test_gaussian_elimination_invalid_input(r):
+def test_gaussian_elimination_invalid_input(r, error):
     # Only bits and erasures are accepted.
     decoder = komm.GaussianEliminationDecoder(komm.HammingCode(3))
-    with pytest.raises(ValueError):
+    with pytest.raises(error):
         decoder.decode(r)
 
 
