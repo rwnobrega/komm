@@ -22,19 +22,10 @@ def validate_probability(value: float) -> float:
     return value
 
 
-def validate_pmf(
-    value: npt.ArrayLike,
-    joint: bool = False,
-) -> npt.NDArray[np.floating]:
+def validate_pmf(value: npt.ArrayLike) -> npt.NDArray[np.floating]:
     value = np.asarray(value, dtype=float)
-    if joint:
-        if not (len(value.shape) > 0 and len(set(value.shape)) == 1):
-            raise ValueError(
-                f"pmf must have equal dimensions (got shape {value.shape})"
-            )
-    else:
-        if not value.ndim == 1:
-            raise ValueError("pmf must be a 1D-array")
+    if not value.ndim == 1:
+        raise ValueError("pmf must be a 1D-array")
     if not np.all(value >= 0.0):
         raise ValueError("pmf must be non-negative")
     if not np.isclose(value.sum(), 1.0):
@@ -74,22 +65,11 @@ def validate_integer_range(
     value: npt.ArrayLike,
     *,
     low: int = 0,
-    high: int = 2,
+    high: int,
 ) -> npt.NDArray[np.integer]:
     value = validate_integer_array(value)
     if not (np.all(value >= low) and np.all(value < high)):
         raise ValueError(f"input contains invalid entries (expected in [{low}:{high}))")
-    return value
-
-
-def validate_integer_min(
-    value: npt.ArrayLike,
-    *,
-    low: int = 0,
-) -> npt.NDArray[np.integer]:
-    value = validate_integer_array(value)
-    if not np.all(value >= low):
-        raise ValueError(f"input contains invalid entries (expected at least {low})")
     return value
 
 

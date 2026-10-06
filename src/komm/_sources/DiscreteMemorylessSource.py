@@ -30,7 +30,7 @@ class DiscreteMemorylessSource:
             if not pmf >= 1:
                 raise ValueError("cardinality must be at least 1")
             pmf = np.full(pmf, 1 / pmf)
-        self._pmf = validate_pmf(pmf, joint=False)
+        self._pmf = validate_pmf(pmf)
         self._rng = rng
 
     @property
