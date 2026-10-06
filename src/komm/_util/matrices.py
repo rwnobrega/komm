@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-from komm._algebra.BinaryPolynomial import BinaryPolynomial
+from .._algebra.BinaryPolynomial import BinaryPolynomial
 
 ArrayInt = npt.NDArray[np.integer]
 

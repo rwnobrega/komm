@@ -4,9 +4,8 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
-from komm._util.validators import validate_integer_range
-
 from .. import abc
+from .._util.validators import validate_integer_range
 from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = int
