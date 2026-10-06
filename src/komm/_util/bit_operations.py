@@ -42,7 +42,7 @@ def bits_to_int(
         array([[0, 3],
                [2, 2]])
     """
-    bit_order = validate_bit_order(bit_order)
+    bit_order = validate_bit_order(bit_order, "bit_order")
     width = validate_integer(width, "width", low=1, high=64)
     input = validate_integer_array(input, "input", low=0, high=2)
     if input.shape[-1] % width != 0:
@@ -91,7 +91,7 @@ def int_to_bits(
         array([[0, 0, 1, 1],
                [0, 1, 0, 1]])
     """
-    bit_order = validate_bit_order(bit_order)
+    bit_order = validate_bit_order(bit_order, "bit_order")
     width = validate_integer(width, "width", low=0, high=64)
     input = validate_integer_array(input, "input", low=0, high=1 << width)
     shifts = np.arange(width)
@@ -132,7 +132,7 @@ def to_binary(
         >>> komm.from_binary(komm.to_binary(2**100))
         1267650600228229401496703205376
     """
-    bit_order = validate_bit_order(bit_order)
+    bit_order = validate_bit_order(bit_order, "bit_order")
     integer = index(integer)  # Accepts int-like (e.g. np.int64), rejects float
     if width is None:
         width = integer.bit_length()
@@ -169,7 +169,7 @@ def from_binary(
         >>> komm.from_binary([0] * 100 + [1])
         1267650600228229401496703205376
     """
-    bit_order = validate_bit_order(bit_order)
+    bit_order = validate_bit_order(bit_order, "bit_order")
     bit_list = [index(bit) for bit in bits]
     if bit_order == "LSB-first":
         bit_list.reverse()

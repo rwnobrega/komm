@@ -125,14 +125,6 @@ def validate_choice(value: T, name: str, choices: Sequence[T]) -> T:
     return value
 
 
-validate_bit_order = partial(
-    validate_choice,
-    name="bit_order",
-    choices=("LSB-first", "MSB-first"),
-)
+validate_bit_order = partial(validate_choice, choices=("LSB-first", "MSB-first"))
 
-
-validate_decision_type = partial(
-    validate_choice,
-    choices=("hard", "soft"),
-)
+validate_decision_type = partial(validate_choice, choices=("hard", "soft"))
