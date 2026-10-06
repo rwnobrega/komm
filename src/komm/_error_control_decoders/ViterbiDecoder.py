@@ -17,7 +17,7 @@ from .util import get_pbar
 @dataclass
 class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     r"""
-    Viterbi decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). For more details, see <cite>LC04, Sec. 12.1</cite>.
+    Viterbi decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). This decoder searches the code trellis for the maximum-likelihood (ML) codeword, which is also the maximum a posteriori (MAP) codeword when messages are equiprobable. For more details, see <cite>LC04, Sec. 12.1</cite>.
 
     Parameters:
         code: The terminated convolutional code to be used for decoding.

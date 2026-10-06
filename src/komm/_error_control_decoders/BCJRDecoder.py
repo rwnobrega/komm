@@ -17,7 +17,7 @@ from .util import get_pbar, marginalize
 @dataclass
 class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     r"""
-    Bahl–Cocke–Jelinek–Raviv (BCJR) decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). For more details, see <cite>LC04, Sec. 12.6</cite>.
+    Bahl–Cocke–Jelinek–Raviv (BCJR) decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). This decoder computes the a posteriori L-value of each message bit over the code trellis, assuming equiprobable messages. Its hard decisions, the signs of the L-values, are the bitwise maximum a posteriori (MAP) decisions. For more details, see <cite>LC04, Sec. 12.6</cite>.
 
     Parameters:
         code: The terminated convolutional code to be used for decoding.

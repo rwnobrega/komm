@@ -13,7 +13,7 @@ from .util import get_pbar
 @dataclass
 class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
-    Gaussian elimination decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). The non-erased bits must be correct. This decoder performs bit-wise MAP decoding: it solves the linear system relating the erased positions to the received ones, and returns the bits shared by all its solutions. For more details, see <cite>RU08, Sec. 3.2</cite>.
+    Gaussian elimination decoder for general [block codes](/ref/BlockCode) over the [binary erasure channel](/ref/BinaryErasureChannel). The non-erased bits must be correct. This decoder performs bitwise MAP decoding: it solves the linear system relating the erased positions to the received ones, and returns the bits shared by all its solutions. For more details, see <cite>RU08, Sec. 3.2</cite>.
 
     Parameters:
         code: The block code to be used for decoding.
