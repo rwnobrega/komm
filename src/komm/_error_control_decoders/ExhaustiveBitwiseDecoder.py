@@ -7,6 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
+from .._util.validators import validate_decision_type
 from .util import get_pbar, marginalize
 
 
@@ -28,8 +29,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
     output_type: Literal["hard", "soft"] = "soft"
 
     def __post_init__(self) -> None:
-        if self.output_type not in ["hard", "soft"]:
-            raise ValueError("'output_type' must be 'hard' or 'soft'")
+        self.output_type = validate_decision_type(self.output_type, "output_type")
         k = self.code.dimension
         self._codewords = self.code.codewords()
         self._messages = int_to_bits(range(2**k), width=k).reshape(-1, k)

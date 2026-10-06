@@ -79,3 +79,9 @@ def test_viterbi_stream_decoder_parallel_transitions(rng):
     u = rng.integers(0, 2, 40)
     v = code.encode(np.concatenate([u, np.zeros(10, dtype=int)]))
     np.testing.assert_equal(decoder.decode(v)[10:], u)
+
+
+def test_viterbi_stream_decoder_invalid_input_type():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(ValueError, match="'input_type' must be 'hard' or 'soft'"):
+        komm.ViterbiStreamDecoder(code, 10, input_type="sotf")  # type: ignore

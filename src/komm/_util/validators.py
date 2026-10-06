@@ -130,3 +130,9 @@ validate_bit_order = partial(
     name="bit_order",
     choices=("LSB-first", "MSB-first"),
 )
+
+
+validate_decision_type = partial(
+    validate_choice,
+    choices=("hard", "soft"),
+)

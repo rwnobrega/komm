@@ -11,6 +11,7 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 from .._finite_state_machine.trellis import TrellisSection, viterbi
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
+from .._util.validators import validate_decision_type
 from .util import get_pbar
 
 
@@ -36,8 +37,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             raise NotImplementedError(
                 "Viterbi algorithm not implemented for 'tail-biting'"
             )
-        if self.input_type not in ["hard", "soft"]:
-            raise ValueError("input_type must be 'hard' or 'soft'")
+        self.input_type = validate_decision_type(self.input_type, "input_type")
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         num_sections = self.code.strategy.codeword_length() // n

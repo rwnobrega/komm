@@ -8,6 +8,7 @@ import numpy.typing as npt
 from .. import abc
 from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
+from .._util.validators import validate_decision_type
 
 
 @dataclass
@@ -28,6 +29,7 @@ class ViterbiStreamDecoder:
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self):
+        self.input_type = validate_decision_type(self.input_type, "input_type")
         self._fsm = self.convolutional_code.finite_state_machine()
         num_states, traceback_length = self._fsm.num_states, self.traceback_length
         self.memory: MetricMemory = {

@@ -11,6 +11,7 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 from .._finite_state_machine.trellis import TrellisSection, forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
+from .._util.validators import validate_decision_type
 from .util import get_pbar, marginalize
 
 
@@ -36,8 +37,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             raise NotImplementedError(
                 "BCJR algorithm not implemented for 'tail-biting'"
             )
-        if self.output_type not in ["hard", "soft"]:
-            raise ValueError("'output_type' must be 'hard' or 'soft'")
+        self.output_type = validate_decision_type(self.output_type, "output_type")
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits

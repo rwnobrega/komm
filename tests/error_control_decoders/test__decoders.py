@@ -48,3 +48,19 @@ def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class):
         assert u_hat.shape == (3, 4, b * k)
     with pytest.raises(ValueError):
         decoder.decode(np.zeros((3, 4, n + 1), dtype=int))
+
+
+@pytest.mark.parametrize(
+    "code, decoder_class, parameter",
+    [
+        [block, komm.ExhaustiveCodewordDecoder, "input_type"],
+        [block, komm.ExhaustiveBitwiseDecoder, "output_type"],
+        [terminated, komm.ViterbiDecoder, "input_type"],
+        [terminated, komm.BCJRDecoder, "output_type"],
+        [reed_muller, komm.ReedDecoder, "input_type"],
+        [polar, komm.SCDecoder, "output_type"],
+    ],
+)
+def test_decoders_invalid_type(code, decoder_class, parameter):
+    with pytest.raises(ValueError, match=f"'{parameter}' must be 'hard' or 'soft'"):
+        decoder_class(code, **{parameter: "sotf"})

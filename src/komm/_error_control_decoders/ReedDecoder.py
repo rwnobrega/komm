@@ -7,6 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._error_control_block.ReedMullerCode import ReedMullerCode
 from .._util.decorators import blockwise
+from .._util.validators import validate_decision_type
 
 
 @dataclass
@@ -27,6 +28,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
+        self.input_type = validate_decision_type(self.input_type, "input_type")
         self._reed_partitions = self.code.reed_partitions()
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:

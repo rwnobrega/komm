@@ -8,6 +8,7 @@ from .. import abc
 from .._error_control_block.PolarCode import PolarCode
 from .._util.decorators import blockwise
 from .._util.special_functions import boxplus
+from .._util.validators import validate_decision_type
 
 Belief: TypeAlias = npt.NDArray[np.floating]
 Decision: TypeAlias = npt.NDArray[np.integer]
@@ -38,6 +39,9 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
 
     code: PolarCode
     output_type: Literal["hard", "soft"] = "soft"
+
+    def __post_init__(self) -> None:
+        self.output_type = validate_decision_type(self.output_type, "output_type")
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
