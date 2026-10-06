@@ -1,4 +1,5 @@
 from itertools import islice
+from re import findall
 
 import numpy as np
 import pytest
@@ -121,3 +122,29 @@ def test_integer_coding_composition(code: komm.abc.IntegerCode):
 
 def test_integer_coding_instance(code: komm.abc.IntegerCode):
     assert isinstance(code, komm.abc.IntegerCode)
+
+
+@pytest.mark.parametrize(
+    "cls",
+    [
+        komm.UnaryCode,
+        komm.GolombCode,
+        komm.EscapeCode,
+        komm.EliasGammaCode,
+        komm.EliasDeltaCode,
+        komm.EliasOmegaCode,
+        komm.FibonacciCode,
+        komm.TabooCode,
+    ],
+)
+def test_integer_coding_docstring_table(cls):
+    lines = [line.strip() for line in str(cls.__doc__).splitlines()]
+    rows = [line.strip("|").split("|") for line in lines if line.startswith("|")]
+    header, body = rows[0], rows[2:]
+    # Parameters come from column headers
+    codes = [cls(*map(int, findall(r"\d+", cell))) for cell in header[1:]]
+    for row in body:
+        n = int(row[0].strip(" $"))
+        for code, cell in zip(codes, row[1:], strict=True):
+            codeword = [int(bit) for bit in cell.strip(" `").replace(" ", "")]
+            assert code.encode_single(n) == codeword

@@ -10,6 +10,19 @@ from .UnaryCode import UnaryCode
 class EliasGammaCode(abc.IntegerCode):
     r"""
     Elias gamma code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of the [unary codeword](/ref/UnaryCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias gamma coding](https://en.wikipedia.org/wiki/Elias_gamma_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\alpha$).
+
+    The table below shows the codewords for the first integers, with a space between the two parts.
+
+    | $n$ | Codeword   |
+    | :-: | ---------- |
+    | $1$ | `1`        |
+    | $2$ | `01 0`     |
+    | $3$ | `01 1`     |
+    | $4$ | `001 00`   |
+    | $5$ | `001 01`   |
+    | $6$ | `001 10`   |
+    | $7$ | `001 11`   |
+    | $8$ | `0001 000` |
     """
 
     unary_code = UnaryCode()

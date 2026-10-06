@@ -15,6 +15,19 @@ class TabooCode(abc.IntegerCode):
 
     This is a variation of the block taboo codes of <cite>SM10, Sec. 3.16</cite>, which have blocks of $b$ bits (that is, $M = 2^b - 1$) and do not use the taboo alone as a codeword. Here, the taboo alone is the codeword for $n = 1$, which makes the code complete; the codewords for $n \geq 2$ are those of <cite>SM10</cite>, in the same order. The codes $C_3$, $C_7$, and $C_{15}$ of <cite>MacK03, Ch. 7</cite> are similar, but write $n$ in the usual base $M$, without leading zeros, and are therefore not complete.
 
+    The table below shows the codewords for the first integers, with a space between the blocks.
+
+    | $n$ | $M = 1$           | $M = 2$      | $M = 3$    | $M = 4$     |
+    | :-: | ----------------- | ------------ | ---------- | ----------- |
+    | $1$ | `0`               | `0`          | `00`       | `00`        |
+    | $2$ | `1 0`             | `10 0`       | `01 00`    | `01 00`     |
+    | $3$ | `1 1 0`           | `11 0`       | `10 00`    | `10 00`     |
+    | $4$ | `1 1 1 0`         | `10 10 0`    | `11 00`    | `110 00`    |
+    | $5$ | `1 1 1 1 0`       | `10 11 0`    | `01 01 00` | `111 00`    |
+    | $6$ | `1 1 1 1 1 0`     | `11 10 0`    | `01 10 00` | `01 01 00`  |
+    | $7$ | `1 1 1 1 1 1 0`   | `11 11 0`    | `01 11 00` | `01 10 00`  |
+    | $8$ | `1 1 1 1 1 1 1 0` | `10 10 10 0` | `10 01 00` | `01 110 00` |
+
     Notes:
         - For $M = 1$ it reduces to the [unary code](/ref/UnaryCode) with stop bit $0$.
         - For $M = 2$ it has the same codeword lengths as the [Elias gamma code](/ref/EliasGammaCode).

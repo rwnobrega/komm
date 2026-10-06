@@ -10,6 +10,19 @@ from .EliasGammaCode import EliasGammaCode
 class EliasDeltaCode(abc.IntegerCode):
     r"""
     Elias delta code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of the [Elias gamma codeword](/ref/EliasGammaCode) for the number of bits of $n$ followed by the binary representation of $n$ without its leading one. For more details, see [Wikipedia: Elias delta coding](https://en.wikipedia.org/wiki/Elias_delta_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\beta$).
+
+    The table below shows the codewords for the first integers, with a space between the two parts.
+
+    | $n$ | Codeword    |
+    | :-: | ----------- |
+    | $1$ | `1`         |
+    | $2$ | `010 0`     |
+    | $3$ | `010 1`     |
+    | $4$ | `011 00`    |
+    | $5$ | `011 01`    |
+    | $6$ | `011 10`    |
+    | $7$ | `011 11`    |
+    | $8$ | `00100 000` |
     """
 
     gamma_code = EliasGammaCode()

@@ -12,6 +12,19 @@ class UnaryCode(abc.IntegerCode):
     r"""
     Unary code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of $n - 1$ copies of one bit followed by a single copy of the other bit, called the *stop bit*. For more details, see [Wikipedia: Unary coding](https://en.wikipedia.org/wiki/Unary_coding) or <cite>MacK03, Ch. 7</cite>.
 
+    The table below shows the codewords for the first integers.
+
+    | $n$ | Stop bit $1$ | Stop bit $0$ |
+    | :-: | ------------ | ------------ |
+    | $1$ | `1`          | `0`          |
+    | $2$ | `01`         | `10`         |
+    | $3$ | `001`        | `110`        |
+    | $4$ | `0001`       | `1110`       |
+    | $5$ | `00001`      | `11110`      |
+    | $6$ | `000001`     | `111110`     |
+    | $7$ | `0000001`    | `1111110`    |
+    | $8$ | `00000001`   | `11111110`   |
+
     Parameters:
         stop_bit: The stop bit. Must be either $0$ or $1$. The default value is $1$, so that the codeword for $n$ consists of $n - 1$ zeros followed by a single $1$.
     """

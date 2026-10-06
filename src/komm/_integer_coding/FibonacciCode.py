@@ -9,6 +9,19 @@ from .base import validate_positive
 class FibonacciCode(abc.IntegerCode):
     r"""
     Fibonacci code. It is an integer code with domain the positive integers. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
+
+    The table below shows the codewords for the first integers.
+
+    | $n$ | Codeword |
+    | :-: | -------- |
+    | $1$ | `11`     |
+    | $2$ | `011`    |
+    | $3$ | `0011`   |
+    | $4$ | `1011`   |
+    | $5$ | `00011`  |
+    | $6$ | `10011`  |
+    | $7$ | `01011`  |
+    | $8$ | `000011` |
     """
 
     def __repr__(self) -> str:

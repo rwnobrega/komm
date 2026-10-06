@@ -9,6 +9,19 @@ from .base import take, validate_positive
 class EliasOmegaCode(abc.IntegerCode):
     r"""
     Elias omega code. It is an integer code with domain the positive integers. The codeword for an integer $n$ is built from right to left: it ends with a single $0$ and, while $n > 1$, the binary representation of $n$ is prepended, and $n$ is replaced by its number of bits minus one. For more details, see [Wikipedia: Elias omega coding](https://en.wikipedia.org/wiki/Elias_omega_coding) or <cite>MacK03, Ch. 7</cite> (therein called code $C_\omega$).
+
+    The table below shows the codewords for the first integers, with a space between the parts.
+
+    | $n$ | Codeword    |
+    | :-: | ----------- |
+    | $1$ | `0`         |
+    | $2$ | `10 0`      |
+    | $3$ | `11 0`      |
+    | $4$ | `10 100 0`  |
+    | $5$ | `10 101 0`  |
+    | $6$ | `10 110 0`  |
+    | $7$ | `10 111 0`  |
+    | $8$ | `11 1000 0` |
     """
 
     def __repr__(self) -> str:

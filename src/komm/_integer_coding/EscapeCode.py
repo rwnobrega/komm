@@ -13,6 +13,19 @@ class EscapeCode(abc.IntegerCode):
     r"""
     Escape code. It is an integer code with domain the positive integers. Let $M \geq 1$ be the *divisor*. For an integer $n$, let $q$ and $r$ be the quotient and the remainder of the division of $n - 1$ by $M$. The codeword for $n$ is a sequence of blocks, each one a [truncated binary codeword](/ref/TruncatedBinaryCode) with cardinality $M + 1$: $q$ blocks of $M$, called the *escape*, followed by the block of $r$.
 
+    The table below shows the codewords for the first integers, with a space between the blocks.
+
+    | $n$ | $M = 1$           | $M = 2$       | $M = 3$    | $M = 4$   |
+    | :-: | ----------------- | ------------- | ---------- | --------- |
+    | $1$ | `0`               | `0`           | `00`       | `00`      |
+    | $2$ | `1 0`             | `10`          | `01`       | `01`      |
+    | $3$ | `1 1 0`           | `11 0`        | `10`       | `10`      |
+    | $4$ | `1 1 1 0`         | `11 10`       | `11 00`    | `110`     |
+    | $5$ | `1 1 1 1 0`       | `11 11 0`     | `11 01`    | `111 00`  |
+    | $6$ | `1 1 1 1 1 0`     | `11 11 10`    | `11 10`    | `111 01`  |
+    | $7$ | `1 1 1 1 1 1 0`   | `11 11 11 0`  | `11 11 00` | `111 10`  |
+    | $8$ | `1 1 1 1 1 1 1 0` | `11 11 11 10` | `11 11 01` | `111 110` |
+
     Notes:
         - For $M = 1$ it reduces to the [unary code](/ref/UnaryCode) with stop bit $0$.
         - For $M = 2^b - 1$ all blocks have $b$ bits.
