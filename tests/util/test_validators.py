@@ -8,6 +8,7 @@ from komm._util.validators import (
     validate_float,
     validate_integer,
     validate_integer_array,
+    validate_log_base,
 )
 
 
@@ -170,3 +171,22 @@ def test_validate_float_low_high():
     for value in [-0.1, 1.1, float("nan")]:
         with pytest.raises(ValueError, match=r"'x' must be in \[0, 1\]"):
             validate_float(value, "x", low=0, high=1)
+
+
+def test_validate_log_base():
+    assert validate_log_base("e", "x") == "e"
+    base = validate_log_base(2, "x")
+    assert base == 2.0
+    assert type(base) is float
+
+
+@pytest.mark.parametrize("value", [0, -1.0, 1, 1.0, float("nan"), "f", ""])
+def test_validate_log_base_invalid(value):
+    with pytest.raises(ValueError, match="'x' must be 'e' or a positive real"):
+        validate_log_base(value, "x")
+
+
+@pytest.mark.parametrize("value", [None, 1j])
+def test_validate_log_base_not_real(value):
+    with pytest.raises(TypeError, match="'x' must be a real number"):
+        validate_log_base(value, "x")

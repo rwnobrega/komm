@@ -90,7 +90,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             0.6099865470109874
         """
         input_pmf = validate_pmf(input_pmf)
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         p = self.decay_probability
         pi = float(input_pmf[1])
@@ -109,7 +109,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             >>> zc.capacity()  # doctest: +FLOAT_CMP
             0.6182313659549211
         """
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         p = self.decay_probability
         if p == 1.0:

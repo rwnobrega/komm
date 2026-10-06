@@ -8,13 +8,15 @@ import numpy.typing as npt
 from ..types import Array2D
 
 
-def validate_log_base(value: float | str) -> float | Literal["e"]:
+def validate_log_base(value: float | str, name: str) -> float | Literal["e"]:
     if isinstance(value, str):
-        if value != "e":
-            raise ValueError("log base must be 'e' or a positive real other than 1")
-    elif value <= 0.0 or value == 1.0:
-        raise ValueError("log base must be 'e' or a positive real other than 1")
-    return value
+        if value == "e":
+            return "e"
+    else:
+        value = validate_float(value, name)
+        if value > 0 and value != 1:
+            return value
+    raise ValueError(f"'{name}' must be 'e' or a positive real other than 1")
 
 
 def validate_pmf(value: npt.ArrayLike) -> npt.NDArray[np.floating]:

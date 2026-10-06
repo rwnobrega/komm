@@ -90,7 +90,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             0.7942195631902467
         """
         input_pmf = validate_pmf(input_pmf)
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         epsilon = self.erasure_probability
         pi = input_pmf[1]
@@ -109,7 +109,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             >>> bec.capacity()
             0.8
         """
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         return (1.0 - self.erasure_probability) / log2(base)
 

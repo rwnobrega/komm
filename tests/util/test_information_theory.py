@@ -45,7 +45,7 @@ def test_entropy_invalid_pmf():
     [0.0, 0, -1.0, -1, -2.0, -2, 1.0, 1, "f", "2", ""],
 )
 def test_entropy_invalid_base(invalid_base):
-    with pytest.raises(ValueError, match="log base must"):
+    with pytest.raises(ValueError, match="'base' must be 'e' or"):
         komm.entropy([0.5, 0.5], base=invalid_base)
 
 

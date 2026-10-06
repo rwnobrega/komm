@@ -90,7 +90,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             0.2754734936803773
         """
         input_pmf = validate_pmf(input_pmf)
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         p = self.crossover_probability
         pi = input_pmf[1]
@@ -110,7 +110,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             0.2780719051126377
         """
         p = self.crossover_probability
-        base = validate_log_base(base)
+        base = validate_log_base(base, "base")
         base = e if base == "e" else base
         return (1.0 - binary_entropy(p)) / log2(base)
 
