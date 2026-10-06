@@ -47,15 +47,15 @@ def test_validate_integer_no_bounds():
 def test_validate_integer_low():
     assert validate_integer(0, "x", low=0) == 0
     assert validate_integer(1, "x", low=1) == 1
-    with pytest.raises(ValueError, match="'x' must be at least 0"):
+    with pytest.raises(ValueError, match=r"'x' must be at least 0 \(got -1\)"):
         validate_integer(-1, "x", low=0)
-    with pytest.raises(ValueError, match="'x' must be at least 1"):
+    with pytest.raises(ValueError, match=r"'x' must be at least 1 \(got 0\)"):
         validate_integer(0, "x", low=1)
 
 
 def test_validate_integer_high():
     assert validate_integer(-1, "x", high=2) == -1
-    with pytest.raises(ValueError, match="'x' must be less than 2"):
+    with pytest.raises(ValueError, match=r"'x' must be less than 2 \(got 2\)"):
         validate_integer(2, "x", high=2)
 
 
@@ -164,7 +164,7 @@ def test_validate_float_low():
 
 def test_validate_float_high():
     assert validate_float(1.0, "x", high=1) == 1.0
-    with pytest.raises(ValueError, match="'x' must be at most 1"):
+    with pytest.raises(ValueError, match=r"'x' must be at most 1 \(got 1.1\)"):
         validate_float(1.1, "x", high=1)
 
 

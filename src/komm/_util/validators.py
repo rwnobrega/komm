@@ -66,11 +66,11 @@ def validate_integer(
         raise TypeError(f"'{name}' must be an integer (got {got})") from None
     if low is not None and high is not None:
         if not low <= integer < high:
-            raise ValueError(f"'{name}' must be in [{low}:{high})")
+            raise ValueError(f"'{name}' must be in [{low}:{high}) (got {integer})")
     elif low is not None and not integer >= low:
-        raise ValueError(f"'{name}' must be at least {low}")
+        raise ValueError(f"'{name}' must be at least {low} (got {integer})")
     elif high is not None and not integer < high:
-        raise ValueError(f"'{name}' must be less than {high}")
+        raise ValueError(f"'{name}' must be less than {high} (got {integer})")
     return integer
 
 
@@ -110,11 +110,11 @@ def validate_float(
         raise TypeError(f"'{name}' must be a real number (got {got})")
     if low is not None and high is not None:
         if not low <= value <= high:
-            raise ValueError(f"'{name}' must be in [{low}, {high}]")
+            raise ValueError(f"'{name}' must be in [{low}, {high}] (got {value})")
     elif low is not None and not value >= low:
-        raise ValueError(f"'{name}' must be at least {low}")
+        raise ValueError(f"'{name}' must be at least {low} (got {value})")
     elif high is not None and not value <= high:
-        raise ValueError(f"'{name}' must be at most {high}")
+        raise ValueError(f"'{name}' must be at most {high} (got {value})")
     return float(value)
 
 
