@@ -82,16 +82,17 @@ def validate_integer_array(
     high: int | None = None,
 ) -> npt.NDArray[np.integer]:
     value = np.asarray(value)
-    # Accept bools and empty arrays
-    if value.dtype == bool or value.size == 0:
+    if value.size == 0:  # np.asarray([]) is float64
+        return value.astype(int)
+    if value.dtype == bool:
         value = value.astype(int)
     if not np.issubdtype(value.dtype, np.integer):
         raise TypeError(f"'{name}' must contain only integers (got {value.dtype})")
     if low is not None and high is not None:
-        if not np.all((value >= low) & (value < high)):
+        if not (value.min() >= low and value.max() < high):
             raise ValueError(f"elements of '{name}' must be in [{low}:{high})")
-    elif low is not None and not np.all(value >= low):
+    elif low is not None and not value.min() >= low:
         raise ValueError(f"elements of '{name}' must be at least {low}")
-    elif high is not None and not np.all(value < high):
+    elif high is not None and not value.max() < high:
         raise ValueError(f"elements of '{name}' must be less than {high}")
     return value
