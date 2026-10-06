@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from komm._util.validators import (
+    validate_choice,
     validate_float,
     validate_integer,
     validate_integer_array,
@@ -231,3 +232,11 @@ def test_validate_transition_matrix():
 def test_validate_transition_matrix_invalid(value, message):
     with pytest.raises(ValueError, match=message):
         validate_transition_matrix(value, "x", square=True)
+
+
+def test_validate_choice():
+    assert validate_choice("b", "x", ["a", "b"]) == "b"
+    with pytest.raises(ValueError, match="'x' must be 'a' or 'b'"):
+        validate_choice("c", "x", ["a", "b"])
+    with pytest.raises(ValueError, match="'x' must be 1, 2 or 3"):
+        validate_choice(4, "x", [1, 2, 3])

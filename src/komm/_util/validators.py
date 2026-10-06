@@ -1,11 +1,14 @@
+from collections.abc import Sequence
 from numbers import Real
 from operator import index
-from typing import Literal, SupportsIndex
+from typing import Literal, SupportsIndex, TypeVar
 
 import numpy as np
 import numpy.typing as npt
 
 from ..types import Array2D
+
+T = TypeVar("T")
 
 
 def validate_log_base(value: float | str, name: str) -> float | Literal["e"]:
@@ -112,3 +115,10 @@ def validate_float(
     elif high is not None and not value <= high:
         raise ValueError(f"'{name}' must be at most {high}")
     return float(value)
+
+
+def validate_choice(value: T, name: str, choices: Sequence[T]) -> T:
+    if value not in choices:
+        *init, last = map(repr, choices)
+        raise ValueError(f"'{name}' must be {', '.join(init)} or {last}")
+    return value
