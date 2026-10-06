@@ -69,10 +69,10 @@ pytest
 
 ### Documentation
 
-The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. To serve the documentation locally, run:
+The documentation is built using [ProperDocs](https://properdocs.org/) with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. To serve the documentation locally, run:
 
 ```bash
-mkdocs serve
+properdocs serve
 ```
 
 ## Changelog

@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from mkdocs.plugins import event_priority
+from properdocs.plugins import event_priority
 
 ABBR_RE = re.compile(r"^\*\[(.+?)\]: (.*)$")
 
