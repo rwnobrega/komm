@@ -31,8 +31,9 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
         self.input_type = validate_decision_type(self.input_type, "input_type")
         k = self.code.dimension
         self._codewords = self.code.codewords()
+        self._polar = (-1.0) ** self._codewords
         # About 64 MiB of metrics
-        self._chunk_size = max(1, 2**26 // (8 * 2**k * self.code.length))
+        self._chunk_size = max(1, 2**26 // (8 * 2**k))
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -56,12 +57,9 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
         @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "exhaustive codeword"))
         def decode_to_codeword(r: npt.NDArray[np.integer]):
-            if self.input_type == "hard":
-                ds = r[..., np.newaxis, :] != self._codewords
-            else:
-                ds = -r[..., np.newaxis, :] * (-1) ** self._codewords
-            metrics = np.sum(ds, axis=-1)
-            v_hat = self._codewords[np.argmin(metrics, axis=-1)]
+            x = (-1.0) ** r if self.input_type == "hard" else r
+            metrics = x @ self._polar.T
+            v_hat = self._codewords[np.argmax(metrics, axis=-1)]
             return v_hat
 
         return decode_to_codeword(input)
