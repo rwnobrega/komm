@@ -10,7 +10,24 @@ from .._util.bit_operations import from_binary, to_binary
 @dataclass
 class TruncatedBinaryCode(SelfDelimitingCode):
     r"""
-    Truncated binary code. It is a code for integers in $[0 : M)$, where $M \geq 2$ is a given cardinality. Let $k = \lfloor \log_2 M \rfloor$ and $u = 2^{k+1} - M$. The codeword for an integer $n \in [0 : M)$ is the $k$-bit binary representation of $n$, if $n < u$, or the $(k + 1)$-bit binary representation of $n + u$, otherwise. If $M$ is a power of $2$, the code reduces to the fixed-length binary code. For more details, see [Wikipedia: Truncated binary encoding](https://en.wikipedia.org/wiki/Truncated_binary_encoding).
+    Truncated binary code. It is a code for integers in $[0 : M)$, where $M \geq 2$ is a given cardinality. Let $k = \lfloor \log_2 M \rfloor$ and $u = 2^{k+1} - M$. The codeword for an integer $n \in [0 : M)$ is the $k$-bit binary representation of $n$, if $n < u$, or the $(k + 1)$-bit binary representation of $n + u$, otherwise. For more details, see [Wikipedia: Truncated binary encoding](https://en.wikipedia.org/wiki/Truncated_binary_encoding).
+
+    The table below shows the codewords for small values of $M$.
+
+    | $n$ | $M = 4$ | $M = 5$ | $M = 6$ | $M = 7$ | $M = 8$ |
+    | :-: | ------- | ------- | ------- | ------- | ------- |
+    | $0$ | `00`    | `00`    | `00`    | `00`    | `000`   |
+    | $1$ | `01`    | `01`    | `01`    | `010`   | `001`   |
+    | $2$ | `10`    | `10`    | `100`   | `011`   | `010`   |
+    | $3$ | `11`    | `110`   | `101`   | `100`   | `011`   |
+    | $4$ |         | `111`   | `110`   | `101`   | `100`   |
+    | $5$ |         |         | `111`   | `110`   | `101`   |
+    | $6$ |         |         |         | `111`   | `110`   |
+    | $7$ |         |         |         |         | `111`   |
+
+    Notes:
+        - For $M$ a power of $2$ it reduces to the fixed-length binary code.
+        - It coincides with the [Huffman code](/ref/HuffmanCode) for the uniform pmf, with canonical assignment.
 
     Parameters:
         cardinality: The cardinality $M$ of the code. Must satisfy $M \geq 2$.

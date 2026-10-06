@@ -1,4 +1,5 @@
 from itertools import islice
+from re import findall
 
 import numpy as np
 import pytest
@@ -128,3 +129,28 @@ def test_truncated_binary_invalid_cardinality(M):
 
 def test_truncated_binary_not_integer_code():
     assert not isinstance(komm.TruncatedBinaryCode(5), komm.abc.IntegerCode)
+
+
+def test_truncated_binary_docstring_table():
+    doc = str(komm.TruncatedBinaryCode.__doc__)
+    lines = [line.strip() for line in doc.splitlines()]
+    rows = [line.strip("|").split("|") for line in lines if line.startswith("|")]
+    header, body = rows[0], rows[2:]
+    cardinalities = [int(findall(r"\d+", cell)[0]) for cell in header[1:]]
+    codes = [komm.TruncatedBinaryCode(M) for M in cardinalities]
+    for row in body:
+        n = int(row[0].strip(" $"))
+        for code, cell in zip(codes, row[1:], strict=True):
+            codeword = [int(bit) for bit in cell.strip(" `")]
+            if n < code.cardinality:
+                assert code.encode_single(n) == codeword
+            else:
+                assert codeword == []
+
+
+@pytest.mark.parametrize("M", range(2, 65))
+def test_truncated_binary_uniform_huffman(M):
+    code = komm.TruncatedBinaryCode(M)
+    huffman = komm.HuffmanCode([1 / M] * M, assignment="canonical")
+    for n in range(M):
+        assert np.array_equal(huffman.encode([n]), code.encode_single(n))
