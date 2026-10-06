@@ -32,7 +32,7 @@ class UnaryCode(abc.IntegerCode):
     stop_bit: int = 1
 
     def __post_init__(self) -> None:
-        self.stop_bit = validate_integer(self.stop_bit, "stop_bit", high=2)
+        self.stop_bit = validate_integer(self.stop_bit, "stop_bit", low=0, high=2)
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""

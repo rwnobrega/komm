@@ -97,7 +97,7 @@ def int_to_bits(
                [0, 1, 0, 1]])
     """
     validate_bit_order(bit_order)
-    width = validate_integer(width, "width", high=64)
+    width = validate_integer(width, "width", low=0, high=64)
     input = validate_integer_array(input, "input", low=0, high=1 << width)
     shifts = np.arange(width)
     if bit_order == "MSB-first":

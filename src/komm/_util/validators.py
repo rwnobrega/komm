@@ -56,7 +56,7 @@ def validate_integer(
     value: SupportsIndex,
     name: str,
     *,
-    low: int = 0,
+    low: int | None = None,
     high: int | None = None,
 ) -> int:
     try:
@@ -64,10 +64,13 @@ def validate_integer(
     except TypeError:
         got = type(value).__name__
         raise TypeError(f"'{name}' must be an integer (got {got})") from None
-    if high is None and not integer >= low:
+    if low is not None and high is not None:
+        if not low <= integer < high:
+            raise ValueError(f"'{name}' must be in [{low}:{high})")
+    elif low is not None and not integer >= low:
         raise ValueError(f"'{name}' must be at least {low}")
-    if high is not None and not low <= integer < high:
-        raise ValueError(f"'{name}' must be in [{low}:{high})")
+    elif high is not None and not integer < high:
+        raise ValueError(f"'{name}' must be less than {high}")
     return integer
 
 

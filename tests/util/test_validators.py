@@ -29,21 +29,31 @@ def test_validate_integer_not_integer(value, got):
         validate_integer(value, "x")
 
 
+def test_validate_integer_no_bounds():
+    assert validate_integer(-5, "x") == -5
+
+
 def test_validate_integer_low():
-    assert validate_integer(0, "x") == 0
+    assert validate_integer(0, "x", low=0) == 0
     assert validate_integer(1, "x", low=1) == 1
     with pytest.raises(ValueError, match="'x' must be at least 0"):
-        validate_integer(-1, "x")
+        validate_integer(-1, "x", low=0)
     with pytest.raises(ValueError, match="'x' must be at least 1"):
         validate_integer(0, "x", low=1)
 
 
 def test_validate_integer_high():
-    assert validate_integer(0, "x", high=2) == 0
-    assert validate_integer(1, "x", high=2) == 1
+    assert validate_integer(-1, "x", high=2) == -1
+    with pytest.raises(ValueError, match="'x' must be less than 2"):
+        validate_integer(2, "x", high=2)
+
+
+def test_validate_integer_low_high():
+    assert validate_integer(0, "x", low=0, high=2) == 0
+    assert validate_integer(1, "x", low=0, high=2) == 1
     for value in [-1, 2]:
         with pytest.raises(ValueError, match=r"'x' must be in \[0:2\)"):
-            validate_integer(value, "x", high=2)
+            validate_integer(value, "x", low=0, high=2)
 
 
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8])
