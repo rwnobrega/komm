@@ -8,7 +8,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
+from .._util.validators import validate_choice, validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
@@ -81,10 +81,8 @@ class HuffmanCode(FixedToVariableCode):
         self.pmf = validate_pmf(pmf, "pmf")
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
-        if not policy in {"high", "low"}:
-            raise ValueError("'policy' must be in {'high', 'low'}")
-        if not assignment in {"tree", "canonical"}:
-            raise ValueError("'assignment' must be in {'tree', 'canonical'}")
+        policy = validate_choice(policy, "policy", ("high", "low"))
+        assignment = validate_choice(assignment, "assignment", ("tree", "canonical"))
         self.policy = policy
         self.assignment = assignment
         super().__init__(

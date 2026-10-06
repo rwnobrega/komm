@@ -1,3 +1,4 @@
+from .._util.validators import validate_choice
 from .BinarySequence import BinarySequence
 from .sequences import barker_sequence
 
@@ -28,9 +29,7 @@ class BarkerSequence(BinarySequence):
     """
 
     def __init__(self, length: int) -> None:
-        allowed_lengths = {2, 3, 4, 5, 7, 11, 13}
-        if length not in allowed_lengths:
-            raise ValueError(f"'length' must be in {allowed_lengths}")
+        length = validate_choice(length, "length", (2, 3, 4, 5, 7, 11, 13))
         super().__init__(bit_sequence=barker_sequence(length))
 
     def __repr__(self) -> str:

@@ -58,7 +58,7 @@ def test_walsh_hadamard_invalid():
         komm.WalshHadamardSequence(3)
     with pytest.raises(ValueError):
         komm.WalshHadamardSequence(4, index=4)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'ordering' must be 'natural', 'sequency'"):
         komm.WalshHadamardSequence(4, ordering="invalid")  # type: ignore
     with pytest.raises(NotImplementedError):
         komm.WalshHadamardSequence(4, ordering="dyadic")

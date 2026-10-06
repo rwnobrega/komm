@@ -15,5 +15,5 @@ def test_barker(length):
 
 @pytest.mark.parametrize("length", [-10, 0, 1, 6, 8, 9, 10, 12, 14])
 def test_barker_invalid_length(length):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'length' must be 2, 3, 4, 5, 7, 11 or 13"):
         komm.BarkerSequence(length)

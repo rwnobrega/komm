@@ -145,9 +145,9 @@ def test_huffman_code_invalid_call():
         komm.HuffmanCode([0.5, 0.5, 0.1])
     with pytest.raises(ValueError, match="must be a 1D-array"):
         komm.HuffmanCode([[0.5], [0.5]])
-    with pytest.raises(ValueError, match="must be in"):
+    with pytest.raises(ValueError, match="'policy' must be 'high' or 'low'"):
         komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore
-    with pytest.raises(ValueError, match="'assignment' must be in"):
+    with pytest.raises(ValueError, match="'assignment' must be 'tree' or 'canonical'"):
         komm.HuffmanCode([0.5, 0.5], assignment="unknown")  # type: ignore
 
 
