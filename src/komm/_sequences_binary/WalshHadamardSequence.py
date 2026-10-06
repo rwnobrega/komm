@@ -63,7 +63,6 @@ class WalshHadamardSequence(BinarySequence):
         >>> walsh_hadamard.polar_sequence
         array([ 1, -1,  1, -1, -1,  1, -1,  1])
 
-
         >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='sequency', index=5)
         >>> walsh_hadamard.polar_sequence
         array([ 1, -1, -1,  1, -1,  1,  1, -1])

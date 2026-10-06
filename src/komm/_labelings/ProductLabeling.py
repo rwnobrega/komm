@@ -35,10 +35,9 @@ class ProductLabeling(abc.Labeling):
                [0, 1, 1],
                [0, 1, 0]])
 
-
         >>> labeling = komm.ProductLabeling(
-        ...    komm.Labeling([[1, 0], [1, 1], [0, 1], [0, 0]]),
-        ...    repeat=2,
+        ...     komm.Labeling([[1, 0], [1, 1], [0, 1], [0, 0]]),
+        ...     repeat=2,
         ... )
         >>> labeling.matrix
         array([[1, 0, 1, 0],

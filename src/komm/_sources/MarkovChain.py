@@ -466,7 +466,6 @@ class MarkovChain:
             - This method only applies to absorbing Markov chains.
             - This corresponds to the *fundamental matrix* $N$ of the Markov chain.
 
-
         Returns:
             A $|\mathcal{T}| \times |\mathcal{T}|$-matrix $N$ where entry $N_{i,j}$ is the mean number of visits from $i \in \mathcal{T}$ to $j \in \mathcal{T}$.
 

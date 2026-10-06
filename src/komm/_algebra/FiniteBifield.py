@@ -105,7 +105,6 @@ class FiniteBifield:
 
         modulus: Modulus $p(X)$ of the field, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be an irreducible polynomial. If not specified, the modulus is chosen from [the list of default primitive polynomials](/tables/primitive-polynomials).
 
-
     Examples:
         >>> field = komm.FiniteBifield(4)
         >>> field
