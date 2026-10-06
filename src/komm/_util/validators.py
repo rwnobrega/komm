@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from functools import partial
 from numbers import Real
 from operator import index
 from typing import Literal, SupportsIndex, TypeVar
@@ -122,3 +123,10 @@ def validate_choice(value: T, name: str, choices: Sequence[T]) -> T:
         *init, last = map(repr, choices)
         raise ValueError(f"'{name}' must be {', '.join(init)} or {last}")
     return value
+
+
+validate_bit_order = partial(
+    validate_choice,
+    name="bit_order",
+    choices=("LSB-first", "MSB-first"),
+)

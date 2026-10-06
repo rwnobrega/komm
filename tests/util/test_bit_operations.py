@@ -74,7 +74,7 @@ def test_bit_operations_invalid():
         komm.int_to_bits([4], width=2)
     with pytest.raises(ValueError):
         komm.int_to_bits([-1], width=2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'bit_order' must be 'LSB-first' or"):
         komm.int_to_bits([0], width=1, bit_order="invalid")  # type: ignore
 
 
