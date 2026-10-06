@@ -82,7 +82,7 @@ def prime_factors(n: int) -> list[int]:
 
 
 def mersenne_prime_factors(k: int) -> list[int]:
-    # Prime factors of 2^k - 1, tabulated.
+    # Prime factors of 2^k - 1, tabulated by tools/mersenne_prime_factors.py
     if not 1 <= k <= 128:
         return prime_factors(2**k - 1)
     # fmt: off

@@ -1,12 +1,12 @@
 import json
-import os
+from pathlib import Path
 
 from sympy import factorint, isprime
 
-output_file = "mersenne_prime_factors.json"
+output_file = Path(__file__).with_suffix(".json")
 max_k = 128
 
-if not os.path.exists(output_file):
+if not output_file.exists():
     table = {}
     for k in range(1, max_k + 1):
         print(k)
@@ -16,8 +16,8 @@ if not os.path.exists(output_file):
 
     # One line per k.
     rows = [f'  "{k}": {json.dumps(primes)}' for k, primes in table.items()]
-    open(output_file, "w").write("{\n" + ",\n".join(rows) + "\n}\n")
+    output_file.write_text("{\n" + ",\n".join(rows) + "\n}\n")
 
-table = json.load(open(output_file, "r"))
+table = json.loads(output_file.read_text())
 for k, primes in table.items():
     print(f"        {k}: {primes},")
