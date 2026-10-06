@@ -24,6 +24,8 @@
 
 - Fixed `check` of `CyclicCode`.
 
+- Fixed the default primitive polynomial of degree 16, used by `FiniteBifield` and `LFSRSequence`.
+
 ## v0.36.0 (2026-09-28)
 
 ### Added

@@ -330,7 +330,7 @@ class BinaryPolynomials:
 
 
 def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
-    # [LC04, Table 2.7, p. 47]
+    # [LC04, Table 2.7, p. 42]
     if not 1 <= degree <= 24:
         raise ValueError("only degrees in the range [1 : 24] are implemented")
     return BinaryPolynomial(
@@ -350,7 +350,7 @@ def default_primitive_polynomial(degree: int) -> BinaryPolynomial:
             13: 0b10000000011011,
             14: 0b100010001000011,
             15: 0b1000000000000011,
-            16: 0b11010000000010001,
+            16: 0b10001000000001011,
             17: 0b100000000000001001,
             18: 0b1000000000010000001,
             19: 0b10000000000000100111,
