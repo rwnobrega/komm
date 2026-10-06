@@ -74,3 +74,17 @@ def test_labeling_bijective(labeling: komm.abc.Labeling, rng):
 
 def test_inverse_mapping_is_cached(labeling):
     assert labeling.inverse_mapping is labeling.inverse_mapping
+
+
+def test_labeling_invalid_input(labeling: komm.abc.Labeling):
+    m, M = labeling.num_bits, labeling.cardinality
+    for lab in [labeling, komm.Labeling(labeling.matrix)]:
+        for indices in [[-1], [M]]:
+            with pytest.raises(ValueError, match=rf"'indices' must be in \[0:{M}\)"):
+                lab.indices_to_bits(indices)
+        with pytest.raises(TypeError, match="'indices' must contain only integers"):
+            lab.indices_to_bits([0.5])
+        with pytest.raises(ValueError, match=r"'bits' must be in \[0:2\)"):
+            lab.bits_to_indices([2] * m)
+        with pytest.raises(TypeError, match="'bits' must contain only integers"):
+            lab.bits_to_indices([0.5] * m)

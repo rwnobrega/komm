@@ -4,6 +4,7 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from .._util.validators import validate_integer_array
 from ..types import Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -54,9 +55,7 @@ class Labeling(ABC):
             bits: The binary representations of the given indices. Has the same shape as `indices`, but with the last dimension expanded by a factor of $m$.
         """
         M = self.cardinality
-        indices = np.asarray(indices, dtype=int)
-        if not (np.all(indices >= 0) and np.all(indices < M)):
-            raise ValueError(f"elements of 'index' must be in [0:{M})")
+        indices = validate_integer_array(indices, "indices", low=0, high=M)
         bits = self.matrix[indices].reshape(*indices.shape[:-1], -1)
         return bits
 
@@ -72,14 +71,12 @@ class Labeling(ABC):
             indices: The indices corresponding to the given bits. Has the same shape as `bits`, but with the last dimension contracted by a factor of $m$.
         """
         m = self.num_bits
-        bits = np.asarray(bits, dtype=int)
+        bits = validate_integer_array(bits, "bits", low=0, high=2)
         if bits.shape[-1] % m != 0:
             raise ValueError(
                 "last dimension of 'bits' must be a multiple of the number of"
                 f" bits per index {m} (got {bits.shape[-1]})"
             )
-        if not np.all(np.isin(bits, [0, 1])):
-            raise ValueError("elements of 'bits' must be either 0 or 1")
         indices = np.apply_along_axis(
             func1d=lambda row: self.inverse_mapping[tuple(row)],
             axis=-1,

@@ -5,6 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import bits_to_int, int_to_bits
+from .._util.validators import validate_integer_array
 
 
 class NaturalLabeling(abc.Labeling):
@@ -81,6 +82,7 @@ class NaturalLabeling(abc.Labeling):
                    [1, 1, 1, 1]])
         """
         m = self._num_bits
+        indices = validate_integer_array(indices, "indices", low=0, high=2**m)
         return int_to_bits(indices, width=m, bit_order="MSB-first")
 
     def bits_to_indices(self, bits: npt.ArrayLike) -> npt.NDArray[np.integer]:
@@ -94,6 +96,7 @@ class NaturalLabeling(abc.Labeling):
                    [3, 3]])
         """
         m = self._num_bits
+        bits = validate_integer_array(bits, "bits", low=0, high=2)
         return bits_to_int(bits, width=m, bit_order="MSB-first")
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
