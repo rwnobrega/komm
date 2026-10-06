@@ -8,20 +8,20 @@ from .base import validate_positive
 
 class FibonacciCode(abc.IntegerCode):
     r"""
-    Fibonacci code. It is an integer code with domain the positive integers. For the definition of this code, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
+    Fibonacci code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of the [Zeckendorf representation](https://en.wikipedia.org/wiki/Zeckendorf%27s_theorem) of $n$ (a sum of non-consecutive Fibonacci numbers $1, 2, 3, 5, 8, \ldots$), least significant bit first, followed by an extra $1$. For more details, see [Wikipedia: Fibonacci coding](https://en.wikipedia.org/wiki/Fibonacci_coding).
 
-    The table below shows the codewords for the first integers.
+    The table below shows the codewords for the first integers, with a space between the two parts.
 
-    | $n$ | Codeword |
-    | :-: | -------- |
-    | $1$ | `11`     |
-    | $2$ | `011`    |
-    | $3$ | `0011`   |
-    | $4$ | `1011`   |
-    | $5$ | `00011`  |
-    | $6$ | `10011`  |
-    | $7$ | `01011`  |
-    | $8$ | `000011` |
+    | $n$ | Codeword  |
+    | :-: | --------- |
+    | $1$ | `1 1`     |
+    | $2$ | `01 1`    |
+    | $3$ | `001 1`   |
+    | $4$ | `101 1`   |
+    | $5$ | `0001 1`  |
+    | $6$ | `1001 1`  |
+    | $7$ | `0101 1`  |
+    | $8$ | `00001 1` |
     """
 
     def __repr__(self) -> str:
