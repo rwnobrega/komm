@@ -5,19 +5,12 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .validators import validate_integer_range
+from .validators import validate_integer, validate_integer_range
 
 
 def validate_bit_order(bit_order: str) -> None:
     if bit_order not in {"LSB-first", "MSB-first"}:
         raise ValueError("'bit_order' must be in {'LSB-first', 'MSB-first'}")
-
-
-def validate_width(width: int, low: int = 0) -> int:
-    width = index(width)
-    if not low <= width <= 63:
-        raise ValueError(f"'width' must be in [{low}:64)")
-    return width
 
 
 def bits_to_int(
@@ -55,7 +48,7 @@ def bits_to_int(
                [2, 2]])
     """
     validate_bit_order(bit_order)
-    width = validate_width(width, low=1)
+    width = validate_integer(width, "width", low=1, high=64)
     input = validate_integer_range(input, low=0, high=2)
     if input.shape[-1] % width != 0:
         raise ValueError(
@@ -104,7 +97,7 @@ def int_to_bits(
                [0, 1, 0, 1]])
     """
     validate_bit_order(bit_order)
-    width = validate_width(width)
+    width = validate_integer(width, "width", high=64)
     input = validate_integer_range(input, low=0, high=1 << width)
     shifts = np.arange(width)
     if bit_order == "MSB-first":

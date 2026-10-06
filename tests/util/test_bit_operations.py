@@ -66,9 +66,9 @@ def test_bit_operations_invalid():
         komm.bits_to_int([0, 1, 0], width=2)
     with pytest.raises(ValueError):
         komm.bits_to_int([0, 2], width=2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'width' must be in \[1:64\)"):
         komm.bits_to_int([0, 1], width=0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'width' must be in \[1:64\)"):
         komm.bits_to_int([0, 1], width=64)
     with pytest.raises(ValueError):
         komm.int_to_bits([4], width=2)
