@@ -1,4 +1,4 @@
-import itertools as it
+from itertools import combinations
 
 import numpy as np
 import pytest
@@ -39,7 +39,7 @@ def test_walsh_hadamard_orthogonality(length, ordering):
     walsh_hadamard = []
     for i in range(length):
         walsh_hadamard.append(komm.WalshHadamardSequence(length, ordering, index=i))
-    for i1, i2 in it.combinations(range(length), 2):
+    for i1, i2 in combinations(range(length), 2):
         seq1 = walsh_hadamard[i1].polar_sequence
         seq2 = walsh_hadamard[i2].polar_sequence
         assert np.correlate(seq1, seq2) == (length if i1 == i2 else 0)

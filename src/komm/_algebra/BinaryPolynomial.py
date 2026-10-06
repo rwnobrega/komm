@@ -1,5 +1,5 @@
-import operator
 from functools import reduce
+from operator import mul
 from typing import Self, SupportsInt, TypeVar
 
 import numpy as np
@@ -305,7 +305,7 @@ class BinaryPolynomial:
         r"""
         Computes the least common multiple (lcm) of the arguments.
         """
-        return reduce(operator.mul, poly_list) // cls.gcd(*poly_list)
+        return reduce(mul, poly_list) // cls.gcd(*poly_list)
 
 
 class BinaryPolynomials:

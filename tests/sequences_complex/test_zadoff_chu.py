@@ -1,4 +1,4 @@
-import itertools as it
+from itertools import combinations
 
 import numpy as np
 import pytest
@@ -66,7 +66,7 @@ def test_zadoff_chu_zero_cyclic_acorr(length):
 
 @pytest.mark.parametrize("length", range(1, 20, 2))
 def test_zadoff_chu_constant_cyclic_xcorr(length):
-    for q1, q2 in it.combinations(range(1, length), 2):
+    for q1, q2 in combinations(range(1, length), 2):
         if np.gcd(abs(q1 - q2), length) != 1:
             continue
         zc1 = komm.ZadoffChuSequence(length, root_index=q1)

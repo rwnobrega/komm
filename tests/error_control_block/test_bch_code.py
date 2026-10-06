@@ -1,5 +1,5 @@
-import operator
 from functools import reduce
+from operator import mul
 
 import pytest
 from typeguard import TypeCheckError
@@ -44,7 +44,7 @@ def test_bch_generator_polynomial():
         assert code.length == 63
         assert code.dimension == dimension
         assert code.generator_polynomial == reduce(
-            operator.mul,
+            mul,
             [factors.get(i, komm.BinaryPolynomial(0b1)) for i in range(1, tau + 1)],
         )
 

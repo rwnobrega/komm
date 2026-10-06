@@ -1,5 +1,5 @@
-import operator
 from functools import reduce
+from operator import mul
 
 from typeguard import typechecked
 
@@ -83,7 +83,7 @@ class BCHCode(CyclicCode):
 
         super().__init__(
             length=n,
-            generator_polynomial=reduce(operator.mul, lcm_set),
+            generator_polynomial=reduce(mul, lcm_set),
         )
 
     def __repr__(self) -> str:
