@@ -307,3 +307,9 @@ def test_terminated_convolutional_code_puncturing_matrix_invalid(puncturing_matr
         komm.TerminatedConvolutionalCode(
             convolutional_code, 4, "zero-termination", puncturing_matrix
         )
+
+
+def test_terminated_convolutional_code_invalid_mode():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(ValueError, match="'mode' must be 'direct-truncation'"):
+        komm.TerminatedConvolutionalCode(code, 5, mode="zero")  # type: ignore

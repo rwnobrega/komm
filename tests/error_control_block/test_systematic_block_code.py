@@ -112,3 +112,8 @@ def test_block_code_inverse_encode_invalid_input():
     with pytest.raises(ValueError):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
+
+
+def test_systematic_block_code_invalid_information_set():
+    with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
+        komm.SystematicBlockCode([[1, 1, 0], [0, 1, 1]], information_set="middle")

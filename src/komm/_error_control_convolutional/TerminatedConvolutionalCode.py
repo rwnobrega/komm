@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from functools import cache, cached_property
-from typing import Literal
+from typing import Literal, get_args
 
 import numpy as np
 import numpy.typing as npt
@@ -9,6 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
+from .._util.validators import validate_choice
 from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -103,11 +104,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
     puncturing_matrix: npt.ArrayLike | None = None
 
     def __post_init__(self):
-        if not self.mode in TerminationMode.__args__:
-            raise ValueError(
-                f"mode '{self.mode}' is unknown\n"
-                f"supported termination modes: {set(TerminationMode.__args__)}"
-            )
+        self.mode = validate_choice(self.mode, "mode", get_args(TerminationMode))
         self.strategy = {
             "direct-truncation": DirectTruncation,
             "zero-termination": ZeroTermination,

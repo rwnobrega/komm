@@ -7,6 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
+from .._util.validators import validate_choice
 from ..types import Array1D, Array2D
 
 
@@ -56,14 +57,12 @@ class SystematicBlockCode(abc.BlockCode):
         self.parity_submatrix = np.asarray(parity_submatrix)
         n, k, m = self.length, self.dimension, self.redundancy
         if isinstance(information_set, str):
-            if information_set == "left":
+            sides = ("left", "right")
+            side = validate_choice(information_set, "information_set", sides)
+            if side == "left":
                 self.information_set = np.arange(k)
-            elif information_set == "right":
-                self.information_set = np.arange(m, n)
             else:
-                raise ValueError(
-                    "if string, 'information_set' must be 'left' or 'right'"
-                )
+                self.information_set = np.arange(m, n)
             return
         self.information_set = np.asarray(information_set)
         if (
