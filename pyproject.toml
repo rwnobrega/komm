@@ -42,6 +42,7 @@ doc = [
 debug = [
     "ipykernel>=6.28.0",
     "matplotlib>=3.8.2",
+    "sympy>=1.14.0",
 ]
 all = [
     "komm[lint]",
