@@ -8,7 +8,9 @@ MARKERS = re.compile(r"(<!-- table: (\w+) -->\n\n).*?(\n\n<!-- end table -->)", 
 
 def fill(match):
     module = importlib.import_module(f"tables.{match[2]}")
-    return match[1] + module.table() + match[3]
+    table = module.table()
+    print(f"Generated {match[2]}")
+    return match[1] + table + match[3]
 
 
 def main():

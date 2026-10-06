@@ -47,6 +47,7 @@ def main():
         with plt.style.context(style):
             fig = module.plot()
             save(fig, site / "docs" / "fig" / f"{path.stem}.svg", themed=not style)
+        print(f"Generated {path.stem}.svg")
 
 
 if __name__ == "__main__":
