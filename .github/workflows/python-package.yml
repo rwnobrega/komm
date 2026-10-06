@@ -49,3 +49,18 @@ jobs:
           python gen_plots.py
           git add --intent-to-add docs/fig  # Also catch new files
           git diff --exit-code docs/fig
+  tables:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: pip install -e .
+      - name: Check tables
+        working-directory: site
+        run: |
+          python gen_tables.py
+          git diff --exit-code docs/tables
