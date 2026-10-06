@@ -17,7 +17,7 @@
           <td>
             {% if attribute.annotation %}
               {% with expression = attribute.annotation %}
-                <code>{% include "expression.html" with context %}</code>
+                <code>{% include "expression.html.jinja" with context %}</code>
               {% endwith %}
             {% endif %}
           </td>
@@ -40,7 +40,7 @@
         <b><code>{{ attribute.name }}</code></b>
         {% if attribute.annotation %}
           {% with expression = attribute.annotation %}
-            <span class="doc-param-annotation">(<code>{% include "expression.html" with context %}</code>)</span>
+            <span class="doc-param-annotation">(<code>{% include "expression.html.jinja" with context %}</code>)</span>
           {% endwith %}
         {% endif %}
         –
@@ -73,7 +73,7 @@
                 <span class="doc-attribute-annotation">
                   <b>TYPE:</b>
                   {% with expression = attribute.annotation %}
-                    <code>{% include "expression.html" with context %}</code>
+                    <code>{% include "expression.html.jinja" with context %}</code>
                   {% endwith %}
                 </span>
               {% endif %}

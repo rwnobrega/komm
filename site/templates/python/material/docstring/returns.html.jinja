@@ -18,7 +18,7 @@
           <td>
             {% if returns.annotation %}
               {% with expression = returns.annotation %}
-                <code>{% include "expression.html" with context %}</code>
+                <code>{% include "expression.html.jinja" with context %}</code>
               {% endwith %}
             {% endif %}
           </td>
@@ -41,7 +41,7 @@
         {% if returns.name %}<b><code>{{ returns.name }}</code></b>{% endif %}
         {% if returns.annotation %}
           {% with expression = returns.annotation %}
-            <span class="doc-param-annotation">{% if returns.name %} ({% endif %}<code>{% include "expression.html" with context %}</code>{% if returns.name %}) {% endif %}</span>
+            <span class="doc-param-annotation">{% if returns.name %} ({% endif %}<code>{% include "expression.html.jinja" with context %}</code>{% if returns.name %}) {% endif %}</span>
           {% endwith %}
         {% endif %}
         –
@@ -70,7 +70,7 @@
             {% elif returns.annotation %}
               <span class="doc-returns-annotation">
                 {% with expression = returns.annotation %}
-                  <code>{% include "expression.html" with context %}</code>
+                  <code>{% include "expression.html.jinja" with context %}</code>
                 {% endwith %}
               </span>
             {% endif %}
@@ -84,7 +84,7 @@
                 <span class="doc-returns-annotation">
                   <b>TYPE:</b>
                   {% with expression = returns.annotation %}
-                    <code>{% include "expression.html" with context %}</code>
+                    <code>{% include "expression.html.jinja" with context %}</code>
                   {% endwith %}
                 </span>
               </p>

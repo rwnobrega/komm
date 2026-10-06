@@ -18,7 +18,7 @@
           <td>
             {% if parameter.annotation %}
               {% with expression = parameter.annotation %}
-                <code>{% include "expression.html" with context %}</code>
+                <code>{% include "expression.html.jinja" with context %}</code>
               {% endwith %}
             {% endif %}
           </td>
@@ -30,7 +30,7 @@
           <td>
             {% if parameter.default %}
               {% with expression = parameter.default %}
-                <code>{% include "expression.html" with context %}</code>
+                <code>{% include "expression.html.jinja" with context %}</code>
               {% endwith %}
             {% else %}
               <em>required</em>
@@ -50,7 +50,7 @@
         <b><code>{{ parameter.name }}</code></b>
         {% if parameter.annotation %}
           {% with expression = parameter.annotation %}
-            <span class="doc-param-annotation">(<code>{% include "expression.html" with context %}</code>)</span>
+            <span class="doc-param-annotation">(<code>{% include "expression.html.jinja" with context %}</code>)</span>
           {% endwith %}
         {% endif %}
         –
@@ -83,7 +83,7 @@
                 <span class="doc-param-annotation">
                   <b>TYPE:</b>
                   {% with expression = parameter.annotation %}
-                    <code>{% include "expression.html" with context %}</code>
+                    <code>{% include "expression.html.jinja" with context %}</code>
                   {% endwith %}
                 </span>
               {% endif %}
@@ -91,7 +91,7 @@
                 <span class="doc-param-default">
                   <b>DEFAULT:</b>
                   {% with expression = parameter.default %}
-                    <code>{% include "expression.html" with context %}</code>
+                    <code>{% include "expression.html.jinja" with context %}</code>
                   {% endwith %}
                 </span>
               {% endif %}

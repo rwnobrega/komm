@@ -26,12 +26,12 @@
       {% else %}
         {% filter highlight(language="python", inline=True) %}
           {{ function.name }}()
-          {% include "signature.html" with context %}
+          {% include "signature.html.jinja" with context %}
         {% endfilter %}
       {% endif %}
       
       {% with labels = function.labels %}
-        {% include "labels.html" with context %}
+        {% include "labels.html.jinja" with context %}
       {% endwith %}
 
     {% endfilter %}
@@ -56,7 +56,7 @@
 
   <div class="doc doc-contents {% if root %}first{% endif %}">
     {% with docstring_sections = function.docstring.parsed %}
-      {% include "docstring.html" with context %}
+      {% include "docstring.html.jinja" with context %}
     {% endwith %}
 
     {% if config.show_source and function.source %}

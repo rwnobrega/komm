@@ -42,7 +42,7 @@
       {% endif %}
 
       {% with labels = attribute.labels %}
-        {% include "labels.html" with context %}
+        {% include "labels.html.jinja" with context %}
       {% endwith %}
 
     {% endfilter %}
@@ -71,7 +71,7 @@
 
   <div class="doc doc-contents {% if root %}first{% endif %}">
     {% with docstring_sections = attribute.docstring.parsed %}
-      {% include "docstring.html" with context %}
+      {% include "docstring.html.jinja" with context %}
     {% endwith %}
   </div>
 
