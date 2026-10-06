@@ -44,7 +44,7 @@ def test_escape_fixed_blocks(b):
 
 @pytest.mark.parametrize("M", [0, -1])
 def test_escape_invalid_divisor(M):
-    with pytest.raises(ValueError, match="at least 1"):
+    with pytest.raises(ValueError, match="'divisor' must be at least 1"):
         komm.EscapeCode(M)
 
 

@@ -123,7 +123,7 @@ def test_truncated_binary_rejects_float(integer):
 
 @pytest.mark.parametrize("M", [-1, 0, 1])
 def test_truncated_binary_invalid_cardinality(M):
-    with pytest.raises(ValueError, match="at least 2"):
+    with pytest.raises(ValueError, match="'cardinality' must be at least 2"):
         komm.TruncatedBinaryCode(M)
 
 

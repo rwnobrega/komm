@@ -5,7 +5,7 @@ from typing import SupportsIndex
 
 from .._integer_coding.base import SelfDelimitingCode, take
 from .._util.bit_operations import from_binary, to_binary
-from .._util.validators import validate_index
+from .._util.validators import validate_integer
 
 
 @dataclass
@@ -37,7 +37,7 @@ class TruncatedBinaryCode(SelfDelimitingCode):
     cardinality: int
 
     def __post_init__(self) -> None:
-        self.cardinality = validate_index(self.cardinality, low=2)
+        self.cardinality = validate_integer(self.cardinality, "cardinality", low=2)
         self._k = self.cardinality.bit_length() - 1
         self._u = 2 ** (self._k + 1) - self.cardinality
 

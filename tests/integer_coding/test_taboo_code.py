@@ -50,7 +50,7 @@ def test_taboo_gamma_lengths():
 
 @pytest.mark.parametrize("M", [0, -1])
 def test_taboo_invalid_base(M):
-    with pytest.raises(ValueError, match="at least 1"):
+    with pytest.raises(ValueError, match="'base' must be at least 1"):
         komm.TabooCode(M)
 
 
