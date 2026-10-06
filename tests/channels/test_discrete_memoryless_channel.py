@@ -5,15 +5,15 @@ import komm
 
 
 @pytest.mark.parametrize(
-    "transition_matrix",
+    "transition_matrix, message",
     [
-        [0.5, 0.5],  # Not a 2D array
-        [[0.5, 0.6], [0.5, 0.5]],  # Does not sum to 1.0
-        [[-0.5, 1.5], [0.5, 0.5]],  # Negative probability
+        ([0.5, 0.5], "'transition_matrix' must be a 2D-array"),
+        ([[0.5, 0.6], [0.5, 0.5]], "rows of 'transition_matrix' must sum to 1.0"),
+        ([[-0.5, 1.5], [0.5, 0.5]], "'transition_matrix' must be non-negative"),
     ],
 )
-def test_dmf_invalid_transition_matrix(transition_matrix):
-    with pytest.raises(ValueError):
+def test_dmf_invalid_transition_matrix(transition_matrix, message):
+    with pytest.raises(ValueError, match=message):
         komm.DiscreteMemorylessChannel(transition_matrix)
 
 

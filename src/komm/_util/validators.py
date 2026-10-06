@@ -32,20 +32,19 @@ def validate_pmf(value: npt.ArrayLike, name: str) -> npt.NDArray[np.floating]:
 
 def validate_transition_matrix(
     value: npt.ArrayLike,
+    name: str,
+    *,
     square: bool = False,
 ) -> Array2D[np.floating]:
     value = np.asarray(value, dtype=float)
     if not value.ndim == 2:
-        raise ValueError("transition matrix must be a 2D array")
+        raise ValueError(f"'{name}' must be a 2D-array")
     if not np.all(value >= 0.0):
-        raise ValueError("transition matrix must be non-negative")
+        raise ValueError(f"'{name}' must be non-negative")
     if not np.allclose(value.sum(axis=1), 1.0):
-        raise ValueError("rows of transition matrix must sum to 1.0")
+        raise ValueError(f"rows of '{name}' must sum to 1.0")
     if square and value.shape[0] != value.shape[1]:
-        raise ValueError(
-            "transition matrix must be square (got shape "
-            f"({value.shape[0]}, {value.shape[1]}))"
-        )
+        raise ValueError(f"'{name}' must be square (got shape {value.shape})")
     return value
 
 

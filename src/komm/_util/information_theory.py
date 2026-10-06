@@ -164,7 +164,9 @@ def mutual_information(
 ) -> float:
     input_pmf = validate_pmf(input_pmf, "input_pmf")
     base = validate_log_base(base, "base")
-    transition_matrix = validate_transition_matrix(transition_matrix)
+    transition_matrix = validate_transition_matrix(
+        transition_matrix, "transition_matrix"
+    )
     output_pmf = np.dot(input_pmf, transition_matrix)
     entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(

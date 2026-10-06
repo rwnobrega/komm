@@ -10,6 +10,7 @@ from komm._util.validators import (
     validate_integer_array,
     validate_log_base,
     validate_pmf,
+    validate_transition_matrix,
 )
 
 
@@ -210,3 +211,23 @@ def test_validate_pmf():
 def test_validate_pmf_invalid(value, message):
     with pytest.raises(ValueError, match=message):
         validate_pmf(value, "x")
+
+
+def test_validate_transition_matrix():
+    matrix = validate_transition_matrix([[1, 0], [0, 1]], "x")
+    assert matrix.dtype == np.float64
+    np.testing.assert_equal(matrix, [[1.0, 0.0], [0.0, 1.0]])
+
+
+@pytest.mark.parametrize(
+    "value, message",
+    [
+        ([0.5, 0.5], "'x' must be a 2D-array"),
+        ([[1.5, -0.5]], "'x' must be non-negative"),
+        ([[0.5, 0.6]], "rows of 'x' must sum to 1.0"),
+        ([[0.5, 0.5]], r"'x' must be square \(got shape \(1, 2\)\)"),
+    ],
+)
+def test_validate_transition_matrix_invalid(value, message):
+    with pytest.raises(ValueError, match=message):
+        validate_transition_matrix(value, "x", square=True)
