@@ -1,3 +1,4 @@
+from numbers import Real
 from operator import index
 from typing import Literal, SupportsIndex
 
@@ -13,12 +14,6 @@ def validate_log_base(value: float | str) -> float | Literal["e"]:
             raise ValueError("log base must be 'e' or a positive real other than 1")
     elif value <= 0.0 or value == 1.0:
         raise ValueError("log base must be 'e' or a positive real other than 1")
-    return value
-
-
-def validate_probability(value: float, name: str) -> float:
-    if not 0 <= value <= 1:
-        raise ValueError(f"'{name}' must be between 0 and 1")
     return value
 
 
@@ -96,3 +91,23 @@ def validate_integer_array(
     elif high is not None and not value.max() < high:
         raise ValueError(f"elements of '{name}' must be less than {high}")
     return value
+
+
+def validate_float(
+    value: float,
+    name: str,
+    *,
+    low: float | None = None,
+    high: float | None = None,
+) -> float:
+    if not isinstance(value, Real):
+        got = type(value).__name__
+        raise TypeError(f"'{name}' must be a real number (got {got})")
+    if low is not None and high is not None:
+        if not low <= value <= high:
+            raise ValueError(f"'{name}' must be in [{low}, {high}]")
+    elif low is not None and not value >= low:
+        raise ValueError(f"'{name}' must be at least {low}")
+    elif high is not None and not value <= high:
+        raise ValueError(f"'{name}' must be at most {high}")
+    return float(value)

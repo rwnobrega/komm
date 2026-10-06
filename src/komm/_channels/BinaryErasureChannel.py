@@ -9,7 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_log_base, validate_pmf, validate_probability
+from .._util.validators import validate_float, validate_log_base, validate_pmf
 
 
 @dataclass(init=False)
@@ -28,8 +28,8 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         erasure_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        self.erasure_probability = validate_probability(
-            erasure_probability, "erasure_probability"
+        self.erasure_probability = validate_float(
+            erasure_probability, "erasure_probability", low=0, high=1
         )
         self._rng = rng
 

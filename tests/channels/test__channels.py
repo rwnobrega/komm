@@ -46,6 +46,18 @@ def test_channels_follow_global_rng(channel):
     np.testing.assert_equal(channel.transmit(x), y)
 
 
+@pytest.mark.parametrize(
+    "channel",
+    [
+        komm.BinarySymmetricChannel(0),
+        komm.BinaryErasureChannel(1),
+        komm.ZChannel(1),
+    ],
+)
+def test_binary_channels_float_transition_matrix(channel):
+    assert channel.transition_matrix.dtype == np.float64
+
+
 def test_channels_equality_ignores_rng():
     channel = komm.BinarySymmetricChannel(0.1, rng=np.random.default_rng(1))
     assert channel == komm.BinarySymmetricChannel(0.1)

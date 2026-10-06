@@ -6,7 +6,7 @@ import komm
 
 @pytest.mark.parametrize("p", [-0.1, 1.1])
 def test_bsc_invalid_crossover_probability(p):
-    with pytest.raises(ValueError, match="'crossover_probability' must be between"):
+    with pytest.raises(ValueError, match="'crossover_probability' must be in"):
         komm.BinarySymmetricChannel(p)
 
 

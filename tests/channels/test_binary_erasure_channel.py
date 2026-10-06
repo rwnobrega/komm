@@ -6,7 +6,7 @@ import komm
 
 @pytest.mark.parametrize("eps", [-0.1, 1.1])
 def test_bec_invalid_erasure_probability(eps):
-    with pytest.raises(ValueError, match="'erasure_probability' must be between"):
+    with pytest.raises(ValueError, match="'erasure_probability' must be in"):
         komm.BinaryErasureChannel(eps)
 
 

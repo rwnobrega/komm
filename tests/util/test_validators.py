@@ -1,19 +1,14 @@
+from decimal import Decimal
+from fractions import Fraction
+
 import numpy as np
 import pytest
 
 from komm._util.validators import (
+    validate_float,
     validate_integer,
     validate_integer_array,
-    validate_probability,
 )
-
-
-def test_validate_probability():
-    assert validate_probability(0.0, "p") == 0.0
-    assert validate_probability(1.0, "p") == 1.0
-    for value in [-0.1, 1.1]:
-        with pytest.raises(ValueError, match="'p' must be between 0 and 1"):
-            validate_probability(value, "p")
 
 
 @pytest.mark.parametrize(
@@ -124,3 +119,54 @@ def test_validate_integer_array_low_high():
     for value in [[0, -1], [0, 2]]:
         with pytest.raises(ValueError, match=r"elements of 'x' must be in \[0:2\)"):
             validate_integer_array(value, "x", low=0, high=2)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [1, True, np.int64(1), 1.0, np.float64(1.0), np.float32(1.0), Fraction(1)],
+)
+def test_validate_float(value):
+    real = validate_float(value, "x")
+    assert real == 1.0
+    assert type(real) is float
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ("1", "str"),
+        (None, "NoneType"),
+        (1j, "complex"),
+        (np.complex128(1), "complex128"),
+        (Decimal(1), "Decimal"),
+        (np.array(1.0), "ndarray"),
+    ],
+)
+def test_validate_float_not_real(value, got):
+    with pytest.raises(TypeError, match=rf"'x' must be a real number \(got {got}\)"):
+        validate_float(value, "x")
+
+
+def test_validate_float_no_bounds():
+    assert validate_float(-5.0, "x") == -5.0
+
+
+def test_validate_float_low():
+    assert validate_float(0.0, "x", low=0) == 0.0
+    for value in [-0.1, float("nan")]:
+        with pytest.raises(ValueError, match="'x' must be at least 0"):
+            validate_float(value, "x", low=0)
+
+
+def test_validate_float_high():
+    assert validate_float(1.0, "x", high=1) == 1.0
+    with pytest.raises(ValueError, match="'x' must be at most 1"):
+        validate_float(1.1, "x", high=1)
+
+
+def test_validate_float_low_high():
+    assert validate_float(0.0, "x", low=0, high=1) == 0.0
+    assert validate_float(1.0, "x", low=0, high=1) == 1.0
+    for value in [-0.1, 1.1, float("nan")]:
+        with pytest.raises(ValueError, match=r"'x' must be in \[0, 1\]"):
+            validate_float(value, "x", low=0, high=1)

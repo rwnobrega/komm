@@ -6,7 +6,7 @@ import komm
 
 @pytest.mark.parametrize("p", [-0.1, 1.1])
 def test_zc_invalid_decay_probability(p):
-    with pytest.raises(ValueError, match="'decay_probability' must be between"):
+    with pytest.raises(ValueError, match="'decay_probability' must be in"):
         komm.ZChannel(p)
 
 

@@ -6,9 +6,9 @@ import numpy as np
 import numpy.typing as npt
 
 from .validators import (
+    validate_float,
     validate_log_base,
     validate_pmf,
-    validate_probability,
     validate_transition_matrix,
 )
 
@@ -70,7 +70,7 @@ def binary_entropy(p: float) -> float:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
-    p = validate_probability(p, "p")
+    p = validate_float(p, "p", low=0, high=1)
     if p in {0.0, 1.0}:
         return 0.0
     return float(-p * log2(p) - (1 - p) * log2(1 - p))
