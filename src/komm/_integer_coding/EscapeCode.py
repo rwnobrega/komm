@@ -1,10 +1,10 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from operator import index
 from typing import SupportsIndex
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
+from .._util.validators import validate_index
 from .base import validate_positive
 
 
@@ -39,9 +39,7 @@ class EscapeCode(abc.IntegerCode):
     divisor: int
 
     def __post_init__(self) -> None:
-        self.divisor = index(self.divisor)
-        if not self.divisor >= 1:
-            raise ValueError("'divisor' must be at least 1")
+        self.divisor = validate_index(self.divisor, low=1)
         self._block_code = TruncatedBinaryCode(self.divisor + 1)
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:

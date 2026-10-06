@@ -1,10 +1,10 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from operator import index
 from typing import SupportsIndex
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
+from .._util.validators import validate_index
 from .base import validate_positive
 
 
@@ -40,9 +40,7 @@ class TabooCode(abc.IntegerCode):
     base: int
 
     def __post_init__(self) -> None:
-        self.base = index(self.base)
-        if not self.base >= 1:
-            raise ValueError("'base' must be at least 1")
+        self.base = validate_index(self.base, low=1)
         self._block_code = TruncatedBinaryCode(self.base + 1)
 
     def _digits(self, integer: int) -> list[int]:

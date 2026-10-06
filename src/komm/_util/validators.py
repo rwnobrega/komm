@@ -1,4 +1,5 @@
-from typing import Literal
+from operator import index
+from typing import Literal, SupportsIndex
 
 import numpy as np
 import numpy.typing as npt
@@ -89,4 +90,18 @@ def validate_integer_min(
     value = validate_integer_array(value)
     if not np.all(value >= low):
         raise ValueError(f"input contains invalid entries (expected at least {low})")
+    return value
+
+
+def validate_index(
+    value: SupportsIndex,
+    *,
+    low: int = 0,
+    high: int | None = None,
+) -> int:
+    value = index(value)
+    if high is None and not value >= low:
+        raise ValueError(f"value must be at least {low}")
+    if high is not None and not low <= value < high:
+        raise ValueError(f"value must be in [{low}:{high})")
     return value

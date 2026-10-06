@@ -1,9 +1,9 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from operator import index
 from typing import SupportsIndex
 
 from .. import abc
+from .._util.validators import validate_index
 from .base import validate_positive
 
 
@@ -32,9 +32,7 @@ class UnaryCode(abc.IntegerCode):
     stop_bit: int = 1
 
     def __post_init__(self) -> None:
-        self.stop_bit = index(self.stop_bit)
-        if self.stop_bit not in {0, 1}:
-            raise ValueError("'stop_bit' must be either 0 or 1")
+        self.stop_bit = validate_index(self.stop_bit, high=2)
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""

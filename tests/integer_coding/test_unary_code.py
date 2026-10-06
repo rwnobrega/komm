@@ -46,7 +46,7 @@ def test_unary_stop_bit_zero():
 
 @pytest.mark.parametrize("stop_bit", [-1, 2])
 def test_unary_invalid_stop_bit(stop_bit):
-    with pytest.raises(ValueError, match="'stop_bit'"):
+    with pytest.raises(ValueError, match=r"must be in \[0:2\)"):
         komm.UnaryCode(stop_bit=stop_bit)
 
 
