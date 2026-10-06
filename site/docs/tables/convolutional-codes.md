@@ -8,6 +8,8 @@ The table below lists optimal [low-rate convolutional codes](/ref/LowRateConvolu
 
 **Source:** <cite>LC04, Tables 12.1 (a)–(c), pp. 539–540</cite>.
 
+<!-- table: convolutional_codes_low_rate -->
+
 | $n$ | $\sigma$ | $g(D) = [g_0(D) ~ \cdots ~ g_{n-1}(D)]$ | $d_\mathrm{free}$ |
 | :-: | :------: | --------------------------------------- | :---------------: |
 | $2$ |   $1$    | `[0o3, 0o1]`                            |        $3$        |
@@ -45,11 +47,15 @@ The table below lists optimal [low-rate convolutional codes](/ref/LowRateConvolu
 | $4$ |   $8$    | `[0o533, 0o575, 0o647, 0o711]`          |       $24$        |
 | $4$ |   $9$    | `[0o1173, 0o1325, 0o1467, 0o1751]`      |       $27$        |
 
+<!-- end table -->
+
 <h2 markdown id="high-rate">Optimal high-rate convolutional codes</h2>
 
 The table below lists optimal [high-rate convolutional codes](/ref/HighRateConvolutionalCode), for $n \in \\{ 3, 4 \\}$, and small values of degree $\sigma$.
 
 **Source:** <cite>LC04, Tables 12.1 (d) and (e), p. 540</cite>.
+
+<!-- table: convolutional_codes_high_rate -->
 
 | $n$ | $\sigma$ | $h(D) = [h_0(D) ~ \cdots ~ h_{n-1}(D)]$ | $d_\mathrm{free}$ |
 | :-: | :------: | --------------------------------------- | :---------------: |
@@ -70,3 +76,5 @@ The table below lists optimal [high-rate convolutional codes](/ref/HighRateConvo
 | $4$ |   $7$    | `[0o267, 0o315, 0o341, 0o211]`          |        $6$        |
 | $4$ |   $8$    | `[0o661, 0o733, 0o757, 0o535]`          |        $7$        |
 | $4$ |   $9$    | `[0o1371, 0o1157, 0o1723, 0o1475]`      |        $8$        |
+
+<!-- end table -->
