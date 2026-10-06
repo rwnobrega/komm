@@ -58,7 +58,7 @@ class TunstallCode(VariableToFixedCode):
         pmf: npt.ArrayLike,
         target_block_size: int | None = None,
     ) -> None:
-        self.pmf = validate_pmf(pmf)
+        self.pmf = validate_pmf(pmf, "pmf")
         if target_block_size is None:
             target_block_size = ceil(log2(self.pmf.size))
         if 2**target_block_size < self.pmf.size:

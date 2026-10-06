@@ -9,6 +9,7 @@ from komm._util.validators import (
     validate_integer,
     validate_integer_array,
     validate_log_base,
+    validate_pmf,
 )
 
 
@@ -190,3 +191,22 @@ def test_validate_log_base_invalid(value):
 def test_validate_log_base_not_real(value):
     with pytest.raises(TypeError, match="'x' must be a real number"):
         validate_log_base(value, "x")
+
+
+def test_validate_pmf():
+    pmf = validate_pmf([1, 0], "x")
+    assert pmf.dtype == np.float64
+    np.testing.assert_equal(pmf, [1.0, 0.0])
+
+
+@pytest.mark.parametrize(
+    "value, message",
+    [
+        ([[0.5], [0.5]], "'x' must be a 1D-array"),
+        ([1.5, -0.5], "'x' must be non-negative"),
+        ([0.5, 0.6], "'x' must sum to 1.0"),
+    ],
+)
+def test_validate_pmf_invalid(value, message):
+    with pytest.raises(ValueError, match=message):
+        validate_pmf(value, "x")

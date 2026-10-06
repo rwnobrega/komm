@@ -78,7 +78,7 @@ class HuffmanCode(FixedToVariableCode):
         policy: Literal["high", "low"] = "high",
         assignment: Literal["tree", "canonical"] = "tree",
     ):
-        self.pmf = validate_pmf(pmf)
+        self.pmf = validate_pmf(pmf, "pmf")
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
         if not policy in {"high", "low"}:

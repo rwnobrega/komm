@@ -12,11 +12,11 @@ def test_discrete_memoryless_source_init():
 
 
 def test_discrete_memoryless_source_invalid():
-    with pytest.raises(ValueError, match="pmf must be a 1D-array"):
+    with pytest.raises(ValueError, match="'pmf' must be a 1D-array"):
         komm.DiscreteMemorylessSource([[0.25, 0.25], [0.25, 0.25]])
-    with pytest.raises(ValueError, match="pmf must sum to 1.0"):
+    with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
         komm.DiscreteMemorylessSource([0.5, 0.5, 0.1])
-    with pytest.raises(ValueError, match="pmf must be non-negative"):
+    with pytest.raises(ValueError, match="'pmf' must be non-negative"):
         komm.DiscreteMemorylessSource([0.5, -1.5])
     with pytest.raises(ValueError, match="cardinality must be at least 1"):
         komm.DiscreteMemorylessSource(0)

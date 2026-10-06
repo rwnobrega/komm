@@ -39,7 +39,7 @@ class Constellation(ABC, Generic[T]):
         M = self.order
         if priors is None:
             priors = np.ones(M) / M
-        priors = validate_pmf(priors)
+        priors = validate_pmf(priors, "priors")
         if priors.size != M:
             raise ValueError(
                 "length of 'priors' must be equal to the constellation"

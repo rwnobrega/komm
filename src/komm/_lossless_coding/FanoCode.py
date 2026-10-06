@@ -52,7 +52,7 @@ class FanoCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
-        self.pmf = validate_pmf(pmf)
+        self.pmf = validate_pmf(pmf, "pmf")
         if not source_block_size >= 1:
             raise ValueError("'source_block_size' must be at least 1")
         super().__init__(

@@ -19,14 +19,14 @@ def validate_log_base(value: float | str, name: str) -> float | Literal["e"]:
     raise ValueError(f"'{name}' must be 'e' or a positive real other than 1")
 
 
-def validate_pmf(value: npt.ArrayLike) -> npt.NDArray[np.floating]:
+def validate_pmf(value: npt.ArrayLike, name: str) -> npt.NDArray[np.floating]:
     value = np.asarray(value, dtype=float)
     if not value.ndim == 1:
-        raise ValueError("pmf must be a 1D-array")
+        raise ValueError(f"'{name}' must be a 1D-array")
     if not np.all(value >= 0.0):
-        raise ValueError("pmf must be non-negative")
+        raise ValueError(f"'{name}' must be non-negative")
     if not np.isclose(value.sum(), 1.0):
-        raise ValueError("pmf must sum to 1.0")
+        raise ValueError(f"'{name}' must sum to 1.0")
     return value
 
 

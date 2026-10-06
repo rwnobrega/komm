@@ -32,7 +32,7 @@ def test_shannon_code_wikipedia_2():
 
 @pytest.mark.parametrize("pmf", [[0.5, 0.5, 0.0], [1.0, 0.0], [0.0, 0.4, 0.6]])
 def test_shannon_code_zero_probability(pmf):
-    with pytest.raises(ValueError, match="pmf must be positive"):
+    with pytest.raises(ValueError, match="'pmf' must be positive"):
         komm.ShannonCode(pmf)
 
 

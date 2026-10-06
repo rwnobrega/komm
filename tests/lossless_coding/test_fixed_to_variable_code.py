@@ -217,7 +217,7 @@ def test_rate(code_parameters, pmf, rate):
 )
 def test_rate_invalid_pmf(pmf):
     code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
-    with pytest.raises(ValueError, match="pmf must"):
+    with pytest.raises(ValueError, match="'pmf' must"):
         code.rate(pmf)
 
 
