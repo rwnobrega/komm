@@ -32,8 +32,9 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         decay_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        validate_probability(decay_probability)
-        self.decay_probability = decay_probability
+        self.decay_probability = validate_probability(
+            decay_probability, "decay_probability"
+        )
         self._rng = rng
 
     @property

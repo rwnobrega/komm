@@ -70,7 +70,7 @@ def binary_entropy(p: float) -> float:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
-    validate_probability(p)
+    p = validate_probability(p, "p")
     if p in {0.0, 1.0}:
         return 0.0
     return float(-p * log2(p) - (1 - p) * log2(1 - p))

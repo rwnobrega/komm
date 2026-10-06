@@ -28,8 +28,9 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         erasure_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        validate_probability(erasure_probability)
-        self.erasure_probability = erasure_probability
+        self.erasure_probability = validate_probability(
+            erasure_probability, "erasure_probability"
+        )
         self._rng = rng
 
     @property

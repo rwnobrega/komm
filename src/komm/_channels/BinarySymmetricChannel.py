@@ -32,8 +32,9 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         crossover_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        validate_probability(crossover_probability)
-        self.crossover_probability = crossover_probability
+        self.crossover_probability = validate_probability(
+            crossover_probability, "crossover_probability"
+        )
         self._rng = rng
 
     @property

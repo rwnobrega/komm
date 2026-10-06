@@ -1,7 +1,19 @@
 import numpy as np
 import pytest
 
-from komm._util.validators import validate_integer, validate_integer_array
+from komm._util.validators import (
+    validate_integer,
+    validate_integer_array,
+    validate_probability,
+)
+
+
+def test_validate_probability():
+    assert validate_probability(0.0, "p") == 0.0
+    assert validate_probability(1.0, "p") == 1.0
+    for value in [-0.1, 1.1]:
+        with pytest.raises(ValueError, match="'p' must be between 0 and 1"):
+            validate_probability(value, "p")
 
 
 @pytest.mark.parametrize(

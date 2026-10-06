@@ -16,9 +16,9 @@ def validate_log_base(value: float | str) -> float | Literal["e"]:
     return value
 
 
-def validate_probability(value: float) -> float:
+def validate_probability(value: float, name: str) -> float:
     if not 0 <= value <= 1:
-        raise ValueError("probability must be between 0 and 1")
+        raise ValueError(f"'{name}' must be between 0 and 1")
     return value
 
 
