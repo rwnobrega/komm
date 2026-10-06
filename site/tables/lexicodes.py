@@ -1,9 +1,11 @@
 import json
-import os
+from pathlib import Path
 
 import komm
 
-output_file = "lexicodes.json"
+from . import markdown
+
+output_file = Path(__file__).with_suffix(".json")
 max_redundancy = 29  # About 13 GiB of memory.
 
 
@@ -17,7 +19,7 @@ def dimension(n, d, previous):
     return komm.Lexicode(n, d).dimension
 
 
-if not os.path.exists(output_file):
+def compute():
     dimensions = {}
     for n in range(1, 64):
         print(n)
@@ -26,12 +28,17 @@ if not os.path.exists(output_file):
 
     # One line per length.
     rows = [f'  "{n}": {json.dumps(ks)}' for n, ks in dimensions.items()]
-    open(output_file, "w").write("{\n" + ",\n".join(rows) + "\n}\n")
+    output_file.write_text("{\n" + ",\n".join(rows) + "\n}\n")
 
-dimensions = json.load(open(output_file, "r"))
-print("| $n \\backslash d$ | " + " | ".join(f"${d}$" for d in range(1, 21)) + " |")
-print("| :-: " * 21 + "|")
-for n, ks in dimensions.items():
-    cells = ["" if k is None else f"${k}$" for k in ks[:20]]
-    cells += [""] * (20 - len(cells))
-    print(f"| ${n}$ | " + " | ".join(cells) + " |")
+
+def table():
+    if not output_file.exists():
+        compute()
+    dimensions = json.loads(output_file.read_text())
+    rows = []
+    for n, ks in dimensions.items():
+        cells = ["" if k is None else f"${k}$" for k in ks[:20]]
+        cells += [""] * (20 - len(cells))
+        rows.append([f"${n}$", *cells])
+    header = ["$n \\backslash d$", *(f"${d}$" for d in range(1, 21))]
+    return markdown(header, rows, center=[True] * 21)

@@ -6,6 +6,8 @@ The table below lists the default primitive polynomials of degree $k$ over $\mat
 
 **Source:** <cite>LC04, Table 2.7, p. 42</cite>.
 
+<!-- table: primitive_polynomials -->
+
 | Degree $k$ | Primitive polynomial $p(X)$ | Degree $k$ | Primitive polynomial $p(X)$   |
 | :--------: | --------------------------- | :--------: | ----------------------------- |
 |    $1$     | `0b11`                      |    $13$    | `0b10000000011011`            |
@@ -20,3 +22,5 @@ The table below lists the default primitive polynomials of degree $k$ over $\mat
 |    $10$    | `0b10000001001`             |    $22$    | `0b10000000000000000000011`   |
 |    $11$    | `0b100000000101`            |    $23$    | `0b100000000000000000100001`  |
 |    $12$    | `0b1000001010011`           |    $24$    | `0b1000000000000000010000111` |
+
+<!-- end table -->
