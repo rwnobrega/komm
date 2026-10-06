@@ -79,8 +79,6 @@ theme:
     - navigation.indexes
     - navigation.footer
     # - toc.integrate
-    - hide:
-        - navigation
 
 markdown_extensions:
   - abbr
