@@ -1,7 +1,6 @@
 from collections.abc import Sequence
 from itertools import product
 from math import prod
-from operator import index
 from typing import Any, SupportsIndex
 
 import numpy as np
@@ -9,6 +8,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .validators import validate_integer
 
 ArrayInt = npt.NDArray[np.integer]
 
@@ -59,9 +59,7 @@ def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> ArrayInt:
                [0, 1]])
     """
     matrix = np.asarray(matrix, dtype=int)
-    exponent = index(exponent)
-    if exponent < 0:
-        raise ValueError("'exponent' must be nonnegative")
+    exponent = validate_integer(exponent, "exponent", low=0)
     power = np.eye(matrix.shape[0], dtype=int)
     while exponent > 0:  # Square and multiply
         if exponent & 1:

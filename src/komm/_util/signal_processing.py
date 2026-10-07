@@ -3,6 +3,8 @@ from typing import Any, Literal
 import numpy as np
 import numpy.typing as npt
 
+from .validators import validate_integer
+
 
 def sampling_rate_compress(
     input: npt.ArrayLike,
@@ -54,10 +56,8 @@ def sampling_rate_compress(
         array([[11, 12],
                [17, 18]])
     """
-    if not factor > 0:
-        raise ValueError("'factor' should be a positive integer")
-    if not (0 <= offset < factor):
-        raise ValueError("'offset' should satisfy 0 <= offset < factor")
+    factor = validate_integer(factor, "factor", low=1)
+    offset = validate_integer(offset, "offset", low=0, high=factor)
     input = np.asarray(input)
     indexer = [slice(None)] * input.ndim
     indexer[axis] = slice(offset, input.shape[axis], factor)
@@ -104,10 +104,8 @@ def sampling_rate_expand(
                [0, 0],
                [0, 0]])
     """
-    if not factor > 0:
-        raise ValueError("'factor' should be a positive integer")
-    if not (0 <= offset < factor):
-        raise ValueError("'offset' should satisfy 0 <= offset < factor")
+    factor = validate_integer(factor, "factor", low=1)
+    offset = validate_integer(offset, "offset", low=0, high=factor)
     input = np.asarray(input)
     shape = list(input.shape)
     shape[axis] *= factor

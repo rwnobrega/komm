@@ -112,8 +112,12 @@ def test_binary_basic():
 def test_binary_invalid():
     with pytest.raises(ValueError):
         komm.from_binary([0, 2])
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'integer' must be an integer"):
         komm.to_binary(1.5)  # type: ignore
+    with pytest.raises(ValueError, match=r"'integer' must be at least 0 \(got -1\)"):
+        komm.to_binary(-1)
+    with pytest.raises(ValueError, match=r"must be in \[0:2\*\*4\) \(got 16\)"):
+        komm.to_binary(16, width=4)
 
 
 @pytest.mark.parametrize("width", range(1, 201))

@@ -43,9 +43,9 @@ def test_matrix_power(size, exponent, rng):
 
 
 def test_matrix_power_invalid_exponent():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'exponent' must be at least 0 \(got -1\)"):
         matrix_power([[1, 1], [1, 0]], -1)
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'exponent' must be an integer"):
         matrix_power([[1, 1], [1, 0]], 2.0)  # type: ignore
 
 
