@@ -69,3 +69,10 @@ def test_fixed_to_variable_codes_deterministic(constructor, S, k):
         np.testing.assert_allclose(code.rate(pmf), 1 / k)
         message = np.full(10 * k, i, dtype=int)
         np.testing.assert_equal(code.decode(code.encode(message)), message)
+
+
+def test_fixed_to_variable_codes_invalid_block_size(constructor):
+    with pytest.raises(ValueError, match="'source_block_size' must be at least 1"):
+        constructor([0.5, 0.5], 0)
+    with pytest.raises(TypeError, match="'source_block_size' must be an integer"):
+        constructor([0.5, 0.5], 2.0)

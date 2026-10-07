@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
@@ -57,13 +57,12 @@ class ShannonCode(FixedToVariableCode):
         self.pmf = validate_pmf(pmf, "pmf")
         if not np.all(self.pmf > 0):
             raise ValueError("'pmf' must be positive")
-        if not source_block_size >= 1:
-            raise ValueError("'source_block_size' must be at least 1")
+        k = validate_integer(source_block_size, "source_block_size", low=1)
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=shannon_code(self.pmf, source_block_size),
+            source_block_size=k,
+            enc_mapping=shannon_code(self.pmf, k),
         )
 
     def __repr__(self) -> str:

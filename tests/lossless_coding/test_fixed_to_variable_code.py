@@ -89,6 +89,14 @@ def test_invalid_target_cardinality():
         komm.FixedToVariableCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
 
 
+def test_integer_parameters():
+    enc_mapping = {(0,): (0,), (1,): (1,)}
+    code = komm.FixedToVariableCode(np.int64(2), 2, 1, enc_mapping)  # type: ignore
+    assert type(code.source_cardinality) is int
+    with pytest.raises(TypeError, match="'source_block_size' must be an integer"):
+        komm.FixedToVariableCode(2, 2, 1.0, enc_mapping)  # type: ignore
+
+
 def test_invalid_enc_mapping_domain_1():
     enc_mapping: dict = {
         (0, 0): (0,),

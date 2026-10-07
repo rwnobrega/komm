@@ -5,7 +5,7 @@ from typing import Self
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .util import (
     Word,
@@ -33,9 +33,10 @@ class FixedToVariableCode:
         source_block_size: int,
         enc_mapping: dict[Word, Word],
     ) -> None:
-        self._source_cardinality = source_cardinality
-        self._target_cardinality = target_cardinality
-        self._source_block_size = source_block_size
+        calX, calY, k = source_cardinality, target_cardinality, source_block_size
+        self._source_cardinality = validate_integer(calX, "source_cardinality", low=2)
+        self._target_cardinality = validate_integer(calY, "target_cardinality", low=2)
+        self._source_block_size = validate_integer(k, "source_block_size", low=1)
         self._enc_mapping = enc_mapping
         self.__post_init__()
 
@@ -43,12 +44,6 @@ class FixedToVariableCode:
         domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
         calX, calY = self.source_cardinality, self.target_cardinality
         k = self.source_block_size
-        if not calX >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        if not calY >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
-        if not k >= 1:
-            raise ValueError("'source_block_size' must be at least 1")
         if set(domain) != set(product(range(calX), repeat=k)):
             raise ValueError("'enc_mapping': invalid domain")
         if not all(all(0 <= x < calY for x in word) for word in codomain):
@@ -153,9 +148,7 @@ class FixedToVariableCode:
             raise ValueError("'codewords' must be non-empty")
         if source_cardinality is None:
             source_cardinality = len(codewords)
-        if not source_cardinality >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        calX = source_cardinality
+        calX = validate_integer(source_cardinality, "source_cardinality", low=2)
         calY = max(max(codeword) for codeword in codewords) + 1
         k = infer_block_size(len(codewords), calX, "codewords")
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
@@ -227,11 +220,8 @@ class FixedToVariableCode:
             raise ValueError("'lengths' must be a 1D-array")
         if source_cardinality is None:
             source_cardinality = lengths.size
-        if not source_cardinality >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        if not target_cardinality >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
-        calX, calY = source_cardinality, target_cardinality
+        calX = validate_integer(source_cardinality, "source_cardinality", low=2)
+        calY = validate_integer(target_cardinality, "target_cardinality", low=2)
         k = infer_block_size(lengths.size, calX, "lengths")
         codewords = canonical_code(lengths, base=calY)
         if any(len(codeword) == 0 for codeword in codewords):
