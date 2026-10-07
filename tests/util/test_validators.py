@@ -1,5 +1,6 @@
 from decimal import Decimal
 from fractions import Fraction
+from re import escape
 
 import numpy as np
 import pytest
@@ -124,6 +125,14 @@ def test_validate_integer_array_low_high():
     for value in [[0, -1], [0, 2]]:
         with pytest.raises(ValueError, match=r"elements of 'x' must be in \[0:2\)"):
             validate_integer_array(value, "x", low=0, high=2)
+
+
+def test_validate_integer_array_shape():
+    validate_integer_array([1, 2], "x", shape=(2,))
+    for value, got in [([1, 2, 3], "(3,)"), ([], "(0,)"), ([[1, 2]], "(1, 2)")]:
+        message = f"'x' must have shape (2,) (got {got})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_integer_array(value, "x", shape=(2,))
 
 
 @pytest.mark.parametrize(

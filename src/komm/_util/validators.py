@@ -80,8 +80,11 @@ def validate_integer_array(
     *,
     low: int | None = None,
     high: int | None = None,
+    shape: tuple[int, ...] | None = None,
 ) -> npt.NDArray[np.integer]:
     value = np.asarray(value)
+    if shape is not None and not value.shape == shape:
+        raise ValueError(f"'{name}' must have shape {shape} (got {value.shape})")
     if value.size == 0:  # np.asarray([]) is float64
         return value.astype(int)
     if value.dtype == bool:
