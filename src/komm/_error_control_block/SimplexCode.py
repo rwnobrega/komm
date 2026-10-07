@@ -69,7 +69,7 @@ class SimplexCode(SystematicBlockCode):
         4
     """
 
-    def __init__(self, kappa: int, extended: bool = False) -> None:
+    def __init__(self, kappa: int, *, extended: bool = False) -> None:
         if not kappa >= 2:
             raise ValueError("'kappa' must be at least 2")
         self.kappa = kappa

@@ -60,7 +60,7 @@ class GolayCode(SystematicBlockCode):
         8
     """
 
-    def __init__(self, extended: bool = False) -> None:
+    def __init__(self, *, extended: bool = False) -> None:
         self.extended = extended
         super().__init__(parity_submatrix=golay_parity_submatrix(extended))
 

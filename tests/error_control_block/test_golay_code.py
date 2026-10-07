@@ -84,7 +84,9 @@ def test_extended_golay_code_codewords():
 
 
 def test_golay_code_invalid_init():
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="takes 1 positional argument"):
         komm.GolayCode(23, 12)  # type: ignore
+    with pytest.raises(TypeError, match="takes 1 positional argument"):
+        komm.GolayCode(True)  # type: ignore
     with pytest.raises(TypeCheckError):
         komm.GolayCode(extended=1)  # type: ignore

@@ -74,7 +74,7 @@ class HammingCode(SystematicBlockCode):
         4
     """
 
-    def __init__(self, mu: int, extended: bool = False) -> None:
+    def __init__(self, mu: int, *, extended: bool = False) -> None:
         if not mu >= 2:
             raise ValueError("'mu' must be at least 2")
         self.mu = mu

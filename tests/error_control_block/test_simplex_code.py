@@ -18,5 +18,5 @@ def test_simplex_invalid_init():
         komm.SimplexCode(1)
     with pytest.raises(TypeCheckError):
         komm.SimplexCode(7 / 3)  # type: ignore
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.SimplexCode(7, 3)  # type: ignore

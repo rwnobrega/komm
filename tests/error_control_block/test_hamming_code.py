@@ -159,5 +159,5 @@ def test_hamming_code_invalid_init():
         komm.HammingCode(1)
     with pytest.raises(TypeCheckError):
         komm.HammingCode(7 / 4)  # type: ignore
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.HammingCode(7, 4)  # type: ignore

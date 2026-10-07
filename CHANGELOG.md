@@ -26,6 +26,8 @@
 
 - Renamed parameter `state` of `ViterbiStreamDecoder` to `initial_state`, and made its `memory`, `cache_bit`, and `metric_function` private.
 
+- Made parameter `extended` of `HammingCode`, `SimplexCode`, and `GolayCode` keyword-only.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.
