@@ -1,13 +1,11 @@
 from functools import reduce
 from operator import mul
 
-from typeguard import typechecked
-
 from .._algebra.FiniteBifield import FiniteBifield
+from .._util.validators import validate_integer
 from .CyclicCode import CyclicCode
 
 
-@typechecked
 class BCHCode(CyclicCode):
     r"""
     Bose–Ray-Chaudhuri–Hocquenghem (BCH) code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *binary BCH code* is a [cyclic code](/ref/CyclicCode) with generator polynomial given by
@@ -57,10 +55,8 @@ class BCHCode(CyclicCode):
     """
 
     def __init__(self, mu: int, delta: int) -> None:
-        if not mu >= 2:
-            raise ValueError("'mu' must satisfy mu >= 2")
-        if not 2 <= delta <= 2**mu - 1:
-            raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
+        mu = validate_integer(mu, "mu", low=2)
+        delta = validate_integer(delta, "delta", low=2, high=2**mu)
 
         field = FiniteBifield(mu)
         alpha = field.primitive_element

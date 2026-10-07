@@ -61,9 +61,13 @@ def test_reed_solomon_weight_distribution(mu, delta):
 
 
 @pytest.mark.parametrize(
-    "mu, delta",
-    [(1, 2), (3, 1), (3, 8)],
+    "mu, delta, message",
+    [
+        (1, 2, "'mu' must be at least 2"),
+        (3, 1, "'delta' must be in"),
+        (3, 8, "'delta' must be in"),
+    ],
 )
-def test_reed_solomon_invalid_parameters(mu, delta):
-    with pytest.raises(ValueError):
+def test_reed_solomon_invalid_parameters(mu, delta, message):
+    with pytest.raises(ValueError, match=message):
         komm.ReedSolomonCode(mu=mu, delta=delta)

@@ -2,16 +2,15 @@ from functools import partial, reduce
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._algebra import bifield
 from .._algebra.FiniteBifield import FiniteBifield
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer
 from .SystematicBlockCode import SystematicBlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class ReedSolomonCode(SystematicBlockCode):
     r"""
     Reed–Solomon code. For given parameters $\mu \geq 2$ and $\delta$ satisfying $2 \leq \delta \leq 2^{\mu} - 1$, a *Reed–Solomon code* is a cyclic code over $\mathrm{GF}(2^\mu)$ with generator polynomial given by
@@ -56,10 +55,8 @@ class ReedSolomonCode(SystematicBlockCode):
     """
 
     def __init__(self, mu: int, delta: int) -> None:
-        if not mu >= 2:
-            raise ValueError("'mu' must satisfy mu >= 2")
-        if not 2 <= delta <= 2**mu - 1:
-            raise ValueError("'delta' must satisfy 2 <= delta <= 2**mu - 1")
+        mu = validate_integer(mu, "mu", low=2)
+        delta = validate_integer(delta, "delta", low=2, high=2**mu)
         self.mu = mu
         self.delta = delta
         self.field = FiniteBifield(mu)

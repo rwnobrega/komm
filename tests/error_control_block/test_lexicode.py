@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 
@@ -59,7 +58,7 @@ def test_lexicode_wikipedia():
 
 
 def test_lexicode_invalid_init():
-    with pytest.raises(ValueError, match="'n' and 'd' must satisfy 1 <= d <= n"):
+    with pytest.raises(ValueError, match="'d' must be in"):
         komm.Lexicode(3, 4)
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'d' must be an integer"):
         komm.Lexicode(7, 3.5)  # type: ignore

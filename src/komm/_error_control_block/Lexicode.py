@@ -3,15 +3,14 @@ from functools import cache
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
-from typeguard import typechecked
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class Lexicode(BlockCode):
     r"""
     Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code. For more details, see <cite>HP03, Sec. 2.11</cite>.
@@ -44,8 +43,8 @@ class Lexicode(BlockCode):
     """
 
     def __init__(self, n: int, d: int) -> None:
-        if not 1 <= d <= n:
-            raise ValueError("'n' and 'd' must satisfy 1 <= d <= n")
+        n = validate_integer(n, "n", low=1)
+        d = validate_integer(d, "d", low=1, high=n + 1)
         self.n = n
         self.d = d
         super().__init__(generator_matrix=lexicode_generator_matrix(n, d))

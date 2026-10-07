@@ -2,7 +2,6 @@ from functools import reduce
 from operator import mul
 
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 from komm._algebra.bifield import horner
@@ -84,11 +83,11 @@ def test_bch_syndrome():
 
 
 def test_bch_code_invalid_init():
-    with pytest.raises(ValueError, match="must satisfy mu >= 2"):
+    with pytest.raises(ValueError, match="'mu' must be at least 2"):
         komm.BCHCode(mu=1, delta=3)
-    with pytest.raises(ValueError, match="must satisfy 2 <= delta"):
+    with pytest.raises(ValueError, match="'delta' must be in"):
         komm.BCHCode(mu=3, delta=8)
     with pytest.raises(ValueError, match="must be a Bose distance"):
         komm.BCHCode(mu=3, delta=5)
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'delta' must be an integer"):
         komm.BCHCode(mu=3, delta="5")  # type: ignore

@@ -3,15 +3,14 @@ from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(members=["reed_partitions"], filters=["!.*"])
-@typechecked
 class ReedMullerCode(BlockCode):
     r"""
     Reed–Muller code. Let $\mu$ and $\rho$ be two integers such that $0 \leq \rho < \mu$. The Reed–Muller code with parameters $(\rho, \mu)$ is the [linear block code](/ref/BlockCode) whose generator matrix rows are
@@ -59,8 +58,8 @@ class ReedMullerCode(BlockCode):
     """
 
     def __init__(self, rho: int, mu: int) -> None:
-        if not 0 <= rho < mu:
-            raise ValueError("'rho' and 'mu' must satisfy 0 <= rho < mu")
+        mu = validate_integer(mu, "mu", low=1)
+        rho = validate_integer(rho, "rho", low=0, high=mu)
         self.rho = rho
         self.mu = mu
         super().__init__(generator_matrix=reed_muller_generator_matrix(rho, mu))
