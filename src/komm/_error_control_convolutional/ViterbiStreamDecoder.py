@@ -34,9 +34,9 @@ class ViterbiStreamDecoder:
         num_states, traceback_length = self._fsm.num_states, self.traceback_length
         self.memory: MetricMemory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
-            "metrics": np.full((num_states, traceback_length + 1), fill_value=np.inf),
+            "metrics": np.full(num_states, fill_value=np.inf),
         }
-        self.memory["metrics"][self.state, -1] = 0.0
+        self.memory["metrics"][self.state] = 0.0
 
     @cached_property
     def cache_bit(self) -> npt.NDArray[np.integer]:

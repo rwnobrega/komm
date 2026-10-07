@@ -204,7 +204,7 @@ class MealyMachine:
 
             metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
 
-            memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$, with the inputs along the survivor ending in each state; and `'metrics'`, a 2D-array of floats of shape $|\mathcal{S}| \times (\tau + 1)$. This dictionary is updated in-place by this method.
+            memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$, with the inputs along the survivor ending in each state; and `'metrics'`, a 1D-array of floats of length $|\mathcal{S}|$, with the metric of the survivor ending in each state. This dictionary is updated in-place by this method.
 
         Returns:
             input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$
@@ -217,13 +217,12 @@ class MealyMachine:
             choices = np.zeros((num_states, 2), dtype=int)  # State and input
             for s0, x in product(range(num_states), range(self.num_input_symbols)):
                 s1, y = self.transitions[s0, x], self.outputs[s0, x]
-                candidate_metric = memory["metrics"][s0, -1] + metric_function(y, z)
+                candidate_metric = memory["metrics"][s0] + metric_function(y, z)
                 if candidate_metric < new_metrics[s1]:
                     new_metrics[s1] = candidate_metric
                     choices[s1] = s0, x
 
-            memory["metrics"] = np.roll(memory["metrics"], shift=-1, axis=1)
-            memory["metrics"][:, -1] = new_metrics
+            memory["metrics"] = new_metrics
             memory["paths"] = np.roll(memory["paths"], shift=-1, axis=1)
 
             paths_copy = np.copy(memory["paths"])
