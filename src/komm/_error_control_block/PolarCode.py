@@ -3,6 +3,7 @@ import numpy.typing as npt
 
 from .._util.decorators import blockwise
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer, validate_integer_array
 from .BlockCode import BlockCode
 
 
@@ -51,14 +52,12 @@ class PolarCode(BlockCode):
     frozen: npt.NDArray[np.integer]
 
     def __init__(self, mu: int, frozen: npt.ArrayLike):
+        mu = validate_integer(mu, "mu", low=1)
+        frozen = validate_integer_array(frozen, "frozen", low=0, high=2**mu)
         self.mu = mu
-        if not mu >= 1:
-            raise ValueError("'mu' must be greater than or equal to 1")
         self.frozen = np.sort(frozen).astype(int)
-        if not np.all((0 <= self.frozen) & (self.frozen < 2**mu)):
-            raise ValueError("frozen bits must be between 0 and 2^mu - 1")
-        if self.frozen.size != np.unique(self.frozen).size:
-            raise ValueError("frozen bits must be unique")
+        if not self.frozen.size == np.unique(self.frozen).size:
+            raise ValueError("elements of 'frozen' must be unique")
         self.active = np.setdiff1d(np.arange(1 << mu), self.frozen)
         hadamard = np.array([[1]])
         for _ in range(mu):

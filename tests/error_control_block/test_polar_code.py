@@ -5,15 +5,19 @@ import komm
 
 
 def test_polar_code_invalid_construction():
-    with pytest.raises(ValueError):  # mu must be positive
+    with pytest.raises(ValueError, match="'mu' must be at least 1"):
         komm.PolarCode(-1, [])
-    with pytest.raises(ValueError):  # mu must be positive
+    with pytest.raises(ValueError, match="'mu' must be at least 1"):
         komm.PolarCode(0, [])
-    with pytest.raises(ValueError):  # frozen bits must be between 0 and 2^mu - 1
+    with pytest.raises(TypeError, match="'mu' must be an integer"):
+        komm.PolarCode(2.0, [0])  # type: ignore
+    with pytest.raises(ValueError, match="elements of 'frozen' must be in"):
         komm.PolarCode(2, [3, 4])
-    with pytest.raises(ValueError):  # frozen bits must be between 0 and 2^mu - 1
+    with pytest.raises(ValueError, match="elements of 'frozen' must be in"):
         komm.PolarCode(2, [-1, 0])
-    with pytest.raises(ValueError):  # frozen bits must be unique
+    with pytest.raises(TypeError, match="'frozen' must contain only integers"):
+        komm.PolarCode(2, [0.5, 1.7])
+    with pytest.raises(ValueError, match="elements of 'frozen' must be unique"):
         komm.PolarCode(2, [0, 0])
 
 
