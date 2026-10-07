@@ -60,3 +60,22 @@ def test_token_codes_invalid_input(code: komm.abc.TokenCode):
         code.encode([0, 256])
     with pytest.raises(ValueError, match="elements of 'source' must be in"):
         code.encode([-1, 0])
+
+
+@pytest.mark.parametrize(
+    "cls, kwargs",
+    [
+        (komm.LempelZiv77Code, LZ_KWARGS),
+        (komm.LempelZivSSCode, LZ_KWARGS),
+        (komm.LempelZiv78Code, dict(source_cardinality=256)),
+        (komm.LempelZivWelchCode, dict(source_cardinality=256)),
+        (komm.RunLengthCode, dict(source_cardinality=256, max_run_length=16)),
+    ],
+)
+def test_token_codes_integer_parameters(cls, kwargs):
+    kwargs = kwargs | dict(target_cardinality=2)
+    for name, value in kwargs.items():
+        code = cls(**kwargs | {name: np.int64(value)})
+        assert type(getattr(code, name)) is int
+        with pytest.raises(TypeError, match=f"'{name}' must be an integer"):
+            cls(**kwargs | {name: float(value)})

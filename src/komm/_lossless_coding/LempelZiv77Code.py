@@ -3,13 +3,8 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .. import abc
-from .._util.validators import validate_integer_array
-from .util import (
-    find_longest_match,
-    integer_to_symbols,
-    num_digits,
-    symbols_to_integer,
-)
+from .._util.validators import validate_integer, validate_integer_array
+from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int, int]
 
@@ -46,19 +41,11 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         target_cardinality: int = 2,
         search_buffer: npt.ArrayLike | None = None,
     ):
-        if not search_size >= 1:
-            raise ValueError("'search_size' must be at least 1")
-        if not lookahead_size >= 1:
-            raise ValueError("'lookahead_size' must be at least 1")
-        if not source_cardinality >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        if not target_cardinality >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
-
-        self.search_size = search_size
-        self.lookahead_size = lookahead_size
-        self.source_cardinality = source_cardinality
-        self.target_cardinality = target_cardinality
+        calX, calY = source_cardinality, target_cardinality
+        self.search_size = validate_integer(search_size, "search_size", low=1)
+        self.lookahead_size = validate_integer(lookahead_size, "lookahead_size", low=1)
+        self.source_cardinality = validate_integer(calX, "source_cardinality", low=2)
+        self.target_cardinality = validate_integer(calY, "target_cardinality", low=2)
 
         if search_buffer is None:
             self.search_buffer = [0] * self.search_size
