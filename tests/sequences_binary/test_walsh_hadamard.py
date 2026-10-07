@@ -54,10 +54,12 @@ def test_walsh_hadamard_sequency_sign_changes(length):
 
 
 def test_walsh_hadamard_invalid():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'length' must be a power of two"):
         komm.WalshHadamardSequence(3)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'index' must be in \[0:4\) \(got 4\)"):
         komm.WalshHadamardSequence(4, index=4)
+    with pytest.raises(TypeError, match="'index' must be an integer"):
+        komm.WalshHadamardSequence(4, index=1.0)  # type: ignore
     with pytest.raises(ValueError, match="'ordering' must be 'natural', 'sequency'"):
         komm.WalshHadamardSequence(4, ordering="invalid")  # type: ignore
     with pytest.raises(NotImplementedError):

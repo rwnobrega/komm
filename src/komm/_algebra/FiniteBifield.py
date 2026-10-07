@@ -3,6 +3,7 @@ from typing import Generic, Self, SupportsInt, TypeVar
 
 import numpy as np
 
+from .._util.validators import validate_integer
 from . import field
 from .BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
 from .Integers import mersenne_prime_factors
@@ -168,11 +169,9 @@ class FiniteBifield:
     """
 
     def __init__(self, degree: int, modulus: BinaryPolynomial | int | None = None):
-        if degree < 1:
-            raise ValueError("'degree' must be a positive integer")
-        self.degree = degree
+        self.degree = validate_integer(degree, "degree", low=1)
         if modulus is None:
-            self.modulus = default_primitive_polynomial(degree)
+            self.modulus = default_primitive_polynomial(self.degree)
         else:
             self.modulus = BinaryPolynomial(modulus)
         if self.modulus.degree != self.degree:

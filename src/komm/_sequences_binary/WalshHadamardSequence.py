@@ -1,7 +1,7 @@
 from typing import Literal
 
 from .._util.bit_operations import from_binary, to_binary
-from .._util.validators import validate_choice
+from .._util.validators import validate_choice, validate_integer
 from .BinarySequence import BinarySequence
 from .sequences import hadamard_matrix
 
@@ -80,10 +80,10 @@ class WalshHadamardSequence(BinarySequence):
         ordering: Literal["natural", "sequency", "dyadic"] = "natural",
         index: int = 0,
     ) -> None:
+        length = validate_integer(length, "length", low=1)
         if length & (length - 1):
             raise ValueError("'length' must be a power of two")
-        if not 0 <= index < length:
-            raise ValueError("'index' must be in [0 : length)")
+        index = validate_integer(index, "index", low=0, high=length)
         orderings = ("natural", "sequency", "dyadic")
         ordering = validate_choice(ordering, "ordering", orderings)
 

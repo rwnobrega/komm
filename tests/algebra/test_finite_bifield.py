@@ -26,10 +26,12 @@ def test_finite_bifield_constructor():
 
 
 def test_finite_bifield_invalid_degree():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'degree' must be at least 1 \(got 0\)"):
         komm.FiniteBifield(0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'degree' must be at least 1 \(got -1\)"):
         komm.FiniteBifield(-1)
+    with pytest.raises(TypeError, match="'degree' must be an integer"):
+        komm.FiniteBifield(2.0)  # type: ignore
 
 
 def test_finite_bifield_invalid_modulus():
