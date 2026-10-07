@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from functools import cached_property
 from typing import Literal
 
 import numpy as np
@@ -19,35 +18,32 @@ class ViterbiStreamDecoder:
     Parameters:
         convolutional_code: The convolutional code.
         traceback_length: The traceback length (path memory) $\tau$ of the decoder.
-        state: The current state of the decoder. The default value is `0`.
+        initial_state: The initial state of the decoder. The default value is `0`.
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
     """
 
     convolutional_code: abc.ConvolutionalCode
     traceback_length: int
-    state: int = 0
+    initial_state: int = 0
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self):
         self.input_type = validate_decision_type(self.input_type, "input_type")
         self._fsm = self.convolutional_code.finite_state_machine()
+        n = self.convolutional_code.num_output_bits
+        self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         num_states, traceback_length = self._fsm.num_states, self.traceback_length
-        self.memory: MetricMemory = {
+        self._memory: MetricMemory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
             "metrics": np.full(num_states, fill_value=np.inf),
         }
-        self.memory["metrics"][self.state] = 0.0
+        self._memory["metrics"][self.initial_state] = 0.0
 
-    @cached_property
-    def cache_bit(self) -> npt.NDArray[np.integer]:
-        n = self.convolutional_code.num_output_bits
-        return int_to_bits(range(2**n), width=n).reshape(-1, n)
-
-    def metric_function(self, y: int, z: npt.ArrayLike) -> float:
+    def _metric(self, y: int, z: npt.ArrayLike) -> float:
         if self.input_type == "hard":
-            return float(np.count_nonzero(self.cache_bit[y] != z))
+            return float(np.count_nonzero(self._bits[y] != z))
         else:  # self.input_type == "soft"
-            return np.dot(self.cache_bit[y], z)
+            return np.dot(self._bits[y], z)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -74,8 +70,8 @@ class ViterbiStreamDecoder:
         k = self.convolutional_code.num_input_bits
         input_hat = self._fsm.viterbi_streaming(
             observed=input.reshape(-1, n),
-            metric_function=self.metric_function,
-            memory=self.memory,
+            metric_function=self._metric,
+            memory=self._memory,
         )
         output = int_to_bits(input_hat, width=k)
         return output

@@ -20,7 +20,9 @@
 
 - Removed `SlepianArray`. Instead of `komm.SlepianArray(code)`, use `code.coset_leaders()[:, np.newaxis] ^ code.codewords()`, as in the [standard array recipe](https://komm.dev/recipes/standard-array).
 
-- Changed `'metrics'` in the `memory` of `viterbi_streaming` of `MealyMachine` (and hence `ViterbiStreamDecoder`) to a 1D-array with one metric per state.
+- Changed `'metrics'` in the `memory` of `viterbi_streaming` of `MealyMachine` to a 1D-array with one metric per state.
+
+- Renamed parameter `state` of `ViterbiStreamDecoder` to `initial_state`, and made its `memory`, `cache_bit`, and `metric_function` private.
 
 ### Fixed
 

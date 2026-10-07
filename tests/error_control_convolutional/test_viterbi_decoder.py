@@ -81,6 +81,24 @@ def test_viterbi_stream_decoder_parallel_transitions(rng):
     np.testing.assert_equal(decoder.decode(v)[10:], u)
 
 
+@pytest.mark.parametrize(
+    "feedforward_polynomials",
+    [
+        [[0o7, 0o5]],
+        [[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]],
+    ],
+)
+def test_viterbi_stream_decoder_initial_state(feedforward_polynomials, rng):
+    code = komm.ConvolutionalCode(feedforward_polynomials)
+    k, σ, tblen = code.num_input_bits, code.degree, 10
+    for s in range(2**σ):
+        decoder = komm.ViterbiStreamDecoder(code, tblen, initial_state=s)
+        u = rng.integers(0, 2, 20 * k)
+        padded = np.concatenate([u, np.zeros(tblen * k, dtype=int)])
+        v, _ = code.encode_with_state(padded, komm.int_to_bits(s, width=σ))
+        np.testing.assert_equal(decoder.decode(v)[tblen * k :], u)
+
+
 def test_viterbi_stream_decoder_invalid_input_type():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     with pytest.raises(ValueError, match="'input_type' must be 'hard' or 'soft'"):
