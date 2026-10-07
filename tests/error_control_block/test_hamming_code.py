@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 
@@ -157,7 +156,9 @@ def test_extended_hamming_code_codewords():
 def test_hamming_code_invalid_init():
     with pytest.raises(ValueError, match="'mu' must be at least 2"):
         komm.HammingCode(1)
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'mu' must be an integer"):
         komm.HammingCode(7 / 4)  # type: ignore
     with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.HammingCode(7, 4)  # type: ignore
+    with pytest.raises(TypeError, match="'extended' must be a boolean"):
+        komm.HammingCode(3, extended="False")  # type: ignore

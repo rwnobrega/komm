@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 
@@ -16,7 +15,9 @@ def test_encoder():
 def test_simplex_invalid_init():
     with pytest.raises(ValueError, match="'kappa' must be at least 2"):
         komm.SimplexCode(1)
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'kappa' must be an integer"):
         komm.SimplexCode(7 / 3)  # type: ignore
     with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.SimplexCode(7, 3)  # type: ignore
+    with pytest.raises(TypeError, match="'extended' must be a boolean"):
+        komm.SimplexCode(3, extended="False")  # type: ignore

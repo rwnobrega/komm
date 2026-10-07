@@ -2,15 +2,14 @@ from functools import cache
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_bool
 from .SystematicBlockCode import SystematicBlockCode
 from .util import extended_parity_submatrix
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class GolayCode(SystematicBlockCode):
     r"""
     Binary Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
@@ -61,8 +60,8 @@ class GolayCode(SystematicBlockCode):
     """
 
     def __init__(self, *, extended: bool = False) -> None:
-        self.extended = extended
-        super().__init__(parity_submatrix=golay_parity_submatrix(extended))
+        self.extended = validate_bool(extended, "extended")
+        super().__init__(parity_submatrix=golay_parity_submatrix(self.extended))
 
     def __repr__(self) -> str:
         args = f"extended={self.extended}"

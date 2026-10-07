@@ -3,15 +3,14 @@ from itertools import combinations
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_bool, validate_integer
 from .SystematicBlockCode import SystematicBlockCode
 from .util import extended_parity_submatrix
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class HammingCode(SystematicBlockCode):
     r"""
     Hamming code. For a given parameter $\mu \geq 2$, it is the [linear block code](/ref/BlockCode) with check matrix whose columns are all the $2^\mu - 1$ nonzero binary $\mu$-tuples. The Hamming code has the following parameters:
@@ -75,11 +74,10 @@ class HammingCode(SystematicBlockCode):
     """
 
     def __init__(self, mu: int, *, extended: bool = False) -> None:
-        if not mu >= 2:
-            raise ValueError("'mu' must be at least 2")
-        self.mu = mu
-        self.extended = extended
-        super().__init__(parity_submatrix=hamming_parity_submatrix(mu, extended))
+        self.mu = validate_integer(mu, "mu", low=2)
+        self.extended = validate_bool(extended, "extended")
+        P = hamming_parity_submatrix(self.mu, self.extended)
+        super().__init__(parity_submatrix=P)
 
     def __repr__(self) -> str:
         args = f"mu={self.mu}, extended={self.extended}"

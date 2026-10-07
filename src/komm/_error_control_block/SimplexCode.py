@@ -1,14 +1,12 @@
 from functools import cache
 
-from typeguard import typechecked
-
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_bool, validate_integer
 from .HammingCode import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class SimplexCode(SystematicBlockCode):
     r"""
     Simplex (maximum-length) code. For a given parameter $\kappa \geq 2$, it is the [linear block code](/ref/BlockCode) with generator matrix whose columns are all the $2^\kappa - 1$ nonzero binary $\kappa$-tuples. The simplex code (also known as maximum-length code) has the following parameters:
@@ -70,11 +68,10 @@ class SimplexCode(SystematicBlockCode):
     """
 
     def __init__(self, kappa: int, *, extended: bool = False) -> None:
-        if not kappa >= 2:
-            raise ValueError("'kappa' must be at least 2")
-        self.kappa = kappa
-        self.extended = extended
-        super().__init__(parity_submatrix=hamming_parity_submatrix(kappa, extended).T)
+        self.kappa = validate_integer(kappa, "kappa", low=2)
+        self.extended = validate_bool(extended, "extended")
+        P = hamming_parity_submatrix(self.kappa, self.extended).T
+        super().__init__(parity_submatrix=P)
 
     def __repr__(self) -> str:
         args = f"kappa={self.kappa}, extended={self.extended}"

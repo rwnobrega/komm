@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 
@@ -88,5 +87,5 @@ def test_golay_code_invalid_init():
         komm.GolayCode(23, 12)  # type: ignore
     with pytest.raises(TypeError, match="takes 1 positional argument"):
         komm.GolayCode(True)  # type: ignore
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'extended' must be a boolean"):
         komm.GolayCode(extended=1)  # type: ignore

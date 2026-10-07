@@ -3,14 +3,13 @@ from math import comb
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class SingleParityCheckCode(BlockCode):
     r"""
     Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The single parity-check code has the following parameters:
@@ -49,10 +48,8 @@ class SingleParityCheckCode(BlockCode):
     """
 
     def __init__(self, n: int) -> None:
-        if not n >= 1:
-            raise ValueError("'n' must be a positive integer")
-        self.n = n
-        super().__init__(check_matrix=np.ones((1, n), dtype=int))
+        self.n = validate_integer(n, "n", low=1)
+        super().__init__(check_matrix=np.ones((1, self.n), dtype=int))
 
     def __repr__(self) -> str:
         args = f"n={self.n}"

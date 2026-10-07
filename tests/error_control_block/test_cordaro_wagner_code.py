@@ -1,5 +1,4 @@
 import pytest
-from typeguard import TypeCheckError
 
 import komm
 
@@ -23,7 +22,7 @@ def test_cordaro_wagner_code_invalid_init():
         komm.CordaroWagnerCode(0)
     with pytest.raises(ValueError, match="'n' must be at least 2"):
         komm.CordaroWagnerCode(-1)
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'n' must be an integer"):
         komm.CordaroWagnerCode(3.0)  # type: ignore
-    with pytest.raises(TypeCheckError):
+    with pytest.raises(TypeError, match="'n' must be an integer"):
         komm.CordaroWagnerCode("3")  # type: ignore

@@ -2,14 +2,13 @@ from functools import cache
 
 import numpy as np
 import numpy.typing as npt
-from typeguard import typechecked
 
 from .._util.docs import mkdocstrings
+from .._util.validators import validate_integer
 from .BlockCode import BlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-@typechecked
 class CordaroWagnerCode(BlockCode):
     r"""
     Cordaro–Wagner code. For a given length $n \geq 2$, it is the [linear block code](/ref/BlockCode) with dimension $k = 2$ which is optimum for the [BSC](/ref/BinarySymmetricChannel) with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.
@@ -38,10 +37,8 @@ class CordaroWagnerCode(BlockCode):
     """
 
     def __init__(self, n: int) -> None:
-        if not n >= 2:
-            raise ValueError("'n' must be at least 2")
-        self.n = n
-        super().__init__(generator_matrix=cordaro_wagner_generator_matrix(n))
+        self.n = validate_integer(n, "n", low=2)
+        super().__init__(generator_matrix=cordaro_wagner_generator_matrix(self.n))
 
     def __repr__(self) -> str:
         args = f"n={self.n}"
