@@ -9,6 +9,8 @@ def test_discrete_memoryless_source_init():
     source = komm.DiscreteMemorylessSource(pmf)
     assert np.array_equal(source.pmf, pmf)
     assert source.cardinality == 3
+    source = komm.DiscreteMemorylessSource(np.int64(4))
+    assert np.array_equal(source.pmf, [0.25, 0.25, 0.25, 0.25])
 
 
 def test_discrete_memoryless_source_invalid():
@@ -18,7 +20,7 @@ def test_discrete_memoryless_source_invalid():
         komm.DiscreteMemorylessSource([0.5, 0.5, 0.1])
     with pytest.raises(ValueError, match="'pmf' must be non-negative"):
         komm.DiscreteMemorylessSource([0.5, -1.5])
-    with pytest.raises(ValueError, match="cardinality must be at least 1"):
+    with pytest.raises(ValueError, match="single integer, 'pmf' must be at least 1"):
         komm.DiscreteMemorylessSource(0)
 
 

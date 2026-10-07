@@ -1,12 +1,12 @@
 from functools import cached_property
-from typing import Literal, overload
+from typing import Literal, SupportsIndex, overload
 
 import numpy as np
 import numpy.typing as npt
 
 from .._util import global_rng
 from .._util.information_theory import entropy
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 
 
@@ -26,10 +26,11 @@ class DiscreteMemorylessSource:
         pmf: npt.ArrayLike | int,
         rng: np.random.Generator | None = None,
     ):
-        if isinstance(pmf, int):
-            if not pmf >= 1:
-                raise ValueError("cardinality must be at least 1")
-            pmf = np.full(pmf, 1 / pmf)
+        if isinstance(pmf, SupportsIndex) and np.ndim(pmf) == 0:
+            M = validate_integer(pmf, "pmf")
+            if not M >= 1:
+                raise ValueError("if a single integer, 'pmf' must be at least 1")
+            pmf = np.full(M, 1 / M)
         self._pmf = validate_pmf(pmf, "pmf")
         self._rng = rng
 

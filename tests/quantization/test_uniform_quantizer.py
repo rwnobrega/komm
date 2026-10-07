@@ -68,8 +68,10 @@ def test_uniform_quantizer_mid_tread_scalar_equivalent(num_levels, peak):
 
 
 def test_uniform_quantizer_invalid_constructions():
-    with pytest.raises(ValueError, match="must be greater than 1"):
+    with pytest.raises(ValueError, match=r"'num_levels' must be at least 2 \(got 1\)"):
         komm.UniformQuantizer(num_levels=1, step=1.0)
+    with pytest.raises(TypeError, match="'num_levels' must be an integer"):
+        komm.UniformQuantizer(num_levels=4.0, step=1.0)  # type: ignore
     with pytest.raises(ValueError, match="must be positive"):
         komm.UniformQuantizer(num_levels=8, step=0.0)
 
