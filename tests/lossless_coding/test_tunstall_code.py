@@ -28,8 +28,12 @@ def test_tunstall_code():
 def test_tunstall_code_invalid_init():
     with pytest.raises(ValueError):
         komm.TunstallCode([0.5, 0.5, 0.1], 3)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"must be at least 1 \(got 0\)"):
         komm.TunstallCode([0.5, 0.5], 0)
+    with pytest.raises(ValueError, match=r"must be at least 2 \(got 1\)"):
+        komm.TunstallCode([0.25, 0.25, 0.25, 0.25], 1)
+    with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
+        komm.TunstallCode([0.5, 0.5], 2.0)  # type: ignore
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 9))

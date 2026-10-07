@@ -5,7 +5,7 @@ from typing import Self
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .util import (
     Word,
@@ -32,9 +32,10 @@ class VariableToFixedCode:
         target_block_size: int,
         dec_mapping: dict[Word, Word],
     ) -> None:
-        self._target_cardinality = target_cardinality
-        self._source_cardinality = source_cardinality
-        self._target_block_size = target_block_size
+        calY, calX, n = target_cardinality, source_cardinality, target_block_size
+        self._target_cardinality = validate_integer(calY, "target_cardinality", low=2)
+        self._source_cardinality = validate_integer(calX, "source_cardinality", low=2)
+        self._target_block_size = validate_integer(n, "target_block_size", low=1)
         self._dec_mapping = dec_mapping
         self.__post_init__()
 
@@ -42,12 +43,6 @@ class VariableToFixedCode:
         domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
         calY, calX = self.target_cardinality, self.source_cardinality
         n = self.target_block_size
-        if not calY >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
-        if not calX >= 2:
-            raise ValueError("'source_cardinality' must be at least 2")
-        if not n >= 1:
-            raise ValueError("'target_block_size' must be at least 1")
         if not set(domain) <= set(product(range(calY), repeat=n)):
             raise ValueError("'dec_mapping': invalid domain")
         if not all(
@@ -164,9 +159,7 @@ class VariableToFixedCode:
         """
         if any(len(sourceword) == 0 for sourceword in sourcewords):
             raise ValueError("'sourcewords' must be non-empty")
-        if not target_cardinality >= 2:
-            raise ValueError("'target_cardinality' must be at least 2")
-        calY = target_cardinality
+        calY = validate_integer(target_cardinality, "target_cardinality", low=2)
         calX = max(max(word) for word in sourcewords) + 1
         n = next(n for n in count(1) if calY**n >= len(sourcewords))
         dec_mapping = dict(zip(product(range(calY), repeat=n), sourcewords))

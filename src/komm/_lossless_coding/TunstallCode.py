@@ -10,7 +10,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .util import Word
 from .VariableToFixedCode import VariableToFixedCode
@@ -59,15 +59,15 @@ class TunstallCode(VariableToFixedCode):
         target_block_size: int | None = None,
     ) -> None:
         self.pmf = validate_pmf(pmf, "pmf")
+        n_min = ceil(log2(self.pmf.size))
         if target_block_size is None:
-            target_block_size = ceil(log2(self.pmf.size))
-        if 2**target_block_size < self.pmf.size:
-            raise ValueError("'target_block_size' is too low")
+            target_block_size = n_min
+        n = validate_integer(target_block_size, "target_block_size", low=n_min)
         super().__init__(
             target_cardinality=2,
             source_cardinality=self.pmf.size,
-            target_block_size=target_block_size,
-            dec_mapping=tunstall_code(self.pmf, target_block_size),
+            target_block_size=n,
+            dec_mapping=tunstall_code(self.pmf, n),
         )
 
     def __repr__(self) -> str:

@@ -20,6 +20,14 @@ def test_invalid_source_cardinality():
         komm.VariableToFixedCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
 
 
+def test_integer_parameters():
+    dec_mapping = {(0,): (0,), (1,): (1,)}
+    code = komm.VariableToFixedCode(np.int64(2), 2, 1, dec_mapping)  # type: ignore
+    assert type(code.target_cardinality) is int
+    with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
+        komm.VariableToFixedCode(2, 2, 1.0, dec_mapping)  # type: ignore
+
+
 def test_from_sourcewords_invalid_target_cardinality():
     with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
         komm.VariableToFixedCode.from_sourcewords(
