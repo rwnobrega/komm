@@ -92,17 +92,17 @@ def test_integer_coding_incomplete(code: komm.abc.IntegerCode):
 
 @pytest.mark.parametrize("message", [[0], [-1], [1, 0, 2]])
 def test_integer_coding_rejects_nonpositive(code: komm.abc.IntegerCode, message):
-    with pytest.raises(ValueError, match="non-positive"):
+    with pytest.raises(ValueError, match="'integer' must be at least 1"):
         list(code.encode(message))
-    with pytest.raises(ValueError, match="non-positive"):
+    with pytest.raises(ValueError, match="'integer' must be at least 1"):
         code.length(min(message))
 
 
 @pytest.mark.parametrize("integer", [4.0, 4.5])
 def test_integer_coding_rejects_float(code: komm.abc.IntegerCode, integer):
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'integer' must be an integer"):
         code.encode_single(integer)
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'integer' must be an integer"):
         code.length(integer)
 
 

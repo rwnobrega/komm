@@ -5,7 +5,6 @@ from typing import SupportsIndex
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from .._util.validators import validate_integer
-from .base import validate_positive
 from .UnaryCode import UnaryCode
 
 
@@ -51,7 +50,7 @@ class GolombCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 0, 0]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         q, r = divmod(integer - 1, self.divisor)
         bits = self._unary_code.encode_single(q + 1)
         if self._remainder_code is not None:
@@ -81,7 +80,7 @@ class GolombCode(abc.IntegerCode):
             >>> code.length(4)
             3
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         q, r = divmod(integer - 1, self.divisor)
         if self._remainder_code is None:
             return q + 1

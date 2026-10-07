@@ -4,7 +4,6 @@ from typing import SupportsIndex
 
 from .. import abc
 from .._util.validators import validate_integer
-from .base import validate_positive
 
 
 @dataclass
@@ -45,7 +44,7 @@ class UnaryCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 1, 0]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         return [1 - self.stop_bit] * (integer - 1) + [self.stop_bit]
 
     def decode_single(self, bits: Iterator[int]) -> int:
@@ -79,7 +78,7 @@ class UnaryCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        return validate_positive(integer)
+        return validate_integer(integer, "integer", low=1)
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""

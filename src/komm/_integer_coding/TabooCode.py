@@ -5,7 +5,6 @@ from typing import SupportsIndex
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from .._util.validators import validate_integer
-from .base import validate_positive
 
 
 @dataclass
@@ -59,7 +58,7 @@ class TabooCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 0, 0]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         bits: list[int] = []
         for digit in self._digits(integer) + [0]:
             bits += self._block_code.encode_single(digit)
@@ -89,7 +88,7 @@ class TabooCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         digits = self._digits(integer) + [0]
         return sum(self._block_code.length(digit) for digit in digits)
 

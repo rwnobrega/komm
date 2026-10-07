@@ -3,7 +3,7 @@ from functools import cache
 from typing import SupportsIndex
 
 from .. import abc
-from .base import validate_positive
+from .._util.validators import validate_integer
 
 
 class FibonacciCode(abc.IntegerCode):
@@ -34,7 +34,7 @@ class FibonacciCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 0, 1, 1]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         top = 2
         while fibonacci(top + 1) <= integer:
             top += 1
@@ -74,7 +74,6 @@ class FibonacciCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        validate_positive(integer)
         return super().length(integer)
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:

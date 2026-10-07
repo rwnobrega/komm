@@ -3,7 +3,8 @@ from typing import SupportsIndex
 
 from .. import abc
 from .._util.bit_operations import from_binary, to_binary
-from .base import take, validate_positive
+from .._util.validators import validate_integer
+from .base import take
 from .UnaryCode import UnaryCode
 
 
@@ -37,7 +38,7 @@ class EliasGammaCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [0, 0, 1, 0, 0]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         binary = to_binary(integer, bit_order="MSB-first")
         return self.unary_code.encode_single(len(binary)) + binary[1:]
 
@@ -61,7 +62,7 @@ class EliasGammaCode(abc.IntegerCode):
             >>> code.length(4)
             5
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         return 2 * integer.bit_length() - 1
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:

@@ -5,7 +5,6 @@ from typing import SupportsIndex
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from .._util.validators import validate_integer
-from .base import validate_positive
 
 
 @dataclass
@@ -49,7 +48,7 @@ class EscapeCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 0, 0]
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         q, r = divmod(integer - 1, self.divisor)
         bits: list[int] = []
         for value in [self.divisor] * q + [r]:
@@ -80,7 +79,7 @@ class EscapeCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        integer = validate_positive(integer)
+        integer = validate_integer(integer, "integer", low=1)
         q, r = divmod(integer - 1, self.divisor)
         escape_length = self._block_code.length(self.divisor)
         return q * escape_length + self._block_code.length(r)

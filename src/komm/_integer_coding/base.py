@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Iterator
 from itertools import chain, islice
-from operator import index
 from typing import SupportsIndex
 
 
@@ -80,13 +79,6 @@ class IntegerCode(SelfDelimitingCode):
     r"""
     Abstract base class for integer codes with domain the positive integers.
     """
-
-
-def validate_positive(integer: SupportsIndex) -> int:
-    integer = index(integer)
-    if not integer > 0:
-        raise ValueError("input contains a non-positive entry")
-    return integer
 
 
 def take(bits: Iterator[int], num: int) -> list[int]:

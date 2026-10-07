@@ -104,20 +104,20 @@ def test_truncated_binary_invalid_bit():
 def test_truncated_binary_out_of_range(M):
     code = komm.TruncatedBinaryCode(M)
     for n in [-1, M, 2 * M]:
-        with pytest.raises(ValueError, match="out-of-range"):
+        with pytest.raises(ValueError, match=rf"'integer' must be in \[0:{M}\)"):
             code.encode_single(n)
-        with pytest.raises(ValueError, match="out-of-range"):
+        with pytest.raises(ValueError, match=rf"'integer' must be in \[0:{M}\)"):
             code.length(n)
-    with pytest.raises(ValueError, match="out-of-range"):
+    with pytest.raises(ValueError, match=rf"must be in \[0:{M}\) \(got {M}\)"):
         list(code.encode([0, M]))
 
 
 @pytest.mark.parametrize("integer", [2.0, 2.5])
 def test_truncated_binary_rejects_float(integer):
     code = komm.TruncatedBinaryCode(5)
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'integer' must be an integer"):
         code.encode_single(integer)
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="'integer' must be an integer"):
         code.length(integer)
 
 
