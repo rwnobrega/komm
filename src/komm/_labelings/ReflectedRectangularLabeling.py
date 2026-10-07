@@ -1,9 +1,11 @@
+from collections.abc import Iterable
 from functools import cache
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_integer, validate_integer_array
 from .ProductLabeling import ProductLabeling
 from .ReflectedLabeling import ReflectedLabeling
 
@@ -18,15 +20,16 @@ class ReflectedRectangularLabeling(abc.Labeling):
         num_bits: int | tuple[int, int],
         _pre_cache: bool = True,
     ) -> None:
-        if isinstance(num_bits, int):
-            if not (num_bits > 0 and num_bits % 2 == 0):
+        if isinstance(num_bits, Iterable):
+            mi, mq = validate_integer_array(num_bits, "num_bits", low=1).tolist()
+        else:
+            m = validate_integer(num_bits, "num_bits", low=2)
+            if m % 2 != 0:
                 raise ValueError(
                     "if a single integer, 'num_bits' must be an even number"
                 )
-            num_bits = (num_bits // 2, num_bits // 2)
-        if not (num_bits[0] >= 1 and num_bits[1] >= 1):
-            raise ValueError("'num_bits' must contain positive integers")
-        self._num_bits = num_bits
+            mi = mq = m // 2
+        self._num_bits = (mi, mq)
         if _pre_cache:
             self.matrix
 

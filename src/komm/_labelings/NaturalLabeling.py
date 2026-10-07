@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import bits_to_int, int_to_bits
-from .._util.validators import validate_integer_array
+from .._util.validators import validate_integer, validate_integer_array
 
 
 class NaturalLabeling(abc.Labeling):
@@ -14,9 +14,7 @@ class NaturalLabeling(abc.Labeling):
     """
 
     def __init__(self, num_bits: int, _pre_cache: bool = True) -> None:
-        if num_bits < 1:
-            raise ValueError("'m' must be a positive integer")
-        self._num_bits = num_bits
+        self._num_bits = validate_integer(num_bits, "num_bits", low=1)
         if _pre_cache:
             self.matrix
 

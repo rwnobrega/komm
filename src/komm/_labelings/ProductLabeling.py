@@ -7,6 +7,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_integer
 from .Labeling import Labeling
 
 T = TypeVar("T", bound=np.generic)
@@ -61,8 +62,7 @@ class ProductLabeling(abc.Labeling):
     def __init__(self, *labelings: abc.Labeling, repeat: int = 1) -> None:
         if len(labelings) < 1:
             raise ValueError("at least one labeling is required")
-        if repeat < 1:
-            raise ValueError("'repeat' must be at least 1")
+        repeat = validate_integer(repeat, "repeat", low=1)
         self._labelings = labelings * repeat
 
     @classmethod

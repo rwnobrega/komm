@@ -88,3 +88,19 @@ def test_labeling_invalid_input(labeling: komm.abc.Labeling):
             lab.bits_to_indices([2] * m)
         with pytest.raises(TypeError, match="'bits' must contain only integers"):
             lab.bits_to_indices([0.5] * m)
+
+
+@pytest.mark.parametrize(
+    "cls",
+    [
+        komm.NaturalLabeling,
+        komm.ReflectedLabeling,
+        komm.ReflectedRectangularLabeling,
+    ],
+)
+def test_labeling_invalid_num_bits(cls):
+    assert type(cls(np.int64(2)).num_bits) is int
+    with pytest.raises(ValueError, match="'num_bits' must be at least"):
+        cls(0)
+    with pytest.raises(TypeError, match="'num_bits' must be an integer"):
+        cls(2.0)
