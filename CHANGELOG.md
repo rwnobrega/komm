@@ -12,6 +12,8 @@
 
 - Implemented [Golomb](https://komm.dev/ref/GolombCode), [taboo](https://komm.dev/ref/TabooCode), [escape](https://komm.dev/ref/EscapeCode), and [Elias omega](https://komm.dev/ref/EliasOmegaCode) integer codes.
 
+- Added method `flush` to `ViterbiStreamDecoder`, which returns the last bits of the stream and resets the decoder.
+
 ### Breaking changes
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.

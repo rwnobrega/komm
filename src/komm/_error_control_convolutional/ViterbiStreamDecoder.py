@@ -13,7 +13,7 @@ from .._util.validators import validate_decision_type
 @dataclass
 class ViterbiStreamDecoder:
     r"""
-    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the path survivor with best metric at time $t - \tau$ and outputs the corresponding information bits. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
+    Convolutional stream decoder using Viterbi algorithm. Decode a (hard or soft) bit stream given a [convolutional code](/ref/ConvolutionalCode), assuming a traceback length (path memory) of $\tau$. At time $t$, the decoder chooses the survivor with best metric and outputs its information bits from time $t - \tau$. The output stream has a delay equal to $k \tau$, where $k$ is the number of input bits of the convolutional code. As a rule of thumb, the traceback length is chosen as $\tau = 5\mu$, where $\mu$ is the memory order of the convolutional code.
 
     Parameters:
         convolutional_code: The convolutional code.
@@ -32,6 +32,9 @@ class ViterbiStreamDecoder:
         self._fsm = self.convolutional_code.finite_state_machine()
         n = self.convolutional_code.num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
+        self._reset()
+
+    def _reset(self) -> None:
         num_states, traceback_length = self._fsm.num_states, self.traceback_length
         self._memory: MetricMemory = {
             "paths": np.zeros((num_states, traceback_length + 1), dtype=int),
@@ -75,3 +78,26 @@ class ViterbiStreamDecoder:
         )
         output = int_to_bits(input_hat, width=k)
         return output
+
+    def flush(self) -> npt.NDArray[np.integer]:
+        r"""
+        Returns the last $k \tau$ bits of the stream, taken from the survivor with best metric, and resets the decoder to its initial state.
+
+        Returns:
+            output: The last decoded bits.
+
+        Examples:
+            >>> decoder = komm.ViterbiStreamDecoder(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
+            ...     traceback_length=4,
+            ... )
+            >>> decoder.decode([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1])
+            array([0, 0, 0, 0, 1, 0])
+            >>> decoder.flush()
+            array([1, 1, 1, 0])
+        """
+        k = self.convolutional_code.num_input_bits
+        s_star = np.argmin(self._memory["metrics"])
+        input_hat = self._memory["paths"][s_star, 1:]
+        self._reset()
+        return int_to_bits(input_hat, width=k)
