@@ -118,6 +118,13 @@ def validate_float(
     return float(value)
 
 
+def validate_bool(value: object, name: str) -> bool:
+    if type(value) not in (bool, np.bool_):
+        got = type(value).__name__
+        raise TypeError(f"'{name}' must be a boolean (got {got})")
+    return bool(value)
+
+
 def validate_choice(value: T, name: str, choices: Sequence[T]) -> T:
     if value not in choices:
         *init, last = map(repr, choices)

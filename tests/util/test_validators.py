@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from komm._util.validators import (
+    validate_bool,
     validate_choice,
     validate_float,
     validate_integer,
@@ -174,6 +175,27 @@ def test_validate_float_low_high():
     for value in [-0.1, 1.1, float("nan")]:
         with pytest.raises(ValueError, match=r"'x' must be in \[0, 1\]"):
             validate_float(value, "x", low=0, high=1)
+
+
+@pytest.mark.parametrize("value", [False, True, np.False_, np.True_])
+def test_validate_bool(value):
+    boolean = validate_bool(value, "x")
+    assert boolean == value
+    assert type(boolean) is bool
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        (1, "int"),
+        ("False", "str"),
+        (None, "NoneType"),
+        (np.array(True), "ndarray"),
+    ],
+)
+def test_validate_bool_not_bool(value, got):
+    with pytest.raises(TypeError, match=rf"'x' must be a boolean \(got {got}\)"):
+        validate_bool(value, "x")
 
 
 def test_validate_log_base():
