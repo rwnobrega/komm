@@ -32,10 +32,15 @@ class VariableToFixedCode:
         target_block_size: int,
         dec_mapping: dict[Word, Word],
     ) -> None:
-        calY, calX, n = target_cardinality, source_cardinality, target_block_size
-        self._target_cardinality = validate_integer(calY, "target_cardinality", low=2)
-        self._source_cardinality = validate_integer(calX, "source_cardinality", low=2)
-        self._target_block_size = validate_positive_integer(n, "target_block_size")
+        self._target_cardinality = validate_integer(
+            target_cardinality, "target_cardinality", low=2
+        )
+        self._source_cardinality = validate_integer(
+            source_cardinality, "source_cardinality", low=2
+        )
+        self._target_block_size = validate_positive_integer(
+            target_block_size, "target_block_size"
+        )
         self._dec_mapping = dec_mapping
         self.__post_init__()
 

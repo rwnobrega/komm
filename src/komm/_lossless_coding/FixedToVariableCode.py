@@ -33,10 +33,15 @@ class FixedToVariableCode:
         source_block_size: int,
         enc_mapping: dict[Word, Word],
     ) -> None:
-        calX, calY, k = source_cardinality, target_cardinality, source_block_size
-        self._source_cardinality = validate_integer(calX, "source_cardinality", low=2)
-        self._target_cardinality = validate_integer(calY, "target_cardinality", low=2)
-        self._source_block_size = validate_positive_integer(k, "source_block_size")
+        self._source_cardinality = validate_integer(
+            source_cardinality, "source_cardinality", low=2
+        )
+        self._target_cardinality = validate_integer(
+            target_cardinality, "target_cardinality", low=2
+        )
+        self._source_block_size = validate_positive_integer(
+            source_block_size, "source_block_size"
+        )
         self._enc_mapping = enc_mapping
         self.__post_init__()
 

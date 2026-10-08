@@ -48,12 +48,16 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         target_cardinality: int = 2,
         search_buffer: npt.ArrayLike | None = None,
     ):
-        S, L = search_size, lookahead_size
-        calX, calY = source_cardinality, target_cardinality
-        self.search_size = validate_positive_integer(S, "search_size")
-        self.lookahead_size = validate_positive_integer(L, "lookahead_size")
-        self.source_cardinality = validate_integer(calX, "source_cardinality", low=2)
-        self.target_cardinality = validate_integer(calY, "target_cardinality", low=2)
+        self.search_size = validate_positive_integer(search_size, "search_size")
+        self.lookahead_size = validate_positive_integer(
+            lookahead_size, "lookahead_size"
+        )
+        self.source_cardinality = validate_integer(
+            source_cardinality, "source_cardinality", low=2
+        )
+        self.target_cardinality = validate_integer(
+            target_cardinality, "target_cardinality", low=2
+        )
 
         if search_buffer is None:
             self.search_buffer = [0] * self.search_size
