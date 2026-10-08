@@ -208,8 +208,7 @@ class BlockCode(ABC):
         H_cols = bits_to_int(self.check_matrix.T.ravel(), width=m)
         visited = np.zeros(2**m, dtype=bool)
         visited[0] = True
-        count = 1
-        syndromes = [0]
+        syndromes = np.array([0])
         leaders = np.zeros((2**m, n), dtype=int)
         pbar = tqdm(
             total=2**m,
@@ -217,24 +216,22 @@ class BlockCode(ABC):
             delay=2.5,
             initial=1,
         )
-        while True:
-            next_syndromes: list[int] = []
-            for s in syndromes:
-                for j, h in enumerate(H_cols):
-                    s0 = s ^ h
-                    if visited[s0]:
-                        continue
-                    visited[s0] = True
-                    leaders[s0] = leaders[s].copy()
-                    leaders[s0, j] ^= 1
-                    next_syndromes.append(s0)
-                    count += 1
-                    pbar.update()
-                    if count == 2**m:
-                        self._cached_coset_leaders = True
-                        pbar.close()
-                        return leaders
-            syndromes = next_syndromes
+        while not visited.all():
+            next_syndromes: list[npt.NDArray[np.integer]] = []
+            for j, h in enumerate(H_cols):
+                # XOR by h is injective: no repeats.
+                candidates = syndromes ^ h
+                candidates = candidates[~visited[candidates]]
+                visited[candidates] = True
+                # Parent leader, plus bit j.
+                leaders[candidates] = leaders[candidates ^ h]
+                leaders[candidates, j] = 1
+                next_syndromes.append(candidates)
+            syndromes = np.concatenate(next_syndromes)
+            pbar.update(syndromes.size)
+        pbar.close()
+        self._cached_coset_leaders = True
+        return leaders
 
     @cache
     @abstractmethod
