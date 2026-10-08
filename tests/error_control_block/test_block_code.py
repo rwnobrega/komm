@@ -1,3 +1,5 @@
+from itertools import combinations
+
 import numpy as np
 import pytest
 
@@ -77,6 +79,27 @@ def test_block_code_mappings(rng):
         v = code.encode(u)
         np.testing.assert_equal(code.inverse_encode(v), u)
         np.testing.assert_equal(code.check(v), np.zeros((3, 4, m)))
+
+
+@pytest.mark.repeat(20)
+def test_block_code_coset_leaders_ties(rng):
+    while True:
+        try:
+            code = komm.BlockCode(generator_matrix=rng.integers(0, 2, (3, 8)))
+            break
+        except ValueError:  # Rank-deficient generator matrix.
+            pass
+    n, m = code.length, code.redundancy
+    expected = np.full((2**m, n), -1)
+    # Weight first, then support in lexicographic order.
+    for w in range(n + 1):
+        for support in combinations(range(n), w):
+            word = np.zeros(n, dtype=int)
+            word[list(support)] = 1
+            i = komm.bits_to_int(code.check(word), width=m)[0]
+            if expected[i, 0] == -1:
+                expected[i] = word
+    np.testing.assert_equal(code.coset_leaders(), expected)
 
 
 @pytest.mark.parametrize(
