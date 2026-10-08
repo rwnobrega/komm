@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_integer
 from ..types import Array1D, Array2D
 
 
@@ -42,7 +43,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
     def __init__(
         self, order: int, amplitude: float = 1.0, phase_offset: float = 0.0
     ) -> None:
-        self._order = order
+        self._order = validate_integer(order, "order", low=2)
         self._amplitude = float(amplitude)
         self._phase_offset = float(phase_offset)
 

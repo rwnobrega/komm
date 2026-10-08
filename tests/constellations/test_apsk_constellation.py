@@ -17,6 +17,15 @@ import komm
             },
         ),
         (
+            {"orders": (1, 3), "amplitudes": (0.0, 1.0)},
+            {
+                "matrix": [0, 1, -0.5 + 0.866j, -0.5 - 0.866j],
+                "order": 4,
+                "mean_energy": 0.75,
+                "minimum_distance": 1,
+            },
+        ),
+        (
             {
                 "orders": (8, 8),
                 "amplitudes": (1.0, 2.0),

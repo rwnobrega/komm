@@ -97,3 +97,10 @@ def test_pam_posteriors(noise_power, expected):
         priors=[0.1, 0.2, 0.3, 0.4],
     )
     np.testing.assert_allclose(posteriors, expected, atol=1e-8)
+
+
+def test_pam_invalid_order():
+    with pytest.raises(ValueError, match=r"'order' must be at least 2 \(got 1\)"):
+        komm.PAMConstellation(1)
+    with pytest.raises(TypeError, match="'order' must be an integer"):
+        komm.PAMConstellation(4.0)  # type: ignore
