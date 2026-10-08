@@ -155,9 +155,8 @@ class BlockCode(ABC):
         b = min(k, 10)
         low, high = row_span(G[:b]), row_span(G[b:])
         codewords = np.empty((2**k, n), dtype=int)
-        for i, offset in enumerate(
-            tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=2**b)
-        ):
+        pbar = tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=2**b)
+        for i, offset in enumerate(pbar):
             codewords[i * 2**b : (i + 1) * 2**b] = low ^ offset
         self._cached_codewords = True
         return codewords
@@ -207,12 +206,7 @@ class BlockCode(ABC):
         visited[0] = True
         syndromes = np.array([0])
         leaders = np.zeros((2**m, n), dtype=int)
-        pbar = tqdm(
-            total=2**m,
-            desc="Generating coset leaders",
-            delay=2.5,
-            initial=1,
-        )
+        pbar = tqdm(total=2**m, desc="Generating coset leaders", delay=2.5, initial=1)
         while not visited.all():
             next_syndromes: list[npt.NDArray[np.integer]] = []
             for j, h in enumerate(H_cols):
