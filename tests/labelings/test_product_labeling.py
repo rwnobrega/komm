@@ -130,7 +130,7 @@ def test_labeling_reflected_repeat():
 
 def test_labeling_product_invalid_repeat():
     labeling = komm.ReflectedLabeling(1)
-    with pytest.raises(ValueError, match=r"'repeat' must be at least 1 \(got 0\)"):
+    with pytest.raises(ValueError, match="'repeat' must be a positive integer"):
         komm.ProductLabeling(labeling, repeat=0)
     with pytest.raises(TypeError, match="'repeat' must be an integer"):
         komm.ProductLabeling(labeling, repeat=2.0)  # type: ignore

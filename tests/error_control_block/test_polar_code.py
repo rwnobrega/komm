@@ -5,9 +5,9 @@ import komm
 
 
 def test_polar_code_invalid_construction():
-    with pytest.raises(ValueError, match="'mu' must be at least 1"):
+    with pytest.raises(ValueError, match="'mu' must be a positive integer"):
         komm.PolarCode(-1, [])
-    with pytest.raises(ValueError, match="'mu' must be at least 1"):
+    with pytest.raises(ValueError, match="'mu' must be a positive integer"):
         komm.PolarCode(0, [])
     with pytest.raises(TypeError, match="'mu' must be an integer"):
         komm.PolarCode(2.0, [0])  # type: ignore

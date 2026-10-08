@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer
+from .._util.validators import validate_integer, validate_positive_integer
 from .BlockCode import BlockCode
 
 
@@ -43,7 +43,7 @@ class Lexicode(BlockCode):
     """
 
     def __init__(self, n: int, d: int) -> None:
-        n = validate_integer(n, "n", low=1)
+        n = validate_positive_integer(n, "n")
         d = validate_integer(d, "d", low=1, high=n + 1, rule="1 <= d <= n")
         self.n = n
         self.d = d

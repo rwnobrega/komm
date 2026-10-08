@@ -91,16 +91,16 @@ def test_labeling_invalid_input(labeling: komm.abc.Labeling):
 
 
 @pytest.mark.parametrize(
-    "cls",
+    "cls, message",
     [
-        komm.NaturalLabeling,
-        komm.ReflectedLabeling,
-        komm.ReflectedRectangularLabeling,
+        (komm.NaturalLabeling, "'num_bits' must be a positive integer"),
+        (komm.ReflectedLabeling, "'num_bits' must be a positive integer"),
+        (komm.ReflectedRectangularLabeling, "'num_bits' must be at least 2"),
     ],
 )
-def test_labeling_invalid_num_bits(cls):
+def test_labeling_invalid_num_bits(cls, message):
     assert type(cls(np.int64(2)).num_bits) is int
-    with pytest.raises(ValueError, match="'num_bits' must be at least"):
+    with pytest.raises(ValueError, match=message):
         cls(0)
     with pytest.raises(TypeError, match="'num_bits' must be an integer"):
         cls(2.0)

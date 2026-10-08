@@ -3,7 +3,7 @@ import numpy.typing as npt
 
 from .._util.decorators import blockwise
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer, validate_integer_array
+from .._util.validators import validate_integer_array, validate_positive_integer
 from .BlockCode import BlockCode
 
 
@@ -52,7 +52,7 @@ class PolarCode(BlockCode):
     frozen: npt.NDArray[np.integer]
 
     def __init__(self, mu: int, frozen: npt.ArrayLike):
-        mu = validate_integer(mu, "mu", low=1)
+        mu = validate_positive_integer(mu, "mu")
         frozen = validate_integer_array(frozen, "frozen", low=0, high=2**mu)
         self.mu = mu
         self.frozen = np.sort(frozen).astype(int)

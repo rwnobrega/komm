@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer
+from .._util.validators import validate_positive_integer
 from .BlockCode import BlockCode
 
 
@@ -48,7 +48,7 @@ class SingleParityCheckCode(BlockCode):
     """
 
     def __init__(self, n: int) -> None:
-        self.n = validate_integer(n, "n", low=1)
+        self.n = validate_positive_integer(n, "n")
         super().__init__(check_matrix=np.ones((1, self.n), dtype=int))
 
     def __repr__(self) -> str:

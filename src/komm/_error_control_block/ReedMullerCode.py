@@ -6,7 +6,7 @@ import numpy.typing as npt
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer
+from .._util.validators import validate_integer, validate_positive_integer
 from .BlockCode import BlockCode
 
 
@@ -58,7 +58,7 @@ class ReedMullerCode(BlockCode):
     """
 
     def __init__(self, rho: int, mu: int) -> None:
-        mu = validate_integer(mu, "mu", low=1)
+        mu = validate_positive_integer(mu, "mu")
         rho = validate_integer(rho, "rho", low=0, high=mu, rule="0 <= rho < mu")
         self.rho = rho
         self.mu = mu

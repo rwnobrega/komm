@@ -27,9 +27,9 @@ def test_encoder():
 
 
 def test_single_parity_check_code_invalid_init():
-    with pytest.raises(ValueError, match="'n' must be at least 1"):
+    with pytest.raises(ValueError, match="'n' must be a positive integer"):
         komm.SingleParityCheckCode(0)
-    with pytest.raises(ValueError, match="'n' must be at least 1"):
+    with pytest.raises(ValueError, match="'n' must be a positive integer"):
         komm.SingleParityCheckCode(-1)
     with pytest.raises(TypeError, match="'n' must be an integer"):
         komm.SingleParityCheckCode(3.0)  # type: ignore
