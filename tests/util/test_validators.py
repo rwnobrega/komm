@@ -176,7 +176,7 @@ def test_validate_integer_array_shape():
     [1, True, np.int64(1), 1.0, np.float64(1.0), np.float32(1.0), Fraction(1)],
 )
 def test_validate_float(value):
-    real = validate_float(value, "x")
+    real = validate_float(value)
     assert real == 1.0
     assert type(real) is float
 
@@ -193,33 +193,34 @@ def test_validate_float(value):
     ],
 )
 def test_validate_float_not_real(value, got):
-    with pytest.raises(TypeError, match=rf"'x' must be a real number \(got {got}\)"):
-        validate_float(value, "x")
+    with pytest.raises(TypeError, match=rf"'value' must be a real number \(got {got}"):
+        validate_float(value)
 
 
 def test_validate_float_no_bounds():
-    assert validate_float(-5.0, "x") == -5.0
+    assert validate_float(-5.0) == -5.0
 
 
 def test_validate_float_low():
-    assert validate_float(0.0, "x", low=0) == 0.0
+    assert validate_float(0.0, low=0) == 0.0
     for value in [-0.1, float("nan")]:
-        with pytest.raises(ValueError, match="'x' must be at least 0"):
-            validate_float(value, "x", low=0)
+        with pytest.raises(ValueError, match="'value' must be at least 0"):
+            validate_float(value, low=0)
 
 
 def test_validate_float_high():
-    assert validate_float(1.0, "x", high=1) == 1.0
-    with pytest.raises(ValueError, match=r"'x' must be at most 1 \(got 1.1\)"):
-        validate_float(1.1, "x", high=1)
+    assert validate_float(1.0, high=1) == 1.0
+    value = 1.1
+    with pytest.raises(ValueError, match=r"'value' must be at most 1 \(got 1.1\)"):
+        validate_float(value, high=1)
 
 
 def test_validate_float_low_high():
-    assert validate_float(0.0, "x", low=0, high=1) == 0.0
-    assert validate_float(1.0, "x", low=0, high=1) == 1.0
+    assert validate_float(0.0, low=0, high=1) == 0.0
+    assert validate_float(1.0, low=0, high=1) == 1.0
     for value in [-0.1, 1.1, float("nan")]:
-        with pytest.raises(ValueError, match=r"'x' must be in \[0, 1\]"):
-            validate_float(value, "x", low=0, high=1)
+        with pytest.raises(ValueError, match=r"'value' must be in \[0, 1\]"):
+            validate_float(value, low=0, high=1)
 
 
 @pytest.mark.parametrize("value", [False, True, np.False_, np.True_])
@@ -276,22 +277,22 @@ def test_arg_name_stale_source(monkeypatch: pytest.MonkeyPatch):
 
 
 def test_validate_log_base():
-    assert validate_log_base("e", "x") == "e"
-    base = validate_log_base(2, "x")
+    assert validate_log_base("e") == "e"
+    base = validate_log_base(2)
     assert base == 2.0
     assert type(base) is float
 
 
 @pytest.mark.parametrize("value", [0, -1.0, 1, 1.0, float("nan"), "f", ""])
 def test_validate_log_base_invalid(value):
-    with pytest.raises(ValueError, match="'x' must be 'e' or a positive real"):
-        validate_log_base(value, "x")
+    with pytest.raises(ValueError, match="'value' must be 'e' or a positive real"):
+        validate_log_base(value)
 
 
 @pytest.mark.parametrize("value", [None, 1j])
 def test_validate_log_base_not_real(value):
-    with pytest.raises(TypeError, match="'x' must be a real number"):
-        validate_log_base(value, "x")
+    with pytest.raises(TypeError, match="'value' must be a real number"):
+        validate_log_base(value)
 
 
 def test_validate_pmf():

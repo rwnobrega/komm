@@ -33,7 +33,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
         rng: np.random.Generator | None = None,
     ):
         self.crossover_probability = validate_float(
-            crossover_probability, "crossover_probability", low=0, high=1
+            crossover_probability, low=0, high=1
         )
         self._rng = rng
 
@@ -90,7 +90,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             0.2754734936803773
         """
         input_pmf = validate_pmf(input_pmf, "input_pmf")
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         p = self.crossover_probability
         pi = input_pmf[1]
@@ -110,7 +110,7 @@ class BinarySymmetricChannel(abc.DiscreteMemorylessChannel):
             0.2780719051126377
         """
         p = self.crossover_probability
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         return (1.0 - binary_entropy(p)) / log2(base)
 

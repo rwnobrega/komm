@@ -40,7 +40,7 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> float:
         0.6931471805599453
     """
     pmf = validate_pmf(pmf, "pmf")
-    base = validate_log_base(base, "base")
+    base = validate_log_base(base)
     pmf = pmf[pmf > 0]
     # We compute log(1/p) rather than -log(p) to avoid -0.0.
     if base == "e":
@@ -70,7 +70,7 @@ def binary_entropy(p: float) -> float:
         >>> [komm.binary_entropy(p) for p in [0.0, 0.25, 0.5, 0.75, 1.0]]
         [0.0, 0.8112781244591328, 1.0, 0.8112781244591328, 0.0]
     """
-    p = validate_float(p, "p", low=0, high=1)
+    p = validate_float(p, low=0, high=1)
     if p in {0.0, 1.0}:
         return 0.0
     return float(-p * log2(p) - (1 - p) * log2(1 - p))
@@ -142,7 +142,7 @@ def relative_entropy(
     """
     pmf = validate_pmf(pmf, "pmf")
     qmf = validate_pmf(qmf, "qmf")
-    base = validate_log_base(base, "base")
+    base = validate_log_base(base)
     if pmf.shape != qmf.shape:
         raise ValueError("inputs must have the same shape")
     mask = pmf > 0
@@ -163,7 +163,7 @@ def mutual_information(
     base: float | Literal["e"] = 2.0,
 ) -> float:
     input_pmf = validate_pmf(input_pmf, "input_pmf")
-    base = validate_log_base(base, "base")
+    base = validate_log_base(base)
     transition_matrix = validate_transition_matrix(
         transition_matrix, "transition_matrix"
     )

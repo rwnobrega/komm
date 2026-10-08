@@ -32,9 +32,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         decay_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        self.decay_probability = validate_float(
-            decay_probability, "decay_probability", low=0, high=1
-        )
+        self.decay_probability = validate_float(decay_probability, low=0, high=1)
         self._rng = rng
 
     @property
@@ -90,7 +88,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             0.6099865470109874
         """
         input_pmf = validate_pmf(input_pmf, "input_pmf")
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         p = self.decay_probability
         pi = float(input_pmf[1])
@@ -109,7 +107,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             >>> zc.capacity()  # doctest: +FLOAT_CMP
             0.6182313659549211
         """
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         p = self.decay_probability
         if p == 1.0:

@@ -28,9 +28,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
         erasure_probability: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        self.erasure_probability = validate_float(
-            erasure_probability, "erasure_probability", low=0, high=1
-        )
+        self.erasure_probability = validate_float(erasure_probability, low=0, high=1)
         self._rng = rng
 
     @property
@@ -90,7 +88,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             0.7942195631902467
         """
         input_pmf = validate_pmf(input_pmf, "input_pmf")
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         epsilon = self.erasure_probability
         pi = input_pmf[1]
@@ -109,7 +107,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             >>> bec.capacity()
             0.8
         """
-        base = validate_log_base(base, "base")
+        base = validate_log_base(base)
         base = e if base == "e" else base
         return (1.0 - self.erasure_probability) / log2(base)
 

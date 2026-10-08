@@ -43,15 +43,15 @@ def arg_name() -> str:
     return ast.unparse(call.args[0]).removeprefix("self.")
 
 
-def validate_log_base(value: float | str, name: str) -> float | Literal["e"]:
+def validate_log_base(value: float | str) -> float | Literal["e"]:
     if isinstance(value, str):
         if value == "e":
             return "e"
     else:
-        value = validate_float(value, name)
+        value = validate_float(value)
         if value > 0 and value != 1:
             return value
-    raise ValueError(f"'{name}' must be 'e' or a positive real other than 1")
+    raise ValueError(f"'{arg_name()}' must be 'e' or a positive real other than 1")
 
 
 def validate_pmf(value: npt.ArrayLike, name: str) -> npt.NDArray[np.floating]:
@@ -152,21 +152,20 @@ def validate_integer_array(
 
 def validate_float(
     value: float,
-    name: str,
     *,
     low: float | None = None,
     high: float | None = None,
 ) -> float:
     if not isinstance(value, Real):
         got = type(value).__name__
-        raise TypeError(f"'{name}' must be a real number (got {got})")
+        raise TypeError(f"'{arg_name()}' must be a real number (got {got})")
     if low is not None and high is not None:
         if not low <= value <= high:
-            raise ValueError(f"'{name}' must be in [{low}, {high}] (got {value})")
+            raise ValueError(f"'{arg_name()}' must be in [{low}, {high}] (got {value})")
     elif low is not None and not value >= low:
-        raise ValueError(f"'{name}' must be at least {low} (got {value})")
+        raise ValueError(f"'{arg_name()}' must be at least {low} (got {value})")
     elif high is not None and not value <= high:
-        raise ValueError(f"'{name}' must be at most {high} (got {value})")
+        raise ValueError(f"'{arg_name()}' must be at most {high} (got {value})")
     return float(value)
 
 
