@@ -60,9 +60,9 @@ class TunstallCode(VariableToFixedCode):
     ) -> None:
         self.pmf = validate_pmf(pmf, "pmf")
         n_min = ceil(log2(self.pmf.size))
-        if target_block_size is None:
-            target_block_size = n_min
-        n = validate_integer(target_block_size, "target_block_size", low=n_min)
+        n = n_min if target_block_size is None else target_block_size
+        rule = "2**target_block_size >= len(pmf)"
+        n = validate_integer(n, "target_block_size", low=n_min, rule=rule)
         super().__init__(
             target_cardinality=2,
             source_cardinality=self.pmf.size,

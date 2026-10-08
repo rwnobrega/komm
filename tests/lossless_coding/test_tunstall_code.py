@@ -1,4 +1,5 @@
 from math import ceil, log2
+from re import escape
 
 import numpy as np
 import pytest
@@ -28,10 +29,11 @@ def test_tunstall_code():
 def test_tunstall_code_invalid_init():
     with pytest.raises(ValueError):
         komm.TunstallCode([0.5, 0.5, 0.1], 3)
-    with pytest.raises(ValueError, match=r"must be at least 1 \(got 0\)"):
-        komm.TunstallCode([0.5, 0.5], 0)
-    with pytest.raises(ValueError, match=r"must be at least 2 \(got 1\)"):
-        komm.TunstallCode([0.25, 0.25, 0.25, 0.25], 1)
+    rule = "2**target_block_size >= len(pmf)"
+    for pmf, n in [([0.5, 0.5], 0), ([0.25, 0.25, 0.25, 0.25], 1)]:
+        message = f"'target_block_size' must satisfy {rule} (got {n})"
+        with pytest.raises(ValueError, match=escape(message)):
+            komm.TunstallCode(pmf, n)
     with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
         komm.TunstallCode([0.5, 0.5], 2.0)  # type: ignore
 
