@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
-from .._util.matrices import boolean_matmul, matmul, pseudo_inverse
+from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
 from ..types import Array1D, Array2D
 
 
@@ -150,18 +150,15 @@ class BlockCode(ABC):
         Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (LSB-first).
         """
         k, n = self.dimension, self.length
-        batch_size = 1024
+        G = self.generator_matrix
+        # Split messages into low and high bits.
+        b = min(k, 10)
+        low, high = row_span(G[:b]), row_span(G[b:])
         codewords = np.empty((2**k, n), dtype=int)
-        for i in tqdm(
-            range(0, 2**k, batch_size),
-            desc="Generating codewords",
-            delay=2.5,
-            unit_scale=batch_size,
+        for i, offset in enumerate(
+            tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=2**b)
         ):
-            batch_end = min(i + batch_size, 2**k)
-            js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
-            messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
-            codewords[i:batch_end] = self.encode(messages_batch)
+            codewords[i * 2**b : (i + 1) * 2**b] = low ^ offset
         self._cached_codewords = True
         return codewords
 

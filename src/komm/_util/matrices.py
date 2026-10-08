@@ -190,6 +190,30 @@ def rank(matrix: npt.ArrayLike) -> int:
     return int(np.count_nonzero(reduced.any(axis=1)))
 
 
+def row_span(matrix: npt.ArrayLike) -> ArrayInt:
+    r"""
+    Lists all XOR combinations of the rows of a matrix. Row $i$ of the output is the XOR of the rows selected by the binary expansion of $i$ (LSB-first). For a matrix in $\ZZ_2$, these are all the vectors in its row space.
+
+    Parameters:
+        matrix: The matrix. Its elements must be nonnegative integers. Must be a 2D-array.
+
+    Returns:
+        span: The $2^r \times c$ matrix of combinations, where $r \times c$ is the shape of the input.
+
+    Examples:
+        >>> row_span([[1, 1, 0], [0, 1, 1]])
+        array([[0, 0, 0],
+               [1, 1, 0],
+               [0, 1, 1],
+               [1, 0, 1]])
+    """
+    matrix = np.asarray(matrix)
+    span = np.zeros((2 ** matrix.shape[0], matrix.shape[1]), dtype=matrix.dtype)
+    for j, row in enumerate(matrix):
+        span[2**j : 2 ** (j + 1)] = span[: 2**j] ^ row
+    return span
+
+
 def trellis_oriented_form(matrix: npt.ArrayLike) -> ArrayInt:
     r"""
     Computes a trellis-oriented form of a matrix in $\ZZ_2$. A matrix is in trellis-oriented form if its rows are linearly independent, no two rows have their leading one in the same column, and no two rows have their trailing one in the same column. The result has the same row space as the input.

@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._util.bit_operations import int_to_bits
 from komm._util.matrices import (
     boolean_matmul,
     invariant_factors,
@@ -9,6 +10,7 @@ from komm._util.matrices import (
     matrix_power,
     pseudo_inverse,
     rank,
+    row_span,
     rref,
     trellis_oriented_form,
     xrref,
@@ -47,6 +49,17 @@ def test_matrix_power_invalid_exponent():
         matrix_power([[1, 1], [1, 0]], -1)
     with pytest.raises(TypeError, match="'exponent' must be an integer"):
         matrix_power([[1, 1], [1, 0]], 2.0)  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "shape",
+    [(0, 4), (1, 4), (5, 3), (6, 10)],
+)
+def test_row_span(shape, rng):
+    matrix = rng.integers(0, 2, shape)
+    r = shape[0]
+    messages = int_to_bits(np.arange(2**r), width=r).reshape(2**r, r)
+    np.testing.assert_equal(row_span(matrix), matmul(messages, matrix))
 
 
 @pytest.mark.parametrize(
