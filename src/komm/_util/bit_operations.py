@@ -133,11 +133,11 @@ def to_binary(
         1267650600228229401496703205376
     """
     bit_order = validate_bit_order(bit_order, "bit_order")
-    integer = validate_integer(integer, "integer", low=0)
+    integer = validate_integer(integer, "integer")
     if width is None:
         width = integer.bit_length()
-    if not integer < 1 << width:
-        raise ValueError(f"'integer' must be in [0:2**{width}) (got {integer})")
+    rule = "0 <= integer < 2**width"
+    integer = validate_integer(integer, "integer", low=0, high=1 << width, rule=rule)
     bits = [(integer >> i) & 1 for i in range(width)]
     if bit_order == "MSB-first":
         bits.reverse()

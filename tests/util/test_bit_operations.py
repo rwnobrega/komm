@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -114,10 +116,10 @@ def test_binary_invalid():
         komm.from_binary([0, 2])
     with pytest.raises(TypeError, match="'integer' must be an integer"):
         komm.to_binary(1.5)  # type: ignore
-    with pytest.raises(ValueError, match=r"'integer' must be at least 0 \(got -1\)"):
-        komm.to_binary(-1)
-    with pytest.raises(ValueError, match=r"must be in \[0:2\*\*4\) \(got 16\)"):
-        komm.to_binary(16, width=4)
+    for integer, width in [(-1, None), (16, 4)]:
+        message = f"'integer' must satisfy 0 <= integer < 2**width (got {integer})"
+        with pytest.raises(ValueError, match=escape(message)):
+            komm.to_binary(integer, width=width)
 
 
 @pytest.mark.parametrize("width", range(1, 201))
