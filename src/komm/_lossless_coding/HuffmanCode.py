@@ -79,7 +79,7 @@ class HuffmanCode(FixedToVariableCode):
         assignment: Literal["tree", "canonical"] = "tree",
     ):
         self.pmf = validate_pmf(pmf)
-        k = validate_positive_integer(source_block_size, "source_block_size")
+        source_block_size = validate_positive_integer(source_block_size)
         policy = validate_choice(policy, ("high", "low"))
         assignment = validate_choice(assignment, ("tree", "canonical"))
         self.policy = policy
@@ -87,8 +87,8 @@ class HuffmanCode(FixedToVariableCode):
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,
-            source_block_size=k,
-            enc_mapping=huffman_code(self.pmf, k, policy, assignment),
+            source_block_size=source_block_size,
+            enc_mapping=huffman_code(self.pmf, source_block_size, policy, assignment),
         )
 
     def __repr__(self) -> str:

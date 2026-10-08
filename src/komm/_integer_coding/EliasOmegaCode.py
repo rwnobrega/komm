@@ -35,7 +35,7 @@ class EliasOmegaCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 0, 1, 0, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         bits = [0]
         while integer > 1:
             binary = to_binary(integer, bit_order="MSB-first")
@@ -69,7 +69,7 @@ class EliasOmegaCode(abc.IntegerCode):
             >>> code.length(4)
             6
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         length = 1
         while integer > 1:
             num_bits = integer.bit_length()

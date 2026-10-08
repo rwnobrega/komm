@@ -49,7 +49,7 @@ class UnaryCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 1, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         return [1 - self.stop_bit] * (integer - 1) + [self.stop_bit]
 
     def decode_single(self, bits: Iterator[int]) -> int:
@@ -83,7 +83,7 @@ class UnaryCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        return validate_positive_integer(integer, "integer")
+        return validate_positive_integer(integer)
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""

@@ -56,7 +56,7 @@ def sampling_rate_compress(
         array([[11, 12],
                [17, 18]])
     """
-    factor = validate_positive_integer(factor, "factor")
+    factor = validate_positive_integer(factor)
     rule = "0 <= offset < factor"
     offset = validate_integer(offset, low=0, high=factor, rule=rule)
     input = np.asarray(input)
@@ -105,7 +105,7 @@ def sampling_rate_expand(
                [0, 0],
                [0, 0]])
     """
-    factor = validate_positive_integer(factor, "factor")
+    factor = validate_positive_integer(factor)
     rule = "0 <= offset < factor"
     offset = validate_integer(offset, low=0, high=factor, rule=rule)
     input = np.asarray(input)

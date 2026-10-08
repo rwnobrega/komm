@@ -38,7 +38,7 @@ class EscapeCode(abc.IntegerCode):
     divisor: int
 
     def __post_init__(self) -> None:
-        self.divisor = validate_positive_integer(self.divisor, "divisor")
+        self.divisor = validate_positive_integer(self.divisor)
         self._block_code = TruncatedBinaryCode(self.divisor + 1)
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
@@ -48,7 +48,7 @@ class EscapeCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
         bits: list[int] = []
         for value in [self.divisor] * q + [r]:
@@ -79,7 +79,7 @@ class EscapeCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
         escape_length = self._block_code.length(self.divisor)
         return q * escape_length + self._block_code.length(r)

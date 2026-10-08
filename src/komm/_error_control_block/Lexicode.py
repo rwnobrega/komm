@@ -43,7 +43,7 @@ class Lexicode(BlockCode):
     """
 
     def __init__(self, n: int, d: int) -> None:
-        n = validate_positive_integer(n, "n")
+        n = validate_positive_integer(n)
         d = validate_integer(d, low=1, high=n + 1, rule="1 <= d <= n")
         self.n = n
         self.d = d

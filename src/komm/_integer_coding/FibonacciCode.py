@@ -34,7 +34,7 @@ class FibonacciCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 0, 1, 1]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         top = 2
         while fibonacci(top + 1) <= integer:
             top += 1

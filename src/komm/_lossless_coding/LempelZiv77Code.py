@@ -45,10 +45,8 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         target_cardinality: int = 2,
         search_buffer: npt.ArrayLike | None = None,
     ):
-        self.search_size = validate_positive_integer(search_size, "search_size")
-        self.lookahead_size = validate_positive_integer(
-            lookahead_size, "lookahead_size"
-        )
+        self.search_size = validate_positive_integer(search_size)
+        self.lookahead_size = validate_positive_integer(lookahead_size)
         self.source_cardinality = validate_integer(source_cardinality, low=2)
         self.target_cardinality = validate_integer(target_cardinality, low=2)
 

@@ -39,7 +39,7 @@ class TabooCode(abc.IntegerCode):
     base: int
 
     def __post_init__(self) -> None:
-        self.base = validate_positive_integer(self.base, "base")
+        self.base = validate_positive_integer(self.base)
         self._block_code = TruncatedBinaryCode(self.base + 1)
 
     def _digits(self, integer: int) -> list[int]:
@@ -58,7 +58,7 @@ class TabooCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 1, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         bits: list[int] = []
         for digit in self._digits(integer) + [0]:
             bits += self._block_code.encode_single(digit)
@@ -88,7 +88,7 @@ class TabooCode(abc.IntegerCode):
             >>> code.length(4)
             4
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         digits = self._digits(integer) + [0]
         return sum(self._block_code.length(digit) for digit in digits)
 

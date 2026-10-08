@@ -169,7 +169,7 @@ class FiniteBifield:
     """
 
     def __init__(self, degree: int, modulus: BinaryPolynomial | int | None = None):
-        self.degree = validate_positive_integer(degree, "degree")
+        self.degree = validate_positive_integer(degree)
         if modulus is None:
             self.modulus = default_primitive_polynomial(self.degree)
         else:

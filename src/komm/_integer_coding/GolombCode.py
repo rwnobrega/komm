@@ -37,7 +37,7 @@ class GolombCode(abc.IntegerCode):
     divisor: int
 
     def __post_init__(self) -> None:
-        self.divisor = validate_positive_integer(self.divisor, "divisor")
+        self.divisor = validate_positive_integer(self.divisor)
         self._unary_code = UnaryCode(stop_bit=0)
         self._remainder_code = (
             TruncatedBinaryCode(self.divisor) if self.divisor >= 2 else None
@@ -50,7 +50,7 @@ class GolombCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [1, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
         bits = self._unary_code.encode_single(q + 1)
         if self._remainder_code is not None:
@@ -80,7 +80,7 @@ class GolombCode(abc.IntegerCode):
             >>> code.length(4)
             3
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
         if self._remainder_code is None:
             return q + 1

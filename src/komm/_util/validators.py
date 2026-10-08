@@ -107,17 +107,19 @@ def validate_integer(
     raise ValueError(f"'{arg_name()}' must {condition} (got {integer})")
 
 
-def validate_positive_integer(value: SupportsIndex, name: str) -> int:
+def validate_positive_integer(value: SupportsIndex) -> int:
     integer = validate_integer(value)
     if not integer > 0:
-        raise ValueError(f"'{name}' must be a positive integer (got {integer})")
+        raise ValueError(f"'{arg_name()}' must be a positive integer (got {integer})")
     return integer
 
 
-def validate_nonnegative_integer(value: SupportsIndex, name: str) -> int:
+def validate_nonnegative_integer(value: SupportsIndex) -> int:
     integer = validate_integer(value)
     if not integer >= 0:
-        raise ValueError(f"'{name}' must be a non-negative integer (got {integer})")
+        raise ValueError(
+            f"'{arg_name()}' must be a non-negative integer (got {integer})"
+        )
     return integer
 
 

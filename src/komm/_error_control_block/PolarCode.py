@@ -52,7 +52,7 @@ class PolarCode(BlockCode):
     frozen: npt.NDArray[np.integer]
 
     def __init__(self, mu: int, frozen: npt.ArrayLike):
-        mu = validate_positive_integer(mu, "mu")
+        mu = validate_positive_integer(mu)
         frozen = validate_integer_array(frozen, low=0, high=2**mu)
         self.mu = mu
         self.frozen = np.sort(frozen).astype(int)

@@ -38,7 +38,7 @@ class EliasDeltaCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [0, 1, 1, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         binary = to_binary(integer, bit_order="MSB-first")
         return self.gamma_code.encode_single(len(binary)) + binary[1:]
 
@@ -62,7 +62,7 @@ class EliasDeltaCode(abc.IntegerCode):
             >>> code.length(4)
             5
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         num_bits = integer.bit_length()
         return self.gamma_code.length(num_bits) + num_bits - 1
 

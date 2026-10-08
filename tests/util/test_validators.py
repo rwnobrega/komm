@@ -86,28 +86,29 @@ def test_validate_integer_rule():
 
 
 def test_validate_positive_integer():
-    integer = validate_positive_integer(np.int64(1), "n")
+    integer = validate_positive_integer(np.int64(1))
     assert integer == 1
     assert type(integer) is int
-    for value in [0, -1]:
-        message = f"'n' must be a positive integer (got {value})"
+    for n in [0, -1]:
+        message = f"'n' must be a positive integer (got {n})"
         with pytest.raises(ValueError, match=escape(message)):
-            validate_positive_integer(value, "n")
+            validate_positive_integer(n)
     n = 1.0
     with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
-        validate_positive_integer(n, "n")  # type: ignore
+        validate_positive_integer(n)  # type: ignore
 
 
 def test_validate_nonnegative_integer():
-    integer = validate_nonnegative_integer(np.int64(0), "n")
+    integer = validate_nonnegative_integer(np.int64(0))
     assert integer == 0
     assert type(integer) is int
+    n = -1
     message = "'n' must be a non-negative integer (got -1)"
     with pytest.raises(ValueError, match=escape(message)):
-        validate_nonnegative_integer(-1, "n")
+        validate_nonnegative_integer(n)
     n = 0.0
     with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
-        validate_nonnegative_integer(n, "n")  # type: ignore
+        validate_nonnegative_integer(n)  # type: ignore
 
 
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8])

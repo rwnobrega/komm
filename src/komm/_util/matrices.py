@@ -59,7 +59,7 @@ def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> ArrayInt:
                [0, 1]])
     """
     matrix = np.asarray(matrix, dtype=int)
-    exponent = validate_nonnegative_integer(exponent, "exponent")
+    exponent = validate_nonnegative_integer(exponent)
     power = np.eye(matrix.shape[0], dtype=int)
     while exponent > 0:  # Square and multiply
         if exponent & 1:

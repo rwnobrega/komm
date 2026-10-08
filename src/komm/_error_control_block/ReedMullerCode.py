@@ -58,7 +58,7 @@ class ReedMullerCode(BlockCode):
     """
 
     def __init__(self, rho: int, mu: int) -> None:
-        mu = validate_positive_integer(mu, "mu")
+        mu = validate_positive_integer(mu)
         rho = validate_integer(rho, low=0, high=mu, rule="0 <= rho < mu")
         self.rho = rho
         self.mu = mu

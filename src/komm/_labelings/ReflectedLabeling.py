@@ -14,7 +14,7 @@ class ReflectedLabeling(abc.Labeling):
     """
 
     def __init__(self, num_bits: int, _pre_cache: bool = True) -> None:
-        self._num_bits = validate_positive_integer(num_bits, "num_bits")
+        self._num_bits = validate_positive_integer(num_bits)
         if _pre_cache:
             self.matrix
 

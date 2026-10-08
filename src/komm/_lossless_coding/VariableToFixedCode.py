@@ -34,9 +34,7 @@ class VariableToFixedCode:
     ) -> None:
         self._target_cardinality = validate_integer(target_cardinality, low=2)
         self._source_cardinality = validate_integer(source_cardinality, low=2)
-        self._target_block_size = validate_positive_integer(
-            target_block_size, "target_block_size"
-        )
+        self._target_block_size = validate_positive_integer(target_block_size)
         self._dec_mapping = dec_mapping
         self.__post_init__()
 

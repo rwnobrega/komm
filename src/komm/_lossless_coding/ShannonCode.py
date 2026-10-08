@@ -57,12 +57,12 @@ class ShannonCode(FixedToVariableCode):
         self.pmf = validate_pmf(pmf)
         if not np.all(self.pmf > 0):
             raise ValueError("'pmf' must be positive")
-        k = validate_positive_integer(source_block_size, "source_block_size")
+        source_block_size = validate_positive_integer(source_block_size)
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,
-            source_block_size=k,
-            enc_mapping=shannon_code(self.pmf, k),
+            source_block_size=source_block_size,
+            enc_mapping=shannon_code(self.pmf, source_block_size),
         )
 
     def __repr__(self) -> str:

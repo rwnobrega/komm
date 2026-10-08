@@ -62,7 +62,7 @@ class ProductLabeling(abc.Labeling):
     def __init__(self, *labelings: abc.Labeling, repeat: int = 1) -> None:
         if len(labelings) < 1:
             raise ValueError("at least one labeling is required")
-        repeat = validate_positive_integer(repeat, "repeat")
+        repeat = validate_positive_integer(repeat)
         self._labelings = labelings * repeat
 
     @classmethod

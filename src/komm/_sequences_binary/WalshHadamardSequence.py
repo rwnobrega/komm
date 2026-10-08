@@ -96,7 +96,7 @@ class WalshHadamardSequence(BinarySequence):
         ordering: Literal["natural", "sequency", "dyadic"] = "natural",
         index: int = 0,
     ) -> None:
-        length = validate_positive_integer(length, "length")
+        length = validate_positive_integer(length)
         if length & (length - 1):
             raise ValueError("'length' must be a power of two")
         rule = "0 <= index < length"

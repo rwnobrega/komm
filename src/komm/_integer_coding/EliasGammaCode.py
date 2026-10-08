@@ -38,7 +38,7 @@ class EliasGammaCode(abc.IntegerCode):
             >>> code.encode_single(4)
             [0, 0, 1, 0, 0]
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         binary = to_binary(integer, bit_order="MSB-first")
         return self.unary_code.encode_single(len(binary)) + binary[1:]
 
@@ -62,7 +62,7 @@ class EliasGammaCode(abc.IntegerCode):
             >>> code.length(4)
             5
         """
-        integer = validate_positive_integer(integer, "integer")
+        integer = validate_positive_integer(integer)
         return 2 * integer.bit_length() - 1
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
