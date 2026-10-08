@@ -59,7 +59,7 @@ class ReedMullerCode(BlockCode):
 
     def __init__(self, rho: int, mu: int) -> None:
         mu = validate_integer(mu, "mu", low=1)
-        rho = validate_integer(rho, "rho", low=0, high=mu)
+        rho = validate_integer(rho, "rho", low=0, high=mu, rule="0 <= rho < mu")
         self.rho = rho
         self.mu = mu
         super().__init__(generator_matrix=reed_muller_generator_matrix(rho, mu))

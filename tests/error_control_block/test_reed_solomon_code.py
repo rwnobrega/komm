@@ -64,8 +64,8 @@ def test_reed_solomon_weight_distribution(mu, delta):
     "mu, delta, message",
     [
         (1, 2, "'mu' must be at least 2"),
-        (3, 1, "'delta' must be in"),
-        (3, 8, "'delta' must be in"),
+        (3, 1, "'delta' must satisfy 2 <= delta <="),
+        (3, 8, "'delta' must satisfy 2 <= delta <="),
     ],
 )
 def test_reed_solomon_invalid_parameters(mu, delta, message):

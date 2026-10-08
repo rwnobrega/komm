@@ -85,7 +85,7 @@ def test_bch_syndrome():
 def test_bch_code_invalid_init():
     with pytest.raises(ValueError, match="'mu' must be at least 2"):
         komm.BCHCode(mu=1, delta=3)
-    with pytest.raises(ValueError, match="'delta' must be in"):
+    with pytest.raises(ValueError, match="'delta' must satisfy 2 <= delta <="):
         komm.BCHCode(mu=3, delta=8)
     with pytest.raises(ValueError, match="must be a Bose distance"):
         komm.BCHCode(mu=3, delta=5)

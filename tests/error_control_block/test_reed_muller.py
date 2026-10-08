@@ -69,11 +69,11 @@ def test_reed_muller_code_2_4_encoder():
 
 
 def test_reed_muller_code_invalid_init():
-    with pytest.raises(ValueError, match="'rho' must be in"):
+    with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
         komm.ReedMullerCode(2, 2)
-    with pytest.raises(ValueError, match="'rho' must be in"):
+    with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
         komm.ReedMullerCode(-1, 3)
-    with pytest.raises(ValueError, match="'rho' must be in"):
+    with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
         komm.ReedMullerCode(3, 2)
     with pytest.raises(TypeError, match="'rho' must be an integer"):
         komm.ReedMullerCode(1.5, 3)  # type: ignore

@@ -58,7 +58,7 @@ def test_lexicode_wikipedia():
 
 
 def test_lexicode_invalid_init():
-    with pytest.raises(ValueError, match="'d' must be in"):
+    with pytest.raises(ValueError, match=r"'d' must satisfy 1 <= d <= n \(got 4\)"):
         komm.Lexicode(3, 4)
     with pytest.raises(TypeError, match="'d' must be an integer"):
         komm.Lexicode(7, 3.5)  # type: ignore
