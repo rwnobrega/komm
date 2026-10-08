@@ -170,6 +170,22 @@ def validate_float(
     return float(value)
 
 
+def validate_positive_float(value: float) -> float:
+    real = validate_float(value)
+    if not real > 0:
+        raise ValueError(f"'{arg_name()}' must be a positive real number (got {real})")
+    return real
+
+
+def validate_nonnegative_float(value: float) -> float:
+    real = validate_float(value)
+    if not real >= 0:
+        raise ValueError(
+            f"'{arg_name()}' must be a non-negative real number (got {real})"
+        )
+    return real
+
+
 def validate_bool(value: object) -> bool:
     if type(value) not in (bool, np.bool_):
         got = type(value).__name__

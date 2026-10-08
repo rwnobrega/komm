@@ -15,8 +15,10 @@ from komm._util.validators import (
     validate_integer,
     validate_integer_array,
     validate_log_base,
+    validate_nonnegative_float,
     validate_nonnegative_integer,
     validate_pmf,
+    validate_positive_float,
     validate_positive_integer,
     validate_transition_matrix,
 )
@@ -230,6 +232,32 @@ def test_validate_float_low_high():
     for value in [-0.1, 1.1, float("nan")]:
         with pytest.raises(ValueError, match=r"'value' must be in \[0, 1\]"):
             validate_float(value, low=0, high=1)
+
+
+def test_validate_positive_float():
+    real = validate_positive_float(np.float64(1.0))
+    assert real == 1.0
+    assert type(real) is float
+    for x in [0.0, -1.0, float("nan")]:
+        message = f"'x' must be a positive real number (got {x})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_positive_float(x)
+    x = "1"
+    with pytest.raises(TypeError, match=r"'x' must be a real number \(got str\)"):
+        validate_positive_float(x)  # type: ignore
+
+
+def test_validate_nonnegative_float():
+    real = validate_nonnegative_float(np.float64(0.0))
+    assert real == 0.0
+    assert type(real) is float
+    for x in [-1.0, float("nan")]:
+        message = f"'x' must be a non-negative real number (got {x})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_nonnegative_float(x)
+    x = "0"
+    with pytest.raises(TypeError, match=r"'x' must be a real number \(got str\)"):
+        validate_nonnegative_float(x)  # type: ignore
 
 
 @pytest.mark.parametrize("value", [False, True, np.False_, np.True_])
