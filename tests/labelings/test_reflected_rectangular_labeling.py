@@ -101,6 +101,8 @@ def test_labeling_reflected_retangular_invalid():
         komm.ReflectedRectangularLabeling((-1, 2))
     with pytest.raises(TypeError, match="'num_bits' must contain only integers"):
         komm.ReflectedRectangularLabeling((2.0, 2))  # type: ignore
+    with pytest.raises(ValueError, match=r"'num_bits' must have shape \(2,\)"):
+        komm.ReflectedRectangularLabeling((1, 2, 3))  # type: ignore
     with pytest.raises(ValueError, match=r"'num_bits' must be at least 2 \(got -4\)"):
         komm.ReflectedRectangularLabeling(-4)
     with pytest.raises(ValueError, match="must be an even number"):
