@@ -8,7 +8,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
-from .validators import validate_integer
+from .validators import validate_nonnegative_integer
 
 ArrayInt = npt.NDArray[np.integer]
 
@@ -59,7 +59,7 @@ def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> ArrayInt:
                [0, 1]])
     """
     matrix = np.asarray(matrix, dtype=int)
-    exponent = validate_integer(exponent, "exponent", low=0)
+    exponent = validate_nonnegative_integer(exponent, "exponent")
     power = np.eye(matrix.shape[0], dtype=int)
     while exponent > 0:  # Square and multiply
         if exponent & 1:

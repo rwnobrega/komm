@@ -79,6 +79,8 @@ def test_zadoff_chu_constant_cyclic_xcorr(length):
 
 
 def test_zadoff_chu_invalid():
+    with pytest.raises(ValueError, match="'length' must be a positive integer"):
+        komm.ZadoffChuSequence(0)
     with pytest.raises(ValueError, match="'length' must be an odd integer"):
         komm.ZadoffChuSequence(4)
     with pytest.raises(ValueError, match="'root_index' must satisfy 1 <= root_index <"):

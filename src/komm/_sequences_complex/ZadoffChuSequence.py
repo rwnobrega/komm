@@ -1,4 +1,4 @@
-from .._util.validators import validate_integer
+from .._util.validators import validate_integer, validate_positive_integer
 from .ComplexSequence import ComplexSequence
 from .sequences import zadoff_chu_sequence
 
@@ -47,7 +47,7 @@ class ZadoffChuSequence(ComplexSequence):
     """
 
     def __init__(self, length: int, root_index: int = 1) -> None:
-        length = validate_integer(length, "length", low=1)
+        length = validate_positive_integer(length, "length")
         if length % 2 == 0:
             raise ValueError("'length' must be an odd integer")
         rule = "1 <= root_index < length"
