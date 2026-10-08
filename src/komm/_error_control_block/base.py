@@ -245,34 +245,30 @@ class BlockCode(ABC):
         H_cols = bits_to_int(self.check_matrix.T.ravel(), width=m)
         visited = np.zeros(2**m, dtype=bool)
         visited[0] = True
-        count = 1
-        syndromes = [0]
+        syndromes = np.array([0])
         weight = 0
         distribution = np.zeros(n + 1, dtype=int)
+        distribution[0] = 1
         pbar = tqdm(
             total=2**m,
             desc="Computing coset leader weight distribution",
             delay=2.5,
             initial=1,
         )
-        while True:
-            distribution[weight] = len(syndromes)
-            next_syndromes: list[int] = []
-            for s in syndromes:
-                for h in H_cols:
-                    s0 = s ^ h
-                    if visited[s0]:
-                        continue
-                    visited[s0] = True
-                    next_syndromes.append(s0)
-                    count += 1
-                    pbar.update()
-                    if count == 2**m:
-                        distribution[weight + 1] = len(next_syndromes)
-                        pbar.close()
-                        return distribution
-            syndromes = next_syndromes
+        while not visited.all():
+            next_syndromes: list[npt.NDArray[np.integer]] = []
+            for h in H_cols:
+                # XOR by h is injective: no repeats.
+                candidates = syndromes ^ h
+                candidates = candidates[~visited[candidates]]
+                visited[candidates] = True
+                next_syndromes.append(candidates)
+            syndromes = np.concatenate(next_syndromes)
             weight += 1
+            distribution[weight] = syndromes.size
+            pbar.update(syndromes.size)
+        pbar.close()
+        return distribution
 
     @cache
     @abstractmethod
