@@ -9,6 +9,7 @@ from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
 from ..types import Array2D
+from .util import macwilliams_transform, span_weight_distribution
 
 
 class BlockCode(ABC):
@@ -165,21 +166,22 @@ class BlockCode(ABC):
     def codeword_weight_distribution(self) -> list[int]:
         r"""
         Returns the codeword weight distribution of the code. This is the list $A_0, A_1, \ldots, A_n$, in which $A_w$ is the number of codewords of Hamming weight $w$.
+
+        If $m < k$, this method enumerates the $2^m$ codewords of the dual code, spanned by the rows of the check matrix $H$, and applies the MacWilliams identity
+        $$
+            \sum_{w=0}^n A_w z^w = \frac{1}{2^m} \sum_{w=0}^n B_w (1 - z)^w (1 + z)^{n - w},
+        $$
+        where $B_w$ is the number of codewords of Hamming weight $w$ in the dual code. Otherwise, it enumerates the $2^k$ codewords of the code. For more details, see <cite>LC04, Sec. 3.6</cite>.
         """
         n = self.length
         if hasattr(self, "_cached_codewords"):
             weights = np.sum(self.codewords(), axis=1)
             return np.bincount(weights, minlength=n + 1).tolist()
-        # Packed bits: faster XOR and popcount.
-        G = np.packbits(self.generator_matrix, axis=1)
-        # Batches of up to 2**10 codewords.
-        low, high = row_span(G[:10]), row_span(G[10:])
-        distribution = np.zeros(n + 1, dtype=int)
-        desc = "Computing codeword weight distribution"
-        for offset in tqdm(high, desc=desc, delay=2.5, unit_scale=len(low)):
-            weights = np.bitwise_count(low ^ offset).sum(axis=1, dtype=int)
-            distribution += np.bincount(weights, minlength=n + 1)
-        return distribution.tolist()
+        if self.redundancy < self.dimension:
+            # Fewer dual codewords: MacWilliams identity.
+            dual = span_weight_distribution(self.check_matrix)
+            return macwilliams_transform(dual)
+        return span_weight_distribution(self.generator_matrix)
 
     @cache
     @abstractmethod

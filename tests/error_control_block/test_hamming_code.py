@@ -47,6 +47,13 @@ def test_hamming_code_weight_distributions():
     )
 
 
+def test_hamming_code_large():
+    code = komm.HammingCode(7)
+    distribution = code.codeword_weight_distribution()
+    assert distribution[3] == 127 * 126 // 6
+    assert sum(distribution) == 2**120
+
+
 def test_hamming_code_GH_orthogonality():
     code = komm.HammingCode(3)
     np.testing.assert_equal(

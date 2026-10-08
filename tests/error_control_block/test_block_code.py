@@ -102,6 +102,20 @@ def test_block_code_coset_leaders_ties(rng):
     np.testing.assert_equal(code.coset_leaders(), expected)
 
 
+@pytest.mark.repeat(20)
+def test_block_code_weight_distribution_dual(rng):
+    while True:
+        try:
+            code = komm.BlockCode(generator_matrix=rng.integers(0, 2, (6, 9)))
+            break
+        except ValueError:  # Rank-deficient generator matrix.
+            pass
+    # Before codewords(), so via the dual.
+    distribution = code.codeword_weight_distribution()
+    weights = np.sum(code.codewords(), axis=1)
+    np.testing.assert_equal(distribution, np.bincount(weights, minlength=10))
+
+
 @pytest.mark.parametrize(
     "kwargs",
     [
