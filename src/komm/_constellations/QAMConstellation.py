@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D, Array2D
 from .PAMConstellation import pam_matrix
 
@@ -44,13 +45,18 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         phase_offset: float = 0.0,
     ) -> None:
         if isinstance(orders, Iterable):
-            self._orders = orders
+            pair = validate_integer_array(orders, "orders", low=1, shape=(2,))
+            Mi, Mq = pair.tolist()
+            if (Mi, Mq) == (1, 1):
+                raise ValueError("'orders' must not be (1, 1)")
+            self._orders = (Mi, Mq)
         else:
-            if not isqrt(orders) ** 2 == orders:
+            M = validate_integer(orders, "orders", low=2)
+            if not isqrt(M) ** 2 == M:
                 raise ValueError(
-                    "when a single integer, 'orders' must be a perfect square"
+                    "if a single integer, 'orders' must be a perfect square"
                 )
-            self._orders = (isqrt(orders), isqrt(orders))
+            self._orders = (isqrt(M), isqrt(M))
         if isinstance(deltas, Iterable):
             self._deltas = deltas
         else:

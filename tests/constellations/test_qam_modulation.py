@@ -36,6 +36,14 @@ import komm
             },
         ),
         (
+            {"orders": (4, 1)},
+            {
+                "matrix": [-3, -1, 1, 3],
+                "order": 4,
+                "mean_energy": 5.0,
+            },
+        ),
+        (
             {"orders": 16},
             {
                 # fmt: off
@@ -65,3 +73,15 @@ def test_qam_parameters(params, expected):
 def test_qam_invalid():
     with pytest.raises(ValueError, match="must be a perfect square"):
         komm.QAMConstellation(8)
+    with pytest.raises(ValueError, match=r"'orders' must be at least 2 \(got 1\)"):
+        komm.QAMConstellation(1)
+    with pytest.raises(TypeError, match="'orders' must be an integer"):
+        komm.QAMConstellation(16.0)  # type: ignore
+    with pytest.raises(ValueError, match=r"'orders' must not be \(1, 1\)"):
+        komm.QAMConstellation((1, 1))
+    with pytest.raises(ValueError, match="elements of 'orders' must be at least 1"):
+        komm.QAMConstellation((4, 0))
+    with pytest.raises(ValueError, match=r"'orders' must have shape \(2,\)"):
+        komm.QAMConstellation((4,))  # type: ignore
+    with pytest.raises(TypeError, match="'orders' must contain only integers"):
+        komm.QAMConstellation((4, 2.0))  # type: ignore
