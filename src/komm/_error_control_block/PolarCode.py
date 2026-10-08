@@ -10,8 +10,8 @@ from .BlockCode import BlockCode
 @mkdocstrings(filters=["!.*"])
 class PolarCode(BlockCode):
     r"""
-    Polar (Arıkan) code. Let $\mu \geq 1$ be an integer, and $\mathcal{F}$ (called the _frozen bit indices_) be a subset of $[0 : 2^\mu)$. Define $\mathcal{A} = [0 : 2^\mu) \setminus \mathcal{F}$ (called the _active bit indices_). The polar code with parameters $(\mu, \mathcal{F})$ is the [linear block code](/ref/BlockCode) whose generator matrix is obtained by selecting the rows of the order-$2^\mu$ Walsh-Hadamard matrix,
-    $$ H_{2^\mu} = \begin{bmatrix} 1 & 0 \\\\ 1 & 1 \end{bmatrix} ^ {\otimes \mu}, $$
+    Polar (Arıkan) code. Let $\mu \geq 1$ be an integer, and $\mathcal{F}$ (called the _frozen bit indices_) be a subset of $[0 : 2^\mu)$. Define $\mathcal{A} = [0 : 2^\mu) \setminus \mathcal{F}$ (called the _active bit indices_). The polar code with parameters $(\mu, \mathcal{F})$ is the [linear block code](/ref/BlockCode) whose generator matrix is obtained by selecting the rows of the matrix
+    $$ G_{2^\mu} = \begin{bmatrix} 1 & 0 \\\\ 1 & 1 \end{bmatrix} ^ {\otimes \mu}, $$
     corresponding to the active bit indices, where $\otimes$ denotes the Kronecker product. The resulting code has the following parameters:
 
     - Length: $n = 2^{\mu}$
@@ -59,10 +59,10 @@ class PolarCode(BlockCode):
         if not self.frozen.size == np.unique(self.frozen).size:
             raise ValueError("elements of 'frozen' must be unique")
         self.active = np.setdiff1d(np.arange(1 << mu), self.frozen)
-        hadamard = np.array([[1]])
+        transform = np.array([[1]])
         for _ in range(mu):
-            hadamard = np.kron(hadamard, [[1, 0], [1, 1]]).astype(int)
-        super().__init__(generator_matrix=hadamard[self.active])
+            transform = np.kron(transform, [[1, 0], [1, 1]]).astype(int)
+        super().__init__(generator_matrix=transform[self.active])
 
     def __repr__(self) -> str:
         args = f"mu={self.mu}, frozen={self.frozen.tolist()}"
