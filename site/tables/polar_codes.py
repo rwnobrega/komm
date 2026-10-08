@@ -1,3 +1,7 @@
+from . import markdown
+
+columns = 8
+
 # 3GPP TS 38.212 version 15.2.0, Sec. 5.3.1.2, pp. 16–18
 # fmt: off
 sequence = [
@@ -75,4 +79,8 @@ def data():
 
 
 def table(rows):
-    return "```text\n" + ", ".join(map(str, rows)) + "\n```"
+    cells = []
+    for r in range(0, len(rows), columns):
+        cells.append([f"${r}$", *(f"${q}$" for q in rows[r : r + columns])])
+    header = ["$r \\backslash c$", *(f"${c}$" for c in range(columns))]
+    return markdown(header, cells, center=[True] * (columns + 1))
