@@ -112,8 +112,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
             >>> lzss.source_to_tokens([3, 0, 0, 0, 3, 2, 0, 3])
             [(0, 3), (1, 4, 4), (0, 2), (1, 3, 2)]
         """
-        calX = self.source_cardinality
-        source = validate_integer_array(source, low=0, high=calX)
+        source = validate_integer_array(source, low=0, high=self.source_cardinality)
         ss, ls = self.search_size, self.lookahead_size
         break_even = self.break_even
         buffer = bytes(self.search_buffer + source.tolist())

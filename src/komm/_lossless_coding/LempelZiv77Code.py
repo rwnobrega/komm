@@ -95,8 +95,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             >>> lz77.source_to_tokens([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
             [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
         """
-        calX = self.source_cardinality
-        source = validate_integer_array(source, low=0, high=calX)
+        source = validate_integer_array(source, low=0, high=self.source_cardinality)
         ss, ls = self.search_size, self.lookahead_size
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []

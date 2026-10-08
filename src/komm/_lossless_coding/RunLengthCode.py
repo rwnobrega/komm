@@ -53,8 +53,7 @@ class RunLengthCode(abc.TokenCode[Token]):
             >>> code.source_to_tokens([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
             [(0, 3), (2, 2), (1, 4), (1, 1)]
         """
-        calX = self.source_cardinality
-        source = validate_integer_array(source, low=0, high=calX)
+        source = validate_integer_array(source, low=0, high=self.source_cardinality)
         L = self.max_run_length
         starts = np.flatnonzero(np.diff(source, prepend=-1))
         lengths = np.diff(starts, append=source.size)
