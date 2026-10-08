@@ -78,7 +78,7 @@ class HuffmanCode(FixedToVariableCode):
         policy: Literal["high", "low"] = "high",
         assignment: Literal["tree", "canonical"] = "tree",
     ):
-        self.pmf = validate_pmf(pmf, "pmf")
+        self.pmf = validate_pmf(pmf)
         k = validate_positive_integer(source_block_size, "source_block_size")
         policy = validate_choice(policy, ("high", "low"))
         assignment = validate_choice(assignment, ("tree", "canonical"))

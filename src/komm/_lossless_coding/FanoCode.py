@@ -52,7 +52,7 @@ class FanoCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
-        self.pmf = validate_pmf(pmf, "pmf")
+        self.pmf = validate_pmf(pmf)
         k = validate_positive_integer(source_block_size, "source_block_size")
         super().__init__(
             source_cardinality=self.pmf.size,

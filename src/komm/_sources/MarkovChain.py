@@ -46,7 +46,7 @@ class MarkovChain:
         rng: np.random.Generator | None = None,
     ):
         self._transition_matrix = validate_transition_matrix(
-            transition_matrix, "transition_matrix", square=True
+            transition_matrix, square=True
         )
         self._rng = rng
 

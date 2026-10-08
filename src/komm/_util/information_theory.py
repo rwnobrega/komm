@@ -39,7 +39,7 @@ def entropy(pmf: npt.ArrayLike, base: float | Literal["e"] = 2.0) -> float:
         >>> komm.entropy([0.5, 0.5], base='e')  # doctest: +FLOAT_CMP
         0.6931471805599453
     """
-    pmf = validate_pmf(pmf, "pmf")
+    pmf = validate_pmf(pmf)
     base = validate_log_base(base)
     pmf = pmf[pmf > 0]
     # We compute log(1/p) rather than -log(p) to avoid -0.0.
@@ -140,8 +140,8 @@ def relative_entropy(
         >>> komm.relative_entropy([1/2, 1/2], [0, 1])  # doctest: +FLOAT_CMP
         inf
     """
-    pmf = validate_pmf(pmf, "pmf")
-    qmf = validate_pmf(qmf, "qmf")
+    pmf = validate_pmf(pmf)
+    qmf = validate_pmf(qmf)
     base = validate_log_base(base)
     if pmf.shape != qmf.shape:
         raise ValueError("inputs must have the same shape")
@@ -162,11 +162,9 @@ def mutual_information(
     transition_matrix: npt.ArrayLike,
     base: float | Literal["e"] = 2.0,
 ) -> float:
-    input_pmf = validate_pmf(input_pmf, "input_pmf")
+    input_pmf = validate_pmf(input_pmf)
     base = validate_log_base(base)
-    transition_matrix = validate_transition_matrix(
-        transition_matrix, "transition_matrix"
-    )
+    transition_matrix = validate_transition_matrix(transition_matrix)
     output_pmf = np.dot(input_pmf, transition_matrix)
     entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(

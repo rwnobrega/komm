@@ -54,7 +54,7 @@ class ShannonCode(FixedToVariableCode):
     """
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
-        self.pmf = validate_pmf(pmf, "pmf")
+        self.pmf = validate_pmf(pmf)
         if not np.all(self.pmf > 0):
             raise ValueError("'pmf' must be positive")
         k = validate_positive_integer(source_block_size, "source_block_size")

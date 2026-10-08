@@ -31,7 +31,7 @@ class DiscreteMemorylessSource:
             if not M >= 1:
                 raise ValueError("if a single integer, 'pmf' must be at least 1")
             pmf = np.full(M, 1 / M)
-        self._pmf = validate_pmf(pmf, "pmf")
+        self._pmf = validate_pmf(pmf)
         self._rng = rng
 
     @property

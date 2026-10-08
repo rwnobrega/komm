@@ -87,7 +87,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             >>> zc.mutual_information([0.5, 0.5])  # doctest: +FLOAT_CMP
             0.6099865470109874
         """
-        input_pmf = validate_pmf(input_pmf, "input_pmf")
+        input_pmf = validate_pmf(input_pmf)
         base = validate_log_base(base)
         base = e if base == "e" else base
         p = self.decay_probability

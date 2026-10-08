@@ -296,7 +296,7 @@ def test_validate_log_base_not_real(value):
 
 
 def test_validate_pmf():
-    pmf = validate_pmf([1, 0], "x")
+    pmf = validate_pmf([1, 0])
     assert pmf.dtype == np.float64
     np.testing.assert_equal(pmf, [1.0, 0.0])
 
@@ -304,18 +304,18 @@ def test_validate_pmf():
 @pytest.mark.parametrize(
     "value, message",
     [
-        ([[0.5], [0.5]], "'x' must be a 1D-array"),
-        ([1.5, -0.5], "'x' must be non-negative"),
-        ([0.5, 0.6], "'x' must sum to 1.0"),
+        ([[0.5], [0.5]], "'value' must be a 1D-array"),
+        ([1.5, -0.5], "'value' must be non-negative"),
+        ([0.5, 0.6], "'value' must sum to 1.0"),
     ],
 )
 def test_validate_pmf_invalid(value, message):
     with pytest.raises(ValueError, match=message):
-        validate_pmf(value, "x")
+        validate_pmf(value)
 
 
 def test_validate_transition_matrix():
-    matrix = validate_transition_matrix([[1, 0], [0, 1]], "x")
+    matrix = validate_transition_matrix([[1, 0], [0, 1]])
     assert matrix.dtype == np.float64
     np.testing.assert_equal(matrix, [[1.0, 0.0], [0.0, 1.0]])
 
@@ -323,15 +323,15 @@ def test_validate_transition_matrix():
 @pytest.mark.parametrize(
     "value, message",
     [
-        ([0.5, 0.5], "'x' must be a 2D-array"),
-        ([[1.5, -0.5]], "'x' must be non-negative"),
-        ([[0.5, 0.6]], "rows of 'x' must sum to 1.0"),
-        ([[0.5, 0.5]], r"'x' must be square \(got shape \(1, 2\)\)"),
+        ([0.5, 0.5], "'value' must be a 2D-array"),
+        ([[1.5, -0.5]], "'value' must be non-negative"),
+        ([[0.5, 0.6]], "rows of 'value' must sum to 1.0"),
+        ([[0.5, 0.5]], r"'value' must be square \(got shape \(1, 2\)\)"),
     ],
 )
 def test_validate_transition_matrix_invalid(value, message):
     with pytest.raises(ValueError, match=message):
-        validate_transition_matrix(value, "x", square=True)
+        validate_transition_matrix(value, square=True)
 
 
 def test_validate_choice():

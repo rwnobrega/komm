@@ -54,32 +54,31 @@ def validate_log_base(value: float | str) -> float | Literal["e"]:
     raise ValueError(f"'{arg_name()}' must be 'e' or a positive real other than 1")
 
 
-def validate_pmf(value: npt.ArrayLike, name: str) -> npt.NDArray[np.floating]:
+def validate_pmf(value: npt.ArrayLike) -> npt.NDArray[np.floating]:
     value = np.asarray(value, dtype=float)
     if not value.ndim == 1:
-        raise ValueError(f"'{name}' must be a 1D-array")
+        raise ValueError(f"'{arg_name()}' must be a 1D-array")
     if not np.all(value >= 0.0):
-        raise ValueError(f"'{name}' must be non-negative")
+        raise ValueError(f"'{arg_name()}' must be non-negative")
     if not np.isclose(value.sum(), 1.0):
-        raise ValueError(f"'{name}' must sum to 1.0")
+        raise ValueError(f"'{arg_name()}' must sum to 1.0")
     return value
 
 
 def validate_transition_matrix(
     value: npt.ArrayLike,
-    name: str,
     *,
     square: bool = False,
 ) -> Array2D[np.floating]:
     value = np.asarray(value, dtype=float)
     if not value.ndim == 2:
-        raise ValueError(f"'{name}' must be a 2D-array")
+        raise ValueError(f"'{arg_name()}' must be a 2D-array")
     if not np.all(value >= 0.0):
-        raise ValueError(f"'{name}' must be non-negative")
+        raise ValueError(f"'{arg_name()}' must be non-negative")
     if not np.allclose(value.sum(axis=1), 1.0):
-        raise ValueError(f"rows of '{name}' must sum to 1.0")
+        raise ValueError(f"rows of '{arg_name()}' must sum to 1.0")
     if square and value.shape[0] != value.shape[1]:
-        raise ValueError(f"'{name}' must be square (got shape {value.shape})")
+        raise ValueError(f"'{arg_name()}' must be square (got shape {value.shape})")
     return value
 
 

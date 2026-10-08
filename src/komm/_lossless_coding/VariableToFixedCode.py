@@ -354,7 +354,7 @@ class VariableToFixedCode:
             1.3846153846153846
         """
         n = self.target_block_size
-        pmf = validate_pmf(pmf, "pmf")
+        pmf = validate_pmf(pmf)
         lengths = self.lengths
         probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
         rate = n / np.dot(lengths, probabilities)

@@ -23,9 +23,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         transition_matrix: npt.ArrayLike,
         rng: np.random.Generator | None = None,
     ):
-        self._transition_matrix = validate_transition_matrix(
-            transition_matrix, "transition_matrix"
-        )
+        self._transition_matrix = validate_transition_matrix(transition_matrix)
         self._rng = rng
 
     @property

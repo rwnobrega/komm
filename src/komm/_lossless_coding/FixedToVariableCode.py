@@ -427,7 +427,7 @@ class FixedToVariableCode:
             1.5
         """
         k = self.source_block_size
-        pmf = validate_pmf(pmf, "pmf")
+        pmf = validate_pmf(pmf)
         lengths = self.lengths
         probabilities = [np.prod(ps) for ps in product(pmf, repeat=k)]
         rate = np.dot(lengths, probabilities) / k
