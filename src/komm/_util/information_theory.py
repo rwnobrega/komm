@@ -91,8 +91,7 @@ def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
         >>> [komm.binary_entropy_inv(h) for h in [0.0, 0.25, 0.5, 0.75, 1.0]]
         [0.0, 0.04169269027397604, 0.1100278644385071, 0.2145017448597173, 0.5]
     """
-    if not 0.0 <= h <= 1.0:
-        raise ValueError("h must be in [0, 1]")
+    h = validate_float(h, low=0, high=1)
     if h in {0.0, 1.0}:
         return 0.5 * h
     low, high = 0.0, 0.5

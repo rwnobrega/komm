@@ -139,10 +139,12 @@ def test_binary_entropy():
 
 
 def test_binary_entropy_inv():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'h' must be in \[0, 1\] \(got -1\)"):
         komm.binary_entropy_inv(-1)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'h' must be in \[0, 1\] \(got 2\)"):
         komm.binary_entropy_inv(2)
+    with pytest.raises(TypeError, match=r"'h' must be a real number \(got str\)"):
+        komm.binary_entropy_inv("0.5")  # type: ignore
     for p in np.linspace(0, 0.5, 1000):
         np.testing.assert_allclose(
             p,
