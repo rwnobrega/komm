@@ -167,22 +167,17 @@ class BlockCode(ABC):
         r"""
         Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
         """
-        k, n = self.dimension, self.length
+        n = self.length
         if hasattr(self, "_cached_codewords"):
             return np.bincount(np.sum(self.codewords(), axis=1), minlength=n + 1)
-        batch_size = 1024
+        # Packed bits: faster XOR and popcount.
+        G = np.packbits(self.generator_matrix, axis=1)
+        # Batches of up to 2**10 codewords.
+        low, high = row_span(G[:10]), row_span(G[10:])
         distribution = np.zeros(n + 1, dtype=int)
-        for i in tqdm(
-            range(0, 2**k, batch_size),
-            desc="Computing codeword weight distribution",
-            delay=2.5,
-            unit_scale=batch_size,
-        ):
-            batch_end = min(i + batch_size, 2**k)
-            js = np.arange(i, batch_end, dtype=np.uint64).reshape(-1, 1).view(np.uint8)
-            messages_batch = np.unpackbits(js, axis=1, count=k, bitorder="little")
-            codewords_batch = self.encode(messages_batch)
-            weights = np.sum(codewords_batch, axis=1)
+        desc = "Computing codeword weight distribution"
+        for offset in tqdm(high, desc=desc, delay=2.5, unit_scale=len(low)):
+            weights = np.bitwise_count(low ^ offset).sum(axis=1, dtype=int)
             distribution += np.bincount(weights, minlength=n + 1)
         return distribution
 
