@@ -63,4 +63,5 @@ jobs:
         working-directory: site
         run: |
           python gen_tables.py
+          git add --intent-to-add docs/tables  # Also catch new files
           git diff --exit-code docs/tables
