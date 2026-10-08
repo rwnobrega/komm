@@ -6,6 +6,8 @@ title: Polar codes
 
 Below is the reliability sequence $Q_0, Q_1, \ldots, Q_{1023}$ of the length-$1024$ [polar code](/ref/PolarCode) used in 5G, in ascending order of reliability. The entry in row $r$ and column $c$ is $Q_{r + c}$.
 
+**Source:** <cite>ETSI18, Table 5.3.1.2-1, pp. 16–18</cite>.
+
 <div class="compact" markdown>
 
 <!-- table: polar_codes -->
@@ -146,5 +148,3 @@ Below is the reliability sequence $Q_0, Q_1, \ldots, Q_{1023}$ of the length-$10
 </div>
 
 [Download JSON](polar-codes.json){ download="" }
-
-**Source:** <cite>ETSI: 5G; NR; Multiplexing and channel coding (3GPP TS 38.212 version 15.2.0 Release 15), Sec. 5.3.1.2, pp. 16–18</cite>.

@@ -2,7 +2,7 @@ from . import markdown
 
 columns = 8
 
-# 3GPP TS 38.212 version 15.2.0, Sec. 5.3.1.2, pp. 16–18
+# [ETSI18, Table 5.3.1.2-1, pp. 16–18]
 # fmt: off
 sequence = [
     0, 1, 2, 4, 8, 16, 32, 3, 5, 64, 9, 6, 17, 10, 18, 128,
