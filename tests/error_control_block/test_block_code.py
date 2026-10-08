@@ -65,14 +65,17 @@ def test_block_code():
         np.testing.assert_equal(code.covering_radius(), 3)
 
 
-@pytest.mark.repeat(20)
-def test_block_code_mappings(rng):
+def random_code(rng: np.random.Generator, k: int, n: int) -> komm.BlockCode:
     while True:
         try:
-            code = komm.BlockCode(generator_matrix=rng.integers(0, 2, (4, 8)))
-            break
+            return komm.BlockCode(generator_matrix=rng.integers(0, 2, (k, n)))
         except ValueError:  # Rank-deficient generator matrix.
             pass
+
+
+@pytest.mark.repeat(20)
+def test_block_code_mappings(rng):
+    code = random_code(rng, 4, 8)
     k, m = code.dimension, code.redundancy
     for _ in range(100):
         u = rng.integers(0, 2, (3, 4, k))
@@ -83,12 +86,7 @@ def test_block_code_mappings(rng):
 
 @pytest.mark.repeat(20)
 def test_block_code_coset_leaders_ties(rng):
-    while True:
-        try:
-            code = komm.BlockCode(generator_matrix=rng.integers(0, 2, (3, 8)))
-            break
-        except ValueError:  # Rank-deficient generator matrix.
-            pass
+    code = random_code(rng, 3, 8)
     n, m = code.length, code.redundancy
     expected = np.full((2**m, n), -1)
     # Weight first, then support in lexicographic order.
@@ -104,12 +102,7 @@ def test_block_code_coset_leaders_ties(rng):
 
 @pytest.mark.repeat(20)
 def test_block_code_weight_distribution_dual(rng):
-    while True:
-        try:
-            code = komm.BlockCode(generator_matrix=rng.integers(0, 2, (6, 9)))
-            break
-        except ValueError:  # Rank-deficient generator matrix.
-            pass
+    code = random_code(rng, 6, 9)
     # Before codewords(), so via the dual.
     distribution = code.codeword_weight_distribution()
     weights = np.sum(code.codewords(), axis=1)
