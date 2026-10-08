@@ -50,7 +50,7 @@ def test_golomb_unary():
 
 @pytest.mark.parametrize("M", [0, -1])
 def test_golomb_invalid_divisor(M):
-    with pytest.raises(ValueError, match="'divisor' must be at least 1"):
+    with pytest.raises(ValueError, match="'divisor' must be a positive integer"):
         komm.GolombCode(M)
 
 

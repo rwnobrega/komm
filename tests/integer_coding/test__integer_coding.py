@@ -92,9 +92,9 @@ def test_integer_coding_incomplete(code: komm.abc.IntegerCode):
 
 @pytest.mark.parametrize("message", [[0], [-1], [1, 0, 2]])
 def test_integer_coding_rejects_nonpositive(code: komm.abc.IntegerCode, message):
-    with pytest.raises(ValueError, match="'integer' must be at least 1"):
+    with pytest.raises(ValueError, match="'integer' must be a positive integer"):
         list(code.encode(message))
-    with pytest.raises(ValueError, match="'integer' must be at least 1"):
+    with pytest.raises(ValueError, match="'integer' must be a positive integer"):
         code.length(min(message))
 
 
