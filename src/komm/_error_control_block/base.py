@@ -227,8 +227,8 @@ class BlockCode(ABC):
                 leaders[candidates] = leaders[candidates ^ h]
                 leaders[candidates, j] = 1
                 next_syndromes.append(candidates)
+                pbar.update(candidates.size)
             syndromes = np.concatenate(next_syndromes)
-            pbar.update(syndromes.size)
         pbar.close()
         self._cached_coset_leaders = True
         return leaders
@@ -263,10 +263,10 @@ class BlockCode(ABC):
                 candidates = candidates[~visited[candidates]]
                 visited[candidates] = True
                 next_syndromes.append(candidates)
+                pbar.update(candidates.size)
             syndromes = np.concatenate(next_syndromes)
             weight += 1
             distribution[weight] = syndromes.size
-            pbar.update(syndromes.size)
         pbar.close()
         return distribution
 
