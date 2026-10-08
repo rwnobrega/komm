@@ -69,6 +69,14 @@ def test_validate_integer_low_high():
             validate_integer(value, "x", low=0, high=2)
 
 
+def test_validate_integer_rule():
+    assert validate_integer(3, "d", low=1, high=4, rule="1 <= d <= n") == 3
+    for value in [0, 4]:
+        message = f"'d' must satisfy 1 <= d <= n (got {value})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_integer(value, "d", low=1, high=4, rule="1 <= d <= n")
+
+
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8])
 def test_validate_integer_array(dtype):
     value = np.array([0, 1, 2], dtype=dtype)

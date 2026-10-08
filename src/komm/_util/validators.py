@@ -58,20 +58,24 @@ def validate_integer(
     *,
     low: int | None = None,
     high: int | None = None,
+    rule: str | None = None,
 ) -> int:
     try:
         integer = index(value)
     except TypeError:
         got = type(value).__name__
         raise TypeError(f"'{name}' must be an integer (got {got})") from None
-    if low is not None and high is not None:
-        if not low <= integer < high:
-            raise ValueError(f"'{name}' must be in [{low}:{high}) (got {integer})")
-    elif low is not None and not integer >= low:
-        raise ValueError(f"'{name}' must be at least {low} (got {integer})")
-    elif high is not None and not integer < high:
-        raise ValueError(f"'{name}' must be less than {high} (got {integer})")
-    return integer
+    if (low is None or integer >= low) and (high is None or integer < high):
+        return integer
+    if rule is not None:
+        condition = f"satisfy {rule}"
+    elif high is None:
+        condition = f"be at least {low}"
+    elif low is None:
+        condition = f"be less than {high}"
+    else:
+        condition = f"be in [{low}:{high})"
+    raise ValueError(f"'{name}' must {condition} (got {integer})")
 
 
 def validate_integer_array(
