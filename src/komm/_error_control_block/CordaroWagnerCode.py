@@ -37,7 +37,7 @@ class CordaroWagnerCode(BlockCode):
     """
 
     def __init__(self, n: int) -> None:
-        self.n = validate_integer(n, "n", low=2)
+        self.n = validate_integer(n, low=2)
         super().__init__(generator_matrix=cordaro_wagner_generator_matrix(self.n))
 
     def __repr__(self) -> str:

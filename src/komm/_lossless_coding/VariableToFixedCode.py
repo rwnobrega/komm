@@ -32,12 +32,8 @@ class VariableToFixedCode:
         target_block_size: int,
         dec_mapping: dict[Word, Word],
     ) -> None:
-        self._target_cardinality = validate_integer(
-            target_cardinality, "target_cardinality", low=2
-        )
-        self._source_cardinality = validate_integer(
-            source_cardinality, "source_cardinality", low=2
-        )
+        self._target_cardinality = validate_integer(target_cardinality, low=2)
+        self._source_cardinality = validate_integer(source_cardinality, low=2)
         self._target_block_size = validate_positive_integer(
             target_block_size, "target_block_size"
         )
@@ -164,7 +160,7 @@ class VariableToFixedCode:
         """
         if any(len(sourceword) == 0 for sourceword in sourcewords):
             raise ValueError("'sourcewords' must be non-empty")
-        calY = validate_integer(target_cardinality, "target_cardinality", low=2)
+        calY = validate_integer(target_cardinality, low=2)
         calX = max(max(word) for word in sourcewords) + 1
         n = next(n for n in count(1) if calY**n >= len(sourcewords))
         dec_mapping = dict(zip(product(range(calY), repeat=n), sourcewords))

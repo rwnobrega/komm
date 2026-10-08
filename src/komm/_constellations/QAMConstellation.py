@@ -51,7 +51,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
                 raise ValueError("'orders' must not be (1, 1)")
             self._orders = (Mi, Mq)
         else:
-            M = validate_integer(orders, "orders", low=2)
+            M = validate_integer(orders, low=2)
             if not isqrt(M) ** 2 == M:
                 raise ValueError(
                     "if a single integer, 'orders' must be a perfect square"

@@ -36,15 +36,11 @@ class RunLengthCode(abc.TokenCode[Token]):
     target_cardinality: int = 2
 
     def __post_init__(self) -> None:
-        self.source_cardinality = validate_integer(
-            self.source_cardinality, "source_cardinality", low=2
-        )
+        self.source_cardinality = validate_integer(self.source_cardinality, low=2)
         self.max_run_length = validate_positive_integer(
             self.max_run_length, "max_run_length"
         )
-        self.target_cardinality = validate_integer(
-            self.target_cardinality, "target_cardinality", low=2
-        )
+        self.target_cardinality = validate_integer(self.target_cardinality, low=2)
 
     def _get_widths(self) -> tuple[int, int]:
         calY = self.target_cardinality

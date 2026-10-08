@@ -100,7 +100,7 @@ class WalshHadamardSequence(BinarySequence):
         if length & (length - 1):
             raise ValueError("'length' must be a power of two")
         rule = "0 <= index < length"
-        index = validate_integer(index, "index", low=0, high=length, rule=rule)
+        index = validate_integer(index, low=0, high=length, rule=rule)
         ordering = validate_choice(ordering, ("natural", "sequency", "dyadic"))
 
         width = (length - 1).bit_length()

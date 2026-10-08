@@ -43,7 +43,7 @@ def bits_to_int(
                [2, 2]])
     """
     bit_order = validate_bit_order(bit_order)
-    width = validate_integer(width, "width", low=1, high=64)
+    width = validate_integer(width, low=1, high=64)
     input = validate_integer_array(input, low=0, high=2)
     if input.shape[-1] % width != 0:
         raise ValueError(
@@ -92,7 +92,7 @@ def int_to_bits(
                [0, 1, 0, 1]])
     """
     bit_order = validate_bit_order(bit_order)
-    width = validate_integer(width, "width", low=0, high=64)
+    width = validate_integer(width, low=0, high=64)
     input = validate_integer_array(input, low=0, high=1 << width)
     shifts = np.arange(width)
     if bit_order == "MSB-first":
@@ -133,11 +133,11 @@ def to_binary(
         1267650600228229401496703205376
     """
     bit_order = validate_bit_order(bit_order)
-    integer = validate_integer(integer, "integer")
+    integer = validate_integer(integer)
     if width is None:
         width = integer.bit_length()
     rule = "0 <= integer < 2**width"
-    integer = validate_integer(integer, "integer", low=0, high=1 << width, rule=rule)
+    integer = validate_integer(integer, low=0, high=1 << width, rule=rule)
     bits = [(integer >> i) & 1 for i in range(width)]
     if bit_order == "MSB-first":
         bits.reverse()

@@ -52,12 +52,8 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         self.lookahead_size = validate_positive_integer(
             lookahead_size, "lookahead_size"
         )
-        self.source_cardinality = validate_integer(
-            source_cardinality, "source_cardinality", low=2
-        )
-        self.target_cardinality = validate_integer(
-            target_cardinality, "target_cardinality", low=2
-        )
+        self.source_cardinality = validate_integer(source_cardinality, low=2)
+        self.target_cardinality = validate_integer(target_cardinality, low=2)
 
         if search_buffer is None:
             self.search_buffer = [0] * self.search_size

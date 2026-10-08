@@ -58,7 +58,7 @@ def sampling_rate_compress(
     """
     factor = validate_positive_integer(factor, "factor")
     rule = "0 <= offset < factor"
-    offset = validate_integer(offset, "offset", low=0, high=factor, rule=rule)
+    offset = validate_integer(offset, low=0, high=factor, rule=rule)
     input = np.asarray(input)
     indexer = [slice(None)] * input.ndim
     indexer[axis] = slice(offset, input.shape[axis], factor)
@@ -107,7 +107,7 @@ def sampling_rate_expand(
     """
     factor = validate_positive_integer(factor, "factor")
     rule = "0 <= offset < factor"
-    offset = validate_integer(offset, "offset", low=0, high=factor, rule=rule)
+    offset = validate_integer(offset, low=0, high=factor, rule=rule)
     input = np.asarray(input)
     shape = list(input.shape)
     shape[axis] *= factor

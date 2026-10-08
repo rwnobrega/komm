@@ -24,7 +24,7 @@ class ReflectedRectangularLabeling(abc.Labeling):
             pair = validate_integer_array(num_bits, low=1, shape=(2,))
             mi, mq = pair.tolist()
         else:
-            m = validate_integer(num_bits, "num_bits", low=2)
+            m = validate_integer(num_bits, low=2)
             if m % 2 != 0:
                 raise ValueError(
                     "if a single integer, 'num_bits' must be an even number"

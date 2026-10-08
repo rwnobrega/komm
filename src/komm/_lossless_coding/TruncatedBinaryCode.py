@@ -36,7 +36,7 @@ class TruncatedBinaryCode(SelfDelimitingCode):
     cardinality: int
 
     def __post_init__(self) -> None:
-        self.cardinality = validate_integer(self.cardinality, "cardinality", low=2)
+        self.cardinality = validate_integer(self.cardinality, low=2)
         self._k = self.cardinality.bit_length() - 1
         self._u = 2 ** (self._k + 1) - self.cardinality
 
@@ -49,7 +49,7 @@ class TruncatedBinaryCode(SelfDelimitingCode):
             >>> code.encode_single(3)
             [1, 1, 0]
         """
-        integer = validate_integer(integer, "integer", low=0, high=self.cardinality)
+        integer = validate_integer(integer, low=0, high=self.cardinality)
         u, k = self._u, self._k
         if integer < u:
             return to_binary(integer, width=k, bit_order="MSB-first")
@@ -79,7 +79,7 @@ class TruncatedBinaryCode(SelfDelimitingCode):
             (2, 3)
         """
         u, k = self._u, self._k
-        integer = validate_integer(integer, "integer", low=0, high=self.cardinality)
+        integer = validate_integer(integer, low=0, high=self.cardinality)
         return k if integer < u else k + 1
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:

@@ -44,7 +44,7 @@ class Lexicode(BlockCode):
 
     def __init__(self, n: int, d: int) -> None:
         n = validate_positive_integer(n, "n")
-        d = validate_integer(d, "d", low=1, high=n + 1, rule="1 <= d <= n")
+        d = validate_integer(d, low=1, high=n + 1, rule="1 <= d <= n")
         self.n = n
         self.d = d
         super().__init__(generator_matrix=lexicode_generator_matrix(n, d))

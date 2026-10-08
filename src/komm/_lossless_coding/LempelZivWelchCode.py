@@ -32,12 +32,8 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
     target_cardinality: int = 2
 
     def __post_init__(self) -> None:
-        self.source_cardinality = validate_integer(
-            self.source_cardinality, "source_cardinality", low=2
-        )
-        self.target_cardinality = validate_integer(
-            self.target_cardinality, "target_cardinality", low=2
-        )
+        self.source_cardinality = validate_integer(self.source_cardinality, low=2)
+        self.target_cardinality = validate_integer(self.target_cardinality, low=2)
 
     def _width(self, i: int) -> int:
         # Dictionary has |X| + i entries at the i-th token

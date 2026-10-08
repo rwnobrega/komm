@@ -68,7 +68,7 @@ class SimplexCode(SystematicBlockCode):
     """
 
     def __init__(self, kappa: int, *, extended: bool = False) -> None:
-        self.kappa = validate_integer(kappa, "kappa", low=2)
+        self.kappa = validate_integer(kappa, low=2)
         self.extended = validate_bool(extended)
         P = hamming_parity_submatrix(self.kappa, self.extended).T
         super().__init__(parity_submatrix=P)

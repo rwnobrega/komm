@@ -34,7 +34,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
     """
 
     def __init__(self, order: int, delta: float = 2.0) -> None:
-        self._order = validate_integer(order, "order", low=2)
+        self._order = validate_integer(order, low=2)
         self._delta = float(delta)
 
     def __repr__(self) -> str:

@@ -27,7 +27,7 @@ from komm._util.validators import (
     [3, np.int64(3), np.uint8(3), np.array(3)],
 )
 def test_validate_integer(value):
-    integer = validate_integer(value, "x")
+    integer = validate_integer(value)
     assert integer == 3
     assert type(integer) is int
 
@@ -43,43 +43,46 @@ def test_validate_integer(value):
     ],
 )
 def test_validate_integer_not_integer(value, got):
-    with pytest.raises(TypeError, match=rf"'x' must be an integer \(got {got}\)"):
-        validate_integer(value, "x")
+    with pytest.raises(TypeError, match=rf"'value' must be an integer \(got {got}\)"):
+        validate_integer(value)
 
 
 def test_validate_integer_no_bounds():
-    assert validate_integer(-5, "x") == -5
+    assert validate_integer(-5) == -5
 
 
 def test_validate_integer_low():
-    assert validate_integer(0, "x", low=0) == 0
-    assert validate_integer(1, "x", low=1) == 1
-    with pytest.raises(ValueError, match=r"'x' must be at least 0 \(got -1\)"):
-        validate_integer(-1, "x", low=0)
-    with pytest.raises(ValueError, match=r"'x' must be at least 1 \(got 0\)"):
-        validate_integer(0, "x", low=1)
+    assert validate_integer(0, low=0) == 0
+    assert validate_integer(1, low=1) == 1
+    value = -1
+    with pytest.raises(ValueError, match=r"'value' must be at least 0 \(got -1\)"):
+        validate_integer(value, low=0)
+    value = 0
+    with pytest.raises(ValueError, match=r"'value' must be at least 1 \(got 0\)"):
+        validate_integer(value, low=1)
 
 
 def test_validate_integer_high():
-    assert validate_integer(-1, "x", high=2) == -1
-    with pytest.raises(ValueError, match=r"'x' must be less than 2 \(got 2\)"):
-        validate_integer(2, "x", high=2)
+    assert validate_integer(-1, high=2) == -1
+    value = 2
+    with pytest.raises(ValueError, match=r"'value' must be less than 2 \(got 2\)"):
+        validate_integer(value, high=2)
 
 
 def test_validate_integer_low_high():
-    assert validate_integer(0, "x", low=0, high=2) == 0
-    assert validate_integer(1, "x", low=0, high=2) == 1
+    assert validate_integer(0, low=0, high=2) == 0
+    assert validate_integer(1, low=0, high=2) == 1
     for value in [-1, 2]:
-        with pytest.raises(ValueError, match=r"'x' must be in \[0:2\)"):
-            validate_integer(value, "x", low=0, high=2)
+        with pytest.raises(ValueError, match=r"'value' must be in \[0:2\)"):
+            validate_integer(value, low=0, high=2)
 
 
 def test_validate_integer_rule():
-    assert validate_integer(3, "d", low=1, high=4, rule="1 <= d <= n") == 3
-    for value in [0, 4]:
-        message = f"'d' must satisfy 1 <= d <= n (got {value})"
+    assert validate_integer(3, low=1, high=4, rule="1 <= d <= n") == 3
+    for d in [0, 4]:
+        message = f"'d' must satisfy 1 <= d <= n (got {d})"
         with pytest.raises(ValueError, match=escape(message)):
-            validate_integer(value, "d", low=1, high=4, rule="1 <= d <= n")
+            validate_integer(d, low=1, high=4, rule="1 <= d <= n")
 
 
 def test_validate_positive_integer():
@@ -90,8 +93,9 @@ def test_validate_positive_integer():
         message = f"'n' must be a positive integer (got {value})"
         with pytest.raises(ValueError, match=escape(message)):
             validate_positive_integer(value, "n")
+    n = 1.0
     with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
-        validate_positive_integer(1.0, "n")  # type: ignore
+        validate_positive_integer(n, "n")  # type: ignore
 
 
 def test_validate_nonnegative_integer():
@@ -101,8 +105,9 @@ def test_validate_nonnegative_integer():
     message = "'n' must be a non-negative integer (got -1)"
     with pytest.raises(ValueError, match=escape(message)):
         validate_nonnegative_integer(-1, "n")
+    n = 0.0
     with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
-        validate_nonnegative_integer(0.0, "n")  # type: ignore
+        validate_nonnegative_integer(n, "n")  # type: ignore
 
 
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8])

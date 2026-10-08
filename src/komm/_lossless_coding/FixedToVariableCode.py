@@ -33,12 +33,8 @@ class FixedToVariableCode:
         source_block_size: int,
         enc_mapping: dict[Word, Word],
     ) -> None:
-        self._source_cardinality = validate_integer(
-            source_cardinality, "source_cardinality", low=2
-        )
-        self._target_cardinality = validate_integer(
-            target_cardinality, "target_cardinality", low=2
-        )
+        self._source_cardinality = validate_integer(source_cardinality, low=2)
+        self._target_cardinality = validate_integer(target_cardinality, low=2)
         self._source_block_size = validate_positive_integer(
             source_block_size, "source_block_size"
         )
@@ -153,7 +149,7 @@ class FixedToVariableCode:
             raise ValueError("'codewords' must be non-empty")
         if source_cardinality is None:
             source_cardinality = len(codewords)
-        calX = validate_integer(source_cardinality, "source_cardinality", low=2)
+        calX = validate_integer(source_cardinality, low=2)
         calY = max(max(codeword) for codeword in codewords) + 1
         k = infer_block_size(len(codewords), calX, "codewords")
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
@@ -225,8 +221,8 @@ class FixedToVariableCode:
             raise ValueError("'lengths' must be a 1D-array")
         if source_cardinality is None:
             source_cardinality = lengths.size
-        calX = validate_integer(source_cardinality, "source_cardinality", low=2)
-        calY = validate_integer(target_cardinality, "target_cardinality", low=2)
+        calX = validate_integer(source_cardinality, low=2)
+        calY = validate_integer(target_cardinality, low=2)
         k = infer_block_size(lengths.size, calX, "lengths")
         codewords = canonical_code(lengths, base=calY)
         if any(len(codeword) == 0 for codeword in codewords):

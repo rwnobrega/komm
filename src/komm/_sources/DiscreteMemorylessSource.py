@@ -27,7 +27,7 @@ class DiscreteMemorylessSource:
         rng: np.random.Generator | None = None,
     ):
         if isinstance(pmf, SupportsIndex) and np.ndim(pmf) == 0:
-            M = validate_integer(pmf, "pmf")
+            M = validate_integer(pmf)
             if not M >= 1:
                 raise ValueError("if a single integer, 'pmf' must be at least 1")
             pmf = np.full(M, 1 / M)

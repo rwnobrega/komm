@@ -84,7 +84,6 @@ def validate_transition_matrix(
 
 def validate_integer(
     value: SupportsIndex,
-    name: str,
     *,
     low: int | None = None,
     high: int | None = None,
@@ -94,7 +93,7 @@ def validate_integer(
         integer = index(value)
     except TypeError:
         got = type(value).__name__
-        raise TypeError(f"'{name}' must be an integer (got {got})") from None
+        raise TypeError(f"'{arg_name()}' must be an integer (got {got})") from None
     if (low is None or integer >= low) and (high is None or integer < high):
         return integer
     if rule is not None:
@@ -105,18 +104,18 @@ def validate_integer(
         condition = f"be less than {high}"
     else:
         condition = f"be in [{low}:{high})"
-    raise ValueError(f"'{name}' must {condition} (got {integer})")
+    raise ValueError(f"'{arg_name()}' must {condition} (got {integer})")
 
 
 def validate_positive_integer(value: SupportsIndex, name: str) -> int:
-    integer = validate_integer(value, name)
+    integer = validate_integer(value)
     if not integer > 0:
         raise ValueError(f"'{name}' must be a positive integer (got {integer})")
     return integer
 
 
 def validate_nonnegative_integer(value: SupportsIndex, name: str) -> int:
-    integer = validate_integer(value, name)
+    integer = validate_integer(value)
     if not integer >= 0:
         raise ValueError(f"'{name}' must be a non-negative integer (got {integer})")
     return integer
