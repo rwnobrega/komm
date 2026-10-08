@@ -3,7 +3,11 @@ from dataclasses import dataclass
 from typing import SupportsIndex
 
 from .. import abc
-from .._util.validators import validate_integer, validate_positive_integer
+from .._util.validators import (
+    validate_choice,
+    validate_integer,
+    validate_positive_integer,
+)
 
 
 @dataclass
@@ -31,7 +35,8 @@ class UnaryCode(abc.IntegerCode):
     stop_bit: int = 1
 
     def __post_init__(self) -> None:
-        self.stop_bit = validate_integer(self.stop_bit, "stop_bit", low=0, high=2)
+        stop_bit = validate_integer(self.stop_bit, "stop_bit")
+        self.stop_bit = validate_choice(stop_bit, "stop_bit", (0, 1))
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
