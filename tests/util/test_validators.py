@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from komm._util.validators import (
+    validate_bit_order,
     validate_bool,
     validate_choice,
     validate_float,
@@ -333,8 +334,17 @@ def test_validate_transition_matrix_invalid(value, message):
 
 
 def test_validate_choice():
-    assert validate_choice("b", "x", ["a", "b"]) == "b"
+    x = "b"
+    assert validate_choice(x, ["a", "b"]) == "b"
+    x = "c"
     with pytest.raises(ValueError, match="'x' must be 'a' or 'b'"):
-        validate_choice("c", "x", ["a", "b"])
+        validate_choice(x, ["a", "b"])
+    x = 4
     with pytest.raises(ValueError, match="'x' must be 1, 2 or 3"):
-        validate_choice(4, "x", [1, 2, 3])
+        validate_choice(x, [1, 2, 3])
+
+
+def test_arg_name_partial():
+    bit_order = "LSB"
+    with pytest.raises(ValueError, match="'bit_order' must be 'LSB-first' or"):
+        validate_bit_order(bit_order)  # type: ignore

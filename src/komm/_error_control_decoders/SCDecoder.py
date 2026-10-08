@@ -41,7 +41,7 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
     output_type: Literal["hard", "soft"] = "soft"
 
     def __post_init__(self) -> None:
-        self.output_type = validate_decision_type(self.output_type, "output_type")
+        self.output_type = validate_decision_type(self.output_type)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

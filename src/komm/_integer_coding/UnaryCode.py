@@ -36,7 +36,7 @@ class UnaryCode(abc.IntegerCode):
 
     def __init__(self, stop_bit: Literal[0, 1] = 1) -> None:
         self.stop_bit = validate_integer(stop_bit, "stop_bit")
-        self.stop_bit = validate_choice(self.stop_bit, "stop_bit", (0, 1))
+        self.stop_bit = validate_choice(self.stop_bit, (0, 1))
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""

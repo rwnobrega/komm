@@ -28,7 +28,7 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
-        self.input_type = validate_decision_type(self.input_type, "input_type")
+        self.input_type = validate_decision_type(self.input_type)
         k = self.code.dimension
         self._codewords = self.code.codewords()
         self._polar = (-1.0) ** self._codewords

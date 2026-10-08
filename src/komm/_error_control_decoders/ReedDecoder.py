@@ -28,7 +28,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
-        self.input_type = validate_decision_type(self.input_type, "input_type")
+        self.input_type = validate_decision_type(self.input_type)
         self._reed_partitions = self.code.reed_partitions()
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:

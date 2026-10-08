@@ -29,7 +29,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
     output_type: Literal["hard", "soft"] = "soft"
 
     def __post_init__(self) -> None:
-        self.output_type = validate_decision_type(self.output_type, "output_type")
+        self.output_type = validate_decision_type(self.output_type)
         k = self.code.dimension
         self._codewords = self.code.codewords()
         self._messages = int_to_bits(range(2**k), width=k).reshape(-1, k)

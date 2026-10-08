@@ -104,7 +104,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
     puncturing_matrix: npt.ArrayLike | None = None
 
     def __post_init__(self):
-        self.mode = validate_choice(self.mode, "mode", get_args(TerminationMode))
+        self.mode = validate_choice(self.mode, get_args(TerminationMode))
         self.strategy = {
             "direct-truncation": DirectTruncation,
             "zero-termination": ZeroTermination,

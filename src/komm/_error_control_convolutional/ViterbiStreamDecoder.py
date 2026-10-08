@@ -28,7 +28,7 @@ class ViterbiStreamDecoder:
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self):
-        self.input_type = validate_decision_type(self.input_type, "input_type")
+        self.input_type = validate_decision_type(self.input_type)
         self._fsm = self.convolutional_code.finite_state_machine()
         n = self.convolutional_code.num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)

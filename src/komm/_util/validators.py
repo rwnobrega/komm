@@ -177,10 +177,10 @@ def validate_bool(value: object) -> bool:
     return bool(value)
 
 
-def validate_choice(value: T, name: str, choices: Sequence[T]) -> T:
+def validate_choice(value: T, choices: Sequence[T]) -> T:
     if value not in choices:
         *init, last = map(repr, choices)
-        raise ValueError(f"'{name}' must be {', '.join(init)} or {last}")
+        raise ValueError(f"'{arg_name()}' must be {', '.join(init)} or {last}")
     return value
 
 

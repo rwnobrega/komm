@@ -57,8 +57,7 @@ class SystematicBlockCode(abc.BlockCode):
         self.parity_submatrix = np.asarray(parity_submatrix)
         n, k, m = self.length, self.dimension, self.redundancy
         if isinstance(information_set, str):
-            sides = ("left", "right")
-            side = validate_choice(information_set, "information_set", sides)
+            side = validate_choice(information_set, ("left", "right"))
             if side == "left":
                 self.information_set = np.arange(k)
             else:

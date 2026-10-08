@@ -29,7 +29,7 @@ class BarkerSequence(BinarySequence):
     """
 
     def __init__(self, length: int) -> None:
-        length = validate_choice(length, "length", (2, 3, 4, 5, 7, 11, 13))
+        length = validate_choice(length, (2, 3, 4, 5, 7, 11, 13))
         super().__init__(bit_sequence=barker_sequence(length))
 
     def __repr__(self) -> str:
