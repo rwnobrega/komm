@@ -75,7 +75,7 @@ class HammingCode(SystematicBlockCode):
 
     def __init__(self, mu: int, *, extended: bool = False) -> None:
         self.mu = validate_integer(mu, "mu", low=2)
-        self.extended = validate_bool(extended, "extended")
+        self.extended = validate_bool(extended)
         P = hamming_parity_submatrix(self.mu, self.extended)
         super().__init__(parity_submatrix=P)
 

@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 from decimal import Decimal
 from fractions import Fraction
+from linecache import cache
 from re import escape
 
 import numpy as np
@@ -221,7 +223,7 @@ def test_validate_float_low_high():
 
 @pytest.mark.parametrize("value", [False, True, np.False_, np.True_])
 def test_validate_bool(value):
-    boolean = validate_bool(value, "x")
+    boolean = validate_bool(value)
     assert boolean == value
     assert type(boolean) is bool
 
@@ -236,8 +238,40 @@ def test_validate_bool(value):
     ],
 )
 def test_validate_bool_not_bool(value, got):
-    with pytest.raises(TypeError, match=rf"'x' must be a boolean \(got {got}\)"):
-        validate_bool(value, "x")
+    with pytest.raises(TypeError, match=rf"'value' must be a boolean \(got {got}\)"):
+        validate_bool(value)
+
+
+@dataclass
+class Flagged:
+    flag: object
+
+    def __post_init__(self):
+        validate_bool(self.flag)
+
+
+def test_arg_name():
+    flag = 1
+    with pytest.raises(TypeError, match="'flag' must be a boolean"):
+        validate_bool(flag)
+    with pytest.raises(TypeError, match="'flag' must be a boolean"):
+        validate_bool(
+            flag,
+        )
+    with pytest.raises(TypeError, match="'flag' must be a boolean"):
+        Flagged(1)
+
+
+def test_arg_name_no_source():
+    with pytest.raises(TypeError, match="'value' must be a boolean"):
+        eval("validate_bool(1)", {"validate_bool": validate_bool})
+
+
+def test_arg_name_stale_source(monkeypatch: pytest.MonkeyPatch):
+    code = compile("validate_bool(1)", "<stale>", "eval")
+    monkeypatch.setitem(cache, "<stale>", (3, None, ["x)\n"], "<stale>"))
+    with pytest.raises(TypeError, match="'value' must be a boolean"):
+        eval(code, {"validate_bool": validate_bool})
 
 
 def test_validate_log_base():

@@ -1,5 +1,9 @@
+import ast
+import inspect
+import linecache
 from collections.abc import Sequence
 from functools import partial
+from itertools import islice
 from numbers import Real
 from operator import index
 from typing import Literal, SupportsIndex, TypeVar
@@ -10,6 +14,33 @@ import numpy.typing as npt
 from ..types import Array2D
 
 T = TypeVar("T")
+
+
+def arg_name() -> str:
+    # First argument of the outer validator call.
+    frame = inspect.currentframe()
+    while frame is not None and frame.f_globals is globals():
+        frame = frame.f_back
+    if frame is None:
+        return "value"
+    positions = frame.f_code.co_positions()
+    lineno, end_lineno, col, end_col = next(islice(positions, frame.f_lasti // 2, None))
+    if lineno is None or end_lineno is None or col is None or end_col is None:
+        return "value"
+    lines = linecache.getlines(frame.f_code.co_filename)[lineno - 1 : end_lineno]
+    if not lines:
+        return "value"
+    # Columns are byte offsets.
+    chunks = [line.encode() for line in lines]
+    chunks[-1] = chunks[-1][:end_col]
+    chunks[0] = chunks[0][col:]
+    try:
+        call = ast.parse(b"".join(chunks), mode="eval").body
+    except SyntaxError:  # source changed since import
+        return "value"
+    if not isinstance(call, ast.Call) or not call.args:
+        return "value"
+    return ast.unparse(call.args[0]).removeprefix("self.")
 
 
 def validate_log_base(value: float | str, name: str) -> float | Literal["e"]:
@@ -139,10 +170,10 @@ def validate_float(
     return float(value)
 
 
-def validate_bool(value: object, name: str) -> bool:
+def validate_bool(value: object) -> bool:
     if type(value) not in (bool, np.bool_):
         got = type(value).__name__
-        raise TypeError(f"'{name}' must be a boolean (got {got})")
+        raise TypeError(f"'{arg_name()}' must be a boolean (got {got})")
     return bool(value)
 
 

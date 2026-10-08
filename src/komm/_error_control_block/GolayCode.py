@@ -60,7 +60,7 @@ class GolayCode(SystematicBlockCode):
     """
 
     def __init__(self, *, extended: bool = False) -> None:
-        self.extended = validate_bool(extended, "extended")
+        self.extended = validate_bool(extended)
         super().__init__(parity_submatrix=golay_parity_submatrix(self.extended))
 
     def __repr__(self) -> str:
