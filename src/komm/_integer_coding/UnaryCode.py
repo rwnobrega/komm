@@ -1,6 +1,6 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from typing import SupportsIndex
+from typing import Literal, SupportsIndex
 
 from .. import abc
 from .._util.validators import (
@@ -10,7 +10,7 @@ from .._util.validators import (
 )
 
 
-@dataclass
+@dataclass(init=False)
 class UnaryCode(abc.IntegerCode):
     r"""
     Unary code. It is an integer code with domain the positive integers. The codeword for an integer $n$ consists of $n - 1$ copies of one bit followed by a single copy of the other bit, called the *stop bit*. For more details, see [Wikipedia: Unary coding](https://en.wikipedia.org/wiki/Unary_coding) or <cite>MacK03, Ch. 7</cite>.
@@ -32,11 +32,11 @@ class UnaryCode(abc.IntegerCode):
         stop_bit: The stop bit. Must be either $0$ or $1$. The default value is $1$, so that the codeword for $n$ consists of $n - 1$ zeros followed by a single $1$.
     """
 
-    stop_bit: int = 1
+    stop_bit: int
 
-    def __post_init__(self) -> None:
-        stop_bit = validate_integer(self.stop_bit, "stop_bit")
-        self.stop_bit = validate_choice(stop_bit, "stop_bit", (0, 1))
+    def __init__(self, stop_bit: Literal[0, 1] = 1) -> None:
+        bit = validate_integer(stop_bit, "stop_bit")
+        self.stop_bit = validate_choice(bit, "stop_bit", (0, 1))
 
     def encode_single(self, integer: SupportsIndex) -> list[int]:
         r"""
