@@ -12,7 +12,9 @@ from komm._util.validators import (
     validate_integer,
     validate_integer_array,
     validate_log_base,
+    validate_nonnegative_integer,
     validate_pmf,
+    validate_positive_integer,
     validate_transition_matrix,
 )
 
@@ -75,6 +77,29 @@ def test_validate_integer_rule():
         message = f"'d' must satisfy 1 <= d <= n (got {value})"
         with pytest.raises(ValueError, match=escape(message)):
             validate_integer(value, "d", low=1, high=4, rule="1 <= d <= n")
+
+
+def test_validate_positive_integer():
+    integer = validate_positive_integer(np.int64(1), "n")
+    assert integer == 1
+    assert type(integer) is int
+    for value in [0, -1]:
+        message = f"'n' must be a positive integer (got {value})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_positive_integer(value, "n")
+    with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
+        validate_positive_integer(1.0, "n")  # type: ignore
+
+
+def test_validate_nonnegative_integer():
+    integer = validate_nonnegative_integer(np.int64(0), "n")
+    assert integer == 0
+    assert type(integer) is int
+    message = "'n' must be a non-negative integer (got -1)"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_nonnegative_integer(-1, "n")
+    with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
+        validate_nonnegative_integer(0.0, "n")  # type: ignore
 
 
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8])
