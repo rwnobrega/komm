@@ -100,14 +100,13 @@ class WalshHadamardSequence(BinarySequence):
         orderings = ("natural", "sequency", "dyadic")
         ordering = validate_choice(ordering, "ordering", orderings)
 
+        width = (length - 1).bit_length()
         if ordering == "natural":
             natural_index = index
         elif ordering == "sequency":
             index_gray = index ^ (index >> 1)
-            width = (length - 1).bit_length()
             natural_index = from_binary(to_binary(index_gray, width, "MSB-first"))
         elif ordering == "dyadic":
-            width = (length - 1).bit_length()
             natural_index = from_binary(to_binary(index, width, "MSB-first"))
 
         self.index = index
