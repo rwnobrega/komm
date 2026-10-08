@@ -62,6 +62,57 @@ def test_walsh_hadamard_dyadic_sign_changes(length):
         assert np.sum(np.abs(np.diff(walsh_hadamard.bit_sequence))) == i
 
 
+@pytest.mark.parametrize(
+    "ordering, matrix",
+    [
+        (
+            "sequency",
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, -1, -1, -1, -1],
+                [1, 1, -1, -1, -1, -1, 1, 1],
+                [1, 1, -1, -1, 1, 1, -1, -1],
+                [1, -1, -1, 1, 1, -1, -1, 1],
+                [1, -1, -1, 1, -1, 1, 1, -1],
+                [1, -1, 1, -1, -1, 1, -1, 1],
+                [1, -1, 1, -1, 1, -1, 1, -1],
+            ],
+        ),
+        (
+            "dyadic",
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, -1, -1, -1, -1],
+                [1, 1, -1, -1, 1, 1, -1, -1],
+                [1, 1, -1, -1, -1, -1, 1, 1],
+                [1, -1, 1, -1, 1, -1, 1, -1],
+                [1, -1, 1, -1, -1, 1, -1, 1],
+                [1, -1, -1, 1, 1, -1, -1, 1],
+                [1, -1, -1, 1, -1, 1, 1, -1],
+            ],
+        ),
+        (
+            "natural",
+            [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, -1, 1, -1, 1, -1, 1, -1],
+                [1, 1, -1, -1, 1, 1, -1, -1],
+                [1, -1, -1, 1, 1, -1, -1, 1],
+                [1, 1, 1, 1, -1, -1, -1, -1],
+                [1, -1, 1, -1, -1, 1, -1, 1],
+                [1, 1, -1, -1, -1, -1, 1, 1],
+                [1, -1, -1, 1, -1, 1, 1, -1],
+            ],
+        ),
+    ],
+)
+def test_walsh_hadamard_wikipedia(ordering, matrix):
+    # [https://en.wikipedia.org/wiki/Walsh_matrix]
+    for index, row in enumerate(matrix):
+        walsh_hadamard = komm.WalshHadamardSequence(8, ordering, index=index)
+        np.testing.assert_equal(walsh_hadamard.polar_sequence, row)
+
+
 def test_walsh_hadamard_invalid():
     with pytest.raises(ValueError, match="'length' must be a power of two"):
         komm.WalshHadamardSequence(3)
