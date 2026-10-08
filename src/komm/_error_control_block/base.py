@@ -234,12 +234,8 @@ class BlockCode(ABC):
         weight = 0
         distribution = np.zeros(n + 1, dtype=int)
         distribution[0] = 1
-        pbar = tqdm(
-            total=2**m,
-            desc="Computing coset leader weight distribution",
-            delay=2.5,
-            initial=1,
-        )
+        desc = "Computing coset leader weight distribution"
+        pbar = tqdm(total=2**m, desc=desc, delay=2.5, initial=1)
         while not visited.all():
             next_syndromes: list[npt.NDArray[np.integer]] = []
             for h in H_cols:
