@@ -56,8 +56,9 @@ class ReedSolomonCode(SystematicBlockCode):
 
     def __init__(self, mu: int, delta: int) -> None:
         mu = validate_integer(mu, low=2)
-        rule = "2 <= delta <= 2**mu - 1"
-        delta = validate_integer(delta, low=2, high=2**mu, rule=rule)
+        delta = validate_integer(
+            delta, low=2, high=2**mu, rule="2 <= delta <= 2**mu - 1"
+        )
         self.mu = mu
         self.delta = delta
         self.field = FiniteBifield(mu)

@@ -50,6 +50,7 @@ class ZadoffChuSequence(ComplexSequence):
         length = validate_positive_integer(length)
         if length % 2 == 0:
             raise ValueError("'length' must be an odd integer")
-        rule = "1 <= root_index < length"
-        root_index = validate_integer(root_index, low=1, high=length, rule=rule)
+        root_index = validate_integer(
+            root_index, low=1, high=length, rule="1 <= root_index < length"
+        )
         super().__init__(sequence=zadoff_chu_sequence(length, root_index))

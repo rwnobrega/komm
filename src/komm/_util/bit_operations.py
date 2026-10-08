@@ -136,8 +136,9 @@ def to_binary(
     integer = validate_integer(integer)
     if width is None:
         width = integer.bit_length()
-    rule = "0 <= integer < 2**width"
-    integer = validate_integer(integer, low=0, high=1 << width, rule=rule)
+    integer = validate_integer(
+        integer, low=0, high=1 << width, rule="0 <= integer < 2**width"
+    )
     bits = [(integer >> i) & 1 for i in range(width)]
     if bit_order == "MSB-first":
         bits.reverse()

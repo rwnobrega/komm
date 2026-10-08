@@ -62,13 +62,14 @@ class TunstallCode(VariableToFixedCode):
         n_min = ceil(log2(self.pmf.size))
         if target_block_size is None:
             target_block_size = n_min
-        rule = "2**target_block_size >= len(pmf)"
-        n = validate_integer(target_block_size, low=n_min, rule=rule)
+        target_block_size = validate_integer(
+            target_block_size, low=n_min, rule="2**target_block_size >= len(pmf)"
+        )
         super().__init__(
             target_cardinality=2,
             source_cardinality=self.pmf.size,
-            target_block_size=n,
-            dec_mapping=tunstall_code(self.pmf, n),
+            target_block_size=target_block_size,
+            dec_mapping=tunstall_code(self.pmf, target_block_size),
         )
 
     def __repr__(self) -> str:
