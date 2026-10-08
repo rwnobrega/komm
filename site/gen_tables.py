@@ -14,19 +14,15 @@ def dumps(rows):
     return "[\n" + ",\n".join("  " + json.dumps(row) for row in rows) + "\n]\n"
 
 
-def load(module, path):
-    # Slow tables are computed once
-    if not path.exists():
-        path.write_text(dumps(module.data()))
-    return json.loads(path.read_text())
-
-
 def fill(match):
     module = importlib.import_module(f"tables.{match[2]}")
-    if getattr(module, "cached", False):
-        rows = load(module, site / f"tables/{match[2]}.json")
+    path = site / "docs/tables" / f"{match[2].replace('_', '-')}.json"
+    # Slow tables are computed once
+    if getattr(module, "cached", False) and path.exists():
+        rows = json.loads(path.read_text())
     else:
         rows = module.data()
+    path.write_text(dumps(rows))
     print(f"Generated {match[2]}")
     return match[1] + module.table(rows) + match[3]
 
