@@ -34,7 +34,7 @@ def test_walsh_hadamard_index_2(length):
 
 
 @pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
-@pytest.mark.parametrize("ordering", ("natural", "sequency"))
+@pytest.mark.parametrize("ordering", ("natural", "sequency", "dyadic"))
 def test_walsh_hadamard_orthogonality(length, ordering):
     walsh_hadamard = []
     for i in range(length):
@@ -53,6 +53,15 @@ def test_walsh_hadamard_sequency_sign_changes(length):
         assert np.sum(np.abs(np.diff(walsh_hadamard.bit_sequence))) == index
 
 
+@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
+def test_walsh_hadamard_dyadic_sign_changes(length):
+    # Row $i \oplus (i \gg 1)$ must have exactly $i$ sign changes
+    for i in range(length):
+        index = i ^ (i >> 1)
+        walsh_hadamard = komm.WalshHadamardSequence(length, "dyadic", index=index)
+        assert np.sum(np.abs(np.diff(walsh_hadamard.bit_sequence))) == i
+
+
 def test_walsh_hadamard_invalid():
     with pytest.raises(ValueError, match="'length' must be a power of two"):
         komm.WalshHadamardSequence(3)
@@ -62,5 +71,3 @@ def test_walsh_hadamard_invalid():
         komm.WalshHadamardSequence(4, index=1.0)  # type: ignore
     with pytest.raises(ValueError, match="'ordering' must be 'natural', 'sequency'"):
         komm.WalshHadamardSequence(4, ordering="invalid")  # type: ignore
-    with pytest.raises(NotImplementedError):
-        komm.WalshHadamardSequence(4, ordering="dyadic")

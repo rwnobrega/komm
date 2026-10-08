@@ -8,7 +8,9 @@ from .sequences import hadamard_matrix
 
 class WalshHadamardSequence(BinarySequence):
     r"""
-    Walsh–Hadamard sequence. Consider the following recursive matrix construction:
+    Walsh–Hadamard sequence. The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, $H_L^{\mathrm{d}}$, or $H_L^{\mathrm{s}}$, for natural, dyadic, or sequency *ordering*, respectively. These are $L \times L$ matrices with the same rows, in different orders.
+
+    In *natural ordering* (also known as *Hadamard ordering*), the matrix $H_L$ is defined recursively by
     $$
         H_1 =
         \begin{bmatrix}
@@ -20,7 +22,7 @@ class WalshHadamardSequence(BinarySequence):
             H_{2^{n-1}} & -H_{2^{n-1}}
         \end{bmatrix},
     $$
-    for $n = 1, 2, \ldots$. For example, for $n = 3$,
+    for $n = 1, 2, \ldots$. In *dyadic ordering* (also known as *Paley ordering*), the matrix $H_L^{\mathrm{d}}$ is obtained by applying the bit-reversal permutation to the rows of $H_L$. In *sequency ordering* (also known as *Walsh ordering*), the matrix $H_L^{\mathrm{s}}$ is obtained by applying the Gray-code permutation to the rows of $H_L^{\mathrm{d}}$; its row $i$ has exactly $i$ sign changes. For example, for $L = 8$,
     $$
         H_8 =
         \begin{bmatrix}
@@ -34,7 +36,19 @@ class WalshHadamardSequence(BinarySequence):
             +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
         \end{bmatrix}
     $$
-    The above matrix is said to be in *natural ordering*. If the rows of the matrix are rearranged by first applying the bit-reversal permutation and then the Gray-code permutation, the following matrix is obtained:
+    $$
+        H_8^{\mathrm{d}} =
+        \begin{bmatrix}
+            +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1 \\\\
+            +1 & +1 & +1 & +1 & -1 & -1 & -1 & -1 \\\\
+            +1 & +1 & -1 & -1 & +1 & +1 & -1 & -1 \\\\
+            +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1 \\\\
+            +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
+            +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1 \\\\
+            +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1 \\\\
+            +1 & -1 & -1 & +1 & -1 & +1 & +1 & -1 \\\\
+        \end{bmatrix}
+    $$
     $$
         H_8^{\mathrm{s}} =
         \begin{bmatrix}
@@ -48,9 +62,8 @@ class WalshHadamardSequence(BinarySequence):
             +1 & -1 & +1 & -1 & +1 & -1 & +1 & -1 \\\\
         \end{bmatrix}
     $$
-    The above matrix is said to be in *sequency ordering*. It has the property that row $i$ has exactly $i$ sign changes.
 
-    The Walsh–Hadamard sequence of *length* $L$ and *index* $i \in [0 : L)$ is a [binary sequence](/ref/BinarySequence) whose polar format is the $i$-th row of $H_L$, if assuming natural ordering, or $H_L^{\mathrm{s}}$, if assuming sequency ordering. For more details, see [Wikipedia: Hadamard matrix](https://en.wikipedia.org/wiki/Hadamard_matrix) and [Wikipedia: Walsh matrix](https://en.wikipedia.org/wiki/Walsh_matrix).
+    For more details, see [Wikipedia: Hadamard matrix](https://en.wikipedia.org/wiki/Hadamard_matrix) and [Wikipedia: Walsh matrix](https://en.wikipedia.org/wiki/Walsh_matrix).
 
     Parameters:
         length: Length $L$ of the Walsh–Hadamard sequence. Must be a power of two.
@@ -60,18 +73,17 @@ class WalshHadamardSequence(BinarySequence):
         index: Index of the Walsh–Hadamard sequence, with respect to the ordering assumed. Must be in the set $[0 : L)$. The default value is `0`.
 
     Examples:
-        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='natural', index=5)
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='natural', index=6)
+        >>> walsh_hadamard.polar_sequence
+        array([ 1,  1, -1, -1, -1, -1,  1,  1])
+
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='sequency', index=6)
         >>> walsh_hadamard.polar_sequence
         array([ 1, -1,  1, -1, -1,  1, -1,  1])
 
-        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='sequency', index=5)
+        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='dyadic', index=6)
         >>> walsh_hadamard.polar_sequence
-        array([ 1, -1, -1,  1, -1,  1,  1, -1])
-
-        >>> walsh_hadamard = komm.WalshHadamardSequence(8, ordering='dyadic', index=5)
-        Traceback (most recent call last):
-        ...
-        NotImplementedError
+        array([ 1, -1, -1,  1,  1, -1, -1,  1])
     """
 
     def __init__(
@@ -94,7 +106,8 @@ class WalshHadamardSequence(BinarySequence):
             width = (length - 1).bit_length()
             natural_index = from_binary(to_binary(index_gray, width, "MSB-first"))
         elif ordering == "dyadic":
-            raise NotImplementedError
+            width = (length - 1).bit_length()
+            natural_index = from_binary(to_binary(index, width, "MSB-first"))
 
         self.index = index
         self.ordering = ordering
