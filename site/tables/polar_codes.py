@@ -69,6 +69,10 @@ sequence = [
 # fmt: on
 
 
-def table():
+def data():
     assert sorted(sequence) == list(range(1024))
-    return "```text\n" + ", ".join(map(str, sequence)) + "\n```"
+    return sequence
+
+
+def table(rows):
+    return "```text\n" + ", ".join(map(str, rows)) + "\n```"

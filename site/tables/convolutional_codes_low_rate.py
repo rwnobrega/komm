@@ -41,16 +41,28 @@ g_rows = [
 ]
 
 
-def table():
+def data():
     rows = []
     for g_row in g_rows:
         code = komm.LowRateConvolutionalCode(g_row)
-        polys = ", ".join(map(oct, g_row))
-        rows.append([
-            f"${len(g_row)}$",
-            f"${code.degree}$",
+        rows.append({
+            "n": len(g_row),
+            "sigma": code.degree,
+            "g": g_row,
+            "d_free": code.free_distance(),
+        })
+    return rows
+
+
+def table(rows):
+    cells = []
+    for row in rows:
+        polys = ", ".join(map(oct, row["g"]))
+        cells.append([
+            f"${row['n']}$",
+            f"${row['sigma']}$",
             f"`[{polys}]`",
-            f"${code.free_distance()}$",
+            f"${row['d_free']}$",
         ])
     header = [
         "$n$",
@@ -58,4 +70,4 @@ def table():
         "$g(D) = [g_0(D) ~ \\cdots ~ g_{n-1}(D)]$",
         "$d_\\mathrm{free}$",
     ]
-    return markdown(header, rows, center=[True, True, False, True])
+    return markdown(header, cells, center=[True, True, False, True])

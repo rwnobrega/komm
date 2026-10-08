@@ -24,16 +24,28 @@ h_rows = [
 ]
 
 
-def table():
+def data():
     rows = []
     for h_row in h_rows:
         code = komm.HighRateConvolutionalCode(h_row)
-        polys = ", ".join(map(oct, h_row))
-        rows.append([
-            f"${len(h_row)}$",
-            f"${code.degree}$",
+        rows.append({
+            "n": len(h_row),
+            "sigma": code.degree,
+            "h": h_row,
+            "d_free": code.free_distance(),
+        })
+    return rows
+
+
+def table(rows):
+    cells = []
+    for row in rows:
+        polys = ", ".join(map(oct, row["h"]))
+        cells.append([
+            f"${row['n']}$",
+            f"${row['sigma']}$",
             f"`[{polys}]`",
-            f"${code.free_distance()}$",
+            f"${row['d_free']}$",
         ])
     header = [
         "$n$",
@@ -41,4 +53,4 @@ def table():
         "$h(D) = [h_0(D) ~ \\cdots ~ h_{n-1}(D)]$",
         "$d_\\mathrm{free}$",
     ]
-    return markdown(header, rows, center=[True, True, False, True])
+    return markdown(header, cells, center=[True, True, False, True])
