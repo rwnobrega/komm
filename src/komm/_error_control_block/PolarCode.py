@@ -53,7 +53,7 @@ class PolarCode(BlockCode):
 
     def __init__(self, mu: int, frozen: npt.ArrayLike):
         mu = validate_positive_integer(mu, "mu")
-        frozen = validate_integer_array(frozen, "frozen", low=0, high=2**mu)
+        frozen = validate_integer_array(frozen, low=0, high=2**mu)
         self.mu = mu
         self.frozen = np.sort(frozen).astype(int)
         if not self.frozen.size == np.unique(self.frozen).size:

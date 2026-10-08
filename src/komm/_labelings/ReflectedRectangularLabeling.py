@@ -21,7 +21,7 @@ class ReflectedRectangularLabeling(abc.Labeling):
         _pre_cache: bool = True,
     ) -> None:
         if isinstance(num_bits, Iterable):
-            pair = validate_integer_array(num_bits, "num_bits", low=1, shape=(2,))
+            pair = validate_integer_array(num_bits, low=1, shape=(2,))
             mi, mq = pair.tolist()
         else:
             m = validate_integer(num_bits, "num_bits", low=2)

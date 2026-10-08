@@ -81,7 +81,7 @@ class ReflectedLabeling(abc.Labeling):
                    [1, 0, 1, 0]])
         """
         m = self._num_bits
-        indices = validate_integer_array(indices, "indices", low=0, high=2**m)
+        indices = validate_integer_array(indices, low=0, high=2**m)
         gray = indices ^ indices >> 1
         return int_to_bits(gray, width=m, bit_order="MSB-first")
 
@@ -96,7 +96,7 @@ class ReflectedLabeling(abc.Labeling):
                    [3, 3]])
         """
         m = self._num_bits
-        bits = validate_integer_array(bits, "bits", low=0, high=2)
+        bits = validate_integer_array(bits, low=0, high=2)
         nat_indices = bits_to_int(bits, width=m, bit_order="MSB-first")
         indices = np.zeros_like(nat_indices)
         for shift in range(m):

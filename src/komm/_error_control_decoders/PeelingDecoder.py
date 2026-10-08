@@ -41,7 +41,7 @@ class PeelingDecoder(abc.CodewordDecoder[abc.BlockCode]):
             >>> decoder.decode_to_codeword([1, 0, 2, 1, 2, 2, 2])
             array([1, 0, 2, 1, 0, 2, 2])
         """
-        input = validate_integer_array(input, "input", low=0, high=3)
+        input = validate_integer_array(input, low=0, high=3)
 
         @blockwise(self.code.length)
         @vectorize

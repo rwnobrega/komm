@@ -44,7 +44,7 @@ def bits_to_int(
     """
     bit_order = validate_bit_order(bit_order)
     width = validate_integer(width, "width", low=1, high=64)
-    input = validate_integer_array(input, "input", low=0, high=2)
+    input = validate_integer_array(input, low=0, high=2)
     if input.shape[-1] % width != 0:
         raise ValueError(
             f"last dimension of 'input' must be a multiple of {width}"
@@ -93,7 +93,7 @@ def int_to_bits(
     """
     bit_order = validate_bit_order(bit_order)
     width = validate_integer(width, "width", low=0, high=64)
-    input = validate_integer_array(input, "input", low=0, high=1 << width)
+    input = validate_integer_array(input, low=0, high=1 << width)
     shifts = np.arange(width)
     if bit_order == "MSB-first":
         shifts = shifts[::-1]

@@ -124,7 +124,6 @@ def validate_nonnegative_integer(value: SupportsIndex, name: str) -> int:
 
 def validate_integer_array(
     value: npt.ArrayLike,
-    name: str,
     *,
     low: int | None = None,
     high: int | None = None,
@@ -132,20 +131,22 @@ def validate_integer_array(
 ) -> npt.NDArray[np.integer]:
     value = np.asarray(value)
     if shape is not None and not value.shape == shape:
-        raise ValueError(f"'{name}' must have shape {shape} (got {value.shape})")
+        raise ValueError(f"'{arg_name()}' must have shape {shape} (got {value.shape})")
     if value.size == 0:  # np.asarray([]) is float64
         return value.astype(int)
     if value.dtype == bool:
         value = value.astype(int)
     if not np.issubdtype(value.dtype, np.integer):
-        raise TypeError(f"'{name}' must contain only integers (got {value.dtype})")
+        raise TypeError(
+            f"'{arg_name()}' must contain only integers (got {value.dtype})"
+        )
     if low is not None and high is not None:
         if not (value.min() >= low and value.max() < high):
-            raise ValueError(f"elements of '{name}' must be in [{low}:{high})")
+            raise ValueError(f"elements of '{arg_name()}' must be in [{low}:{high})")
     elif low is not None and not value.min() >= low:
-        raise ValueError(f"elements of '{name}' must be at least {low}")
+        raise ValueError(f"elements of '{arg_name()}' must be at least {low}")
     elif high is not None and not value.max() < high:
-        raise ValueError(f"elements of '{name}' must be less than {high}")
+        raise ValueError(f"elements of '{arg_name()}' must be less than {high}")
     return value
 
 

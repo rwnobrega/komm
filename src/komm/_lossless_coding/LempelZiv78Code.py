@@ -47,7 +47,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
         calX = self.source_cardinality
-        source = validate_integer_array(source, "source", low=0, high=calX)
+        source = validate_integer_array(source, low=0, high=calX)
         dictionary: dict[Word, int] = {(): 0}
         tokens: list[Token] = []
         word: Word = ()

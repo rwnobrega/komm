@@ -45,7 +45,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         phase_offset: float = 0.0,
     ) -> None:
         if isinstance(orders, Iterable):
-            pair = validate_integer_array(orders, "orders", low=1, shape=(2,))
+            pair = validate_integer_array(orders, low=1, shape=(2,))
             Mi, Mq = pair.tolist()
             if (Mi, Mq) == (1, 1):
                 raise ValueError("'orders' must not be (1, 1)")
