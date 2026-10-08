@@ -149,17 +149,16 @@ class BlockCode(ABC):
         r"""
         Returns the codewords of the code. This is a $2^k \times n$ matrix whose rows are all the codewords. The codeword in row $i$ corresponds to the message obtained by expressing $i$ in binary with $k$ bits (LSB-first).
         """
-        k, n = self.dimension, self.length
+        n = self.length
         G = self.generator_matrix
-        # Split messages into low and high bits.
-        b = min(k, 10)
-        low, high = row_span(G[:b]), row_span(G[b:])
-        codewords = np.empty((2**k, n), dtype=int)
-        pbar = tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=2**b)
+        # Batches of up to 2**10 codewords.
+        low, high = row_span(G[:10]), row_span(G[10:])
+        codewords = np.empty((len(high), len(low), n), dtype=int)
+        pbar = tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=len(low))
         for i, offset in enumerate(pbar):
-            codewords[i * 2**b : (i + 1) * 2**b] = low ^ offset
+            codewords[i] = low ^ offset
         self._cached_codewords = True
-        return codewords
+        return codewords.reshape(-1, n)
 
     @cache
     @abstractmethod
