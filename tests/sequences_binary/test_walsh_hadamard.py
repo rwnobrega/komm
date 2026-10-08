@@ -116,7 +116,7 @@ def test_walsh_hadamard_wikipedia(ordering, matrix):
 def test_walsh_hadamard_invalid():
     with pytest.raises(ValueError, match="'length' must be a power of two"):
         komm.WalshHadamardSequence(3)
-    with pytest.raises(ValueError, match=r"'index' must be in \[0:4\) \(got 4\)"):
+    with pytest.raises(ValueError, match="'index' must satisfy 0 <= index < length"):
         komm.WalshHadamardSequence(4, index=4)
     with pytest.raises(TypeError, match="'index' must be an integer"):
         komm.WalshHadamardSequence(4, index=1.0)  # type: ignore

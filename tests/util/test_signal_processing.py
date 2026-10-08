@@ -47,7 +47,7 @@ def test_sampling_rate_expand_axis():
 def test_sampling_rate_expand_invalid_parameters():
     with pytest.raises(ValueError, match=r"'factor' must be at least 1 \(got 0\)"):
         komm.sampling_rate_expand([1, 2, 3], factor=0)
-    with pytest.raises(ValueError, match=r"'offset' must be in \[0:3\) \(got 3\)"):
+    with pytest.raises(ValueError, match="'offset' must satisfy 0 <= offset < factor"):
         komm.sampling_rate_expand([1, 2, 3], factor=3, offset=3)
 
 
@@ -94,5 +94,5 @@ def test_sampling_rate_compress_axis():
 def test_sampling_rate_compress_invalid_parameters():
     with pytest.raises(ValueError, match=r"'factor' must be at least 1 \(got 0\)"):
         komm.sampling_rate_compress([1, 2, 3], factor=0)
-    with pytest.raises(ValueError, match=r"'offset' must be in \[0:3\) \(got 3\)"):
+    with pytest.raises(ValueError, match="'offset' must satisfy 0 <= offset < factor"):
         komm.sampling_rate_compress([1, 2, 3], factor=3, offset=3)
