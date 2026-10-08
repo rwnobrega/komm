@@ -24,3 +24,5 @@ The table below lists the default primitive polynomials of degree $k$ over $\mat
 |    $12$    | `0b1000001010011`           |    $24$    | `0b1000000000000000010000111` |
 
 <!-- end table -->
+
+[Download JSON](primitive-polynomials.json){ download="" }

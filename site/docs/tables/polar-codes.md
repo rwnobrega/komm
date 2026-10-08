@@ -14,4 +14,6 @@ Below is the reliability sequence of the length-$1024$ [polar code](/ref/PolarCo
 
 <!-- end table -->
 
+[Download JSON](polar-codes.json){ download="" }
+
 **Source:** <cite>ETSI: 5G; NR; Multiplexing and channel coding (3GPP TS 38.212 version 15.2.0 Release 15), Sec. 5.3.1.2, pp. 16–18</cite>.

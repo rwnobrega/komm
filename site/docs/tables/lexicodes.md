@@ -79,3 +79,5 @@ The table below lists the dimension $k$ of the [lexicode](/ref/Lexicode) of leng
 <!-- end table -->
 
 </div>
+
+[Download JSON](lexicodes.json){ download="" }

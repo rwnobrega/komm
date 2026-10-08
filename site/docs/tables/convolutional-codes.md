@@ -49,6 +49,8 @@ The table below lists optimal [low-rate convolutional codes](/ref/LowRateConvolu
 
 <!-- end table -->
 
+[Download JSON](convolutional-codes-low-rate.json){ download="" }
+
 <h2 markdown id="high-rate">Optimal high-rate convolutional codes</h2>
 
 The table below lists optimal [high-rate convolutional codes](/ref/HighRateConvolutionalCode), for $n \in \\{ 3, 4 \\}$, and small values of degree $\sigma$.
@@ -78,3 +80,5 @@ The table below lists optimal [high-rate convolutional codes](/ref/HighRateConvo
 | $4$ |   $9$    | `[0o1371, 0o1157, 0o1723, 0o1475]`      |        $8$        |
 
 <!-- end table -->
+
+[Download JSON](convolutional-codes-high-rate.json){ download="" }
