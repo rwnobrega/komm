@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float
 from .base import RootPulse
 from .util import rect
 
@@ -46,8 +47,7 @@ class BeaulieuPulse(abc.Pulse):
     rolloff: float = 1.0
 
     def __post_init__(self) -> None:
-        if not 0 <= self.rolloff <= 1:
-            raise ValueError("'rolloff' must satisfy 0 <= rolloff <= 1")
+        self.rolloff = validate_float(self.rolloff, low=0, high=1)
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

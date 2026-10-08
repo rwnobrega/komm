@@ -21,10 +21,16 @@ def test_raised_cosine_pulse_autocorrelation_scalar():
 
 @pytest.mark.parametrize("rolloff", [-0.1, 1.5, 2.0])
 def test_raised_cosine_pulse_invalid_rolloff(rolloff):
-    with pytest.raises(ValueError, match="must satisfy 0 <= rolloff <= 1"):
+    with pytest.raises(ValueError, match=r"'rolloff' must be in \[0, 1\]"):
         komm.RaisedCosinePulse(rolloff=rolloff)
-    with pytest.raises(ValueError, match="must satisfy 0 <= rolloff <= 1"):
+    with pytest.raises(ValueError, match=r"'rolloff' must be in \[0, 1\]"):
         komm.RaisedCosinePulse(rolloff=rolloff).root()
+
+
+def test_raised_cosine_pulse_rolloff_not_real():
+    with pytest.raises(TypeError, match=r"'rolloff' must be a real number \(got str\)"):
+        komm.RaisedCosinePulse(rolloff="0.5")  # type: ignore
+    assert type(komm.RaisedCosinePulse(rolloff=1).rolloff) is float
 
 
 @pytest.mark.parametrize("rolloff, t", [(0.25, 6.0), (0.75, 2.0), (1.0, 1.5)])

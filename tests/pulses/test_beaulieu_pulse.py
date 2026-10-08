@@ -13,10 +13,16 @@ def test_beaulieu_pulse_repr():
 
 @pytest.mark.parametrize("rolloff", [-0.1, 1.5, 2.0])
 def test_beaulieu_pulse_invalid_rolloff(rolloff):
-    with pytest.raises(ValueError, match="must satisfy 0 <= rolloff <= 1"):
+    with pytest.raises(ValueError, match=r"'rolloff' must be in \[0, 1\]"):
         komm.BeaulieuPulse(rolloff=rolloff)
-    with pytest.raises(ValueError, match="must satisfy 0 <= rolloff <= 1"):
+    with pytest.raises(ValueError, match=r"'rolloff' must be in \[0, 1\]"):
         komm.BeaulieuPulse(rolloff=rolloff).root()
+
+
+def test_beaulieu_pulse_rolloff_not_real():
+    with pytest.raises(TypeError, match=r"'rolloff' must be a real number \(got str\)"):
+        komm.BeaulieuPulse(rolloff="0.5")  # type: ignore
+    assert type(komm.BeaulieuPulse(rolloff=1).rolloff) is float
 
 
 @pytest.mark.parametrize("rolloff", [0.25, 0.35, 0.5, 0.75, 1.0])
