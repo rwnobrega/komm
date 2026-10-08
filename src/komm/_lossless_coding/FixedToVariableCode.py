@@ -5,7 +5,7 @@ from typing import Self
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer, validate_pmf
+from .._util.validators import validate_integer, validate_pmf, validate_positive_integer
 from ..types import Array1D
 from .util import (
     Word,
@@ -36,7 +36,7 @@ class FixedToVariableCode:
         calX, calY, k = source_cardinality, target_cardinality, source_block_size
         self._source_cardinality = validate_integer(calX, "source_cardinality", low=2)
         self._target_cardinality = validate_integer(calY, "target_cardinality", low=2)
-        self._source_block_size = validate_integer(k, "source_block_size", low=1)
+        self._source_block_size = validate_positive_integer(k, "source_block_size")
         self._enc_mapping = enc_mapping
         self.__post_init__()
 

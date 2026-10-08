@@ -109,14 +109,14 @@ def test_lzss_invalid_input():
 
 
 def test_lzss_invalid_construction():
-    with pytest.raises(ValueError, match="'search_size' must be at least 1"):
+    with pytest.raises(ValueError, match="'search_size' must be a positive integer"):
         komm.LempelZivSSCode(
             search_size=0,
             lookahead_size=4,
             source_cardinality=2,
         )
 
-    with pytest.raises(ValueError, match="'lookahead_size' must be at least 1"):
+    with pytest.raises(ValueError, match="'lookahead_size' must be a positive integer"):
         komm.LempelZivSSCode(
             search_size=4,
             lookahead_size=0,

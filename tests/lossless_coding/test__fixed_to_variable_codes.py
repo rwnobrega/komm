@@ -72,7 +72,9 @@ def test_fixed_to_variable_codes_deterministic(constructor, S, k):
 
 
 def test_fixed_to_variable_codes_invalid_block_size(constructor):
-    with pytest.raises(ValueError, match="'source_block_size' must be at least 1"):
+    with pytest.raises(
+        ValueError, match="'source_block_size' must be a positive integer"
+    ):
         constructor([0.5, 0.5], 0)
     with pytest.raises(TypeError, match="'source_block_size' must be an integer"):
         constructor([0.5, 0.5], 2.0)

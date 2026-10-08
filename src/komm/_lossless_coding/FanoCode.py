@@ -6,7 +6,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer, validate_pmf
+from .._util.validators import validate_pmf, validate_positive_integer
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
@@ -53,7 +53,7 @@ class FanoCode(FixedToVariableCode):
 
     def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
         self.pmf = validate_pmf(pmf, "pmf")
-        k = validate_integer(source_block_size, "source_block_size", low=1)
+        k = validate_positive_integer(source_block_size, "source_block_size")
         super().__init__(
             source_cardinality=self.pmf.size,
             target_cardinality=2,

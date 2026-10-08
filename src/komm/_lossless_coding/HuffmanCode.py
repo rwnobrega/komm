@@ -8,7 +8,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_choice, validate_integer, validate_pmf
+from .._util.validators import validate_choice, validate_pmf, validate_positive_integer
 from ..types import Array1D
 from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
@@ -79,7 +79,7 @@ class HuffmanCode(FixedToVariableCode):
         assignment: Literal["tree", "canonical"] = "tree",
     ):
         self.pmf = validate_pmf(pmf, "pmf")
-        k = validate_integer(source_block_size, "source_block_size", low=1)
+        k = validate_positive_integer(source_block_size, "source_block_size")
         policy = validate_choice(policy, "policy", ("high", "low"))
         assignment = validate_choice(assignment, "assignment", ("tree", "canonical"))
         self.policy = policy

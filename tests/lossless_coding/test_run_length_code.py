@@ -102,7 +102,7 @@ def test_run_length_invalid_input():
 def test_run_length_invalid_construction():
     with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
         komm.RunLengthCode(source_cardinality=1, max_run_length=4)
-    with pytest.raises(ValueError, match="'max_run_length' must be at least 1"):
+    with pytest.raises(ValueError, match="'max_run_length' must be a positive integer"):
         komm.RunLengthCode(source_cardinality=2, max_run_length=0)
     with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
         komm.RunLengthCode(source_cardinality=2, max_run_length=4, target_cardinality=1)

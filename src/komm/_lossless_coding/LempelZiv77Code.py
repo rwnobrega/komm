@@ -3,7 +3,11 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .. import abc
-from .._util.validators import validate_integer, validate_integer_array
+from .._util.validators import (
+    validate_integer,
+    validate_integer_array,
+    validate_positive_integer,
+)
 from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int, int]
@@ -41,9 +45,10 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         target_cardinality: int = 2,
         search_buffer: npt.ArrayLike | None = None,
     ):
+        S, L = search_size, lookahead_size
         calX, calY = source_cardinality, target_cardinality
-        self.search_size = validate_integer(search_size, "search_size", low=1)
-        self.lookahead_size = validate_integer(lookahead_size, "lookahead_size", low=1)
+        self.search_size = validate_positive_integer(S, "search_size")
+        self.lookahead_size = validate_positive_integer(L, "lookahead_size")
         self.source_cardinality = validate_integer(calX, "source_cardinality", low=2)
         self.target_cardinality = validate_integer(calY, "target_cardinality", low=2)
 

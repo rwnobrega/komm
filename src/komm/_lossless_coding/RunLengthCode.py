@@ -4,7 +4,11 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer, validate_integer_array
+from .._util.validators import (
+    validate_integer,
+    validate_integer_array,
+    validate_positive_integer,
+)
 from .util import integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
@@ -35,7 +39,7 @@ class RunLengthCode(abc.TokenCode[Token]):
         calX, calY = self.source_cardinality, self.target_cardinality
         L = self.max_run_length
         self.source_cardinality = validate_integer(calX, "source_cardinality", low=2)
-        self.max_run_length = validate_integer(L, "max_run_length", low=1)
+        self.max_run_length = validate_positive_integer(L, "max_run_length")
         self.target_cardinality = validate_integer(calY, "target_cardinality", low=2)
 
     def _get_widths(self) -> tuple[int, int]:
