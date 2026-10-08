@@ -5,7 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from ..types import Array1D, Array2D
-from .PSKConstellation import PSKConstellation
+from .PSKConstellation import psk_matrix
 
 
 class APSKConstellation(abc.Constellation[np.complexfloating]):
@@ -88,7 +88,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
                    [ 0.-2.j]])
         """
         Ms, As, φs = self._orders, self._amplitudes, self._phase_offsets
-        matrices = [PSKConstellation(M, A, φ).matrix for M, A, φ in zip(Ms, As, φs)]
+        matrices = [psk_matrix(M, A, φ) for M, A, φ in zip(Ms, As, φs)]
         matrix = np.concatenate(matrices)
         return matrix.reshape(-1, 1)
 

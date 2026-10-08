@@ -7,7 +7,7 @@ import numpy.typing as npt
 
 from .. import abc
 from ..types import Array1D, Array2D
-from .PAMConstellation import PAMConstellation
+from .PAMConstellation import pam_matrix
 
 
 class QAMConstellation(abc.Constellation[np.complexfloating]):
@@ -92,8 +92,8 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
         Mi, Mq = self._orders
         δi, δq = self._deltas
         φ = self._phase_offset
-        matrix_i = PAMConstellation(Mi, δi).matrix
-        matrix_q = PAMConstellation(Mq, δq).matrix
+        matrix_i = pam_matrix(Mi, δi)
+        matrix_q = pam_matrix(Mq, δq)
         matrix = (matrix_i + 1j * matrix_q.T) * np.exp(2j * np.pi * φ)
         return matrix.reshape(-1, 1)
 

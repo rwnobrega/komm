@@ -55,9 +55,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
                    [ 1.],
                    [ 3.]])
         """
-        M, δ = self._order, self._delta
-        peak = (M - 1) * δ / 2
-        return np.linspace(-peak, peak, num=M, endpoint=True).reshape(-1, 1)
+        return pam_matrix(self._order, self._delta)
 
     @property
     def order(self) -> int:
@@ -181,3 +179,8 @@ class PAMConstellation(abc.Constellation[np.floating]):
             array([0.169, 0.562, 0.253, 0.015, 0.   , 0.035, 0.387, 0.577])
         """
         return super().posteriors(received, noise_power, priors)
+
+
+def pam_matrix(M: int, δ: float) -> Array2D[np.floating]:
+    peak = (M - 1) * δ / 2
+    return np.linspace(-peak, peak, num=M, endpoint=True).reshape(-1, 1)

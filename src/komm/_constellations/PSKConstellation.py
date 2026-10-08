@@ -66,11 +66,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
                    [-1.+0.j],
                    [ 0.-1.j]])
         """
-        M, A, φ = self._order, self._amplitude, self._phase_offset
-        i = np.arange(M).reshape(-1, 1)
-        matrix = A * np.exp(2j * np.pi * i / M) * np.exp(2j * np.pi * φ)
-        # We round to avoid sin(pi) != 0, and add 0.0 to avoid -0.0.
-        return matrix.round(15) + 0.0
+        return psk_matrix(self._order, self._amplitude, self._phase_offset)
 
     @property
     def order(self) -> int:
@@ -189,3 +185,10 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
             array([0.018, 0.   , 0.008, 0.974, 0.982, 0.012, 0.   , 0.005])
         """
         return super().posteriors(received, noise_power, priors)
+
+
+def psk_matrix(M: int, A: float, φ: float) -> Array2D[np.complexfloating]:
+    i = np.arange(M).reshape(-1, 1)
+    matrix = A * np.exp(2j * np.pi * i / M) * np.exp(2j * np.pi * φ)
+    # We round to avoid sin(pi) != 0, and add 0.0 to avoid -0.0.
+    return matrix.round(15) + 0.0
