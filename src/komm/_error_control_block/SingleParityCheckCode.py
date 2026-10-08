@@ -2,7 +2,6 @@ from functools import cache
 from math import comb
 
 import numpy as np
-import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_positive_integer
@@ -41,10 +40,9 @@ class SingleParityCheckCode(BlockCode):
 
         >>> code = komm.SingleParityCheckCode(16)
         >>> code.codeword_weight_distribution()
-        array([    1,     0,   120,     0,  1820,     0,  8008,     0, 12870,
-                   0,  8008,     0,  1820,     0,   120,     0,     1])
+        [1, 0, 120, 0, 1820, 0, 8008, 0, 12870, 0, 8008, 0, 1820, 0, 120, 0, 1]
         >>> code.coset_leader_weight_distribution()
-        array([1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     """
 
     def __init__(self, n: int) -> None:
@@ -60,9 +58,9 @@ class SingleParityCheckCode(BlockCode):
         return 2
 
     @cache
-    def codeword_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def codeword_weight_distribution(self) -> list[int]:
         n = self.n
-        codeword_weight_distribution = np.zeros(n + 1, dtype=int)
+        codeword_weight_distribution = [0] * (n + 1)
         for w in range(0, n + 1, 2):
             codeword_weight_distribution[w] = comb(n, w)
         return codeword_weight_distribution

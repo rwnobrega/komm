@@ -2,7 +2,6 @@ from functools import cache
 from math import comb
 
 import numpy as np
-import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_positive_integer
@@ -41,10 +40,9 @@ class RepetitionCode(BlockCode):
 
         >>> code = komm.RepetitionCode(16)
         >>> code.codeword_weight_distribution()
-        array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
         >>> code.coset_leader_weight_distribution()
-        array([    1,    16,   120,   560,  1820,  4368,  8008, 11440,  6435,
-                   0,     0,     0,     0,     0,     0,     0,     0])
+        [1, 16, 120, 560, 1820, 4368, 8008, 11440, 6435, 0, 0, 0, 0, 0, 0, 0, 0]
     """
 
     def __init__(self, n: int) -> None:
@@ -60,9 +58,9 @@ class RepetitionCode(BlockCode):
         return self.n
 
     @cache
-    def coset_leader_weight_distribution(self) -> npt.NDArray[np.integer]:
+    def coset_leader_weight_distribution(self) -> list[int]:
         n = self.n
-        coset_leader_weight_distribution = np.zeros(n + 1, dtype=int)
+        coset_leader_weight_distribution = [0] * (n + 1)
         for w in range((n + 1) // 2):
             coset_leader_weight_distribution[w] = comb(n, w)
         if n % 2 == 0:

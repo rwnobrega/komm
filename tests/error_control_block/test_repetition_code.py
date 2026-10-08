@@ -1,3 +1,5 @@
+from math import comb
+
 import numpy as np
 import pytest
 
@@ -16,6 +18,14 @@ def test_repetition_code(length):
         code1.coset_leader_weight_distribution(),
         code2.coset_leader_weight_distribution(),
     )
+
+
+def test_repetition_code_large():
+    # Counts exceed 64-bit integers.
+    code = komm.RepetitionCode(100)
+    distribution = code.coset_leader_weight_distribution()
+    assert distribution[49] == comb(100, 49)
+    assert sum(distribution) == 2**99
 
 
 def test_encoder():

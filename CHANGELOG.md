@@ -30,11 +30,15 @@
 
 - Made parameter `extended` of `HammingCode`, `SimplexCode`, and `GolayCode` keyword-only.
 
+- Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers instead of a NumPy array.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.
 
 - Fixed the default primitive polynomial of degree 16, used by `FiniteBifield` and `LFSRSequence`.
+
+- Fixed `codeword_weight_distribution` of `SingleParityCheckCode` and `coset_leader_weight_distribution` of `RepetitionCode` for lengths of 67 or more.
 
 ## v0.36.0 (2026-09-28)
 

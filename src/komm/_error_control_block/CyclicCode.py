@@ -10,7 +10,7 @@ from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
-from ..types import Array1D, Array2D
+from ..types import Array2D
 
 
 class CyclicCode(abc.BlockCode):
@@ -220,12 +220,12 @@ class CyclicCode(abc.BlockCode):
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> Array1D[np.integer]:
+    def codeword_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
             >>> code.codeword_weight_distribution()
-            array([1, 0, 0, 7, 7, 0, 0, 1])
+            [1, 0, 0, 7, 7, 0, 0, 1]
         """
         return super().codeword_weight_distribution()
 
@@ -257,12 +257,12 @@ class CyclicCode(abc.BlockCode):
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+    def coset_leader_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
             >>> code.coset_leader_weight_distribution()
-            array([1, 7, 0, 0, 0, 0, 0, 0])
+            [1, 7, 0, 0, 0, 0, 0, 0]
         """
         return super().coset_leader_weight_distribution()
 

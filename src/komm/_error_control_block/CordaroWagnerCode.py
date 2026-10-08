@@ -31,9 +31,9 @@ class CordaroWagnerCode(BlockCode):
         >>> code.minimum_distance()
         7
         >>> code.codeword_weight_distribution()
-        array([1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0])
+        [1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0]
         >>> code.coset_leader_weight_distribution()
-        array([  1,  11,  55, 165, 226,  54,   0,   0,   0,   0,   0,   0])
+        [1, 11, 55, 165, 226, 54, 0, 0, 0, 0, 0, 0]
     """
 
     def __init__(self, n: int) -> None:

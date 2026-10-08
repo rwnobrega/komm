@@ -1,3 +1,5 @@
+from math import comb
+
 import numpy as np
 import pytest
 
@@ -16,6 +18,14 @@ def test_single_parity_check_code(length):
         code1.coset_leader_weight_distribution(),
         code2.coset_leader_weight_distribution(),
     )
+
+
+def test_single_parity_check_code_large():
+    # Counts exceed 64-bit integers.
+    code = komm.SingleParityCheckCode(100)
+    distribution = code.codeword_weight_distribution()
+    assert distribution[50] == comb(100, 50)
+    assert sum(distribution) == 2**99
 
 
 def test_encoder():

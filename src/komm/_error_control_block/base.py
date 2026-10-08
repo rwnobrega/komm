@@ -8,7 +8,7 @@ from tqdm import tqdm
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
-from ..types import Array1D, Array2D
+from ..types import Array2D
 
 
 class BlockCode(ABC):
@@ -162,13 +162,14 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def codeword_weight_distribution(self) -> Array1D[np.integer]:
+    def codeword_weight_distribution(self) -> list[int]:
         r"""
-        Returns the codeword weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of codewords of Hamming weight $w$, for $w \in [0 : n]$.
+        Returns the codeword weight distribution of the code. This is the list $A_0, A_1, \ldots, A_n$, in which $A_w$ is the number of codewords of Hamming weight $w$.
         """
         n = self.length
         if hasattr(self, "_cached_codewords"):
-            return np.bincount(np.sum(self.codewords(), axis=1), minlength=n + 1)
+            weights = np.sum(self.codewords(), axis=1)
+            return np.bincount(weights, minlength=n + 1).tolist()
         # Packed bits: faster XOR and popcount.
         G = np.packbits(self.generator_matrix, axis=1)
         # Batches of up to 2**10 codewords.
@@ -178,7 +179,7 @@ class BlockCode(ABC):
         for offset in tqdm(high, desc=desc, delay=2.5, unit_scale=len(low)):
             weights = np.bitwise_count(low ^ offset).sum(axis=1, dtype=int)
             distribution += np.bincount(weights, minlength=n + 1)
-        return distribution
+        return distribution.tolist()
 
     @cache
     @abstractmethod
@@ -222,13 +223,14 @@ class BlockCode(ABC):
 
     @cache
     @abstractmethod
-    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+    def coset_leader_weight_distribution(self) -> list[int]:
         r"""
-        Returns the coset leader weight distribution of the code. This is an array of shape $(n + 1)$ in which element in position $w$ is equal to the number of coset leaders of weight $w$, for $w \in [0 : n]$.
+        Returns the coset leader weight distribution of the code. This is the list $\alpha_0, \alpha_1, \ldots, \alpha_n$, in which $\alpha_w$ is the number of coset leaders of Hamming weight $w$.
         """
         m, n = self.redundancy, self.length
         if hasattr(self, "_cached_coset_leaders"):
-            return np.bincount(np.sum(self.coset_leaders(), axis=1), minlength=n + 1)
+            weights = np.sum(self.coset_leaders(), axis=1)
+            return np.bincount(weights, minlength=n + 1).tolist()
         H_cols = bits_to_int(self.check_matrix.T.ravel(), width=m)
         visited = np.zeros(2**m, dtype=bool)
         visited[0] = True
@@ -251,7 +253,7 @@ class BlockCode(ABC):
             weight += 1
             distribution[weight] = syndromes.size
         pbar.close()
-        return distribution
+        return distribution.tolist()
 
     @cache
     @abstractmethod

@@ -222,12 +222,12 @@ class SystematicBlockCode(abc.BlockCode):
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> Array1D[np.integer]:
+    def codeword_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
             >>> code.codeword_weight_distribution()
-            array([1, 0, 0, 2, 1, 0])
+            [1, 0, 0, 2, 1, 0]
         """
         return super().codeword_weight_distribution()
 
@@ -259,12 +259,12 @@ class SystematicBlockCode(abc.BlockCode):
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+    def coset_leader_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
             >>> code.coset_leader_weight_distribution()
-            array([1, 5, 2, 0, 0, 0])
+            [1, 5, 2, 0, 0, 0]
         """
         return super().coset_leader_weight_distribution()
 

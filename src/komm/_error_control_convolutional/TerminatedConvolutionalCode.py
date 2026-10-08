@@ -10,7 +10,7 @@ from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
 from .._util.validators import validate_choice
-from ..types import Array1D, Array2D
+from ..types import Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
 
@@ -313,7 +313,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         return super().codewords()
 
     @cache
-    def codeword_weight_distribution(self) -> Array1D[np.integer]:
+    def codeword_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.TerminatedConvolutionalCode(
@@ -322,7 +322,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             ...     mode='tail-biting',
             ... )
             >>> code.codeword_weight_distribution()
-            array([1, 0, 0, 4, 3, 0, 0])
+            [1, 0, 0, 4, 3, 0, 0]
         """
         return super().codeword_weight_distribution()
 
@@ -362,7 +362,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         return super().coset_leaders()
 
     @cache
-    def coset_leader_weight_distribution(self) -> Array1D[np.integer]:
+    def coset_leader_weight_distribution(self) -> list[int]:
         r"""
         Examples:
             >>> code = komm.TerminatedConvolutionalCode(
@@ -371,7 +371,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             ...     mode='tail-biting',
             ... )
             >>> code.coset_leader_weight_distribution()
-            array([1, 6, 1, 0, 0, 0, 0])
+            [1, 6, 1, 0, 0, 0, 0]
         """
         return super().coset_leader_weight_distribution()
 
