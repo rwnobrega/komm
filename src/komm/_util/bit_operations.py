@@ -5,7 +5,12 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
-from .validators import validate_bit_order, validate_integer, validate_integer_array
+from .validators import (
+    validate_binary_array,
+    validate_bit_order,
+    validate_integer,
+    validate_integer_array,
+)
 
 
 def bits_to_int(
@@ -44,7 +49,7 @@ def bits_to_int(
     """
     bit_order = validate_bit_order(bit_order)
     width = validate_integer(width, low=1, high=64)
-    input = validate_integer_array(input, low=0, high=2)
+    input = validate_binary_array(input)
     if input.shape[-1] % width != 0:
         raise ValueError(
             f"last dimension of 'input' must be a multiple of {width}"

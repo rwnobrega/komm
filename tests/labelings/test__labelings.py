@@ -84,7 +84,7 @@ def test_labeling_invalid_input(labeling: komm.abc.Labeling):
                 lab.indices_to_bits(indices)
         with pytest.raises(TypeError, match="'indices' must contain only integers"):
             lab.indices_to_bits([0.5])
-        with pytest.raises(ValueError, match=r"'bits' must be in \[0:2\)"):
+        with pytest.raises(ValueError, match="'bits' must be 0 or 1"):
             lab.bits_to_indices([2] * m)
         with pytest.raises(TypeError, match="'bits' must contain only integers"):
             lab.bits_to_indices([0.5] * m)

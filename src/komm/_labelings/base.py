@@ -4,7 +4,7 @@ from typing import TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer_array
+from .._util.validators import validate_binary_array, validate_integer_array
 from ..types import Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -71,7 +71,7 @@ class Labeling(ABC):
             indices: The indices corresponding to the given bits. Has the same shape as `bits`, but with the last dimension contracted by a factor of $m$.
         """
         m = self.num_bits
-        bits = validate_integer_array(bits, low=0, high=2)
+        bits = validate_binary_array(bits)
         if bits.shape[-1] % m != 0:
             raise ValueError(
                 "last dimension of 'bits' must be a multiple of the number of"

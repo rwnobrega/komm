@@ -5,7 +5,11 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import bits_to_int, int_to_bits
-from .._util.validators import validate_integer_array, validate_positive_integer
+from .._util.validators import (
+    validate_binary_array,
+    validate_integer_array,
+    validate_positive_integer,
+)
 
 
 class ReflectedLabeling(abc.Labeling):
@@ -96,7 +100,7 @@ class ReflectedLabeling(abc.Labeling):
                    [3, 3]])
         """
         m = self._num_bits
-        bits = validate_integer_array(bits, low=0, high=2)
+        bits = validate_binary_array(bits)
         nat_indices = bits_to_int(bits, width=m, bit_order="MSB-first")
         indices = np.zeros_like(nat_indices)
         for shift in range(m):

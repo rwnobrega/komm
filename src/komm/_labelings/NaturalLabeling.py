@@ -5,7 +5,11 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import bits_to_int, int_to_bits
-from .._util.validators import validate_integer_array, validate_positive_integer
+from .._util.validators import (
+    validate_binary_array,
+    validate_integer_array,
+    validate_positive_integer,
+)
 
 
 class NaturalLabeling(abc.Labeling):
@@ -94,7 +98,7 @@ class NaturalLabeling(abc.Labeling):
                    [3, 3]])
         """
         m = self._num_bits
-        bits = validate_integer_array(bits, low=0, high=2)
+        bits = validate_binary_array(bits)
         return bits_to_int(bits, width=m, bit_order="MSB-first")
 
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:

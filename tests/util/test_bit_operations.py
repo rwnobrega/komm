@@ -66,7 +66,7 @@ def test_bit_operations_bit_order():
 def test_bit_operations_invalid():
     with pytest.raises(ValueError):
         komm.bits_to_int([0, 1, 0], width=2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
         komm.bits_to_int([0, 2], width=2)
     with pytest.raises(ValueError, match=r"'width' must be in \[1:64\)"):
         komm.bits_to_int([0, 1], width=0)
