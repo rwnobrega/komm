@@ -30,9 +30,10 @@ class HammingCode(SystematicBlockCode):
     For more details, see <cite>LC04, Sec. 4.1</cite> and [EC Zoo: Hamming code](https://errorcorrectionzoo.org/c/hamming).
 
     Notes:
-        - For $\mu = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$.
-        - Its dual is the [simplex code](/ref/SimplexCode).
-        - Hamming codes are perfect codes.
+        - For $\mu = 2$ it reduces to the [repetition code](/ref/RepetitionCode) of length $3$; in its extended version, of length $4$.
+        - Its extended version is equivalent to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\mu - 2, \mu)$.
+        - Its dual is the [simplex code](/ref/SimplexCode); the dual of its extended version is the lengthened simplex code.
+        - Hamming codes are perfect codes; their extended versions are not.
 
     Parameters:
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
