@@ -13,12 +13,12 @@ def test_lengths():
 
 
 def test_invalid_target_cardinality():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
         komm.VariableToFixedCode(1, 2, 1, {(0,): (0,)})
 
 
 def test_invalid_source_cardinality():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
         komm.VariableToFixedCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
 
 
@@ -52,7 +52,7 @@ def test_invalid_dec_mapping_domain_1():
     }
     komm.VariableToFixedCode(2, 2, 2, dec_mapping)
     dec_mapping[(2, 1)] = dec_mapping.pop((0, 1))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'dec_mapping': invalid domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
@@ -65,7 +65,7 @@ def test_invalid_dec_mapping_domain_2():
     }
     komm.VariableToFixedCode(2, 2, 2, dec_mapping)
     dec_mapping[(0,)] = dec_mapping.pop((0, 1))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'dec_mapping': invalid domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
@@ -78,7 +78,7 @@ def test_invalid_dec_mapping_codomain_1():
     }
     komm.VariableToFixedCode(2, 2, 2, dec_mapping)
     dec_mapping[(0, 1)] = (0, 0, 2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'dec_mapping': invalid co-domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
@@ -91,7 +91,7 @@ def test_invalid_dec_mapping_codomain_2():
     }
     komm.VariableToFixedCode(2, 2, 2, dec_mapping)
     dec_mapping[(0, 1)] = ()
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'dec_mapping': invalid co-domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
@@ -143,5 +143,5 @@ def test_encoding_not_fully_covering():
     code = komm.VariableToFixedCode.from_sourcewords(
         [(0, 0, 0), (0, 1, 0), (0, 1), (1,)]
     )
-    with pytest.raises(ValueError):  # Code is not fully covering
+    with pytest.raises(ValueError, match="code is not fully covering"):
         code.encode([0])
