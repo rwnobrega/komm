@@ -166,7 +166,7 @@ def test_cyclic_code_inverse_encode_invalid_input():
     code = komm.CyclicCode(length=7, check_polynomial=0b10111)
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
 

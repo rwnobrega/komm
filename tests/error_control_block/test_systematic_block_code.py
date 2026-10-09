@@ -91,17 +91,17 @@ def test_systematic_block_code_mappings_invalid_input():
 
     # For 'encode', last dimension of 'u' should be the code dimension (3)
     code.encode(np.zeros((3, 4, 3)))  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
         code.encode(np.zeros((3, 4, 4)))  # Incorrect
 
     # For 'inverse_encode', last dimension of 'v' should be the code length (6)
     code.inverse_encode(np.zeros((3, 4, 6)))  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
         code.inverse_encode(np.zeros((3, 4, 5)))
 
     # For 'check', last dimension of 'r' should be the code length (6)
     code.check(np.zeros((3, 4, 6)))  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
         code.check(np.zeros((3, 4, 5)))
 
 
@@ -109,7 +109,7 @@ def test_block_code_inverse_encode_invalid_input():
     code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
 
