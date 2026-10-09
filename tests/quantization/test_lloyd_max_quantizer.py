@@ -102,3 +102,11 @@ def test_lloyd_max_quantizer_sayood_table_9_6(
     signal_power = np.trapezoid(input_pdf(x) * x**2, x)
     noise_power = quantizer.mean_squared_error(input_pdf, input_range)
     assert np.isclose(10 * np.log10(signal_power / noise_power), snr_db, atol=0.05)
+
+
+def test_lloyd_max_quantizer_invalid_num_levels():
+    pdf, input_range = partial(uniform_pdf, peak=1), (-1, 1)
+    with pytest.raises(ValueError, match=r"'num_levels' must be at least 2 \(got 1\)"):
+        komm.LloydMaxQuantizer(pdf, input_range, num_levels=1)
+    with pytest.raises(TypeError, match="'num_levels' must be an integer"):
+        komm.LloydMaxQuantizer(pdf, input_range, num_levels=2.0)  # type: ignore

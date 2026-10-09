@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_integer
 
 
 @dataclass
@@ -49,6 +50,7 @@ class LloydMaxQuantizer(abc.ScalarQuantizer):
     num_levels: int
 
     def __post_init__(self) -> None:
+        self.num_levels = validate_integer(self.num_levels, low=2)
         self._levels, self._thresholds = lloyd_max_quantizer(
             self.input_pdf,
             self.num_levels,
