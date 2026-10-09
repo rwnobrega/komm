@@ -10,6 +10,7 @@ from .validators import (
     validate_bit_order,
     validate_integer,
     validate_integer_array,
+    validate_nonnegative_integer,
 )
 
 
@@ -141,6 +142,7 @@ def to_binary(
     integer = validate_integer(integer)
     if width is None:
         width = integer.bit_length()
+    width = validate_nonnegative_integer(width)
     integer = validate_integer(
         integer, low=0, high=1 << width, rule="0 <= integer < 2**width"
     )

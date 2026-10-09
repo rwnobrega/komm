@@ -116,6 +116,10 @@ def test_binary_invalid():
         komm.from_binary([0, 2])
     with pytest.raises(TypeError, match="'integer' must be an integer"):
         komm.to_binary(1.5)  # type: ignore
+    with pytest.raises(ValueError, match="'width' must be a non-negative integer"):
+        komm.to_binary(3, width=-1)
+    with pytest.raises(TypeError, match="'width' must be an integer"):
+        komm.to_binary(3, width=2.0)  # type: ignore
     for integer, width in [(-1, None), (16, 4)]:
         message = f"'integer' must satisfy 0 <= integer < 2**width (got {integer})"
         with pytest.raises(ValueError, match=escape(message)):
