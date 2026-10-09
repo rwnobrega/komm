@@ -124,6 +124,17 @@ def test_marqum_q_exponential_distribution(lamb):
     )
 
 
+@pytest.mark.parametrize("m", [0, -1])
+def test_marcum_q_invalid_m(m):
+    with pytest.raises(ValueError, match=rf"'m' must be a positive integer \(got {m}"):
+        komm.marcum_q(m, 1.0, 1.0)
+
+
+def test_marcum_q_m_not_integer():
+    with pytest.raises(TypeError, match=r"'m' must be an integer \(got float\)"):
+        komm.marcum_q(1.5, 1.0, 1.0)  # type: ignore
+
+
 @pytest.mark.parametrize(
     "a, b, expected",
     [

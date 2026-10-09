@@ -4,6 +4,8 @@ from statistics import NormalDist
 import numpy as np
 import numpy.typing as npt
 
+from .validators import validate_positive_integer
+
 norm = NormalDist()
 
 
@@ -115,8 +117,7 @@ def marcum_q(
     """
     a = np.asarray(a)
     x = np.asarray(x)
-    if not m > 0:
-        raise ValueError("'m' must be positive")
+    m = validate_positive_integer(m)
     if not np.all(a >= 0) or not np.all(x >= 0):
         raise ValueError("'a' and 'x' must be non-negative")
     result = np.vectorize(_auxiliary_p)(m, a**2 / (2 * m), x**2 / 2)
