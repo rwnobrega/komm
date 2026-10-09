@@ -453,3 +453,16 @@ def test_convolutional_code_encode_invalid_state():
         code.encode_with_state([1, 0, 1, 1], [0, 0, 0])
     with pytest.raises(ValueError):
         code.encode_with_state([1, 0, 1, 1], [[0, 0], [0, 0]])
+
+
+def test_convolutional_code_invalid_polynomials():
+    with pytest.raises(TypeError, match="'feedforward_polynomials' must contain only"):
+        komm.ConvolutionalCode([[0o7, 5.5]])
+    with pytest.raises(ValueError, match="elements of 'feedforward_polynomials' must"):
+        komm.ConvolutionalCode([[0o7, -0o5]])
+    with pytest.raises(ValueError, match="'feedforward_polynomials' must be a 2D"):
+        komm.ConvolutionalCode([0o7, 0o5])
+    with pytest.raises(ValueError, match="elements of 'feedback_polynomials' must"):
+        komm.ConvolutionalCode([[0o7, 0o5]], [0])
+    with pytest.raises(ValueError, match="'feedback_polynomials' must be a 1D-array"):
+        komm.ConvolutionalCode([[0o7, 0o5]], [[0o7]])

@@ -10,6 +10,7 @@ from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
 from .._util.matrices import block_diagonal
+from .._util.validators import validate_integer_array
 from ..types import Array1D, Array2D
 
 
@@ -88,15 +89,10 @@ class ConvolutionalCode(abc.ConvolutionalCode):
         feedforward_polynomials: npt.ArrayLike,
         feedback_polynomials: npt.ArrayLike | None = None,
     ) -> None:
-        ff = np.asarray(feedforward_polynomials, dtype=int)
-        if ff.ndim != 2:
-            raise ValueError("feedforward must be a 2-dimensional array")
+        ff = validate_integer_array(feedforward_polynomials, low=0, ndim=2)
         if feedback_polynomials is None:
-            fb = np.ones(ff.shape[0], dtype=int)
-        else:
-            fb = np.asarray(feedback_polynomials, dtype=int)
-        if fb.ndim != 1:
-            raise ValueError("feedback must be a 1-dimensional array")
+            feedback_polynomials = np.ones(ff.shape[0], dtype=int)
+        fb = validate_integer_array(feedback_polynomials, low=1, ndim=1)
         if fb.shape[0] != ff.shape[0]:
             raise ValueError("feedback and feedforward dimensions do not match")
         self.feedforward_polynomials = [[BinaryPolynomial(p) for p in ps] for ps in ff]
