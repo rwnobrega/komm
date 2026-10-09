@@ -5,7 +5,7 @@ from math import ceil, log
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer_array
+from .._util.validators import validate_integer, validate_integer_array
 
 Word = tuple[int, ...]
 
@@ -181,8 +181,7 @@ def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
         codewords: A list where the index is the symbol and the value is the symbol tuple for that symbol. Symbols with zero length receive an empty tuple.
     """
     lengths = validate_integer_array(lengths, low=0, ndim=1)
-    if not base >= 2:
-        raise ValueError("'base' must be at least 2")
+    base = validate_integer(base, low=2)
 
     lengths_list: list[int] = lengths.tolist()
     l_max = max(lengths_list)

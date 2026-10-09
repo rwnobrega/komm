@@ -76,5 +76,7 @@ def test_canonical_code_invalid():
         canonical_code([-1, 0, 1])
     with pytest.raises(TypeError, match="'lengths' must contain only integers"):
         canonical_code([1.0, 2.0, 2.0])
-    with pytest.raises(ValueError, match="'base' must be at least 2"):
+    with pytest.raises(ValueError, match=r"'base' must be at least 2 \(got 1\)"):
         canonical_code([1, 2, 2], base=1)
+    with pytest.raises(TypeError, match=r"'base' must be an integer \(got float\)"):
+        canonical_code([1, 2, 2], base=2.0)  # type: ignore
