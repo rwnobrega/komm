@@ -33,5 +33,5 @@ def test_lfsr_mls(degree):
 
 @pytest.mark.parametrize("degree", [-10, 0, 25])
 def test_lfsr_mls_invalid(degree):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"only degrees in the range \[1 : 24\]"):
         komm.LFSRSequence.maximum_length_sequence(degree)
