@@ -72,17 +72,22 @@ def test_peeling_correct_bits(code: komm.abc.BlockCode):
         np.testing.assert_equal(u_hat[known], u[known])
 
 
-@pytest.mark.parametrize(
-    "r, error",
-    [
-        ([1, 1, 0, 3, 0, 1, 1], ValueError),
-        ([-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4], TypeError),
-        ([1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4], TypeError),
-        ([1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0], TypeError),
-    ],
-)
-def test_peeling_invalid_input(r, error):
+def test_peeling_invalid_input():
     # Only bits and erasures are accepted.
     decoder = komm.PeelingDecoder(komm.HammingCode(3))
-    with pytest.raises(error):
+    with pytest.raises(ValueError, match=r"elements of 'input' must be in \[0:3\)"):
+        decoder.decode([1, 1, 0, 3, 0, 1, 1])
+
+
+@pytest.mark.parametrize(
+    "r",
+    [
+        [-1.3, -0.8, 1.1, -0.8, 1.2, -0.2, -1.4],
+        [1.3, 0.8, 1.1, 0.8, 1.2, 0.2, 1.4],
+        [1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0],
+    ],
+)
+def test_peeling_input_not_integer(r):
+    decoder = komm.PeelingDecoder(komm.HammingCode(3))
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
         decoder.decode(r)
