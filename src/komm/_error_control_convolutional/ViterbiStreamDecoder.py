@@ -8,6 +8,7 @@ from .. import abc
 from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
 from .._util.validators import validate_decision_type
+from ..types import Array1D
 
 
 @dataclass
@@ -48,7 +49,7 @@ class ViterbiStreamDecoder:
         else:  # self.input_type == "soft"
             return np.dot(self._bits[y], z)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Parameters:
             input: The (hard or soft) bit sequence to be decoded.
@@ -79,7 +80,7 @@ class ViterbiStreamDecoder:
         output = int_to_bits(input_hat, width=k)
         return output
 
-    def flush(self) -> npt.NDArray[np.integer]:
+    def flush(self) -> Array1D[np.integer]:
         r"""
         Returns the last $k \tau$ bits of the stream, taken from the survivor with best metric, and resets the decoder to its initial state.
 

@@ -445,7 +445,7 @@ class DirectTruncation(TerminationStrategy):
 
 class ZeroTermination(TerminationStrategy):
     @cached_property
-    def _tail_projector(self) -> npt.NDArray[np.integer]:
+    def _tail_projector(self) -> Array2D[np.integer]:
         # See [WBR01, eq. (3)]. Set x_0 = x_t = 0, and t = h + μ.
         h = self.num_blocks
         μ = self.convolutional_code.memory_order
