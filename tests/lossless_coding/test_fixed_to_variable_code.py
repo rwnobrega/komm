@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -227,6 +229,14 @@ def test_rate_invalid_pmf(pmf):
     code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
     with pytest.raises(ValueError, match="'pmf' must"):
         code.rate(pmf)
+
+
+def test_rate_pmf_size():
+    code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
+    for pmf in [[0.5, 0.5], [0.25, 0.25, 0.25, 0.25]]:
+        message = f"'pmf' must have size 3 (got {len(pmf)})"
+        with pytest.raises(ValueError, match=escape(message)):
+            code.rate(pmf)
 
 
 @pytest.mark.parametrize(
