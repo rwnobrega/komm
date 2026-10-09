@@ -1,4 +1,5 @@
 from itertools import product
+from re import escape
 
 import numpy as np
 import pytest
@@ -104,3 +105,25 @@ def test_labeling_invalid_num_bits(cls, message):
         cls(0)
     with pytest.raises(TypeError, match="'num_bits' must be an integer"):
         cls(2.0)
+
+
+@pytest.mark.parametrize(
+    "matrix, message",
+    [
+        ([0, 1], "'matrix' must be a 2D-array (got shape (2,))"),
+        ([[0, 0], [0, 2], [1, 0], [1, 1]], "elements of 'matrix' must be 0 or 1"),
+        ([[0, 0], [0, 1], [1, 0]], "shape of 'matrix' must be (2**m, m) (got (3, 2))"),
+        ([[0, 0], [0, 0], [1, 0], [1, 1]], "rows of 'matrix' must be distinct"),
+    ],
+)
+def test_labeling_invalid_matrix(matrix, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.Labeling(matrix)
+
+
+def test_labeling_matrix_not_integer():
+    for matrix in [[[0, 0], [0, 0.5], [1, 0], [1, 1]], [[0.0], [1.0]]]:
+        with pytest.raises(TypeError, match="'matrix' must contain only integers"):
+            komm.Labeling(matrix)
+    labeling = komm.Labeling([[False], [True]])
+    assert np.issubdtype(labeling.matrix.dtype, np.integer)

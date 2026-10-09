@@ -2,6 +2,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_binary_array
 
 
 class Labeling(abc.Labeling):
@@ -13,14 +14,10 @@ class Labeling(abc.Labeling):
     """
 
     def __init__(self, matrix: npt.ArrayLike) -> None:
-        matrix = np.asarray(matrix)
-        if matrix.ndim != 2:
-            raise ValueError("'matrix' must be a 2D-array")
+        matrix = validate_binary_array(matrix, ndim=2)
         M, m = matrix.shape
         if M != 2**m:
             raise ValueError(f"shape of 'matrix' must be (2**m, m) (got ({M}, {m}))")
-        if np.any(matrix < 0) or np.any(matrix > 1):
-            raise ValueError("elements of 'matrix' must be either 0 or 1")
         if len(set(tuple(row) for row in matrix)) != M:
             raise ValueError("rows of 'matrix' must be distinct")
         self._matrix = matrix
