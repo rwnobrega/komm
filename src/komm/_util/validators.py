@@ -11,7 +11,7 @@ from typing import Literal, SupportsIndex, TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from ..types import Array2D
+from ..types import Array1D, Array2D
 
 T = TypeVar("T")
 
@@ -58,7 +58,7 @@ def validate_pmf(
     value: npt.ArrayLike,
     *,
     size: int | None = None,
-) -> npt.NDArray[np.floating]:
+) -> Array1D[np.floating]:
     value = np.asarray(value)
     if not value.ndim == 1:
         raise ValueError(f"'{arg_name()}' must be a 1D-array")

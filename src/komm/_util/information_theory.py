@@ -5,6 +5,7 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D, Array2D
 from .validators import (
     validate_float,
     validate_log_base,
@@ -178,11 +179,11 @@ def mutual_information(
 
 
 def arimoto_blahut(
-    transition_matrix: npt.NDArray[np.floating],
-    initial_guess: npt.NDArray[np.floating],
+    transition_matrix: Array2D[np.floating],
+    initial_guess: Array1D[np.floating],
     max_iter: int,
     tol: float,
-) -> npt.NDArray[np.floating]:
+) -> Array1D[np.floating]:
     r"""
     Arimoto–Blahut algorithm for channel capacity. See <cite>CT06, Sec. 10.8</cite>.
     """

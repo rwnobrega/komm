@@ -10,6 +10,7 @@ from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
 from .._util.validators import validate_float, validate_log_base, validate_pmf
+from ..types import Array2D
 
 
 @dataclass(init=False)
@@ -54,7 +55,7 @@ class ZChannel(abc.DiscreteMemorylessChannel):
         return 2
 
     @cached_property
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
+    def transition_matrix(self) -> Array2D[np.floating]:
         r"""
         For the Z-channel, it is given by
         $$

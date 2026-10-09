@@ -5,6 +5,8 @@ from typing import Literal
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array2D
+
 
 class DiscreteMemorylessChannel(ABC):
     @cached_property
@@ -25,7 +27,7 @@ class DiscreteMemorylessChannel(ABC):
 
     @cached_property
     @abstractmethod
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
+    def transition_matrix(self) -> Array2D[np.floating]:
         r"""
         The channel transition probability matrix $p_{Y \mid X}$.
         """

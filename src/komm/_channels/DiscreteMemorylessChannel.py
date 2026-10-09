@@ -8,6 +8,7 @@ from .. import abc
 from .._util import global_rng
 from .._util.information_theory import arimoto_blahut, mutual_information
 from .._util.validators import validate_transition_matrix
+from ..types import Array2D
 
 
 class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
@@ -42,7 +43,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         return self.transition_matrix.shape[1]
 
     @cached_property
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
+    def transition_matrix(self) -> Array2D[np.floating]:
         return self._transition_matrix
 
     def mutual_information(

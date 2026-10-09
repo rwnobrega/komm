@@ -58,7 +58,7 @@ class MarkovChain:
         return f"{self.__class__.__name__}({self.transition_matrix.tolist()})"
 
     @property
-    def transition_matrix(self) -> npt.NDArray[np.floating]:
+    def transition_matrix(self) -> Array2D[np.floating]:
         return self._transition_matrix
 
     @property
