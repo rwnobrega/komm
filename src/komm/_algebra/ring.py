@@ -28,33 +28,33 @@ class Ring(Protocol[T_co]):
     def one(self) -> T_co: ...
 
 
-def power(x: T_co, n: int) -> T_co:
+def power(base: T_co, exponent: int) -> T_co:
     r"""
-    Computes $x^n$ using exponentiation by squaring.
+    Computes $b^e$ using exponentiation by squaring.
 
     Parameters:
-        x: The base (a ring element)
-        n: The exponent (a non-negative integer)
+        base: The base $b$ (a ring element)
+        exponent: The exponent $e$ (a non-negative integer)
 
     Returns:
-        power: The result of `x` raised to the power of `n` in the ring
+        power: The result of `base` raised to the power of `exponent` in the ring
 
     Raises:
-        ValueError: If `n` is negative
+        ValueError: If `exponent` is negative
 
     References:
         `Exponentiation by squaring <https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_
     """
-    if n < 0:
+    if exponent < 0:
         raise ValueError("Negative exponents not supported")
-    if n == 0:
-        return x.ambient.one
-    if n == 1:
-        return x
-    y = power(x, n // 2)
+    if exponent == 0:
+        return base.ambient.one
+    if exponent == 1:
+        return base
+    y = power(base, exponent // 2)
     y = y * y
-    if n % 2 == 1:
-        y = x * y
+    if exponent % 2 == 1:
+        y = base * y
     return y
 
 

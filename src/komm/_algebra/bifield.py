@@ -99,15 +99,15 @@ def divide(
 
 
 def power(
-    field: FiniteBifield, b: npt.ArrayLike, e: npt.ArrayLike
+    field: FiniteBifield, base: npt.ArrayLike, exponent: npt.ArrayLike
 ) -> npt.NDArray[np.integer]:
     r"""
     Raises elements of a finite field to integer powers. The elements are given by their integer representations, in $[0 : 2^k)$. The operation is elementwise, with broadcasting.
 
     Parameters:
         field: A finite field.
-        b: The base.
-        e: The exponent.
+        base: The base $b$.
+        exponent: The exponent $e$.
 
     Returns:
         power: The power $b^e$.
@@ -120,13 +120,13 @@ def power(
         >>> power(field, 0b10, [0, 1, 2, 3, 4, 15, -1])
         array([1, 2, 4, 8, 3, 1, 9])
     """
-    b, e = np.asarray(b), np.asarray(e)
-    if np.any((b == 0) & (e < 0)):
+    base, exponent = np.asarray(base), np.asarray(exponent)
+    if np.any((base == 0) & (exponent < 0)):
         raise ZeroDivisionError("zero cannot be raised to a negative power")
     n = field.order - 1
     exp, log = exp_table(field), log_table(field)
-    result = exp[log[b] * (e % n) % n]
-    return np.where(b == 0, np.where(e == 0, 1, 0), result)
+    result = exp[log[base] * (exponent % n) % n]
+    return np.where(base == 0, np.where(exponent == 0, 1, 0), result)
 
 
 # Polynomial functions

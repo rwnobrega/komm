@@ -11,18 +11,18 @@ class FieldElement(ring.RingElement, Protocol):
     def __truediv__(self: Self, other: Self) -> Self: ...
 
 
-def power(x: T_co, n: int) -> T_co:
+def power(base: T_co, exponent: int) -> T_co:
     r"""
-    Compute $x^n$ using exponentiation by squaring. See the corresponding function in :mod:`komm._algebra.ring`.
+    Computes $b^e$ using exponentiation by squaring. See the corresponding function in :mod:`komm._algebra.ring`.
 
     Parameters:
-        x: The base (a field element)
-        n: The exponent
+        base: The base $b$ (a field element)
+        exponent: The exponent $e$
 
     Returns:
-        power: The result of `x` raised to the power of `n` in the field
+        power: The result of `base` raised to the power of `exponent` in the field
     """
-    if n < 0:
-        return ring.power(x.inverse(), -n)
+    if exponent < 0:
+        return ring.power(base.inverse(), -exponent)
     else:
-        return ring.power(x, n)
+        return ring.power(base, exponent)
