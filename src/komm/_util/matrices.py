@@ -106,7 +106,9 @@ def rref(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     reduced = np.asarray(matrix, dtype=bool).copy()
     n_rows, n_cols = reduced.shape
     r = 0
-    cols = tqdm(range(n_cols), desc="Row-reducing matrix", unit="col", delay=2.5)
+    cols = range(n_cols)
+    if reduced.size > 2**20:  # Small matrices finish before the bar shows
+        cols = tqdm(cols, desc="Row-reducing matrix", unit="col", delay=2.5)
     for c in cols:
         if r == n_rows:
             break
