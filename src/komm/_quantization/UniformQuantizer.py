@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_float, validate_integer, validate_positive_float
+from ..types import Array1D
 
 
 class UniformQuantizer(abc.ScalarQuantizer):
@@ -111,7 +112,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
         )
 
     @cached_property
-    def levels(self) -> npt.NDArray[np.floating]:
+    def levels(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> quantizer = komm.UniformQuantizer(num_levels=8, step=3.0)
@@ -126,7 +127,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
         return np.array([(i - (L - 1) / 2 + θ) * Δ for i in range(L)])
 
     @cached_property
-    def thresholds(self) -> npt.NDArray[np.floating]:
+    def thresholds(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> quantizer = komm.UniformQuantizer(num_levels=8, step=3.0)

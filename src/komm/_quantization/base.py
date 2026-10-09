@@ -5,11 +5,13 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D
+
 
 class ScalarQuantizer(ABC):
     @cached_property
     @abstractmethod
-    def levels(self) -> npt.NDArray[np.floating]:
+    def levels(self) -> Array1D[np.floating]:
         r"""
         The quantizer levels $y_0, y_1, \ldots, y_{L-1}$.
         """
@@ -17,7 +19,7 @@ class ScalarQuantizer(ABC):
 
     @cached_property
     @abstractmethod
-    def thresholds(self) -> npt.NDArray[np.floating]:
+    def thresholds(self) -> Array1D[np.floating]:
         r"""
         The quantizer finite thresholds $\lambda_1, \lambda_2, \ldots, \lambda_{L-1}$.
         """

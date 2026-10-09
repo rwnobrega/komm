@@ -7,6 +7,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_integer
+from ..types import Array1D
 
 
 @dataclass
@@ -60,7 +61,7 @@ class LloydMaxQuantizer(abc.ScalarQuantizer):
         )
 
     @cached_property
-    def levels(self) -> npt.NDArray[np.floating]:
+    def levels(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
@@ -75,7 +76,7 @@ class LloydMaxQuantizer(abc.ScalarQuantizer):
         return self._levels
 
     @cached_property
-    def thresholds(self) -> npt.NDArray[np.floating]:
+    def thresholds(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> gaussian_pdf = lambda x: 1/np.sqrt(2*np.pi) * np.exp(-x**2/2)
@@ -146,7 +147,7 @@ def lloyd_max_quantizer(
     input_range: tuple[float, float],
     points_per_interval: int,
     max_iter: int,
-) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
+) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
     # See [Say06, eqs. (9.27) and (9.28)].
     x_min, x_max = input_range
 

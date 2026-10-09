@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from ..types import Array1D
 
 
 class ScalarQuantizer(abc.ScalarQuantizer):
@@ -64,7 +65,7 @@ class ScalarQuantizer(abc.ScalarQuantizer):
         return f"{self.__class__.__name__}({args})"
 
     @cached_property
-    def levels(self) -> npt.NDArray[np.floating]:
+    def levels(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> quantizer = komm.ScalarQuantizer(
@@ -77,7 +78,7 @@ class ScalarQuantizer(abc.ScalarQuantizer):
         return self._levels
 
     @cached_property
-    def thresholds(self) -> npt.NDArray[np.floating]:
+    def thresholds(self) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> quantizer = komm.ScalarQuantizer(
