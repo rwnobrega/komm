@@ -13,7 +13,7 @@ from .BlockCode import BlockCode
 @mkdocstrings(filters=["!.*"])
 class Lexicode(BlockCode):
     r"""
-    Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code. For more details, see <cite>HP03, Sec. 2.11</cite>.
+    Lexicographic code (lexicode). For a given length $n$ and minimum distance $d$, it is the [linear block code](/ref/BlockCode) obtained by starting with the all-zero codeword and adding all binary $n$-tuples (in lexicographic order) that are at least at distance $d$ from all codewords already in the code. For more details, see <cite>HP03, Sec. 2.11</cite> and [EC Zoo: Lexicographic code](https://errorcorrectionzoo.org/c/lexicographic).
 
     Notes:
         - For $d = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $n$.

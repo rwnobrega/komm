@@ -19,7 +19,7 @@ class BCHCode(CyclicCode):
     - Redundancy: $m \leq \mu \tau$
     - Minimum distance: $d \geq \delta$
 
-    Only *narrow-sense* and *primitive* BCH codes are implemented. For more details, see <cite>LC04, Ch. 6</cite> and <cite>HP03, Sec. 5.1</cite>.
+    Only *narrow-sense* and *primitive* BCH codes are implemented. For more details, see <cite>LC04, Ch. 6</cite>, <cite>HP03, Sec. 5.1</cite>, and [EC Zoo: Binary BCH code](https://errorcorrectionzoo.org/c/bch).
 
     Notes:
         - For $\delta = 3$ it is equivalent to the [Hamming code](/ref/HammingCode).

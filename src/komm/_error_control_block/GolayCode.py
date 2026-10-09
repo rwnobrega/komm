@@ -36,6 +36,8 @@ class GolayCode(SystematicBlockCode):
     - Dimension: $12$
     - Minimum distance: $7$
 
+    For more details, see <cite>LC04, Sec. 4.6</cite> and [EC Zoo: Golay code](https://errorcorrectionzoo.org/c/golay).
+
     Notes:
         - The binary Golay code is a perfect code.
         - The extended binary Golay code is self-dual.

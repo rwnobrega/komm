@@ -18,6 +18,8 @@ class RepetitionCode(BlockCode):
     - Redundancy: $m = n - 1$
     - Minimum distance: $d = n$
 
+    For more details, see <cite>LC04, Sec. 3.7</cite> and [EC Zoo: Repetition code](https://errorcorrectionzoo.org/c/repetition).
+
     Notes:
         - Its dual is the [single parity-check code](/ref/SingleParityCheckCode).
 

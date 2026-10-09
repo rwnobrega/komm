@@ -23,6 +23,8 @@ class SimplexCode(SystematicBlockCode):
     - Redundancy: $m = 2^\kappa - \kappa - 1$
     - Minimum distance: $d = 2^{\kappa - 1}$
 
+    For more details, see [EC Zoo: Simplex code](https://errorcorrectionzoo.org/c/simplex).
+
     Notes:
         - For $\kappa = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$.
         - Its dual is the [Hamming code](/ref/HammingCode).

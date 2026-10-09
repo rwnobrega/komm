@@ -10,7 +10,7 @@ from ..types import Array2D
 
 class BlockCode(abc.BlockCode):
     r"""
-    General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite>.
+    General binary linear block code. It is characterized by its *generator matrix* $G \in \mathbb{B}^{k \times n}$, and by its *check matrix* $H \in \mathbb{B}^{m \times n}$, which are related by $G H^\transpose = 0$. The parameters $n$, $k$, and $m$ are called the code *length*, *dimension*, and *redundancy*, respectively, and are related by $k + m = n$. For more details, see <cite>LC04, Ch. 3</cite> and [EC Zoo: Linear binary code](https://errorcorrectionzoo.org/c/binary_linear).
 
     The constructor expects the generator matrix, the check matrix, or both. If both are provided, they must satisfy $G H^\transpose = 0$, and each one is kept as given, rather than derived from the other.
 

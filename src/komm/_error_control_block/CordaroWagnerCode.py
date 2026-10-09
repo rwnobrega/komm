@@ -11,7 +11,7 @@ from .BlockCode import BlockCode
 @mkdocstrings(filters=["!.*"])
 class CordaroWagnerCode(BlockCode):
     r"""
-    Cordaro–Wagner code. For a given length $n \geq 2$, it is the [linear block code](/ref/BlockCode) with dimension $k = 2$ which is optimum for the [BSC](/ref/BinarySymmetricChannel) with sufficiently small crossover probability. For more details, see <cite>CW67</cite>.
+    Cordaro–Wagner code. For a given length $n \geq 2$, it is the [linear block code](/ref/BlockCode) with dimension $k = 2$ which is optimum for the [BSC](/ref/BinarySymmetricChannel) with sufficiently small crossover probability. For more details, see <cite>CW67</cite> and [EC Zoo: Cordaro–Wagner code](https://errorcorrectionzoo.org/c/cordaro_wagner).
 
     - Length: $n$
     - Dimension: $k = 2$

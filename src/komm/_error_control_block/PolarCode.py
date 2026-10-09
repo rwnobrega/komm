@@ -18,6 +18,8 @@ class PolarCode(BlockCode):
     - Dimension: $k = |\mathcal{A}|$
     - Redundancy: $m = |\mathcal{F}|$
 
+    For more details, see [EC Zoo: Polar code](https://errorcorrectionzoo.org/c/polar).
+
     Notes:
         - For $\mathcal{F} = \\{ i : \mathrm{w}(i) < \mu - \rho \\}$ it reduces to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\rho, \mu)$, where $\mathrm{w}(i)$ is the number of ones in the binary representation of $i$.
 

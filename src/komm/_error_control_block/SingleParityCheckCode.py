@@ -18,6 +18,8 @@ class SingleParityCheckCode(BlockCode):
     - Redundancy: $m = 1$
     - Minimum distance: $d = 2$
 
+    For more details, see <cite>LC04, Sec. 3.7</cite> and [EC Zoo: Single parity-check code](https://errorcorrectionzoo.org/c/parity_check).
+
     Notes:
         - Its dual is the [repetition code](/ref/RepetitionCode).
 
