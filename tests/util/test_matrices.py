@@ -12,6 +12,7 @@ from komm._util.matrices import (
     rank,
     row_span,
     rref,
+    solution_set,
     trellis_oriented_form,
     xrref,
 )
@@ -180,6 +181,22 @@ def test_pseudo_inverse_random(n_rows, n_cols, rng):
         if rank(matrix) == n_cols:
             eye = np.eye(n_cols, dtype=int)
             np.testing.assert_equal((p_inv @ matrix) % 2, eye)
+
+
+@pytest.mark.parametrize("n_rows", range(6))
+@pytest.mark.parametrize("n_cols", range(6))
+def test_solution_set_random(n_rows, n_cols, rng):
+    for _ in range(100):
+        matrix = rng.integers(0, 2, size=(n_rows, n_cols))
+        vector = rng.integers(0, 2, size=n_cols)
+        if rank(np.vstack([matrix, vector])) > rank(matrix):
+            with pytest.raises(ValueError, match="system has no solution"):
+                solution_set(matrix, vector)
+            continue
+        particular, kernel = solution_set(matrix, vector)
+        np.testing.assert_equal(particular @ matrix % 2, vector)
+        np.testing.assert_equal(kernel @ matrix % 2, 0)
+        assert rank(kernel) == kernel.shape[0] == n_rows - rank(matrix)
 
 
 def spans(matrix):

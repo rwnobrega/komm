@@ -253,16 +253,6 @@ def trellis_oriented_form(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     return tof.astype(int)
 
 
-def _pseudo_inverse_and_kernel(
-    matrix: npt.ArrayLike,
-) -> tuple[Array2D[np.integer], Array2D[np.integer]]:
-    row_transform, reduced, pivots = xrref(matrix)
-    p_inverse = np.zeros_like(reduced.T)
-    p_inverse[pivots] = row_transform[: pivots.size]
-    kernel = row_transform[~reduced.any(axis=1)]
-    return p_inverse, kernel
-
-
 def pseudo_inverse(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Computes a pseudo inverse of a matrix in $\ZZ_2$.
@@ -295,7 +285,9 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> Array2D[np.integer]:
         >>> np.array_equal((p_inverse @ matrix @ p_inverse) % 2, p_inverse)
         True
     """
-    p_inverse, _ = _pseudo_inverse_and_kernel(matrix)
+    row_transform, reduced, pivots = xrref(matrix)
+    p_inverse = np.zeros_like(reduced.T)
+    p_inverse[pivots] = row_transform[: pivots.size]
     return p_inverse
 
 
@@ -344,18 +336,25 @@ def solution_set(
 
         >>> matrix = [[1, 1], [1, 1]]
         >>> solution_set(matrix, [1, 1])
-        (array([0, 1]), array([[1, 1]]))
+        (array([1, 0]), array([[1, 1]]))
         >>> solution_set(matrix, [1, 0])
         Traceback (most recent call last):
         ...
         ValueError: system has no solution
     """
     matrix = np.asarray(matrix)
-    vector = np.asarray(vector)
-    p_inverse, kernel = _pseudo_inverse_and_kernel(matrix)
-    particular = vector @ p_inverse % 2
-    if not np.array_equal(particular @ matrix % 2, vector):
+    n = len(matrix)
+    # One row per equation: [A^T | b]
+    reduced = rref(np.column_stack((matrix.T, vector)))
+    reduced = reduced[reduced.any(axis=1)]
+    pivots = np.argmax(reduced, axis=1)
+    if not np.all(pivots < n):  # No row reads 0 = 1
         raise ValueError("system has no solution")
+    free = np.delete(np.arange(n), pivots)
+    particular = np.zeros(n, dtype=int)  # Free unknowns at zero
+    particular[pivots] = reduced[:, n]
+    kernel = np.eye(n, dtype=int)[free]  # One free unknown at one
+    kernel[:, pivots] = reduced[:, free].T
     return particular, kernel
 
 
