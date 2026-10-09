@@ -9,7 +9,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
-from .._util.validators import validate_choice
+from .._util.validators import validate_binary_array, validate_choice
 from ..types import Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -114,9 +114,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         num_sections = self.strategy.codeword_length() // n0
         P_mat = np.ones((n0, 1), dtype=int)
         if self.puncturing_matrix is not None:
-            P_mat = np.asarray(self.puncturing_matrix)
-        if not P_mat.ndim == 2 or not np.isin(P_mat, [0, 1]).all():
-            raise ValueError("'puncturing_matrix' must be a 2D-array of bits")
+            P_mat = validate_binary_array(self.puncturing_matrix, ndim=2)
         if not P_mat.shape[0] == n0:
             raise ValueError("'puncturing_matrix' must have one row per output bit")
         if not np.any(P_mat):

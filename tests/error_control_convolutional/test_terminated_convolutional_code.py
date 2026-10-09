@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -290,22 +292,31 @@ def test_terminated_convolutional_code_depuncture(rng):
 
 
 @pytest.mark.parametrize(
-    "puncturing_matrix",
+    "puncturing_matrix, message",
     [
-        [[1, 2], [1, 1]],
-        [[0.5, 1], [1, 1]],
-        [1, 1, 1, 0],
-        [[1, 1]],
-        [[0, 0], [0, 0]],
-        [[], []],
-        [[1, 1, 0, 1, 1], [1, 1, 1, 1, 1]],
+        ([[1, 2], [1, 1]], "elements of 'puncturing_matrix' must be 0 or 1"),
+        ([1, 1, 1, 0], "'puncturing_matrix' must be a 2D-array (got shape (4,))"),
+        ([[1, 1]], "'puncturing_matrix' must have one row per output bit"),
+        ([[0, 0], [0, 0]], "'puncturing_matrix' must keep at least one bit"),
+        ([[], []], "'puncturing_matrix' must keep at least one bit"),
+        ([[1, 1, 0, 1, 1], [1, 1, 1, 1, 1]], "'puncturing_matrix' period must divide"),
     ],
 )
-def test_terminated_convolutional_code_puncturing_matrix_invalid(puncturing_matrix):
+def test_terminated_convolutional_code_puncturing_matrix_invalid(
+    puncturing_matrix, message
+):
     convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=escape(message)):
         komm.TerminatedConvolutionalCode(
             convolutional_code, 4, "zero-termination", puncturing_matrix
+        )
+
+
+def test_terminated_convolutional_code_puncturing_matrix_not_integer():
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'puncturing_matrix' must contain only"):
+        komm.TerminatedConvolutionalCode(
+            convolutional_code, 4, "zero-termination", [[1.0, 1.0], [1.0, 0.0]]
         )
 
 
