@@ -154,7 +154,7 @@ def test_terminated_convolutional_code_tail_biting_singular(
 ):
     # Here A^h + I is singular
     convolutional_code = komm.ConvolutionalCode(*convolutional_args)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="tail-biting is impossible for this code"):
         komm.TerminatedConvolutionalCode(convolutional_code, num_blocks, "tail-biting")
 
 
@@ -228,7 +228,7 @@ def test_terminated_convolutional_unencode_invalid_input(mode):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
         r[0] = 1
         code.inverse_encode(r)  # Incorrect
 
