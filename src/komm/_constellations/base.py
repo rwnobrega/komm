@@ -39,13 +39,7 @@ class Constellation(ABC, Generic[T]):
         M = self.order
         if priors is None:
             priors = np.ones(M) / M
-        priors = validate_pmf(priors)
-        if priors.size != M:
-            raise ValueError(
-                "length of 'priors' must be equal to the constellation"
-                f" order {M} (got {priors.size})"
-            )
-        return priors
+        return validate_pmf(priors, size=M)
 
     def _validate_received(self, received: npt.ArrayLike) -> npt.NDArray[T]:
         N = self.dimension

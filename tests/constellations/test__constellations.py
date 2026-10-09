@@ -1,4 +1,5 @@
 from itertools import product
+from re import escape
 
 import numpy as np
 import pytest
@@ -65,6 +66,18 @@ for args in product(order, base_amplitude):
 @pytest.fixture(params=params, ids=lambda const: repr(const))
 def const(request: pytest.FixtureRequest):
     return request.param
+
+
+def test_constellation_priors_size(const: komm.abc.Constellation):
+    M = const.order
+    priors = np.ones(M + 1) / (M + 1)
+    message = f"'priors' must have size {M} (got {M + 1})"
+    with pytest.raises(ValueError, match=escape(message)):
+        const.mean(priors)
+    with pytest.raises(ValueError, match=escape(message)):
+        const.mean_energy(priors)
+    with pytest.raises(ValueError, match=escape(message)):
+        const.posteriors(np.zeros(const.dimension), 1.0, priors)
 
 
 def test_constellation_equivalence_properties(const: komm.abc.Constellation):
