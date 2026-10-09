@@ -8,9 +8,8 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
+from ..types import Array1D, Array2D
 from .validators import validate_nonnegative_integer
-
-ArrayInt = npt.NDArray[np.integer]
 
 
 def _float_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.floating]:
@@ -20,7 +19,7 @@ def _float_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.floating
     return (rows @ y).reshape(*x.shape[:-1], y.shape[-1])
 
 
-def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> ArrayInt:
+def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.integer]:
     r"""
     Multiplies two matrices in $\ZZ_2$. The first factor may have extra leading dimensions, which are kept in the product.
 
@@ -39,7 +38,7 @@ def matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> ArrayInt:
     return _float_matmul(x, y).astype(int) & 1
 
 
-def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> ArrayInt:
+def matrix_power(matrix: npt.ArrayLike, exponent: SupportsIndex) -> Array2D[np.integer]:
     r"""
     Raises a square matrix to a nonnegative integer power in $\ZZ_2$.
 
@@ -88,7 +87,7 @@ def boolean_matmul(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.bool_]:
     return _float_matmul(x, y) > 0
 
 
-def rref(matrix: npt.ArrayLike) -> ArrayInt:
+def rref(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Computes the row-reduced echelon form of a matrix in $\ZZ_2$.
 
@@ -125,7 +124,9 @@ def rref(matrix: npt.ArrayLike) -> ArrayInt:
     return reduced.astype(int)
 
 
-def xrref(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt, ArrayInt]:
+def xrref(
+    matrix: npt.ArrayLike,
+) -> tuple[Array2D[np.integer], Array2D[np.integer], Array1D[np.integer]]:
     r"""
     Computes the row-reduced echelon form of a matrix in $\ZZ_2$. Returns the row transformation matrix, the reduced matrix, and the pivot indices. The relation between the input matrix `matrix` and the reduced matrix `reduced` is given by the equation `reduced = row_transform @ matrix`.
 
@@ -190,7 +191,7 @@ def rank(matrix: npt.ArrayLike) -> int:
     return int(np.count_nonzero(reduced.any(axis=1)))
 
 
-def row_span(matrix: npt.ArrayLike) -> ArrayInt:
+def row_span(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Lists all XOR combinations of the rows of a matrix. Row $i$ of the output is the XOR of the rows selected by the binary expansion of $i$ (LSB-first). For a matrix in $\ZZ_2$, these are all the vectors in its row space.
 
@@ -214,7 +215,7 @@ def row_span(matrix: npt.ArrayLike) -> ArrayInt:
     return span
 
 
-def trellis_oriented_form(matrix: npt.ArrayLike) -> ArrayInt:
+def trellis_oriented_form(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Computes a trellis-oriented form of a matrix in $\ZZ_2$. A matrix is in trellis-oriented form if its rows are linearly independent, no two rows have their leading one in the same column, and no two rows have their trailing one in the same column. The result has the same row space as the input.
 
@@ -250,7 +251,9 @@ def trellis_oriented_form(matrix: npt.ArrayLike) -> ArrayInt:
     return tof.astype(int)
 
 
-def _pseudo_inverse_and_kernel(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayInt]:
+def _pseudo_inverse_and_kernel(
+    matrix: npt.ArrayLike,
+) -> tuple[Array2D[np.integer], Array2D[np.integer]]:
     row_transform, reduced, pivots = xrref(matrix)
     p_inverse = np.zeros_like(reduced.T)
     p_inverse[pivots] = row_transform[: pivots.size]
@@ -258,7 +261,7 @@ def _pseudo_inverse_and_kernel(matrix: npt.ArrayLike) -> tuple[ArrayInt, ArrayIn
     return p_inverse, kernel
 
 
-def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
+def pseudo_inverse(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Computes a pseudo inverse of a matrix in $\ZZ_2$.
 
@@ -294,7 +297,7 @@ def pseudo_inverse(matrix: npt.ArrayLike) -> ArrayInt:
     return p_inverse
 
 
-def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
+def null_matrix(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r"""
     Computes a null matrix of a matrix in $\ZZ_2$.
     """
@@ -310,7 +313,7 @@ def null_matrix(matrix: npt.ArrayLike) -> ArrayInt:
 
 def solution_set(
     matrix: npt.ArrayLike, vector: npt.ArrayLike
-) -> tuple[ArrayInt, ArrayInt]:
+) -> tuple[Array1D[np.integer], Array2D[np.integer]]:
     r"""
     Solves the linear system $x A = b$ in $\ZZ_2$.
 
@@ -354,7 +357,7 @@ def solution_set(
     return particular, kernel
 
 
-def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> npt.NDArray[Any]:
+def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> Array2D[Any]:
     arrays_np = [np.asarray(a) for a in arrays]
     total_rows = sum(a.shape[0] for a in arrays_np)
     total_cols = sum(a.shape[1] for a in arrays_np)
