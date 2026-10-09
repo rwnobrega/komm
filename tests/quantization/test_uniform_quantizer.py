@@ -77,6 +77,9 @@ def test_uniform_quantizer_invalid_constructions():
     with pytest.raises(TypeError, match="'step' must be a real number"):
         komm.UniformQuantizer(num_levels=8, step="1.0")  # type: ignore
     assert type(komm.UniformQuantizer(num_levels=8, step=1).step) is float
+    with pytest.raises(TypeError, match="'offset' must be a real number"):
+        komm.UniformQuantizer(num_levels=8, step=1.0, offset="0.5")  # type: ignore
+    assert type(komm.UniformQuantizer(num_levels=8, step=1.0, offset=1).offset) is float
 
 
 @pytest.mark.parametrize("n_bits", [2, 3, 4, 5])

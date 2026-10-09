@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer, validate_positive_float
+from .._util.validators import validate_float, validate_integer, validate_positive_float
 
 
 class UniformQuantizer(abc.ScalarQuantizer):
@@ -50,7 +50,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
     def __init__(self, num_levels: int, step: float, offset: float = 0.0):
         self.num_levels = validate_integer(num_levels, low=2)
         self.step = validate_positive_float(step)
-        self.offset = offset
+        self.offset = validate_float(offset)
 
     @classmethod
     def mid_riser(cls, num_levels: int, step: float):
