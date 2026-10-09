@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
+from ..types import Array1D
 from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
@@ -58,7 +59,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             tokens.append((dictionary[word], -1))
         return tokens
 
-    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
@@ -75,7 +76,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             dictionary[len(dictionary)] = word + (x,)
         return np.array(source, dtype=int)
 
-    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
@@ -118,7 +119,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             i += M
         return tokens
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)
@@ -131,7 +132,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         """
         return super().encode(input)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz78 = komm.LempelZiv78Code(2)

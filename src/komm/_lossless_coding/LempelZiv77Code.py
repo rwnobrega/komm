@@ -8,6 +8,7 @@ from .._util.validators import (
     validate_integer_array,
     validate_positive_integer,
 )
+from ..types import Array1D
 from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int, int]
@@ -110,7 +111,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
 
         return tokens
 
-    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
@@ -132,7 +133,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         source = np.array(buffer[ss:], dtype=int)
         return source
 
-    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
@@ -180,7 +181,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             tokens.append((p, l, x))
         return tokens
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz77 = komm.LempelZiv77Code(
@@ -194,7 +195,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         """
         return super().encode(input)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lz77 = komm.LempelZiv77Code(

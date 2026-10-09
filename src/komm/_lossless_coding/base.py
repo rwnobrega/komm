@@ -4,6 +4,8 @@ from typing import Generic, TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D
+
 T = TypeVar("T")
 
 
@@ -23,14 +25,14 @@ class TokenCode(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def tokens_to_source(self, tokens: list[T]) -> npt.NDArray[np.integer]:
+    def tokens_to_source(self, tokens: list[T]) -> Array1D[np.integer]:
         r"""
         Decodes a given list of tokens to the corresponding sequence of source symbols.
         """
         raise NotImplementedError
 
     @abstractmethod
-    def tokens_to_target(self, tokens: list[T]) -> npt.NDArray[np.integer]:
+    def tokens_to_target(self, tokens: list[T]) -> Array1D[np.integer]:
         r"""
         Returns the target alphabet representation corresponding to a given list of tokens.
         """
@@ -43,7 +45,7 @@ class TokenCode(ABC, Generic[T]):
         """
         raise NotImplementedError
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Encodes a sequence of source symbols to a sequence of target symbols.
 
@@ -57,7 +59,7 @@ class TokenCode(ABC, Generic[T]):
         output = self.tokens_to_target(tokens)
         return output
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Decodes a sequence of target symbols to a sequence of source symbols.
 

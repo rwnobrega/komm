@@ -9,6 +9,7 @@ from .._util.validators import (
     validate_integer_array,
     validate_positive_integer,
 )
+from ..types import Array1D
 from .util import integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[int, int]
@@ -65,7 +66,7 @@ class RunLengthCode(abc.TokenCode[Token]):
                 tokens.append((x, r))
         return tokens
 
-    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
@@ -75,7 +76,7 @@ class RunLengthCode(abc.TokenCode[Token]):
         symbols, lengths = np.array(tokens, dtype=int).reshape(-1, 2).T
         return np.repeat(symbols, lengths)
 
-    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
@@ -113,7 +114,7 @@ class RunLengthCode(abc.TokenCode[Token]):
             tokens.append((x, l + 1))
         return tokens
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
@@ -122,7 +123,7 @@ class RunLengthCode(abc.TokenCode[Token]):
         """
         return super().encode(input)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)

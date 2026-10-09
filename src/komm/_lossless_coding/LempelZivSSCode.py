@@ -11,6 +11,7 @@ from .._util.validators import (
     validate_integer_array,
     validate_positive_integer,
 )
+from ..types import Array1D
 from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
 
 Token = tuple[Literal[0], int] | tuple[Literal[1], int, int]
@@ -134,7 +135,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         pbar.close()
         return tokens
 
-    def tokens_to_source(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lzss = komm.LempelZivSSCode(
@@ -161,7 +162,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         source = np.array(buffer[ss:], dtype=int)
         return source
 
-    def tokens_to_target(self, tokens: list[Token]) -> npt.NDArray[np.integer]:
+    def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lzss = komm.LempelZivSSCode(
@@ -227,7 +228,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
 
         return tokens
 
-    def encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lzss = komm.LempelZivSSCode(
@@ -240,7 +241,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         """
         return super().encode(input)
 
-    def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> lzss = komm.LempelZivSSCode(

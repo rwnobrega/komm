@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.validators import validate_integer, validate_integer_array
+from ..types import Array1D
 
 Word = tuple[int, ...]
 
@@ -75,10 +76,10 @@ def is_fully_covering(words: list[Word], cardinality: int) -> bool:
 
 
 def parse_fixed_length(
-    input: npt.NDArray[np.integer],
+    input: Array1D[np.integer],
     dictionary: dict[Word, Word],
     block_size: int,
-) -> npt.NDArray[np.integer]:
+) -> Array1D[np.integer]:
     if input.size % block_size != 0:
         raise ValueError(
             "length of input must be a multiple of block size"
@@ -96,11 +97,11 @@ def parse_fixed_length(
 
 
 def parse_prefix_free(
-    input: npt.NDArray[np.integer],
+    input: Array1D[np.integer],
     dictionary: dict[Word, Word],
     allow_incomplete: bool,
     cardinality: int = 2,
-) -> npt.NDArray[np.integer]:
+) -> Array1D[np.integer]:
     # Precompute a (length, value) -> word table, where 'value' is the word
     # folded into an integer in base 'cardinality'. Parsing is then a single
     # pass which folds input symbols into an accumulator and probes the table.
