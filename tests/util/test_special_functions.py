@@ -39,12 +39,14 @@ def test_gaussian_q_inv_array():
 
 
 def test_gaussian_q_inv_invalid_input():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'y' must be in \[0, 1\]"):
         komm.gaussian_q_inv(-1.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'y' must be in \[0, 1\]"):
         komm.gaussian_q_inv(2.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'y' must be in \[0, 1\]"):
         komm.gaussian_q_inv([[-1.0], [0.0], [1.0], [2.0]])
+    with pytest.raises(ValueError, match=r"'y' must be in \[0, 1\]"):
+        komm.gaussian_q_inv(np.nan)
 
 
 def test_gaussian_q_inverse_relation():

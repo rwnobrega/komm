@@ -70,6 +70,9 @@ def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
                [ 0.],
                [ 1.]])
     """
+    y = np.asarray(y)
+    if not np.all((0 <= y) & (y <= 1)):
+        raise ValueError("'y' must be in [0, 1]")
     result = np.vectorize(_gaussian_q_inv)(y) + 0.0  # + 0.0 to avoid -0.0
     return float(result) if np.ndim(result) == 0 else result
 
