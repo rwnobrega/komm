@@ -4,8 +4,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
-IntArray = npt.NDArray[np.integer]
-FloatArray = npt.NDArray[np.floating]
+from ..types import Array2D
 
 
 class TrellisSection:
@@ -28,8 +27,8 @@ class TrellisSection:
         outputs: npt.ArrayLike,
         num_next_states: int,
     ):
-        self.transitions: IntArray = np.asarray(transitions)
-        self.outputs: IntArray = np.asarray(outputs)
+        self.transitions: Array2D[np.integer] = np.asarray(transitions)
+        self.outputs: Array2D[np.integer] = np.asarray(outputs)
         self.num_next_states = num_next_states
 
     @property
@@ -41,7 +40,9 @@ class TrellisSection:
         return self.transitions.shape[1]
 
     @cached_property
-    def incoming(self) -> tuple[IntArray, IntArray, IntArray]:
+    def incoming(
+        self,
+    ) -> tuple[Array2D[np.integer], Array2D[np.integer], Array2D[np.integer]]:
         r"""
         The branches into each next state, in (state, input) order. They are given by three 2D-arrays, with the state, the input, and the output of each branch; row $s'$ lists the branches into state $s'$. Rows are padded with state $-1$ up to the largest number of branches into a state.
         """
@@ -65,7 +66,7 @@ class TrellisSection:
         return in_states, in_inputs, in_outputs
 
 
-def _pad(metrics: FloatArray, value: float) -> FloatArray:
+def _pad(metrics: npt.NDArray[np.floating], value: float) -> npt.NDArray[np.floating]:
     # Extra column, reached by index -1
     column = np.full((*metrics.shape[:-1], 1), value)
     return np.concatenate([metrics, column], axis=-1)
@@ -76,7 +77,7 @@ def viterbi(
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike,
     final_metrics: npt.ArrayLike,
-) -> IntArray:
+) -> npt.NDArray[np.integer]:
     r"""
     Finds the input sequence of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
 
@@ -95,7 +96,7 @@ def viterbi(
     branch_metrics = np.asarray(branch_metrics)
     shape = branch_metrics.shape[:-2]
     metrics = np.broadcast_to(initial_metrics, (*shape, sections[0].num_states))
-    choices: list[IntArray] = []
+    choices: list[npt.NDArray[np.integer]] = []
     for t, section in enumerate(sections):
         # Add, compare, select
         in_states, _, in_outputs = section.incoming
@@ -125,7 +126,7 @@ def forward_backward(
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike,
     final_metrics: npt.ArrayLike,
-) -> FloatArray:
+) -> npt.NDArray[np.floating]:
     r"""
     Computes the a posteriori log-probabilities of the inputs. The weight of a path is the sum of the metrics of its initial state, its branches, and its final state, in the log domain.
 

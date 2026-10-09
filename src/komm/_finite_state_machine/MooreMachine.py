@@ -3,6 +3,8 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D
+
 
 class MooreMachine:
     r"""
@@ -115,7 +117,7 @@ class MooreMachine:
         self,
         input: npt.ArrayLike,
         initial_state: int,
-    ) -> tuple[npt.NDArray[np.integer], int]:
+    ) -> tuple[Array1D[np.integer], int]:
         r"""
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^{L}$, respectively. The output is $y_t = G(s_{t+1})$, where $s_0 = s_\mathrm{i}$ and $s_{t+1} = T(s_t, x_t)$.
 

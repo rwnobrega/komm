@@ -6,10 +6,12 @@ from typing import Any, TypedDict
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D, Array2D
+
 
 class MetricMemory(TypedDict):
-    paths: npt.NDArray[np.integer]
-    metrics: npt.NDArray[np.floating]
+    paths: Array2D[np.integer]
+    metrics: Array1D[np.floating]
 
 
 class MealyMachine:
@@ -107,7 +109,7 @@ class MealyMachine:
         self,
         input: npt.ArrayLike,
         initial_state: int,
-    ) -> tuple[npt.NDArray[np.integer], int]:
+    ) -> tuple[Array1D[np.integer], int]:
         r"""
         Returns the output sequence corresponding to a given input sequence. It assumes the machine starts at a given initial state $s_\mathrm{i}$. The input sequence and the output sequence are denoted by $x = (x_0, x_1, \ldots, x_{L-1}) \in \mathcal{X}^L$ and $y = (y_0, y_1, \ldots, y_{L-1}) \in \mathcal{Y}^L$, respectively.
 
@@ -147,7 +149,7 @@ class MealyMachine:
         observed: npt.ArrayLike,
         metric_function: Callable[[int, Any], float],
         initial_metrics: npt.ArrayLike | None = None,
-    ) -> tuple[npt.NDArray[np.integer], npt.NDArray[np.floating]]:
+    ) -> tuple[Array2D[np.integer], Array1D[np.floating]]:
         r"""
         Applies the Viterbi algorithm on a given observed sequence. The Viterbi algorithm finds the most probable input sequence $\hat{x} \in \mathcal{X}^L$ ending in state $s$, for all $s \in \mathcal{S}$, given an observed sequence $z \in \mathcal{Z}^L$. It is assumed uniform input priors. See <cite>LC04, Sec. 12.1</cite>.
 
@@ -195,7 +197,7 @@ class MealyMachine:
         observed: npt.ArrayLike,
         metric_function: Callable[[int, Any], float],
         memory: MetricMemory,
-    ) -> npt.NDArray[np.integer]:
+    ) -> Array1D[np.integer]:
         r"""
         Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
 
@@ -242,7 +244,7 @@ class MealyMachine:
         input_priors: npt.ArrayLike | None = None,
         initial_state_distribution: npt.ArrayLike | None = None,
         final_state_distribution: npt.ArrayLike | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array2D[np.floating]:
         r"""
         Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
 
