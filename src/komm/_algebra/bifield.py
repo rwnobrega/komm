@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.bit_operations import int_to_bits
+from ..types import Array1D, Array2D
 from .FiniteBifield import FiniteBifield
 
 
@@ -22,7 +23,7 @@ def multiply_mod(x: int, y: int, modulus: int) -> int:
 
 
 @cache
-def exp_table(field: FiniteBifield) -> npt.NDArray[np.integer]:
+def exp_table(field: FiniteBifield) -> Array1D[np.integer]:
     # α^i for i in [0 : 2n), avoiding mod n of indices.
     n = field.order - 1
     modulus, alpha = int(field.modulus), int(field.primitive_element)
@@ -36,7 +37,7 @@ def exp_table(field: FiniteBifield) -> npt.NDArray[np.integer]:
 
 
 @cache
-def log_table(field: FiniteBifield) -> npt.NDArray[np.integer]:
+def log_table(field: FiniteBifield) -> Array1D[np.integer]:
     # log_α(x) for x in [1 : n], dummy at 0.
     n = field.order - 1
     table = np.zeros(field.order, dtype=int)
@@ -234,7 +235,7 @@ def deconvolve(
 def binary_matrix(
     field: FiniteBifield,
     matrix: npt.ArrayLike,
-) -> npt.NDArray[np.integer]:
+) -> Array2D[np.integer]:
     r"""
     Computes the binary matrix of a matrix over a finite field. Entries are given by their integer representations, in $[0 : 2^k)$.
 

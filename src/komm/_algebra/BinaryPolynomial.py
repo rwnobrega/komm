@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.bit_operations import from_binary, to_binary
+from ..types import Array1D
 from . import domain, ring
 from .Integers import mersenne_prime_factors, prime_factors
 
@@ -167,7 +168,7 @@ class BinaryPolynomial:
         """
         return self.value.bit_length() - 1
 
-    def coefficients(self, width: int | None = None) -> npt.NDArray[np.integer]:
+    def coefficients(self, width: int | None = None) -> Array1D[np.integer]:
         r"""
         Returns the coefficients of the binary polynomial.
 
@@ -187,7 +188,7 @@ class BinaryPolynomial:
         width = width or max(self.degree + 1, 1)
         return np.array(to_binary(self.value, width), dtype=int)
 
-    def exponents(self) -> npt.NDArray[np.integer]:
+    def exponents(self) -> Array1D[np.integer]:
         r"""
         Returns the exponents of the binary polynomial.
 
