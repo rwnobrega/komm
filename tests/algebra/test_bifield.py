@@ -56,11 +56,11 @@ def test_bifield_power_zero_base(field: komm.FiniteBifield):
 
 
 def test_bifield_division_by_zero(field: komm.FiniteBifield):
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="division by zero"):
         divide(field, 1, 0)
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="zero cannot be raised to a negative"):
         power(field, 0, -1)
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="division by zero"):
         deconvolve(field, [1, 1], [1, 0])
 
 

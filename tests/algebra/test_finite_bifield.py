@@ -36,20 +36,20 @@ def test_finite_bifield_invalid_degree():
 
 def test_finite_bifield_invalid_modulus():
     komm.FiniteBifield(2, 0b111)  # OK  (irreducible and primitive)
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(3, 0b111)  # degree mismatch
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(2, 0b101)  # reducible polynomial
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(3, 0b101)  # both degree mismatch and reducible polynomial
+    with pytest.raises(ValueError, match="'modulus' must have the same degree"):
+        komm.FiniteBifield(3, 0b111)
+    with pytest.raises(ValueError, match="'modulus' must be an irreducible polynomial"):
+        komm.FiniteBifield(2, 0b101)
+    with pytest.raises(ValueError, match="'modulus' must have the same degree"):
+        komm.FiniteBifield(3, 0b101)  # also reducible
 
     komm.FiniteBifield(4, 0b11111)  # OK  (irreducible but not primitive)
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(3, 0b11111)  # degree mismatch
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(4, 0b10001)  # reducible polynomial
-    with pytest.raises(ValueError):
-        komm.FiniteBifield(3, 0b10001)  # both degree mismatch and reducible polynomial
+    with pytest.raises(ValueError, match="'modulus' must have the same degree"):
+        komm.FiniteBifield(3, 0b11111)
+    with pytest.raises(ValueError, match="'modulus' must be an irreducible polynomial"):
+        komm.FiniteBifield(4, 0b10001)
+    with pytest.raises(ValueError, match="'modulus' must have the same degree"):
+        komm.FiniteBifield(3, 0b10001)  # also reducible
 
 
 def test_finite_bifield_hash():
@@ -73,13 +73,13 @@ def test_finite_bifield_different_fields():
     x1 = field1(0b1011)
     x2 = field2(0b1011)
     assert x1 != x2
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="elements must belong to the same finite"):
         _ = x1 + x2
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="elements must belong to the same finite"):
         _ = x1 - x2
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="elements must belong to the same finite"):
         _ = x1 * x2
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="elements must belong to the same finite"):
         _ = x1 / x2
 
 
@@ -169,9 +169,9 @@ def test_finite_bifield_division_and_inverse(m):
             assert x / x == field.one
             assert x * x.inverse() == field.one
         else:
-            with pytest.raises(ZeroDivisionError):
+            with pytest.raises(ZeroDivisionError, match="element does not have a"):
                 _ = x / x
-            with pytest.raises(ZeroDivisionError):
+            with pytest.raises(ZeroDivisionError, match="element does not have a"):
                 _ = x.inverse()
 
 
@@ -205,9 +205,9 @@ def test_finite_bifield_logarithm(k):
 def test_finite_bifield_logarithm_invalid_base():
     field = komm.FiniteBifield(4)
     x = field(0b1011)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="element is not a power of the base"):
         x.logarithm(field.zero)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="element is not a power of the base"):
         x.logarithm(field.one)
 
 

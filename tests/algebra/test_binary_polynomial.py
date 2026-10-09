@@ -146,11 +146,11 @@ def test_binary_polynomial_division():
 def test_binary_polynomial_division_by_zero():
     poly = komm.BinaryPolynomial(0b1011)
     zero = komm.BinaryPolynomial(0)
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="division by zero polynomial"):
         _ = divmod(poly, zero)
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="division by zero polynomial"):
         _ = poly // zero
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="division by zero polynomial"):
         _ = poly % zero
 
 

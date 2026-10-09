@@ -35,7 +35,7 @@ def test_binary_polynomial_fraction_constructor():
 
 
 def test_binary_polynomial_fraction_zero_denominator():
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ZeroDivisionError, match="denominator cannot be zero"):
         komm.BinaryPolynomialFraction(0b1011, 0b0)
 
 
