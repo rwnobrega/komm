@@ -128,9 +128,14 @@ def validate_integer_array(
     *,
     low: int | None = None,
     high: int | None = None,
+    ndim: int | None = None,
     shape: tuple[int, ...] | None = None,
 ) -> npt.NDArray[np.integer]:
     value = np.asarray(value)
+    if ndim is not None and not value.ndim == ndim:
+        raise ValueError(
+            f"'{arg_name()}' must be a {ndim}D-array (got shape {value.shape})"
+        )
     if shape is not None and not value.shape == shape:
         raise ValueError(f"'{arg_name()}' must have shape {shape} (got {value.shape})")
     if value.size == 0:  # np.asarray([]) is float64

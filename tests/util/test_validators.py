@@ -182,6 +182,19 @@ def test_validate_integer_array_shape():
             validate_integer_array(value, shape=(2,))
 
 
+def test_validate_integer_array_ndim():
+    validate_integer_array([], ndim=1)
+    validate_integer_array([[1, 2]], ndim=2)
+    for value, got in [([[1, 2]], "(1, 2)"), ([[]], "(1, 0)"), (1, "()")]:
+        message = f"'value' must be a 1D-array (got shape {got})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_integer_array(value, ndim=1)
+    value = [1, 2]
+    message = "'value' must be a 2D-array (got shape (2,))"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_integer_array(value, ndim=2)
+
+
 @pytest.mark.parametrize(
     "value",
     [1, True, np.int64(1), 1.0, np.float64(1.0), np.float32(1.0), Fraction(1)],
