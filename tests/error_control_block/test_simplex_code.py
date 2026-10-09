@@ -19,5 +19,5 @@ def test_simplex_invalid_init():
         komm.SimplexCode(7 / 3)  # type: ignore
     with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.SimplexCode(7, 3)  # type: ignore
-    with pytest.raises(TypeError, match="'extended' must be a boolean"):
-        komm.SimplexCode(3, extended="False")  # type: ignore
+    with pytest.raises(TypeError, match="'lengthened' must be a boolean"):
+        komm.SimplexCode(3, lengthened="False")  # type: ignore

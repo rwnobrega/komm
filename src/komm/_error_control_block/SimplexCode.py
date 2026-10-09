@@ -16,7 +16,7 @@ class SimplexCode(SystematicBlockCode):
     - Redundancy: $m = 2^\kappa - \kappa - 1$
     - Minimum distance: $d = 2^{\kappa - 1}$
 
-    In its extended version, the simplex code has the following parameters:
+    In its lengthened version, the simplex code has the following parameters:
 
     - Length: $n = 2^\kappa$
     - Dimension: $k = \kappa + 1$
@@ -32,7 +32,7 @@ class SimplexCode(SystematicBlockCode):
 
     Parameters:
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
-        extended: Whether to use the extended version of the Simplex code. Default is `False`.
+        lengthened: Whether to use the lengthened version of the simplex code. Default is `False`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 
@@ -52,7 +52,7 @@ class SimplexCode(SystematicBlockCode):
         >>> code.minimum_distance()
         4
 
-        >>> code = komm.SimplexCode(3, extended=True)
+        >>> code = komm.SimplexCode(3, lengthened=True)
         >>> (code.length, code.dimension, code.redundancy)
         (8, 4, 4)
         >>> code.generator_matrix
@@ -69,14 +69,14 @@ class SimplexCode(SystematicBlockCode):
         4
     """
 
-    def __init__(self, kappa: int, *, extended: bool = False) -> None:
+    def __init__(self, kappa: int, *, lengthened: bool = False) -> None:
         self.kappa = validate_integer(kappa, low=2)
-        self.extended = validate_bool(extended)
-        P = hamming_parity_submatrix(self.kappa, self.extended).T
+        self.lengthened = validate_bool(lengthened)
+        P = hamming_parity_submatrix(self.kappa, self.lengthened).T
         super().__init__(parity_submatrix=P)
 
     def __repr__(self) -> str:
-        args = f"kappa={self.kappa}, extended={self.extended}"
+        args = f"kappa={self.kappa}, lengthened={self.lengthened}"
         return f"{self.__class__.__name__}({args})"
 
     @cache

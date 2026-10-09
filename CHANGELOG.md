@@ -28,7 +28,9 @@
 
 - Renamed parameter `state` of `ViterbiStreamDecoder` to `initial_state`, and made its `memory`, `cache_bit`, and `metric_function` private.
 
-- Made parameter `extended` of `HammingCode`, `SimplexCode`, and `GolayCode` keyword-only.
+- Made parameter `extended` of `HammingCode` and `GolayCode` keyword-only.
+
+- Renamed parameter `extended` of `SimplexCode` to `lengthened`, and made it keyword-only.
 
 - Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers instead of a NumPy array.
 
