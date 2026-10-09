@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -101,15 +103,28 @@ def test_rate():
 
 
 @pytest.mark.parametrize(
-    "pmf",
-    [[0.5, 0.5, 0.1], [-0.4, 0.4, 1.0]],
+    "pmf, message",
+    [
+        ([0.5, 0.6], "'pmf' must sum to 1.0"),
+        ([-0.4, 1.4], "'pmf' must be non-negative"),
+    ],
 )
-def test_rate_invalid_pmf(pmf):
+def test_rate_invalid_pmf(pmf, message):
     code = komm.VariableToFixedCode.from_sourcewords(
         [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=escape(message)):
         code.rate(pmf)
+
+
+def test_rate_pmf_size():
+    code = komm.VariableToFixedCode.from_sourcewords(
+        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
+    )
+    for pmf in [[1.0], [0.2, 0.3, 0.5]]:
+        message = f"'pmf' must have size 2 (got {len(pmf)})"
+        with pytest.raises(ValueError, match=escape(message)):
+            code.rate(pmf)
 
 
 def test_encoding_decoding():
