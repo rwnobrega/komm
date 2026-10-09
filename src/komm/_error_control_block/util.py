@@ -1,19 +1,19 @@
 import numpy as np
-import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.matrices import row_span
+from ..types import Array2D
 
 
 def extended_parity_submatrix(
-    parity_submatrix: npt.NDArray[np.integer],
-) -> npt.NDArray[np.integer]:
+    parity_submatrix: Array2D[np.integer],
+) -> Array2D[np.integer]:
     last_column = (1 + np.sum(parity_submatrix, axis=1)) % 2
     extended_parity_submatrix = np.hstack([parity_submatrix, last_column[np.newaxis].T])
     return extended_parity_submatrix
 
 
-def span_weight_distribution(matrix: npt.NDArray[np.integer]) -> list[int]:
+def span_weight_distribution(matrix: Array2D[np.integer]) -> list[int]:
     n = matrix.shape[1]
     # Packed bits: faster XOR and popcount.
     packed = np.packbits(matrix, axis=1)

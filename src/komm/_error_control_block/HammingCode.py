@@ -2,10 +2,10 @@ from functools import cache
 from itertools import combinations
 
 import numpy as np
-import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_bool, validate_integer
+from ..types import Array2D
 from .SystematicBlockCode import SystematicBlockCode
 from .util import extended_parity_submatrix
 
@@ -89,7 +89,7 @@ class HammingCode(SystematicBlockCode):
         return 4 if self.extended else 3
 
 
-def hamming_parity_submatrix(m: int, extended: bool = False) -> npt.NDArray[np.integer]:
+def hamming_parity_submatrix(m: int, extended: bool = False) -> Array2D[np.integer]:
     parity_submatrix = np.zeros((2**m - m - 1, m), dtype=int)
     i = 0
     for w in range(2, m + 1):

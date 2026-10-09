@@ -1,10 +1,10 @@
 from functools import cache
 
 import numpy as np
-import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_bool
+from ..types import Array2D
 from .SystematicBlockCode import SystematicBlockCode
 from .util import extended_parity_submatrix
 
@@ -74,7 +74,7 @@ class GolayCode(SystematicBlockCode):
         return 8 if self.extended else 7
 
 
-def golay_parity_submatrix(extended: bool = False) -> npt.NDArray[np.integer]:
+def golay_parity_submatrix(extended: bool = False) -> Array2D[np.integer]:
     parity_submatrix = np.array([
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
         [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],

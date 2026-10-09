@@ -1,10 +1,10 @@
 from functools import cache
 
 import numpy as np
-import numpy.typing as npt
 
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_integer
+from ..types import Array2D
 from .BlockCode import BlockCode
 
 
@@ -49,7 +49,7 @@ class CordaroWagnerCode(BlockCode):
         return int(np.ceil(2 * self.n / 3)) - 1
 
 
-def cordaro_wagner_generator_matrix(n: int) -> npt.NDArray[np.integer]:
+def cordaro_wagner_generator_matrix(n: int) -> Array2D[np.integer]:
     # See [CW67].
     d = int(np.ceil(2 * n / 3)) - 1
     q = (n + 1) // 3

@@ -1,12 +1,12 @@
 from functools import partial, reduce
 
 import numpy as np
-import numpy.typing as npt
 
 from .._algebra import bifield
 from .._algebra.FiniteBifield import FiniteBifield
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_integer
+from ..types import Array2D
 from .SystematicBlockCode import SystematicBlockCode
 
 
@@ -76,7 +76,7 @@ class ReedSolomonCode(SystematicBlockCode):
 def reed_solomon_parity_submatrix(
     field: FiniteBifield,
     delta: int,
-) -> npt.NDArray[np.integer]:
+) -> Array2D[np.integer]:
     n, m = field.order - 1, delta - 1
     # g(X) = (X + α)·(X + α^2)· ⋯ ·(X + α^m)
     roots = bifield.power(field, int(field.primitive_element), np.arange(1, delta))

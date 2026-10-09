@@ -1,12 +1,12 @@
 from functools import cache
 
 import numpy as np
-import numpy.typing as npt
 from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_integer, validate_positive_integer
+from ..types import Array2D
 from .BlockCode import BlockCode
 
 
@@ -58,7 +58,7 @@ class Lexicode(BlockCode):
         return self.d
 
 
-def lexicode_generator_matrix(n: int, d: int) -> npt.NDArray[np.integer]:
+def lexicode_generator_matrix(n: int, d: int) -> Array2D[np.integer]:
     # Per syndrome: coset weight and smallest word.
     weight = np.array([0], dtype=np.uint8)
     leader = np.array([0])

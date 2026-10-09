@@ -11,6 +11,7 @@ from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
 from .._util.matrices import row_span
 from .._util.validators import validate_integer, validate_positive_integer
+from ..types import Array2D
 from .BlockCode import BlockCode
 from .util import macwilliams_transform
 
@@ -90,7 +91,7 @@ class ReedMullerCode(BlockCode):
         return 2 ** (self.mu - self.rho)
 
     @cache
-    def reed_partitions(self) -> list[npt.NDArray[np.integer]]:
+    def reed_partitions(self) -> list[Array2D[np.integer]]:
         r"""
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
@@ -113,7 +114,7 @@ class ReedMullerCode(BlockCode):
                    [11, 15]])
         """
         rho, mu = self.rho, self.mu
-        reed_partitions: list[npt.NDArray[np.integer]] = []
+        reed_partitions: list[Array2D[np.integer]] = []
         bin_vectors = [
             int_to_bits(range(2**ell), width=ell).reshape(2**ell, ell)
             for ell in range(mu + 1)
@@ -128,7 +129,7 @@ class ReedMullerCode(BlockCode):
         return reed_partitions
 
 
-def reed_muller_generator_matrix(rho: int, mu: int) -> npt.NDArray[np.integer]:
+def reed_muller_generator_matrix(rho: int, mu: int) -> Array2D[np.integer]:
     # See [LC04, pp. 105–114]. Assumes 0 <= rho < mu.
     v = np.empty((mu, 2**mu), dtype=int)
     for i in range(mu):
