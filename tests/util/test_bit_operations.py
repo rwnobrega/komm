@@ -64,7 +64,7 @@ def test_bit_operations_bit_order():
 
 
 def test_bit_operations_invalid():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of 'input' must be"):
         komm.bits_to_int([0, 1, 0], width=2)
     with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
         komm.bits_to_int([0, 2], width=2)
@@ -72,9 +72,9 @@ def test_bit_operations_invalid():
         komm.bits_to_int([0, 1], width=0)
     with pytest.raises(ValueError, match=r"'width' must be in \[1:64\)"):
         komm.bits_to_int([0, 1], width=64)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"elements of 'input' must be in \[0:4\)"):
         komm.int_to_bits([4], width=2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"elements of 'input' must be in \[0:4\)"):
         komm.int_to_bits([-1], width=2)
     with pytest.raises(ValueError, match="'bit_order' must be 'LSB-first' or"):
         komm.int_to_bits([0], width=1, bit_order="invalid")  # type: ignore
@@ -112,7 +112,7 @@ def test_binary_basic():
 
 
 def test_binary_invalid():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="invalid bit in input: 2"):
         komm.from_binary([0, 2])
     with pytest.raises(TypeError, match="'integer' must be an integer"):
         komm.to_binary(1.5)  # type: ignore

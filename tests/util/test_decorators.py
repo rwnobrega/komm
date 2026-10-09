@@ -27,7 +27,7 @@ def test_blockwise():
     np.testing.assert_equal(func([1, 2, 3, 4, 5, 6]), [6, 15])
     arr = np.arange(24).reshape(2, 2, 6)
     np.testing.assert_equal(func(arr), arr.reshape(2, 2, 2, 3).sum(axis=-1))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
         func([1, 2, 3, 4])
 
 

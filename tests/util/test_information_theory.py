@@ -32,11 +32,11 @@ def test_entropy_accepts_integer_base():
 
 
 def test_entropy_invalid_pmf():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
         komm.entropy([0.5, 0.5, 0.5])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
         komm.entropy([0.5, 0.5, 0.5], base=3.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
         komm.entropy([0.5, 0.5, 0.5], base="e")
 
 
@@ -94,12 +94,16 @@ def test_relative_entropy_never_nan(rng):
 
 def test_relative_entropy_invalid_pmf():
     valid_pmf = [0.25, 0.25, 0.5]
-    invalid_pmfs = [[0.5, 0.5, 0.5], [0.1, 0.1, 0.1], [0.5, -0.5, 1.0]]
+    invalid_pmfs = [
+        ([0.5, 0.5, 0.5], "must sum to 1.0"),
+        ([0.1, 0.1, 0.1], "must sum to 1.0"),
+        ([0.5, -0.5, 1.0], "must be non-negative"),
+    ]
     komm.relative_entropy(valid_pmf, valid_pmf)
-    for invalid_pmf in invalid_pmfs:
-        with pytest.raises(ValueError):
+    for invalid_pmf, message in invalid_pmfs:
+        with pytest.raises(ValueError, match=f"'pmf' {message}"):
             komm.relative_entropy(invalid_pmf, valid_pmf)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=f"'qmf' {message}"):
             komm.relative_entropy(valid_pmf, invalid_pmf)
 
 
@@ -108,9 +112,9 @@ def test_relative_entropy_different_size():
     pmf2 = [0.25, 0.75]
     komm.relative_entropy(pmf1, pmf1)
     komm.relative_entropy(pmf2, pmf2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="inputs must have the same shape"):
         komm.relative_entropy(pmf1, pmf2)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="inputs must have the same shape"):
         komm.relative_entropy(pmf2, pmf1)
 
 
@@ -118,18 +122,18 @@ def test_relative_entropy_invalid_base():
     pmf1 = [0.25, 0.25, 0.5]
     pmf2 = [0.1, 0.1, 0.8]
     komm.relative_entropy(pmf1, pmf2, base=2.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'base' must be 'e' or"):
         komm.relative_entropy(pmf1, pmf2, base=0.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'base' must be 'e' or"):
         komm.relative_entropy(pmf1, pmf2, base=-1.0)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'base' must be 'e' or"):
         komm.relative_entropy(pmf1, pmf2, base="f")  # type: ignore
 
 
 def test_binary_entropy():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'p' must be in \[0, 1\] \(got -1\)"):
         komm.binary_entropy(-1)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"'p' must be in \[0, 1\] \(got 2\)"):
         komm.binary_entropy(2)
     for p in np.linspace(0, 0.5, 1000):
         np.testing.assert_allclose(
