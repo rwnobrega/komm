@@ -72,7 +72,9 @@ def test_canonical_code_kraft(lengths, base):
 def test_canonical_code_invalid():
     with pytest.raises(ValueError, match="'lengths' must be a 1D-array"):
         canonical_code(np.array([[1, 2], [3, 4]]))
-    with pytest.raises(ValueError, match="'lengths' must be non-negative"):
+    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 0"):
         canonical_code([-1, 0, 1])
+    with pytest.raises(TypeError, match="'lengths' must contain only integers"):
+        canonical_code([1.0, 2.0, 2.0])
     with pytest.raises(ValueError, match="'base' must be at least 2"):
         canonical_code([1, 2, 2], base=1)

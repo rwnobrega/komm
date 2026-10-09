@@ -5,7 +5,12 @@ from typing import Self
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer, validate_pmf, validate_positive_integer
+from .._util.validators import (
+    validate_integer,
+    validate_integer_array,
+    validate_pmf,
+    validate_positive_integer,
+)
 from ..types import Array1D
 from .util import (
     Word,
@@ -214,17 +219,13 @@ class FixedToVariableCode:
             ...
             ValueError: 'lengths' must satisfy Kraft inequality
         """
-        lengths = np.asarray(lengths)
-        if not lengths.ndim == 1:
-            raise ValueError("'lengths' must be a 1D-array")
+        lengths = validate_integer_array(lengths, low=1, ndim=1)
         if source_cardinality is None:
             source_cardinality = lengths.size
         calX = validate_integer(source_cardinality, low=2)
         calY = validate_integer(target_cardinality, low=2)
         k = infer_block_size(lengths.size, calX, "lengths")
         codewords = canonical_code(lengths, base=calY)
-        if any(len(codeword) == 0 for codeword in codewords):
-            raise ValueError("'lengths' must be positive")
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
         return cls(calX, calY, k, enc_mapping)
 

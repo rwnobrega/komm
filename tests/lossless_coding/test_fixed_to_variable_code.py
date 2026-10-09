@@ -316,9 +316,11 @@ def test_from_lengths_invalid():
         komm.FixedToVariableCode.from_lengths([1, 2, 2], target_cardinality=1)
     with pytest.raises(ValueError, match="'lengths' must satisfy Kraft inequality"):
         komm.FixedToVariableCode.from_lengths([1, 1, 1])
-    with pytest.raises(ValueError, match="'lengths' must be positive"):
+    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 1"):
         komm.FixedToVariableCode.from_lengths([0, 1, 2])
-    with pytest.raises(ValueError, match="'lengths' must be non-negative"):
+    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 1"):
         komm.FixedToVariableCode.from_lengths([1, -1, 2])
+    with pytest.raises(TypeError, match="'lengths' must contain only integers"):
+        komm.FixedToVariableCode.from_lengths([1.7, 2.2, 2.9])
     with pytest.raises(ValueError, match="must be a power of source cardinality"):
         komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=3)
