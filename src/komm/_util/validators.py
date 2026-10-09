@@ -156,6 +156,18 @@ def validate_integer_array(
     return value
 
 
+def validate_binary_array(
+    value: npt.ArrayLike,
+    *,
+    ndim: int | None = None,
+    shape: tuple[int, ...] | None = None,
+) -> npt.NDArray[np.integer]:
+    array = validate_integer_array(value, ndim=ndim, shape=shape)
+    if array.size > 0 and not (array.min() >= 0 and array.max() <= 1):
+        raise ValueError(f"elements of '{arg_name()}' must be 0 or 1")
+    return array
+
+
 def validate_float(
     value: float,
     *,

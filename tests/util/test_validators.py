@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from komm._util.validators import (
+    validate_binary_array,
     validate_bit_order,
     validate_bool,
     validate_choice,
@@ -193,6 +194,28 @@ def test_validate_integer_array_ndim():
     message = "'value' must be a 2D-array (got shape (2,))"
     with pytest.raises(ValueError, match=escape(message)):
         validate_integer_array(value, ndim=2)
+
+
+@pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool])
+def test_validate_binary_array(dtype):
+    array = validate_binary_array(np.array([0, 1, 1], dtype=dtype))
+    assert np.issubdtype(array.dtype, np.integer)
+    np.testing.assert_equal(array, [0, 1, 1])
+    assert validate_binary_array([]).size == 0
+
+
+def test_validate_binary_array_invalid():
+    for value in [[0, 2], [-1, 1]]:
+        with pytest.raises(ValueError, match="elements of 'value' must be 0 or 1"):
+            validate_binary_array(value)
+    value = [0.0, 1.0]
+    with pytest.raises(TypeError, match="'value' must contain only integers"):
+        validate_binary_array(value)
+    value = [[0, 1]]
+    with pytest.raises(ValueError, match="'value' must be a 1D-array"):
+        validate_binary_array(value, ndim=1)
+    with pytest.raises(ValueError, match=r"'value' must have shape \(2,\)"):
+        validate_binary_array(value, shape=(2,))
 
 
 @pytest.mark.parametrize(
