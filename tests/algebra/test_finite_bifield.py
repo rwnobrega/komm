@@ -189,6 +189,9 @@ def test_finite_bifield_power(m):
             assert x**-1 == x.inverse()
             assert x**-2 == (x * x).inverse()
             assert x ** (field.order - 1) == field.one
+            for exponent in [1.5, -1.5]:
+                with pytest.raises(TypeError, match="'exponent' must be an integer"):
+                    _ = x**exponent  # type: ignore
 
 
 @pytest.mark.parametrize("k", list(range(2, 8)))

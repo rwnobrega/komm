@@ -73,8 +73,10 @@ def test_binary_polynomial_shifts():
 
 def test_binary_polynomial_power():
     poly = komm.BinaryPolynomial(0b10100110111)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="'exponent' must be a non-negative integer"):
         _ = poly ** (-1)
+    with pytest.raises(TypeError, match=r"'exponent' must be an integer \(got float\)"):
+        _ = poly**1.5  # type: ignore
     assert poly**0 == komm.BinaryPolynomial(1)
     assert poly**1 == komm.BinaryPolynomial(0b10100110111)
     assert poly**2 == komm.BinaryPolynomial(0b100010000010100010101)

@@ -4,6 +4,8 @@ from typing import Any, Protocol, Self, TypeVar, runtime_checkable
 import numpy as np
 import numpy.typing as npt
 
+from .._util.validators import validate_nonnegative_integer
+
 T_co = TypeVar("T_co", bound="RingElement", covariant=True)
 
 
@@ -45,8 +47,7 @@ def power(base: T_co, exponent: int) -> T_co:
     References:
         `Exponentiation by squaring <https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_
     """
-    if exponent < 0:
-        raise ValueError("Negative exponents not supported")
+    exponent = validate_nonnegative_integer(exponent)
     if exponent == 0:
         return base.ambient.one
     if exponent == 1:
