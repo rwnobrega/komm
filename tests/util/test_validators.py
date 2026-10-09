@@ -387,6 +387,14 @@ def test_validate_pmf_invalid(value, message):
         validate_pmf(value)
 
 
+def test_validate_pmf_size():
+    validate_pmf([0.5, 0.5], size=2)
+    for value in [[1.0], [0.2, 0.3, 0.5]]:
+        message = f"'value' must have size 2 (got {len(value)})"
+        with pytest.raises(ValueError, match=escape(message)):
+            validate_pmf(value, size=2)
+
+
 @pytest.mark.parametrize(
     "value, got",
     [

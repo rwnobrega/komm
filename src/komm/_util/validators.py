@@ -54,10 +54,16 @@ def validate_log_base(value: float | str) -> float | Literal["e"]:
     raise ValueError(f"'{arg_name()}' must be 'e' or a positive real other than 1")
 
 
-def validate_pmf(value: npt.ArrayLike) -> npt.NDArray[np.floating]:
+def validate_pmf(
+    value: npt.ArrayLike,
+    *,
+    size: int | None = None,
+) -> npt.NDArray[np.floating]:
     value = np.asarray(value)
     if not value.ndim == 1:
         raise ValueError(f"'{arg_name()}' must be a 1D-array")
+    if size is not None and not value.size == size:
+        raise ValueError(f"'{arg_name()}' must have size {size} (got {value.size})")
     if value.dtype.kind not in "biuf":  # bool, int, uint, float
         got = value.dtype
         raise TypeError(f"'{arg_name()}' must contain only real numbers (got {got})")
