@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from ..types import Array1D
 
 
 class Pulse(abc.Pulse):
@@ -32,5 +33,5 @@ class Pulse(abc.Pulse):
 
     def taps(
         self, samples_per_symbol: int, span: tuple[int, int] | None = None
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         return super().taps(samples_per_symbol, span)

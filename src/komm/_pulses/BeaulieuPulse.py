@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_float
+from ..types import Array1D
 from .base import RootPulse
 from .util import rect
 
@@ -190,7 +191,7 @@ class BeaulieuPulse(abc.Pulse):
         self,
         samples_per_symbol: int,
         span: tuple[int, int] | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> pulse = komm.BeaulieuPulse(rolloff=0.25)
@@ -222,7 +223,7 @@ class BeaulieuPulse(abc.Pulse):
 
 class _RootBeaulieuPulse(RootPulse[BeaulieuPulse]):
     @cached_property
-    def _quadrature(self) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    def _quadrature(self) -> tuple[Array1D[np.float64], Array1D[np.float64]]:
         # Gauss–Legendre nodes and weights on [0, sqrt(α/2)], used to integrate
         # the outer band of the square-root spectrum after the substitution
         # f = f2 - v², which removes the square-root cusp at f = f2.

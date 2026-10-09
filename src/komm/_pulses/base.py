@@ -6,6 +6,8 @@ from typing import Generic, TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from ..types import Array1D
+
 
 class Pulse(ABC):
     @abstractmethod
@@ -56,7 +58,7 @@ class Pulse(ABC):
         self,
         samples_per_symbol: int,
         span: tuple[int, int] | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         r"""
         Returns the FIR taps of the pulse.
 
@@ -115,7 +117,7 @@ class RootPulse(Pulse, Generic[T]):
         self,
         samples_per_symbol: int,
         span: tuple[int, int] | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         return super().taps(samples_per_symbol, span)
 
     def __repr__(self) -> str:

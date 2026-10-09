@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_float
+from ..types import Array1D
 from .base import RootPulse
 from .util import raised_cosine, rect
 
@@ -167,7 +168,7 @@ class RaisedCosinePulse(abc.Pulse):
         self,
         samples_per_symbol: int,
         span: tuple[int, int] | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> pulse = komm.RaisedCosinePulse(rolloff=0.25)

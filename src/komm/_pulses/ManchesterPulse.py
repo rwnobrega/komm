@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from ..types import Array1D
 from .util import rect, tri
 
 
@@ -132,7 +133,7 @@ class ManchesterPulse(abc.Pulse):
         self,
         samples_per_symbol: int,
         span: tuple[int, int] | None = None,
-    ) -> npt.NDArray[np.floating]:
+    ) -> Array1D[np.floating]:
         r"""
         Examples:
             >>> pulse = komm.ManchesterPulse()
