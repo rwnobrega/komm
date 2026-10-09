@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.sequences import autocorrelation, cyclic_autocorrelation
+from ..types import Array1D
 
 
 class ComplexSequence:
@@ -35,7 +36,7 @@ class ComplexSequence:
 
     def autocorrelation(
         self, shifts: npt.ArrayLike | None = None, normalized: bool = False
-    ) -> npt.NDArray[np.complexfloating]:
+    ) -> Array1D[np.complexfloating]:
         r"""
         Returns the autocorrelation $R[\ell]$ of the complex sequence. See [`komm.autocorrelation`](/ref/autocorrelation) for more details.
 
@@ -55,7 +56,7 @@ class ComplexSequence:
 
     def cyclic_autocorrelation(
         self, shifts: npt.ArrayLike | None = None, normalized: bool = False
-    ) -> npt.NDArray[np.complexfloating]:
+    ) -> Array1D[np.complexfloating]:
         r"""
         Returns the cyclic autocorrelation $\tilde{R}[\ell]$ of the complex sequence. See [`komm.cyclic_autocorrelation`](/ref/cyclic_autocorrelation) for more details.
 
