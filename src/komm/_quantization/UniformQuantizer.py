@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer
+from .._util.validators import validate_integer, validate_positive_float
 
 
 class UniformQuantizer(abc.ScalarQuantizer):
@@ -49,9 +49,7 @@ class UniformQuantizer(abc.ScalarQuantizer):
 
     def __init__(self, num_levels: int, step: float, offset: float = 0.0):
         self.num_levels = validate_integer(num_levels, low=2)
-        if not step > 0:
-            raise ValueError("'step' must be positive")
-        self.step = step
+        self.step = validate_positive_float(step)
         self.offset = offset
 
     @classmethod

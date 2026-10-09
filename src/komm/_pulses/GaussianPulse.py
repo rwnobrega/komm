@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_positive_float
 
 
 @dataclass
@@ -34,8 +35,7 @@ class GaussianPulse(abc.Pulse):
     half_power_bandwidth: float = 1.0
 
     def __post_init__(self) -> None:
-        if not self.half_power_bandwidth > 0:
-            raise ValueError("'half_power_bandwidth' must be positive")
+        self.half_power_bandwidth = validate_positive_float(self.half_power_bandwidth)
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""

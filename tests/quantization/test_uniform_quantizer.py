@@ -72,8 +72,11 @@ def test_uniform_quantizer_invalid_constructions():
         komm.UniformQuantizer(num_levels=1, step=1.0)
     with pytest.raises(TypeError, match="'num_levels' must be an integer"):
         komm.UniformQuantizer(num_levels=4.0, step=1.0)  # type: ignore
-    with pytest.raises(ValueError, match="must be positive"):
+    with pytest.raises(ValueError, match="'step' must be a positive real number"):
         komm.UniformQuantizer(num_levels=8, step=0.0)
+    with pytest.raises(TypeError, match="'step' must be a real number"):
+        komm.UniformQuantizer(num_levels=8, step="1.0")  # type: ignore
+    assert type(komm.UniformQuantizer(num_levels=8, step=1).step) is float
 
 
 @pytest.mark.parametrize("n_bits", [2, 3, 4, 5])
