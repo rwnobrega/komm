@@ -39,6 +39,17 @@ def test_autocorrelation_normalized_not_bool(function):
         function([2, 3, -1], normalized=1)
 
 
+@pytest.mark.parametrize(
+    "function",
+    [komm.autocorrelation, komm.cyclic_autocorrelation],
+)
+def test_autocorrelation_invalid_shifts(function):
+    with pytest.raises(TypeError, match="'shifts' must contain only integers"):
+        function([2, 3, -1], shifts=[0.5])
+    with pytest.raises(ValueError, match="'shifts' must be a 1D-array"):
+        function([2, 3, -1], shifts=[[0, 1]])
+
+
 def test_autocorrelation_wikipedia():
     assert np.allclose(
         komm.autocorrelation([2, 3, -1]),
