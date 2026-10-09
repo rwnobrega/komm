@@ -387,6 +387,20 @@ def test_validate_pmf_invalid(value, message):
         validate_pmf(value)
 
 
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        (["0.5", "0.5"], "<U3"),
+        ([0.5j, 0.5], "complex128"),
+        ([None, 1], "object"),
+    ],
+)
+def test_validate_pmf_not_real(value, got):
+    message = f"'value' must contain only real numbers (got {got})"
+    with pytest.raises(TypeError, match=escape(message)):
+        validate_pmf(value)
+
+
 def test_validate_transition_matrix():
     matrix = validate_transition_matrix([[1, 0], [0, 1]])
     assert matrix.dtype == np.float64
@@ -405,6 +419,12 @@ def test_validate_transition_matrix():
 def test_validate_transition_matrix_invalid(value, message):
     with pytest.raises(ValueError, match=message):
         validate_transition_matrix(value, square=True)
+
+
+def test_validate_transition_matrix_not_real():
+    value = [["1", "0"], ["0", "1"]]
+    with pytest.raises(TypeError, match="'value' must contain only real numbers"):
+        validate_transition_matrix(value)
 
 
 def test_validate_choice():
