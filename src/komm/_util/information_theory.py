@@ -161,9 +161,9 @@ def mutual_information(
     transition_matrix: npt.ArrayLike,
     base: float | Literal["e"] = 2.0,
 ) -> float:
-    input_pmf = validate_pmf(input_pmf)
-    base = validate_log_base(base)
     transition_matrix = validate_transition_matrix(transition_matrix)
+    input_pmf = validate_pmf(input_pmf, size=transition_matrix.shape[0])
+    base = validate_log_base(base)
     output_pmf = np.dot(input_pmf, transition_matrix)
     entropy_output_prior = entropy(output_pmf, base=base)
     entropy_output_posterior = np.dot(

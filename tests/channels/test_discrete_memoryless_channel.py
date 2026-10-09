@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -65,3 +67,10 @@ def _get_noisy_typewriter_transition_matrix():
 def test_channel_capacity(transition_matrix, expected):
     channel = komm.DiscreteMemorylessChannel(transition_matrix)
     assert np.allclose(channel.capacity(), expected)
+
+
+def test_dmc_mutual_information_size():
+    dmc = komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2]])
+    message = "'input_pmf' must have size 2 (got 3)"
+    with pytest.raises(ValueError, match=escape(message)):
+        dmc.mutual_information([0.2, 0.3, 0.5])
