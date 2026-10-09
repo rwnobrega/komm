@@ -42,7 +42,7 @@ def autocorrelation(
     shifts = validate_integer_array(shifts, ndim=1)
     normalized = validate_bool(normalized)
     acorr = np.empty_like(shifts, dtype=sequence.dtype)
-    for i, ℓ in enumerate(shifts):
+    for i, ℓ in enumerate(shifts.tolist()):
         if ℓ < 0:
             acorr[i] = np.dot(sequence[:ℓ], seq_conj[-ℓ:])
         elif ℓ > 0:

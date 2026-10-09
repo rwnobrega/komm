@@ -50,6 +50,16 @@ def test_autocorrelation_invalid_shifts(function):
         function([2, 3, -1], shifts=[[0, 1]])
 
 
+@pytest.mark.parametrize(
+    "function",
+    [komm.autocorrelation, komm.cyclic_autocorrelation],
+)
+def test_autocorrelation_unsigned_shifts(function):
+    shifts = np.array([0, 1, 2], dtype=np.uint8)
+    expected = function([2, 3, -1], [0, 1, 2])
+    np.testing.assert_allclose(function([2, 3, -1], shifts), expected)
+
+
 def test_autocorrelation_wikipedia():
     assert np.allclose(
         komm.autocorrelation([2, 3, -1]),
