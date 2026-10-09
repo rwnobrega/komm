@@ -10,6 +10,7 @@ from .._util.validators import (
     validate_integer_array,
     validate_positive_integer,
 )
+from ..types import Array2D
 
 
 class ReflectedLabeling(abc.Labeling):
@@ -27,7 +28,7 @@ class ReflectedLabeling(abc.Labeling):
 
     @property
     @cache
-    def matrix(self) -> npt.NDArray[np.integer]:
+    def matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> labeling = komm.ReflectedLabeling(2)

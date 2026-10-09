@@ -8,6 +8,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_positive_integer
+from ..types import Array2D
 from .Labeling import Labeling
 
 T = TypeVar("T", bound=np.generic)
@@ -124,7 +125,7 @@ class ProductLabeling(abc.Labeling):
 
     @property
     @cache
-    def matrix(self) -> npt.NDArray[np.integer]:
+    def matrix(self) -> Array2D[np.integer]:
         matrices = [lab.matrix for lab in self._labelings]
         rows = [np.hstack(comb) for comb in product(*matrices)]
         return np.vstack(rows)

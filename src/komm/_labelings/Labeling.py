@@ -3,6 +3,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_binary_array
+from ..types import Array2D
 
 
 class Labeling(abc.Labeling):
@@ -26,7 +27,7 @@ class Labeling(abc.Labeling):
         return f"{self.__class__.__name__}({self.matrix.tolist()})"
 
     @property
-    def matrix(self) -> npt.NDArray[np.integer]:
+    def matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> labeling = komm.Labeling([[1, 0], [1, 1], [0, 1], [0, 0]])

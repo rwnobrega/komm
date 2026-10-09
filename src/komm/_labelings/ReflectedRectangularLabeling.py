@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
+from ..types import Array2D
 from .ProductLabeling import ProductLabeling
 from .ReflectedLabeling import ReflectedLabeling
 
@@ -39,7 +40,7 @@ class ReflectedRectangularLabeling(abc.Labeling):
 
     @property
     @cache
-    def matrix(self) -> npt.NDArray[np.integer]:
+    def matrix(self) -> Array2D[np.integer]:
         r"""
         Examples:
             >>> labeling = komm.ReflectedRectangularLabeling(4)
