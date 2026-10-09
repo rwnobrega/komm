@@ -87,7 +87,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             >>> bec.mutual_information([0.45, 0.55])  # doctest: +FLOAT_CMP
             0.7942195631902467
         """
-        input_pmf = validate_pmf(input_pmf)
+        input_pmf = validate_pmf(input_pmf, size=2)
         base = validate_log_base(base)
         base = e if base == "e" else base
         epsilon = self.erasure_probability

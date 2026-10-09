@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -61,3 +63,18 @@ def test_binary_channels_float_transition_matrix(channel):
 def test_channels_equality_ignores_rng():
     channel = komm.BinarySymmetricChannel(0.1, rng=np.random.default_rng(1))
     assert channel == komm.BinarySymmetricChannel(0.1)
+
+
+@pytest.mark.parametrize(
+    "channel",
+    [
+        komm.BinarySymmetricChannel(0.1),
+        komm.BinaryErasureChannel(0.1),
+        komm.ZChannel(0.1),
+    ],
+)
+def test_binary_channels_mutual_information_size(channel):
+    for input_pmf in [[1.0], [0.2, 0.3, 0.5]]:
+        message = f"'input_pmf' must have size 2 (got {len(input_pmf)})"
+        with pytest.raises(ValueError, match=escape(message)):
+            channel.mutual_information(input_pmf)
