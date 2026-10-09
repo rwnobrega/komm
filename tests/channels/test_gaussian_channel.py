@@ -23,6 +23,9 @@ def test_gaussian_channel_real_input_noise_power():
     np.testing.assert_allclose(np.var(output), 1.0, rtol=0.05)
 
 
-def test_gaussian_channel_rejects_negative_noise_power():
-    with pytest.raises(ValueError):
+def test_gaussian_channel_invalid_noise_power():
+    with pytest.raises(ValueError, match="'noise_power' must be a non-negative real"):
         komm.GaussianChannel(noise_power=-1.0)
+    with pytest.raises(TypeError, match="'noise_power' must be a real number"):
+        komm.GaussianChannel(noise_power="1.0")  # type: ignore
+    assert type(komm.GaussianChannel(noise_power=1).noise_power) is float

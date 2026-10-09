@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util import global_rng
+from .._util.validators import validate_nonnegative_float
 
 
 @dataclass(init=False)
@@ -34,9 +35,7 @@ class GaussianChannel:
         noise_power: float = 0.0,
         rng: np.random.Generator | None = None,
     ):
-        if not noise_power >= 0:
-            raise ValueError("'noise_power' must be non-negative")
-        self.noise_power = noise_power
+        self.noise_power = validate_nonnegative_float(noise_power)
         self._rng = rng
 
     @property
