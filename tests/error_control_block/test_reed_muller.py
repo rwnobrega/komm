@@ -35,6 +35,15 @@ def test_reed_muller_code_2_4_weight_distributions():
     )
 
 
+@pytest.mark.parametrize("mu", range(1, 7))
+def test_reed_muller_code_weight_distribution(mu):
+    for rho in range(mu):
+        code1 = komm.ReedMullerCode(rho, mu)
+        code2 = komm.BlockCode(generator_matrix=code1.generator_matrix)
+        distribution = code1.codeword_weight_distribution()
+        assert distribution == code2.codeword_weight_distribution()
+
+
 def test_reed_muller_code_2_4_GH_orthogonality():
     code = komm.ReedMullerCode(2, 4)
     np.testing.assert_equal(

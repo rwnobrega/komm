@@ -1,13 +1,18 @@
+from collections import Counter
 from functools import cache, reduce
 from itertools import combinations
+from math import comb
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
+from .._util.matrices import row_span
 from .._util.validators import validate_integer, validate_positive_integer
 from .BlockCode import BlockCode
+from .util import macwilliams_transform
 
 
 @mkdocstrings(members=["reed_partitions"], filters=["!.*"])
@@ -67,6 +72,18 @@ class ReedMullerCode(BlockCode):
     def __repr__(self) -> str:
         args = f"rho={self.rho}, mu={self.mu}"
         return f"{self.__class__.__name__}({args})"
+
+    @cache
+    def codeword_weight_distribution(self) -> list[int]:
+        rho, mu = self.rho, self.mu
+        # Generic method: trivial for mu = 1, no gain for mu > 8.
+        if not 2 <= mu <= 8:
+            return super().codeword_weight_distribution()
+        if self.redundancy < self.dimension:
+            # The dual code is RM(mu - rho - 1, mu).
+            dual = reed_muller_weight_distribution(mu - rho - 1, mu)
+            return macwilliams_transform(dual)
+        return reed_muller_weight_distribution(rho, mu)
 
     @cache
     def minimum_distance(self) -> int:
@@ -130,3 +147,25 @@ def reed_muller_generator_matrix(rho: int, mu: int) -> npt.NDArray[np.integer]:
     G_list.append(row)
 
     return np.array(G_list, dtype=int)
+
+
+def reed_muller_weight_distribution(rho: int, mu: int) -> list[int]:
+    # Codewords are (u | u + v), with u in RM(ρ, μ - 1) and v in RM(ρ - 1, μ - 1).
+    # Both halves lie in the same coset C of RM(ρ - 1, μ - 1), and every pair of
+    # words of C forms a codeword. Hence A(z) = sum_C φ_C(z)^2, where φ_C(z) is
+    # the weight enumerator of C.
+    rows = np.packbits(reed_muller_generator_matrix(rho, mu - 1), axis=1)
+    top = comb(mu - 1, rho)  # Rows of degree rho come first.
+    representatives, subcode = row_span(rows[:top]), row_span(rows[top:])
+    enumerators: Counter[tuple[int, ...]] = Counter()
+    desc = "Computing codeword weight distribution"
+    for word in tqdm(representatives, desc=desc, delay=2.5):
+        weights = np.bitwise_count(word ^ subcode).sum(-1, dtype=int)
+        enumerator = np.bincount(weights, minlength=2 ** (mu - 1) + 1)
+        enumerators[tuple(enumerator.tolist())] += 1
+    # Few distinct enumerators: square each once.
+    distribution = np.zeros(2**mu + 1, dtype=object)
+    for enumerator, count in enumerators.items():
+        poly = np.array(enumerator, dtype=object)
+        distribution += count * np.convolve(poly, poly)
+    return distribution.tolist()
