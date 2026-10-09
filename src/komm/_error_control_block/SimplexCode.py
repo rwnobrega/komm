@@ -26,9 +26,10 @@ class SimplexCode(SystematicBlockCode):
     For more details, see [EC Zoo: Simplex code](https://errorcorrectionzoo.org/c/simplex).
 
     Notes:
-        - For $\kappa = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$.
-        - Its dual is the [Hamming code](/ref/HammingCode).
-        - Simplex codes are constant-weight codes.
+        - For $\kappa = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$; in its lengthened version, of length $4$.
+        - Its lengthened version is equivalent to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(1, \kappa)$.
+        - Its dual is the [Hamming code](/ref/HammingCode); the dual of its lengthened version is the extended Hamming code.
+        - Simplex codes are constant-weight codes; their lengthened versions are not.
 
     Parameters:
         kappa: The parameter $\kappa$ of the code. Must satisfy $\kappa \geq 2$.
