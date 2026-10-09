@@ -10,6 +10,7 @@ from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
+from .._util.validators import validate_bool
 from ..types import Array2D
 
 
@@ -76,7 +77,7 @@ class CyclicCode(abc.BlockCode):
                 raise ValueError("'check_polynomial' must be a factor of X^n + 1")
             self.generator_polynomial = quotient
             self._constructed_from = "check_polynomial"
-        self.systematic = systematic
+        self.systematic = validate_bool(systematic)
 
     @cached_property
     def _encoding_strategy(self) -> "EncodingStrategy":

@@ -180,3 +180,8 @@ def test_cyclic_code_check_random(systematic, rng):
     )
     r = rng.integers(0, 2, (100, code.length))
     np.testing.assert_equal(code.check(r), r @ code.check_matrix.T % 2)
+
+
+def test_cyclic_code_systematic_not_bool():
+    with pytest.raises(TypeError, match=r"'systematic' must be a boolean \(got str\)"):
+        komm.CyclicCode(7, 0b1011, systematic="False")  # type: ignore

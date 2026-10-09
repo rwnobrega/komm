@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from ..types import Array1D
+from .validators import validate_bool
 
 DType = TypeVar("DType", bound=np.floating | np.complexfloating)
 
@@ -37,6 +38,7 @@ def autocorrelation(
     sequence = np.asarray(sequence)
     seq_conj = np.conj(sequence)
     shifts = np.arange(sequence.size) if shifts is None else np.asarray(shifts)
+    normalized = validate_bool(normalized)
     acorr = np.empty_like(shifts, dtype=sequence.dtype)
     for i, ℓ in enumerate(shifts):
         if ℓ < 0:
@@ -77,6 +79,7 @@ def cyclic_autocorrelation(
     """
     sequence = np.asarray(sequence)
     shifts = np.arange(sequence.size) if shifts is None else np.asarray(shifts)
+    normalized = validate_bool(normalized)
     acorr = np.array([np.dot(sequence, np.roll(sequence, ℓ).conj()) for ℓ in shifts])
     energy = np.dot(sequence, sequence.conj())
     return acorr / energy if normalized else acorr

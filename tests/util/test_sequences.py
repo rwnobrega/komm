@@ -30,6 +30,15 @@ def test_autocorrelation_general(seq, answer):
         assert np.allclose(komm.autocorrelation(seq, shifts), expected)
 
 
+@pytest.mark.parametrize(
+    "function",
+    [komm.autocorrelation, komm.cyclic_autocorrelation],
+)
+def test_autocorrelation_normalized_not_bool(function):
+    with pytest.raises(TypeError, match=r"'normalized' must be a boolean \(got int\)"):
+        function([2, 3, -1], normalized=1)
+
+
 def test_autocorrelation_wikipedia():
     assert np.allclose(
         komm.autocorrelation([2, 3, -1]),
