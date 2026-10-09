@@ -8,6 +8,7 @@ from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
+from .._util.validators import validate_integer_array
 from ..types import Array1D, Array2D
 
 
@@ -44,9 +45,7 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
     h_row: list[BinaryPolynomial]
 
     def __init__(self, h_row: npt.ArrayLike) -> None:
-        h_row = np.asarray(h_row, dtype=int)
-        if h_row.ndim != 1:
-            raise ValueError("'h_row' must be a 1-dimensional array")
+        h_row = validate_integer_array(h_row, low=0, ndim=1)
         self.h_row = [BinaryPolynomial(x) for x in h_row]
 
     def __repr__(self) -> str:

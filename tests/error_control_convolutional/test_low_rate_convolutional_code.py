@@ -65,3 +65,12 @@ def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance, 
     for _ in range(100):
         input = rng.integers(0, 2, size=50)
         np.testing.assert_equal(code.encode(input), code1.encode(input))
+
+
+def test_low_rate_convolutional_code_invalid_g_row():
+    with pytest.raises(TypeError, match="'g_row' must contain only integers"):
+        komm.LowRateConvolutionalCode([0o117, 109.7])
+    with pytest.raises(ValueError, match="elements of 'g_row' must be at least 0"):
+        komm.LowRateConvolutionalCode([0o117, -3])
+    with pytest.raises(ValueError, match="'g_row' must be a 1D-array"):
+        komm.LowRateConvolutionalCode([[0o117, 0o155]])
