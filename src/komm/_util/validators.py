@@ -59,15 +59,9 @@ def validate_pmf(
     *,
     size: int | None = None,
 ) -> Array1D[np.floating]:
-    value = np.asarray(value)
-    if not value.ndim == 1:
-        raise ValueError(f"'{arg_name()}' must be a 1D-array")
+    value = validate_float_array(value, ndim=1)
     if size is not None and not value.size == size:
         raise ValueError(f"'{arg_name()}' must have size {size} (got {value.size})")
-    if value.dtype.kind not in "biuf":  # bool, int, uint, float
-        got = value.dtype
-        raise TypeError(f"'{arg_name()}' must contain only real numbers (got {got})")
-    value = value.astype(float, copy=False)
     if not np.all(value >= 0.0):
         raise ValueError(f"'{arg_name()}' must be non-negative")
     if not np.isclose(value.sum(), 1.0):
@@ -80,13 +74,7 @@ def validate_transition_matrix(
     *,
     square: bool = False,
 ) -> Array2D[np.floating]:
-    value = np.asarray(value)
-    if not value.ndim == 2:
-        raise ValueError(f"'{arg_name()}' must be a 2D-array")
-    if value.dtype.kind not in "biuf":  # bool, int, uint, float
-        got = value.dtype
-        raise TypeError(f"'{arg_name()}' must contain only real numbers (got {got})")
-    value = value.astype(float, copy=False)
+    value = validate_float_array(value, ndim=2)
     if not np.all(value >= 0.0):
         raise ValueError(f"'{arg_name()}' must be non-negative")
     if not np.allclose(value.sum(axis=1), 1.0):

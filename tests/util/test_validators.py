@@ -451,7 +451,7 @@ def test_validate_pmf():
 @pytest.mark.parametrize(
     "value, message",
     [
-        ([[0.5], [0.5]], "'value' must be a 1D-array"),
+        ([[0.5], [0.5]], r"'value' must be a 1D-array \(got shape \(2, 1\)\)"),
         ([1.5, -0.5], "'value' must be non-negative"),
         ([0.5, 0.6], "'value' must sum to 1.0"),
     ],
@@ -492,7 +492,7 @@ def test_validate_transition_matrix():
 @pytest.mark.parametrize(
     "value, message",
     [
-        ([0.5, 0.5], "'value' must be a 2D-array"),
+        ([0.5, 0.5], r"'value' must be a 2D-array \(got shape \(2,\)\)"),
         ([[1.5, -0.5]], "'value' must be non-negative"),
         ([[0.5, 0.6]], "rows of 'value' must sum to 1.0"),
         ([[0.5, 0.5]], r"'value' must be square \(got shape \(1, 2\)\)"),
