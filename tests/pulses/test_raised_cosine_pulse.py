@@ -37,4 +37,5 @@ def test_raised_cosine_pulse_rolloff_not_real():
 def test_raised_cosine_pulse_no_negative_zero(rolloff, t):
     pulse = komm.RaisedCosinePulse(rolloff=rolloff)
     y = pulse.waveform([-t, t])
-    assert np.all(y == 0.0) and not np.any(np.signbit(y))
+    assert np.all(y == 0.0)
+    assert not np.any(np.signbit(y))

@@ -35,7 +35,8 @@ def test_discrete_memoryless_source_output(pmf):
     source = komm.DiscreteMemorylessSource(pmf)
     symbols = source.emit((100, 500))
     assert symbols.shape == (100, 500)
-    assert np.all(symbols >= 0) and np.all(symbols < source.cardinality)
+    assert np.all(symbols >= 0)
+    assert np.all(symbols < source.cardinality)
 
 
 @pytest.mark.parametrize(

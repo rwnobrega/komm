@@ -164,4 +164,5 @@ def test_binary_entropy_inv():
 @pytest.mark.parametrize("base", [2.0, 3.0, "e"])
 def test_entropy_deterministic_no_negative_zero(base):
     h = komm.entropy([1.0, 0.0], base=base)
-    assert h == 0.0 and not np.signbit(h)
+    assert h == 0.0
+    assert not np.signbit(h)
