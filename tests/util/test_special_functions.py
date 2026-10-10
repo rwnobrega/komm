@@ -138,6 +138,32 @@ def test_marcum_q_m_not_integer():
 
 
 @pytest.mark.parametrize(
+    "a, x, message",
+    [
+        (-1.0, 1.0, "'a' must be non-negative"),
+        (1.0, -1.0, "'x' must be non-negative"),
+        ([1.0, -1.0], 1.0, "'a' must be non-negative"),
+        (1.0, [1.0, -1.0], "'x' must be non-negative"),
+    ],
+)
+def test_marcum_q_invalid_a_x(a, x, message):
+    with pytest.raises(ValueError, match=message):
+        komm.marcum_q(1, a, x)
+
+
+@pytest.mark.parametrize(
+    "a, x, message",
+    [
+        ("1", 1.0, r"'a' must contain only real numbers \(got <U1\)"),
+        (1.0, 1j, r"'x' must contain only real numbers \(got complex128\)"),
+    ],
+)
+def test_marcum_q_not_real(a, x, message):
+    with pytest.raises(TypeError, match=message):
+        komm.marcum_q(1, a, x)
+
+
+@pytest.mark.parametrize(
     "a, b, expected",
     [
         (1.0, 2.0, 0.73532566405551922471),

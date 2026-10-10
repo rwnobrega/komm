@@ -4,7 +4,7 @@ from statistics import NormalDist
 import numpy as np
 import numpy.typing as npt
 
-from .validators import validate_positive_integer
+from .validators import validate_float_array, validate_positive_integer
 
 norm = NormalDist()
 
@@ -105,8 +105,8 @@ def marcum_q(
 
     Parameters:
         m: The order of the Marcum Q-function. Should be a positive integer.
-        a: The value of $a$. Should be a float or array of floats.
-        x: The input to the function. Should be a float or array of floats.
+        a: The value of $a$. Should be a float or array of floats. Must satisfy $a \geq 0$.
+        x: The input to the function. Should be a float or array of floats. Must satisfy $x \geq 0$.
 
     Returns:
         y: The value $y = \mathrm{Q}_{m,a}(x)$.
@@ -118,11 +118,13 @@ def marcum_q(
         >>> komm.marcum_q(2, 0.5, [1.2, 1.4, 1.6])
         array([0.85225816, 0.76472056, 0.66139663])
     """
-    a = np.asarray(a)
-    x = np.asarray(x)
     m = validate_positive_integer(m)
-    if not np.all(a >= 0) or not np.all(x >= 0):
-        raise ValueError("'a' and 'x' must be non-negative")
+    a = validate_float_array(a)
+    if not np.all(a >= 0):
+        raise ValueError("'a' must be non-negative")
+    x = validate_float_array(x)
+    if not np.all(x >= 0):
+        raise ValueError("'x' must be non-negative")
     result = np.vectorize(_auxiliary_p)(m, a**2 / (2 * m), x**2 / 2)
     return float(result) if np.ndim(result) == 0 else result
 
