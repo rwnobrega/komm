@@ -41,3 +41,31 @@ def test_finite_state_machine_ami(input, expected_output):
     )
     output, _ = moore_machine.process(input, 0)
     np.testing.assert_equal(output, expected_output)
+
+
+@pytest.mark.parametrize(
+    "machine",
+    [
+        komm.MealyMachine(
+            transitions=[[0, 1], [1, 0]],
+            outputs=[[0, 1], [0, 2]],
+        ),
+        komm.MooreMachine(
+            transitions=[[0, 1], [2, 3], [2, 3], [0, 1]],
+            outputs=[0, 1, 0, 2],
+        ),
+    ],
+)
+def test_finite_state_machine_process_invalid_input(machine):
+    with pytest.raises(ValueError, match="'input' must be a 1D-array"):
+        machine.process([[0, 1], [1, 0]], 0)
+    with pytest.raises(ValueError, match="elements of 'input' must be in"):
+        machine.process([0, 2], 0)
+    with pytest.raises(ValueError, match="elements of 'input' must be in"):
+        machine.process([0, -1], 0)
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        machine.process([0.0, 1.0], 0)
+    with pytest.raises(ValueError, match="'initial_state' must be in"):
+        machine.process([0, 1], -1)
+    with pytest.raises(TypeError, match="'initial_state' must be an integer"):
+        machine.process([0, 1], 1.0)
