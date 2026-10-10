@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -115,3 +117,15 @@ def test_simplex_closest_indices():
         [-0.2, -0.1, -0.3, 0.7],
     ])
     np.testing.assert_equal(const.closest_indices(received.ravel()), [0, 1, 3])
+
+
+@pytest.mark.parametrize("base_amplitude", [0.0, -1.0])
+def test_simplex_invalid_base_amplitude(base_amplitude):
+    message = f"'base_amplitude' must be a positive real number (got {base_amplitude})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.SimplexConstellation(4, base_amplitude=base_amplitude)
+
+
+def test_simplex_base_amplitude_not_real():
+    with pytest.raises(TypeError, match="'base_amplitude' must be a real number"):
+        komm.SimplexConstellation(4, base_amplitude="1")  # type: ignore

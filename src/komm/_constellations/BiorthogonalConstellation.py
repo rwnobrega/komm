@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -22,7 +23,7 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
     Parameters:
         order: The order $M$ of the constellation. Must be an even integer.
 
-        amplitude: The amplitude $A$ of the constellation. The default value is `1.0`.
+        amplitude: The amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
     Examples:
         1. The $4$-ary biorthogonal constellation with amplitude $A = 1$ is given by
@@ -46,7 +47,7 @@ class BiorthogonalConstellation(abc.Constellation[np.floating]):
         if order % 2 != 0:
             raise ValueError(f"'order' must be even (got {order})")
         self._order = order
-        self._amplitude = float(amplitude)
+        self._amplitude = validate_positive_float(amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([

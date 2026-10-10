@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -19,7 +20,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        base_amplitude: The base amplitude $A$ of the constellation. The default value is `1.0`.
+        base_amplitude: The base amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
     Examples:
         1. The $4$-ary simplex constellation with base amplitude $A = 1$ is given by
@@ -41,7 +42,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, base_amplitude: float = 1.0) -> None:
         self._order = order
-        self._base_amplitude = float(base_amplitude)
+        self._base_amplitude = validate_positive_float(base_amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([

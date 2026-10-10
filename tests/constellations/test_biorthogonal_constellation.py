@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -97,3 +99,15 @@ def test_biorthogonal_closest_indices_order_2():
     const = komm.BiorthogonalConstellation(2)
     received = [0.5, -0.3, 2.0, -1.0]
     np.testing.assert_equal(const.closest_indices(received), [0, 1, 0, 1])
+
+
+@pytest.mark.parametrize("amplitude", [0.0, -1.0])
+def test_biorthogonal_invalid_amplitude(amplitude):
+    message = f"'amplitude' must be a positive real number (got {amplitude})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.BiorthogonalConstellation(4, amplitude=amplitude)
+
+
+def test_biorthogonal_amplitude_not_real():
+    with pytest.raises(TypeError, match="'amplitude' must be a real number"):
+        komm.BiorthogonalConstellation(4, amplitude="1")  # type: ignore

@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -79,3 +81,15 @@ def test_orthogonal_closest_indices_shape():
     const = komm.OrthogonalConstellation(4)
     received = [[2.0, 1.0, 0.5, 0.1], [0.1, 0.1, 0.1, 5.0]]
     np.testing.assert_equal(const.closest_indices(received), [[0], [3]])
+
+
+@pytest.mark.parametrize("amplitude", [0.0, -1.0])
+def test_orthogonal_invalid_amplitude(amplitude):
+    message = f"'amplitude' must be a positive real number (got {amplitude})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.OrthogonalConstellation(4, amplitude=amplitude)
+
+
+def test_orthogonal_amplitude_not_real():
+    with pytest.raises(TypeError, match="'amplitude' must be a real number"):
+        komm.OrthogonalConstellation(4, amplitude="1")  # type: ignore

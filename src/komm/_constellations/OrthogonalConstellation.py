@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -19,7 +20,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        amplitude: The amplitude $A$ of the constellation. The default value is `1.0`.
+        amplitude: The amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
     Examples:
         1. The $4$-ary orthogonal constellation with amplitude $A = 1$ is given by
@@ -41,7 +42,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, amplitude: float = 1.0) -> None:
         self._order = order
-        self._amplitude = float(amplitude)
+        self._amplitude = validate_positive_float(amplitude)
 
     def __repr__(self) -> str:
         args = ", ".join([
