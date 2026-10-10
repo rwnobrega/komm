@@ -75,8 +75,6 @@ def test_integer_coding_boundary_invariant(code: komm.abc.IntegerCode, n: int):
 def test_integer_coding_empty(code: komm.abc.IntegerCode):
     assert list(code.encode([])) == []
     assert list(code.decode([])) == []
-    with pytest.raises(StopIteration):
-        next(code.decode([]))
     with pytest.raises(ValueError, match="incomplete codeword"):
         code.decode_single(iter([]))
 

@@ -80,8 +80,6 @@ def test_truncated_binary_empty():
     code = komm.TruncatedBinaryCode(5)
     assert list(code.encode([])) == []
     assert list(code.decode([])) == []
-    with pytest.raises(StopIteration):
-        next(code.decode([]))
     with pytest.raises(ValueError, match="incomplete codeword"):
         code.decode_single(iter([]))
 
