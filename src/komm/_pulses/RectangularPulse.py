@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float
 from ..types import Array1D
 from .util import rect, tri
 
@@ -42,6 +43,11 @@ class RectangularPulse(abc.Pulse):
     """
 
     width: float = 1.0
+
+    def __post_init__(self) -> None:
+        self.width = validate_float(self.width)
+        if not 0 < self.width <= 1:
+            raise ValueError(f"'width' must satisfy 0 < width <= 1 (got {self.width})")
 
     def waveform(self, t: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
