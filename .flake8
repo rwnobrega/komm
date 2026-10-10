@@ -3,3 +3,5 @@ ignore = E124,E126,E131,E203,E501,E704,E713,E741,W503
 per-file-ignores =
     __init__.py:F401,F403
     tests/error_control_block/test_cordaro_wagner_code.py:F841
+pytest-parametrize-names-type = csv
+pytest-raises-require-match-for = BaseException,Exception,ValueError,TypeError,ZeroDivisionError,NotImplementedError,RuntimeError
