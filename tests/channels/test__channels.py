@@ -73,8 +73,8 @@ def test_channels_equality_ignores_rng():
         komm.ZChannel(0.1),
     ],
 )
-def test_binary_channels_mutual_information_size(channel):
-    for input_pmf in [[1.0], [0.2, 0.3, 0.5]]:
-        message = f"'input_pmf' must have size 2 (got {len(input_pmf)})"
-        with pytest.raises(ValueError, match=escape(message)):
-            channel.mutual_information(input_pmf)
+@pytest.mark.parametrize("input_pmf", [[1.0], [0.2, 0.3, 0.5]])
+def test_binary_channels_mutual_information_size(channel, input_pmf):
+    message = f"'input_pmf' must have size 2 (got {len(input_pmf)})"
+    with pytest.raises(ValueError, match=escape(message)):
+        channel.mutual_information(input_pmf)
