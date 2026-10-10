@@ -83,6 +83,18 @@ def test_orthogonal_closest_indices_shape():
     np.testing.assert_equal(const.closest_indices(received), [[0], [3]])
 
 
+@pytest.mark.parametrize("order", [-1, 0, 1])
+def test_orthogonal_invalid_order(order):
+    message = f"'order' must be at least 2 (got {order})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.OrthogonalConstellation(order)
+
+
+def test_orthogonal_order_not_integer():
+    with pytest.raises(TypeError, match=r"'order' must be an integer \(got float\)"):
+        komm.OrthogonalConstellation(4.0)  # type: ignore
+
+
 @pytest.mark.parametrize("amplitude", [0.0, -1.0])
 def test_orthogonal_invalid_amplitude(amplitude):
     message = f"'amplitude' must be a positive real number (got {amplitude})"

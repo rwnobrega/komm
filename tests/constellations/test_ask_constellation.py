@@ -107,6 +107,18 @@ def test_ask_no_negative_zero(phase_offset):
     np.testing.assert_allclose(np.angle(origin), 0.0)
 
 
+@pytest.mark.parametrize("order", [-1, 0, 1])
+def test_ask_invalid_order(order):
+    message = f"'order' must be at least 2 (got {order})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.ASKConstellation(order)
+
+
+def test_ask_order_not_integer():
+    with pytest.raises(TypeError, match=r"'order' must be an integer \(got float\)"):
+        komm.ASKConstellation(4.0)  # type: ignore
+
+
 @pytest.mark.parametrize("base_amplitude", [0.0, -1.0])
 def test_ask_invalid_base_amplitude(base_amplitude):
     message = f"'base_amplitude' must be a positive real number (got {base_amplitude})"

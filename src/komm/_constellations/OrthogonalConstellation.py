@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_positive_float
+from .._util.validators import validate_integer, validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -18,7 +18,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
     where $A$ is the *amplitude*, and $\mathbf{e}_i$ is the $i$-th standard basis vector of $\mathbb{R}^M$. For more details, see <cite>PS08, Sec. 3.2–4</cite>.
 
     Parameters:
-        order: The order $M$ of the constellation.
+        order: The order $M$ of the constellation. Must satisfy $M \geq 2$.
 
         amplitude: The amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
@@ -41,7 +41,7 @@ class OrthogonalConstellation(abc.Constellation[np.floating]):
     """
 
     def __init__(self, order: int, amplitude: float = 1.0) -> None:
-        self._order = order
+        self._order = validate_integer(order, low=2)
         self._amplitude = validate_positive_float(amplitude)
 
     def __repr__(self) -> str:

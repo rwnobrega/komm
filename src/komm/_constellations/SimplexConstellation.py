@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_positive_float
+from .._util.validators import validate_integer, validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -18,7 +18,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
     where $A$ is the *base amplitude*, and $\mathbf{e}_i$ is the $i$-th standard basis vector of $\mathbb{R}^M$. The symbols are equidistant, equicorrelated, and lie in an $(M-1)$-dimensional subspace. The simplex constellation achieves the same minimum distance as the orthogonal constellation, but with smaller energy. For more details, see <cite>PS08, Sec. 3.2–4</cite>.
 
     Parameters:
-        order: The order $M$ of the constellation.
+        order: The order $M$ of the constellation. Must satisfy $M \geq 2$.
 
         base_amplitude: The base amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
@@ -41,7 +41,7 @@ class SimplexConstellation(abc.Constellation[np.floating]):
     """
 
     def __init__(self, order: int, base_amplitude: float = 1.0) -> None:
-        self._order = order
+        self._order = validate_integer(order, low=2)
         self._base_amplitude = validate_positive_float(base_amplitude)
 
     def __repr__(self) -> str:

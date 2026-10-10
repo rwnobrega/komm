@@ -64,10 +64,23 @@ def test_biorthogonal_parameters(params, expected):
     np.testing.assert_allclose(const.minimum_distance(), expected["minimum_distance"])
 
 
-@pytest.mark.parametrize("order", [1, 3, 5, 7])
-def test_biorthogonal_odd_order_raises(order):
-    with pytest.raises(ValueError, match="even"):
+@pytest.mark.parametrize(
+    "order, message",
+    [
+        (-2, "'order' must be a positive integer (got -2)"),
+        (0, "'order' must be a positive integer (got 0)"),
+        (1, "'order' must be even (got 1)"),
+        (3, "'order' must be even (got 3)"),
+    ],
+)
+def test_biorthogonal_invalid_order(order, message):
+    with pytest.raises(ValueError, match=escape(message)):
         komm.BiorthogonalConstellation(order)
+
+
+def test_biorthogonal_order_not_integer():
+    with pytest.raises(TypeError, match=r"'order' must be an integer \(got float\)"):
+        komm.BiorthogonalConstellation(4.0)  # type: ignore
 
 
 @pytest.mark.parametrize("order", [4, 6, 8])

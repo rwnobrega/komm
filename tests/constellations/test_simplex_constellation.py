@@ -119,6 +119,18 @@ def test_simplex_closest_indices():
     np.testing.assert_equal(const.closest_indices(received.ravel()), [0, 1, 3])
 
 
+@pytest.mark.parametrize("order", [-1, 0, 1])
+def test_simplex_invalid_order(order):
+    message = f"'order' must be at least 2 (got {order})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.SimplexConstellation(order)
+
+
+def test_simplex_order_not_integer():
+    with pytest.raises(TypeError, match=r"'order' must be an integer \(got float\)"):
+        komm.SimplexConstellation(4.0)  # type: ignore
+
+
 @pytest.mark.parametrize("base_amplitude", [0.0, -1.0])
 def test_simplex_invalid_base_amplitude(base_amplitude):
     message = f"'base_amplitude' must be a positive real number (got {base_amplitude})"

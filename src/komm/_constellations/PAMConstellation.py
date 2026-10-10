@@ -13,7 +13,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
     Pulse-amplitude modulation (PAM) constellation. It is a real one-dimensional [constellation](/ref/Constellation) in which the symbols are *uniformly arranged* in the real line and centered about the origin. For more details, see <cite>SA15, Sec. 2.5.1</cite>.
 
     Parameters:
-        order: The order $M$ of the constellation.
+        order: The order $M$ of the constellation. Must satisfy $M \geq 2$.
 
         delta: The distance $\delta$ between adjacent symbols. Must satisfy $\delta > 0$. The default value is `2.0`.
 

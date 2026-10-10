@@ -18,7 +18,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
     where $M$ is the *order*, $A$ is the *amplitude*, and $\phi$ is the *phase offset* of the constellation.
 
     Parameters:
-        order: The order $M$ of the constellation.
+        order: The order $M$ of the constellation. Must satisfy $M \geq 2$.
 
         amplitude: The amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
