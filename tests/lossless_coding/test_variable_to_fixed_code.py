@@ -117,14 +117,14 @@ def test_rate_invalid_pmf(pmf, message):
         code.rate(pmf)
 
 
-def test_rate_pmf_size():
+@pytest.mark.parametrize("pmf", [[1.0], [0.2, 0.3, 0.5]])
+def test_rate_pmf_size(pmf):
     code = komm.VariableToFixedCode.from_sourcewords(
         [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
     )
-    for pmf in [[1.0], [0.2, 0.3, 0.5]]:
-        message = f"'pmf' must have size 2 (got {len(pmf)})"
-        with pytest.raises(ValueError, match=escape(message)):
-            code.rate(pmf)
+    message = f"'pmf' must have size 2 (got {len(pmf)})"
+    with pytest.raises(ValueError, match=escape(message)):
+        code.rate(pmf)
 
 
 def test_encoding_decoding():

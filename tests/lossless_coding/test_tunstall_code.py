@@ -29,13 +29,22 @@ def test_tunstall_code():
 def test_tunstall_code_invalid_init():
     with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
         komm.TunstallCode([0.5, 0.5, 0.1], 3)
-    rule = "2**target_block_size >= len(pmf)"
-    for pmf, n in [([0.5, 0.5], 0), ([0.25, 0.25, 0.25, 0.25], 1)]:
-        message = f"'target_block_size' must satisfy {rule} (got {n})"
-        with pytest.raises(ValueError, match=escape(message)):
-            komm.TunstallCode(pmf, n)
     with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
         komm.TunstallCode([0.5, 0.5], 2.0)  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "pmf, n",
+    [
+        ([0.5, 0.5], 0),
+        ([0.25, 0.25, 0.25, 0.25], 1),
+    ],
+)
+def test_tunstall_code_invalid_target_block_size(pmf, n):
+    rule = "2**target_block_size >= len(pmf)"
+    message = f"'target_block_size' must satisfy {rule} (got {n})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.TunstallCode(pmf, n)
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 9))
