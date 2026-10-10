@@ -17,6 +17,8 @@ def test_polar_code_invalid_construction():
         komm.PolarCode(2, [-1, 0])
     with pytest.raises(TypeError, match="'frozen' must contain only integers"):
         komm.PolarCode(2, [0.5, 1.7])
+    with pytest.raises(ValueError, match="'frozen' must be a 1D-array"):
+        komm.PolarCode(3, [[0, 1], [2, 4]])
     with pytest.raises(ValueError, match="elements of 'frozen' must be unique"):
         komm.PolarCode(2, [0, 0])
 
