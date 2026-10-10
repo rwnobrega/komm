@@ -85,3 +85,29 @@ def test_qam_invalid():
         komm.QAMConstellation((4,))  # type: ignore
     with pytest.raises(TypeError, match="'orders' must contain only integers"):
         komm.QAMConstellation((4, 2.0))  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "deltas, message",
+    [
+        (0.0, r"'deltas' must be a positive real number \(got 0.0\)"),
+        ((2.0, -1.0), "elements of 'deltas' must be positive"),
+        ((2.0,), r"'deltas' must have shape \(2,\) \(got \(1,\)\)"),
+    ],
+)
+def test_qam_invalid_deltas(deltas, message):
+    with pytest.raises(ValueError, match=message):
+        komm.QAMConstellation(16, deltas=deltas)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"deltas": 2j}, "'deltas' must be a real number"),
+        ({"deltas": (2.0, "4")}, "'deltas' must contain only real numbers"),
+        ({"phase_offset": "0"}, "'phase_offset' must be a real number"),
+    ],
+)
+def test_qam_not_real(kwargs, message):
+    with pytest.raises(TypeError, match=message):
+        komm.QAMConstellation(16, **kwargs)

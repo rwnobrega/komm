@@ -6,7 +6,13 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer, validate_integer_array
+from .._util.validators import (
+    validate_float,
+    validate_float_array,
+    validate_integer,
+    validate_integer_array,
+    validate_positive_float,
+)
 from ..types import Array1D, Array2D
 from .PAMConstellation import pam_matrix
 
@@ -18,7 +24,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         orders: A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be a perfect square.
 
-        deltas: A tuple $(\delta_\mathrm{I}, \delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\delta$, then it is assumed that $\delta_\mathrm{I} = \delta_\mathrm{Q} = \delta$. The default value is `2.0`.
+        deltas: A tuple $(\delta_\mathrm{I}, \delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\delta$, then it is assumed that $\delta_\mathrm{I} = \delta_\mathrm{Q} = \delta$. Must satisfy $\delta_\mathrm{I}, \delta_\mathrm{Q} > 0$. The default value is `2.0`.
 
         phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
@@ -58,10 +64,14 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
                 )
             self._orders = (isqrt(M), isqrt(M))
         if isinstance(deltas, Iterable):
-            self._deltas = deltas
+            δi, δq = validate_float_array(deltas, shape=(2,)).tolist()
+            if not (δi > 0 and δq > 0):
+                raise ValueError("elements of 'deltas' must be positive")
+            self._deltas = (δi, δq)
         else:
-            self._deltas = (deltas, deltas)
-        self._phase_offset = phase_offset
+            δ = validate_positive_float(deltas)
+            self._deltas = (δ, δ)
+        self._phase_offset = validate_float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([
