@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -104,3 +106,15 @@ def test_pam_invalid_order():
         komm.PAMConstellation(1)
     with pytest.raises(TypeError, match="'order' must be an integer"):
         komm.PAMConstellation(4.0)  # type: ignore
+
+
+@pytest.mark.parametrize("delta", [0.0, -2.0])
+def test_pam_invalid_delta(delta):
+    message = f"'delta' must be a positive real number (got {delta})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.PAMConstellation(4, delta=delta)
+
+
+def test_pam_delta_not_real():
+    with pytest.raises(TypeError, match=r"'delta' must be a real number \(got str\)"):
+        komm.PAMConstellation(4, delta="2")  # type: ignore

@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer
+from .._util.validators import validate_float, validate_integer, validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -20,7 +20,7 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        amplitude: The amplitude $A$ of the constellation. The default value is `1.0`.
+        amplitude: The amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
         phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
@@ -44,8 +44,8 @@ class PSKConstellation(abc.Constellation[np.complexfloating]):
         self, order: int, amplitude: float = 1.0, phase_offset: float = 0.0
     ) -> None:
         self._order = validate_integer(order, low=2)
-        self._amplitude = float(amplitude)
-        self._phase_offset = float(phase_offset)
+        self._amplitude = validate_positive_float(amplitude)
+        self._phase_offset = validate_float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([

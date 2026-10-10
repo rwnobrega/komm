@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer
+from .._util.validators import validate_integer, validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -15,7 +15,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        delta: The distance $\delta$ between adjacent symbols. The default value is `2.0`.
+        delta: The distance $\delta$ between adjacent symbols. Must satisfy $\delta > 0$. The default value is `2.0`.
 
     Examples:
         1. The $4$-PAM constellation with $\delta = 2$ is depicted below.
@@ -35,7 +35,7 @@ class PAMConstellation(abc.Constellation[np.floating]):
 
     def __init__(self, order: int, delta: float = 2.0) -> None:
         self._order = validate_integer(order, low=2)
-        self._delta = float(delta)
+        self._delta = validate_positive_float(delta)
 
     def __repr__(self) -> str:
         args = ", ".join([

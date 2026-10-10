@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -93,3 +95,22 @@ def test_psk_invalid_order():
         komm.PSKConstellation(1)
     with pytest.raises(TypeError, match="'order' must be an integer"):
         komm.PSKConstellation(4.0)  # type: ignore
+
+
+@pytest.mark.parametrize("amplitude", [0.0, -1.0])
+def test_psk_invalid_amplitude(amplitude):
+    message = f"'amplitude' must be a positive real number (got {amplitude})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.PSKConstellation(4, amplitude=amplitude)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"amplitude": "1"}, r"'amplitude' must be a real number \(got str\)"),
+        ({"phase_offset": "0"}, r"'phase_offset' must be a real number \(got str\)"),
+    ],
+)
+def test_psk_not_real(kwargs, message):
+    with pytest.raises(TypeError, match=message):
+        komm.PSKConstellation(4, **kwargs)
