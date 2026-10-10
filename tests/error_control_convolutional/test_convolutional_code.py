@@ -449,9 +449,9 @@ def test_convolutional_code_encode_batch(
 
 def test_convolutional_code_encode_invalid_state():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="last dimension of 'initial_state' must be"):
         code.encode_with_state([1, 0, 1, 1], [0, 0, 0])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="could not broadcast"):
         code.encode_with_state([1, 0, 1, 1], [[0, 0], [0, 0]])
 
 
