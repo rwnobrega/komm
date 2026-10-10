@@ -217,6 +217,25 @@ def validate_nonnegative_float(value: float) -> float:
     return real
 
 
+def validate_float_array(
+    value: npt.ArrayLike,
+    *,
+    ndim: int | None = None,
+    shape: tuple[int, ...] | None = None,
+) -> npt.NDArray[np.floating]:
+    value = np.asarray(value)
+    if ndim is not None and not value.ndim == ndim:
+        raise ValueError(
+            f"'{arg_name()}' must be a {ndim}D-array (got shape {value.shape})"
+        )
+    if shape is not None and not value.shape == shape:
+        raise ValueError(f"'{arg_name()}' must have shape {shape} (got {value.shape})")
+    if value.dtype.kind not in "biuf":  # bool, int, uint, float
+        got = value.dtype
+        raise TypeError(f"'{arg_name()}' must contain only real numbers (got {got})")
+    return value.astype(float, copy=False)
+
+
 def validate_bool(value: object) -> bool:
     if type(value) not in (bool, np.bool_):
         got = type(value).__name__

@@ -13,6 +13,7 @@ from komm._util.validators import (
     validate_bool,
     validate_choice,
     validate_float,
+    validate_float_array,
     validate_integer,
     validate_integer_array,
     validate_log_base,
@@ -294,6 +295,79 @@ def test_validate_nonnegative_float():
     x = "0"
     with pytest.raises(TypeError, match=r"'x' must be a real number \(got str\)"):
         validate_nonnegative_float(x)  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "dtype",
+    [np.int64, np.uint8, np.float32, np.float64],
+)
+def test_validate_float_array(dtype):
+    value = np.array([0, 1, 2], dtype=dtype)
+    array = validate_float_array(value)
+    assert array.dtype == np.float64
+    np.testing.assert_equal(array, [0.0, 1.0, 2.0])
+
+
+def test_validate_float_array_bool_and_empty():
+    array = validate_float_array([True, False])
+    assert array.dtype == np.float64
+    np.testing.assert_equal(array, [1.0, 0.0])
+    array = validate_float_array([])
+    assert array.dtype == np.float64
+    assert array.size == 0
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ([1j, 2.0], "complex128"),
+        (["1.0", "2.0"], "<U3"),
+        ([1, 2**70], "object"),
+    ],
+)
+def test_validate_float_array_not_real(value, got):
+    with pytest.raises(
+        TypeError, match=rf"'value' must contain only real numbers \(got {got}\)"
+    ):
+        validate_float_array(value)
+
+
+def test_validate_float_array_shape():
+    validate_float_array([1.0, 2.0], shape=(2,))
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ([1.0, 2.0, 3.0], "(3,)"),
+        ([], "(0,)"),
+        ([[1.0, 2.0]], "(1, 2)"),
+    ],
+)
+def test_validate_float_array_shape_invalid(value, got):
+    message = f"'value' must have shape (2,) (got {got})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_float_array(value, shape=(2,))
+
+
+def test_validate_float_array_ndim():
+    validate_float_array([], ndim=1)
+    validate_float_array([[1.0, 2.0]], ndim=2)
+
+
+@pytest.mark.parametrize(
+    "value, ndim, got",
+    [
+        ([[1.0, 2.0]], 1, "(1, 2)"),
+        ([[]], 1, "(1, 0)"),
+        (1.0, 1, "()"),
+        ([1.0, 2.0], 2, "(2,)"),
+    ],
+)
+def test_validate_float_array_ndim_invalid(value, ndim, got):
+    message = f"'value' must be a {ndim}D-array (got shape {got})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_float_array(value, ndim=ndim)
 
 
 @pytest.mark.parametrize("value", [False, True, np.False_, np.True_])
