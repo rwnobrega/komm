@@ -209,7 +209,7 @@ class MealyMachine:
             memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$, with the inputs along the survivor ending in each state; and `'metrics'`, a 1D-array of floats of length $|\mathcal{S}|$, with the metric of the survivor ending in each state. This dictionary is updated in-place by this method.
 
         Returns:
-            input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$
+            input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$.
         """
         observed = np.asarray(observed)
         L, num_states = observed.shape[0], self.num_states
@@ -246,7 +246,7 @@ class MealyMachine:
         final_state_distribution: npt.ArrayLike | None = None,
     ) -> Array2D[np.floating]:
         r"""
-        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, 12.6</cite>.
+        Applies the forward-backward algorithm on a given observed sequence. The forward-backward algorithm computes the posterior pmf of each input $x_0, x_1, \ldots, x_{L-1} \in \mathcal{X}$ given an observed sequence $z = (z_0, z_1, \ldots, z_{L-1}) \in \mathcal{Z}^L$. The prior pmf of each input may also be provided. See <cite>LC04, Sec. 12.6</cite>.
 
         Parameters:
             observed: The observed sequence $z \in \mathcal{Z}^L$.
