@@ -27,6 +27,8 @@ class FixedToVariableCode:
     r"""
     General fixed-to-variable length code. A *fixed-to-variable length code* with *source alphabet* $\mathcal{X}$, *target alphabet* $\mathcal{Y}$, and *source block size* $k$ is defined by an *encoding mapping* $\Enc: \mathcal{X}^k \to \mathcal{Y}^+$, where the domain is the set of all $k$-tuples with entries in $\mathcal{X}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{Y}$. The elements in the image of $\Enc$ are called *codewords*.
 
+    A fixed-to-variable length code with $k = 1$ is equivalent to a [symbol code](/ref/SymbolCode).
+
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
     """

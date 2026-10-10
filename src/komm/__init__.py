@@ -101,6 +101,7 @@ from ._lossless_coding.LempelZivSSCode import LempelZivSSCode
 from ._lossless_coding.LempelZivWelchCode import LempelZivWelchCode
 from ._lossless_coding.RunLengthCode import RunLengthCode
 from ._lossless_coding.ShannonCode import ShannonCode
+from ._lossless_coding.SymbolCode import SymbolCode
 from ._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from ._lossless_coding.TunstallCode import TunstallCode
 from ._lossless_coding.VariableToFixedCode import VariableToFixedCode
@@ -233,6 +234,7 @@ __all__ = [
     "LempelZivWelchCode",
     "RunLengthCode",
     "ShannonCode",
+    "SymbolCode",
     "TruncatedBinaryCode",
     "TunstallCode",
     "VariableToFixedCode",

@@ -85,11 +85,12 @@ Sequences:
     - ZadoffChuSequence
 Source coding:
   Lossless coding:
-    - FixedToVariableCode
+    - SymbolCode
     - ShannonCode
     - FanoCode
     - HuffmanCode
     - TruncatedBinaryCode
+    - FixedToVariableCode
     - VariableToFixedCode
     - TunstallCode
     - RunLengthCode
