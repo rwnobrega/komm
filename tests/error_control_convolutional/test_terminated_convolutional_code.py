@@ -142,6 +142,21 @@ def test_terminated_convolutional_code_tail_biting(convolutional_args):
 
 
 @pytest.mark.parametrize(
+    "mode, final_distribution",
+    [
+        ("direct-truncation", [0.25, 0.25, 0.25, 0.25]),
+        ("zero-termination", [1.0, 0.0, 0.0, 0.0]),
+    ],
+)
+def test_terminated_convolutional_code_distributions(mode, final_distribution):
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 3, mode)
+    initial, final = code.strategy.initial_final_distributions(4)
+    np.testing.assert_equal(initial, [1.0, 0.0, 0.0, 0.0])
+    np.testing.assert_equal(final, final_distribution)
+
+
+@pytest.mark.parametrize(
     "convolutional_args, num_blocks",
     [
         (([[0b11, 0b1]], [0b11]), 6),

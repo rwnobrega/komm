@@ -10,7 +10,7 @@ from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
 from .._util.validators import validate_binary_array, validate_choice
-from ..types import Array2D
+from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
 
@@ -419,7 +419,7 @@ class TerminationStrategy(ABC):
     @abstractmethod
     def initial_final_distributions(
         self, num_states: int
-    ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]: ...
+    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]: ...
 
 
 class DirectTruncation(TerminationStrategy):
@@ -437,8 +437,8 @@ class DirectTruncation(TerminationStrategy):
 
     def initial_final_distributions(
         self, num_states: int
-    ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
-        initial_distribution = np.eye(1, num_states, 0)
+    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
+        initial_distribution = np.eye(1, num_states)[0]
         final_distribution = np.ones(num_states) / num_states
         return initial_distribution, final_distribution
 
@@ -478,9 +478,9 @@ class ZeroTermination(TerminationStrategy):
 
     def initial_final_distributions(
         self, num_states: int
-    ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
-        initial_distribution = np.eye(1, num_states, 0)
-        final_distribution = np.eye(1, num_states, 0)
+    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
+        initial_distribution = np.eye(1, num_states)[0]
+        final_distribution = np.eye(1, num_states)[0]
         return initial_distribution, final_distribution
 
 
@@ -512,5 +512,5 @@ class TailBiting(TerminationStrategy):
 
     def initial_final_distributions(
         self, num_states: int
-    ) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
+    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
         raise NotImplementedError
