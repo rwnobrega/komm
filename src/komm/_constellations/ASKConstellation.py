@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float, validate_positive_float
 from ..types import Array1D, Array2D
 
 
@@ -18,7 +19,7 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         order: The order $M$ of the constellation.
 
-        base_amplitude: The base amplitude $A$ of the constellation. The default value is `1.0`.
+        base_amplitude: The base amplitude $A$ of the constellation. Must satisfy $A > 0$. The default value is `1.0`.
 
         phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
@@ -46,8 +47,8 @@ class ASKConstellation(abc.Constellation[np.complexfloating]):
         self, order: int, base_amplitude: float = 1.0, phase_offset: float = 0.0
     ) -> None:
         self._order = order
-        self._base_amplitude = float(base_amplitude)
-        self._phase_offset = float(phase_offset)
+        self._base_amplitude = validate_positive_float(base_amplitude)
+        self._phase_offset = validate_float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([

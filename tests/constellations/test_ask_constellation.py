@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -103,3 +105,22 @@ def test_ask_no_negative_zero(phase_offset):
     assert not np.any(np.signbit(origin.real))
     assert not np.any(np.signbit(origin.imag))
     np.testing.assert_allclose(np.angle(origin), 0.0)
+
+
+@pytest.mark.parametrize("base_amplitude", [0.0, -1.0])
+def test_ask_invalid_base_amplitude(base_amplitude):
+    message = f"'base_amplitude' must be a positive real number (got {base_amplitude})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.ASKConstellation(4, base_amplitude=base_amplitude)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"base_amplitude": "1"}, "'base_amplitude' must be a real number"),
+        ({"phase_offset": "0"}, "'phase_offset' must be a real number"),
+    ],
+)
+def test_ask_not_real(kwargs, message):
+    with pytest.raises(TypeError, match=message):
+        komm.ASKConstellation(4, **kwargs)

@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -95,3 +97,22 @@ def test_cross_qam_invalid(order):
 def test_cross_qam_closest_indices(received, indices):
     cross = komm.CrossQAMConstellation(32)
     np.testing.assert_equal(cross.closest_indices(received), indices)
+
+
+@pytest.mark.parametrize("delta", [0.0, -2.0])
+def test_cross_qam_invalid_delta(delta):
+    message = f"'delta' must be a positive real number (got {delta})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.CrossQAMConstellation(32, delta=delta)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"delta": "2"}, "'delta' must be a real number"),
+        ({"phase_offset": "0"}, "'phase_offset' must be a real number"),
+    ],
+)
+def test_cross_qam_not_real(kwargs, message):
+    with pytest.raises(TypeError, match=message):
+        komm.CrossQAMConstellation(32, **kwargs)

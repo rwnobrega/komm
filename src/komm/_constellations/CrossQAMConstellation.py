@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float, validate_positive_float
 from ..types import Array1D, Array2D
 from .QAMConstellation import QAMConstellation
 
@@ -15,7 +16,7 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         order: The order $M$ of the constellation. Must be of the form $M = 2^k$ with $k$ odd and $k \geq 5$.
 
-        delta: The distance $\delta$ between adjacent symbols (along the in-phase and quadrature axes). The default value is `2.0`.
+        delta: The distance $\delta$ between adjacent symbols (along the in-phase and quadrature axes). Must satisfy $\delta > 0$. The default value is `2.0`.
 
         phase_offset: The phase offset $\phi$ of the constellation (in turns, not radians). The default value is `0.0`.
 
@@ -38,8 +39,8 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
                 " (e.g., 32, 128, 512)"
             )
         self._order = order
-        self._delta = float(delta)
-        self._phase_offset = float(phase_offset)
+        self._delta = validate_positive_float(delta)
+        self._phase_offset = validate_float(phase_offset)
 
     def __repr__(self) -> str:
         args = ", ".join([
