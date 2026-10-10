@@ -79,13 +79,13 @@ def test_integer_coding_empty(code: komm.abc.IntegerCode):
         code.decode_single(iter([]))
 
 
-def test_integer_coding_incomplete(code: komm.abc.IntegerCode):
-    for n in [2, 45, 1000]:
-        codeword = code.encode_single(n)
-        with pytest.raises(ValueError, match="incomplete codeword"):
-            code.decode_single(iter(codeword[:-1]))
-        with pytest.raises(ValueError, match="incomplete codeword"):
-            list(code.decode(codeword[:-1]))
+@pytest.mark.parametrize("n", [2, 45, 1000])
+def test_integer_coding_incomplete(code: komm.abc.IntegerCode, n: int):
+    codeword = code.encode_single(n)
+    with pytest.raises(ValueError, match="incomplete codeword"):
+        code.decode_single(iter(codeword[:-1]))
+    with pytest.raises(ValueError, match="incomplete codeword"):
+        list(code.decode(codeword[:-1]))
 
 
 @pytest.mark.parametrize("message", [[0], [-1], [1, 0, 2]])
