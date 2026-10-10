@@ -6,7 +6,7 @@ import pytest
 import komm
 
 
-@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
+@pytest.mark.parametrize("length", [2, 4, 8, 16, 32, 64])
 def test_walsh_hadamard_index_0(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=0)
     np.testing.assert_equal(
@@ -15,7 +15,7 @@ def test_walsh_hadamard_index_0(length):
     )
 
 
-@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
+@pytest.mark.parametrize("length", [2, 4, 8, 16, 32, 64])
 def test_walsh_hadamard_index_1(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=1)
     np.testing.assert_equal(
@@ -24,7 +24,7 @@ def test_walsh_hadamard_index_1(length):
     )
 
 
-@pytest.mark.parametrize("length", (4, 8, 16, 32, 64))
+@pytest.mark.parametrize("length", [4, 8, 16, 32, 64])
 def test_walsh_hadamard_index_2(length):
     walsh_hadamard = komm.WalshHadamardSequence(length, index=2)
     np.testing.assert_equal(
@@ -33,8 +33,8 @@ def test_walsh_hadamard_index_2(length):
     )
 
 
-@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
-@pytest.mark.parametrize("ordering", ("natural", "sequency", "dyadic"))
+@pytest.mark.parametrize("length", [2, 4, 8, 16, 32, 64])
+@pytest.mark.parametrize("ordering", ["natural", "sequency", "dyadic"])
 def test_walsh_hadamard_orthogonality(length, ordering):
     walsh_hadamard = []
     for i in range(length):
@@ -45,7 +45,7 @@ def test_walsh_hadamard_orthogonality(length, ordering):
         assert np.correlate(seq1, seq2) == (length if i1 == i2 else 0)
 
 
-@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
+@pytest.mark.parametrize("length", [2, 4, 8, 16, 32, 64])
 def test_walsh_hadamard_sequency_sign_changes(length):
     # Row $i$ must have exactly $i$ sign changes
     for index in range(length):
@@ -53,7 +53,7 @@ def test_walsh_hadamard_sequency_sign_changes(length):
         assert np.sum(np.abs(np.diff(walsh_hadamard.bit_sequence))) == index
 
 
-@pytest.mark.parametrize("length", (2, 4, 8, 16, 32, 64))
+@pytest.mark.parametrize("length", [2, 4, 8, 16, 32, 64])
 def test_walsh_hadamard_dyadic_sign_changes(length):
     # Row $i \oplus (i \gg 1)$ must have exactly $i$ sign changes
     for i in range(length):
