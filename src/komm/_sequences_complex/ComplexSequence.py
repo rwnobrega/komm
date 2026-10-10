@@ -21,7 +21,11 @@ class ComplexSequence:
     """
 
     def __init__(self, sequence: npt.ArrayLike) -> None:
-        self.sequence = np.asarray(sequence, dtype=complex)
+        sequence = np.asarray(sequence, dtype=complex)
+        if not sequence.ndim == 1:
+            shape = sequence.shape
+            raise ValueError(f"'sequence' must be a 1D-array (got shape {shape})")
+        self.sequence = sequence
 
     def __repr__(self) -> str:
         args = f"sequence={self.sequence.tolist()}"

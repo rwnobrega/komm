@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -8,6 +9,17 @@ def test_binary_sequence_construction():
     np.testing.assert_equal(sequence.bit_sequence, [0, 1, 1, 0])
     np.testing.assert_equal(sequence.polar_sequence, [1, -1, -1, 1])
     assert sequence.length == 4
+
+
+def test_binary_sequence_invalid_construction():
+    with pytest.raises(ValueError, match="'bit_sequence' must be a 1D-array"):
+        komm.BinarySequence(bit_sequence=[[0, 1], [1, 0]])
+    with pytest.raises(ValueError, match="elements of 'bit_sequence' must be 0 or 1"):
+        komm.BinarySequence(bit_sequence=[0, 2])
+    with pytest.raises(ValueError, match="'polar_sequence' must be a 1D-array"):
+        komm.BinarySequence(polar_sequence=[[1, -1], [-1, 1]])
+    with pytest.raises(ValueError, match="elements of 'polar_sequence' must be"):
+        komm.BinarySequence(polar_sequence=[1, 0])
 
 
 def test_binary_sequence_autocorrelation():

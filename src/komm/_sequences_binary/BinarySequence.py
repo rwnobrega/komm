@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.sequences import autocorrelation, cyclic_autocorrelation
+from .._util.validators import validate_binary_array, validate_integer_array
 from ..types import Array1D
 
 
@@ -14,8 +15,8 @@ class BinarySequence:
     The constructor expects either the bit sequence or the polar sequence.
 
     Parameters:
-        bit_sequence: The binary sequence in bit format, $b[n] \in \\{ 0, 1 \\}$.
-        polar_sequence: The binary sequence in polar format, $x[n] \in \\{ \pm 1 \\}$.
+        bit_sequence: The binary sequence in bit format, $b[n] \in \\{ 0, 1 \\}$. Must be a 1D-array.
+        polar_sequence: The binary sequence in polar format, $x[n] \in \\{ \pm 1 \\}$. Must be a 1D-array.
 
     Examples:
         >>> seq = komm.BinarySequence(bit_sequence=[0, 1, 1, 0])
@@ -37,10 +38,14 @@ class BinarySequence:
         polar_sequence: npt.ArrayLike | None = None,
     ) -> None:
         if bit_sequence is not None and polar_sequence is None:
-            self.bit_sequence = np.asarray(bit_sequence, dtype=int)
+            bit_sequence = validate_binary_array(bit_sequence, ndim=1)
+            self.bit_sequence = bit_sequence.astype(int)
             self.polar_sequence = (-1) ** self.bit_sequence
         elif polar_sequence is not None and bit_sequence is None:
-            self.polar_sequence = np.asarray(polar_sequence, dtype=int)
+            polar_sequence = validate_integer_array(polar_sequence, ndim=1)
+            if not np.all(np.abs(polar_sequence) == 1):
+                raise ValueError("elements of 'polar_sequence' must be 1 or -1")
+            self.polar_sequence = polar_sequence.astype(int)
             self.bit_sequence = 1 * (self.polar_sequence < 0)
         else:
             raise ValueError("either specify 'bit_sequence' or 'polar_sequence'")
