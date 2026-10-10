@@ -92,19 +92,20 @@ def test_relative_entropy_never_nan(rng):
         assert not np.isnan(komm.relative_entropy(pmf, qpm))
 
 
-def test_relative_entropy_invalid_pmf():
-    valid_pmf = [0.25, 0.25, 0.5]
-    invalid_pmfs = [
+@pytest.mark.parametrize(
+    "invalid_pmf, message",
+    [
         ([0.5, 0.5, 0.5], "must sum to 1.0"),
         ([0.1, 0.1, 0.1], "must sum to 1.0"),
         ([0.5, -0.5, 1.0], "must be non-negative"),
-    ]
-    komm.relative_entropy(valid_pmf, valid_pmf)
-    for invalid_pmf, message in invalid_pmfs:
-        with pytest.raises(ValueError, match=f"'pmf' {message}"):
-            komm.relative_entropy(invalid_pmf, valid_pmf)
-        with pytest.raises(ValueError, match=f"'qmf' {message}"):
-            komm.relative_entropy(valid_pmf, invalid_pmf)
+    ],
+)
+def test_relative_entropy_invalid_pmf(invalid_pmf, message):
+    valid_pmf = [0.25, 0.25, 0.5]
+    with pytest.raises(ValueError, match=f"'pmf' {message}"):
+        komm.relative_entropy(invalid_pmf, valid_pmf)
+    with pytest.raises(ValueError, match=f"'qmf' {message}"):
+        komm.relative_entropy(valid_pmf, invalid_pmf)
 
 
 def test_relative_entropy_different_size():
