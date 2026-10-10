@@ -95,3 +95,31 @@ def test_apsk_parameters(params, expected):
     np.testing.assert_allclose(apsk.mean(), 0.0)
     np.testing.assert_allclose(apsk.mean_energy(), expected["mean_energy"])
     np.testing.assert_allclose(apsk.minimum_distance(), expected["minimum_distance"])
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"amplitudes": (1.0, -2.0)}, "elements of 'amplitudes' must be non-negative"),
+        ({"amplitudes": (1.0,)}, r"'amplitudes' must have shape \(2,\)"),
+        ({"phase_offsets": (0.0,)}, r"'phase_offsets' must have shape \(2,\)"),
+    ],
+)
+def test_apsk_invalid(kwargs, message):
+    kwargs = {"orders": (4, 4), "amplitudes": (1.0, 2.0)} | kwargs
+    with pytest.raises(ValueError, match=message):
+        komm.APSKConstellation(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"amplitudes": (1.0, "2")}, "'amplitudes' must contain only real numbers"),
+        ({"phase_offsets": "0"}, "'phase_offsets' must be a real number"),
+        ({"phase_offsets": (0.0, "0")}, "'phase_offsets' must contain only"),
+    ],
+)
+def test_apsk_not_real(kwargs, message):
+    kwargs = {"orders": (4, 4), "amplitudes": (1.0, 2.0)} | kwargs
+    with pytest.raises(TypeError, match=message):
+        komm.APSKConstellation(**kwargs)

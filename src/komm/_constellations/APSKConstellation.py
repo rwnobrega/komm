@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float, validate_float_array
 from ..types import Array1D, Array2D
 from .PSKConstellation import psk_matrix
 
@@ -15,7 +16,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
     Parameters:
         orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$.
 
-        amplitudes: A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$.
+        amplitudes: A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$. Must satisfy $A_k \geq 0$.
 
         phase_offsets: A $K$-tuple with the phase offsets $\phi_k$ of each ring, for $k \in [0 : K)$. If specified as a single float $\phi$, then it is assumed that $\phi_k = \phi$ for all $k \in [0 : K)$. The default value is `0.0`.
 
@@ -56,12 +57,18 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         amplitudes: tuple[float, ...],
         phase_offsets: float | tuple[float, ...] = 0.0,
     ) -> None:
+        K = len(orders)
         self._orders = orders
-        self._amplitudes = amplitudes
+        As = validate_float_array(amplitudes, shape=(K,))
+        if not np.all(As >= 0):
+            raise ValueError("elements of 'amplitudes' must be non-negative")
+        self._amplitudes = tuple(As.tolist())
         if isinstance(phase_offsets, tuple):
-            self._phase_offsets = phase_offsets
+            φs = validate_float_array(phase_offsets, shape=(K,))
+            self._phase_offsets = tuple(φs.tolist())
         else:
-            self._phase_offsets = (phase_offsets,) * len(orders)
+            φ = validate_float(phase_offsets)
+            self._phase_offsets = (φ,) * K
 
     def __repr__(self) -> str:
         args = ", ".join([
