@@ -109,8 +109,8 @@ def test_block_code_inverse_encode_invalid_input():
     code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 0, 1], [1, 1, 0]])
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
+    r[0] = 1
     with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
-        r[0] = 1
         code.inverse_encode(r)  # Incorrect
 
 

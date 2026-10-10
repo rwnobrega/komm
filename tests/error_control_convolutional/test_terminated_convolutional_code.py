@@ -243,8 +243,8 @@ def test_terminated_convolutional_unencode_invalid_input(mode):
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
+    r[0] = 1
     with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
-        r[0] = 1
         code.inverse_encode(r)  # Incorrect
 
 

@@ -75,8 +75,8 @@ def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
 def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
     r = np.zeros(code.length)
     code.inverse_encode(r)  # Correct
+    r[0] = 1
     with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
-        r[0] = 1
         code.inverse_encode(r)  # Incorrect
 
 
