@@ -76,27 +76,39 @@ def test_validate_integer_high():
 def test_validate_integer_low_high():
     assert validate_integer(0, low=0, high=2) == 0
     assert validate_integer(1, low=0, high=2) == 1
-    for value in [-1, 2]:
-        with pytest.raises(ValueError, match=r"'value' must be in \[0:2\)"):
-            validate_integer(value, low=0, high=2)
+
+
+@pytest.mark.parametrize("value", [-1, 2])
+def test_validate_integer_low_high_invalid(value):
+    with pytest.raises(ValueError, match=r"'value' must be in \[0:2\)"):
+        validate_integer(value, low=0, high=2)
 
 
 def test_validate_integer_rule():
     assert validate_integer(3, low=1, high=4, rule="1 <= d <= n") == 3
-    for d in [0, 4]:
-        message = f"'d' must satisfy 1 <= d <= n (got {d})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_integer(d, low=1, high=4, rule="1 <= d <= n")
+
+
+@pytest.mark.parametrize("d", [0, 4])
+def test_validate_integer_rule_invalid(d):
+    message = f"'d' must satisfy 1 <= d <= n (got {d})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_integer(d, low=1, high=4, rule="1 <= d <= n")
 
 
 def test_validate_positive_integer():
     integer = validate_positive_integer(np.int64(1))
     assert integer == 1
     assert type(integer) is int
-    for n in [0, -1]:
-        message = f"'n' must be a positive integer (got {n})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_positive_integer(n)
+
+
+@pytest.mark.parametrize("n", [0, -1])
+def test_validate_positive_integer_invalid(n):
+    message = f"'n' must be a positive integer (got {n})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_positive_integer(n)
+
+
+def test_validate_positive_integer_not_integer():
     n = 1.0
     with pytest.raises(TypeError, match=r"'n' must be an integer \(got float\)"):
         validate_positive_integer(n)  # type: ignore
@@ -171,30 +183,50 @@ def test_validate_integer_array_high():
 
 def test_validate_integer_array_low_high():
     validate_integer_array([[0, 1], [1, 0]], low=0, high=2)
-    for value in [[0, -1], [0, 2]]:
-        with pytest.raises(ValueError, match=r"elements of 'value' must be in \[0:2"):
-            validate_integer_array(value, low=0, high=2)
+
+
+@pytest.mark.parametrize("value", [[0, -1], [0, 2]])
+def test_validate_integer_array_low_high_invalid(value):
+    with pytest.raises(ValueError, match=r"elements of 'value' must be in \[0:2\)"):
+        validate_integer_array(value, low=0, high=2)
 
 
 def test_validate_integer_array_shape():
     validate_integer_array([1, 2], shape=(2,))
-    for value, got in [([1, 2, 3], "(3,)"), ([], "(0,)"), ([[1, 2]], "(1, 2)")]:
-        message = f"'value' must have shape (2,) (got {got})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_integer_array(value, shape=(2,))
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ([1, 2, 3], "(3,)"),
+        ([], "(0,)"),
+        ([[1, 2]], "(1, 2)"),
+    ],
+)
+def test_validate_integer_array_shape_invalid(value, got):
+    message = f"'value' must have shape (2,) (got {got})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_integer_array(value, shape=(2,))
 
 
 def test_validate_integer_array_ndim():
     validate_integer_array([], ndim=1)
     validate_integer_array([[1, 2]], ndim=2)
-    for value, got in [([[1, 2]], "(1, 2)"), ([[]], "(1, 0)"), (1, "()")]:
-        message = f"'value' must be a 1D-array (got shape {got})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_integer_array(value, ndim=1)
-    value = [1, 2]
-    message = "'value' must be a 2D-array (got shape (2,))"
+
+
+@pytest.mark.parametrize(
+    "value, ndim, got",
+    [
+        ([[1, 2]], 1, "(1, 2)"),
+        ([[]], 1, "(1, 0)"),
+        (1, 1, "()"),
+        ([1, 2], 2, "(2,)"),
+    ],
+)
+def test_validate_integer_array_ndim_invalid(value, ndim, got):
+    message = f"'value' must be a {ndim}D-array (got shape {got})"
     with pytest.raises(ValueError, match=escape(message)):
-        validate_integer_array(value, ndim=2)
+        validate_integer_array(value, ndim=ndim)
 
 
 @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool])
@@ -205,18 +237,24 @@ def test_validate_binary_array(dtype):
     assert validate_binary_array([]).size == 0
 
 
-def test_validate_binary_array_invalid():
-    for value in [[0, 2], [-1, 1]]:
-        with pytest.raises(ValueError, match="elements of 'value' must be 0 or 1"):
-            validate_binary_array(value)
+@pytest.mark.parametrize(
+    "value, kwargs, message",
+    [
+        ([0, 2], {}, "elements of 'value' must be 0 or 1"),
+        ([-1, 1], {}, "elements of 'value' must be 0 or 1"),
+        ([[0, 1]], {"ndim": 1}, "'value' must be a 1D-array"),
+        ([[0, 1]], {"shape": (2,)}, r"'value' must have shape \(2,\)"),
+    ],
+)
+def test_validate_binary_array_invalid(value, kwargs, message):
+    with pytest.raises(ValueError, match=message):
+        validate_binary_array(value, **kwargs)
+
+
+def test_validate_binary_array_not_integer():
     value = [0.0, 1.0]
     with pytest.raises(TypeError, match="'value' must contain only integers"):
         validate_binary_array(value)
-    value = [[0, 1]]
-    with pytest.raises(ValueError, match="'value' must be a 1D-array"):
-        validate_binary_array(value, ndim=1)
-    with pytest.raises(ValueError, match=r"'value' must have shape \(2,\)"):
-        validate_binary_array(value, shape=(2,))
 
 
 @pytest.mark.parametrize(
