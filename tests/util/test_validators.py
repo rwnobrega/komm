@@ -289,9 +289,12 @@ def test_validate_float_no_bounds():
 
 def test_validate_float_low():
     assert validate_float(0.0, low=0) == 0.0
-    for value in [-0.1, float("nan")]:
-        with pytest.raises(ValueError, match="'value' must be at least 0"):
-            validate_float(value, low=0)
+
+
+@pytest.mark.parametrize("value", [-0.1, float("nan")])
+def test_validate_float_low_invalid(value):
+    with pytest.raises(ValueError, match="'value' must be at least 0"):
+        validate_float(value, low=0)
 
 
 def test_validate_float_high():
@@ -304,19 +307,28 @@ def test_validate_float_high():
 def test_validate_float_low_high():
     assert validate_float(0.0, low=0, high=1) == 0.0
     assert validate_float(1.0, low=0, high=1) == 1.0
-    for value in [-0.1, 1.1, float("nan")]:
-        with pytest.raises(ValueError, match=r"'value' must be in \[0, 1\]"):
-            validate_float(value, low=0, high=1)
+
+
+@pytest.mark.parametrize("value", [-0.1, 1.1, float("nan")])
+def test_validate_float_low_high_invalid(value):
+    with pytest.raises(ValueError, match=r"'value' must be in \[0, 1\]"):
+        validate_float(value, low=0, high=1)
 
 
 def test_validate_positive_float():
     real = validate_positive_float(np.float64(1.0))
     assert real == 1.0
     assert type(real) is float
-    for x in [0.0, -1.0, float("nan")]:
-        message = f"'x' must be a positive real number (got {x})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_positive_float(x)
+
+
+@pytest.mark.parametrize("x", [0.0, -1.0, float("nan")])
+def test_validate_positive_float_invalid(x):
+    message = f"'x' must be a positive real number (got {x})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_positive_float(x)
+
+
+def test_validate_positive_float_not_real():
     x = "1"
     with pytest.raises(TypeError, match=r"'x' must be a real number \(got str\)"):
         validate_positive_float(x)  # type: ignore
@@ -326,19 +338,22 @@ def test_validate_nonnegative_float():
     real = validate_nonnegative_float(np.float64(0.0))
     assert real == 0.0
     assert type(real) is float
-    for x in [-1.0, float("nan")]:
-        message = f"'x' must be a non-negative real number (got {x})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_nonnegative_float(x)
+
+
+@pytest.mark.parametrize("x", [-1.0, float("nan")])
+def test_validate_nonnegative_float_invalid(x):
+    message = f"'x' must be a non-negative real number (got {x})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_nonnegative_float(x)
+
+
+def test_validate_nonnegative_float_not_real():
     x = "0"
     with pytest.raises(TypeError, match=r"'x' must be a real number \(got str\)"):
         validate_nonnegative_float(x)  # type: ignore
 
 
-@pytest.mark.parametrize(
-    "dtype",
-    [np.int64, np.uint8, np.float32, np.float64],
-)
+@pytest.mark.parametrize("dtype", [np.int64, np.uint8, np.float32, np.float64])
 def test_validate_float_array(dtype):
     value = np.array([0, 1, 2], dtype=dtype)
     array = validate_float_array(value)
@@ -501,10 +516,13 @@ def test_validate_pmf_invalid(value, message):
 
 def test_validate_pmf_size():
     validate_pmf([0.5, 0.5], size=2)
-    for value in [[1.0], [0.2, 0.3, 0.5]]:
-        message = f"'value' must have size 2 (got {len(value)})"
-        with pytest.raises(ValueError, match=escape(message)):
-            validate_pmf(value, size=2)
+
+
+@pytest.mark.parametrize("value", [[1.0], [0.2, 0.3, 0.5]])
+def test_validate_pmf_size_invalid(value):
+    message = f"'value' must have size 2 (got {len(value)})"
+    with pytest.raises(ValueError, match=escape(message)):
+        validate_pmf(value, size=2)
 
 
 @pytest.mark.parametrize(
