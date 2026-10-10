@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -6,14 +6,12 @@ import numpy.typing as npt
 from ..types import Array1D
 from .validators import validate_bool, validate_integer_array
 
-DType = TypeVar("DType", bound=np.floating | np.complexfloating)
-
 
 def autocorrelation(
     sequence: npt.ArrayLike,
     shifts: npt.ArrayLike | None = None,
     normalized: bool = False,
-) -> Array1D[DType]:
+) -> Array1D[Any]:
     r"""
     Computes the autocorrelation $R[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
@@ -57,7 +55,7 @@ def cyclic_autocorrelation(
     sequence: npt.ArrayLike,
     shifts: npt.ArrayLike | None = None,
     normalized: bool = False,
-) -> Array1D[DType]:
+) -> Array1D[Any]:
     r"""
     Computes the cyclic autocorrelation $\tilde{R}[\ell]$ of a real or complex sequence $x[n]$. This is defined as
     $$
