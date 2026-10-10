@@ -203,7 +203,7 @@ class MealyMachine:
         memory: MetricMemory,
     ) -> Array1D[np.integer]:
         r"""
-        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.3</cite>.
+        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.4</cite>.
 
         Parameters:
             observed: The observed sequence $z \in \mathcal{Z}^L$.
