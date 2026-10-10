@@ -121,9 +121,12 @@ def test_labeling_invalid_matrix(matrix, message):
         komm.Labeling(matrix)
 
 
-def test_labeling_matrix_not_integer():
-    for matrix in [[[0, 0], [0, 0.5], [1, 0], [1, 1]], [[0.0], [1.0]]]:
-        with pytest.raises(TypeError, match="'matrix' must contain only integers"):
-            komm.Labeling(matrix)
+@pytest.mark.parametrize("matrix", [[[0, 0], [0, 0.5], [1, 0], [1, 1]], [[0.0], [1.0]]])
+def test_labeling_matrix_not_integer(matrix):
+    with pytest.raises(TypeError, match="'matrix' must contain only integers"):
+        komm.Labeling(matrix)
+
+
+def test_labeling_matrix_bool():
     labeling = komm.Labeling([[False], [True]])
     assert np.issubdtype(labeling.matrix.dtype, np.integer)
