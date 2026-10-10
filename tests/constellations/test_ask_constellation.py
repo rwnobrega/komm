@@ -35,15 +35,6 @@ import komm
             },
         ),
         (
-            {"order": 4, "base_amplitude": 1, "phase_offset": 0},
-            {
-                "matrix": [0, 1, 2, 3],
-                "mean": 1.5,
-                "mean_energy": 3.5,
-                "minimum_distance": 1,
-            },
-        ),
-        (
             {"order": 4, "base_amplitude": 2, "phase_offset": 0},
             {
                 "matrix": [0, 2, 4, 6],

@@ -49,7 +49,7 @@ def test_uniform_quantizer_range():
     assert np.allclose(quantizer.quantize(x), y)
 
 
-@pytest.mark.parametrize("peak", [1.0, 0.3, 0.5, 1.0, 2.0, 3.0, 10.0])
+@pytest.mark.parametrize("peak", [0.3, 0.5, 1.0, 2.0, 3.0, 10.0])
 @pytest.mark.parametrize("num_levels", [2, 4, 8, 16, 32])
 def test_uniform_quantizer_mid_riser_scalar_equivalent(num_levels, peak):
     quantizer_1 = komm.UniformQuantizer.mid_riser(num_levels, peak)
@@ -58,7 +58,7 @@ def test_uniform_quantizer_mid_riser_scalar_equivalent(num_levels, peak):
     assert np.allclose(quantizer_1.quantize(x), quantizer_2.quantize(x))
 
 
-@pytest.mark.parametrize("peak", [1.0, 0.3, 0.5, 1.0, 2.0, 3.0, 10.0])
+@pytest.mark.parametrize("peak", [0.3, 0.5, 1.0, 2.0, 3.0, 10.0])
 @pytest.mark.parametrize("num_levels", [2, 4, 8, 16, 32])
 def test_uniform_quantizer_mid_tread_scalar_equivalent(num_levels, peak):
     quantizer_1 = komm.UniformQuantizer.mid_tread(num_levels, peak)

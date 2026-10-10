@@ -159,11 +159,6 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
             4,
             True,
         ),
-        (  # Missing short sequences but covering long ones
-            [(0, 0, 0), (0, 0, 1), (0, 1), (1,)],
-            2,
-            True,
-        ),
         (  # Prefix-free code but not fully covering
             [(0, 0), (0, 1), (1, 0)],  # missing (1, 1, ...)
             2,
