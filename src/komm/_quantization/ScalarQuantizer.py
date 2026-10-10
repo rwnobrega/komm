@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._util.validators import validate_float_array
 from ..types import Array1D
 
 
@@ -17,9 +18,9 @@ class ScalarQuantizer(abc.ScalarQuantizer):
     Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = y_i$ if and only if $\lambda_i \leq x < \lambda_{i+1}$, where $i \in [0:L)$. For more details, see <cite>Say06, Ch. 9</cite>.
 
     Parameters:
-        levels: The quantizer levels $y_0, y_1, \ldots, y_{L-1}$. It should be a list floats of length $L$.
+        levels: The quantizer levels $y_0, y_1, \ldots, y_{L-1}$. Must be a 1D-array of length $L$.
 
-        thresholds: The quantizer finite thresholds $\lambda_1, \lambda_2, \ldots, \lambda_{L-1}$. It should be a list of floats of length $L - 1$.
+        thresholds: The quantizer finite thresholds $\lambda_1, \lambda_2, \ldots, \lambda_{L-1}$. Must be a 1D-array of length $L - 1$.
 
     Examples:
         The $5$-level scalar quantizer whose characteristic (input × output) curve is depicted in the figure below has levels
@@ -42,8 +43,8 @@ class ScalarQuantizer(abc.ScalarQuantizer):
     """
 
     def __init__(self, levels: npt.ArrayLike, thresholds: npt.ArrayLike) -> None:
-        self._levels = np.asarray(levels, dtype=float)
-        self._thresholds = np.asarray(thresholds, dtype=float)
+        self._levels = validate_float_array(levels, ndim=1)
+        self._thresholds = validate_float_array(thresholds, ndim=1)
         self.__post_init__()
 
     def __post_init__(self) -> None:
