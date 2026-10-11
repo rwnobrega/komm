@@ -10,6 +10,7 @@ from .._error_control_block.BCHCode import BCHCode
 from .._error_control_block.ReedSolomonCode import ReedSolomonCode
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.decorators import blockwise
+from .._util.validators import validate_binary_array
 from .util import get_pbar
 
 
@@ -76,7 +77,7 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode | ReedSolomonCode]):
                 v_hat[i][e_loc] ^= e_val
             return int_to_bits(v_hat, width=width)
 
-        return decode_to_codeword(input)
+        return decode_to_codeword(validate_binary_array(input))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

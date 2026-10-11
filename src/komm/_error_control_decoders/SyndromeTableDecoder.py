@@ -5,6 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.bit_operations import bits_to_int
+from .._util.validators import validate_binary_array
 
 
 @dataclass
@@ -37,7 +38,7 @@ class SyndromeTableDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([[1, 1, 0, 0, 0, 1, 1],
                    [1, 0, 1, 1, 0, 1, 0]])
         """
-        r = np.asarray(input)
+        r = validate_binary_array(input)
         s = self.code.check(r)
         e_hat = self._coset_leaders[bits_to_int(s, width=self.code.redundancy)]
         v_hat = np.bitwise_xor(r, e_hat.reshape(r.shape))

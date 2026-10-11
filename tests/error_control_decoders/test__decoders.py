@@ -17,6 +17,12 @@ reed_muller = komm.ReedMullerCode(1, 5)
 spc = komm.SingleParityCheckCode(3)
 polar = komm.PolarCode(3, [0, 1, 2, 4])
 
+hard_decoders = [
+    (block, komm.SyndromeTableDecoder),
+    (bch, komm.BerlekampDecoder),
+    (reed_solomon, komm.BerlekampDecoder),
+]
+
 
 @pytest.mark.parametrize(
     "code, decoder_class",
@@ -64,3 +70,22 @@ def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class):
 def test_decoders_invalid_type(code, decoder_class, parameter):
     with pytest.raises(ValueError, match=f"'{parameter}' must be 'hard' or 'soft'"):
         decoder_class(code, **{parameter: "sotf"})
+
+
+@pytest.mark.parametrize("code, decoder_class", hard_decoders)
+@pytest.mark.parametrize("method", ["decode", "decode_to_codeword"])
+@pytest.mark.parametrize("bit", [2, -1])
+def test_hard_decoders_invalid_input(code, decoder_class, method, bit):
+    decoder = decoder_class(code)
+    r = np.zeros(code.length, dtype=int)
+    r[0] = bit
+    with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
+        getattr(decoder, method)(r)
+
+
+@pytest.mark.parametrize("code, decoder_class", hard_decoders)
+@pytest.mark.parametrize("method", ["decode", "decode_to_codeword"])
+def test_hard_decoders_input_not_integer(code, decoder_class, method):
+    decoder = decoder_class(code)
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        getattr(decoder, method)(np.zeros(code.length))
