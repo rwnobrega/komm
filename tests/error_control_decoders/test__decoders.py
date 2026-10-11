@@ -30,6 +30,10 @@ soft_decoders = [
     komm.ExhaustiveCodewordDecoder(block, input_type="soft"),
     komm.ReedDecoder(reed_muller, input_type="soft"),
     komm.ViterbiDecoder(terminated, input_type="soft"),
+    komm.ExhaustiveBitwiseDecoder(block),
+    komm.BCJRDecoder(terminated),
+    komm.WagnerDecoder(spc),
+    komm.SCDecoder(polar),
 ]
 
 

@@ -8,7 +8,7 @@ from .. import abc
 from .._error_control_block.PolarCode import PolarCode
 from .._util.decorators import blockwise
 from .._util.special_functions import boxplus
-from .._util.validators import validate_decision_type
+from .._util.validators import validate_decision_type, validate_float_array
 
 Belief: TypeAlias = npt.NDArray[np.floating]
 Decision: TypeAlias = npt.NDArray[np.integer]
@@ -99,7 +99,7 @@ class SCDecoder(abc.BlockDecoder[PolarCode]):
                     active = parent
             return np.concatenate(outputs, axis=-1)
 
-        output = decode(input)
+        output = decode(validate_float_array(input))
         if self.output_type == "hard":
             output = (output < 0.0).astype(int)
         return output
