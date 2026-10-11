@@ -467,6 +467,19 @@ def test_convolutional_code_encode_state_not_integer():
         code.encode_with_state([1, 0, 1, 1], [0.3, 1.7])
 
 
+@pytest.mark.parametrize("bit", [2, -1])
+def test_convolutional_code_encode_invalid_input(bit):
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
+        code.encode([bit, 0, 1, 1])
+
+
+def test_convolutional_code_encode_input_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        code.encode([1.0, 0.0, 1.0, 1.0])
+
+
 def test_convolutional_code_invalid_polynomials():
     with pytest.raises(TypeError, match="'feedforward_polynomials' must contain only"):
         komm.ConvolutionalCode([[0o7, 5.5]])

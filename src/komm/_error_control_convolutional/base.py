@@ -238,7 +238,7 @@ class ConvolutionalCode(ABC):
         n, k, σ = self.num_output_bits, self.num_input_bits, self.degree
         A_mat, B_mat, C_mat, D_mat = self.state_space_representation()
 
-        input = np.asarray(input)
+        input = validate_binary_array(input)
         u = input.reshape(*input.shape[:-1], -1, k)
         state = np.atleast_1d(validate_binary_array(initial_state))
 
