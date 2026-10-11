@@ -61,7 +61,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     ) -> npt.NDArray[np.integer | np.floating]:
         n = self.code.convolutional_code.num_output_bits
         if self.input_type == "hard":
-            r = (-1) ** r  # Bits as unit L-values
+            r = (-1.0) ** r  # Bits as unit L-values
         r = self.code.depuncture(r, 0.0)  # Deleted bits as null L-values
         return r.reshape(r.shape[0], -1, n) @ self._bits.T
 

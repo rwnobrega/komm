@@ -53,7 +53,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
         @blockwise(self.code.length)
         def decode_hard(r: npt.NDArray[np.integer]):
             u_hat = np.empty((*r.shape[:-1], self.code.dimension), dtype=int)
-            bx = r.copy()
+            bx = r.astype(int)
             for i, partition in enumerate(self._reed_partitions):
                 checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
                 votes = np.count_nonzero(checksums, axis=-1)

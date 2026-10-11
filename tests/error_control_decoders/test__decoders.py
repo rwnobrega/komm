@@ -110,9 +110,10 @@ def test_hard_decoders_input_not_integer(decoder, method):
 
 
 @pytest.mark.parametrize("decoder", hard_decoders)
-def test_hard_decoders_bool_input(decoder, rng):
+@pytest.mark.parametrize("dtype", [bool, np.uint8])
+def test_hard_decoders_input_dtype(decoder, dtype, rng):
     r = rng.integers(0, 2, decoder.code.length)
-    np.testing.assert_array_equal(decoder.decode(r.astype(bool)), decoder.decode(r))
+    np.testing.assert_array_equal(decoder.decode(r.astype(dtype)), decoder.decode(r))
 
 
 @pytest.mark.parametrize("decoder, method", decoding_methods(soft_decoders))
