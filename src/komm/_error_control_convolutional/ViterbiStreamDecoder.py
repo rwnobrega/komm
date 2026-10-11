@@ -7,7 +7,11 @@ import numpy.typing as npt
 from .. import abc
 from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
-from .._util.validators import validate_decision_type, validate_nonnegative_integer
+from .._util.validators import (
+    validate_decision_type,
+    validate_integer,
+    validate_nonnegative_integer,
+)
 from ..types import Array1D
 
 
@@ -19,7 +23,7 @@ class ViterbiStreamDecoder:
     Parameters:
         convolutional_code: The convolutional code.
         traceback_length: The traceback length (path memory) $\tau$ of the decoder. Must be a non-negative integer.
-        initial_state: The initial state of the decoder. The default value is `0`.
+        initial_state: The initial state of the decoder. Must be in $[0 : 2^\sigma)$, where $\sigma$ is the degree of the convolutional code. The default value is `0`.
         input_type: The type of the input sequence, either `hard` or `soft`. The default value is `hard`.
     """
 
@@ -32,6 +36,9 @@ class ViterbiStreamDecoder:
         self.traceback_length = validate_nonnegative_integer(self.traceback_length)
         self.input_type = validate_decision_type(self.input_type)
         self._fsm = self.convolutional_code.finite_state_machine()
+        self.initial_state = validate_integer(
+            self.initial_state, low=0, high=self._fsm.num_states
+        )
         n = self.convolutional_code.num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         self._reset()

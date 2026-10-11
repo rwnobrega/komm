@@ -132,6 +132,20 @@ def test_viterbi_stream_decoder_traceback_length_not_integer():
         komm.ViterbiStreamDecoder(code, 10.0)  # type: ignore
 
 
+@pytest.mark.parametrize("initial_state", [-1, 4])
+def test_viterbi_stream_decoder_invalid_initial_state(initial_state):
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    message = f"'initial_state' must be in [0:4) (got {initial_state})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.ViterbiStreamDecoder(code, 10, initial_state=initial_state)
+
+
+def test_viterbi_stream_decoder_initial_state_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'initial_state' must be an integer"):
+        komm.ViterbiStreamDecoder(code, 10, initial_state=1.0)  # type: ignore
+
+
 def test_viterbi_stream_decoder_invalid_input_type():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     with pytest.raises(ValueError, match="'input_type' must be 'hard' or 'soft'"):
