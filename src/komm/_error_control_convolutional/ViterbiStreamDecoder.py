@@ -8,7 +8,9 @@ from .. import abc
 from .._finite_state_machine.MealyMachine import MetricMemory
 from .._util.bit_operations import int_to_bits
 from .._util.validators import (
+    validate_binary_array,
     validate_decision_type,
+    validate_float_array,
     validate_integer,
     validate_nonnegative_integer,
 )
@@ -77,7 +79,10 @@ class ViterbiStreamDecoder:
                 >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
                 array([0, 0, 1, 0, 1, 1, 1, 0])
         """
-        input = np.asarray(input)
+        if self.input_type == "hard":
+            input = validate_binary_array(input)
+        else:  # self.input_type == "soft"
+            input = validate_float_array(input)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
         input_hat = self._fsm.viterbi_streaming(

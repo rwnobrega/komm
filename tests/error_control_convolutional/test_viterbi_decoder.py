@@ -150,3 +150,25 @@ def test_viterbi_stream_decoder_invalid_input_type():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     with pytest.raises(ValueError, match="'input_type' must be 'hard' or 'soft'"):
         komm.ViterbiStreamDecoder(code, 10, input_type="sotf")  # type: ignore
+
+
+@pytest.mark.parametrize("bit", [2, -1])
+def test_viterbi_stream_decoder_invalid_input(bit):
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, 10)
+    with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
+        decoder.decode([bit, 1, 0, 1])
+
+
+def test_viterbi_stream_decoder_input_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, 10)
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        decoder.decode([0.5, 1.0, 0.0, 1.0])
+
+
+def test_viterbi_stream_decoder_input_not_real():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, 10, input_type="soft")
+    with pytest.raises(TypeError, match="'input' must contain only real numbers"):
+        decoder.decode([1j, 1, -1, 1])
