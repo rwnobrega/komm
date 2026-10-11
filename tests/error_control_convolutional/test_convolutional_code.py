@@ -447,12 +447,24 @@ def test_convolutional_code_encode_batch(
         np.testing.assert_equal(s_final[i, j], s_ij)
 
 
-def test_convolutional_code_encode_invalid_state():
+@pytest.mark.parametrize(
+    "initial_state, message",
+    [
+        ([0, 0, 0], "last dimension of 'initial_state' must be"),
+        ([[0, 0], [0, 0]], "could not broadcast"),
+        ([2, 5], "elements of 'initial_state' must be 0 or 1"),
+    ],
+)
+def test_convolutional_code_encode_invalid_state(initial_state, message):
     code = komm.ConvolutionalCode([[0o7, 0o5]])
-    with pytest.raises(ValueError, match="last dimension of 'initial_state' must be"):
-        code.encode_with_state([1, 0, 1, 1], [0, 0, 0])
-    with pytest.raises(ValueError, match="could not broadcast"):
-        code.encode_with_state([1, 0, 1, 1], [[0, 0], [0, 0]])
+    with pytest.raises(ValueError, match=message):
+        code.encode_with_state([1, 0, 1, 1], initial_state)
+
+
+def test_convolutional_code_encode_state_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'initial_state' must contain only integers"):
+        code.encode_with_state([1, 0, 1, 1], [0.3, 1.7])
 
 
 def test_convolutional_code_invalid_polynomials():

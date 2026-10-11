@@ -12,6 +12,7 @@ from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import invariant_factors, matmul
+from .._util.validators import validate_binary_array
 from ..types import Array1D, Array2D
 
 
@@ -227,7 +228,7 @@ class ConvolutionalCode(ABC):
         Parameters:
             input: The bit sequence(s) to be encoded. Can be either a single sequence whose length is a multiple of $k$, or a multidimensional array where the last dimension is a multiple of $k$.
 
-            initial_state: The initial state(s). Must be either a 1D-array of length $\sigma$, or an array with the leading dimensions of the input and length $\sigma$ in the last dimension.
+            initial_state: The initial state(s). Its elements must be `0` or `1`. Must be either a 1D-array of length $\sigma$, or an array with the leading dimensions of the input and length $\sigma$ in the last dimension.
 
         Returns:
             output: The encoded bit sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n / k$.
@@ -239,7 +240,7 @@ class ConvolutionalCode(ABC):
 
         input = np.asarray(input)
         u = input.reshape(*input.shape[:-1], -1, k)
-        state = np.atleast_1d(np.asarray(initial_state))
+        state = np.atleast_1d(validate_binary_array(initial_state))
 
         if state.shape[-1] != σ:
             raise ValueError(
