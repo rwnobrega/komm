@@ -99,6 +99,21 @@ def test_average_length(code_parameters, pmf, average_length):
     assert np.isclose(code.average_length(pmf), average_length)
 
 
+@pytest.mark.parametrize(
+    "code_parameters, x, y",
+    [
+        (test_data[0], [3, 0, 4], [0, 1, 1, 0, 0, 0, 1, 0, 0]),
+        (test_data[1], [3, 0, 4, 2], [0, 1, 0, 0, 0, 0, 1, 1, 1, 1]),
+        (test_data[3], [4, 0, 2, 1, 3], [0, 2, 1, 0, 0, 2, 0, 1]),
+    ],
+)
+def test_encode_decode(code_parameters, x, y):
+    _, _, codewords = code_parameters.values()
+    code = komm.SymbolCode.from_codewords(codewords)
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), x)
+
+
 @pytest.mark.parametrize("code_parameters", test_data)
 def test_fixed_to_variable_equivalence(code_parameters):
     # Same code as the fixed-to-variable one with k = 1.
@@ -121,6 +136,10 @@ def test_fixed_to_variable_equivalence(code_parameters):
     assert code.kraft_parameter() == block_code.kraft_parameter()
     pmf = np.full(source_cardinality, 1 / source_cardinality)
     assert code.average_length(pmf) == block_code.rate(pmf)
+    x = np.arange(source_cardinality)
+    y = block_code.encode(x)
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), block_code.decode(y))
     canonical = komm.SymbolCode.from_lengths(
         code.lengths,
         target_cardinality=target_cardinality,
@@ -264,3 +283,53 @@ def test_average_length_invalid_pmf(pmf, message):
     code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
     with pytest.raises(ValueError, match=escape(message)):
         code.average_length(pmf)
+
+
+@pytest.mark.parametrize(
+    "codewords, x, message",
+    [
+        ([(0,), (1, 0), (1, 1)], [0, 3, 0], "elements of 'input' must be in [0:3)"),
+        ([(0,), (1, 0), (1, 1)], [[0, 1], [2, 0]], "'input' must be a 1D-array"),
+        ([(0,), (0, 0), (1, 0)], [0], "code is not uniquely decodable"),
+    ],
+)
+def test_encode_invalid(codewords, x, message):
+    code = komm.SymbolCode.from_codewords(codewords)
+    with pytest.raises(ValueError, match=escape(message)):
+        code.encode(x)
+
+
+@pytest.mark.parametrize("x", [[0.0, 1.0], [0.5, 1.0]])
+def test_encode_not_integer(x):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        code.encode(x)
+
+
+@pytest.mark.parametrize(
+    "codewords, y, message",
+    [
+        ([(0,), (1, 0)], [1, 1], "input contains invalid word"),  # Invalid codeword
+        ([(0,), (1, 0)], [1], "input contains invalid word"),  # Incomplete codeword
+        ([(0,), (1, 0)], [1, 0, 2], "elements of 'input' must be in [0:2)"),
+        ([(0,), (1, 0)], [[1, 0], [0, 0]], "'input' must be a 1D-array"),
+        ([(0,), (0, 0), (1, 0)], [0], "code is not uniquely decodable"),
+    ],
+)
+def test_decode_invalid(codewords, y, message):
+    code = komm.SymbolCode.from_codewords(codewords)
+    with pytest.raises(ValueError, match=escape(message)):
+        code.decode(y)
+
+
+@pytest.mark.parametrize("y", [[1.0, 0.0], [0.5, 1.0]])
+def test_decode_not_integer(y):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        code.decode(y)
+
+
+def test_decode_not_prefix_free():
+    code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+    with pytest.raises(NotImplementedError, match="not implemented yet"):
+        code.decode([0, 1, 1])

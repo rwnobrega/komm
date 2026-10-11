@@ -5,9 +5,9 @@ from typing import Generic, TypeVar
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer_array, validate_pmf
 from ..types import Array1D
-from .util import Word, is_prefix_free, is_uniquely_parsable
+from .util import Word, is_prefix_free, is_uniquely_parsable, parse_prefix_free
 
 T = TypeVar("T")
 
@@ -40,6 +40,10 @@ class SymbolCode(ABC):
         The encoding mapping $\Enc$ of the code. It is a dictionary of length $|\mathcal{X}|$ whose keys are all the integers in $\mathcal{X}$ and whose values are the corresponding codewords.
         """
         raise NotImplementedError
+
+    @cached_property
+    def _inv_enc_mapping(self) -> dict[Word, Word]:
+        return {y: (x,) for x, y in self.enc_mapping.items()}
 
     @cached_property
     def codewords(self) -> list[Word]:
@@ -101,6 +105,51 @@ class SymbolCode(ABC):
         """
         pmf = validate_pmf(pmf, size=self.source_cardinality)
         return float(np.dot(self.lengths, pmf))
+
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Encodes a sequence of source symbols using the code, which must be uniquely decodable.
+
+        Parameters:
+            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
+
+        Returns:
+            output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$.
+        """
+        if not self.is_uniquely_decodable():
+            raise ValueError("code is not uniquely decodable")
+        calX = self.source_cardinality
+        input = validate_integer_array(input, low=0, high=calX, ndim=1)
+        output = [y for x in input.tolist() for y in self.enc_mapping[x]]
+        return np.array(output, dtype=int)
+
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Decodes a sequence of target symbols using the code, which must be uniquely decodable.
+
+        Warning:
+            Decoding for non-prefix-free codes is not implemented yet.
+
+        Parameters:
+            input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a concatenation of codewords (i.e., the output of the `encode` method).
+
+        Returns:
+            output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
+        """
+        if not self.is_uniquely_decodable():
+            raise ValueError("code is not uniquely decodable")
+        if not self.is_prefix_free():
+            raise NotImplementedError(
+                "decoding for non-prefix-free codes is not implemented yet"
+            )
+        calY = self.target_cardinality
+        input = validate_integer_array(input, low=0, high=calY, ndim=1)
+        return parse_prefix_free(
+            input,
+            dictionary=self._inv_enc_mapping,
+            allow_incomplete=False,
+            cardinality=calY,
+        )
 
 
 class TokenCode(ABC, Generic[T]):

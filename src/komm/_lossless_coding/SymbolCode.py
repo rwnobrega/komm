@@ -1,10 +1,12 @@
 from functools import cache, cached_property
 from typing import Self
 
+import numpy as np
 import numpy.typing as npt
 
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
+from ..types import Array1D
 from .util import Word, canonical_code
 
 
@@ -257,3 +259,45 @@ class SymbolCode(abc.SymbolCode):
             1.5
         """
         return super().average_length(pmf)
+
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+
+            >>> code.encode([0, 1, 0, 2])
+            array([0, 1, 0, 0, 1, 1])
+
+            >>> code.encode([0, 3, 0])  # 3 is not a source symbol
+            Traceback (most recent call last):
+            ...
+            ValueError: elements of 'input' must be in [0:3)
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.encode([0, 1, 0])  # Code is not uniquely decodable
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not uniquely decodable
+        """
+        return super().encode(input)
+
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+
+            >>> code.decode([0, 1, 0, 0, 1, 1])
+            array([0, 1, 0, 2])
+
+            >>> code.decode([0, 1])  # Not a concatenation of codewords
+            Traceback (most recent call last):
+            ...
+            ValueError: input contains invalid word
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not uniquely decodable
+        """
+        return super().decode(input)
