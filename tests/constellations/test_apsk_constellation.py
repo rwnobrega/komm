@@ -100,6 +100,11 @@ def test_apsk_parameters(params, expected):
 @pytest.mark.parametrize(
     "kwargs, message",
     [
+        ({"orders": (4, 0)}, "elements of 'orders' must be at least 1"),
+        ({"orders": (4, -1)}, "elements of 'orders' must be at least 1"),
+        ({"orders": 8}, "'orders' must be a 1D-array"),
+        ({"orders": (), "amplitudes": ()}, "'orders' must sum to at least 2"),
+        ({"orders": (1,), "amplitudes": (0.0,)}, "'orders' must sum to at least 2"),
         ({"amplitudes": (1.0, -2.0)}, "elements of 'amplitudes' must be non-negative"),
         ({"amplitudes": (1.0,)}, r"'amplitudes' must have shape \(2,\)"),
         ({"phase_offsets": (0.0,)}, r"'phase_offsets' must have shape \(2,\)"),
@@ -109,6 +114,11 @@ def test_apsk_invalid(kwargs, message):
     kwargs = {"orders": (4, 4), "amplitudes": (1.0, 2.0)} | kwargs
     with pytest.raises(ValueError, match=message):
         komm.APSKConstellation(**kwargs)
+
+
+def test_apsk_orders_not_integer():
+    with pytest.raises(TypeError, match="'orders' must contain only integers"):
+        komm.APSKConstellation(orders=(4, 4.0), amplitudes=(1.0, 2.0))  # type: ignore
 
 
 @pytest.mark.parametrize(

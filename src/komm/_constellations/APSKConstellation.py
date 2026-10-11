@@ -4,7 +4,11 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_float, validate_float_array
+from .._util.validators import (
+    validate_float,
+    validate_float_array,
+    validate_integer_array,
+)
 from ..types import Array1D, Array2D
 from .PSKConstellation import psk_matrix
 
@@ -14,7 +18,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
     Amplitude- and phase-shift keying (APSK) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) obtained by the union of $K$ component [PSK constellations](/ref/PSKConstellation), called *rings*.
 
     Parameters:
-        orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$.
+        orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. Must satisfy $M_k \geq 1$ and $\sum_{k \in [0:K)} M_k \geq 2$.
 
         amplitudes: A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$. Must satisfy $A_k \geq 0$.
 
@@ -57,8 +61,11 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         amplitudes: tuple[float, ...],
         phase_offsets: float | tuple[float, ...] = 0.0,
     ) -> None:
-        K = len(orders)
-        self._orders = orders
+        Ms = validate_integer_array(orders, low=1, ndim=1)
+        if not Ms.sum() >= 2:
+            raise ValueError("'orders' must sum to at least 2")
+        K = Ms.size
+        self._orders = tuple(Ms.tolist())
         As = validate_float_array(amplitudes, shape=(K,))
         if not np.all(As >= 0):
             raise ValueError("elements of 'amplitudes' must be non-negative")
