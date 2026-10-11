@@ -1,4 +1,4 @@
-from functools import cached_property
+from functools import cache, cached_property
 from typing import Self
 
 import numpy.typing as npt
@@ -194,3 +194,57 @@ class SymbolCode(abc.SymbolCode):
             [1, 2, 2]
         """
         return super().lengths
+
+    @cache
+    def is_uniquely_decodable(self) -> bool:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.is_uniquely_decodable()
+            True
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.is_uniquely_decodable()
+            True
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
+            False
+        """
+        return super().is_uniquely_decodable()
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.is_prefix_free()
+            True
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.is_prefix_free()
+            False
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.is_prefix_free()
+            False
+        """
+        return super().is_prefix_free()
+
+    @cache
+    def kraft_parameter(self) -> float:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0)])
+            >>> code.kraft_parameter()
+            0.75
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.kraft_parameter()
+            1.0
+
+            >>> code = komm.SymbolCode.from_codewords([(0, 0), (1, 1), (0,), (1,)])
+            >>> code.kraft_parameter()
+            1.5
+        """
+        return super().kraft_parameter()

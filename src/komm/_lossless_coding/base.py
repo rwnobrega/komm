@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from functools import cached_property
+from functools import cache, cached_property
 from typing import Generic, TypeVar
 
 import numpy as np
 import numpy.typing as npt
 
 from ..types import Array1D
-from .util import Word
+from .util import Word, is_prefix_free, is_uniquely_parsable
 
 T = TypeVar("T")
 
@@ -53,6 +53,36 @@ class SymbolCode(ABC):
         The codeword lengths of the code. The integer in position $x$ is equal to $\ell(x)$, the length of the codeword $\Enc(x)$.
         """
         return [len(y) for y in self.codewords]
+
+    @cache
+    def is_uniquely_decodable(self) -> bool:
+        r"""
+        Returns whether the code is uniquely decodable. A code is *uniquely decodable* if there is a unique way to parse any concatenation of codewords.
+        """
+        return is_uniquely_parsable(self.codewords)
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        r"""
+        Returns whether the code is prefix-free. A code is *prefix-free* if no codeword is a prefix of any other codeword.
+        """
+        return is_prefix_free(self.codewords)
+
+    @cache
+    def kraft_parameter(self) -> float:
+        r"""
+        Computes the Kraft parameter $K$ of the code. This quantity is given by
+        $$
+            K = \sum_{x \in \mathcal{X}} |\mathcal{Y}|^{-\ell(x)},
+        $$
+        where $\ell(x)$ is the length of the codeword $\Enc(x)$ associated with the source symbol $x \in \mathcal{X}$.
+
+        Returns:
+            kraft_parameter: The Kraft parameter $K$ of the code.
+        """
+        calY = self.target_cardinality
+        kraft_parameter = np.sum(np.float_power(calY, -np.asarray(self.lengths)))
+        return float(kraft_parameter)
 
 
 class TokenCode(ABC, Generic[T]):

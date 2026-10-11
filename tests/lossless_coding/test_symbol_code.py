@@ -96,6 +96,9 @@ def test_fixed_to_variable_equivalence(code_parameters):
     )
     assert code.codewords == block_code.codewords
     assert code.lengths == block_code.lengths
+    assert code.is_uniquely_decodable() == block_code.is_uniquely_decodable()
+    assert code.is_prefix_free() == block_code.is_prefix_free()
+    assert code.kraft_parameter() == block_code.kraft_parameter()
     canonical = komm.SymbolCode.from_lengths(
         code.lengths,
         target_cardinality=target_cardinality,
