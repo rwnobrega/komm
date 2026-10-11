@@ -480,6 +480,13 @@ def test_convolutional_code_encode_input_not_integer():
         code.encode([1.0, 0.0, 1.0, 1.0])
 
 
+@pytest.mark.parametrize("u", [[1, 0, 1], 1])
+def test_convolutional_code_encode_invalid_input_length(u):
+    code = komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]])
+    with pytest.raises(ValueError, match="'input' must be a multiple of 2"):
+        code.encode(u)
+
+
 def test_convolutional_code_invalid_polynomials():
     with pytest.raises(TypeError, match="'feedforward_polynomials' must contain only"):
         komm.ConvolutionalCode([[0o7, 5.5]])

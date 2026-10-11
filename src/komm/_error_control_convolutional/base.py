@@ -238,7 +238,12 @@ class ConvolutionalCode(ABC):
         n, k, σ = self.num_output_bits, self.num_input_bits, self.degree
         A_mat, B_mat, C_mat, D_mat = self.state_space_representation()
 
-        input = validate_binary_array(input)
+        input = np.atleast_1d(validate_binary_array(input))
+        if not input.shape[-1] % k == 0:
+            raise ValueError(
+                f"last dimension of 'input' must be a multiple of {k}"
+                f" (got {input.shape[-1]})"
+            )
         u = input.reshape(*input.shape[:-1], -1, k)
         state = np.atleast_1d(validate_binary_array(initial_state))
 
