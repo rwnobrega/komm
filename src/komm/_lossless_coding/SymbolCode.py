@@ -3,11 +3,12 @@ from typing import Self
 
 import numpy.typing as npt
 
+from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
 from .util import Word, canonical_code
 
 
-class SymbolCode:
+class SymbolCode(abc.SymbolCode):
     r"""
     General symbol code. A *symbol code* with *source alphabet* $\mathcal{X}$ and *target alphabet* $\mathcal{Y}$ is defined by an *encoding mapping* $\Enc: \mathcal{X} \to \mathcal{Y}^+$, where the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{Y}$. The elements in the image of $\Enc$ are called *codewords*. For more details, see <cite>MacK03, Ch. 5</cite>.
 
@@ -142,11 +143,9 @@ class SymbolCode:
         codewords = canonical_code(lengths, base=calY)
         return cls(lengths.size, calY, dict(enumerate(codewords)))
 
-    @cached_property
+    @property
     def source_cardinality(self) -> int:
         r"""
-        The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
-
         Examples:
             >>> code = komm.SymbolCode(3, 2, {0: (0,), 1: (1, 0), 2: (1, 1)})
             >>> code.source_cardinality
@@ -154,11 +153,9 @@ class SymbolCode:
         """
         return self._source_cardinality
 
-    @cached_property
+    @property
     def target_cardinality(self) -> int:
         r"""
-        The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
-
         Examples:
             >>> code = komm.SymbolCode(3, 2, {0: (0,), 1: (1, 0), 2: (1, 1)})
             >>> code.target_cardinality
@@ -166,11 +163,9 @@ class SymbolCode:
         """
         return self._target_cardinality
 
-    @cached_property
+    @property
     def enc_mapping(self) -> dict[int, Word]:
         r"""
-        The encoding mapping $\Enc$ of the code. It is a dictionary of length $|\mathcal{X}|$ whose keys are all the integers in $\mathcal{X}$ and whose values are the corresponding codewords.
-
         Examples:
             >>> code = komm.SymbolCode(3, 2, {0: (0,), 1: (1, 0), 2: (1, 1)})
             >>> code.enc_mapping
@@ -183,23 +178,19 @@ class SymbolCode:
     @cached_property
     def codewords(self) -> list[Word]:
         r"""
-        The codewords of the code. They correspond to the image of the encoding mapping $\Enc$: the tuple in position $x$ is equal to $\Enc(x)$.
-
         Examples:
             >>> code = komm.SymbolCode(3, 2, {0: (0,), 1: (1, 0), 2: (1, 1)})
             >>> code.codewords
             [(0,), (1, 0), (1, 1)]
         """
-        return list(self.enc_mapping.values())
+        return super().codewords
 
     @cached_property
     def lengths(self) -> list[int]:
         r"""
-        The codeword lengths of the code. The integer in position $x$ is equal to $\ell(x)$, the length of the codeword $\Enc(x)$.
-
         Examples:
             >>> code = komm.SymbolCode(3, 2, {0: (0,), 1: (1, 0), 2: (1, 1)})
             >>> code.lengths
             [1, 2, 2]
         """
-        return [len(y) for y in self.codewords]
+        return super().lengths
