@@ -11,7 +11,11 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 from .._finite_state_machine.trellis import TrellisSection, viterbi
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
-from .._util.validators import validate_decision_type
+from .._util.validators import (
+    validate_binary_array,
+    validate_decision_type,
+    validate_float_array,
+)
 from .util import get_pbar
 
 
@@ -104,4 +108,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             u_hat = int_to_bits(x_hat[:, :h], width=k)
             return u_hat
 
-        return decode(input)
+        if self.input_type == "hard":
+            return decode(validate_binary_array(input))
+        else:  # self.input_type == "soft"
+            return decode(validate_float_array(input))

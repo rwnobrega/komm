@@ -6,7 +6,11 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.decorators import blockwise, chunkwise, with_pbar
-from .._util.validators import validate_decision_type
+from .._util.validators import (
+    validate_binary_array,
+    validate_decision_type,
+    validate_float_array,
+)
 from .util import get_pbar
 
 
@@ -62,7 +66,10 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
             v_hat = self._codewords[np.argmax(metrics, axis=-1)]
             return v_hat
 
-        return decode_to_codeword(input)
+        if self.input_type == "hard":
+            return decode_to_codeword(validate_binary_array(input))
+        else:  # self.input_type == "soft"
+            return decode_to_codeword(validate_float_array(input))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

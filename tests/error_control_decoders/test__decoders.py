@@ -18,10 +18,28 @@ spc = komm.SingleParityCheckCode(3)
 polar = komm.PolarCode(3, [0, 1, 2, 4])
 
 hard_decoders = [
-    (block, komm.SyndromeTableDecoder),
-    (bch, komm.BerlekampDecoder),
-    (reed_solomon, komm.BerlekampDecoder),
+    komm.SyndromeTableDecoder(block),
+    komm.BerlekampDecoder(bch),
+    komm.BerlekampDecoder(reed_solomon),
+    komm.ExhaustiveCodewordDecoder(block, input_type="hard"),
+    komm.ReedDecoder(reed_muller, input_type="hard"),
+    komm.ViterbiDecoder(terminated, input_type="hard"),
 ]
+
+soft_decoders = [
+    komm.ExhaustiveCodewordDecoder(block, input_type="soft"),
+    komm.ReedDecoder(reed_muller, input_type="soft"),
+    komm.ViterbiDecoder(terminated, input_type="soft"),
+]
+
+
+def decoding_methods(decoders):
+    return [
+        (decoder, method)
+        for decoder in decoders
+        for method in ["decode", "decode_to_codeword"]
+        if hasattr(decoder, method)
+    ]
 
 
 @pytest.mark.parametrize(
@@ -72,20 +90,28 @@ def test_decoders_invalid_type(code, decoder_class, parameter):
         decoder_class(code, **{parameter: "sotf"})
 
 
-@pytest.mark.parametrize("code, decoder_class", hard_decoders)
-@pytest.mark.parametrize("method", ["decode", "decode_to_codeword"])
+@pytest.mark.parametrize("decoder, method", decoding_methods(hard_decoders))
 @pytest.mark.parametrize("bit", [2, -1])
-def test_hard_decoders_invalid_input(code, decoder_class, method, bit):
-    decoder = decoder_class(code)
-    r = np.zeros(code.length, dtype=int)
+def test_hard_decoders_invalid_input(decoder, method, bit):
+    r = np.zeros(decoder.code.length, dtype=int)
     r[0] = bit
     with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
         getattr(decoder, method)(r)
 
 
-@pytest.mark.parametrize("code, decoder_class", hard_decoders)
-@pytest.mark.parametrize("method", ["decode", "decode_to_codeword"])
-def test_hard_decoders_input_not_integer(code, decoder_class, method):
-    decoder = decoder_class(code)
+@pytest.mark.parametrize("decoder, method", decoding_methods(hard_decoders))
+def test_hard_decoders_input_not_integer(decoder, method):
     with pytest.raises(TypeError, match="'input' must contain only integers"):
-        getattr(decoder, method)(np.zeros(code.length))
+        getattr(decoder, method)(np.zeros(decoder.code.length))
+
+
+@pytest.mark.parametrize("decoder", hard_decoders)
+def test_hard_decoders_bool_input(decoder, rng):
+    r = rng.integers(0, 2, decoder.code.length)
+    np.testing.assert_array_equal(decoder.decode(r.astype(bool)), decoder.decode(r))
+
+
+@pytest.mark.parametrize("decoder, method", decoding_methods(soft_decoders))
+def test_soft_decoders_input_not_real(decoder, method):
+    with pytest.raises(TypeError, match="'input' must contain only real numbers"):
+        getattr(decoder, method)(np.zeros(decoder.code.length, dtype=complex))

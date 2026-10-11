@@ -7,7 +7,11 @@ import numpy.typing as npt
 from .. import abc
 from .._error_control_block.ReedMullerCode import ReedMullerCode
 from .._util.decorators import blockwise
-from .._util.validators import validate_decision_type
+from .._util.validators import (
+    validate_binary_array,
+    validate_decision_type,
+    validate_float_array,
+)
 
 
 @dataclass
@@ -70,6 +74,6 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
             return u_hat
 
         if self.input_type == "hard":
-            return decode_hard(input)
+            return decode_hard(validate_binary_array(input))
         else:  # self.input_type == "soft"
-            return decode_soft(input)
+            return decode_soft(validate_float_array(input))
