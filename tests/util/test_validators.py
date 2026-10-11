@@ -242,6 +242,9 @@ def test_validate_binary_array(dtype):
     [
         ([0, 2], {}, "elements of 'value' must be 0 or 1"),
         ([-1, 1], {}, "elements of 'value' must be 0 or 1"),
+        ([[0, 1], [1, 2]], {}, "elements of 'value' must be 0 or 1"),
+        (np.array([0, 255], dtype=np.uint8), {}, "elements of 'value' must be 0 or 1"),
+        (np.array([1, -128], dtype=np.int8), {}, "elements of 'value' must be 0 or 1"),
         ([[0, 1]], {"ndim": 1}, "'value' must be a 1D-array"),
         ([[0, 1]], {"shape": (2,)}, r"'value' must have shape \(2,\)"),
     ],

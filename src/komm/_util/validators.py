@@ -165,7 +165,8 @@ def validate_binary_array(
     shape: tuple[int, ...] | None = None,
 ) -> npt.NDArray[np.integer]:
     array = validate_integer_array(value, ndim=ndim, shape=shape)
-    if array.size > 0 and not (array.min() >= 0 and array.max() <= 1):
+    # Any other value sets another bit
+    if np.bitwise_or.reduce(array, axis=None) not in (0, 1):
         raise ValueError(f"elements of '{arg_name()}' must be 0 or 1")
     return array
 
