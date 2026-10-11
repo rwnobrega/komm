@@ -62,7 +62,7 @@ class ViterbiStreamDecoder:
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Parameters:
-            input: The (hard or soft) bit sequence to be decoded.
+            input: The (hard or soft) bit sequence to be decoded. Must be a 1D-array whose length is a multiple of $n$, the number of output bits of the convolutional code.
 
         Returns:
             output: The decoded bit sequence.
@@ -80,11 +80,15 @@ class ViterbiStreamDecoder:
                 array([0, 0, 1, 0, 1, 1, 1, 0])
         """
         if self.input_type == "hard":
-            input = validate_binary_array(input)
+            input = validate_binary_array(input, ndim=1)
         else:  # self.input_type == "soft"
-            input = validate_float_array(input)
+            input = validate_float_array(input, ndim=1)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
+        if not input.size % n == 0:
+            raise ValueError(
+                f"length of 'input' must be a multiple of {n} (got {input.size})"
+            )
         input_hat = self._fsm.viterbi_streaming(
             observed=input.reshape(-1, n),
             metric_function=self._metric,

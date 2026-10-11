@@ -167,6 +167,21 @@ def test_viterbi_stream_decoder_input_not_integer():
         decoder.decode([0.5, 1.0, 0.0, 1.0])
 
 
+@pytest.mark.parametrize(
+    "input_type, r, message",
+    [
+        ("hard", [[1, 1], [0, 1]], "'input' must be a 1D-array (got shape (2, 2))"),
+        ("soft", [[1.0, -1.0]], "'input' must be a 1D-array (got shape (1, 2))"),
+        ("hard", [1, 1, 0], "length of 'input' must be a multiple of 2 (got 3)"),
+    ],
+)
+def test_viterbi_stream_decoder_invalid_input_shape(input_type, r, message):
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, 10, input_type=input_type)
+    with pytest.raises(ValueError, match=escape(message)):
+        decoder.decode(r)
+
+
 def test_viterbi_stream_decoder_input_not_real():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     decoder = komm.ViterbiStreamDecoder(code, 10, input_type="soft")
