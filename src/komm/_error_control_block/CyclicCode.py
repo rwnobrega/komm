@@ -10,7 +10,7 @@ from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
-from .._util.validators import validate_bool
+from .._util.validators import validate_bool, validate_positive_integer
 from ..types import Array2D
 
 
@@ -32,7 +32,7 @@ class CyclicCode(abc.BlockCode):
     The constructor expects either the generator polynomial or the check polynomial.
 
     Parameters:
-        length: The length $n$ of the code.
+        length: The length $n$ of the code. Must be a positive integer.
 
         generator_polynomial: The generator polynomial $g(X)$ of the code, of degree $m$ (the redundancy of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
@@ -57,7 +57,7 @@ class CyclicCode(abc.BlockCode):
         check_polynomial: SupportsInt | None = None,
         systematic: bool = True,
     ):
-        self._length = length
+        self._length = validate_positive_integer(length)
         if generator_polynomial is None and check_polynomial is None:
             raise ValueError(
                 "either 'generator_polynomial' or 'check_polynomial' must be provided"

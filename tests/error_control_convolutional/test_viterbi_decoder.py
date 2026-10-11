@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -106,7 +108,7 @@ def test_viterbi_stream_decoder_initial_state(feedforward_polynomials, rng):
         [[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]],
     ],
 )
-@pytest.mark.parametrize("tblen", [1, 5, 30])
+@pytest.mark.parametrize("tblen", [0, 1, 5, 30])
 def test_viterbi_stream_decoder_flush(feedforward_polynomials, tblen, rng):
     code = komm.ConvolutionalCode(feedforward_polynomials)
     k = code.num_input_bits
@@ -115,6 +117,19 @@ def test_viterbi_stream_decoder_flush(feedforward_polynomials, tblen, rng):
         u = rng.integers(0, 2, 20 * k)
         output = np.concatenate([decoder.decode(code.encode(u)), decoder.flush()])
         np.testing.assert_equal(output, np.pad(u, (tblen * k, 0)))
+
+
+def test_viterbi_stream_decoder_invalid_traceback_length():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    message = "'traceback_length' must be a non-negative integer (got -1)"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.ViterbiStreamDecoder(code, -1)
+
+
+def test_viterbi_stream_decoder_traceback_length_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'traceback_length' must be an integer"):
+        komm.ViterbiStreamDecoder(code, 10.0)  # type: ignore
 
 
 def test_viterbi_stream_decoder_invalid_input_type():

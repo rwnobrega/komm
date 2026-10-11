@@ -335,6 +335,20 @@ def test_terminated_convolutional_code_puncturing_matrix_not_integer():
         )
 
 
+@pytest.mark.parametrize("num_blocks", [0, -1])
+def test_terminated_convolutional_code_invalid_num_blocks(num_blocks):
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    message = f"'num_blocks' must be a positive integer (got {num_blocks})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.TerminatedConvolutionalCode(code, num_blocks)
+
+
+def test_terminated_convolutional_code_num_blocks_not_integer():
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    with pytest.raises(TypeError, match="'num_blocks' must be an integer"):
+        komm.TerminatedConvolutionalCode(code, 4.0)  # type: ignore
+
+
 def test_terminated_convolutional_code_invalid_mode():
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     with pytest.raises(ValueError, match="'mode' must be 'direct-truncation'"):

@@ -9,7 +9,11 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
-from .._util.validators import validate_binary_array, validate_choice
+from .._util.validators import (
+    validate_binary_array,
+    validate_choice,
+    validate_positive_integer,
+)
 from ..types import Array1D, Array2D
 
 TerminationMode = Literal["direct-truncation", "zero-termination", "tail-biting"]
@@ -33,7 +37,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
     Parameters:
         convolutional_code: The convolutional code to be terminated.
 
-        num_blocks: The number $h$ of information blocks.
+        num_blocks: The number $h$ of information blocks. Must be a positive integer.
 
         mode: The termination mode. It must be one of `'direct-truncation'` | `'zero-termination'` | `'tail-biting'`. The default value is `'zero-termination'`.
 
@@ -104,6 +108,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
     puncturing_matrix: npt.ArrayLike | None = None
 
     def __post_init__(self):
+        self.num_blocks = validate_positive_integer(self.num_blocks)
         self.mode = validate_choice(self.mode, get_args(TerminationMode))
         self.strategy = {
             "direct-truncation": DirectTruncation,

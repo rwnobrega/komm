@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -180,6 +182,18 @@ def test_cyclic_code_check_random(systematic, rng):
     )
     r = rng.integers(0, 2, (100, code.length))
     np.testing.assert_equal(code.check(r), r @ code.check_matrix.T % 2)
+
+
+@pytest.mark.parametrize("length", [0, -1])
+def test_cyclic_code_invalid_length(length):
+    message = f"'length' must be a positive integer (got {length})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.CyclicCode(length, 0b1011)
+
+
+def test_cyclic_code_length_not_integer():
+    with pytest.raises(TypeError, match=r"'length' must be an integer \(got float\)"):
+        komm.CyclicCode(7.0, 0b1011)  # type: ignore
 
 
 def test_cyclic_code_systematic_not_bool():
