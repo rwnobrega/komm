@@ -53,31 +53,51 @@ def test_mappings_invalid_dimensions(code: komm.abc.BlockCode):
     n, k = code.length, code.dimension
 
     # For 'encode', last dimension of 'u' should be a multiple of the code dimension
-    code.encode(np.zeros((3, 4, k)))  # Correct
-    code.encode(np.zeros((3, 4, 2 * k)))  # Correct
+    code.encode(np.zeros((3, 4, k), dtype=int))  # Correct
+    code.encode(np.zeros((3, 4, 2 * k), dtype=int))  # Correct
     with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
-        code.encode(np.zeros((3, 4, k + 1)))  # Incorrect
+        code.encode(np.zeros((3, 4, k + 1), dtype=int))  # Incorrect
 
     # For 'inverse_encode', last dimension of 'v' should be a multiple of the code length
-    code.inverse_encode(np.zeros((3, 4, n)))  # Correct
-    code.inverse_encode(np.zeros((3, 4, 2 * n)))  # Correct
+    code.inverse_encode(np.zeros((3, 4, n), dtype=int))  # Correct
+    code.inverse_encode(np.zeros((3, 4, 2 * n), dtype=int))  # Correct
     with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
-        code.inverse_encode(np.zeros((3, 4, n + 1)))  # Incorrect
+        code.inverse_encode(np.zeros((3, 4, n + 1), dtype=int))  # Incorrect
 
     # For 'check', last dimension of 'r' should be a multiple of the code length
-    code.check(np.zeros((3, 4, n)))  # Correct
-    code.check(np.zeros((3, 4, 2 * n)))  # Correct
+    code.check(np.zeros((3, 4, n), dtype=int))  # Correct
+    code.check(np.zeros((3, 4, 2 * n), dtype=int))  # Correct
     with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
-        code.check(np.zeros((3, 4, n + 1)))  # Incorrect
+        code.check(np.zeros((3, 4, n + 1), dtype=int))  # Incorrect
 
 
 @pytest.mark.parametrize("code", codes)
 def test_mappings_invalid_codewords(code: komm.abc.BlockCode):
-    r = np.zeros(code.length)
+    r = np.zeros(code.length, dtype=int)
     code.inverse_encode(r)  # Correct
     r[0] = 1
     with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
         code.inverse_encode(r)  # Incorrect
+
+
+mappings = [("encode", "dimension"), ("inverse_encode", "length"), ("check", "length")]
+
+
+@pytest.mark.parametrize("code", codes)
+@pytest.mark.parametrize("method, size", mappings)
+@pytest.mark.parametrize("bit", [2, -1])
+def test_mappings_invalid_input(code: komm.abc.BlockCode, method, size, bit):
+    x = np.zeros(getattr(code, size), dtype=int)
+    x[0] = bit
+    with pytest.raises(ValueError, match="elements of 'input' must be 0 or 1"):
+        getattr(code, method)(x)
+
+
+@pytest.mark.parametrize("code", codes)
+@pytest.mark.parametrize("method, size", mappings)
+def test_mappings_input_not_integer(code: komm.abc.BlockCode, method, size):
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        getattr(code, method)(np.zeros(getattr(code, size)))
 
 
 @pytest.mark.parametrize("code", codes)

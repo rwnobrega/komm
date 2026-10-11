@@ -3,7 +3,11 @@ import numpy.typing as npt
 
 from .._util.decorators import blockwise
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_integer_array, validate_positive_integer
+from .._util.validators import (
+    validate_binary_array,
+    validate_integer_array,
+    validate_positive_integer,
+)
 from ..types import Array1D
 from .BlockCode import BlockCode
 
@@ -83,4 +87,4 @@ class PolarCode(BlockCode):
                     v[..., i : i + m] ^= v[..., i + m : i + 2 * m]
             return v
 
-        return encode(input)
+        return encode(validate_binary_array(input))

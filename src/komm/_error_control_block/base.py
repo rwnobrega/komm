@@ -8,6 +8,7 @@ from tqdm import tqdm
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
+from .._util.validators import validate_binary_array
 from ..types import Array2D
 from .util import macwilliams_transform, span_weight_distribution
 
@@ -82,7 +83,7 @@ class BlockCode(ABC):
             v = matmul(u, self.generator_matrix)
             return v
 
-        return encode(input)
+        return encode(validate_binary_array(input))
 
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)
@@ -142,7 +143,7 @@ class BlockCode(ABC):
             s = matmul(r, self.check_matrix.T)
             return s
 
-        return check(input)
+        return check(validate_binary_array(input))
 
     @cache
     @abstractmethod

@@ -201,7 +201,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
                    [0, 0, 1, 1, 0, 1],
                    [0, 1, 0, 0, 1, 1]])
         """
-        return self.encode(np.eye(self.dimension))
+        return self.encode(np.eye(self.dimension, dtype=int))
 
     @cached_property
     def check_matrix(self) -> Array2D[np.integer]:
@@ -235,7 +235,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             )
             return v[..., self._kept]
 
-        return encode(input)
+        return encode(validate_binary_array(input))
 
     def inverse_encode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""

@@ -7,7 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
-from .._util.validators import validate_choice
+from .._util.validators import validate_binary_array, validate_choice
 from ..types import Array1D, Array2D
 
 
@@ -175,7 +175,7 @@ class SystematicBlockCode(abc.BlockCode):
             v[..., self.parity_set] = matmul(u, self.parity_submatrix)
             return v
 
-        return encode(input)
+        return encode(validate_binary_array(input))
 
     def project_word(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         @blockwise(self.length)

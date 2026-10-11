@@ -241,7 +241,7 @@ def test_terminated_convolutional_mappings(feedforward_polynomials, mode, rng):
 def test_terminated_convolutional_unencode_invalid_input(mode):
     convolutional_code = komm.ConvolutionalCode(feedforward_polynomials=[[0b1, 0b11]])
     code = komm.TerminatedConvolutionalCode(convolutional_code, num_blocks=3, mode=mode)
-    r = np.zeros(code.length)
+    r = np.zeros(code.length, dtype=int)
     code.inverse_encode(r)  # Correct
     r[0] = 1
     with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
