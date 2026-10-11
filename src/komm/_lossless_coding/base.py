@@ -5,6 +5,7 @@ from typing import Generic, TypeVar
 import numpy as np
 import numpy.typing as npt
 
+from .._util.validators import validate_pmf
 from ..types import Array1D
 from .util import Word, is_prefix_free, is_uniquely_parsable
 
@@ -83,6 +84,23 @@ class SymbolCode(ABC):
         calY = self.target_cardinality
         kraft_parameter = np.sum(np.float_power(calY, -np.asarray(self.lengths)))
         return float(kraft_parameter)
+
+    def average_length(self, pmf: npt.ArrayLike) -> float:
+        r"""
+        Computes the average codeword length $\bar{n}$ of the code, considering a given pmf $p$ over $\mathcal{X}$. This quantity is given by
+        $$
+            \bar{n} = \sum_{x \in \mathcal{X}} p(x) \ell(x),
+        $$
+        where $\ell(x)$ is the length of the codeword $\Enc(x)$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
+
+        Parameters:
+            pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
+
+        Returns:
+            average_length: The average codeword length $\bar{n}$ of the code.
+        """
+        pmf = validate_pmf(pmf, size=self.source_cardinality)
+        return float(np.dot(self.lengths, pmf))
 
 
 class TokenCode(ABC, Generic[T]):

@@ -248,3 +248,12 @@ class SymbolCode(abc.SymbolCode):
             1.5
         """
         return super().kraft_parameter()
+
+    def average_length(self, pmf: npt.ArrayLike) -> float:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.average_length([1/2, 1/4, 1/4])
+            1.5
+        """
+        return super().average_length(pmf)

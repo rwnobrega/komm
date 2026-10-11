@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -79,6 +81,24 @@ def test_from_lengths_alphabetic(lengths):
     assert code.codewords == sorted(code.codewords)
 
 
+@pytest.mark.parametrize(
+    "code_parameters, pmf, average_length",
+    [
+        (test_data[0], [0.4, 0.2, 0.2, 0.1, 0.1], 3.0),
+        (test_data[0], [0.2, 0.2, 0.2, 0.2, 0.2], 3.0),
+        (test_data[1], [0.4, 0.2, 0.2, 0.1, 0.1], 2.2),
+        (test_data[1], [0.2, 0.2, 0.2, 0.2, 0.2], 2.4),
+        (test_data[2], [0.25, 0.25, 0.2, 0.15, 0.15], 2.3),
+        (test_data[3], [0.25, 0.25, 0.2, 0.15, 0.15], 1.5),
+        (test_data[4], [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0], 1.7),
+    ],
+)
+def test_average_length(code_parameters, pmf, average_length):
+    _, _, codewords = code_parameters.values()
+    code = komm.SymbolCode.from_codewords(codewords)
+    assert np.isclose(code.average_length(pmf), average_length)
+
+
 @pytest.mark.parametrize("code_parameters", test_data)
 def test_fixed_to_variable_equivalence(code_parameters):
     # Same code as the fixed-to-variable one with k = 1.
@@ -99,6 +119,8 @@ def test_fixed_to_variable_equivalence(code_parameters):
     assert code.is_uniquely_decodable() == block_code.is_uniquely_decodable()
     assert code.is_prefix_free() == block_code.is_prefix_free()
     assert code.kraft_parameter() == block_code.kraft_parameter()
+    pmf = np.full(source_cardinality, 1 / source_cardinality)
+    assert code.average_length(pmf) == block_code.rate(pmf)
     canonical = komm.SymbolCode.from_lengths(
         code.lengths,
         target_cardinality=target_cardinality,
@@ -227,3 +249,18 @@ def test_from_lengths_invalid(lengths, target_cardinality, message):
 def test_from_lengths_not_integer(lengths, target_cardinality, message):
     with pytest.raises(TypeError, match=message):
         komm.SymbolCode.from_lengths(lengths, target_cardinality=target_cardinality)
+
+
+@pytest.mark.parametrize(
+    "pmf, message",
+    [
+        ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),
+        ([-0.4, 0.4, 1.0], "'pmf' must be non-negative"),
+        ([0.5, 0.5], "'pmf' must have size 3 (got 2)"),
+        ([0.25, 0.25, 0.25, 0.25], "'pmf' must have size 3 (got 4)"),
+    ],
+)
+def test_average_length_invalid_pmf(pmf, message):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(ValueError, match=escape(message)):
+        code.average_length(pmf)
