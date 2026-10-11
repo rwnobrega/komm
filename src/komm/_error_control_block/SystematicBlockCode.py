@@ -54,7 +54,7 @@ class SystematicBlockCode(abc.BlockCode):
         parity_submatrix: npt.ArrayLike,
         information_set: Literal["left", "right"] | npt.ArrayLike = "left",
     ):
-        self.parity_submatrix = np.asarray(parity_submatrix)
+        self.parity_submatrix = validate_binary_array(parity_submatrix, ndim=2)
         n, k, m = self.length, self.dimension, self.redundancy
         if isinstance(information_set, str):
             side = validate_choice(information_set, ("left", "right"))

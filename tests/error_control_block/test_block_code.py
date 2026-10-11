@@ -129,6 +129,26 @@ def test_block_code_reject_rank_deficient(kwargs):
         komm.BlockCode(**kwargs)
 
 
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"generator_matrix": [[1, 2]]}, "'generator_matrix' must be 0 or 1"),
+        ({"check_matrix": [[-1, 1]]}, "'check_matrix' must be 0 or 1"),
+        ({"generator_matrix": [1, 1]}, "'generator_matrix' must be a 2D-array"),
+        ({"check_matrix": [1, 1]}, "'check_matrix' must be a 2D-array"),
+    ],
+)
+def test_block_code_invalid_matrices(kwargs, message):
+    with pytest.raises(ValueError, match=message):
+        komm.BlockCode(**kwargs)
+
+
+@pytest.mark.parametrize("name", ["generator_matrix", "check_matrix"])
+def test_block_code_matrix_not_integer(name):
+    with pytest.raises(TypeError, match=f"'{name}' must contain only integers"):
+        komm.BlockCode(**{name: [[1, 0.5]]})
+
+
 def test_block_code_both_matrices():
     generator_matrix = [
         [1, 0, 0, 1, 1],

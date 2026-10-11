@@ -114,6 +114,23 @@ def test_block_code_inverse_encode_invalid_input():
         code.inverse_encode(r)  # Incorrect
 
 
+@pytest.mark.parametrize(
+    "parity_submatrix, message",
+    [
+        ([[2, 1]], "'parity_submatrix' must be 0 or 1"),
+        ([1, 1], "'parity_submatrix' must be a 2D-array"),
+    ],
+)
+def test_systematic_block_code_invalid_parity_submatrix(parity_submatrix, message):
+    with pytest.raises(ValueError, match=message):
+        komm.SystematicBlockCode(parity_submatrix)
+
+
+def test_systematic_block_code_parity_submatrix_not_integer():
+    with pytest.raises(TypeError, match="'parity_submatrix' must contain only"):
+        komm.SystematicBlockCode([[0.5, 1]])
+
+
 def test_systematic_block_code_invalid_information_set():
     with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
         komm.SystematicBlockCode([[1, 1, 0], [0, 1, 1]], information_set="middle")

@@ -5,6 +5,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._util.matrices import null_matrix, rank, rref
+from .._util.validators import validate_binary_array
 from ..types import Array2D
 
 
@@ -80,8 +81,11 @@ class BlockCode(abc.BlockCode):
             raise ValueError(
                 "either 'generator_matrix' or 'check_matrix' must be provided"
             )
-        G = None if generator_matrix is None else np.asarray(generator_matrix)
-        H = None if check_matrix is None else np.asarray(check_matrix)
+        if generator_matrix is not None:
+            generator_matrix = validate_binary_array(generator_matrix, ndim=2)
+        if check_matrix is not None:
+            check_matrix = validate_binary_array(check_matrix, ndim=2)
+        G, H = generator_matrix, check_matrix
         if G is not None and H is not None:
             if G.shape[1] != H.shape[1] or G.shape[0] + H.shape[0] != G.shape[1]:
                 raise ValueError("matrices must have compatible shapes")
