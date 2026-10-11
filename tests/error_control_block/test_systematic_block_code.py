@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -131,6 +133,24 @@ def test_systematic_block_code_parity_submatrix_not_integer():
         komm.SystematicBlockCode([[0.5, 1]])
 
 
-def test_systematic_block_code_invalid_information_set():
-    with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
-        komm.SystematicBlockCode([[1, 1, 0], [0, 1, 1]], information_set="middle")
+@pytest.mark.parametrize(
+    "information_set, message",
+    [
+        ("middle", "'information_set' must be 'left' or 'right'"),
+        ([0, 5], "elements of 'information_set' must be in [0:5)"),
+        ([-1, 0], "elements of 'information_set' must be in [0:5)"),
+        ([0, 0], "elements of 'information_set' must be unique"),
+        ([0, 1, 2], "'information_set' must have shape (2,) (got (3,))"),
+        ([[0, 1]], "'information_set' must have shape (2,) (got (1, 2))"),
+    ],
+)
+def test_systematic_block_code_invalid_information_set(information_set, message):
+    P = [[1, 1, 0], [0, 1, 1]]
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.SystematicBlockCode(P, information_set=information_set)
+
+
+def test_systematic_block_code_information_set_not_integer():
+    P = [[1, 1, 0], [0, 1, 1]]
+    with pytest.raises(TypeError, match="'information_set' must contain only integers"):
+        komm.SystematicBlockCode(P, information_set=[1.0, 2.0])

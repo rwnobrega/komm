@@ -7,7 +7,11 @@ import numpy.typing as npt
 from .. import abc
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
-from .._util.validators import validate_binary_array, validate_choice
+from .._util.validators import (
+    validate_binary_array,
+    validate_choice,
+    validate_integer_array,
+)
 from ..types import Array1D, Array2D
 
 
@@ -63,13 +67,12 @@ class SystematicBlockCode(abc.BlockCode):
             else:
                 self.information_set = np.arange(m, n)
             return
-        self.information_set = np.asarray(information_set)
-        if (
-            self.information_set.size != k
-            or self.information_set.min() < 0
-            or self.information_set.max() > n
-        ):
-            raise ValueError("'information_set' must be a 'k'-sublist of 'range(n)'")
+        information_set = validate_integer_array(
+            information_set, low=0, high=n, shape=(k,)
+        )
+        if not information_set.size == np.unique(information_set).size:
+            raise ValueError("elements of 'information_set' must be unique")
+        self.information_set = information_set
 
     def __repr__(self) -> str:
         args = ", ".join([
