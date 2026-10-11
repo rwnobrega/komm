@@ -88,6 +88,17 @@ def test_cross_qam_invalid(order):
         komm.CrossQAMConstellation(order)
 
 
+@pytest.mark.parametrize("order", [np.int64(32), np.uint8(128)])
+def test_cross_qam_numpy_order(order):
+    cross = komm.CrossQAMConstellation(order)
+    assert type(cross.order) is int
+
+
+def test_cross_qam_order_not_integer():
+    with pytest.raises(TypeError, match=r"'order' must be an integer \(got float\)"):
+        komm.CrossQAMConstellation(32.0)  # type: ignore
+
+
 @pytest.mark.parametrize(
     "received, indices",
     [

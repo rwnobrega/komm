@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_float, validate_positive_float
+from .._util.validators import validate_float, validate_integer, validate_positive_float
 from ..types import Array1D, Array2D
 from .QAMConstellation import QAMConstellation
 
@@ -32,8 +32,9 @@ class CrossQAMConstellation(abc.Constellation[np.complexfloating]):
     def __init__(
         self, order: int, delta: float = 2.0, phase_offset: float = 0.0
     ) -> None:
+        order = validate_integer(order)
         k = order.bit_length() - 1
-        if order < 32 or order & (order - 1) != 0 or k % 2 == 0:
+        if not (order >= 32 and order & (order - 1) == 0 and k % 2 == 1):
             raise ValueError(
                 "'order' must be of the form 2^k with k odd and k >= 5"
                 " (e.g., 32, 128, 512)"
