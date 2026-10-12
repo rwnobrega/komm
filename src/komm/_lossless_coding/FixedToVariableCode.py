@@ -323,9 +323,14 @@ class FixedToVariableCode:
             >>> code.lengths
             [1, 2, 2]
 
-            >>> code = komm.HuffmanCode([0.8, 0.1, 0.1], 2)
+            >>> code = komm.FixedToVariableCode.from_enc_mapping({
+            ...     (0, 0): (0,),
+            ...     (0, 1): (1, 1),
+            ...     (1, 0): (1, 0, 0),
+            ...     (1, 1): (1, 0, 1),
+            ... })
             >>> code.lengths
-            [1, 3, 3, 3, 6, 6, 4, 6, 6]
+            [1, 2, 3, 3]
         """
         return [len(y) for y in self.codewords]
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from functools import cache, reduce
+from functools import cache
 from heapq import heapify, heappop, heappush
 from typing import Any, Literal, Self
 
@@ -7,98 +7,84 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .. import abc
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_choice, validate_pmf, validate_positive_integer
+from .._util.validators import validate_choice, validate_pmf
 from ..types import Array1D
-from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
-class HuffmanCode(FixedToVariableCode):
+class HuffmanCode(abc.SymbolCode):
     r"""
-    Binary Huffman code. It is an optimal (minimal expected rate) [fixed-to-variable length code](/ref/FixedToVariableCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.2</cite>.
+    Binary Huffman code. It is an optimal (minimal average length) [symbol code](/ref/SymbolCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.2</cite>.
 
     Notes:
-        Huffman codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
+        Huffman codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
 
     Parameters:
         pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
 
-        source_block_size: The source block size $k$. The default value is $k = 1$.
-
         policy: The policy to be used when constructing the code. It must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`. It affects the codeword lengths only in the presence of ties.
 
-        assignment: The strategy used to assign the codewords, once the Huffman tree is built. It must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{1}$ being assigned to the less probable of the two merged nodes, as in classic textbook presentations) or `'canonical'` (the [canonical code](/ref/FixedToVariableCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [rate](/ref/FixedToVariableCode/#rate).
+        assignment: The strategy used to assign the codewords, once the Huffman tree is built. It must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{1}$ being assigned to the less probable of the two merged nodes, as in classic textbook presentations) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
 
     Examples:
-        >>> pmf = [0.8, 0.1, 0.1]
+        >>> pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
 
         >>> code = komm.HuffmanCode(pmf)
-        >>> code.enc_mapping
-        {(0,): (0,),
-         (1,): (1, 0),
-         (2,): (1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        1.2
+        >>> code.codewords
+        [(1, 0), (0, 0), (1, 1), (0, 1, 0), (0, 1, 1)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        2.2
 
-        >>> code = komm.HuffmanCode(pmf, 2)
-        >>> code.enc_mapping
-        {(0, 0): (0,),
-         (0, 1): (1, 0, 1),
-         (0, 2): (1, 1, 0),
-         (1, 0): (1, 1, 1),
-         (1, 1): (1, 0, 0, 1, 0, 0),
-         (1, 2): (1, 0, 0, 1, 0, 1),
-         (2, 0): (1, 0, 0, 0),
-         (2, 1): (1, 0, 0, 1, 1, 0),
-         (2, 2): (1, 0, 0, 1, 1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        0.96
+        >>> code = komm.HuffmanCode(pmf, policy="low")
+        >>> code.codewords
+        [(0, 1), (1,), (0, 0, 0), (0, 0, 1, 0), (0, 0, 1, 1)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        2.2
 
-        >>> code = komm.HuffmanCode(pmf, 2, assignment="canonical")
-        >>> code.enc_mapping
-        {(0, 0): (0,),
-         (0, 1): (1, 0, 0),
-         (0, 2): (1, 0, 1),
-         (1, 0): (1, 1, 0),
-         (1, 1): (1, 1, 1, 1, 0, 0),
-         (1, 2): (1, 1, 1, 1, 0, 1),
-         (2, 0): (1, 1, 1, 0),
-         (2, 1): (1, 1, 1, 1, 1, 0),
-         (2, 2): (1, 1, 1, 1, 1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        0.96
+        >>> code = komm.HuffmanCode(pmf, assignment="canonical")
+        >>> code.codewords
+        [(0, 0), (0, 1), (1, 0), (1, 1, 0), (1, 1, 1)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        2.2
     """
 
     def __init__(
         self,
         pmf: npt.ArrayLike,
-        source_block_size: int = 1,
         policy: Literal["high", "low"] = "high",
         assignment: Literal["tree", "canonical"] = "tree",
     ):
         self.pmf = validate_pmf(pmf)
-        source_block_size = validate_positive_integer(source_block_size)
+        if not self.pmf.size >= 2:
+            raise ValueError(f"'pmf' must have size at least 2 (got {self.pmf.size})")
         policy = validate_choice(policy, ("high", "low"))
         assignment = validate_choice(assignment, ("tree", "canonical"))
         self.policy = policy
         self.assignment = assignment
-        super().__init__(
-            source_cardinality=self.pmf.size,
-            target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=huffman_code(self.pmf, source_block_size, policy, assignment),
-        )
+        self._enc_mapping = huffman_code(self.pmf, policy, assignment)
 
     def __repr__(self) -> str:
         args = ", ".join([
             f"pmf={self.pmf.tolist()}",
-            f"source_block_size={self.source_block_size}",
             f"policy={self.policy!r}",
             f"assignment={self.assignment!r}",
         ])
         return f"{self.__class__.__name__}({args})"
+
+    @property
+    def source_cardinality(self) -> int:
+        return self.pmf.size
+
+    @property
+    def target_cardinality(self) -> int:
+        return 2
+
+    @property
+    def enc_mapping(self) -> dict[int, Word]:
+        return self._enc_mapping
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -180,19 +166,17 @@ def tree_codewords(tree: list[Node], size: int, pbar: "tqdm[Any]") -> list[Word]
 
 def huffman_code(
     pmf: Array1D[np.floating],
-    source_block_size: int,
     policy: Literal["high", "low"],
     assignment: Literal["tree", "canonical"],
-) -> dict[Word, Word]:
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    size = extended_pmf.size
+) -> dict[int, Word]:
+    size = pmf.size
 
     pbar = tqdm(desc="Generating Huffman code", total=3 * size, delay=2.5)
-    tree = huffman_tree(extended_pmf.ravel(), policy, pbar)
+    tree = huffman_tree(pmf, policy, pbar)
     if assignment == "canonical":
         codewords = canonical_code(tree_lengths(tree, size, pbar))
     else:
         codewords = tree_codewords(tree, size, pbar)
     pbar.close()
 
-    return dict(zip(np.ndindex(extended_pmf.shape), codewords))
+    return dict(enumerate(codewords))

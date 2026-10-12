@@ -309,7 +309,7 @@ def test_from_lengths_canonical_huffman(pmf):
     lengths = [len(codeword) for codeword in huffman.codewords]
     code = komm.FixedToVariableCode.from_lengths(lengths, source_cardinality=len(pmf))
     assert code.is_prefix_free()
-    np.testing.assert_allclose(code.rate(pmf), huffman.rate(pmf))
+    np.testing.assert_allclose(code.rate(pmf), huffman.average_length(pmf))
 
 
 @pytest.mark.parametrize("lengths", [[1, 2, 3, 3], [2, 2, 2, 2], [1, 2, 3, 4]])

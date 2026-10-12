@@ -1,5 +1,3 @@
-from functools import partial
-
 import numpy as np
 import pytest
 
@@ -10,18 +8,10 @@ from .util import deterministic_pmf, random_pmf
 
 @pytest.fixture(
     params=[
-        partial(komm.HuffmanCode, policy="high", assignment="tree"),
-        partial(komm.HuffmanCode, policy="low", assignment="tree"),
-        partial(komm.HuffmanCode, policy="high", assignment="canonical"),
-        partial(komm.HuffmanCode, policy="low", assignment="canonical"),
         komm.ShannonCode,
         komm.FanoCode,
     ],
     ids=[
-        "HuffmanCode-high-tree",
-        "HuffmanCode-low-tree",
-        "HuffmanCode-high-canonical",
-        "HuffmanCode-low-canonical",
         "ShannonCode",
         "FanoCode",
     ],
