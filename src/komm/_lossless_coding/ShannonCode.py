@@ -1,76 +1,62 @@
-from functools import cache, reduce
+from functools import cache
 
 import numpy as np
 import numpy.typing as npt
 
+from .. import abc
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf, validate_positive_integer
+from .._util.validators import validate_pmf
 from ..types import Array1D
-from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
-class ShannonCode(FixedToVariableCode):
+class ShannonCode(abc.SymbolCode):
     r"""
-    Binary Shannon code. For a given pmf $p$ over $\mathcal{X}$, it is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the length of the codeword $\Enc(\mathbf{x})$ associated with a source word $\mathbf{x} \in \mathcal{X}^k$ is given by
+    Binary Shannon code. For a given pmf $p$ over $\mathcal{X}$, it is a [symbol code](/ref/SymbolCode) in which the length of the codeword $\Enc(x)$ associated with a source symbol $x \in \mathcal{X}$ is given by
     $$
-        \ell(\mathbf{x}) = \left\lceil \log_2 \frac{1}{p(\mathbf{x})} \right\rceil.
+        \ell(x) = \left\lceil \log_2 \frac{1}{p(x)} \right\rceil.
     $$
-    This function implements the canonical (lexicographical) order assignment as described in [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
+    For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
     Notes:
-        Shannon codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
+        Shannon codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be positive and sum to $1$. Zero probabilities are not allowed, since $\ell(\mathbf{x})$ is undefined for $p(\mathbf{x}) = 0$.
-
-        source_block_size: The source block size $k$. The default value is $k = 1$.
+        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be positive and sum to $1$. Zero probabilities are not allowed, since $\ell(x)$ is undefined for $p(x) = 0$.
 
     Examples:
-        >>> pmf = [0.8, 0.1, 0.1]
+        >>> pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
 
         >>> code = komm.ShannonCode(pmf)
-        >>> code.enc_mapping
-        {(0,): (0,),
-         (1,): (1, 0, 0, 0),
-         (2,): (1, 0, 0, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        1.6
-
-        >>> code = komm.ShannonCode(pmf, 2)
-        >>> code.enc_mapping
-        {(0, 0): (0,),
-         (0, 1): (1, 0, 0, 0),
-         (0, 2): (1, 0, 0, 1),
-         (1, 0): (1, 0, 1, 0),
-         (1, 1): (1, 1, 0, 0, 0, 0, 0),
-         (1, 2): (1, 1, 0, 0, 0, 0, 1),
-         (2, 0): (1, 0, 1, 1),
-         (2, 1): (1, 1, 0, 0, 0, 1, 0),
-         (2, 2): (1, 1, 0, 0, 0, 1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        1.1
+        >>> code.codewords
+        [(0, 1, 0), (0, 0), (0, 1, 1), (1, 0, 0, 0), (1, 0, 0, 1)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        2.8
     """
 
-    def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
+    def __init__(self, pmf: npt.ArrayLike):
         self.pmf = validate_pmf(pmf)
+        if not self.pmf.size >= 2:
+            raise ValueError(f"'pmf' must have size at least 2 (got {self.pmf.size})")
         if not np.all(self.pmf > 0):
             raise ValueError("'pmf' must be positive")
-        source_block_size = validate_positive_integer(source_block_size)
-        super().__init__(
-            source_cardinality=self.pmf.size,
-            target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=shannon_code(self.pmf, source_block_size),
-        )
+        self._enc_mapping = shannon_code(self.pmf)
 
     def __repr__(self) -> str:
-        args = ", ".join([
-            f"pmf={self.pmf.tolist()}",
-            f"source_block_size={self.source_block_size}",
-        ])
-        return f"{self.__class__.__name__}({args})"
+        return f"{self.__class__.__name__}(pmf={self.pmf.tolist()})"
+
+    @property
+    def source_cardinality(self) -> int:
+        return self.pmf.size
+
+    @property
+    def target_cardinality(self) -> int:
+        return 2
+
+    @property
+    def enc_mapping(self) -> dict[int, Word]:
+        return self._enc_mapping
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -87,11 +73,7 @@ def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
     return lengths.astype(int)
 
 
-def shannon_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    lengths = shannon_code_lengths(extended_pmf.ravel())
+def shannon_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
+    lengths = shannon_code_lengths(pmf)
     codewords = canonical_code(lengths)
-    enc_mapping: dict[Word, Word] = {}
-    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
-        enc_mapping[x] = c
-    return enc_mapping
+    return dict(enumerate(codewords))

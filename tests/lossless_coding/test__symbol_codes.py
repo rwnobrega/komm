@@ -14,6 +14,7 @@ from .util import deterministic_pmf, extended_pmf, random_pmf
         komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)]),
         komm.HuffmanCode([0.2, 0.4, 0.2, 0.1, 0.1]),
         komm.FanoCode([0.2, 0.4, 0.2, 0.1, 0.1]),
+        komm.ShannonCode([0.2, 0.4, 0.2, 0.1, 0.1]),
     ],
     ids=lambda code: type(code).__name__,
 )
@@ -28,6 +29,7 @@ def code(request: pytest.FixtureRequest):
         partial(komm.HuffmanCode, policy="high", assignment="canonical"),
         partial(komm.HuffmanCode, policy="low", assignment="canonical"),
         komm.FanoCode,
+        komm.ShannonCode,
     ],
     ids=[
         "HuffmanCode-high-tree",
@@ -35,6 +37,7 @@ def code(request: pytest.FixtureRequest):
         "HuffmanCode-high-canonical",
         "HuffmanCode-low-canonical",
         "FanoCode",
+        "ShannonCode",
     ],
 )
 def constructor(request: pytest.FixtureRequest):
@@ -72,6 +75,8 @@ def test_symbol_codes_random_pmf(constructor, S, k, rng):
 @pytest.mark.parametrize("S", range(2, 7))
 @pytest.mark.parametrize("k", range(1, 4))
 def test_symbol_codes_complete(constructor, S, k, rng):
+    if constructor is komm.ShannonCode:
+        return
     # Full binary tree, so Kraft equality holds.
     pmf = extended_pmf(random_pmf(rng, S), k)
     code: komm.abc.SymbolCode = constructor(pmf)
@@ -90,6 +95,8 @@ def test_symbol_codes_random_encode_decode(constructor, S, k, rng):
 
 @pytest.mark.parametrize("S", range(2, 7))
 def test_symbol_codes_deterministic(constructor, S):
+    if constructor is komm.ShannonCode:
+        return
     for i in range(S):
         pmf = deterministic_pmf(S, i)
         code: komm.abc.SymbolCode = constructor(pmf)
