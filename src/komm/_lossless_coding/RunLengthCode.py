@@ -101,7 +101,7 @@ class RunLengthCode(abc.TokenCode[Token]):
             >>> code.target_to_tokens([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
             [(0, 3), (2, 2), (1, 4), (1, 1)]
         """
-        target = np.asarray(target, dtype=int)
+        target = validate_integer_array(target, low=0, high=self.target_cardinality)
         calY = self.target_cardinality
         x_width, l_width = self._get_widths()
         tokens: list[Token] = []

@@ -204,7 +204,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
             ... )
             [(0, 3), (1, 4, 4), (0, 2), (1, 3, 2)]
         """
-        target = np.asarray(target, dtype=int)
+        target = validate_integer_array(target, low=0, high=self.target_cardinality)
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         tokens: list[Token] = []

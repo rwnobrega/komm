@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -60,6 +62,19 @@ def test_token_codes_invalid_input(code: komm.abc.TokenCode):
         code.encode([0, 256])
     with pytest.raises(ValueError, match="elements of 'source' must be in"):
         code.encode([-1, 0])
+
+
+@pytest.mark.parametrize("side", ["below", "above"])
+def test_token_codes_invalid_target(code: komm.abc.TokenCode, side):
+    symbol = -1 if side == "below" else code.target_cardinality
+    message = f"elements of 'target' must be in [0:{code.target_cardinality})"
+    with pytest.raises(ValueError, match=escape(message)):
+        code.decode([0, symbol])
+
+
+def test_token_codes_target_not_integer(code: komm.abc.TokenCode):
+    with pytest.raises(TypeError, match="'target' must contain only integers"):
+        code.decode([0.0, 1.0])
 
 
 @pytest.mark.parametrize(

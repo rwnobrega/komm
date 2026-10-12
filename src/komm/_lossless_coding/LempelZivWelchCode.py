@@ -100,7 +100,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
             >>> lzw.target_to_tokens([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
             [0, 2, 3, 4, 5]
         """
-        target = np.asarray(target, dtype=int)
+        target = validate_integer_array(target, low=0, high=self.target_cardinality)
         calY = self.target_cardinality
         tokens: list[Token] = []
         i = 0

@@ -104,7 +104,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         """
         calX, calY = self.source_cardinality, self.target_cardinality
         M = num_digits(calX, calY)
-        target = np.asarray(target, dtype=int)
+        target = validate_integer_array(target, low=0, high=self.target_cardinality)
         tokens: list[Token] = []
         i = 0
         while i < target.size:

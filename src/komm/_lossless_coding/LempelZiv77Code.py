@@ -166,7 +166,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             >>> lz77.target_to_tokens([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
             [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
         """
-        target = np.asarray(target, dtype=int)
+        target = validate_integer_array(target, low=0, high=self.target_cardinality)
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         tokens: list[Token] = []
