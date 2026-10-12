@@ -1,4 +1,7 @@
+from re import escape
+
 import numpy as np
+import pytest
 
 import komm
 
@@ -18,3 +21,20 @@ def test_general_constellation():
     np.testing.assert_equal(const.indices_to_symbols([0, 1]), [1.0, 2.0])
     np.testing.assert_equal(const.closest_indices([1.1, 1.9]), [0, 1])
     np.testing.assert_equal(const.closest_symbols([1.1, 1.9]), [1.0, 2.0])
+
+
+@pytest.mark.parametrize(
+    "matrix, message",
+    [
+        ([[[1.0]]], "'matrix' must be a 2D-array"),
+        ([], "'matrix' must be non-empty"),
+        ([[]], "'matrix' must be non-empty"),
+        ([[1, 2], [1, 2]], "rows of 'matrix' must be distinct"),
+        ([[1, 2], [3, 4], [1, 2]], "rows of 'matrix' must be distinct"),
+        ([1, 1j, 1], "rows of 'matrix' must be distinct"),
+        ([[0.0], [-0.0]], "rows of 'matrix' must be distinct"),
+    ],
+)
+def test_general_constellation_invalid(matrix, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.Constellation(matrix)

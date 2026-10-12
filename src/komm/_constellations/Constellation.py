@@ -14,7 +14,7 @@ class Constellation(abc.Constellation[T]):
     General real or complex constellation. A *constellation* of *dimension* $N$ and *order* $M$ is defined by an ordered set $\\{ \mathbf{x}_i : i \in [0:M) \\}$ of $M$ distinct points in $\mathbb{R}^N$ or $\mathbb{C}^N$, called *symbols*. In this class, the constellation is represented by a matrix $\mathbf{X} \in \mathbb{R}^{M \times N}$ or $\mathbf{X} \in \mathbb{C}^{M \times N}$, where the $i$-th row of $\mathbf{X}$ corresponds to symbol $\mathbf{x}_i$. For more details, see <cite>SA15, Sec. 2.5.1</cite>.
 
     Parameters:
-        matrix: The constellation matrix $\mathbf{X}$. Must be a 2D-array of shape $(M, N)$ with real or complex entries.
+        matrix: The constellation matrix $\mathbf{X}$. Must be a non-empty 2D-array of shape $(M, N)$ with real or complex entries and distinct rows.
 
     Examples:
         The real constellation depicted in the figure below has $M = 5$ and $N = 2$.
@@ -30,8 +30,12 @@ class Constellation(abc.Constellation[T]):
         matrix = np.asarray(matrix, dtype=dtype)
         if matrix.ndim == 1:
             matrix = matrix.reshape(-1, 1)
-        if matrix.ndim != 2:
+        if not matrix.ndim == 2:
             raise ValueError("'matrix' must be a 2D-array")
+        if not matrix.size > 0:
+            raise ValueError("'matrix' must be non-empty")
+        if not len(set(tuple(row) for row in matrix)) == matrix.shape[0]:
+            raise ValueError("rows of 'matrix' must be distinct")
         self._matrix = matrix
 
     def __repr__(self) -> str:
