@@ -74,17 +74,6 @@ def test_symbol_codes_random_pmf(constructor, S, k, rng):
 
 @pytest.mark.parametrize("S", range(2, 7))
 @pytest.mark.parametrize("k", range(1, 4))
-def test_symbol_codes_complete(constructor, S, k, rng):
-    if constructor is komm.ShannonCode:
-        return
-    # Full binary tree, so Kraft equality holds.
-    pmf = extended_pmf(random_pmf(rng, S), k)
-    code: komm.abc.SymbolCode = constructor(pmf)
-    assert np.isclose(code.kraft_parameter(), 1.0)
-
-
-@pytest.mark.parametrize("S", range(2, 7))
-@pytest.mark.parametrize("k", range(1, 4))
 def test_symbol_codes_random_encode_decode(constructor, S, k, rng):
     pmf = extended_pmf(random_pmf(rng, S), k)
     dms = komm.DiscreteMemorylessSource(pmf)

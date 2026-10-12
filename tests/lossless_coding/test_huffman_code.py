@@ -166,6 +166,16 @@ def test_huffman_code_policy(source_cardinality, order, rng):
 @pytest.mark.parametrize("policy", ["high", "low"])
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
 @pytest.mark.parametrize("order", range(1, 4))
+def test_huffman_code_complete(policy, source_cardinality, order, rng):
+    # Full binary tree, so Kraft equality holds.
+    pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
+    code = komm.HuffmanCode(pmf, policy)
+    assert np.isclose(code.kraft_parameter(), 1.0)
+
+
+@pytest.mark.parametrize("policy", ["high", "low"])
+@pytest.mark.parametrize("source_cardinality", range(2, 7))
+@pytest.mark.parametrize("order", range(1, 4))
 def test_huffman_code_assignment(policy, source_cardinality, order, rng):
     # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)

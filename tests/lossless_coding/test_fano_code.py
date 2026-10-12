@@ -3,6 +3,8 @@ import pytest
 
 import komm
 
+from .util import extended_pmf, random_pmf
+
 
 def test_fano_code_wikipedia():
     pmf = np.array([15, 7, 6, 6, 5]) / 39
@@ -28,3 +30,12 @@ def test_fano_code_wikipedia():
 def test_fano_code_invalid_pmf(pmf, message):
     with pytest.raises(ValueError, match=message):
         komm.FanoCode(pmf)
+
+
+@pytest.mark.parametrize("source_cardinality", range(2, 7))
+@pytest.mark.parametrize("order", range(1, 4))
+def test_fano_code_complete(source_cardinality, order, rng):
+    # Full binary tree, so Kraft equality holds.
+    pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
+    code = komm.FanoCode(pmf)
+    assert np.isclose(code.kraft_parameter(), 1.0)
