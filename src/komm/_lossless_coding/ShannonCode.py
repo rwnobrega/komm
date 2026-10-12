@@ -5,6 +5,7 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
+from tqdm import tqdm
 
 from .. import abc
 from .._util.docs import mkdocstrings
@@ -90,6 +91,7 @@ def cumulative_code(
     pmf: Array1D[np.floating],
     lengths: Array1D[np.integer],
 ) -> list[Word]:
+    pbar = tqdm(desc="Generating Shannon code", total=pmf.size, delay=2.5)
     # Exact sums, slack of epsilon per symbol.
     eps = Fraction(np.finfo(float).eps)
     slack = min(pmf.size * eps, Fraction(float(pmf.min())) / 2)
@@ -104,6 +106,8 @@ def cumulative_code(
         codewords[x] = integer_to_symbols(value, base=2, width=length)
         total += Fraction(float(p))
         end = Fraction(value + 1, 2**length)
+        pbar.update()
+    pbar.close()
     return codewords
 
 
