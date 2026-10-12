@@ -30,7 +30,8 @@ def code(request: pytest.FixtureRequest):
         partial(komm.HuffmanCode, policy="low", assignment="canonical"),
         partial(komm.FanoCode, assignment="tree"),
         partial(komm.FanoCode, assignment="canonical"),
-        komm.ShannonCode,
+        partial(komm.ShannonCode, assignment="cumulative"),
+        partial(komm.ShannonCode, assignment="canonical"),
     ],
     ids=[
         "HuffmanCode-high-tree",
@@ -39,7 +40,8 @@ def code(request: pytest.FixtureRequest):
         "HuffmanCode-low-canonical",
         "FanoCode-tree",
         "FanoCode-canonical",
-        "ShannonCode",
+        "ShannonCode-cumulative",
+        "ShannonCode-canonical",
     ],
 )
 def constructor(request: pytest.FixtureRequest):
@@ -86,7 +88,7 @@ def test_symbol_codes_random_encode_decode(constructor, S, k, rng):
 
 @pytest.mark.parametrize("S", range(2, 7))
 def test_symbol_codes_deterministic(constructor, S):
-    if constructor is komm.ShannonCode:
+    if constructor.func is komm.ShannonCode:
         return
     for i in range(S):
         pmf = deterministic_pmf(S, i)

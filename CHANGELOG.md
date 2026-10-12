@@ -20,6 +20,8 @@
 
 - Added parameter `assignment` to `FanoCode`, which selects how the codewords are assigned once the partition tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
 
+- Added parameter `assignment` to `ShannonCode`, which selects how the codewords are assigned once the lengths are computed: either `"cumulative"` (the default, from the binary expansions of the cumulative probabilities) or `"canonical"`.
+
 ### Breaking changes
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.
@@ -39,6 +41,8 @@
 - Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers instead of a NumPy array.
 
 - Changed `HuffmanCode`, `FanoCode`, and `ShannonCode` from subclasses of `FixedToVariableCode` to subclasses of `abc.SymbolCode`, with integer keys in `enc_mapping` and `average_length` in place of `rate`; removed their `source_block_size` and `size`. Instead of `komm.HuffmanCode(pmf, k)` and `code.rate(pmf)`, use `komm.HuffmanCode(pmf_k)` and `code.average_length(pmf_k) / k`, where `pmf_k = functools.reduce(np.kron, [pmf] * k)`.
+
+- Changed `ShannonCode` to assign the codewords from the cumulative probabilities, as in Shannon's original construction; for the previous codewords, use `assignment="canonical"`.
 
 ### Fixed
 
