@@ -1,5 +1,6 @@
+from collections.abc import Iterator
 from functools import cache, cached_property
-from typing import Self
+from typing import Self, SupportsIndex
 
 import numpy as np
 import numpy.typing as npt
@@ -301,3 +302,42 @@ class SymbolCode(abc.SymbolCode):
             ValueError: code is not uniquely decodable
         """
         return super().decode(input)
+
+    def encode_single(self, symbol: SupportsIndex) -> Word:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+
+            >>> code.encode_single(2)
+            (1, 1)
+
+            >>> code.encode_single(3)  # 3 is not a source symbol
+            Traceback (most recent call last):
+            ...
+            ValueError: 'symbol' must be in [0:3) (got 3)
+        """
+        return super().encode_single(symbol)
+
+    def decode_single(self, symbols: Iterator[SupportsIndex]) -> int:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+
+            >>> symbols = iter([1, 1, 0, 1, 0])
+            >>> code.decode_single(symbols)
+            2
+            >>> list(symbols)  # Iterator is left at codeword boundary
+            [0, 1, 0]
+
+            >>> code.decode_single(iter([1]))  # Incomplete codeword
+            Traceback (most recent call last):
+            ...
+            ValueError: input contains an incomplete codeword
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.decode_single(iter([0, 1]))  # Code is not prefix-free
+            Traceback (most recent call last):
+            ...
+            ValueError: code is not prefix-free
+        """
+        return super().decode_single(symbols)

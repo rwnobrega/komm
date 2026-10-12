@@ -115,6 +115,18 @@ def test_encode_decode(code_parameters, x, y):
 
 
 @pytest.mark.parametrize("code_parameters", test_data)
+def test_encode_decode_single(code_parameters):
+    source_cardinality, _, codewords = code_parameters.values()
+    code = komm.SymbolCode.from_codewords(codewords)
+    for x, codeword in enumerate(codewords):
+        assert code.encode_single(x) == codeword
+    symbols = iter([y for codeword in codewords for y in codeword])
+    for x in range(source_cardinality):
+        assert code.decode_single(symbols) == x
+    assert list(symbols) == []
+
+
+@pytest.mark.parametrize("code_parameters", test_data)
 def test_fixed_to_variable_equivalence(code_parameters):
     # Same code as the fixed-to-variable one with k = 1.
     source_cardinality, target_cardinality, codewords = code_parameters.values()
@@ -333,3 +345,47 @@ def test_decode_not_prefix_free():
     code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
     with pytest.raises(NotImplementedError, match="not implemented yet"):
         code.decode([0, 1, 1])
+
+
+@pytest.mark.parametrize("x", [-1, 3])
+def test_encode_single_invalid(x):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(ValueError, match=escape("'symbol' must be in [0:3)")):
+        code.encode_single(x)
+
+
+@pytest.mark.parametrize("x", [0.5, 1.0])
+def test_encode_single_not_integer(x):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(TypeError, match="'symbol' must be an integer"):
+        code.encode_single(x)
+
+
+@pytest.mark.parametrize(
+    "y, message, rest",
+    [
+        ([1, 1, 0], "input contains invalid word", [0]),
+        ([2, 0, 1], "input contains invalid word", [1]),
+        ([1], "input contains an incomplete codeword", []),
+        ([], "input contains an incomplete codeword", []),
+    ],
+)
+def test_decode_single_invalid(y, message, rest):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0)])
+    symbols = iter(y)
+    with pytest.raises(ValueError, match=message):
+        code.decode_single(symbols)
+    assert list(symbols) == rest
+
+
+@pytest.mark.parametrize("y", [[1.0, 0.0], [0.5, 1.0]])
+def test_decode_single_not_integer(y):
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(TypeError, match="cannot be interpreted as an integer"):
+        code.decode_single(iter(y))
+
+
+def test_decode_single_not_prefix_free():
+    code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+    with pytest.raises(ValueError, match="code is not prefix-free"):
+        code.decode_single(iter([0, 1, 1]))

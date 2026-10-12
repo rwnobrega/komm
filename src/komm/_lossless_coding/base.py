@@ -1,11 +1,14 @@
 from abc import ABC, abstractmethod
+from collections.abc import Iterator
 from functools import cache, cached_property
-from typing import Generic, TypeVar
+from itertools import islice
+from operator import index
+from typing import Generic, SupportsIndex, TypeVar
 
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer_array, validate_pmf
+from .._util.validators import validate_integer, validate_integer_array, validate_pmf
 from ..types import Array1D
 from .util import Word, is_prefix_free, is_uniquely_parsable, parse_prefix_free
 
@@ -58,6 +61,10 @@ class SymbolCode(ABC):
         The codeword lengths of the code. The integer in position $x$ is equal to $\ell(x)$, the length of the codeword $\Enc(x)$.
         """
         return [len(y) for y in self.codewords]
+
+    @cached_property
+    def _max_length(self) -> int:
+        return max(self.lengths)
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -150,6 +157,43 @@ class SymbolCode(ABC):
             allow_incomplete=False,
             cardinality=calY,
         )
+
+    def encode_single(self, symbol: SupportsIndex) -> Word:
+        r"""
+        Encodes a single source symbol into its codeword.
+
+        Parameters:
+            symbol: The source symbol to be encoded. Must be in $\mathcal{X}$.
+
+        Returns:
+            codeword: The codeword of the source symbol. It is a tuple with elements in $\mathcal{Y}$.
+        """
+        symbol = validate_integer(symbol, low=0, high=self.source_cardinality)
+        return self.enc_mapping[symbol]
+
+    def decode_single(self, symbols: Iterator[SupportsIndex]) -> int:
+        r"""
+        Decodes a single codeword from an iterator of target symbols, using the code, which must be prefix-free. This method consumes exactly the symbols of one codeword, leaving the iterator at the boundary with the next one; any remaining symbols are left untouched.
+
+        Parameters:
+            symbols: An iterator of target symbols starting with a complete codeword. It must be an iterator (as returned by `iter`), not a general iterable, since advancing it is part of the contract.
+
+        Returns:
+            symbol: The decoded source symbol.
+
+        Notes:
+            A ValueError is raised if the iterator is exhausted mid-codeword or if an invalid word is found.
+        """
+        if not self.is_prefix_free():
+            raise ValueError("code is not prefix-free")
+        word: Word = ()
+        for y in islice(symbols, self._max_length):
+            word += (index(y),)
+            if word in self._inv_enc_mapping:
+                return self._inv_enc_mapping[word][0]
+        if len(word) < self._max_length:
+            raise ValueError("input contains an incomplete codeword")
+        raise ValueError("input contains invalid word")
 
 
 class TokenCode(ABC, Generic[T]):

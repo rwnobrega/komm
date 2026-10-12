@@ -1,4 +1,5 @@
 from functools import partial
+from itertools import chain
 
 import numpy as np
 import pytest
@@ -84,6 +85,20 @@ def test_symbol_codes_random_encode_decode(constructor, S, k, rng):
     code: komm.abc.SymbolCode = constructor(pmf)
     x = dms.emit(1000)
     np.testing.assert_equal(x, code.decode(code.encode(x)))
+
+
+@pytest.mark.parametrize("S", range(2, 7))
+@pytest.mark.parametrize("k", range(1, 4))
+def test_symbol_codes_random_single(constructor, S, k, rng):
+    pmf = extended_pmf(random_pmf(rng, S), k)
+    dms = komm.DiscreteMemorylessSource(pmf)
+    code: komm.abc.SymbolCode = constructor(pmf)
+    x = dms.emit(1000)
+    y = code.encode(x)
+    assert list(chain.from_iterable(map(code.encode_single, x))) == y.tolist()
+    symbols = iter(y)
+    assert [code.decode_single(symbols) for _ in x] == x.tolist()
+    assert list(symbols) == []
 
 
 @pytest.mark.parametrize("S", range(2, 7))
