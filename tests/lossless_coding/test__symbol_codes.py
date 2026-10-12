@@ -13,6 +13,7 @@ from .util import deterministic_pmf, extended_pmf, random_pmf
     params=[
         komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)]),
         komm.HuffmanCode([0.2, 0.4, 0.2, 0.1, 0.1]),
+        komm.FanoCode([0.2, 0.4, 0.2, 0.1, 0.1]),
     ],
     ids=lambda code: type(code).__name__,
 )
@@ -26,12 +27,14 @@ def code(request: pytest.FixtureRequest):
         partial(komm.HuffmanCode, policy="low", assignment="tree"),
         partial(komm.HuffmanCode, policy="high", assignment="canonical"),
         partial(komm.HuffmanCode, policy="low", assignment="canonical"),
+        komm.FanoCode,
     ],
     ids=[
         "HuffmanCode-high-tree",
         "HuffmanCode-low-tree",
         "HuffmanCode-high-canonical",
         "HuffmanCode-low-canonical",
+        "FanoCode",
     ],
 )
 def constructor(request: pytest.FixtureRequest):
@@ -64,6 +67,15 @@ def test_symbol_codes_random_pmf(constructor, S, k, rng):
         pmf1_k = extended_pmf(rng.permutation(pmf), k)
         code1: komm.abc.SymbolCode = constructor(pmf1_k)
         np.testing.assert_allclose(rate, code1.average_length(pmf1_k) / k)
+
+
+@pytest.mark.parametrize("S", range(2, 7))
+@pytest.mark.parametrize("k", range(1, 4))
+def test_symbol_codes_complete(constructor, S, k, rng):
+    # Full binary tree, so Kraft equality holds.
+    pmf = extended_pmf(random_pmf(rng, S), k)
+    code: komm.abc.SymbolCode = constructor(pmf)
+    assert np.isclose(code.kraft_parameter(), 1.0)
 
 
 @pytest.mark.parametrize("S", range(2, 7))

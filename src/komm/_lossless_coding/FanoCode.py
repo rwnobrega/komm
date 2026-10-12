@@ -1,72 +1,58 @@
-from functools import cache, reduce
+from functools import cache
 from operator import itemgetter
 
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .. import abc
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf, validate_positive_integer
+from .._util.validators import validate_pmf
 from ..types import Array1D
-from .FixedToVariableCode import FixedToVariableCode
 from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
-class FanoCode(FixedToVariableCode):
+class FanoCode(abc.SymbolCode):
     r"""
-    Binary Fano code. For a given pmf $p$ over $\mathcal{X}$, it is a [fixed-to-variable length code](/ref/FixedToVariableCode) in which the source words are first sorted in descending order of probability and then are recursively partitioned into two groups of approximately equal total probability, assigning bit $\mathtt{0}$ to one group and bit $\mathtt{1}$ to the other, until each source word is assigned a unique codeword. For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
+    Binary Fano code. For a given pmf $p$ over $\mathcal{X}$, it is a [symbol code](/ref/SymbolCode) in which the source symbols are first sorted in descending order of probability and then are recursively partitioned into two groups of approximately equal total probability, assigning bit $\mathtt{0}$ to one group and bit $\mathtt{1}$ to the other, until each source symbol is assigned a unique codeword. For more details, see [Wikipedia: Shannon–Fano coding](https://en.wikipedia.org/wiki/Shannon%E2%80%93Fano_coding).
 
     Notes:
-        Fano codes are always [prefix-free](/ref/FixedToVariableCode/#is_prefix_free) (hence [uniquely decodable](/ref/FixedToVariableCode/#is_uniquely_decodable)).
+        Fano codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
 
     Parameters:
         pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
 
-        source_block_size: The source block size $k$. The default value is $k = 1$.
-
     Examples:
-        >>> pmf = [0.8, 0.1, 0.1]
+        >>> pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
 
         >>> code = komm.FanoCode(pmf)
-        >>> code.enc_mapping
-        {(0,): (0,),
-         (1,): (1, 0),
-         (2,): (1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        1.2
-
-        >>> code = komm.FanoCode(pmf, 2)
-        >>> code.enc_mapping
-        {(0, 0): (0,),
-         (0, 1): (1, 0, 0),
-         (0, 2): (1, 0, 1),
-         (1, 0): (1, 1, 0),
-         (1, 1): (1, 1, 1, 1, 0, 0),
-         (1, 2): (1, 1, 1, 1, 0, 1),
-         (2, 0): (1, 1, 1, 0),
-         (2, 1): (1, 1, 1, 1, 1, 0),
-         (2, 2): (1, 1, 1, 1, 1, 1)}
-        >>> code.rate(pmf)  # doctest: +FLOAT_CMP
-        0.96
+        >>> code.codewords
+        [(1, 0), (0,), (1, 1, 0), (1, 1, 1, 0), (1, 1, 1, 1)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        2.2
     """
 
-    def __init__(self, pmf: npt.ArrayLike, source_block_size: int = 1):
+    def __init__(self, pmf: npt.ArrayLike):
         self.pmf = validate_pmf(pmf)
-        source_block_size = validate_positive_integer(source_block_size)
-        super().__init__(
-            source_cardinality=self.pmf.size,
-            target_cardinality=2,
-            source_block_size=source_block_size,
-            enc_mapping=fano_code(self.pmf, source_block_size),
-        )
+        if not self.pmf.size >= 2:
+            raise ValueError(f"'pmf' must have size at least 2 (got {self.pmf.size})")
+        self._enc_mapping = fano_code(self.pmf)
 
     def __repr__(self) -> str:
-        args = ", ".join([
-            f"pmf={self.pmf.tolist()}",
-            f"source_block_size={self.source_block_size}",
-        ])
-        return f"{self.__class__.__name__}({args})"
+        return f"{self.__class__.__name__}(pmf={self.pmf.tolist()})"
+
+    @property
+    def source_cardinality(self) -> int:
+        return self.pmf.size
+
+    @property
+    def target_cardinality(self) -> int:
+        return 2
+
+    @property
+    def enc_mapping(self) -> dict[int, Word]:
+        return self._enc_mapping
 
     @cache
     def is_uniquely_decodable(self) -> bool:
@@ -98,11 +84,7 @@ def fano_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
     return lengths
 
 
-def fano_code(pmf: Array1D[np.floating], source_block_size: int) -> dict[Word, Word]:
-    extended_pmf = reduce(np.multiply.outer, [pmf] * source_block_size)
-    lengths = fano_code_lengths(extended_pmf.ravel())
+def fano_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
+    lengths = fano_code_lengths(pmf)
     codewords = canonical_code(lengths)
-    enc_mapping: dict[Word, Word] = {}
-    for x, c in zip(np.ndindex(extended_pmf.shape), codewords):
-        enc_mapping[x] = c
-    return enc_mapping
+    return dict(enumerate(codewords))

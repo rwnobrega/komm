@@ -9,11 +9,9 @@ from .util import deterministic_pmf, random_pmf
 @pytest.fixture(
     params=[
         komm.ShannonCode,
-        komm.FanoCode,
     ],
     ids=[
         "ShannonCode",
-        "FanoCode",
     ],
 )
 def constructor(request: pytest.FixtureRequest):
