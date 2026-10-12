@@ -44,7 +44,9 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             >>> lz78.source_to_tokens([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
-        source = validate_integer_array(source, low=0, high=self.source_cardinality)
+        source = validate_integer_array(
+            source, low=0, high=self.source_cardinality, ndim=1
+        )
         dictionary: dict[Word, int] = {(): 0}
         tokens: list[Token] = []
         word: Word = ()
@@ -109,7 +111,9 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         """
         calX, calY = self.source_cardinality, self.target_cardinality
         M = num_digits(calX, calY)
-        target = validate_integer_array(target, low=0, high=self.target_cardinality)
+        target = validate_integer_array(
+            target, low=0, high=self.target_cardinality, ndim=1
+        )
         tokens: list[Token] = []
         it = iter(target.tolist())
         for first in it:

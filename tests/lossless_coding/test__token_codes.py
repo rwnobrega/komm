@@ -77,6 +77,19 @@ def test_token_codes_target_not_integer(code: komm.abc.TokenCode):
         code.decode([0.0, 1.0])
 
 
+@pytest.mark.parametrize(
+    "method, name",
+    [
+        ("encode", "source"),
+        ("decode", "target"),
+    ],
+)
+def test_token_codes_not_1d(code: komm.abc.TokenCode, method, name):
+    message = f"'{name}' must be a 1D-array (got shape (2, 2))"
+    with pytest.raises(ValueError, match=escape(message)):
+        getattr(code, method)([[0, 1], [1, 0]])
+
+
 def test_token_codes_truncated_target(code: komm.abc.TokenCode, long_source):
     target = code.encode(long_source)
     with pytest.raises(ValueError, match="input contains an incomplete token"):

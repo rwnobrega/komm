@@ -48,7 +48,9 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
             >>> lzw.source_to_tokens(np.zeros(15, dtype=int))
             [0, 2, 3, 4, 5]
         """
-        source = validate_integer_array(source, low=0, high=self.source_cardinality)
+        source = validate_integer_array(
+            source, low=0, high=self.source_cardinality, ndim=1
+        )
         dictionary: dict[Word, int] = {(s,): s for s in range(self.source_cardinality)}
         tokens: list[Token] = []
         word: Word = ()
@@ -103,7 +105,9 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
             >>> lzw.target_to_tokens([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
             [0, 2, 3, 4, 5]
         """
-        target = validate_integer_array(target, low=0, high=self.target_cardinality)
+        target = validate_integer_array(
+            target, low=0, high=self.target_cardinality, ndim=1
+        )
         calY = self.target_cardinality
         tokens: list[Token] = []
         it = iter(target.tolist())
