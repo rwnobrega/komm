@@ -6,7 +6,11 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util import global_rng
-from .._util.validators import validate_transition_matrix
+from .._util.validators import (
+    validate_integer,
+    validate_nonnegative_integer,
+    validate_transition_matrix,
+)
 from ..types import Array1D, Array2D
 
 
@@ -120,6 +124,7 @@ class MarkovChain:
             >>> chain.accessible_states_from(2)
             {2}
         """
+        state = validate_integer(state, low=0, high=self.num_states)
         return set(self._accessible_states_from(state))
 
     @cache
@@ -545,7 +550,6 @@ class MarkovChain:
         B = N @ R
         return B
 
-    @cache
     def period(self, state: int) -> int:
         r"""
         Computes the period of a given state. The *period* of a state $i \in \mathcal{S}$ is the largest integer $d$ such that $(P^n)_{i,i} = 0$ whenever $n$ is not divisible by $d$.
@@ -573,6 +577,11 @@ class MarkovChain:
             >>> chain.period(0)
             3
         """
+        state = validate_integer(state, low=0, high=self.num_states)
+        return self._period(state)
+
+    @cache
+    def _period(self, state: int) -> int:
         cls = next(c for c in self._communicating_classes() if state in c)
         adjacency_matrix = self.transition_matrix > 0
         levels: dict[int, int] = {state: 0}
@@ -625,7 +634,7 @@ class MarkovChain:
             >>> chain.is_aperiodic()
             False
         """
-        return all(self.period(i) == 1 for i in range(self.num_states))
+        return all(self._period(i) == 1 for i in range(self.num_states))
 
     def simulate(self, initial_state: int, steps: int) -> Array1D[np.integer]:
         r"""
@@ -634,7 +643,7 @@ class MarkovChain:
         Parameters:
             initial_state: The state $i \in \mathcal{S}$ from which to start the simulation.
 
-            steps: The number of steps to simulate.
+            steps: The number of steps to simulate. Must be a non-negative integer.
 
         Returns:
             output: A 1D-array of integers in $\mathcal{S}$ representing the states visited during the simulation. The length of the array is equal to `steps`.
@@ -656,6 +665,8 @@ class MarkovChain:
             >>> chain.simulate(initial_state=2, steps=10)
             array([2, 0, 1, 2, 0, 1, 2, 0, 1, 2])
         """
+        initial_state = validate_integer(initial_state, low=0, high=self.num_states)
+        steps = validate_nonnegative_integer(steps)
         P = self.transition_matrix
         state = initial_state
         output = np.empty(steps, dtype=int)
@@ -687,6 +698,7 @@ class MarkovChain:
             >>> chain.simulate_until_absorption(initial_state=1)
             array([1, 2, 1, 2, 3])
         """
+        initial_state = validate_integer(initial_state, low=0, high=self.num_states)
         if not self.is_absorbing():
             raise ValueError("chain is not absorbing")
         P = self.transition_matrix

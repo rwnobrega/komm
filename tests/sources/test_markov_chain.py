@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -146,3 +148,35 @@ def test_markov_chain_follows_global_rng():
 def test_markov_chain_not_square():
     with pytest.raises(ValueError, match="'transition_matrix' must be square"):
         komm.MarkovChain([[0.5, 0.5]])
+
+
+@pytest.mark.parametrize(
+    "method, args, message",
+    [
+        ("accessible_states_from", (-1,), "'state' must be in [0:3)"),
+        ("period", (3,), "'state' must be in [0:3)"),
+        ("simulate", (-1, 5), "'initial_state' must be in [0:3)"),
+        ("simulate", (0, -1), "'steps' must be a non-negative integer"),
+        ("simulate_until_absorption", (3,), "'initial_state' must be in [0:3)"),
+    ],
+)
+def test_markov_chain_invalid_states(method, args, message):
+    chain = komm.MarkovChain([[1, 0, 0], [0.5, 0, 0.5], [0, 0, 1]])
+    with pytest.raises(ValueError, match=escape(message)):
+        getattr(chain, method)(*args)
+
+
+@pytest.mark.parametrize(
+    "method, args, message",
+    [
+        ("accessible_states_from", (1.0,), "'state' must be an integer"),
+        ("period", (1.0,), "'state' must be an integer"),
+        ("simulate", (1.0, 5), "'initial_state' must be an integer"),
+        ("simulate", (1, 5.0), "'steps' must be an integer"),
+        ("simulate_until_absorption", (1.0,), "'initial_state' must be an integer"),
+    ],
+)
+def test_markov_chain_states_not_integer(method, args, message):
+    chain = komm.MarkovChain([[1, 0, 0], [0.5, 0, 0.5], [0, 0, 1]])
+    with pytest.raises(TypeError, match=message):
+        getattr(chain, method)(*args)
