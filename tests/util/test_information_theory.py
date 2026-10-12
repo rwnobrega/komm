@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -160,6 +162,23 @@ def test_binary_entropy_inv():
             h,
             komm.binary_entropy(komm.binary_entropy_inv(h)),
         )
+
+
+@pytest.mark.parametrize("tol", [0.0, 1e-20])
+def test_binary_entropy_inv_small_tol(tol):
+    p = komm.binary_entropy_inv(0.5, tol=tol)
+    np.testing.assert_allclose(komm.binary_entropy(p), 0.5)
+
+
+def test_binary_entropy_inv_invalid_tol():
+    message = "'tol' must be a non-negative real number (got -1.0)"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.binary_entropy_inv(0.5, tol=-1.0)
+
+
+def test_binary_entropy_inv_tol_not_real():
+    with pytest.raises(TypeError, match=r"'tol' must be a real number \(got str\)"):
+        komm.binary_entropy_inv(0.5, tol="1e-12")  # type: ignore
 
 
 @pytest.mark.parametrize("base", [2.0, 3.0, "e"])

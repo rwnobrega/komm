@@ -9,6 +9,7 @@ from ..types import Array1D, Array2D
 from .validators import (
     validate_float,
     validate_log_base,
+    validate_nonnegative_float,
     validate_pmf,
     validate_transition_matrix,
 )
@@ -83,7 +84,7 @@ def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
 
     Parameters:
         h: A value in the interval $[0, 1]$.
-        tol: The tolerance for the binary search. The default value is `1e-12`.
+        tol: The tolerance for the binary search. Must be non-negative. The default value is `1e-12`.
 
     Returns:
         The value of $p \in [0, 1/2]$ such that $\Hb(p) = h$.
@@ -93,11 +94,14 @@ def binary_entropy_inv(h: float, tol: float = 1e-12) -> float:
         [0.0, 0.04169269027397604, 0.1100278644385071, 0.2145017448597173, 0.5]
     """
     h = validate_float(h, low=0, high=1)
+    tol = validate_nonnegative_float(tol)
     if h in {0.0, 1.0}:
         return 0.5 * h
     low, high = 0.0, 0.5
     while high - low > tol:
         mid = (low + high) / 2
+        if not low < mid < high:  # Float precision reached
+            break
         if binary_entropy(mid) < h:
             low = mid
         else:
