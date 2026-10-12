@@ -94,6 +94,18 @@ def test_constellation_indices_not_integer(const: komm.abc.Constellation):
         const.indices_to_symbols([0.0, 1.7])
 
 
+@pytest.mark.parametrize("noise_power", [0.0, -1.0])
+def test_constellation_invalid_noise_power(const: komm.abc.Constellation, noise_power):
+    message = f"'noise_power' must be a positive real number (got {noise_power})"
+    with pytest.raises(ValueError, match=escape(message)):
+        const.posteriors(np.zeros(const.dimension), noise_power)
+
+
+def test_constellation_noise_power_not_real(const: komm.abc.Constellation):
+    with pytest.raises(TypeError, match="'noise_power' must be a real number"):
+        const.posteriors(np.zeros(const.dimension), "1.0")  # type: ignore
+
+
 def test_constellation_equivalence_properties(const: komm.abc.Constellation):
     ref = komm.Constellation(const.matrix)
     np.testing.assert_allclose(ref.matrix, const.matrix)

@@ -4,7 +4,11 @@ from typing import Generic, TypeVar, cast
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer_array, validate_pmf
+from .._util.validators import (
+    validate_integer_array,
+    validate_pmf,
+    validate_positive_float,
+)
 from ..types import Array1D, Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -166,7 +170,7 @@ class Constellation(ABC, Generic[T]):
         Parameters:
             received: The received points. Must be an array whose last dimension is a multiple of $N$.
 
-            noise_power: The noise power (variance) $\sigma_Z^2$.
+            noise_power: The noise power (variance) $\sigma_Z^2$. Must satisfy $\sigma_Z^2 > 0$.
 
             priors: The prior probabilities of the symbols. Must be a 1D-array whose size is equal to $M$. If not given, uniform priors are assumed.
 
@@ -174,6 +178,7 @@ class Constellation(ABC, Generic[T]):
             posteriors: The posterior probabilities of each symbol given the received points. Has the same shape as `received`, but with the last dimension changed by a factor of $M / N$.
         """
         N = self.dimension
+        noise_power = validate_positive_float(noise_power)
         priors = self._validate_priors(priors)
         received = self._validate_received(received)
         r = received.reshape(-1, N)
