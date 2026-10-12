@@ -56,6 +56,11 @@ def test_fano_code_invalid_pmf(pmf, message):
         komm.FanoCode(pmf)
 
 
+def test_fano_code_invalid_assignment():
+    with pytest.raises(ValueError, match="'assignment' must be 'tree' or 'canonical'"):
+        komm.FanoCode([0.5, 0.5], assignment="unknown")  # type: ignore
+
+
 @pytest.mark.parametrize("source_cardinality", range(2, 7))
 @pytest.mark.parametrize("order", range(1, 4))
 def test_fano_code_complete(source_cardinality, order, rng):
@@ -63,3 +68,16 @@ def test_fano_code_complete(source_cardinality, order, rng):
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
     code = komm.FanoCode(pmf)
     assert np.isclose(code.kraft_parameter(), 1.0)
+
+
+@pytest.mark.parametrize("source_cardinality", range(2, 7))
+@pytest.mark.parametrize("order", range(1, 4))
+def test_fano_code_assignment(source_cardinality, order, rng):
+    # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
+    pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
+    code_tree = komm.FanoCode(pmf)
+    code_canonical = komm.FanoCode(pmf, "canonical")
+    assert code_canonical.lengths == code_tree.lengths
+    assert np.isclose(code_canonical.average_length(pmf), code_tree.average_length(pmf))
+    expected = komm.SymbolCode.from_lengths(code_tree.lengths)
+    assert code_canonical.enc_mapping == expected.enc_mapping

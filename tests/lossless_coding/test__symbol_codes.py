@@ -28,7 +28,8 @@ def code(request: pytest.FixtureRequest):
         partial(komm.HuffmanCode, policy="low", assignment="tree"),
         partial(komm.HuffmanCode, policy="high", assignment="canonical"),
         partial(komm.HuffmanCode, policy="low", assignment="canonical"),
-        komm.FanoCode,
+        partial(komm.FanoCode, assignment="tree"),
+        partial(komm.FanoCode, assignment="canonical"),
         komm.ShannonCode,
     ],
     ids=[
@@ -36,7 +37,8 @@ def code(request: pytest.FixtureRequest):
         "HuffmanCode-low-tree",
         "HuffmanCode-high-canonical",
         "HuffmanCode-low-canonical",
-        "FanoCode",
+        "FanoCode-tree",
+        "FanoCode-canonical",
         "ShannonCode",
     ],
 )

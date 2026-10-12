@@ -1,5 +1,6 @@
 from functools import cache
 from operator import itemgetter
+from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
@@ -7,9 +8,9 @@ from tqdm import tqdm
 
 from .. import abc
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_pmf
+from .._util.validators import validate_choice, validate_pmf
 from ..types import Array1D
-from .util import Word
+from .util import Word, canonical_code
 
 
 @mkdocstrings(filters=["!.*"])
@@ -23,24 +24,42 @@ class FanoCode(abc.SymbolCode):
     Parameters:
         pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
 
+        assignment: The strategy used to assign the codewords, once the partition tree is built. It must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{0}$ being assigned to the group of more probable source symbols) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
+
     Examples:
-        >>> pmf = [0.2, 0.4, 0.2, 0.1, 0.1]
+        >>> pmf = [0.1, 0.2, 0.3, 0.4]
 
         >>> code = komm.FanoCode(pmf)
         >>> code.codewords
-        [(1, 0), (0,), (1, 1, 0), (1, 1, 1, 0), (1, 1, 1, 1)]
+        [(1, 1, 1), (1, 1, 0), (1, 0), (0,)]
         >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
-        2.2
+        1.9
+
+        >>> code = komm.FanoCode(pmf, assignment="canonical")
+        >>> code.codewords
+        [(1, 1, 0), (1, 1, 1), (1, 0), (0,)]
+        >>> code.average_length(pmf)  # doctest: +FLOAT_CMP
+        1.9
     """
 
-    def __init__(self, pmf: npt.ArrayLike):
+    def __init__(
+        self,
+        pmf: npt.ArrayLike,
+        assignment: Literal["tree", "canonical"] = "tree",
+    ):
         self.pmf = validate_pmf(pmf)
         if not self.pmf.size >= 2:
             raise ValueError(f"'pmf' must have size at least 2 (got {self.pmf.size})")
-        self._enc_mapping = fano_code(self.pmf)
+        assignment = validate_choice(assignment, ("tree", "canonical"))
+        self.assignment = assignment
+        self._enc_mapping = fano_code(self.pmf, assignment)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(pmf={self.pmf.tolist()})"
+        args = ", ".join([
+            f"pmf={self.pmf.tolist()}",
+            f"assignment={self.assignment!r}",
+        ])
+        return f"{self.__class__.__name__}({args})"
 
     @property
     def source_cardinality(self) -> int:
@@ -63,7 +82,10 @@ class FanoCode(abc.SymbolCode):
         return True
 
 
-def fano_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
+def fano_code(
+    pmf: Array1D[np.floating],
+    assignment: Literal["tree", "canonical"],
+) -> dict[int, Word]:
     pbar = tqdm(desc="Generating Fano code", total=pmf.size, delay=2.5)
     codewords: list[Word] = [()] * pmf.size
     items = sorted(enumerate(pmf), key=itemgetter(1), reverse=True)
@@ -81,4 +103,6 @@ def fano_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
         stack.append((mid, hi, word + (1,)))
         stack.append((lo, mid, word + (0,)))
     pbar.close()
+    if assignment == "canonical":
+        codewords = canonical_code([len(word) for word in codewords])
     return dict(enumerate(codewords))

@@ -18,6 +18,8 @@
 
 - Implemented [symbol code](https://komm.dev/ref/SymbolCode).
 
+- Added parameter `assignment` to `FanoCode`, which selects how the codewords are assigned once the partition tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
+
 ### Breaking changes
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.
