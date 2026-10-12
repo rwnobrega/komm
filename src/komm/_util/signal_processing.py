@@ -3,7 +3,11 @@ from typing import Any, Literal
 import numpy as np
 import numpy.typing as npt
 
-from .validators import validate_integer, validate_positive_integer
+from .validators import (
+    validate_integer,
+    validate_positive_float,
+    validate_positive_integer,
+)
 
 
 def sampling_rate_compress(
@@ -184,8 +188,8 @@ def fourier_transform(
 
     Parameters:
         waveform: The input array representing the waveform to be transformed.
-        time_step: The time step between samples in the waveform.
-        nfft: The number of points in the FFT. If `None`, it defaults to the size of the input along the specified axis.
+        time_step: The time step between samples in the waveform. Must be positive.
+        nfft: The number of points in the FFT. Must be a positive integer. If `None`, it defaults to the size of the input along the specified axis.
         axis: The axis along which to compute the Fourier transform. Default is the last axis.
 
     Returns:
@@ -200,7 +204,8 @@ def fourier_transform(
         array([-5. , -2.5,  0. ,  2.5])
     """
     waveform = np.asarray(waveform)
-    n = nfft or waveform.shape[axis]
+    time_step = validate_positive_float(time_step)
+    n = waveform.shape[axis] if nfft is None else validate_positive_integer(nfft)
     spectrum: npt.NDArray[np.complexfloating] = np.fft.fft(waveform, n=n, axis=axis)
     spectrum = np.fft.fftshift(spectrum, axes=axis) * time_step
     frequencies = np.fft.fftshift(np.fft.fftfreq(n=n, d=time_step))

@@ -1,4 +1,7 @@
+from re import escape
+
 import numpy as np
+import pytest
 
 import komm
 
@@ -27,3 +30,27 @@ def test_fourier_transform_3d(rng):
         for j in range(3):
             spectrum_ij, _ = komm.fourier_transform(waveform[i, j], time_step=0.5)
             np.testing.assert_allclose(spectrum[i, j], spectrum_ij)
+
+
+@pytest.mark.parametrize("time_step", [0.0, -0.1])
+def test_fourier_transform_invalid_time_step(time_step):
+    message = f"'time_step' must be a positive real number (got {time_step})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.fourier_transform([1, 2, 3, 4], time_step=time_step)
+
+
+def test_fourier_transform_time_step_not_real():
+    with pytest.raises(TypeError, match="'time_step' must be a real number"):
+        komm.fourier_transform([1, 2, 3, 4], time_step="0.1")  # type: ignore
+
+
+@pytest.mark.parametrize("nfft", [0, -1])
+def test_fourier_transform_invalid_nfft(nfft):
+    message = f"'nfft' must be a positive integer (got {nfft})"
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.fourier_transform([1, 2, 3, 4], time_step=0.1, nfft=nfft)
+
+
+def test_fourier_transform_nfft_not_integer():
+    with pytest.raises(TypeError, match=r"'nfft' must be an integer \(got float\)"):
+        komm.fourier_transform([1, 2, 3, 4], time_step=0.1, nfft=8.0)  # type: ignore
