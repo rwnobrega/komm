@@ -1,6 +1,7 @@
 from typing import Self
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial, default_primitive_polynomial
+from .._util.validators import validate_integer
 from .BinarySequence import BinarySequence
 from .sequences import lfsr_sequence
 
@@ -91,6 +92,7 @@ class LFSRSequence(BinarySequence):
             >>> komm.LFSRSequence.maximum_length_sequence(degree=5)
             LFSRSequence(feedback_polynomial=0b100101, start_state_polynomial=0b1)
         """
+        degree = validate_integer(degree)
         return cls(
             feedback_polynomial=default_primitive_polynomial(degree),
             start_state_polynomial=start_state_polynomial,

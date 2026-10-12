@@ -53,3 +53,8 @@ def test_lfsr_mls(degree):
 def test_lfsr_mls_invalid(degree):
     with pytest.raises(ValueError, match=r"only degrees in the range \[1 : 24\]"):
         komm.LFSRSequence.maximum_length_sequence(degree)
+
+
+def test_lfsr_mls_degree_not_integer():
+    with pytest.raises(TypeError, match=r"'degree' must be an integer \(got float\)"):
+        komm.LFSRSequence.maximum_length_sequence(4.0)  # type: ignore
