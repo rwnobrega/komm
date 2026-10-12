@@ -64,7 +64,7 @@ class SymbolCode(ABC):
         r"""
         Returns whether the code is uniquely decodable. A code is *uniquely decodable* if there is a unique way to parse any concatenation of codewords.
         """
-        return is_uniquely_parsable(self.codewords)
+        return self.is_prefix_free() or is_uniquely_parsable(self.codewords)
 
     @cache
     def is_prefix_free(self) -> bool:
