@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.validators import validate_integer
+from .._util.validators import validate_float_array, validate_integer
 from ..types import Array1D
 
 
@@ -18,7 +18,7 @@ class LloydMaxQuantizer(abc.ScalarQuantizer):
     Parameters:
         input_pdf: The pdf $f_X(x)$ of the input signal.
 
-        input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal.
+        input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal. Must be finite and satisfy $x_\mathrm{min} < x_\mathrm{max}$.
 
         num_levels: The number $L$ of quantization levels. It must be greater than $1$.
 
@@ -51,6 +51,14 @@ class LloydMaxQuantizer(abc.ScalarQuantizer):
     num_levels: int
 
     def __post_init__(self) -> None:
+        x_min, x_max = validate_float_array(self.input_range, shape=(2,)).tolist()
+        if not np.isfinite([x_min, x_max]).all():
+            raise ValueError(f"'input_range' must be finite (got {(x_min, x_max)})")
+        if not x_min < x_max:
+            raise ValueError(
+                f"'input_range' must satisfy x_min < x_max (got {(x_min, x_max)})"
+            )
+        self.input_range = (x_min, x_max)
         self.num_levels = validate_integer(self.num_levels, low=2)
         self._levels, self._thresholds = lloyd_max_quantizer(
             self.input_pdf,

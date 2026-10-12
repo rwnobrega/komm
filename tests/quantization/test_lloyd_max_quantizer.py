@@ -1,4 +1,5 @@
 from functools import partial
+from re import escape
 
 import numpy as np
 import pytest
@@ -110,3 +111,25 @@ def test_lloyd_max_quantizer_invalid_num_levels():
         komm.LloydMaxQuantizer(pdf, input_range, num_levels=1)
     with pytest.raises(TypeError, match="'num_levels' must be an integer"):
         komm.LloydMaxQuantizer(pdf, input_range, num_levels=2.0)  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "input_range, message",
+    [
+        ((-1, 0, 1), "'input_range' must have shape (2,) (got (3,))"),
+        ((1, -1), "'input_range' must satisfy x_min < x_max (got (1.0, -1.0))"),
+        ((1, 1), "'input_range' must satisfy x_min < x_max (got (1.0, 1.0))"),
+        ((-np.inf, np.inf), "'input_range' must be finite (got (-inf, inf))"),
+        ((0, np.nan), "'input_range' must be finite (got (0.0, nan))"),
+    ],
+)
+def test_lloyd_max_quantizer_invalid_input_range(input_range, message):
+    pdf = partial(uniform_pdf, peak=1)
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.LloydMaxQuantizer(pdf, input_range, num_levels=2)
+
+
+def test_lloyd_max_quantizer_input_range_not_real():
+    pdf = partial(uniform_pdf, peak=1)
+    with pytest.raises(TypeError, match="'input_range' must contain only real numbers"):
+        komm.LloydMaxQuantizer(pdf, (-1, 1j), num_levels=2)  # type: ignore
