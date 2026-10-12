@@ -1,3 +1,5 @@
+from re import escape
+
 import numpy as np
 import pytest
 
@@ -19,6 +21,22 @@ def test_lfsr_sequence():
         lfsr.bit_sequence[:200],
         komm.to_binary(0xCD698970BD55FE82A5E2BDD4DC8E3FF01C3F713E33EB2C9200, 200),
     )
+
+
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((0b0,), "'feedback_polynomial' must have degree at least 1 (got 0b0)"),
+        ((0b1,), "'feedback_polynomial' must have degree at least 1 (got 0b1)"),
+        ((0b10,), "'feedback_polynomial' must have constant term 1 (got 0b10)"),
+        ((0b100100,), "'feedback_polynomial' must have constant term 1"),
+        ((0b100101, 0b0), "'start_state_polynomial' must be nonzero"),
+        ((0b100101, 0b100000), "'start_state_polynomial' must have degree less than 5"),
+    ],
+)
+def test_lfsr_sequence_invalid(args, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.LFSRSequence(*args)
 
 
 @pytest.mark.parametrize("degree", range(2, 13))

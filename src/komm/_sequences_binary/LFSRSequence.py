@@ -18,9 +18,9 @@ class LFSRSequence(BinarySequence):
     The default constructor of this takes the following parameters:
 
     Parameters:
-        feedback_polynomial: The feedback polynomial $p(X)$ of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
+        feedback_polynomial: The feedback polynomial $p(X)$ of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must have degree $n \geq 1$ and constant term $1$.
 
-        start_state_polynomial: The start state polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. The default value is `0b1`.
+        start_state_polynomial: The start state polynomial of the LFSR, specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former. Must be nonzero and have degree less than $n$. The default value is `0b1`.
 
     Examples:
         >>> lfsr = komm.LFSRSequence(feedback_polynomial=0b100101)
@@ -51,6 +51,24 @@ class LFSRSequence(BinarySequence):
     ) -> None:
         self.feedback_polynomial = BinaryPolynomial(feedback_polynomial)
         self.start_state_polynomial = BinaryPolynomial(start_state_polynomial)
+        n = self.feedback_polynomial.degree
+        if not n >= 1:
+            raise ValueError(
+                "'feedback_polynomial' must have degree at least 1"
+                f" (got {self.feedback_polynomial})"
+            )
+        if not self.feedback_polynomial.value % 2 == 1:
+            raise ValueError(
+                "'feedback_polynomial' must have constant term 1"
+                f" (got {self.feedback_polynomial})"
+            )
+        if not self.start_state_polynomial.value > 0:
+            raise ValueError("'start_state_polynomial' must be nonzero")
+        if not self.start_state_polynomial.degree < n:
+            raise ValueError(
+                f"'start_state_polynomial' must have degree less than {n}"
+                f" (got {self.start_state_polynomial})"
+            )
         super().__init__(
             bit_sequence=lfsr_sequence(
                 self.feedback_polynomial, self.start_state_polynomial
