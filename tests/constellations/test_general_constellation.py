@@ -23,6 +23,12 @@ def test_general_constellation():
     np.testing.assert_equal(const.closest_symbols([1.1, 1.9]), [1.0, 2.0])
 
 
+def test_general_constellation_1d():
+    const = komm.Constellation([1, 1j, -1, -1j])
+    np.testing.assert_equal(const.matrix, [[1], [1j], [-1], [-1j]])
+    assert const.dimension == 1
+
+
 @pytest.mark.parametrize(
     "matrix, message",
     [
