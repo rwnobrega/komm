@@ -12,7 +12,13 @@ from .._util.validators import (
     validate_positive_integer,
 )
 from ..types import Array1D
-from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
+from .util import (
+    find_longest_match,
+    integer_to_symbols,
+    num_digits,
+    symbols_to_integer,
+    take,
+)
 
 Token = tuple[Literal[0], int] | tuple[Literal[1], int, int]
 
@@ -208,24 +214,15 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         tokens: list[Token] = []
-        i = 0
-
-        while i < target.size:
-            flag = target[i]
-            i += 1
+        it = iter(target.tolist())
+        for flag in it:
             if flag == 1:  # Reference
-                if i + p_width + l_width <= target.size:
-                    p = int(symbols_to_integer(target[i : i + p_width], base=calY)) + 1
-                    i += p_width
-                    l = int(symbols_to_integer(target[i : i + l_width], base=calY)) + 1
-                    i += l_width
-                    tokens.append((1, p, l))
+                p = symbols_to_integer(take(it, p_width), base=calY) + 1
+                l = symbols_to_integer(take(it, l_width), base=calY) + 1
+                tokens.append((1, p, l))
             else:  # Literal
-                if i + x_width <= target.size:
-                    x = int(symbols_to_integer(target[i : i + x_width], base=calY))
-                    i += x_width
-                    tokens.append((0, x))
-
+                x = symbols_to_integer(take(it, x_width), base=calY)
+                tokens.append((0, x))
         return tokens
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:

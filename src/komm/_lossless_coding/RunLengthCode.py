@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from itertools import chain
 
 import numpy as np
 import numpy.typing as npt
@@ -10,7 +11,7 @@ from .._util.validators import (
     validate_positive_integer,
 )
 from ..types import Array1D
-from .util import integer_to_symbols, num_digits, symbols_to_integer
+from .util import integer_to_symbols, num_digits, symbols_to_integer, take
 
 Token = tuple[int, int]
 
@@ -105,12 +106,11 @@ class RunLengthCode(abc.TokenCode[Token]):
         calY = self.target_cardinality
         x_width, l_width = self._get_widths()
         tokens: list[Token] = []
-        i = 0
-        while i + x_width + l_width <= target.size:
-            x = symbols_to_integer(target[i : i + x_width], base=calY)
-            i += x_width
-            l = symbols_to_integer(target[i : i + l_width], base=calY)
-            i += l_width
+        it = iter(target.tolist())
+        for first in it:
+            symbols = chain([first], it)
+            x = symbols_to_integer(take(symbols, x_width), base=calY)
+            l = symbols_to_integer(take(symbols, l_width), base=calY)
             tokens.append((x, l + 1))
         return tokens
 

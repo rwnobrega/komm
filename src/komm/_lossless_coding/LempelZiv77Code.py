@@ -1,3 +1,5 @@
+from itertools import chain
+
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
@@ -9,7 +11,13 @@ from .._util.validators import (
     validate_positive_integer,
 )
 from ..types import Array1D
-from .util import find_longest_match, integer_to_symbols, num_digits, symbols_to_integer
+from .util import (
+    find_longest_match,
+    integer_to_symbols,
+    num_digits,
+    symbols_to_integer,
+    take,
+)
 
 Token = tuple[int, int, int]
 
@@ -170,14 +178,12 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         tokens: list[Token] = []
-        i = 0
-        while i + p_width + l_width + x_width <= target.size:
-            p = int(symbols_to_integer(target[i : i + p_width], base=calY))
-            i += p_width
-            l = int(symbols_to_integer(target[i : i + l_width], base=calY))
-            i += l_width
-            x = int(symbols_to_integer(target[i : i + x_width], base=calY))
-            i += x_width
+        it = iter(target.tolist())
+        for first in it:
+            symbols = chain([first], it)
+            p = symbols_to_integer(take(symbols, p_width), base=calY)
+            l = symbols_to_integer(take(symbols, l_width), base=calY)
+            x = symbols_to_integer(take(symbols, x_width), base=calY)
             tokens.append((p, l, x))
         return tokens
 

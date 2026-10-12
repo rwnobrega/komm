@@ -1,5 +1,6 @@
 from collections import Counter
-from itertools import product
+from collections.abc import Iterable, Iterator
+from itertools import islice, product
 from math import ceil, log
 
 import numpy as np
@@ -229,8 +230,15 @@ def integer_to_symbols(integer: int, base: int, width: int) -> Word:
     return tuple(symbols)
 
 
-def symbols_to_integer(symbols: npt.ArrayLike, base: int) -> int:
+def take(symbols: Iterator[int], num: int) -> list[int]:
+    chunk = list(islice(symbols, num))
+    if len(chunk) < num:
+        raise ValueError("input contains an incomplete token")
+    return chunk
+
+
+def symbols_to_integer(symbols: Iterable[int], base: int) -> int:
     integer = 0
-    for symbol in np.asarray(symbols).tolist():
-        integer = integer * base + symbol
+    for symbol in symbols:
+        integer = integer * base + int(symbol)
     return integer

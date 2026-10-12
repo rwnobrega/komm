@@ -77,6 +77,19 @@ def test_token_codes_target_not_integer(code: komm.abc.TokenCode):
         code.decode([0.0, 1.0])
 
 
+def test_token_codes_truncated_target(code: komm.abc.TokenCode, long_source):
+    target = code.encode(long_source)
+    with pytest.raises(ValueError, match="input contains an incomplete token"):
+        code.decode(target[:-1])
+
+
+@pytest.mark.parametrize("symbol", [0, 1])
+def test_token_codes_extended_target(code: komm.abc.TokenCode, long_source, symbol):
+    target = np.append(code.encode(long_source), symbol)
+    with pytest.raises(ValueError, match="input contains an incomplete token"):
+        code.decode(target)
+
+
 @pytest.mark.parametrize(
     "cls, kwargs",
     [

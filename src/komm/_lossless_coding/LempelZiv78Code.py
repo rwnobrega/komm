@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from itertools import chain
 
 import numpy as np
 import numpy.typing as npt
@@ -7,7 +8,7 @@ from tqdm import tqdm
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D
-from .util import Word, integer_to_symbols, num_digits, symbols_to_integer
+from .util import Word, integer_to_symbols, num_digits, symbols_to_integer, take
 
 Token = tuple[int, int]
 
@@ -106,17 +107,17 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         M = num_digits(calX, calY)
         target = validate_integer_array(target, low=0, high=self.target_cardinality)
         tokens: list[Token] = []
-        i = 0
-        while i < target.size:
+        it = iter(target.tolist())
+        for first in it:
+            symbols = chain([first], it)
             k = num_digits(len(tokens) + 1, calY)
-            p = int(symbols_to_integer(target[i : i + k], base=calY))
-            i += k
-            if i < target.size:
-                x = int(symbols_to_integer(target[i : i + M], base=calY))
-            else:
+            p = symbols_to_integer(take(symbols, k), base=calY)
+            head = next(symbols, None)
+            if head is None:  # Last token may lack symbol
                 x = -1
+            else:
+                x = symbols_to_integer(take(chain([head], symbols), M), base=calY)
             tokens.append((p, x))
-            i += M
         return tokens
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
