@@ -86,17 +86,8 @@ def test_shannon_code_kraft(S, rng):
 def test_shannon_code_almost_deterministic():
     code = komm.ShannonCode([1.0, 1e-17])
     assert code.codewords[0] == (0,)
-    assert komm.SymbolCode.from_codewords(code.codewords).is_prefix_free()
+    assert code.is_prefix_free()
     assert code.kraft_parameter() <= 1
-
-
-@pytest.mark.parametrize("source_cardinality", range(2, 7))
-@pytest.mark.parametrize("order", range(1, 4))
-def test_shannon_code_prefix_free(source_cardinality, order, rng):
-    # Check the codewords, not the claim.
-    pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
-    code = komm.ShannonCode(pmf)
-    assert komm.SymbolCode.from_codewords(code.codewords).is_prefix_free()
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))

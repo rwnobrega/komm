@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from functools import cache
 from heapq import heapify, heappop, heappush
 from typing import Any, Literal, Self
 
@@ -85,14 +84,6 @@ class HuffmanCode(abc.SymbolCode):
     @property
     def enc_mapping(self) -> dict[int, Word]:
         return self._enc_mapping
-
-    @cache
-    def is_uniquely_decodable(self) -> bool:
-        return True
-
-    @cache
-    def is_prefix_free(self) -> bool:
-        return True
 
 
 @dataclass(slots=True)
