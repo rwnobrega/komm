@@ -152,17 +152,17 @@ class LempelZivSSCode(abc.TokenCode[Token]):
             >>> lzss.tokens_to_source([(0, 3), (1, 4, 4), (0, 2), (1, 3, 2)])
             array([3, 0, 0, 0, 3, 2, 0, 3])
         """
-        ss = self.search_size
+        ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         buffer = self.search_buffer.copy()
 
         for token in tokens:
             match token:
-                case (1, p, l):  # Reference
+                case (1, p, l) if 1 <= p <= ss and 1 <= l <= ls:  # Reference
                     for _ in range(l):
                         buffer.append(buffer[-p])
-                case (0, x):  # Literal
+                case (0, x) if 0 <= x < calX:  # Literal
                     buffer.append(x)
-                case _:  # pyright: ignore[reportUnnecessaryComparison]
+                case _:
                     raise ValueError(f"invalid token: {token}")
 
         source = np.array(buffer[ss:], dtype=int)
@@ -220,9 +220,11 @@ class LempelZivSSCode(abc.TokenCode[Token]):
                 p = symbols_to_integer(take(it, p_width), base=calY) + 1
                 l = symbols_to_integer(take(it, l_width), base=calY) + 1
                 tokens.append((1, p, l))
-            else:  # Literal
+            elif flag == 0:  # Literal
                 x = symbols_to_integer(take(it, x_width), base=calY)
                 tokens.append((0, x))
+            else:
+                raise ValueError(f"invalid flag in input: {flag}")
         return tokens
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:

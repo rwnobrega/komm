@@ -172,3 +172,19 @@ def test_lz78_invalid_input():
         code.encode([-1, 10, 26])
     with pytest.raises(TypeError, match="'source' must contain only integers"):
         code.encode([0, 10.5, 26])
+
+
+@pytest.mark.parametrize(
+    "tokens",
+    [
+        [(1, 0)],
+        [(0, 1), (2, 0)],
+        [(0, 3)],
+        [(0, -1), (1, 0)],
+        [(0, 1), (0, -1)],
+    ],
+)
+def test_lz78_invalid_tokens(tokens):
+    code = komm.LempelZiv78Code(source_cardinality=3)
+    with pytest.raises(ValueError, match="invalid token"):
+        code.tokens_to_source(tokens)

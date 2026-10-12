@@ -131,9 +131,11 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             >>> lz77.tokens_to_source([(8, 2, 1), (7, 3, 2), (6, 7, 2)])
             array([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
         """
-        ss = self.search_size
+        ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         buffer = self.search_buffer.copy()
         for p, l, x in tokens:
+            if not (0 <= p < ss and 0 <= l < ls and 0 <= x < calX):
+                raise ValueError(f"invalid token: {(p, l, x)}")
             start = len(buffer) - ss + p
             for j in range(l):
                 buffer.append(buffer[start + j])

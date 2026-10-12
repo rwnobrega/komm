@@ -81,14 +81,15 @@ def test_run_length_narrow_dtype():
     np.testing.assert_equal(code.decode(target.astype(np.uint8)), source)
 
 
+@pytest.mark.parametrize("method", ["tokens_to_source", "tokens_to_target"])
 @pytest.mark.parametrize(
     "tokens",
     [[(3, 1)], [(-1, 1)], [(0, 0)], [(0, 5)]],
 )
-def test_run_length_invalid_tokens(tokens):
+def test_run_length_invalid_tokens(method, tokens):
     code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
     with pytest.raises(ValueError, match="invalid token"):
-        code.tokens_to_target(tokens)
+        getattr(code, method)(tokens)
 
 
 def test_run_length_invalid_input():

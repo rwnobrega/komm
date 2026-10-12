@@ -67,9 +67,13 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             >>> lz78.tokens_to_source([(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)])
             array([1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0])
         """
+        calX = self.source_cardinality
         dictionary: dict[int, Word] = {0: ()}
         source: list[int] = []
-        for p, x in tokens:
+        for i, (p, x) in enumerate(tokens):
+            pointer_only = x == -1 and p > 0 and i == len(tokens) - 1
+            if not (0 <= p < len(dictionary) and (0 <= x < calX or pointer_only)):
+                raise ValueError(f"invalid token: {(p, x)}")
             word = dictionary[p]
             source.extend(word)
             if x >= 0:

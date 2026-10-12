@@ -74,6 +74,8 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
         source: list[int] = []
         old: Word = ()
         for pointer in tqdm(tokens, "Decompressing LZW", delay=2.5):
+            if not (pointer in dictionary or (pointer == len(dictionary) and old)):
+                raise ValueError(f"invalid token: {pointer}")
             word = dictionary.get(pointer, old + old[:1])
             source.extend(word)
             if old:

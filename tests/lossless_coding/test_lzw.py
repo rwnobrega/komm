@@ -79,3 +79,10 @@ def test_lzw_invalid_input():
         code.encode([0, 10, 27])
     with pytest.raises(ValueError, match=r"elements of 'source' must be in \[0:27\)"):
         code.encode([-1, 10, 26])
+
+
+@pytest.mark.parametrize("tokens", [[3], [0, 4], [-1]])
+def test_lzw_invalid_tokens(tokens):
+    code = komm.LempelZivWelchCode(source_cardinality=3)
+    with pytest.raises(ValueError, match="invalid token"):
+        code.tokens_to_source(tokens)

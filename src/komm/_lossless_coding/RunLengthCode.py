@@ -74,7 +74,11 @@ class RunLengthCode(abc.TokenCode[Token]):
             >>> code.tokens_to_source([(0, 3), (2, 2), (1, 4), (1, 1)])
             array([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
         """
+        calX, L = self.source_cardinality, self.max_run_length
         symbols, lengths = np.array(tokens, dtype=int).reshape(-1, 2).T
+        valid = (0 <= symbols) & (symbols < calX) & (1 <= lengths) & (lengths <= L)
+        if not valid.all():
+            raise ValueError(f"invalid token: {tokens[np.argmin(valid)]}")
         return np.repeat(symbols, lengths)
 
     def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
