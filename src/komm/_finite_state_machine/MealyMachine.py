@@ -51,8 +51,10 @@ class MealyMachine:
     """
 
     def __init__(self, transitions: npt.ArrayLike, outputs: npt.ArrayLike):
-        self.transitions = np.asarray(transitions)
-        self.outputs = np.asarray(outputs)
+        self.transitions = validate_integer_array(transitions, ndim=2)
+        calS, calX = self.transitions.shape
+        validate_integer_array(self.transitions, low=0, high=calS)
+        self.outputs = validate_integer_array(outputs, low=0, shape=(calS, calX))
 
     def __repr__(self) -> str:
         args = ", ".join([
