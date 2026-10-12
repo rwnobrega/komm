@@ -20,6 +20,30 @@ def test_fano_code_wikipedia():
 
 
 @pytest.mark.parametrize(
+    "counts, codewords",
+    [
+        (
+            [6, 94],
+            [(1,), (0,)],
+        ),
+        (
+            [1, 1, 1],
+            [(0, 0), (0, 1), (1,)],
+        ),
+        (
+            [12, 11, 10, 9, 8, 7],
+            [(0, 0), (0, 1, 0), (0, 1, 1), (1, 0), (1, 1, 0), (1, 1, 1)],
+        ),
+    ],
+)
+def test_fano_code_partition(counts, codewords):
+    # Partition codewords, not the canonical ones.
+    pmf = np.array(counts) / np.sum(counts)
+    code = komm.FanoCode(pmf)
+    assert code.codewords == codewords
+
+
+@pytest.mark.parametrize(
     "pmf, message",
     [
         ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),

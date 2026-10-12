@@ -46,6 +46,8 @@
 
 - Fixed `codeword_weight_distribution` of `SingleParityCheckCode` and `coset_leader_weight_distribution` of `RepetitionCode` for lengths of 67 or more.
 
+- Fixed regression in `FanoCode`, whose codewords did not follow the recursive partition.
+
 ## v0.36.0 (2026-09-28)
 
 ### Added

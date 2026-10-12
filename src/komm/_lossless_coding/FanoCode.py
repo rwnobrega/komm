@@ -9,7 +9,7 @@ from .. import abc
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_pmf
 from ..types import Array1D
-from .util import Word, canonical_code
+from .util import Word
 
 
 @mkdocstrings(filters=["!.*"])
@@ -63,28 +63,22 @@ class FanoCode(abc.SymbolCode):
         return True
 
 
-def fano_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
-    pbar = tqdm(desc="Generating Fano code lengths", total=pmf.size, delay=2.5)
-    lengths = np.zeros_like(pmf, dtype=int)
-    items = sorted(np.ndenumerate(pmf), key=itemgetter(1), reverse=True)
-    stack: list[tuple[int, int, int]] = [(0, pmf.size, 0)]
+def fano_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
+    pbar = tqdm(desc="Generating Fano code", total=pmf.size, delay=2.5)
+    codewords: list[Word] = [()] * pmf.size
+    items = sorted(enumerate(pmf), key=itemgetter(1), reverse=True)
+    stack: list[tuple[int, int, Word]] = [(0, pmf.size, ())]
     while stack:
-        lo, hi, length = stack.pop()
+        lo, hi, word = stack.pop()
         if hi - lo == 1:
             x, _ = items[lo]
-            lengths[x] = length
+            codewords[x] = word
             pbar.update()
             continue
         probs = [p for _, p in items[lo:hi]]
         index = int(np.argmin(np.abs(np.cumsum(probs) - np.sum(probs) / 2)))
         mid = lo + index + 1
-        stack.append((mid, hi, length + 1))
-        stack.append((lo, mid, length + 1))
+        stack.append((mid, hi, word + (1,)))
+        stack.append((lo, mid, word + (0,)))
     pbar.close()
-    return lengths
-
-
-def fano_code(pmf: Array1D[np.floating]) -> dict[int, Word]:
-    lengths = fano_code_lengths(pmf)
-    codewords = canonical_code(lengths)
     return dict(enumerate(codewords))
