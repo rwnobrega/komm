@@ -337,7 +337,7 @@ class VariableToFixedCode:
         and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
 
         Parameters:
-            pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
+            pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
 
         Returns:
             rate: The expected rate $R$ of the code.

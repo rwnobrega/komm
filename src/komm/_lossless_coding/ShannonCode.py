@@ -26,9 +26,9 @@ class ShannonCode(abc.SymbolCode):
         Shannon codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be positive and sum to $1$. Zero probabilities are not allowed, since $\ell(x)$ is undefined for $p(x) = 0$.
+        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of positive values that sum to $1$. Zero probabilities are not allowed, since $\ell(x)$ is undefined for $p(x) = 0$.
 
-        assignment: The strategy used to assign the codewords, once the lengths are computed. It must be either `'cumulative'` (the codeword of $x$ is formed by the first $\ell(x)$ bits of the binary expansion of the total probability of the source symbols that precede $x$ in descending order of probability, as in Shannon's original construction) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the same lengths). The default value is `'cumulative'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
+        assignment: The strategy used to assign the codewords, once the lengths are computed. Must be either `'cumulative'` (the codeword of $x$ is formed by the first $\ell(x)$ bits of the binary expansion of the total probability of the source symbols that precede $x$ in descending order of probability, as in Shannon's original construction) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the same lengths). The default value is `'cumulative'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
 
     Examples:
         >>> pmf = [0.2, 0.4, 0.2, 0.1, 0.1]

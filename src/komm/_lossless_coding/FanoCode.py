@@ -21,9 +21,9 @@ class FanoCode(abc.SymbolCode):
         Fano codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. It must be a one-dimensional array of floats of size $|\mathcal{X}|$. The elements must be non-negative and sum to $1$.
+        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
 
-        assignment: The strategy used to assign the codewords, once the partition tree is built. It must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{0}$ being assigned to the group of more probable source symbols) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
+        assignment: The strategy used to assign the codewords, once the partition tree is built. Must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{0}$ being assigned to the group of more probable source symbols) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
 
     Examples:
         >>> pmf = [0.1, 0.2, 0.3, 0.4]
