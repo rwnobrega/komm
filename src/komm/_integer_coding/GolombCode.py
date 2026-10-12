@@ -84,7 +84,7 @@ class GolombCode(abc.IntegerCode):
         q, r = divmod(integer - 1, self.divisor)
         if self._remainder_code is None:
             return q + 1
-        return q + 1 + self._remainder_code.length(r)
+        return q + 1 + len(self._remainder_code.encode_single(r))
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""

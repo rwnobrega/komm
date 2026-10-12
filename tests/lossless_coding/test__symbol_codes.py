@@ -16,6 +16,7 @@ from .util import deterministic_pmf, extended_pmf, random_pmf
         komm.HuffmanCode([0.2, 0.4, 0.2, 0.1, 0.1]),
         komm.FanoCode([0.2, 0.4, 0.2, 0.1, 0.1]),
         komm.ShannonCode([0.2, 0.4, 0.2, 0.1, 0.1]),
+        komm.TruncatedBinaryCode(5),
     ],
     ids=lambda code: type(code).__name__,
 )

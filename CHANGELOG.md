@@ -44,6 +44,8 @@
 
 - Changed `ShannonCode` to assign the codewords from the cumulative probabilities, as in Shannon's original construction; for the previous codewords, use `assignment="canonical"`.
 
+- Changed `TruncatedBinaryCode` to a subclass of `abc.SymbolCode`, with `encode` and `decode` on arrays instead of iterators and `encode_single` returning a tuple instead of a list; removed its `length`, in favor of `lengths`.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

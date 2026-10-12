@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Iterator
 from itertools import chain, islice
+from operator import index
 from typing import SupportsIndex
 
 
@@ -81,8 +82,8 @@ class IntegerCode(SelfDelimitingCode):
     """
 
 
-def take(bits: Iterator[int], num: int) -> list[int]:
-    chunk = list(islice(bits, num))
+def take(bits: Iterator[SupportsIndex], num: int) -> list[int]:
+    chunk = [index(bit) for bit in islice(bits, num)]
     if len(chunk) < num:
         raise ValueError("input contains an incomplete codeword")
     return chunk

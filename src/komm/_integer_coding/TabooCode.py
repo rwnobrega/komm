@@ -90,7 +90,7 @@ class TabooCode(abc.IntegerCode):
         """
         integer = validate_positive_integer(integer)
         digits = self._digits(integer) + [0]
-        return sum(self._block_code.length(digit) for digit in digits)
+        return sum(len(self._block_code.encode_single(digit)) for digit in digits)
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""

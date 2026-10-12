@@ -81,8 +81,8 @@ class EscapeCode(abc.IntegerCode):
         """
         integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
-        escape_length = self._block_code.length(self.divisor)
-        return q * escape_length + self._block_code.length(r)
+        escape_length = len(self._block_code.encode_single(self.divisor))
+        return q * escape_length + len(self._block_code.encode_single(r))
 
     def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
         r"""
