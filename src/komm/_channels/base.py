@@ -71,7 +71,7 @@ class DiscreteMemorylessChannel(ABC):
         Transmits the input sequence through the channel and returns the output sequence.
 
         Parameters:
-            input: The input sequence.
+            input: The input sequence. Its elements must be in $[0 : |\mathcal{X}|)$.
 
         Returns:
             output: The output sequence.

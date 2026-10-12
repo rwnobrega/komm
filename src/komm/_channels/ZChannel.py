@@ -9,7 +9,12 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_float, validate_log_base, validate_pmf
+from .._util.validators import (
+    validate_binary_array,
+    validate_float,
+    validate_log_base,
+    validate_pmf,
+)
 from ..types import Array2D
 
 
@@ -124,6 +129,6 @@ class ZChannel(abc.DiscreteMemorylessChannel):
             array([1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
         """
         p = self.decay_probability
-        input = np.asarray(input)
+        input = validate_binary_array(input)
         keep_pattern = self.rng.random(input.shape) >= p
         return (input * keep_pattern).astype(int)

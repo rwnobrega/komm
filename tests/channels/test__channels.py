@@ -33,6 +33,49 @@ def test_discrete_channels_vectorized_input(
 @pytest.mark.parametrize(
     "channel",
     [
+        komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2]]),
+        komm.BinarySymmetricChannel(0.15),
+        komm.BinaryErasureChannel(0.33),
+        komm.ZChannel(0.42),
+    ],
+)
+@pytest.mark.parametrize("input", [[0, 2], [0, -1]])
+def test_discrete_channels_invalid_input(channel, input):
+    with pytest.raises(ValueError, match="elements of 'input' must be"):
+        channel.transmit(input)
+
+
+@pytest.mark.parametrize(
+    "channel",
+    [
+        komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2]]),
+        komm.BinarySymmetricChannel(0.15),
+        komm.BinaryErasureChannel(0.33),
+        komm.ZChannel(0.42),
+    ],
+)
+def test_discrete_channels_input_not_integer(channel):
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        channel.transmit([0.0, 1.0])
+
+
+@pytest.mark.parametrize(
+    "channel",
+    [
+        komm.DiscreteMemorylessChannel([[0, 1], [1, 0]]),
+        komm.BinarySymmetricChannel(1.0),
+        komm.BinaryErasureChannel(1.0),
+        komm.ZChannel(1.0),
+    ],
+)
+def test_discrete_channels_bool_input(channel):
+    output = channel.transmit([True, False])
+    np.testing.assert_equal(output, channel.transmit([1, 0]))
+
+
+@pytest.mark.parametrize(
+    "channel",
+    [
         komm.GaussianChannel(noise_power=1.0),
         komm.DiscreteMemorylessChannel([[0.6, 0.3, 0.1], [0.7, 0.1, 0.2]]),
         komm.BinarySymmetricChannel(0.15),

@@ -9,7 +9,12 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import binary_entropy
-from .._util.validators import validate_float, validate_log_base, validate_pmf
+from .._util.validators import (
+    validate_binary_array,
+    validate_float,
+    validate_log_base,
+    validate_pmf,
+)
 from ..types import Array2D
 
 
@@ -120,7 +125,7 @@ class BinaryErasureChannel(abc.DiscreteMemorylessChannel):
             array([1, 1, 1, 0, 2, 0, 1, 0, 2, 0])
         """
         epsilon = self.erasure_probability
-        input = np.asarray(input)
+        input = validate_binary_array(input)
         erasure_pattern = self.rng.random(input.shape) < epsilon
         output = np.copy(input)
         output[erasure_pattern] = 2

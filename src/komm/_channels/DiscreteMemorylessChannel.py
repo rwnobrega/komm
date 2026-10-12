@@ -7,7 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util import global_rng
 from .._util.information_theory import arimoto_blahut, mutual_information
-from .._util.validators import validate_transition_matrix
+from .._util.validators import validate_integer_array, validate_transition_matrix
 from ..types import Array2D
 
 
@@ -110,7 +110,7 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
             >>> dmc.transmit([1, 1, 1, 0, 0, 0, 1, 0, 1, 0])
             array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])
         """
-        input = np.asarray(input)
+        input = validate_integer_array(input, low=0, high=self.input_cardinality)
         output = np.empty_like(input, dtype=int)
         for index, symbol in np.ndenumerate(input):
             output[index] = self.rng.choice(
