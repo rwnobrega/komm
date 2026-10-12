@@ -4,7 +4,7 @@ from typing import Generic, TypeVar, cast
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_pmf
+from .._util.validators import validate_integer_array, validate_pmf
 from ..types import Array1D, Array2D
 
 T = TypeVar("T", np.floating, np.complexfloating)
@@ -110,7 +110,7 @@ class Constellation(ABC, Generic[T]):
         Returns:
             symbols: The symbols corresponding to the given indices. Has the same shape as `indices`, but with the last dimension expanded by a factor of $N$.
         """
-        indices = np.asarray(indices, dtype=int)
+        indices = validate_integer_array(indices, low=0, high=self.order)
         symbols = self.matrix[indices].reshape(*indices.shape[:-1], -1)
         return symbols
 

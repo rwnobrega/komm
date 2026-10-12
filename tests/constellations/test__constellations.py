@@ -80,6 +80,20 @@ def test_constellation_priors_size(const: komm.abc.Constellation):
         const.posteriors(np.zeros(const.dimension), 1.0, priors)
 
 
+@pytest.mark.parametrize("side", ["below", "above"])
+def test_constellation_indices_out_of_range(const: komm.abc.Constellation, side):
+    M = const.order
+    index = {"below": -1, "above": M}[side]
+    message = f"elements of 'indices' must be in [0:{M})"
+    with pytest.raises(ValueError, match=escape(message)):
+        const.indices_to_symbols([0, index])
+
+
+def test_constellation_indices_not_integer(const: komm.abc.Constellation):
+    with pytest.raises(TypeError, match="'indices' must contain only integers"):
+        const.indices_to_symbols([0.0, 1.7])
+
+
 def test_constellation_equivalence_properties(const: komm.abc.Constellation):
     ref = komm.Constellation(const.matrix)
     np.testing.assert_allclose(ref.matrix, const.matrix)
