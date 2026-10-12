@@ -1,4 +1,5 @@
 from itertools import combinations
+from re import escape
 
 import numpy as np
 import pytest
@@ -42,14 +43,14 @@ def test_zadoff_chu_andrews():
         )
 
 
-@pytest.mark.parametrize("length", range(1, 40, 2))
+@pytest.mark.parametrize("length", range(3, 40, 2))
 def test_zadoff_chu_constant_amplitude(length):
     for q in range(1, length):
         zc = komm.ZadoffChuSequence(length, root_index=q)
         np.testing.assert_allclose(np.abs(zc.sequence), 1.0)
 
 
-@pytest.mark.parametrize("length", range(1, 40, 2))
+@pytest.mark.parametrize("length", range(3, 40, 2))
 def test_zadoff_chu_zero_cyclic_acorr(length):
     for q in range(1, length):
         if np.gcd(q, length) != 1:
@@ -64,7 +65,7 @@ def test_zadoff_chu_zero_cyclic_acorr(length):
         )
 
 
-@pytest.mark.parametrize("length", range(1, 20, 2))
+@pytest.mark.parametrize("length", range(3, 20, 2))
 def test_zadoff_chu_constant_cyclic_xcorr(length):
     for q1, q2 in combinations(range(1, length), 2):
         if np.gcd(abs(q1 - q2), length) != 1:
@@ -78,12 +79,35 @@ def test_zadoff_chu_constant_cyclic_xcorr(length):
             )
 
 
-def test_zadoff_chu_invalid():
-    with pytest.raises(ValueError, match="'length' must be a positive integer"):
-        komm.ZadoffChuSequence(0)
-    with pytest.raises(ValueError, match="'length' must be an odd integer"):
-        komm.ZadoffChuSequence(4)
-    with pytest.raises(ValueError, match="'root_index' must satisfy 1 <= root_index <"):
-        komm.ZadoffChuSequence(5, root_index=5)
-    with pytest.raises(TypeError, match="'root_index' must be an integer"):
-        komm.ZadoffChuSequence(5, root_index=1.0)  # type: ignore
+def test_zadoff_chu_repr():
+    zc = komm.ZadoffChuSequence(5)
+    assert repr(zc) == "ZadoffChuSequence(length=5, root_index=1)"
+    zc = komm.ZadoffChuSequence(5, root_index=2)
+    assert repr(zc) == "ZadoffChuSequence(length=5, root_index=2)"
+
+
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((0,), "'length' must be at least 3 (got 0)"),
+        ((1,), "'length' must be at least 3 (got 1)"),
+        ((4,), "'length' must be odd (got 4)"),
+        ((5, 0), "'root_index' must satisfy 1 <= root_index < length (got 0)"),
+        ((5, 5), "'root_index' must satisfy 1 <= root_index < length (got 5)"),
+    ],
+)
+def test_zadoff_chu_invalid(args, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.ZadoffChuSequence(*args)
+
+
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((5.0,), "'length' must be an integer (got float)"),
+        ((5, 1.0), "'root_index' must be an integer (got float)"),
+    ],
+)
+def test_zadoff_chu_not_integer(args, message):
+    with pytest.raises(TypeError, match=escape(message)):
+        komm.ZadoffChuSequence(*args)

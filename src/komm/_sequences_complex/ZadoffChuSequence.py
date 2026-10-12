@@ -1,4 +1,4 @@
-from .._util.validators import validate_integer, validate_positive_integer
+from .._util.validators import validate_integer
 from .ComplexSequence import ComplexSequence
 from .sequences import zadoff_chu_sequence
 
@@ -9,7 +9,7 @@ class ZadoffChuSequence(ComplexSequence):
     $$
         z_{L,q}[n] = \mathrm{e}^{-\mathrm{j} \pi q n (n + 1) / L},
     $$
-    where $L$ is the *length* (and period) of the sequence (which must be an odd integer) and $q \in [1:L)$ is called the *root index* of the sequence.
+    where $L$ is the *length* (and period) of the sequence, an odd integer with $L \geq 3$, and $q \in [1:L)$ is called the *root index* of the sequence.
 
     Zadoff–Chu sequences have the following properties:
 
@@ -31,10 +31,10 @@ class ZadoffChuSequence(ComplexSequence):
     For more details, see <cite>And22</cite>.
 
     Notes:
-        - Theses sequences are also called *Frank–Zadoff–Chu* sequences.
+        - These sequences are also called *Frank–Zadoff–Chu* sequences.
 
     Parameters:
-        length: The length $L$ of the Zadoff–Chu sequence. Must be an odd integer.
+        length: The length $L$ of the Zadoff–Chu sequence. Must be an odd integer satisfying $L \geq 3$.
         root_index: The root index $q$ of the Zadoff–Chu sequence. Must be in $[1:L)$. The default value is $1$.
 
     Examples:
@@ -47,10 +47,15 @@ class ZadoffChuSequence(ComplexSequence):
     """
 
     def __init__(self, length: int, root_index: int = 1) -> None:
-        length = validate_positive_integer(length)
-        if length % 2 == 0:
-            raise ValueError("'length' must be an odd integer")
+        length = validate_integer(length, low=3)
+        if not length % 2 == 1:
+            raise ValueError(f"'length' must be odd (got {length})")
         root_index = validate_integer(
             root_index, low=1, high=length, rule="1 <= root_index < length"
         )
+        self.root_index = root_index
         super().__init__(sequence=zadoff_chu_sequence(length, root_index))
+
+    def __repr__(self) -> str:
+        args = f"length={self.length}, root_index={self.root_index}"
+        return f"{self.__class__.__name__}({args})"
