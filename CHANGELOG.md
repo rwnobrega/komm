@@ -48,6 +48,8 @@
 
 - Made parameters `policy` and `assignment` of `HuffmanCode` keyword-only.
 
+- Changed `encode_single` of integer codes to return a tuple instead of a list.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

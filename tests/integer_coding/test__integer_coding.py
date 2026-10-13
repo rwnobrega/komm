@@ -67,10 +67,10 @@ def test_integer_coding_lazy_decode(code: komm.abc.IntegerCode):
 def test_integer_coding_boundary_invariant(code: komm.abc.IntegerCode, n: int):
     if not isinstance(code, (komm.UnaryCode, komm.GolombCode, komm.EscapeCode)):
         n = n * 10**6 + 1
-    for tail in [[], [0], [1], [1, 0, 1, 1, 0]]:
+    for tail in [(), (0,), (1,), (1, 0, 1, 1, 0)]:
         bits = iter(code.encode_single(n) + tail)
         assert code.decode_single(bits) == n
-        assert list(bits) == tail
+        assert tuple(bits) == tail
 
 
 def test_integer_coding_empty(code: komm.abc.IntegerCode):
@@ -113,7 +113,7 @@ def test_integer_coding_kraft(code: komm.abc.IntegerCode):
 def test_integer_coding_composition(code: komm.abc.IntegerCode):
     unary = komm.UnaryCode()
     message = [9, 2, 5]
-    bits = iter(unary.encode_single(len(message)) + list(code.encode(message)))
+    bits = iter(unary.encode_single(len(message)) + tuple(code.encode(message)))
     num = unary.decode_single(bits)
     assert list(islice(code.decode(bits), num)) == message
     assert list(bits) == []
@@ -145,7 +145,7 @@ def test_integer_coding_docstring_table(cls):
     for row in body:
         n = int(row[0].strip(" $"))
         for code, cell in zip(codes, row[1:], strict=True):
-            codeword = [int(bit) for bit in cell.strip(" `").replace(" ", "")]
+            codeword = tuple(int(bit) for bit in cell.strip(" `").replace(" ", ""))
             assert code.encode_single(n) == codeword
 
 

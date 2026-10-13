@@ -4,6 +4,7 @@ from operator import index
 from typing import SupportsIndex
 
 from .. import abc
+from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
 
 
@@ -28,12 +29,12 @@ class FibonacciCode(abc.IntegerCode):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
             >>> code.encode_single(4)
-            [1, 0, 1, 1]
+            (1, 0, 1, 1)
         """
         integer = validate_positive_integer(integer)
         top = 2
@@ -44,7 +45,7 @@ class FibonacciCode(abc.IntegerCode):
             if fibonacci(i) <= integer:
                 bits[i - 2] = 1
                 integer -= fibonacci(i)
-        return bits + [1]
+        return tuple(bits + [1])
 
     def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""

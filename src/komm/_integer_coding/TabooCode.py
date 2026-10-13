@@ -4,6 +4,7 @@ from typing import SupportsIndex
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
+from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
 
 
@@ -51,18 +52,18 @@ class TabooCode(abc.IntegerCode):
             digits.append(digit + 1)
         return digits[::-1]
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.TabooCode(3)
             >>> code.encode_single(4)
-            [1, 1, 0, 0]
+            (1, 1, 0, 0)
         """
         integer = validate_positive_integer(integer)
         bits: list[int] = []
         for digit in self._digits(integer) + [0]:
             bits += self._block_code.encode_single(digit)
-        return bits
+        return tuple(bits)
 
     def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""

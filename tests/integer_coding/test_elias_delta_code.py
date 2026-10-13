@@ -14,7 +14,7 @@ def test_elias_delta_basic():
 def test_elias_delta_mackay():
     # [MacK03, Table 7.2]
     code = komm.EliasDeltaCode()
-    assert code.encode_single(45) == [0, 0, 1, 1, 0, 0, 1, 1, 0, 1]
+    assert code.encode_single(45) == (0, 0, 1, 1, 0, 0, 1, 1, 0, 1)
 
 
 @pytest.mark.parametrize("n", range(1, 200))

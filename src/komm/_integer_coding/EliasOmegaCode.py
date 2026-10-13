@@ -2,6 +2,7 @@ from collections.abc import Iterable, Iterator
 from typing import SupportsIndex
 
 from .. import abc
+from .._lossless_coding.util import Word
 from .._util.bit_operations import from_binary, to_binary
 from .._util.validators import validate_positive_integer
 from .base import take
@@ -28,12 +29,12 @@ class EliasOmegaCode(abc.IntegerCode):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.EliasOmegaCode()
             >>> code.encode_single(4)
-            [1, 0, 1, 0, 0, 0]
+            (1, 0, 1, 0, 0, 0)
         """
         integer = validate_positive_integer(integer)
         bits = [0]
@@ -41,7 +42,7 @@ class EliasOmegaCode(abc.IntegerCode):
             binary = to_binary(integer, bit_order="MSB-first")
             bits = binary + bits
             integer = len(binary) - 1
-        return bits
+        return tuple(bits)
 
     def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""

@@ -22,7 +22,7 @@ def test_taboo_book_table():
         "01010100 01011000 01011100"
     )
     for n, codeword in enumerate(codewords.split(), start=2):
-        assert code.encode_single(n) == [int(bit) for bit in codeword]
+        assert code.encode_single(n) == tuple(int(bit) for bit in codeword)
 
 
 @pytest.mark.parametrize("M", [1, 2, 3, 4, 5])
@@ -31,7 +31,7 @@ def test_taboo_digit_sequences(M):
     block_code = komm.TruncatedBinaryCode(M + 1)
     sequences = (s for k in range(4) for s in product(range(1, M + 1), repeat=k))
     for n, digits in enumerate(sequences, start=1):
-        assert code.encode_single(n) == list(block_code.encode([*digits, 0]))
+        assert code.encode_single(n) == tuple(block_code.encode([*digits, 0]))
 
 
 def test_taboo_unary():

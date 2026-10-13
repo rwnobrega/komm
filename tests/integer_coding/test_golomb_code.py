@@ -38,7 +38,7 @@ def test_golomb_paper_tables(M, codewords):
     # [Gol66, Tables I and II], shifted by one
     code = komm.GolombCode(M)
     for n, codeword in enumerate(codewords.split(), start=1):
-        assert code.encode_single(n) == [int(bit) for bit in codeword]
+        assert code.encode_single(n) == tuple(int(bit) for bit in codeword)
 
 
 def test_golomb_unary():
@@ -93,4 +93,4 @@ def test_golomb_book_table(M, codewords):
     # [SM10, Table 3.50, p. 163], shifted by one
     code = komm.GolombCode(M)
     for n, codeword in enumerate(codewords.split(), start=1):
-        assert code.encode_single(n) == [int(bit) for bit in codeword]
+        assert code.encode_single(n) == tuple(int(bit) for bit in codeword)

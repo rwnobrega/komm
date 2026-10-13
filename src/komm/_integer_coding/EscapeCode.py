@@ -4,6 +4,7 @@ from typing import SupportsIndex
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
+from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
 
 
@@ -41,19 +42,19 @@ class EscapeCode(abc.IntegerCode):
         self.divisor = validate_positive_integer(self.divisor)
         self._block_code = TruncatedBinaryCode(self.divisor + 1)
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.EscapeCode(3)
             >>> code.encode_single(4)
-            [1, 1, 0, 0]
+            (1, 1, 0, 0)
         """
         integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)
         bits: list[int] = []
         for value in [self.divisor] * q + [r]:
             bits += self._block_code.encode_single(value)
-        return bits
+        return tuple(bits)
 
     def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""

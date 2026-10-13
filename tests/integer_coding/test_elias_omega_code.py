@@ -51,7 +51,7 @@ def test_elias_omega_basic():
 def test_elias_omega_mackay(n, codeword):
     # [MacK03, Table 7.5]
     code = komm.EliasOmegaCode()
-    assert code.encode_single(n) == [int(bit) for bit in codeword]
+    assert code.encode_single(n) == tuple(int(bit) for bit in codeword)
 
 
 @pytest.mark.parametrize(
@@ -66,7 +66,7 @@ def test_elias_omega_mackay(n, codeword):
 )
 def test_elias_omega_wikipedia(n, codeword):
     code = komm.EliasOmegaCode()
-    assert code.encode_single(n) == [int(bit) for bit in codeword if bit != " "]
+    assert code.encode_single(n) == tuple(int(bit) for bit in codeword if bit != " ")
 
 
 def test_elias_omega_wikipedia_googol():
@@ -80,7 +80,7 @@ def test_elias_omega_wikipedia_googol():
         "00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 "
         "00000000 00000000 00000000 0"
     )
-    assert code.encode_single(n) == [int(bit) for bit in codeword if bit != " "]
+    assert code.encode_single(n) == tuple(int(bit) for bit in codeword if bit != " ")
 
 
 def test_elias_omega_versus_delta():

@@ -4,6 +4,7 @@ from typing import SupportsIndex
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
+from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
 from .UnaryCode import UnaryCode
 
@@ -43,12 +44,12 @@ class GolombCode(abc.IntegerCode):
             TruncatedBinaryCode(self.divisor) if self.divisor >= 2 else None
         )
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.GolombCode(3)
             >>> code.encode_single(4)
-            [1, 0, 0]
+            (1, 0, 0)
         """
         integer = validate_positive_integer(integer)
         q, r = divmod(integer - 1, self.divisor)

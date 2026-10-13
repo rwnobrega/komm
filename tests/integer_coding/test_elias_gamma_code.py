@@ -14,7 +14,7 @@ def test_elias_gamma_basic():
 def test_elias_gamma_mackay():
     # [MacK03, Table 7.1]
     code = komm.EliasGammaCode()
-    assert code.encode_single(45) == [0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1]
+    assert code.encode_single(45) == (0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1)
 
 
 @pytest.mark.parametrize("n", range(1, 200))

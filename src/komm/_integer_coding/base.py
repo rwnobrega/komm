@@ -4,6 +4,8 @@ from itertools import chain, islice
 from operator import index
 from typing import SupportsIndex
 
+from .._lossless_coding.util import Word
+
 
 class IntegerCode(ABC):
     r"""
@@ -11,7 +13,7 @@ class IntegerCode(ABC):
     """
 
     @abstractmethod
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Encodes a single integer into its codeword.
 
@@ -19,7 +21,7 @@ class IntegerCode(ABC):
             integer: The integer to be encoded. Must be in the domain of the code.
 
         Returns:
-            bits: The codeword of the integer, as a list of bits.
+            codeword: The codeword of the integer. It is a tuple of bits.
         """
         raise NotImplementedError
 

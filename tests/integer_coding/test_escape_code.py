@@ -15,7 +15,7 @@ def test_escape_mixed_blocks():
     code = komm.EscapeCode(4)
     codewords = "00 01 10 110 11100 11101 11110 111110 11111100"
     for n, codeword in enumerate(codewords.split(), start=1):
-        assert code.encode_single(n) == [int(bit) for bit in codeword]
+        assert code.encode_single(n) == tuple(int(bit) for bit in codeword)
 
 
 @pytest.mark.parametrize("M", [1, 2, 3, 4, 5])
@@ -24,7 +24,7 @@ def test_escape_block_sequences(M):
     block_code = komm.TruncatedBinaryCode(M + 1)
     sequences = ([M] * q + [r] for q in range(4) for r in range(M))
     for n, values in enumerate(sequences, start=1):
-        assert code.encode_single(n) == list(block_code.encode(values))
+        assert code.encode_single(n) == tuple(block_code.encode(values))
 
 
 def test_escape_unary():

@@ -4,6 +4,7 @@ from operator import index
 from typing import Literal, SupportsIndex
 
 from .. import abc
+from .._lossless_coding.util import Word
 from .._util.validators import (
     validate_choice,
     validate_integer,
@@ -39,19 +40,19 @@ class UnaryCode(abc.IntegerCode):
         self.stop_bit = validate_integer(stop_bit)
         self.stop_bit = validate_choice(self.stop_bit, (0, 1))
 
-    def encode_single(self, integer: SupportsIndex) -> list[int]:
+    def encode_single(self, integer: SupportsIndex) -> Word:
         r"""
         Examples:
             >>> code = komm.UnaryCode()
             >>> code.encode_single(4)
-            [0, 0, 0, 1]
+            (0, 0, 0, 1)
 
             >>> code = komm.UnaryCode(stop_bit=0)
             >>> code.encode_single(4)
-            [1, 1, 1, 0]
+            (1, 1, 1, 0)
         """
         integer = validate_positive_integer(integer)
-        return [1 - self.stop_bit] * (integer - 1) + [self.stop_bit]
+        return (1 - self.stop_bit,) * (integer - 1) + (self.stop_bit,)
 
     def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
