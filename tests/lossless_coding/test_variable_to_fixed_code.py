@@ -148,14 +148,22 @@ def test_encode_decode():
 @pytest.mark.parametrize(
     "sourcewords, x, message",
     [
-        ([(0,), (1, 0), (1, 1)], [0, 7], "input contains invalid word"),
+        ([(0,), (1, 0), (1, 1)], [0, 7], "elements of 'input' must be in [0:2)"),
+        ([(0,), (1, 0), (1, 1)], [[0, 1], [1, 0]], "'input' must be a 1D-array"),
         ([(0, 0, 0), (0, 1, 0), (0, 1), (1,)], [0], "code is not fully covering"),
         ([(0,), (1,), (0, 1)], [1, 0, 0, 0], "code is not uniquely encodable"),
     ],
 )
 def test_encode_invalid(sourcewords, x, message):
     code = komm.VariableToFixedCode.from_sourcewords(sourcewords)
-    with pytest.raises(ValueError, match=message):
+    with pytest.raises(ValueError, match=escape(message)):
+        code.encode(x)
+
+
+@pytest.mark.parametrize("x", [[0.0, 1.0], [0.5, 1.0]])
+def test_encode_not_integer(x):
+    code = komm.VariableToFixedCode.from_sourcewords([(0,), (1, 0), (1, 1)])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
         code.encode(x)
 
 
@@ -164,6 +172,8 @@ def test_encode_invalid(sourcewords, x, message):
     [
         ([(0,), (1,), (2,)], [1, 1, 0, 0, 1], "multiple of block size 2 (got 5)"),
         ([(0,), (1,), (2,)], [0, 0, 1, 1], "input contains invalid word"),
+        ([(0,), (1,), (2,)], [0, 2], "elements of 'input' must be in [0:2)"),
+        ([(0,), (1,), (2,)], [[0, 0], [1, 0]], "'input' must be a 1D-array"),
         ([(0, 0), (0, 1)], [0, 0, 0, 1], "code is not fully covering"),
         ([(0,), (1,), (0, 1)], [0, 0, 0, 1], "code is not uniquely encodable"),
     ],
@@ -171,4 +181,11 @@ def test_encode_invalid(sourcewords, x, message):
 def test_decode_invalid(sourcewords, y, message):
     code = komm.VariableToFixedCode.from_sourcewords(sourcewords)
     with pytest.raises(ValueError, match=escape(message)):
+        code.decode(y)
+
+
+@pytest.mark.parametrize("y", [[1.0, 0.0], [0.5, 1.0]])
+def test_decode_not_integer(y):
+    code = komm.VariableToFixedCode.from_sourcewords([(0,), (1,), (2,)])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
         code.decode(y)

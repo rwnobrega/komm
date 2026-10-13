@@ -461,10 +461,10 @@ class FixedToVariableCode:
             ...
             ValueError: length of input must be a multiple of block size 2 (got 3)
 
-            >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
+            >>> code.encode([0, 7, 0, 0])  # 7 is not a source symbol
             Traceback (most recent call last):
             ...
-            ValueError: input contains invalid word
+            ValueError: elements of 'input' must be in [0:2)
 
             >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0,1), (1,0)])
             >>> code.encode([0, 1, 0])  # Code is not uniquely decodable
@@ -474,7 +474,8 @@ class FixedToVariableCode:
         """
         if not self.is_uniquely_decodable():
             raise ValueError("code is not uniquely decodable")
-        input = np.asarray(input)
+        calX = self.source_cardinality
+        input = validate_integer_array(input, low=0, high=calX, ndim=1)
         return parse_fixed_length(input, self.enc_mapping, self.source_block_size)
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
@@ -518,10 +519,11 @@ class FixedToVariableCode:
             raise NotImplementedError(
                 "decoding for non-prefix-free codes is not implemented yet"
             )
-        input = np.asarray(input)
+        calY = self.target_cardinality
+        input = validate_integer_array(input, low=0, high=calY, ndim=1)
         return parse_prefix_free(
             input,
             dictionary=self._inv_enc_mapping,
             allow_incomplete=False,
-            cardinality=self.target_cardinality,
+            cardinality=calY,
         )

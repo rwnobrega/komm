@@ -250,16 +250,45 @@ def test_encode_decode(code_parameters, x, y):
 
 
 @pytest.mark.parametrize(
+    "x, message",
+    [
+        ([0, 2], "elements of 'input' must be in [0:2)"),
+        ([[0, 1], [1, 0]], "'input' must be a 1D-array"),
+        ([0, 1, 0], "length of input must be a multiple of block size 2 (got 3)"),
+    ],
+)
+def test_encode_invalid(x, message):
+    code = komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=2)
+    with pytest.raises(ValueError, match=escape(message)):
+        code.encode(x)
+
+
+@pytest.mark.parametrize("x", [[0.0, 1.0], [0.5, 1.0]])
+def test_encode_not_integer(x):
+    code = komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=2)
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        code.encode(x)
+
+
+@pytest.mark.parametrize(
     "y, message",
     [
         ([1, 1, 0, 1, 0, 1, 1, 1], "input contains invalid word"),
-        ([1, 1, 0, 1, 0, 1, 3], "input contains invalid word"),
         ([1, 1, 0, 1, 0, 1], "input contains an incomplete codeword"),
+        ([1, 1, 0, 1, 0, 1, 3], "elements of 'input' must be in [0:2)"),
+        ([[1, 0], [0, 0]], "'input' must be a 1D-array"),
     ],
 )
 def test_decode_invalid(y, message):
     code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1, 0)])
-    with pytest.raises(ValueError, match=message):
+    with pytest.raises(ValueError, match=escape(message)):
+        code.decode(y)
+
+
+@pytest.mark.parametrize("y", [[1.0, 0.0], [0.5, 1.0]])
+def test_decode_not_integer(y):
+    code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1, 0)])
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
         code.decode(y)
 
 

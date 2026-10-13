@@ -115,10 +115,6 @@ def parse_prefix_free(
         lut[len(key), acc] = value
         max_length = max(max_length, len(key))
 
-    input = np.asarray(input)
-    if input.size > 0 and (input.min() < 0 or input.max() >= cardinality):
-        raise ValueError("input contains invalid word")
-
     output: list[int] = []
     length = acc = 0
     for symbol in input.tolist():  # Python ints are faster

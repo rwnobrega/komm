@@ -5,7 +5,12 @@ from typing import Self
 import numpy as np
 import numpy.typing as npt
 
-from .._util.validators import validate_integer, validate_pmf, validate_positive_integer
+from .._util.validators import (
+    validate_integer,
+    validate_integer_array,
+    validate_pmf,
+    validate_positive_integer,
+)
 from ..types import Array1D
 from .util import (
     Word,
@@ -379,10 +384,10 @@ class VariableToFixedCode:
             >>> code.encode([1, 0, 0])  # Incomplete input, completed as 1|000
             array([1, 1, 0, 0])
 
-            >>> code.encode([0, 7, 0, 0])  # 07 is not a valid source word
+            >>> code.encode([0, 7, 0, 0])  # 7 is not a source symbol
             Traceback (most recent call last):
             ...
-            ValueError: input contains invalid word
+            ValueError: elements of 'input' must be in [0:2)
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0, 0), (0, 1)])
             >>> code.encode([1, 0, 0, 0])  # Code is not fully covering
@@ -404,12 +409,13 @@ class VariableToFixedCode:
             raise NotImplementedError(
                 "encoding for non-prefix-free codes is not implemented yet"
             )
-        input = np.asarray(input)
+        calX = self.source_cardinality
+        input = validate_integer_array(input, low=0, high=calX, ndim=1)
         return parse_prefix_free(
             input,
             dictionary=self._inv_dec_mapping,
             allow_incomplete=True,
-            cardinality=self.source_cardinality,
+            cardinality=calX,
         )
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
@@ -457,5 +463,6 @@ class VariableToFixedCode:
             raise ValueError("code is not fully covering")
         if not self.is_uniquely_encodable():
             raise ValueError("code is not uniquely encodable")
-        input = np.asarray(input)
+        calY = self.target_cardinality
+        input = validate_integer_array(input, low=0, high=calY, ndim=1)
         return parse_fixed_length(input, self.dec_mapping, self.target_block_size)
