@@ -300,7 +300,7 @@ class FixedToVariableCode:
     @cached_property
     def codewords(self) -> list[Word]:
         r"""
-        The codewords of the code. They correspond to the image of the encoding mapping $\Enc$.
+        The codewords of the code. They correspond to the image of the encoding mapping $\Enc$: the tuple in position $i$ is equal to $\Enc(\mathbf{x})$, where $\mathbf{x}$ is the $i$-th element in the lexicographic ordering of $\mathcal{X}^k$.
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_enc_mapping({
@@ -415,7 +415,7 @@ class FixedToVariableCode:
         $$
             R = \frac{\bar{n}}{k},
         $$
-        where $\bar{n}$ is the expected codeword length, assuming iid source symbols drawn according to $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
+        where $\bar{n}$ is the average codeword length, assuming iid source symbols drawn according to $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
 
         Parameters:
             pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.

@@ -229,7 +229,7 @@ class VariableToFixedCode:
     @cached_property
     def sourcewords(self) -> list[Word]:
         r"""
-        The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$.
+        The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$: the tuple in position $i$ is equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of the domain of $\mathrm{Dec}$.
 
         Examples:
             >>> code = komm.VariableToFixedCode.from_dec_mapping({
@@ -332,7 +332,7 @@ class VariableToFixedCode:
         $$
             R = \frac{n}{\bar{k}},
         $$
-        and $\bar{k}$ is the expected sourceword length, assuming iid source symbols drawn from $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
+        where $\bar{k}$ is the average sourceword length, assuming iid source symbols drawn according to $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
 
         Parameters:
             pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
