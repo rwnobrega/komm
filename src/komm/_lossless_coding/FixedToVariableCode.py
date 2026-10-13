@@ -53,7 +53,7 @@ class FixedToVariableCode:
         self._source_cardinality = calX
         self._target_cardinality = calY
         self._source_block_size = k
-        self._enc_mapping = enc_mapping
+        self._enc_mapping = dict(sorted(enc_mapping.items()))
 
     def __repr__(self) -> str:
         args = ", ".join([

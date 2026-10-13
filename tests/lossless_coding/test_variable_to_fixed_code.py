@@ -12,6 +12,14 @@ def test_lengths():
     assert code.lengths == [len(x) for x in code.sourcewords]
 
 
+def test_dec_mapping_order():
+    dec_mapping = {(1, 1): (1,), (0, 0): (0, 0), (0, 1): (0, 1)}
+    code = komm.VariableToFixedCode(2, 2, 2, dec_mapping)
+    assert list(code.dec_mapping) == [(0, 0), (0, 1), (1, 1)]
+    assert code.sourcewords == [(0, 0), (0, 1), (1,)]
+    assert code.lengths == [2, 2, 1]
+
+
 @pytest.mark.parametrize(
     "args, message",
     [

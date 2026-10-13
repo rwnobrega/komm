@@ -45,7 +45,7 @@ class VariableToFixedCode:
         self._target_cardinality = calY
         self._source_cardinality = calX
         self._target_block_size = n
-        self._dec_mapping = dec_mapping
+        self._dec_mapping = dict(sorted(dec_mapping.items()))
 
     def __repr__(self) -> str:
         args = ", ".join([

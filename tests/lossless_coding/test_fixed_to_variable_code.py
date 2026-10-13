@@ -64,6 +64,15 @@ def test_init(code_parameters):
     assert code.lengths == [len(codeword) for codeword in codewords]
 
 
+def test_enc_mapping_order():
+    enc_mapping = {(1, 1): (1, 1, 1), (0, 0): (0,), (1, 0): (1, 1, 0), (0, 1): (1, 0)}
+    code = komm.FixedToVariableCode(2, 2, 2, enc_mapping)
+    assert list(code.enc_mapping) == [(0, 0), (0, 1), (1, 0), (1, 1)]
+    assert code.codewords == [(0,), (1, 0), (1, 1, 0), (1, 1, 1)]
+    assert code.lengths == [1, 2, 3, 3]
+    assert np.isclose(code.rate([0.9, 0.1]), 0.645)
+
+
 @pytest.mark.parametrize(
     "args, message",
     [

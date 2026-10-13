@@ -62,6 +62,8 @@
 
 - Fixed regression in `FanoCode`, whose codewords did not follow the recursive partition.
 
+- Fixed `lengths` and `rate` of `FixedToVariableCode` when the keys of `enc_mapping` are out of order.
+
 ## v0.36.0 (2026-09-28)
 
 ### Added
