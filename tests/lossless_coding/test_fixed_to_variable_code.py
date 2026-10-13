@@ -122,6 +122,11 @@ def test_invalid_enc_mapping_codomain(enc_mapping):
         komm.FixedToVariableCode(3, 2, 1, enc_mapping)
 
 
+def test_empty_codeword():
+    with pytest.raises(ValueError, match="'enc_mapping': codewords must be non-empty"):
+        komm.FixedToVariableCode(3, 2, 1, {(0,): (), (1,): (1, 0), (2,): (1, 1)})
+
+
 @pytest.mark.parametrize(
     "codewords, source_cardinality, message",
     [

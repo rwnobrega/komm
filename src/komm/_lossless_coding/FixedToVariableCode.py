@@ -46,6 +46,8 @@ class FixedToVariableCode:
         domain, codomain = enc_mapping.keys(), enc_mapping.values()
         if not set(domain) == set(product(range(calX), repeat=k)):
             raise ValueError("'enc_mapping': invalid domain")
+        if not all(len(word) > 0 for word in codomain):
+            raise ValueError("'enc_mapping': codewords must be non-empty")
         if not all(all(0 <= y < calY for y in word) for word in codomain):
             raise ValueError("'enc_mapping': invalid co-domain")
         self._source_cardinality = calX
