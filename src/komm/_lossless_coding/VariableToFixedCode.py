@@ -305,7 +305,7 @@ class VariableToFixedCode:
             >>> code.is_uniquely_encodable()
             True
         """
-        return is_uniquely_parsable(self.sourcewords)
+        return self.is_prefix_free() or is_uniquely_parsable(self.sourcewords)
 
     @cache
     def is_prefix_free(self) -> bool:

@@ -352,7 +352,7 @@ class FixedToVariableCode:
             >>> code.is_uniquely_decodable()  # 010 can be parsed as 0|10 or 01|0
             False
         """
-        return is_uniquely_parsable(self.codewords)
+        return self.is_prefix_free() or is_uniquely_parsable(self.codewords)
 
     @cache
     def is_prefix_free(self) -> bool:
