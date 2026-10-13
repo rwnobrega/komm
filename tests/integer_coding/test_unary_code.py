@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 import komm
@@ -7,21 +8,14 @@ def test_unary_basic():
     message = [1, 2, 3, 4, 5]
     encoded = [1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1]
     code = komm.UnaryCode()
-    assert list(code.encode(message)) == encoded
-    assert list(code.decode(encoded)) == message
+    assert np.array_equal(code.encode(message), encoded)
+    assert np.array_equal(code.decode(encoded), message)
 
 
 @pytest.mark.parametrize("n", range(1, 200))
 def test_unary_code_length(n):
     code = komm.UnaryCode()
     assert code.length(n) == n
-
-
-@pytest.mark.parametrize("stream", [[1, 2, 0], [0, 5]])
-def test_unary_decode_rejects_non_binary(stream):
-    code = komm.UnaryCode()
-    with pytest.raises(ValueError, match="invalid bit"):
-        list(code.decode(stream))
 
 
 def test_unary_incomplete_codeword():
@@ -40,8 +34,8 @@ def test_unary_stop_bit_zero():
     message = [1, 2, 3, 4, 5]
     encoded = [0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0]
     code = komm.UnaryCode(stop_bit=0)
-    assert list(code.encode(message)) == encoded
-    assert list(code.decode(encoded)) == message
+    assert np.array_equal(code.encode(message), encoded)
+    assert np.array_equal(code.decode(encoded), message)
 
 
 @pytest.mark.parametrize("stop_bit", [-1, 2])

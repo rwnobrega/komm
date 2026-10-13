@@ -1,6 +1,5 @@
 from collections.abc import Iterator
-from itertools import islice
-from re import findall
+from re import escape, findall
 
 import numpy as np
 import pytest
@@ -36,13 +35,13 @@ def code(request: pytest.FixtureRequest):
 def test_integer_coding_constants(code: komm.abc.IntegerCode, n: int):
     for r in range(10):
         message = np.full(shape=(r,), fill_value=n)
-        assert np.array_equal(message, list(code.decode(code.encode(message))))
+        assert np.array_equal(message, code.decode(code.encode(message)))
 
 
 def test_integer_coding_random(code: komm.abc.IntegerCode, rng):
     for _ in range(10):
         message = rng.integers(1, 100, 100)
-        assert np.array_equal(message, list(code.decode(code.encode(message))))
+        assert np.array_equal(message, code.decode(code.encode(message)))
 
 
 @pytest.mark.parametrize("n", [1, 2, 3, 7, 8, 63, 64, 1000])
@@ -53,14 +52,6 @@ def test_integer_coding_length(code: komm.abc.IntegerCode, n: int):
 def test_integer_coding_length_numpy(code: komm.abc.IntegerCode):
     for n in np.arange(1, 100):
         assert code.length(n) == len(code.encode_single(n))
-
-
-def test_integer_coding_lazy_decode(code: komm.abc.IntegerCode):
-    message = [5, 1, 9, 2, 8]
-    bits = code.encode(message)
-    assert next(code.decode(bits)) == 5
-    assert list(islice(code.decode(bits), 2)) == [1, 9]
-    assert list(code.decode(bits)) == [2, 8]
 
 
 @pytest.mark.parametrize("n", [1, 2, 3, 7, 8, 63, 64, 1000])
@@ -74,8 +65,8 @@ def test_integer_coding_boundary_invariant(code: komm.abc.IntegerCode, n: int):
 
 
 def test_integer_coding_empty(code: komm.abc.IntegerCode):
-    assert list(code.encode([])) == []
-    assert list(code.decode([])) == []
+    assert code.encode([]).size == 0
+    assert code.decode([]).size == 0
     with pytest.raises(ValueError, match="incomplete codeword"):
         code.decode_single(iter([]))
 
@@ -86,15 +77,15 @@ def test_integer_coding_incomplete(code: komm.abc.IntegerCode, n: int):
     with pytest.raises(ValueError, match="incomplete codeword"):
         code.decode_single(iter(codeword[:-1]))
     with pytest.raises(ValueError, match="incomplete codeword"):
-        list(code.decode(codeword[:-1]))
+        code.decode(codeword[:-1])
 
 
-@pytest.mark.parametrize("message", [[0], [-1], [1, 0, 2]])
-def test_integer_coding_rejects_nonpositive(code: komm.abc.IntegerCode, message):
+@pytest.mark.parametrize("integer", [0, -1])
+def test_integer_coding_rejects_nonpositive(code: komm.abc.IntegerCode, integer):
     with pytest.raises(ValueError, match="'integer' must be a positive integer"):
-        list(code.encode(message))
+        code.encode_single(integer)
     with pytest.raises(ValueError, match="'integer' must be a positive integer"):
-        code.length(min(message))
+        code.length(integer)
 
 
 @pytest.mark.parametrize("integer", [4.0, 4.5])
@@ -115,7 +106,7 @@ def test_integer_coding_composition(code: komm.abc.IntegerCode):
     message = [9, 2, 5]
     bits = iter(unary.encode_single(len(message)) + tuple(code.encode(message)))
     num = unary.decode_single(bits)
-    assert list(islice(code.decode(bits), num)) == message
+    assert [code.decode_single(bits) for _ in range(num)] == message
     assert list(bits) == []
 
 
@@ -158,6 +149,36 @@ def test_integer_coding_decode_single_not_integer(code: komm.abc.IntegerCode, n:
 
 def test_integer_coding_decode_single_numpy(code: komm.abc.IntegerCode):
     message = [9, 2, 5]
-    bits: Iterator[np.integer] = iter(np.array(list(code.encode(message))))
+    bits: Iterator[np.integer] = iter(code.encode(message))
     assert [code.decode_single(bits) for _ in message] == message
     assert list(bits) == []
+
+
+@pytest.mark.parametrize(
+    "x, message",
+    [
+        ([1, 0, 2], "elements of 'input' must be at least 1"),
+        ([[1, 2], [3, 4]], "'input' must be a 1D-array"),
+    ],
+)
+def test_integer_coding_encode_invalid(code: komm.abc.IntegerCode, x, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        code.encode(x)
+
+
+@pytest.mark.parametrize(
+    "y, message",
+    [
+        ([1, 2, 0], "elements of 'input' must be in [0:2)"),
+        ([[0, 1], [1, 0]], "'input' must be a 1D-array"),
+    ],
+)
+def test_integer_coding_decode_invalid(code: komm.abc.IntegerCode, y, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        code.decode(y)
+
+
+@pytest.mark.parametrize("method", ["encode", "decode"])
+def test_integer_coding_not_integer(code: komm.abc.IntegerCode, method):
+    with pytest.raises(TypeError, match="'input' must contain only integers"):
+        getattr(code, method)([0.5, 1.0])

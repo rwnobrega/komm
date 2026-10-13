@@ -1,5 +1,6 @@
 from itertools import product
 
+import numpy as np
 import pytest
 
 import komm
@@ -9,8 +10,8 @@ def test_taboo_basic():
     message = [1, 2, 3, 4, 5]
     encoded = [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0]
     code = komm.TabooCode(3)
-    assert list(code.encode(message)) == encoded
-    assert list(code.decode(encoded)) == message
+    assert np.array_equal(code.encode(message), encoded)
+    assert np.array_equal(code.decode(encoded), message)
 
 
 def test_taboo_book_table():

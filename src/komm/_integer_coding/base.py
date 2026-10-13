@@ -1,10 +1,15 @@
 from abc import ABC, abstractmethod
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from itertools import chain, islice
 from operator import index
 from typing import SupportsIndex
 
+import numpy as np
+import numpy.typing as npt
+
 from .._lossless_coding.util import Word
+from .._util.validators import validate_integer_array
+from ..types import Array1D
 
 
 class IntegerCode(ABC):
@@ -37,7 +42,7 @@ class IntegerCode(ABC):
             integer: The decoded integer.
 
         Notes:
-            A ValueError is raised if the iterator is exhausted mid-codeword or if an invalid bit is found. In contrast, `next(self.decode(bits))` behaves identically except on an exhausted iterator, where it raises StopIteration (end of data) instead of ValueError (malformed data).
+            A ValueError is raised if the iterator is exhausted mid-codeword or if an invalid bit is found.
         """
         raise NotImplementedError
 
@@ -47,35 +52,34 @@ class IntegerCode(ABC):
         """
         return len(self.encode_single(integer))
 
-    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
-        Lazily encodes an iterable of integers.
+        Encodes a sequence of integers.
 
         Parameters:
-            input: The integers to be encoded. Must all be in the domain of the code.
+            input: The sequence of integers to be encoded. Must be a 1D-array of positive integers.
 
         Returns:
-            output: An iterator over the bits of the concatenated codewords.
+            output: The concatenation of the codewords. It is a 1D-array of bits.
         """
-        for integer in input:
-            yield from self.encode_single(integer)
+        input = validate_integer_array(input, low=1, ndim=1)
+        output = [bit for n in input.tolist() for bit in self.encode_single(n)]
+        return np.array(output, dtype=int)
 
-    def decode(self, input: Iterable[int]) -> Iterator[int]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
-        Lazily decodes an iterable of bits.
-
-        Note:
-            Decoding is lazy: invalid or truncated input only raises ValueError when the offending codeword is consumed.
+        Decodes a sequence of bits.
 
         Parameters:
-            input: The bits to be decoded. Must be a concatenation of codewords, possibly partial.
+            input: The sequence of bits to be decoded. Must be a 1D-array of bits. Also, the sequence must be a concatenation of codewords (i.e., the output of the `encode` method).
 
         Returns:
-            output: An iterator over the decoded integers.
+            output: The sequence of decoded integers. It is a 1D-array of positive integers.
         """
-        it = iter(input)
-        for first in it:
-            yield self.decode_single(chain([first], it))
+        input = validate_integer_array(input, low=0, high=2, ndim=1)
+        it = iter(input.tolist())
+        output = [self.decode_single(chain([first], it)) for first in it]
+        return np.array(output, dtype=int)
 
 
 def take(bits: Iterator[SupportsIndex], num: int) -> list[int]:

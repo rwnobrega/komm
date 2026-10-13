@@ -1,11 +1,15 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import SupportsIndex
+
+import numpy as np
+import numpy.typing as npt
 
 from .. import abc
 from .._lossless_coding.TruncatedBinaryCode import TruncatedBinaryCode
 from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
+from ..types import Array1D
 
 
 @dataclass
@@ -85,20 +89,20 @@ class EscapeCode(abc.IntegerCode):
         escape_length = len(self._block_code.encode_single(self.divisor))
         return q * escape_length + len(self._block_code.encode_single(r))
 
-    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EscapeCode(3)
-            >>> list(code.encode([4, 1, 3]))
-            [1, 1, 0, 0, 0, 0, 1, 0]
+            >>> code.encode([4, 1, 3])
+            array([1, 1, 0, 0, 0, 0, 1, 0])
         """
         return super().encode(input)
 
-    def decode(self, input: Iterable[int]) -> Iterator[int]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EscapeCode(3)
-            >>> list(code.decode([1, 1, 0, 0, 0, 0, 1, 0]))
-            [4, 1, 3]
+            >>> code.decode([1, 1, 0, 0, 0, 0, 1, 0])
+            array([4, 1, 3])
         """
         return super().decode(input)

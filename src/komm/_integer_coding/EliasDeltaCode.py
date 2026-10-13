@@ -1,10 +1,14 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from typing import SupportsIndex
+
+import numpy as np
+import numpy.typing as npt
 
 from .. import abc
 from .._lossless_coding.util import Word
 from .._util.bit_operations import from_binary, to_binary
 from .._util.validators import validate_positive_integer
+from ..types import Array1D
 from .base import take
 from .EliasGammaCode import EliasGammaCode
 
@@ -67,20 +71,20 @@ class EliasDeltaCode(abc.IntegerCode):
         num_bits = integer.bit_length()
         return self.gamma_code.length(num_bits) + num_bits - 1
 
-    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EliasDeltaCode()
-            >>> list(code.encode([4, 1, 3]))
-            [0, 1, 1, 0, 0, 1, 0, 1, 0, 1]
+            >>> code.encode([4, 1, 3])
+            array([0, 1, 1, 0, 0, 1, 0, 1, 0, 1])
         """
         return super().encode(input)
 
-    def decode(self, input: Iterable[int]) -> Iterator[int]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EliasDeltaCode()
-            >>> list(code.decode([0, 1, 1, 0, 0, 1, 0, 1, 0, 1]))
-            [4, 1, 3]
+            >>> code.decode([0, 1, 1, 0, 0, 1, 0, 1, 0, 1])
+            array([4, 1, 3])
         """
         return super().decode(input)

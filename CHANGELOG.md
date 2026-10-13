@@ -50,6 +50,8 @@
 
 - Changed `encode_single` of integer codes to return a tuple instead of a list.
 
+- Changed `encode` and `decode` of integer codes to work on arrays instead of iterators. Instead of `list(code.decode(bits))`, use `code.decode(bits)`; to decode one codeword at a time from an iterator, use `decode_single`.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

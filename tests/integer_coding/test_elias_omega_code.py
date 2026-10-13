@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 import komm
@@ -7,8 +8,8 @@ def test_elias_omega_basic():
     message = [1, 2, 3, 4, 5]
     encoded = [0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]
     code = komm.EliasOmegaCode()
-    assert list(code.encode(message)) == encoded
-    assert list(code.decode(encoded)) == message
+    assert np.array_equal(code.encode(message), encoded)
+    assert np.array_equal(code.decode(encoded), message)
 
 
 @pytest.mark.parametrize(

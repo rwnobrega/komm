@@ -1,10 +1,14 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from typing import SupportsIndex
+
+import numpy as np
+import numpy.typing as npt
 
 from .. import abc
 from .._lossless_coding.util import Word
 from .._util.bit_operations import from_binary, to_binary
 from .._util.validators import validate_positive_integer
+from ..types import Array1D
 from .base import take
 
 
@@ -78,20 +82,20 @@ class EliasOmegaCode(abc.IntegerCode):
             integer = num_bits - 1
         return length
 
-    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EliasOmegaCode()
-            >>> list(code.encode([4, 1, 3]))
-            [1, 0, 1, 0, 0, 0, 0, 1, 1, 0]
+            >>> code.encode([4, 1, 3])
+            array([1, 0, 1, 0, 0, 0, 0, 1, 1, 0])
         """
         return super().encode(input)
 
-    def decode(self, input: Iterable[int]) -> Iterator[int]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.EliasOmegaCode()
-            >>> list(code.decode([1, 0, 1, 0, 0, 0, 0, 1, 1, 0]))
-            [4, 1, 3]
+            >>> code.decode([1, 0, 1, 0, 0, 0, 0, 1, 1, 0])
+            array([4, 1, 3])
         """
         return super().decode(input)

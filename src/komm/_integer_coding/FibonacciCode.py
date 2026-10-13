@@ -1,11 +1,15 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from functools import cache
 from operator import index
 from typing import SupportsIndex
 
+import numpy as np
+import numpy.typing as npt
+
 from .. import abc
 from .._lossless_coding.util import Word
 from .._util.validators import validate_positive_integer
+from ..types import Array1D
 
 
 class FibonacciCode(abc.IntegerCode):
@@ -78,21 +82,21 @@ class FibonacciCode(abc.IntegerCode):
         """
         return super().length(integer)
 
-    def encode(self, input: Iterable[SupportsIndex]) -> Iterator[int]:
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
-            >>> list(code.encode([4, 1, 3]))
-            [1, 0, 1, 1, 1, 1, 0, 0, 1, 1]
+            >>> code.encode([4, 1, 3])
+            array([1, 0, 1, 1, 1, 1, 0, 0, 1, 1])
         """
         return super().encode(input)
 
-    def decode(self, input: Iterable[int]) -> Iterator[int]:
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
-            >>> list(code.decode([1, 0, 1, 1, 1, 1, 0, 0, 1, 1]))
-            [4, 1, 3]
+            >>> code.decode([1, 0, 1, 1, 1, 1, 0, 0, 1, 1])
+            array([4, 1, 3])
         """
         return super().decode(input)
 
