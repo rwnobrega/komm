@@ -98,7 +98,7 @@ Source coding:
     - LempelZivSSCode
     - LempelZiv78Code
     - LempelZivWelchCode
-  Integer coding:
+  Integer codes:
     - UnaryCode
     - GolombCode
     - EscapeCode
