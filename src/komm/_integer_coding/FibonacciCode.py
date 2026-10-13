@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Iterator
 from functools import cache
+from operator import index
 from typing import SupportsIndex
 
 from .. import abc
@@ -45,7 +46,7 @@ class FibonacciCode(abc.IntegerCode):
                 integer -= fibonacci(i)
         return bits + [1]
 
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Examples:
             >>> code = komm.FibonacciCode()
@@ -57,7 +58,7 @@ class FibonacciCode(abc.IntegerCode):
         """
         integer = 0
         last = 0
-        for pos, bit in enumerate(bits):
+        for pos, bit in enumerate(map(index, bits)):
             if bit == 1:
                 if last == 1:
                     return integer

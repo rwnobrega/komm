@@ -57,7 +57,7 @@ class GolombCode(abc.IntegerCode):
             bits += self._remainder_code.encode_single(r)
         return bits
 
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Examples:
             >>> code = komm.GolombCode(3)

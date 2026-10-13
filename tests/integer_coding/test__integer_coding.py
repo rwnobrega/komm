@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from itertools import islice
 from re import findall
 
@@ -146,3 +147,17 @@ def test_integer_coding_docstring_table(cls):
         for code, cell in zip(codes, row[1:], strict=True):
             codeword = [int(bit) for bit in cell.strip(" `").replace(" ", "")]
             assert code.encode_single(n) == codeword
+
+
+@pytest.mark.parametrize("n", [1, 45])
+def test_integer_coding_decode_single_not_integer(code: komm.abc.IntegerCode, n: int):
+    bits = iter([float(bit) for bit in code.encode_single(n)])
+    with pytest.raises(TypeError, match="cannot be interpreted as an integer"):
+        code.decode_single(bits)  # type: ignore
+
+
+def test_integer_coding_decode_single_numpy(code: komm.abc.IntegerCode):
+    message = [9, 2, 5]
+    bits: Iterator[np.integer] = iter(np.array(list(code.encode(message))))
+    assert [code.decode_single(bits) for _ in message] == message
+    assert list(bits) == []

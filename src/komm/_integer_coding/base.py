@@ -24,7 +24,7 @@ class IntegerCode(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Decodes a single codeword from a bit iterator. This method consumes exactly the bits of one codeword, leaving the iterator at the boundary with the next one; any remaining bits are left untouched.
 

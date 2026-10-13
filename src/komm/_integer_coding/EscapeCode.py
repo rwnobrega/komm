@@ -55,7 +55,7 @@ class EscapeCode(abc.IntegerCode):
             bits += self._block_code.encode_single(value)
         return bits
 
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Examples:
             >>> code = komm.EscapeCode(3)

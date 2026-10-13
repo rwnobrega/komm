@@ -42,7 +42,7 @@ class EliasGammaCode(abc.IntegerCode):
         binary = to_binary(integer, bit_order="MSB-first")
         return self.unary_code.encode_single(len(binary)) + binary[1:]
 
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Examples:
             >>> code = komm.EliasGammaCode()

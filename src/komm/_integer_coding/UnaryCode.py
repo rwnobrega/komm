@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
+from operator import index
 from typing import Literal, SupportsIndex
 
 from .. import abc
@@ -52,7 +53,7 @@ class UnaryCode(abc.IntegerCode):
         integer = validate_positive_integer(integer)
         return [1 - self.stop_bit] * (integer - 1) + [self.stop_bit]
 
-    def decode_single(self, bits: Iterator[int]) -> int:
+    def decode_single(self, bits: Iterator[SupportsIndex]) -> int:
         r"""
         Examples:
             >>> code = komm.UnaryCode()
@@ -69,7 +70,7 @@ class UnaryCode(abc.IntegerCode):
             >>> list(bits)  # Iterator is left at codeword boundary
             [0, 1]
         """
-        for pos, bit in enumerate(bits):
+        for pos, bit in enumerate(map(index, bits)):
             if bit == self.stop_bit:
                 return pos + 1
             if bit != 1 - self.stop_bit:
