@@ -84,10 +84,6 @@ class TunstallCode(VariableToFixedCode):
         return True
 
     @cache
-    def is_uniquely_encodable(self) -> bool:
-        return True
-
-    @cache
     def is_prefix_free(self) -> bool:
         return True
 
