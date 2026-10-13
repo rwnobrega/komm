@@ -55,7 +55,7 @@ def test_parameters_not_integer(args, message):
 @pytest.mark.parametrize(
     "sourcewords, target_cardinality, message",
     [
-        ([(), (0, 1)], 2, "'sourcewords' must be non-empty"),
+        ([(), (0, 1)], 2, "elements of 'sourcewords' must be non-empty"),
         ([(0,), (1,), (0, 1)], 1, "'target_cardinality' must be at least 2"),
     ],
 )
@@ -84,12 +84,30 @@ def test_invalid_dec_mapping_domain(dec_mapping):
     [
         {(0, 0): (0,), (0, 1): (0, 2)},  # Symbol out of range
         {(0, 0): (0,), (0, 1): (0, -1)},  # Negative symbol
-        {(0, 0): (0,), (0, 1): ()},  # Empty word
     ],
 )
 def test_invalid_dec_mapping_codomain(dec_mapping):
     with pytest.raises(ValueError, match="'dec_mapping': invalid co-domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
+
+
+def test_empty_sourceword():
+    with pytest.raises(
+        ValueError, match="'dec_mapping': sourcewords must be non-empty"
+    ):
+        komm.VariableToFixedCode(2, 2, 2, {(0, 0): (0,), (0, 1): ()})
+
+
+@pytest.mark.parametrize(
+    "dec_mapping, message",
+    [
+        ({(0, 0): (0,), (1,): (1,)}, "'dec_mapping': invalid domain"),
+        ({(0,): (), (1,): (1,)}, "'dec_mapping': sourcewords must be non-empty"),
+    ],
+)
+def test_from_dec_mapping_invalid(dec_mapping, message):
+    with pytest.raises(ValueError, match=message):
+        komm.VariableToFixedCode.from_dec_mapping(dec_mapping)
 
 
 def test_rate():

@@ -137,9 +137,21 @@ def test_empty_codeword():
 
 
 @pytest.mark.parametrize(
+    "enc_mapping, message",
+    [
+        ({(0,): (0,), (2,): (1,)}, "'enc_mapping': invalid domain"),
+        ({(0,): (), (1,): (1,)}, "'enc_mapping': codewords must be non-empty"),
+    ],
+)
+def test_from_enc_mapping_invalid(enc_mapping, message):
+    with pytest.raises(ValueError, match=message):
+        komm.FixedToVariableCode.from_enc_mapping(enc_mapping)
+
+
+@pytest.mark.parametrize(
     "codewords, source_cardinality, message",
     [
-        ([(), (0, 1)], None, "'codewords' must be non-empty"),
+        ([(), (0, 1)], None, "elements of 'codewords' must be non-empty"),
         ([(0,), (1,), (0, 1)], 1, "'source_cardinality' must be at least 2"),
         ([(0,), (1, 0), (1, 1)], 2, "must be a power of source cardinality 2 (got 3)"),
     ],

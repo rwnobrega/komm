@@ -38,9 +38,9 @@ class VariableToFixedCode:
         domain, codomain = dec_mapping.keys(), dec_mapping.values()
         if not set(domain) <= set(product(range(calY), repeat=n)):
             raise ValueError("'dec_mapping': invalid domain")
-        if not all(
-            all(0 <= x < calX for x in word) and len(word) > 0 for word in codomain
-        ):
+        if not all(len(word) > 0 for word in codomain):
+            raise ValueError("'dec_mapping': sourcewords must be non-empty")
+        if not all(all(0 <= x < calX for x in word) for word in codomain):
             raise ValueError("'dec_mapping': invalid co-domain")
         self._target_cardinality = calY
         self._source_cardinality = calX
@@ -95,7 +95,7 @@ class VariableToFixedCode:
         """
         domain, codomain = dec_mapping.keys(), dec_mapping.values()
         calY = max(max(word) for word in domain) + 1
-        calX = max(max(word) for word in codomain) + 1
+        calX = max((x for word in codomain for x in word), default=0) + 1
         n = len(next(iter(domain)))
         return cls(calY, calX, n, dec_mapping)
 
@@ -154,8 +154,8 @@ class VariableToFixedCode:
             >>> code.dec_mapping
             {(0,): (0, 0), (1,): (0, 1), (2,): (1,)}
         """
-        if any(len(sourceword) == 0 for sourceword in sourcewords):
-            raise ValueError("'sourcewords' must be non-empty")
+        if not all(len(sourceword) > 0 for sourceword in sourcewords):
+            raise ValueError("elements of 'sourcewords' must be non-empty")
         calY = validate_integer(target_cardinality, low=2)
         calX = max(max(word) for word in sourcewords) + 1
         n = next(n for n in count(1) if calY**n >= len(sourcewords))

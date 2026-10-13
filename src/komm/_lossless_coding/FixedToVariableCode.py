@@ -99,7 +99,7 @@ class FixedToVariableCode:
         """
         domain, codomain = enc_mapping.keys(), enc_mapping.values()
         calX = max(max(word) for word in domain) + 1
-        calY = max(max(word) for word in codomain) + 1
+        calY = max((y for word in codomain for y in word), default=0) + 1
         k = len(next(iter(domain)))
         return cls(calX, calY, k, enc_mapping)
 
@@ -150,8 +150,8 @@ class FixedToVariableCode:
             ...
             ValueError: length of 'codewords' must be a power of source cardinality 2 (got 3)
         """
-        if any(len(codeword) == 0 for codeword in codewords):
-            raise ValueError("'codewords' must be non-empty")
+        if not all(len(codeword) > 0 for codeword in codewords):
+            raise ValueError("elements of 'codewords' must be non-empty")
         if source_cardinality is None:
             source_cardinality = len(codewords)
         calX = validate_integer(source_cardinality, low=2)
