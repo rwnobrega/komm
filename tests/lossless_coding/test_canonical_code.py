@@ -1,4 +1,5 @@
-import numpy as np
+from re import escape
+
 import pytest
 
 from komm._lossless_coding.util import canonical_code, is_prefix_free
@@ -69,14 +70,26 @@ def test_canonical_code_kraft(lengths, base):
         canonical_code(lengths, base=base)
 
 
-def test_canonical_code_invalid():
-    with pytest.raises(ValueError, match="'lengths' must be a 1D-array"):
-        canonical_code(np.array([[1, 2], [3, 4]]))
-    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 0"):
-        canonical_code([-1, 0, 1])
-    with pytest.raises(TypeError, match="'lengths' must contain only integers"):
-        canonical_code([1.0, 2.0, 2.0])
-    with pytest.raises(ValueError, match=r"'base' must be at least 2 \(got 1\)"):
-        canonical_code([1, 2, 2], base=1)
-    with pytest.raises(TypeError, match=r"'base' must be an integer \(got float\)"):
-        canonical_code([1, 2, 2], base=2.0)  # type: ignore
+@pytest.mark.parametrize(
+    "lengths, base, message",
+    [
+        ([[1, 2], [3, 4]], 2, "'lengths' must be a 1D-array"),
+        ([-1, 0, 1], 2, "elements of 'lengths' must be at least 0"),
+        ([1, 2, 2], 1, "'base' must be at least 2 (got 1)"),
+    ],
+)
+def test_canonical_code_invalid(lengths, base, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        canonical_code(lengths, base=base)
+
+
+@pytest.mark.parametrize(
+    "lengths, base, message",
+    [
+        ([1.0, 2.0, 2.0], 2, "'lengths' must contain only integers"),
+        ([1, 2, 2], 2.0, "'base' must be an integer (got float)"),
+    ],
+)
+def test_canonical_code_not_integer(lengths, base, message):
+    with pytest.raises(TypeError, match=escape(message)):
+        canonical_code(lengths, base=base)

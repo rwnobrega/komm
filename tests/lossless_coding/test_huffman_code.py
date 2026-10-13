@@ -141,15 +141,25 @@ def test_huffman_code_tree_assignment_needs_the_tree():
     assert code1.codewords != code2.codewords
 
 
-def test_huffman_code_invalid_call():
-    with pytest.raises(ValueError, match="must sum to 1.0"):
-        komm.HuffmanCode([0.5, 0.5, 0.1])
-    with pytest.raises(ValueError, match="must be a 1D-array"):
-        komm.HuffmanCode([[0.5], [0.5]])
-    with pytest.raises(ValueError, match="'pmf' must have size at least 2"):
-        komm.HuffmanCode([1.0])
+@pytest.mark.parametrize(
+    "pmf, message",
+    [
+        ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),
+        ([[0.5], [0.5]], "'pmf' must be a 1D-array"),
+        ([1.0], "'pmf' must have size at least 2"),
+    ],
+)
+def test_huffman_code_invalid_pmf(pmf, message):
+    with pytest.raises(ValueError, match=message):
+        komm.HuffmanCode(pmf)
+
+
+def test_huffman_code_invalid_policy():
     with pytest.raises(ValueError, match="'policy' must be 'high' or 'low'"):
         komm.HuffmanCode([0.5, 0.5], policy="unknown")  # type: ignore
+
+
+def test_huffman_code_invalid_assignment():
     with pytest.raises(ValueError, match="'assignment' must be 'tree' or 'canonical'"):
         komm.HuffmanCode([0.5, 0.5], assignment="unknown")  # type: ignore
 
