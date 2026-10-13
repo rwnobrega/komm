@@ -6,6 +6,7 @@ import pytest
 
 import komm
 import komm.abc
+from komm._lossless_coding.util import is_prefix_free
 
 from .util import deterministic_pmf, extended_pmf, random_pmf
 
@@ -69,8 +70,7 @@ def test_symbol_codes_random_pmf(constructor, S, k, rng):
         pmf_k = extended_pmf(pmf, k)
         code: komm.abc.SymbolCode = constructor(pmf_k)
         rate = code.average_length(pmf_k) / k
-        assert code.is_uniquely_decodable()
-        assert code.is_prefix_free()
+        assert is_prefix_free(code.codewords)
         assert code.kraft_parameter() <= 1
         assert entropy <= rate <= entropy + 1 / k
         pmf1_k = extended_pmf(rng.permutation(pmf), k)

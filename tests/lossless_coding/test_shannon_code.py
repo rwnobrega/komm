@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._lossless_coding.util import is_prefix_free
 
 from .util import extended_pmf, random_pmf
 
@@ -86,7 +87,7 @@ def test_shannon_code_kraft(S, rng):
 def test_shannon_code_almost_deterministic():
     code = komm.ShannonCode([1.0, 1e-17])
     assert code.codewords[0] == (0,)
-    assert code.is_prefix_free()
+    assert is_prefix_free(code.codewords)
     assert code.kraft_parameter() <= 1
 
 

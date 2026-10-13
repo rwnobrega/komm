@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._lossless_coding.util import is_fully_covering, is_prefix_free
 
 from .util import random_pmf
 
@@ -23,7 +24,7 @@ def test_tunstall_code():
         (1, 1, 0): (2,),
     }
     assert np.isclose(code.rate(pmf), 3 / 1.96)
-    assert code.is_fully_covering()
+    assert is_fully_covering(code.sourcewords, code.source_cardinality)
 
 
 @pytest.mark.parametrize(
@@ -66,9 +67,8 @@ def test_tunstall_code_random_pmf(source_cardinality, target_block_size, rng):
         pmf = random_pmf(rng, source_cardinality)
         code = komm.TunstallCode(pmf, target_block_size)
         assert code.size <= 2**target_block_size
-        assert code.is_fully_covering()
-        assert code.is_uniquely_encodable()
-        assert code.is_prefix_free()
+        assert is_fully_covering(code.sourcewords, source_cardinality)
+        assert is_prefix_free(code.sourcewords)
         assert code.rate(pmf) >= komm.entropy(pmf)
         # Permute pmf and check if the rate is the same.
         pmf1 = pmf[rng.permutation(source_cardinality)]
