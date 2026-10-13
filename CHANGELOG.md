@@ -40,7 +40,7 @@
 
 - Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers instead of a NumPy array.
 
-- Changed `HuffmanCode`, `FanoCode`, and `ShannonCode` from subclasses of `FixedToVariableCode` to subclasses of `abc.SymbolCode`, with integer keys in `enc_mapping` and `average_length` in place of `rate`; removed their `source_block_size` and `size`. Instead of `komm.HuffmanCode(pmf, k)` and `code.rate(pmf)`, use `komm.HuffmanCode(pmf_k)` and `code.average_length(pmf_k) / k`, where `pmf_k = functools.reduce(np.kron, [pmf] * k)`.
+- Changed `HuffmanCode`, `FanoCode`, and `ShannonCode` from subclasses of `FixedToVariableCode` to subclasses of `abc.SymbolCode`, with integer keys in `enc_mapping` and `average_length` in place of `rate`; removed their `source_block_size` and `size`. Instead of `komm.HuffmanCode(pmf, k)` and `code.rate(pmf)`, use `komm.HuffmanCode(pmf_k)` and `code.average_length(pmf_k) / k`, where `pmf_k = functools.reduce(np.kron, [pmf] * k)`, as in the [extended Huffman recipe](https://komm.dev/recipes/extended-huffman).
 
 - Changed `ShannonCode` to assign the codewords from the cumulative probabilities, as in Shannon's original construction; for the previous codewords, use `assignment="canonical"`.
 
