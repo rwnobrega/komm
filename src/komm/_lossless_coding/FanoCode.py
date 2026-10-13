@@ -1,3 +1,4 @@
+from functools import cache
 from operator import itemgetter
 from typing import Literal
 
@@ -72,6 +73,10 @@ class FanoCode(abc.SymbolCode):
     @property
     def enc_mapping(self) -> dict[int, Word]:
         return self._enc_mapping
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        return True
 
 
 def fano_code(

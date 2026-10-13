@@ -1,4 +1,5 @@
 from fractions import Fraction
+from functools import cache
 from math import floor
 from operator import itemgetter
 from typing import Literal
@@ -80,6 +81,10 @@ class ShannonCode(abc.SymbolCode):
     @property
     def enc_mapping(self) -> dict[int, Word]:
         return self._enc_mapping
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        return True
 
 
 def shannon_code_lengths(pmf: Array1D[np.floating]) -> Array1D[np.integer]:
