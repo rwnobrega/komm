@@ -13,22 +13,32 @@ def test_tunstall_code():
     # [Say06, p. 71]
     pmf = [0.6, 0.3, 0.1]
     code = komm.TunstallCode(pmf, 3)
-    assert code._inv_dec_mapping == {
+    assert code.dec_mapping == {
         (0, 0, 0): (0, 0, 0),
         (0, 0, 1): (0, 0, 1),
-        (0, 0, 2): (0, 1, 0),
-        (0, 1): (0, 1, 1),
-        (0, 2): (1, 0, 0),
-        (1,): (1, 0, 1),
-        (2,): (1, 1, 0),
+        (0, 1, 0): (0, 0, 2),
+        (0, 1, 1): (0, 1),
+        (1, 0, 0): (0, 2),
+        (1, 0, 1): (1,),
+        (1, 1, 0): (2,),
     }
     assert np.isclose(code.rate(pmf), 3 / 1.96)
     assert code.is_fully_covering()
 
 
-def test_tunstall_code_invalid_init():
-    with pytest.raises(ValueError, match="'pmf' must sum to 1.0"):
-        komm.TunstallCode([0.5, 0.5, 0.1], 3)
+@pytest.mark.parametrize(
+    "pmf, message",
+    [
+        ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),
+        ([[0.5], [0.5]], "'pmf' must be a 1D-array"),
+    ],
+)
+def test_tunstall_code_invalid_pmf(pmf, message):
+    with pytest.raises(ValueError, match=message):
+        komm.TunstallCode(pmf)
+
+
+def test_tunstall_code_not_integer():
     with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
         komm.TunstallCode([0.5, 0.5], 2.0)  # type: ignore
 

@@ -12,85 +12,74 @@ def test_lengths():
     assert code.lengths == [len(x) for x in code.sourcewords]
 
 
-def test_invalid_target_cardinality():
-    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
-        komm.VariableToFixedCode(1, 2, 1, {(0,): (0,)})
-
-
-def test_invalid_source_cardinality():
-    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
-        komm.VariableToFixedCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((1, 2, 1), "'target_cardinality' must be at least 2 (got 1)"),
+        ((2, 1, 1), "'source_cardinality' must be at least 2 (got 1)"),
+        ((2, 2, 0), "'target_block_size' must be a positive integer (got 0)"),
+    ],
+)
+def test_invalid_parameters(args, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.VariableToFixedCode(*args, dec_mapping={(0,): (0,), (1,): (1,)})
 
 
 def test_integer_parameters():
     dec_mapping = {(0,): (0,), (1,): (1,)}
     code = komm.VariableToFixedCode(np.int64(2), 2, 1, dec_mapping)  # type: ignore
     assert type(code.target_cardinality) is int
-    with pytest.raises(TypeError, match="'target_block_size' must be an integer"):
-        komm.VariableToFixedCode(2, 2, 1.0, dec_mapping)  # type: ignore
 
 
-def test_from_sourcewords_invalid_target_cardinality():
-    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((2.0, 2, 1), "'target_cardinality' must be an integer (got float)"),
+        ((2, 2.0, 1), "'source_cardinality' must be an integer (got float)"),
+        ((2, 2, 1.0), "'target_block_size' must be an integer (got float)"),
+    ],
+)
+def test_parameters_not_integer(args, message):
+    with pytest.raises(TypeError, match=escape(message)):
+        komm.VariableToFixedCode(*args, dec_mapping={(0,): (0,), (1,): (1,)})
+
+
+@pytest.mark.parametrize(
+    "sourcewords, target_cardinality, message",
+    [
+        ([(), (0, 1)], 2, "'sourcewords' must be non-empty"),
+        ([(0,), (1,), (0, 1)], 1, "'target_cardinality' must be at least 2"),
+    ],
+)
+def test_from_sourcewords_invalid(sourcewords, target_cardinality, message):
+    with pytest.raises(ValueError, match=message):
         komm.VariableToFixedCode.from_sourcewords(
-            [(0,), (1,), (0, 1)],
-            target_cardinality=1,
+            sourcewords,
+            target_cardinality=target_cardinality,
         )
 
 
-def test_from_sourcewords_empty():
-    with pytest.raises(ValueError, match="sourcewords' must be non-empty"):
-        komm.VariableToFixedCode.from_sourcewords([(), (0, 1)])
-
-
-def test_invalid_dec_mapping_domain_1():
-    dec_mapping: dict = {
-        (0, 0): (0, 0, 0),
-        (0, 1): (0, 0, 1),
-        (1, 0): (0, 1),
-        (1, 1): (1,),
-    }
-    komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-    dec_mapping[(2, 1)] = dec_mapping.pop((0, 1))
+@pytest.mark.parametrize(
+    "dec_mapping",
+    [
+        {(0, 0): (0,), (2, 1): (1,)},  # Symbol out of range
+        {(0, 0): (0,), (1,): (1,)},  # Word of wrong length
+    ],
+)
+def test_invalid_dec_mapping_domain(dec_mapping):
     with pytest.raises(ValueError, match="'dec_mapping': invalid domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
 
-def test_invalid_dec_mapping_domain_2():
-    dec_mapping: dict = {
-        (0, 0): (0, 0, 0),
-        (0, 1): (0, 0, 1),
-        (1, 0): (0, 1),
-        (1, 1): (1,),
-    }
-    komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-    dec_mapping[(0,)] = dec_mapping.pop((0, 1))
-    with pytest.raises(ValueError, match="'dec_mapping': invalid domain"):
-        komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-
-
-def test_invalid_dec_mapping_codomain_1():
-    dec_mapping: dict = {
-        (0, 0): (0, 0, 0),
-        (0, 1): (0, 0, 1),
-        (1, 0): (0, 1),
-        (1, 1): (1,),
-    }
-    komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-    dec_mapping[(0, 1)] = (0, 0, 2)
-    with pytest.raises(ValueError, match="'dec_mapping': invalid co-domain"):
-        komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-
-
-def test_invalid_dec_mapping_codomain_2():
-    dec_mapping: dict = {
-        (0, 0): (0, 0, 0),
-        (0, 1): (0, 0, 1),
-        (1, 0): (0, 1),
-        (1, 1): (1,),
-    }
-    komm.VariableToFixedCode(2, 2, 2, dec_mapping)
-    dec_mapping[(0, 1)] = ()
+@pytest.mark.parametrize(
+    "dec_mapping",
+    [
+        {(0, 0): (0,), (0, 1): (0, 2)},  # Symbol out of range
+        {(0, 0): (0,), (0, 1): (0, -1)},  # Negative symbol
+        {(0, 0): (0,), (0, 1): ()},  # Empty word
+    ],
+)
+def test_invalid_dec_mapping_codomain(dec_mapping):
     with pytest.raises(ValueError, match="'dec_mapping': invalid co-domain"):
         komm.VariableToFixedCode(2, 2, 2, dec_mapping)
 
@@ -107,6 +96,8 @@ def test_rate():
     [
         ([0.5, 0.6], "'pmf' must sum to 1.0"),
         ([-0.4, 1.4], "'pmf' must be non-negative"),
+        ([1.0], "'pmf' must have size 2 (got 1)"),
+        ([0.2, 0.3, 0.5], "'pmf' must have size 2 (got 3)"),
     ],
 )
 def test_rate_invalid_pmf(pmf, message):
@@ -117,17 +108,7 @@ def test_rate_invalid_pmf(pmf, message):
         code.rate(pmf)
 
 
-@pytest.mark.parametrize("pmf", [[1.0], [0.2, 0.3, 0.5]])
-def test_rate_pmf_size(pmf):
-    code = komm.VariableToFixedCode.from_sourcewords(
-        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
-    )
-    message = f"'pmf' must have size 2 (got {len(pmf)})"
-    with pytest.raises(ValueError, match=escape(message)):
-        code.rate(pmf)
-
-
-def test_encoding_decoding():
+def test_encode_decode():
     # [Say06, Example 3.7.1]
     code = komm.VariableToFixedCode.from_sourcewords(
         [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
@@ -138,10 +119,30 @@ def test_encoding_decoding():
     assert np.array_equal(code.decode(y), x)
 
 
-def test_encoding_not_fully_covering():
-    # [Say06, Example 3.7.1]
-    code = komm.VariableToFixedCode.from_sourcewords(
-        [(0, 0, 0), (0, 1, 0), (0, 1), (1,)]
-    )
-    with pytest.raises(ValueError, match="code is not fully covering"):
-        code.encode([0])
+@pytest.mark.parametrize(
+    "sourcewords, x, message",
+    [
+        ([(0,), (1, 0), (1, 1)], [0, 7], "input contains invalid word"),
+        ([(0, 0, 0), (0, 1, 0), (0, 1), (1,)], [0], "code is not fully covering"),
+        ([(0,), (1,), (0, 1)], [1, 0, 0, 0], "code is not uniquely encodable"),
+    ],
+)
+def test_encode_invalid(sourcewords, x, message):
+    code = komm.VariableToFixedCode.from_sourcewords(sourcewords)
+    with pytest.raises(ValueError, match=message):
+        code.encode(x)
+
+
+@pytest.mark.parametrize(
+    "sourcewords, y, message",
+    [
+        ([(0,), (1,), (2,)], [1, 1, 0, 0, 1], "multiple of block size 2 (got 5)"),
+        ([(0,), (1,), (2,)], [0, 0, 1, 1], "input contains invalid word"),
+        ([(0, 0), (0, 1)], [0, 0, 0, 1], "code is not fully covering"),
+        ([(0,), (1,), (0, 1)], [0, 0, 0, 1], "code is not uniquely encodable"),
+    ],
+)
+def test_decode_invalid(sourcewords, y, message):
+    code = komm.VariableToFixedCode.from_sourcewords(sourcewords)
+    with pytest.raises(ValueError, match=escape(message)):
+        code.decode(y)
