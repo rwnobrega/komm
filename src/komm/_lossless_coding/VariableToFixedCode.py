@@ -13,7 +13,7 @@ from .util import Word
 
 class VariableToFixedCode(abc.VariableToFixedCode):
     r"""
-    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{Y}$, *source alphabet* $\mathcal{X}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\mathrm{Dec}: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. The elements in the image of $\mathrm{Dec}$ are called *sourcewords*.
+    General variable-to-fixed length code. A *variable-to-fixed length code* with *target alphabet* $\mathcal{Y}$, *source alphabet* $\mathcal{X}$, and *target block size* $n$ is defined by a (possibly partial) decoding mapping $\Dec: \mathcal{Y}^n \rightharpoonup \mathcal{X}^+$, where the domain is the set of all $n$-tuples with entries in $\mathcal{Y}$, and the co-domain is the set of all finite-length, non-empty tuples with entries in $\mathcal{X}$. The elements in the image of $\Dec$ are called *sourcewords*.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
@@ -104,7 +104,7 @@ class VariableToFixedCode(abc.VariableToFixedCode):
         Constructs a variable-to-fixed length code from a list of sourcewords.
 
         Parameters:
-            sourcewords: The sourcewords of the code. Must be a list of length at most $|\mathcal{Y}|^n$ containing non-empty tuples of integers in $\mathcal{X}$. The tuple in position $i$ must be equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of $\mathcal{Y}^n$.
+            sourcewords: The sourcewords of the code. Must be a list of length at most $|\mathcal{Y}|^n$ containing non-empty tuples of integers in $\mathcal{X}$. The tuple in position $i$ must be equal to $\Dec(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of $\mathcal{Y}^n$.
 
             target_cardinality: The target cardinality $|\mathcal{Y}|$. Must be an integer greater than or equal to $2$. The default value is $2$ (binary code).
 

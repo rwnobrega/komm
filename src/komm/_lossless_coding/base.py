@@ -309,7 +309,7 @@ class VariableToFixedCode(ABC):
     @abstractmethod
     def dec_mapping(self) -> dict[Word, Word]:
         r"""
-        The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.
+        The decoding mapping $\Dec$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.
         """
         raise NotImplementedError
 
@@ -320,7 +320,7 @@ class VariableToFixedCode(ABC):
     @cached_property
     def sourcewords(self) -> list[Word]:
         r"""
-        The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$: the tuple in position $i$ is equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of the domain of $\mathrm{Dec}$.
+        The sourcewords of the code. They correspond to the image of the decoding mapping $\Dec$: the tuple in position $i$ is equal to $\Dec(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of the domain of $\Dec$.
         """
         return list(self.dec_mapping.values())
 
@@ -411,7 +411,7 @@ class VariableToFixedCode(ABC):
             input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$ and have a length that is a multiple of $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the `encode` method).
 
         Returns:
-            The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
+            output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
         """
         if not self.is_fully_covering():
             raise ValueError("code is not fully covering")
