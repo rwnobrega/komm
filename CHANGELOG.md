@@ -46,6 +46,8 @@
 
 - Changed `TruncatedBinaryCode` to a subclass of `abc.SymbolCode`, with `encode` and `decode` on arrays instead of iterators and `encode_single` returning a tuple instead of a list; removed its `length`, in favor of `lengths`.
 
+- Made parameters `policy` and `assignment` of `HuffmanCode` keyword-only.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

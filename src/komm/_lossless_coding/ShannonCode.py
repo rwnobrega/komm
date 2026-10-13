@@ -50,6 +50,7 @@ class ShannonCode(abc.SymbolCode):
     def __init__(
         self,
         pmf: npt.ArrayLike,
+        *,
         assignment: Literal["cumulative", "canonical"] = "cumulative",
     ):
         self.pmf = validate_pmf(pmf)

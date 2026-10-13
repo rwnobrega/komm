@@ -53,6 +53,7 @@ class HuffmanCode(abc.SymbolCode):
     def __init__(
         self,
         pmf: npt.ArrayLike,
+        *,
         policy: Literal["high", "low"] = "high",
         assignment: Literal["tree", "canonical"] = "tree",
     ):

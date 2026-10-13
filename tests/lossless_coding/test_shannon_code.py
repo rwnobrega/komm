@@ -15,7 +15,7 @@ from .util import extended_pmf, random_pmf
 )
 def test_shannon_code_wikipedia_1(assignment, codewords):
     pmf = np.array([15, 7, 6, 6, 5]) / 39
-    code = komm.ShannonCode(pmf, assignment)
+    code = komm.ShannonCode(pmf, assignment=assignment)
     assert code.codewords == codewords
     np.testing.assert_allclose(code.average_length(pmf), 102 / 39)
 
@@ -96,7 +96,7 @@ def test_shannon_code_assignment(source_cardinality, order, rng):
     # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
     code_cumulative = komm.ShannonCode(pmf)
-    code_canonical = komm.ShannonCode(pmf, "canonical")
+    code_canonical = komm.ShannonCode(pmf, assignment="canonical")
     assert code_canonical.lengths == code_cumulative.lengths
     assert np.isclose(
         code_canonical.average_length(pmf), code_cumulative.average_length(pmf)

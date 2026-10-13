@@ -76,7 +76,7 @@ def test_fano_code_assignment(source_cardinality, order, rng):
     # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
     code_tree = komm.FanoCode(pmf)
-    code_canonical = komm.FanoCode(pmf, "canonical")
+    code_canonical = komm.FanoCode(pmf, assignment="canonical")
     assert code_canonical.lengths == code_tree.lengths
     assert np.isclose(code_canonical.average_length(pmf), code_tree.average_length(pmf))
     expected = komm.SymbolCode.from_lengths(code_tree.lengths)

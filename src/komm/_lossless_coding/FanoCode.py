@@ -44,6 +44,7 @@ class FanoCode(abc.SymbolCode):
     def __init__(
         self,
         pmf: npt.ArrayLike,
+        *,
         assignment: Literal["tree", "canonical"] = "tree",
     ):
         self.pmf = validate_pmf(pmf)

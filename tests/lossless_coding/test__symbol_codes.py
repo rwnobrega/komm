@@ -112,3 +112,9 @@ def test_symbol_codes_deterministic(constructor, S):
         np.testing.assert_allclose(code.average_length(pmf), 1)
         message = np.full(10, i)
         np.testing.assert_equal(code.decode(code.encode(message)), message)
+
+
+@pytest.mark.parametrize("cls", [komm.HuffmanCode, komm.FanoCode, komm.ShannonCode])
+def test_symbol_codes_keyword_only(cls):
+    with pytest.raises(TypeError, match="takes 2 positional arguments"):
+        cls([0.5, 0.5], "canonical")

@@ -169,7 +169,7 @@ def test_huffman_code_policy(source_cardinality, order, rng):
 def test_huffman_code_complete(policy, source_cardinality, order, rng):
     # Full binary tree, so Kraft equality holds.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
-    code = komm.HuffmanCode(pmf, policy)
+    code = komm.HuffmanCode(pmf, policy=policy)
     assert np.isclose(code.kraft_parameter(), 1.0)
 
 
@@ -179,8 +179,8 @@ def test_huffman_code_complete(policy, source_cardinality, order, rng):
 def test_huffman_code_assignment(policy, source_cardinality, order, rng):
     # Assignment preserves the lengths, and 'canonical' agrees with 'from_lengths'.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
-    code_tree = komm.HuffmanCode(pmf, policy)
-    code_canonical = komm.HuffmanCode(pmf, policy, "canonical")
+    code_tree = komm.HuffmanCode(pmf, policy=policy)
+    code_canonical = komm.HuffmanCode(pmf, policy=policy, assignment="canonical")
     assert code_canonical.lengths == code_tree.lengths
     assert np.isclose(code_canonical.average_length(pmf), code_tree.average_length(pmf))
     expected = komm.SymbolCode.from_lengths(code_tree.lengths)
