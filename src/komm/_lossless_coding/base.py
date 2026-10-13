@@ -10,7 +10,13 @@ import numpy.typing as npt
 
 from .._util.validators import validate_integer, validate_integer_array, validate_pmf
 from ..types import Array1D
-from .util import Word, is_prefix_free, is_uniquely_parsable, parse_prefix_free
+from .util import (
+    Word,
+    is_prefix_free,
+    is_prefix_of,
+    is_uniquely_parsable,
+    parse_prefix_free,
+)
 
 T = TypeVar("T")
 
@@ -191,7 +197,7 @@ class SymbolCode(ABC):
             word += (index(y),)
             if word in self._inv_enc_mapping:
                 return self._inv_enc_mapping[word][0]
-        if len(word) < self._max_length:
+        if any(is_prefix_of(word, codeword) for codeword in self.codewords):
             raise ValueError("input contains an incomplete codeword")
         raise ValueError("input contains invalid word")
 

@@ -321,8 +321,8 @@ def test_encode_not_integer(x):
 @pytest.mark.parametrize(
     "codewords, y, message",
     [
-        ([(0,), (1, 0)], [1, 1], "input contains invalid word"),  # Invalid codeword
-        ([(0,), (1, 0)], [1], "input contains invalid word"),  # Incomplete codeword
+        ([(0,), (1, 0)], [1, 1], "input contains invalid word"),
+        ([(0,), (1, 0)], [1], "input contains an incomplete codeword"),
         ([(0,), (1, 0)], [1, 0, 2], "elements of 'input' must be in [0:2)"),
         ([(0,), (1, 0)], [[1, 0], [0, 0]], "'input' must be a 1D-array"),
         ([(0,), (0, 0), (1, 0)], [0], "code is not uniquely decodable"),
@@ -366,6 +366,7 @@ def test_encode_single_not_integer(x):
     [
         ([1, 1, 0], "input contains invalid word", [0]),
         ([2, 0, 1], "input contains invalid word", [1]),
+        ([2], "input contains invalid word", []),
         ([1], "input contains an incomplete codeword", []),
         ([], "input contains an incomplete codeword", []),
     ],

@@ -118,3 +118,11 @@ def test_symbol_codes_deterministic(constructor, S):
 def test_symbol_codes_keyword_only(cls):
     with pytest.raises(TypeError, match="takes 2 positional arguments"):
         cls([0.5, 0.5], "canonical")
+
+
+def test_symbol_codes_incomplete(code: komm.abc.SymbolCode):
+    codeword = max(code.codewords, key=len)
+    with pytest.raises(ValueError, match="input contains an incomplete codeword"):
+        code.decode_single(iter(codeword[:-1]))
+    with pytest.raises(ValueError, match="input contains an incomplete codeword"):
+        code.decode(codeword[:-1])

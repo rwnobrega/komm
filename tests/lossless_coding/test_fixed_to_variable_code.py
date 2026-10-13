@@ -276,11 +276,11 @@ def test_invalid_decoding_input():
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
     assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
     with pytest.raises(ValueError, match="contains invalid word"):
-        code.decode([1, 1, 0, 1, 0, 1, 1, 1])  # Invalid codeword
+        code.decode([1, 1, 0, 1, 0, 1, 1, 1])
     with pytest.raises(ValueError, match="contains invalid word"):
-        code.decode([1, 1, 0, 1, 0, 1])  # Incomplete codeword
-    with pytest.raises(ValueError, match="contains invalid word"):
-        code.decode([1, 1, 0, 1, 0, 1, 3])  # Invalid symbol
+        code.decode([1, 1, 0, 1, 0, 1, 3])
+    with pytest.raises(ValueError, match="contains an incomplete codeword"):
+        code.decode([1, 1, 0, 1, 0, 1])
 
 
 @pytest.mark.parametrize("code_parameters", test_data)

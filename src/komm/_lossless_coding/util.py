@@ -132,8 +132,6 @@ def parse_prefix_free(
 
     if length == 0:
         return np.asarray(output)
-    elif not allow_incomplete:
-        raise ValueError("input contains invalid word")
 
     remainder: list[int] = []
     for _ in range(length):
@@ -141,6 +139,8 @@ def parse_prefix_free(
         remainder.insert(0, symbol)
     for key, value in dictionary.items():
         if is_prefix_of(tuple(remainder), key):
+            if not allow_incomplete:
+                raise ValueError("input contains an incomplete codeword")
             output.extend(value)
             return np.asarray(output)
 

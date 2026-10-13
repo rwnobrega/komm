@@ -504,7 +504,7 @@ class FixedToVariableCode:
             >>> code.decode([0, 0, 1])  # Not a concatenation of codewords
             Traceback (most recent call last):
             ...
-            ValueError: input contains invalid word
+            ValueError: input contains an incomplete codeword
 
             >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0,1), (1,0)])
             >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
