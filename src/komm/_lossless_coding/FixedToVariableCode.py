@@ -40,20 +40,18 @@ class FixedToVariableCode:
         source_block_size: int,
         enc_mapping: dict[Word, Word],
     ) -> None:
-        self._source_cardinality = validate_integer(source_cardinality, low=2)
-        self._target_cardinality = validate_integer(target_cardinality, low=2)
-        self._source_block_size = validate_positive_integer(source_block_size)
-        self._enc_mapping = enc_mapping
-        self.__post_init__()
-
-    def __post_init__(self) -> None:
-        domain, codomain = self.enc_mapping.keys(), self.enc_mapping.values()
-        calX, calY = self.source_cardinality, self.target_cardinality
-        k = self.source_block_size
-        if set(domain) != set(product(range(calX), repeat=k)):
+        calX = validate_integer(source_cardinality, low=2)
+        calY = validate_integer(target_cardinality, low=2)
+        k = validate_positive_integer(source_block_size)
+        domain, codomain = enc_mapping.keys(), enc_mapping.values()
+        if not set(domain) == set(product(range(calX), repeat=k)):
             raise ValueError("'enc_mapping': invalid domain")
-        if not all(all(0 <= x < calY for x in word) for word in codomain):
+        if not all(all(0 <= y < calY for y in word) for word in codomain):
             raise ValueError("'enc_mapping': invalid co-domain")
+        self._source_cardinality = calX
+        self._target_cardinality = calY
+        self._source_block_size = k
+        self._enc_mapping = enc_mapping
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -231,7 +229,7 @@ class FixedToVariableCode:
         enc_mapping = dict(zip(product(range(calX), repeat=k), codewords))
         return cls(calX, calY, k, enc_mapping)
 
-    @cached_property
+    @property
     def source_cardinality(self) -> int:
         r"""
         The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
@@ -243,7 +241,7 @@ class FixedToVariableCode:
         """
         return self._source_cardinality
 
-    @cached_property
+    @property
     def target_cardinality(self) -> int:
         r"""
         The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
@@ -255,7 +253,7 @@ class FixedToVariableCode:
         """
         return self._target_cardinality
 
-    @cached_property
+    @property
     def source_block_size(self) -> int:
         r"""
         The source block size $k$ of the code. It is the number of symbols in each source word.
@@ -279,7 +277,7 @@ class FixedToVariableCode:
         """
         return len(self.enc_mapping)
 
-    @cached_property
+    @property
     def enc_mapping(self) -> dict[Word, Word]:
         r"""
         The encoding mapping $\Enc$ of the code. It is a dictionary of length $|\mathcal{X}|^k$ whose keys are all the $k$-tuples of integers in $\mathcal{X}$ and whose values are the corresponding codewords.

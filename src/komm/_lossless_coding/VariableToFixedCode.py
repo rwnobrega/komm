@@ -32,22 +32,20 @@ class VariableToFixedCode:
         target_block_size: int,
         dec_mapping: dict[Word, Word],
     ) -> None:
-        self._target_cardinality = validate_integer(target_cardinality, low=2)
-        self._source_cardinality = validate_integer(source_cardinality, low=2)
-        self._target_block_size = validate_positive_integer(target_block_size)
-        self._dec_mapping = dec_mapping
-        self.__post_init__()
-
-    def __post_init__(self) -> None:
-        domain, codomain = self.dec_mapping.keys(), self.dec_mapping.values()
-        calY, calX = self.target_cardinality, self.source_cardinality
-        n = self.target_block_size
+        calY = validate_integer(target_cardinality, low=2)
+        calX = validate_integer(source_cardinality, low=2)
+        n = validate_positive_integer(target_block_size)
+        domain, codomain = dec_mapping.keys(), dec_mapping.values()
         if not set(domain) <= set(product(range(calY), repeat=n)):
             raise ValueError("'dec_mapping': invalid domain")
         if not all(
             all(0 <= x < calX for x in word) and len(word) > 0 for word in codomain
         ):
             raise ValueError("'dec_mapping': invalid co-domain")
+        self._target_cardinality = calY
+        self._source_cardinality = calX
+        self._target_block_size = n
+        self._dec_mapping = dec_mapping
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -56,7 +54,7 @@ class VariableToFixedCode:
             f"target_block_size={self.target_block_size}",
             f"dec_mapping={self.dec_mapping}",
         ])
-        return f"{__class__.__name__}({args})"
+        return f"{self.__class__.__name__}({args})"
 
     @classmethod
     def from_dec_mapping(cls, dec_mapping: dict[Word, Word]) -> Self:
@@ -164,7 +162,7 @@ class VariableToFixedCode:
         dec_mapping = dict(zip(product(range(calY), repeat=n), sourcewords))
         return cls(calY, calX, n, dec_mapping)
 
-    @cached_property
+    @property
     def target_cardinality(self) -> int:
         r"""
         The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
@@ -176,7 +174,7 @@ class VariableToFixedCode:
         """
         return self._target_cardinality
 
-    @cached_property
+    @property
     def source_cardinality(self) -> int:
         r"""
         The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
@@ -188,7 +186,7 @@ class VariableToFixedCode:
         """
         return self._source_cardinality
 
-    @cached_property
+    @property
     def target_block_size(self) -> int:
         r"""
         The target block size $n$ of the code. It is the number of symbols in each target block.
@@ -212,7 +210,7 @@ class VariableToFixedCode:
         """
         return len(self.dec_mapping)
 
-    @cached_property
+    @property
     def dec_mapping(self) -> dict[Word, Word]:
         r"""
         The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.
