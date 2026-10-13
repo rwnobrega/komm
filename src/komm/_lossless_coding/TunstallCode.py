@@ -9,15 +9,15 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .. import abc
 from .._util.docs import mkdocstrings
 from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .util import Word
-from .VariableToFixedCode import VariableToFixedCode
 
 
 @mkdocstrings(filters=["!.*"])
-class TunstallCode(VariableToFixedCode):
+class TunstallCode(abc.VariableToFixedCode):
     r"""
     Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.7</cite>.
 
@@ -59,18 +59,16 @@ class TunstallCode(VariableToFixedCode):
         target_block_size: int | None = None,
     ) -> None:
         self.pmf = validate_pmf(pmf)
+        if not self.pmf.size >= 2:
+            raise ValueError(f"'pmf' must have size at least 2 (got {self.pmf.size})")
         n_min = ceil(log2(self.pmf.size))
         if target_block_size is None:
             target_block_size = n_min
         target_block_size = validate_integer(
             target_block_size, low=n_min, rule="2**target_block_size >= len(pmf)"
         )
-        super().__init__(
-            target_cardinality=2,
-            source_cardinality=self.pmf.size,
-            target_block_size=target_block_size,
-            dec_mapping=tunstall_code(self.pmf, target_block_size),
-        )
+        self._target_block_size = target_block_size
+        self._dec_mapping = tunstall_code(self.pmf, target_block_size)
 
     def __repr__(self) -> str:
         args = ", ".join([
@@ -78,6 +76,22 @@ class TunstallCode(VariableToFixedCode):
             f"target_block_size={self.target_block_size}",
         ])
         return f"{self.__class__.__name__}({args})"
+
+    @property
+    def target_cardinality(self) -> int:
+        return 2
+
+    @property
+    def source_cardinality(self) -> int:
+        return self.pmf.size
+
+    @property
+    def target_block_size(self) -> int:
+        return self._target_block_size
+
+    @property
+    def dec_mapping(self) -> dict[Word, Word]:
+        return self._dec_mapping
 
     @cache
     def is_fully_covering(self) -> bool:

@@ -14,6 +14,7 @@ def test_tunstall_code():
     # [Say06, p. 71]
     pmf = [0.6, 0.3, 0.1]
     code = komm.TunstallCode(pmf, 3)
+    assert code.target_cardinality == 2
     assert code.dec_mapping == {
         (0, 0, 0): (0, 0, 0),
         (0, 0, 1): (0, 0, 1),
@@ -32,6 +33,7 @@ def test_tunstall_code():
     [
         ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),
         ([[0.5], [0.5]], "'pmf' must be a 1D-array"),
+        ([1.0], "'pmf' must have size at least 2"),
     ],
 )
 def test_tunstall_code_invalid_pmf(pmf, message):
