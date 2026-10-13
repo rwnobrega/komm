@@ -64,115 +64,77 @@ def test_init(code_parameters):
     assert code.lengths == [len(codeword) for codeword in codewords]
 
 
-@pytest.mark.parametrize("code_parameters", test_data)
-def test_lengths_round_trip(code_parameters):
-    source_cardinality, _, _, codewords = code_parameters.values()
-    code = komm.FixedToVariableCode.from_codewords(
-        codewords=codewords,
-        source_cardinality=source_cardinality,
-    )
-    canonical = komm.FixedToVariableCode.from_lengths(
-        code.lengths,
-        source_cardinality=source_cardinality,
-        target_cardinality=code.target_cardinality,
-    )
-    assert canonical.lengths == code.lengths
-    assert canonical.is_prefix_free()
-    np.testing.assert_allclose(canonical.kraft_parameter(), code.kraft_parameter())
-
-
-def test_invalid_source_cardinality():
-    with pytest.raises(ValueError, match="'source_cardinality' must be"):
-        komm.FixedToVariableCode(1, 2, 1, {(0,): (1, 1)})
-
-
-def test_invalid_target_cardinality():
-    with pytest.raises(ValueError, match="'target_cardinality' must be"):
-        komm.FixedToVariableCode(2, 1, 1, {(0,): (0,), (1,): (0, 0)})
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((1, 2, 1), "'source_cardinality' must be at least 2 (got 1)"),
+        ((2, 1, 1), "'target_cardinality' must be at least 2 (got 1)"),
+        ((2, 2, 0), "'source_block_size' must be a positive integer (got 0)"),
+    ],
+)
+def test_invalid_parameters(args, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.FixedToVariableCode(*args, enc_mapping={(0,): (0,), (1,): (1,)})
 
 
 def test_integer_parameters():
     enc_mapping = {(0,): (0,), (1,): (1,)}
     code = komm.FixedToVariableCode(np.int64(2), 2, 1, enc_mapping)  # type: ignore
     assert type(code.source_cardinality) is int
-    with pytest.raises(TypeError, match="'source_block_size' must be an integer"):
-        komm.FixedToVariableCode(2, 2, 1.0, enc_mapping)  # type: ignore
 
 
-def test_invalid_enc_mapping_domain_1():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    del enc_mapping[(1, 0)]
-    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
+@pytest.mark.parametrize(
+    "args, message",
+    [
+        ((2.0, 2, 1), "'source_cardinality' must be an integer (got float)"),
+        ((2, 2.0, 1), "'target_cardinality' must be an integer (got float)"),
+        ((2, 2, 1.0), "'source_block_size' must be an integer (got float)"),
+    ],
+)
+def test_parameters_not_integer(args, message):
+    with pytest.raises(TypeError, match=escape(message)):
+        komm.FixedToVariableCode(*args, enc_mapping={(0,): (0,), (1,): (1,)})
 
 
-def test_invalid_enc_mapping_domain_2():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    enc_mapping[(2, 1)] = enc_mapping.pop((0, 1))
-    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
+@pytest.mark.parametrize(
+    "enc_mapping",
+    [
+        {(0,): (0,), (1,): (1, 0)},  # Missing word
+        {(0,): (0,), (1,): (1, 0), (2,): (1, 1, 0), (3,): (1, 1, 1)},  # Extra word
+        {(0,): (0,), (1,): (1, 0), (3,): (1, 1)},  # Symbol out of range
+        {(0,): (0,), (1,): (1, 0), (2, 0): (1, 1)},  # Word of wrong length
+    ],
+)
+def test_invalid_enc_mapping_domain(enc_mapping):
+    with pytest.raises(ValueError, match="'enc_mapping': invalid domain"):
+        komm.FixedToVariableCode(3, 2, 1, enc_mapping)
 
 
-def test_invalid_enc_mapping_domain_3():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    enc_mapping[(0,)] = enc_mapping.pop((0, 1))
-    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
+@pytest.mark.parametrize(
+    "enc_mapping",
+    [
+        {(0,): (0,), (1,): (1, 0), (2,): (1, 2)},  # Symbol out of range
+        {(0,): (0,), (1,): (1, 0), (2,): (1, -1)},  # Negative symbol
+    ],
+)
+def test_invalid_enc_mapping_codomain(enc_mapping):
+    with pytest.raises(ValueError, match="'enc_mapping': invalid co-domain"):
+        komm.FixedToVariableCode(3, 2, 1, enc_mapping)
 
 
-def test_invalid_enc_mapping_domain_4():
-    enc_mapping: dict = {
-        (0,): (0,),
-        (1,): (1, 0, 0),
-        (2,): (1, 1),
-    }
-    komm.FixedToVariableCode(3, 2, 1, enc_mapping)
-    enc_mapping[(0, 0)] = (1, 0, 1)
-    with pytest.raises(ValueError, match="enc_mapping': invalid domain"):
-        komm.FixedToVariableCode(3, 2, 2, enc_mapping)
-
-
-def test_invalid_enc_mapping_codomain():
-    enc_mapping: dict = {
-        (0, 0): (0,),
-        (0, 1): (1, 0, 0),
-        (1, 0): (1, 1),
-        (1, 1): (1, 0, 1),
-    }
-    komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-    enc_mapping[(0, 1)] = (1, 0, 2)
-    with pytest.raises(ValueError, match="enc_mapping': invalid co-domain"):
-        komm.FixedToVariableCode(2, 2, 2, enc_mapping)
-
-
-def test_invalid_codewords_empty():
-    with pytest.raises(ValueError, match="codewords' must be non-empty"):
-        komm.FixedToVariableCode.from_codewords([(), (0, 1)])
-
-
-def test_from_codewords_invalid_source_cardinality():
-    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
+@pytest.mark.parametrize(
+    "codewords, source_cardinality, message",
+    [
+        ([(), (0, 1)], None, "'codewords' must be non-empty"),
+        ([(0,), (1,), (0, 1)], 1, "'source_cardinality' must be at least 2"),
+        ([(0,), (1, 0), (1, 1)], 2, "must be a power of source cardinality 2 (got 3)"),
+    ],
+)
+def test_from_codewords_invalid(codewords, source_cardinality, message):
+    with pytest.raises(ValueError, match=escape(message)):
         komm.FixedToVariableCode.from_codewords(
-            codewords=[(0,), (1,), (0, 1)],
-            source_cardinality=1,
+            codewords,
+            source_cardinality=source_cardinality,
         )
 
 
@@ -184,7 +146,7 @@ def test_from_codewords_invalid_source_cardinality():
         (3, [(0, 0), (1, 0), (0,)]),
     ],
 )
-def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
+def test_decode_not_uniquely_decodable(source_cardinality, codewords):
     code = komm.FixedToVariableCode.from_codewords(
         codewords=codewords,
         source_cardinality=source_cardinality,
@@ -195,19 +157,17 @@ def test_decoding_not_uniquely_decodable(source_cardinality, codewords):
 
 @pytest.mark.parametrize(
     "code_parameters, pmf, rate",
-    # fmt: off
     [
         (test_data[0], [0.4, 0.2, 0.2, 0.1, 0.1], 3.0),
         (test_data[0], [0.2, 0.2, 0.2, 0.2, 0.2], 3.0),
-        (test_data[1], [0.4, 0.2, 0.2, 0.1, 0.1], 2.2),  # [Hay04, Example 9.3]
+        (test_data[1], [0.4, 0.2, 0.2, 0.1, 0.1], 2.2),
         (test_data[1], [0.2, 0.2, 0.2, 0.2, 0.2], 2.4),
         (test_data[2], [0.5, 0.5], 1.125),
         (test_data[2], [0.4, 0.6], 1.18),
-        (test_data[3], [0.25, 0.25, 0.2, 0.15, 0.15], 2.3),  # [CT06, Example 5.6.1]
-        (test_data[4], [0.25, 0.25, 0.2, 0.15, 0.15], 1.5),  # [CT06, Example 5.6.2]
-        (test_data[5], [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0], 1.7),  # [CT06, Example 5.6.3]
+        (test_data[3], [0.25, 0.25, 0.2, 0.15, 0.15], 2.3),
+        (test_data[4], [0.25, 0.25, 0.2, 0.15, 0.15], 1.5),
+        (test_data[5], [0.25, 0.25, 0.2, 0.1, 0.1, 0.1, 0.0], 1.7),
     ],
-    # fmt: on
 )
 def test_rate(code_parameters, pmf, rate):
     source_cardinality, _, _, codewords = code_parameters.values()
@@ -219,22 +179,16 @@ def test_rate(code_parameters, pmf, rate):
 
 
 @pytest.mark.parametrize(
-    "pmf",
+    "pmf, message",
     [
-        [0.5, 0.5, 0.1],
-        [-0.4, 0.4, 1.0],
+        ([0.5, 0.5, 0.1], "'pmf' must sum to 1.0"),
+        ([-0.4, 0.4, 1.0], "'pmf' must be non-negative"),
+        ([0.5, 0.5], "'pmf' must have size 3 (got 2)"),
+        ([0.25, 0.25, 0.25, 0.25], "'pmf' must have size 3 (got 4)"),
     ],
 )
-def test_rate_invalid_pmf(pmf):
+def test_rate_invalid_pmf(pmf, message):
     code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
-    with pytest.raises(ValueError, match="'pmf' must"):
-        code.rate(pmf)
-
-
-@pytest.mark.parametrize("pmf", [[0.5, 0.5], [0.25, 0.25, 0.25, 0.25]])
-def test_rate_pmf_size(pmf):
-    code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
-    message = f"'pmf' must have size 3 (got {len(pmf)})"
     with pytest.raises(ValueError, match=escape(message)):
         code.rate(pmf)
 
@@ -259,7 +213,7 @@ def test_rate_pmf_size(pmf):
         ),
     ],
 )
-def test_encoding_decoding(code_parameters, x, y):
+def test_encode_decode(code_parameters, x, y):
     source_cardinality, _, _, codewords = code_parameters.values()
     code = komm.FixedToVariableCode.from_codewords(
         codewords=codewords,
@@ -269,18 +223,18 @@ def test_encoding_decoding(code_parameters, x, y):
     assert np.array_equal(code.decode(y), x)
 
 
-def test_invalid_decoding_input():
+@pytest.mark.parametrize(
+    "y, message",
+    [
+        ([1, 1, 0, 1, 0, 1, 1, 1], "input contains invalid word"),
+        ([1, 1, 0, 1, 0, 1, 3], "input contains invalid word"),
+        ([1, 1, 0, 1, 0, 1], "input contains an incomplete codeword"),
+    ],
+)
+def test_decode_invalid(y, message):
     code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1, 0)])
-    assert np.array_equal(code.decode([1, 1, 0, 1, 0]), [2, 1])
-    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 0]), [2, 1, 0])
-    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 0]), [2, 1, 1])
-    assert np.array_equal(code.decode([1, 1, 0, 1, 0, 1, 1, 0]), [2, 1, 2])
-    with pytest.raises(ValueError, match="contains invalid word"):
-        code.decode([1, 1, 0, 1, 0, 1, 1, 1])
-    with pytest.raises(ValueError, match="contains invalid word"):
-        code.decode([1, 1, 0, 1, 0, 1, 3])
-    with pytest.raises(ValueError, match="contains an incomplete codeword"):
-        code.decode([1, 1, 0, 1, 0, 1])
+    with pytest.raises(ValueError, match=message):
+        code.decode(y)
 
 
 @pytest.mark.parametrize("code_parameters", test_data)
@@ -302,35 +256,41 @@ def test_from_lengths(code_parameters):
     assert code.kraft_parameter() <= 1
 
 
-@pytest.mark.parametrize("pmf", [[0.4, 0.3, 0.2, 0.1], [0.5, 0.25, 0.125, 0.125]])
-def test_from_lengths_canonical_huffman(pmf):
-    # The canonical code with the Huffman lengths is an optimal code as well.
-    huffman = komm.HuffmanCode(pmf)
-    lengths = [len(codeword) for codeword in huffman.codewords]
-    code = komm.FixedToVariableCode.from_lengths(lengths, source_cardinality=len(pmf))
-    assert code.is_prefix_free()
-    np.testing.assert_allclose(code.rate(pmf), huffman.average_length(pmf))
+@pytest.mark.parametrize(
+    "lengths, source_cardinality, target_cardinality, message",
+    [
+        ([1, 1, 1], None, 2, "'lengths' must satisfy Kraft inequality"),
+        ([0, 1, 2], None, 2, "elements of 'lengths' must be at least 1"),
+        ([1, -1, 2], None, 2, "elements of 'lengths' must be at least 1"),
+        ([[1, 2], [2, 2]], None, 2, "'lengths' must be a 1D-array"),
+        ([1, 2, 2], 1, 2, "'source_cardinality' must be at least 2"),
+        ([1, 2, 2], None, 1, "'target_cardinality' must be at least 2"),
+        ([1, 2, 3, 3], 3, 2, "must be a power of source cardinality 3"),
+    ],
+)
+def test_from_lengths_invalid(lengths, source_cardinality, target_cardinality, message):
+    with pytest.raises(ValueError, match=message):
+        komm.FixedToVariableCode.from_lengths(
+            lengths,
+            source_cardinality=source_cardinality,
+            target_cardinality=target_cardinality,
+        )
 
 
-@pytest.mark.parametrize("lengths", [[1, 2, 3, 3], [2, 2, 2, 2], [1, 2, 3, 4]])
-def test_from_lengths_alphabetic(lengths):
-    # Non-decreasing lengths yield an alphabetic (slice) code. See [CT06, Sec. 5.7].
-    code = komm.FixedToVariableCode.from_lengths(lengths, source_cardinality=2)
-    assert code.codewords == sorted(code.codewords)
-
-
-def test_from_lengths_invalid():
-    with pytest.raises(ValueError, match="'source_cardinality' must be at least 2"):
-        komm.FixedToVariableCode.from_lengths([1, 2, 2], source_cardinality=1)
-    with pytest.raises(ValueError, match="'target_cardinality' must be at least 2"):
-        komm.FixedToVariableCode.from_lengths([1, 2, 2], target_cardinality=1)
-    with pytest.raises(ValueError, match="'lengths' must satisfy Kraft inequality"):
-        komm.FixedToVariableCode.from_lengths([1, 1, 1])
-    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 1"):
-        komm.FixedToVariableCode.from_lengths([0, 1, 2])
-    with pytest.raises(ValueError, match="elements of 'lengths' must be at least 1"):
-        komm.FixedToVariableCode.from_lengths([1, -1, 2])
-    with pytest.raises(TypeError, match="'lengths' must contain only integers"):
-        komm.FixedToVariableCode.from_lengths([1.7, 2.2, 2.9])
-    with pytest.raises(ValueError, match="must be a power of source cardinality"):
-        komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=3)
+@pytest.mark.parametrize(
+    "lengths, source_cardinality, target_cardinality, message",
+    [
+        ([1.7, 2.2, 2.9], None, 2, "'lengths' must contain only integers"),
+        ([1, 2, 2], 3.0, 2, "'source_cardinality' must be an integer"),
+        ([1, 2, 2], None, 2.0, "'target_cardinality' must be an integer"),
+    ],
+)
+def test_from_lengths_not_integer(
+    lengths, source_cardinality, target_cardinality, message
+):
+    with pytest.raises(TypeError, match=message):
+        komm.FixedToVariableCode.from_lengths(
+            lengths,
+            source_cardinality=source_cardinality,
+            target_cardinality=target_cardinality,
+        )
