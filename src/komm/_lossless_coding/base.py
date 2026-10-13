@@ -12,9 +12,11 @@ from .._util.validators import validate_integer, validate_integer_array, validat
 from ..types import Array1D
 from .util import (
     Word,
+    is_fully_covering,
     is_prefix_free,
     is_prefix_of,
     is_uniquely_parsable,
+    parse_fixed_length,
     parse_prefix_free,
 )
 
@@ -265,3 +267,156 @@ class TokenCode(ABC, Generic[T]):
         tokens = self.target_to_tokens(input)
         output = self.tokens_to_source(tokens)
         return output
+
+
+class VariableToFixedCode(ABC):
+    r"""
+    Abstract base class for variable-to-fixed length codes, which parse the source sequence into sourcewords and represent each sourceword by a target word of fixed length.
+    """
+
+    @property
+    @abstractmethod
+    def target_cardinality(self) -> int:
+        r"""
+        The target cardinality $|\mathcal{Y}|$ of the code. It is the number of symbols in the target alphabet.
+        """
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def source_cardinality(self) -> int:
+        r"""
+        The source cardinality $|\mathcal{X}|$ of the code. It is the number of symbols in the source alphabet.
+        """
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def target_block_size(self) -> int:
+        r"""
+        The target block size $n$ of the code. It is the number of symbols in each target block.
+        """
+        raise NotImplementedError
+
+    @cached_property
+    def size(self) -> int:
+        r"""
+        The number of sourcewords in the code. It is less than or equal to $|\mathcal{Y}|^n$.
+        """
+        return len(self.dec_mapping)
+
+    @property
+    @abstractmethod
+    def dec_mapping(self) -> dict[Word, Word]:
+        r"""
+        The decoding mapping $\mathrm{Dec}$ of the code. It is a dictionary of length at most $|\mathcal{Y}|^n$ whose keys are $n$-tuples of integers in $\mathcal{Y}$ and whose values are the corresponding sourcewords.
+        """
+        raise NotImplementedError
+
+    @cached_property
+    def _inv_dec_mapping(self) -> dict[Word, Word]:
+        return {x: y for y, x in self.dec_mapping.items()}
+
+    @cached_property
+    def sourcewords(self) -> list[Word]:
+        r"""
+        The sourcewords of the code. They correspond to the image of the decoding mapping $\mathrm{Dec}$: the tuple in position $i$ is equal to $\mathrm{Dec}(\mathbf{y})$, where $\mathbf{y}$ is the $i$-th element in the lexicographic ordering of the domain of $\mathrm{Dec}$.
+        """
+        return list(self.dec_mapping.values())
+
+    @cached_property
+    def lengths(self) -> list[int]:
+        r"""
+        The sourceword lengths of the code. The integer in position $i$ is the length of the $i$-th sourceword.
+        """
+        return [len(x) for x in self.sourcewords]
+
+    @cache
+    def is_fully_covering(self) -> bool:
+        """
+        Returns whether the code is fully covering. A code is *fully covering* if every possible source sequence has a prefix that is a sourceword.
+        """
+        return is_fully_covering(self.sourcewords, self.source_cardinality)
+
+    @cache
+    def is_uniquely_encodable(self) -> bool:
+        r"""
+        Returns whether the code is uniquely encodable. A code is *uniquely encodable* if there is a unique way to parse any concatenation of sourcewords.
+        """
+        return self.is_prefix_free() or is_uniquely_parsable(self.sourcewords)
+
+    @cache
+    def is_prefix_free(self) -> bool:
+        r"""
+        Returns whether the code is prefix-free. A code is *prefix-free* if no sourceword is a prefix of any other sourceword.
+        """
+        return is_prefix_free(self.sourcewords)
+
+    def rate(self, pmf: npt.ArrayLike) -> float:
+        r"""
+        Computes the expected rate $R$ of the code, considering a given (first-order) pmf $p$ over $\mathcal{X}$. This quantity is given by
+        $$
+            R = \frac{n}{\bar{k}},
+        $$
+        where $\bar{k}$ is the average sourceword length, assuming iid source symbols drawn according to $p$. It is measured in $|\mathcal{Y}|$-ary digits per source symbol.
+
+        Parameters:
+            pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
+
+        Returns:
+            rate: The expected rate $R$ of the code.
+        """
+        n = self.target_block_size
+        pmf = validate_pmf(pmf, size=self.source_cardinality)
+        lengths = self.lengths
+        probabilities = [np.prod([pmf[symb] for symb in x]) for x in self.sourcewords]
+        rate = n / np.dot(lengths, probabilities)
+        return float(rate)
+
+    def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Encodes a sequence of source symbols using the code, which must be fully covering and uniquely encodable. When the input sequence ends with symbols that form only a partial match with any sourceword, the encoder will complete this last block using any valid sourceword that starts with these remaining symbols.
+
+        Warning:
+            Encoding for non-prefix-free codes is not implemented yet.
+
+        Parameters:
+            input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
+
+        Returns:
+            output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$ with a length that is a multiple of $n$.
+        """
+        if not self.is_fully_covering():
+            raise ValueError("code is not fully covering")
+        if not self.is_uniquely_encodable():
+            raise ValueError("code is not uniquely encodable")
+        if not self.is_prefix_free():
+            raise NotImplementedError(
+                "encoding for non-prefix-free codes is not implemented yet"
+            )
+        calX = self.source_cardinality
+        input = validate_integer_array(input, low=0, high=calX, ndim=1)
+        return parse_prefix_free(
+            input,
+            dictionary=self._inv_dec_mapping,
+            allow_incomplete=True,
+            cardinality=calX,
+        )
+
+    def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
+        r"""
+        Decodes a sequence of target symbols using the code, which must be fully covering and uniquely encodable.
+
+        Parameters:
+            input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$ and have a length that is a multiple of $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the `encode` method).
+
+        Returns:
+            The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
+        """
+        if not self.is_fully_covering():
+            raise ValueError("code is not fully covering")
+        if not self.is_uniquely_encodable():
+            raise ValueError("code is not uniquely encodable")
+        calY = self.target_cardinality
+        input = validate_integer_array(input, low=0, high=calY, ndim=1)
+        return parse_fixed_length(input, self.dec_mapping, self.target_block_size)

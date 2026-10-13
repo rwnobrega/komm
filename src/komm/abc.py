@@ -5,7 +5,7 @@ from ._error_control_convolutional.base import ConvolutionalCode
 from ._error_control_decoders.base import BlockDecoder, CodewordDecoder
 from ._integer_coding.base import IntegerCode
 from ._labelings.base import Labeling
-from ._lossless_coding.base import SymbolCode, TokenCode
+from ._lossless_coding.base import SymbolCode, TokenCode, VariableToFixedCode
 from ._pulses.base import Pulse
 from ._quantization.base import ScalarQuantizer
 
@@ -22,4 +22,5 @@ __all__ = [
     "ScalarQuantizer",
     "SymbolCode",
     "TokenCode",
+    "VariableToFixedCode",
 ]
