@@ -64,35 +64,18 @@ Labelings:
   - ReflectedLabeling
   - ReflectedRectangularLabeling
   - ProductLabeling
-Pulse formatting:
-  - Pulse
-  - RectangularPulse
-  - ManchesterPulse
-  - SincPulse
-  - RaisedCosinePulse
-  - BeaulieuPulse
-  - GaussianPulse
-Sequences:
-  Binary sequences:
-    - BinarySequence
-    - BarkerSequence
-    - WalshHadamardSequence
-    - LFSRSequence
-    - GoldSequence
-    - KasamiSequence
-  Complex sequences:
-    - ComplexSequence
-    - ZadoffChuSequence
-Source coding:
-  Lossless coding:
+Lossless coding:
+  Symbol codes:
     - SymbolCode
     - ShannonCode
     - FanoCode
     - HuffmanCode
     - TruncatedBinaryCode
     - FixedToVariableCode
+  Variable-to-fixed codes:
     - VariableToFixedCode
     - TunstallCode
+  Stream codes:
     - RunLengthCode
     - LempelZiv77Code
     - LempelZivSSCode
@@ -107,10 +90,29 @@ Source coding:
     - EliasOmegaCode
     - FibonacciCode
     - TabooCode
-  Quantization:
-    - ScalarQuantizer
-    - UniformQuantizer
-    - LloydMaxQuantizer
+Pulse formatting:
+  - Pulse
+  - RectangularPulse
+  - ManchesterPulse
+  - SincPulse
+  - RaisedCosinePulse
+  - BeaulieuPulse
+  - GaussianPulse
+Quantization:
+  - ScalarQuantizer
+  - UniformQuantizer
+  - LloydMaxQuantizer
+Sequences:
+  Binary sequences:
+    - BinarySequence
+    - BarkerSequence
+    - WalshHadamardSequence
+    - LFSRSequence
+    - GoldSequence
+    - KasamiSequence
+  Complex sequences:
+    - ComplexSequence
+    - ZadoffChuSequence
 Sources:
   - DiscreteMemorylessSource
   - MarkovChain
