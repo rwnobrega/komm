@@ -226,3 +226,19 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
 )
 def test_is_complete(words, cardinality, expected_complete):
     assert is_complete(words, cardinality) == expected_complete
+
+
+@pytest.mark.parametrize("cardinality", [2, 3])
+def test_complete_parsable_prefix_free(cardinality, rng):
+    # Complete and uniquely parsable implies prefix-free
+    for _ in range(100):
+        words = [()]
+        for _ in range(rng.integers(1, 6)):  # Leaves of a full tree
+            word = words.pop(rng.integers(len(words)))
+            words += [word + (y,) for y in range(cardinality)]
+        for _ in range(rng.integers(1, 4)):  # Extensions break prefix-freeness
+            suffix = rng.integers(cardinality, size=rng.integers(1, 3)).tolist()
+            words.append(words[rng.integers(len(words))] + tuple(suffix))
+        assert not is_prefix_free(words)
+        assert is_complete(words, cardinality)
+        assert not is_uniquely_parsable(words)

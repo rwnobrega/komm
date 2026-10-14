@@ -384,9 +384,6 @@ class VariableToFixedCode(ABC):
         r"""
         Encodes a sequence of source symbols using the code, which must be complete and uniquely encodable. When the input sequence ends with symbols that form only a partial match with any sourceword, the encoder will complete this last block using any valid sourceword that starts with these remaining symbols.
 
-        Warning:
-            Encoding for non-prefix-free codes is not implemented yet.
-
         Parameters:
             input: The sequence of symbols to be encoded. Must be a 1D-array with elements in $\mathcal{X}$.
 
@@ -397,12 +394,9 @@ class VariableToFixedCode(ABC):
             raise ValueError("code is not complete")
         if not self.is_uniquely_encodable():
             raise ValueError("code is not uniquely encodable")
-        if not self.is_prefix_free():
-            raise NotImplementedError(
-                "encoding for non-prefix-free codes is not implemented yet"
-            )
         calX = self.source_cardinality
         input = validate_integer_array(input, low=0, high=calX, ndim=1)
+        # Complete and uniquely encodable implies prefix-free
         return parse_prefix_free(
             input,
             dictionary=self._inv_dec_mapping,
