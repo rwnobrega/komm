@@ -1,111 +1,190 @@
 import pytest
 
-from komm._lossless_coding.util import (
-    is_complete,
-    is_prefix_free,
-    is_uniquely_parsable,
-)
+from komm._lossless_coding.util import is_complete, is_prefix_free, is_uniquely_parsable
 
 test_cases = [
     {
         "words": [(0, 0), (0, 1), (1, 0), (1, 1)],
         "uniquely_parsable": True,
         "prefix_free": True,
+        "complete": True,
     },
     {  # [Say06, Sec. 2.4.1, Code 2]
         "words": [(0,), (1,), (0, 0), (1, 1)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": True,
     },
     {  # [Say06, Sec. 2.4.1, Code 3]
         "words": [(0,), (1, 0), (1, 1, 0), (1, 1, 1)],
         "uniquely_parsable": True,
         "prefix_free": True,
+        "complete": True,
     },
     {  # [Say06, Sec. 2.4.1, Code 4]
         "words": [(0,), (0, 1), (0, 1, 1), (0, 1, 1, 1)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Say06, Sec. 2.4.1, Code 5]
         "words": [(0,), (0, 1), (1, 1)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,  # But complete as a symbol code [MacK03, Sec. 5.2]
     },
     {  # [Say06, Sec. 2.4.1, Code 6]
         "words": [(0,), (0, 1), (1, 0)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [CT06, Sec. 5.1, Table 5.1, Code 2]
         "words": [(0,), (0, 1, 0), (0, 1), (1, 0)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [CT06, Sec. 5.1, Table 5.1, Code 3]
         "words": [(1, 0), (0, 0), (1, 1), (1, 1, 0)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
-    {  # Wikipedia example
+    {  # Wikipedia example; [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(1,), (0, 1, 1), (0, 1, 1, 1, 0), (1, 1, 1, 0), (1, 0, 0, 1, 1)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
     },
     {  # Old false negative for UD
         "words": [(0,), (0, 1), (1, 1, 0)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
     {
         "words": [(0,), (0, 0)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.2]: "Any suffix-free code is uniquely decodable"
         "words": [(0,), (0, 1)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.3]
         "words": [(0, 0, 1, 1), (0, 1, 1), (1, 1), (1, 1, 1, 0)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.3]
         "words": [(0, 1), (1, 0), (0, 1, 1), (1, 1, 0)],
         "uniquely_parsable": False,  # Course page is wrong: (01)(110) = (011)(10)
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(1,), (1, 0, 0, 0, 0, 0), (0, 0)],
         "uniquely_parsable": True,
         "prefix_free": False,
+        "complete": False,
     },
     {  # [Sedgewick-Wayne, Exercise 5.5.4]
         "words": [(0, 1), (1, 0, 0, 1), (1, 0, 1, 1), (1, 1, 1), (1, 1, 1, 0)],
         "uniquely_parsable": False,
         "prefix_free": False,
-    },
-    {  # [Sedgewick-Wayne, Exercise 5.5.4]
-        "words": [(1,), (0, 1, 1), (0, 1, 1, 1, 0), (1, 1, 1, 0), (1, 0, 0, 1, 1)],
-        "uniquely_parsable": False,
-        "prefix_free": False,
+        "complete": False,
     },
     {
         "words": [(1, 0, 1), (0, 0, 1, 1, 1), (0, 1, 0, 0), (1,)],
         "uniquely_parsable": False,  # (101)(00111) = (1)(0100)(1)(1)(1)
         "prefix_free": False,
+        "complete": False,
     },
     {  # Regression: Duplicate words
         "words": [(0, 1), (0, 1)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
     },
     {  # Regression: Duplicate words
         "words": [(0,), (0,), (1, 1)],
         "uniquely_parsable": False,
         "prefix_free": False,
+        "complete": False,
+    },
+    {  # [Say06, Example 3.7.1]
+        "words": [(0, 0, 0), (0, 0, 1), (0, 1), (1,)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": True,
+    },
+    {  # [Say06, Example 3.7.1]
+        "words": [(0, 0, 0), (0, 1, 0), (0, 1), (1,)],
+        "uniquely_parsable": False,
+        "prefix_free": False,
+        "complete": False,
+    },
+    {  # Basic complete binary code
+        "words": [(0,), (1, 0), (1, 1)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": True,
+    },
+    {  # Incomplete binary code (missing sequences starting with 1)
+        "words": [(0, 0), (0, 1)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
+    },
+    {  # Larger alphabet (ternary) with full coverage
+        "words": [(0,), (1,), (2, 0), (2, 1), (2, 2)],
+        "cardinality": 3,
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": True,
+    },
+    {  # Single-symbol code (always complete)
+        "words": [(0,), (1,), (2,), (3,)],
+        "cardinality": 4,
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": True,
+    },
+    {  # Prefix-free code but not complete
+        "words": [(0, 0), (0, 1), (1, 0)],  # missing (1, 1, ...)
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
+    },
+    {  # Complex case with longer sequences
+        "words": [(0,), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": True,
+    },
+    {  # Ternary code with gaps
+        "words": [(0,), (1,), (2, 0), (2, 1)],  # missing (2, 2, ...)
+        "cardinality": 3,
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
+    },
+    {  # Edge case: empty code
+        "words": [],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
+    },
+    {  # Single codeword (not complete)
+        "words": [(0, 1, 1)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
     },
 ]
 
@@ -127,64 +206,11 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
 
 
 @pytest.mark.parametrize(
-    "words, cardinality, expected",
+    "words, cardinality, expected_complete",
     [
-        (  # [Say06, Example 3.7.1]
-            [(0, 0, 0), (0, 0, 1), (0, 1), (1,)],
-            2,
-            True,
-        ),
-        (  # [Say06, Example 3.7.1]
-            [(0, 0, 0), (0, 1, 0), (0, 1), (1,)],
-            2,
-            False,
-        ),
-        (  # Basic complete binary code
-            [(0,), (1, 0), (1, 1)],
-            2,
-            True,
-        ),
-        (  # Incomplete binary code (missing sequences starting with 1)
-            [(0, 0), (0, 1)],
-            2,
-            False,
-        ),
-        (  # Larger alphabet (ternary) with full coverage
-            [(0,), (1,), (2, 0), (2, 1), (2, 2)],
-            3,
-            True,
-        ),
-        (  # Single-symbol code (always complete)
-            [(0,), (1,), (2,), (3,)],
-            4,
-            True,
-        ),
-        (  # Prefix-free code but not complete
-            [(0, 0), (0, 1), (1, 0)],  # missing (1, 1, ...)
-            2,
-            False,
-        ),
-        (  # Complex case with longer sequences
-            [(0,), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1)],
-            2,
-            True,
-        ),
-        (  # Ternary code with gaps
-            [(0,), (1,), (2, 0), (2, 1)],  # missing (2, 2, ...)
-            3,
-            False,
-        ),
-        (  # Edge case: empty code
-            [],
-            2,
-            False,
-        ),
-        (  # Single codeword (not complete)
-            [(0, 1, 1)],
-            2,
-            False,
-        ),
+        (case["words"], case.get("cardinality", 2), case["complete"])
+        for case in test_cases
     ],
 )
-def test_is_complete(words, cardinality, expected):
-    assert is_complete(words, cardinality) == expected
+def test_is_complete(words, cardinality, expected_complete):
+    assert is_complete(words, cardinality) == expected_complete
