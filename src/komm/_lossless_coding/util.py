@@ -79,8 +79,10 @@ def is_complete(words: list[Word], cardinality: int) -> bool:
 
 def kraft_parameter(lengths: list[int], base: int) -> Fraction:
     # Integer sum over the common denominator
-    l_max = max(lengths)
-    return Fraction(sum(base ** (l_max - l) for l in lengths), base**l_max)
+    l_max = max(lengths, default=0)
+    counts = Counter(lengths)
+    numerator = sum(n * base ** (l_max - l) for l, n in counts.items())
+    return Fraction(numerator, base**l_max)
 
 
 def parse_fixed_length(
@@ -189,17 +191,15 @@ def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
     base = validate_integer(base, low=2)
 
     lengths_list: list[int] = lengths.tolist()
+    positive = [l for l in lengths_list if l > 0]  # Zero lengths take no budget
+    if kraft_parameter(positive, base) > 1:
+        raise ValueError("'lengths' must satisfy Kraft inequality")
+
     l_max = max(lengths_list)
-    counts = Counter(l for l in lengths_list if l > 0)  # Zero lengths take no budget
+    counts = Counter(positive)
     integers = [0] * (l_max + 1)
     for l in range(1, l_max + 1):
         integers[l] = (integers[l - 1] + counts[l - 1]) * base
-
-    # Kraft inequality, checked exactly in (arbitrary precision) integer arithmetic.
-    # Since integers[l + 1] = (integers[l] + counts[l]) * base, a violation at any
-    # length propagates to l_max, so it suffices to check the condition there.
-    if integers[l_max] + counts[l_max] > base**l_max:
-        raise ValueError("'lengths' must satisfy Kraft inequality")
 
     codewords: list[Word] = [()] * len(lengths_list)
     for x, l in enumerate(lengths_list):
