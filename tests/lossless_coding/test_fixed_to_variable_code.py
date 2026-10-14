@@ -182,6 +182,23 @@ def test_decode_not_uniquely_decodable(source_cardinality, codewords):
 
 
 @pytest.mark.parametrize(
+    "source_cardinality, codewords, is_complete",
+    [
+        (2, [(0,), (1, 0), (1, 1, 0), (1, 1, 1)], True),
+        (2, [(0, 0), (0, 1), (1, 0), (1, 1, 1)], False),  # Kraft parameter is 7/8
+        (3, [(0,), (0, 1), (1, 1)], True),  # Not prefix-free
+        (3, [(0,), (0, 1), (1, 0)], False),  # Not uniquely decodable
+    ],
+)
+def test_is_complete(source_cardinality, codewords, is_complete):
+    code = komm.FixedToVariableCode.from_codewords(
+        codewords=codewords,
+        source_cardinality=source_cardinality,
+    )
+    assert code.is_complete() == is_complete
+
+
+@pytest.mark.parametrize(
     "code_parameters, pmf, rate",
     [
         (test_data[0], [0.4, 0.2, 0.2, 0.1, 0.1], 3.0),

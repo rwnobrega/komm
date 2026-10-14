@@ -105,6 +105,22 @@ def test_kraft_parameter_exact():
 
 
 @pytest.mark.parametrize(
+    "codewords, is_complete",
+    [
+        ([(0,), (1, 0), (1, 1)], True),
+        ([(0,), (0, 1), (1, 1)], True),  # Not prefix-free
+        ([(0,), (0, 1), (1, 0)], False),  # Not uniquely decodable
+        ([(0,), (1, 0)], False),  # Kraft parameter is 3/4
+        ([(0,), (1,), (0, 0)], False),  # Kraft parameter is 5/4
+        ([(1,) * i + (0,) for i in range(60)], False),  # Float sum gives 1.0
+    ],
+)
+def test_is_complete(codewords, is_complete):
+    code = komm.SymbolCode.from_codewords(codewords)
+    assert code.is_complete() == is_complete
+
+
+@pytest.mark.parametrize(
     "code_parameters, pmf, average_length",
     [
         (test_data[0], [0.4, 0.2, 0.2, 0.1, 0.1], 3.0),
@@ -169,6 +185,7 @@ def test_fixed_to_variable_equivalence(code_parameters):
     assert code.is_uniquely_decodable() == block_code.is_uniquely_decodable()
     assert code.is_prefix_free() == block_code.is_prefix_free()
     assert code.kraft_parameter() == block_code.kraft_parameter()
+    assert code.is_complete() == block_code.is_complete()
     pmf = np.full(source_cardinality, 1 / source_cardinality)
     assert code.average_length(pmf) == block_code.rate(pmf)
     x = np.arange(source_cardinality)

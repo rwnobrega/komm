@@ -409,6 +409,30 @@ class FixedToVariableCode:
         """
         return kraft_parameter(self.lengths, self.target_cardinality)
 
+    @cache
+    def is_complete(self) -> bool:
+        r"""
+        Returns whether the code is complete. A code is *complete* if it is uniquely decodable and its Kraft parameter is equal to $1$. See <cite>MacK03, Sec. 5.2</cite>.
+
+        Examples:
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.is_complete()
+            True
+
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.is_complete()
+            True
+
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.is_complete()  # Not uniquely decodable
+            False
+
+            >>> code = komm.FixedToVariableCode.from_codewords([(0,), (1, 0)])
+            >>> code.is_complete()  # Kraft parameter is 3/4
+            False
+        """
+        return self.kraft_parameter() == 1 and self.is_uniquely_decodable()
+
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the expected rate $R$ of the code, considering a given (first-order) pmf $p$ over $\mathcal{X}$. This quantity is given by

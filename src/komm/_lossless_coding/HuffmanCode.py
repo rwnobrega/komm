@@ -20,7 +20,7 @@ class HuffmanCode(abc.SymbolCode):
     Binary Huffman code. It is an optimal (minimal average length) [symbol code](/ref/SymbolCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.2</cite>.
 
     Notes:
-        Huffman codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)).
+        Huffman codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)) and [complete](/ref/SymbolCode/#is_complete).
 
     Parameters:
         pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.

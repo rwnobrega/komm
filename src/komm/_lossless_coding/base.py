@@ -104,6 +104,13 @@ class SymbolCode(ABC):
         """
         return kraft_parameter(self.lengths, self.target_cardinality)
 
+    @cache
+    def is_complete(self) -> bool:
+        r"""
+        Returns whether the code is complete. A code is *complete* if it is uniquely decodable and its Kraft parameter is equal to $1$. See <cite>MacK03, Sec. 5.2</cite>.
+        """
+        return self.kraft_parameter() == 1 and self.is_uniquely_decodable()
+
     def average_length(self, pmf: npt.ArrayLike) -> float:
         r"""
         Computes the average codeword length $\bar{n}$ of the code, considering a given pmf $p$ over $\mathcal{X}$. This quantity is given by

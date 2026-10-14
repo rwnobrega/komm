@@ -22,6 +22,8 @@
 
 - Added parameter `assignment` to `ShannonCode`, which selects how the codewords are assigned once the lengths are computed: either `"cumulative"` (the default, from the binary expansions of the cumulative probabilities) or `"canonical"`.
 
+- Added method `is_complete` to [symbol codes](https://komm.dev/ref/SymbolCode/#is_complete) and [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#is_complete), which returns whether the code is uniquely decodable with Kraft parameter equal to 1.
+
 ### Breaking changes
 
 - Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.

@@ -257,6 +257,28 @@ class SymbolCode(abc.SymbolCode):
         """
         return super().kraft_parameter()
 
+    @cache
+    def is_complete(self) -> bool:
+        r"""
+        Examples:
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+            >>> code.is_complete()
+            True
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.is_complete()
+            True
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
+            >>> code.is_complete()  # Not uniquely decodable
+            False
+
+            >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0)])
+            >>> code.is_complete()  # Kraft parameter is 3/4
+            False
+        """
+        return super().is_complete()
+
     def average_length(self, pmf: npt.ArrayLike) -> float:
         r"""
         Examples:
