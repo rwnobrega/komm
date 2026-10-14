@@ -27,8 +27,6 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
     words = [w for w in words if len(w) > 0]  # Ignore empty words
     if len(set(words)) < len(words):  # Duplicated words
         return False
-    if is_prefix_free(words):  # Prefix-free implies uniquely parsable
-        return True
     augmented_words = set(words)
     while True:
         dangling_suffixes: set[Word] = set()
