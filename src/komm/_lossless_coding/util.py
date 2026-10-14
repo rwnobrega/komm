@@ -47,34 +47,13 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
 
 
 def is_complete(words: list[Word], cardinality: int) -> bool:
-    class Node:
-        def __init__(self):
-            self.is_end: bool = False
-            self.children: dict[int, "Node"] = {}
-
-    # Build trie
-    root = Node()
+    # Minimal words must have Kraft sum one
+    words = sorted(w for w in words if len(w) > 0)  # Ignore empty words
+    minimal: list[Word] = []  # No other word is a prefix
     for word in words:
-        node = root
-        for symbol in word:
-            if symbol not in node.children:
-                node.children[symbol] = Node()
-            node = node.children[symbol]
-        node.is_end = True
-
-    visited = {root}
-    stack = [root]
-    while stack:
-        node = stack.pop()
-        for symbol in range(cardinality):
-            if symbol not in node.children:
-                return False
-            child = node.children[symbol]
-            if not child.is_end and child not in visited:
-                visited.add(child)
-                stack.append(child)
-
-    return True
+        if not minimal or not is_prefix_of(minimal[-1], word):
+            minimal.append(word)
+    return kraft_parameter([len(w) for w in minimal], cardinality) == 1
 
 
 def kraft_parameter(lengths: list[int], base: int) -> Fraction:

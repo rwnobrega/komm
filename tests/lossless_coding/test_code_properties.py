@@ -186,6 +186,18 @@ test_cases = [
         "prefix_free": True,
         "complete": False,
     },
+    {  # Two extensions of a minimal word
+        "words": [(0,), (0, 0), (0, 1), (1,)],
+        "uniquely_parsable": False,
+        "prefix_free": False,
+        "complete": True,
+    },
+    {  # Empty words are ignored
+        "words": [(), (0,)],
+        "uniquely_parsable": True,
+        "prefix_free": True,
+        "complete": False,
+    },
 ]
 
 
