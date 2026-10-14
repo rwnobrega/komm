@@ -11,7 +11,7 @@ from .._util.validators import (
     validate_positive_integer,
 )
 from ..types import Array1D
-from .util import integer_to_symbols, num_digits, symbols_to_integer, take
+from .util import ceil_log, integer_to_symbols, symbols_to_integer, take
 
 Token = tuple[int, int]
 
@@ -44,8 +44,8 @@ class RunLengthCode(abc.TokenCode[Token]):
 
     def _get_widths(self) -> tuple[int, int]:
         calY = self.target_cardinality
-        x_width = num_digits(self.source_cardinality, calY)
-        l_width = num_digits(self.max_run_length, calY)
+        x_width = ceil_log(self.source_cardinality, calY)
+        l_width = ceil_log(self.max_run_length, calY)
         return x_width, l_width
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:

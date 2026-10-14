@@ -129,7 +129,7 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
-def num_digits(size: int, base: int) -> int:
+def ceil_log(size: int, base: int) -> int:
     # Smallest k with base**k >= size
     if size <= 1:
         return 0
@@ -143,7 +143,7 @@ def num_digits(size: int, base: int) -> int:
 
 
 def infer_block_size(size: int, cardinality: int, name: str) -> int:
-    k = max(num_digits(size, cardinality), 1)
+    k = max(ceil_log(size, cardinality), 1)
     if cardinality**k != size:
         raise ValueError(
             f"length of '{name}' must be a power of source cardinality"

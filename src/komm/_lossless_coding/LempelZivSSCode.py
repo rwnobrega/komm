@@ -13,9 +13,9 @@ from .._util.validators import (
 )
 from ..types import Array1D
 from .util import (
+    ceil_log,
     find_longest_match,
     integer_to_symbols,
-    num_digits,
     symbols_to_integer,
     take,
 )
@@ -88,9 +88,9 @@ class LempelZivSSCode(abc.TokenCode[Token]):
 
     def _get_widths(self) -> tuple[int, int, int]:
         calY = self.target_cardinality
-        p_width = num_digits(self.search_size, calY)
-        l_width = num_digits(self.lookahead_size, calY)
-        x_width = num_digits(self.source_cardinality, calY)
+        p_width = ceil_log(self.search_size, calY)
+        l_width = ceil_log(self.lookahead_size, calY)
+        x_width = ceil_log(self.source_cardinality, calY)
         return p_width, l_width, x_width
 
     @property

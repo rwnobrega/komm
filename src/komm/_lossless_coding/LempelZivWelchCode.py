@@ -8,7 +8,7 @@ from tqdm import tqdm
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D
-from .util import Word, integer_to_symbols, num_digits, symbols_to_integer, take
+from .util import Word, ceil_log, integer_to_symbols, symbols_to_integer, take
 
 Token = int
 
@@ -39,7 +39,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
 
     def _width(self, i: int) -> int:
         # Dictionary has |X| + i entries at the i-th token
-        return num_digits(self.source_cardinality + i, self.target_cardinality)
+        return ceil_log(self.source_cardinality + i, self.target_cardinality)
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""

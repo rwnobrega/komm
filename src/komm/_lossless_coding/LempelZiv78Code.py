@@ -8,7 +8,7 @@ from tqdm import tqdm
 from .. import abc
 from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D
-from .util import Word, integer_to_symbols, num_digits, symbols_to_integer, take
+from .util import Word, ceil_log, integer_to_symbols, symbols_to_integer, take
 
 Token = tuple[int, int]
 
@@ -91,10 +91,10 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             array([1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0])
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        M = num_digits(calX, calY)
+        M = ceil_log(calX, calY)
         target: list[int] = []
         for i, (p, x) in enumerate(tokens):
-            k = num_digits(i + 1, calY)
+            k = ceil_log(i + 1, calY)
             target.extend(integer_to_symbols(p, base=calY, width=k))
             if x >= 0:
                 target.extend(integer_to_symbols(x, base=calY, width=M))
@@ -110,7 +110,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
             [(0, 1), (0, 0), (1, 1), (2, 1), (4, 0), (2, 0)]
         """
         calX, calY = self.source_cardinality, self.target_cardinality
-        M = num_digits(calX, calY)
+        M = ceil_log(calX, calY)
         target = validate_integer_array(
             target, low=0, high=self.target_cardinality, ndim=1
         )
@@ -118,7 +118,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         it = iter(target.tolist())
         for first in it:
             symbols = chain([first], it)
-            k = num_digits(len(tokens) + 1, calY)
+            k = ceil_log(len(tokens) + 1, calY)
             p = symbols_to_integer(take(symbols, k), base=calY)
             head = next(symbols, None)
             if head is None:  # Last token may lack symbol
