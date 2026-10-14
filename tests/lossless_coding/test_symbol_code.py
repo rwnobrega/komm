@@ -153,6 +153,13 @@ def test_encode_decode(code_parameters, x, y):
     assert np.array_equal(code.decode(y), x)
 
 
+def test_encode_decode_empty():
+    code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
+    for output in [code.encode([]), code.decode([])]:
+        assert output.shape == (0,)
+        assert np.issubdtype(output.dtype, np.integer)
+
+
 @pytest.mark.parametrize("code_parameters", test_data)
 def test_encode_decode_single(code_parameters):
     source_cardinality, _, codewords = code_parameters.values()

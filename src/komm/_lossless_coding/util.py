@@ -77,7 +77,7 @@ def parse_fixed_length(
         for i in range(0, len(input), block_size):
             key = tuple(map(int, input[i : i + block_size]))
             output_list.extend(dictionary[key])
-        output = np.asarray(output_list)
+        output = np.asarray(output_list, dtype=int)
     except KeyError:
         raise ValueError("input contains invalid word")
     return output
@@ -113,7 +113,7 @@ def parse_prefix_free(
             raise ValueError("input contains invalid word")
 
     if length == 0:
-        return np.asarray(output)
+        return np.asarray(output, dtype=int)
 
     remainder: list[int] = []
     for _ in range(length):
@@ -124,7 +124,7 @@ def parse_prefix_free(
             if not allow_incomplete:
                 raise ValueError("input contains an incomplete codeword")
             output.extend(value)
-            return np.asarray(output)
+            return np.asarray(output, dtype=int)
 
     raise ValueError("input contains invalid word")
 

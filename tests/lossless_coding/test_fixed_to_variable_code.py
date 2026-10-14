@@ -266,6 +266,13 @@ def test_encode_decode(code_parameters, x, y):
     assert np.array_equal(code.decode(y), x)
 
 
+def test_encode_decode_empty():
+    code = komm.FixedToVariableCode.from_lengths([1, 2, 3, 3], source_cardinality=2)
+    for output in [code.encode([]), code.decode([])]:
+        assert output.shape == (0,)
+        assert np.issubdtype(output.dtype, np.integer)
+
+
 @pytest.mark.parametrize(
     "x, message",
     [

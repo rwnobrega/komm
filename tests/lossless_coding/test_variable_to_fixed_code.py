@@ -145,6 +145,15 @@ def test_encode_decode():
     assert np.array_equal(code.decode(y), x)
 
 
+def test_encode_decode_empty():
+    code = komm.VariableToFixedCode.from_sourcewords(
+        [(0, 0, 0), (0, 0, 1), (0, 1), (1,)]
+    )
+    for output in [code.encode([]), code.decode([])]:
+        assert output.shape == (0,)
+        assert np.issubdtype(output.dtype, np.integer)
+
+
 @pytest.mark.parametrize(
     "sourcewords, x, message",
     [
