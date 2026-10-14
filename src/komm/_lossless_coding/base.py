@@ -108,6 +108,8 @@ class SymbolCode(ABC):
     def is_complete(self) -> bool:
         r"""
         Returns whether the code is complete. A code is *complete* if it is uniquely decodable and its Kraft parameter is equal to $1$. See <cite>MacK03, Sec. 5.2</cite>.
+
+        A prefix-free code is complete if and only if every infinite target sequence has a prefix that is a codeword, as in [variable-to-fixed codes](/ref/VariableToFixedCode/#is_complete).
         """
         return self.kraft_parameter() == 1 and self.is_uniquely_decodable()
 
