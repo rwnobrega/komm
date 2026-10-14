@@ -303,6 +303,7 @@ def test_from_codewords_empty_codeword():
         ([0, 1, 2], 2, "elements of 'lengths' must be at least 1"),
         ([[1, 2], [2, 2]], 2, "'lengths' must be a 1D-array"),
         ([1, 2, 2], 1, "'target_cardinality' must be at least 2"),
+        ([], 2, "'source_cardinality' must be at least 2"),
     ],
 )
 def test_from_lengths_invalid(lengths, target_cardinality, message):

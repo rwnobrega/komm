@@ -9,6 +9,7 @@ from komm._lossless_coding.util import canonical_code, is_prefix_free
     "lengths, expected",
     [
         ([3], [(0, 0, 0)]),
+        ([], []),
         ([0, 0], [(), ()]),
         ([0, 1, 0], [(), (0,), ()]),
         ([1, 2, 3, 3], [(0,), (1, 0), (1, 1, 0), (1, 1, 1)]),

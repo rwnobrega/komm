@@ -172,7 +172,7 @@ def canonical_code(lengths: npt.ArrayLike, base: int = 2) -> list[Word]:
     if kraft_parameter(positive, base) > 1:
         raise ValueError("'lengths' must satisfy Kraft inequality")
 
-    l_max = max(lengths_list)
+    l_max = max(lengths_list, default=0)
     counts = Counter(positive)
     integers = [0] * (l_max + 1)
     for l in range(1, l_max + 1):
