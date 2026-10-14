@@ -45,7 +45,7 @@ def is_uniquely_parsable(words: list[Word]) -> bool:
         augmented_words |= dangling_suffixes
 
 
-def is_fully_covering(words: list[Word], cardinality: int) -> bool:
+def is_complete(words: list[Word], cardinality: int) -> bool:
     class Node:
         def __init__(self):
             self.is_end: bool = False

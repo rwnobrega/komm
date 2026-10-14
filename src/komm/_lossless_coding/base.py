@@ -12,7 +12,7 @@ from .._util.validators import validate_integer, validate_integer_array, validat
 from ..types import Array1D
 from .util import (
     Word,
-    is_fully_covering,
+    is_complete,
     is_prefix_free,
     is_prefix_of,
     is_uniquely_parsable,
@@ -332,11 +332,11 @@ class VariableToFixedCode(ABC):
         return [len(x) for x in self.sourcewords]
 
     @cache
-    def is_fully_covering(self) -> bool:
+    def is_complete(self) -> bool:
         """
-        Returns whether the code is fully covering. A code is *fully covering* if every possible source sequence has a prefix that is a sourceword.
+        Returns whether the code is complete. A code is *complete* if every infinite source sequence has a prefix that is a sourceword. See <cite>JS72, Definition 2, p. 766</cite>.
         """
-        return is_fully_covering(self.sourcewords, self.source_cardinality)
+        return is_complete(self.sourcewords, self.source_cardinality)
 
     @cache
     def is_uniquely_encodable(self) -> bool:
@@ -375,7 +375,7 @@ class VariableToFixedCode(ABC):
 
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
-        Encodes a sequence of source symbols using the code, which must be fully covering and uniquely encodable. When the input sequence ends with symbols that form only a partial match with any sourceword, the encoder will complete this last block using any valid sourceword that starts with these remaining symbols.
+        Encodes a sequence of source symbols using the code, which must be complete and uniquely encodable. When the input sequence ends with symbols that form only a partial match with any sourceword, the encoder will complete this last block using any valid sourceword that starts with these remaining symbols.
 
         Warning:
             Encoding for non-prefix-free codes is not implemented yet.
@@ -386,8 +386,8 @@ class VariableToFixedCode(ABC):
         Returns:
             output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$ with a length that is a multiple of $n$.
         """
-        if not self.is_fully_covering():
-            raise ValueError("code is not fully covering")
+        if not self.is_complete():
+            raise ValueError("code is not complete")
         if not self.is_uniquely_encodable():
             raise ValueError("code is not uniquely encodable")
         if not self.is_prefix_free():
@@ -405,7 +405,7 @@ class VariableToFixedCode(ABC):
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
-        Decodes a sequence of target symbols using the code, which must be fully covering and uniquely encodable.
+        Decodes a sequence of target symbols using the code, which must be complete and uniquely encodable.
 
         Parameters:
             input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$ and have a length that is a multiple of $n$. Also, the sequence must be a concatenation of target words (i.e., the output of the `encode` method).
@@ -413,8 +413,8 @@ class VariableToFixedCode(ABC):
         Returns:
             output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
         """
-        if not self.is_fully_covering():
-            raise ValueError("code is not fully covering")
+        if not self.is_complete():
+            raise ValueError("code is not complete")
         if not self.is_uniquely_encodable():
             raise ValueError("code is not uniquely encodable")
         calY = self.target_cardinality

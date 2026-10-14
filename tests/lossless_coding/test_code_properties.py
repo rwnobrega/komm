@@ -1,7 +1,7 @@
 import pytest
 
 from komm._lossless_coding.util import (
-    is_fully_covering,
+    is_complete,
     is_prefix_free,
     is_uniquely_parsable,
 )
@@ -139,7 +139,7 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
             2,
             False,
         ),
-        (  # Basic fully covering binary code
+        (  # Basic complete binary code
             [(0,), (1, 0), (1, 1)],
             2,
             True,
@@ -154,12 +154,12 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
             3,
             True,
         ),
-        (  # Single-symbol code (always fully covering)
+        (  # Single-symbol code (always complete)
             [(0,), (1,), (2,), (3,)],
             4,
             True,
         ),
-        (  # Prefix-free code but not fully covering
+        (  # Prefix-free code but not complete
             [(0, 0), (0, 1), (1, 0)],  # missing (1, 1, ...)
             2,
             False,
@@ -179,12 +179,12 @@ def test_is_uniquely_parsable(words, expected_uniquely_parsable):
             2,
             False,
         ),
-        (  # Single codeword (not covering)
+        (  # Single codeword (not complete)
             [(0, 1, 1)],
             2,
             False,
         ),
     ],
 )
-def test_is_fully_covering(words, cardinality, expected):
-    assert is_fully_covering(words, cardinality) == expected
+def test_is_complete(words, cardinality, expected):
+    assert is_complete(words, cardinality) == expected

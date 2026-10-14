@@ -150,7 +150,7 @@ def test_encode_decode():
     [
         ([(0,), (1, 0), (1, 1)], [0, 7], "elements of 'input' must be in [0:2)"),
         ([(0,), (1, 0), (1, 1)], [[0, 1], [1, 0]], "'input' must be a 1D-array"),
-        ([(0, 0, 0), (0, 1, 0), (0, 1), (1,)], [0], "code is not fully covering"),
+        ([(0, 0, 0), (0, 1, 0), (0, 1), (1,)], [0], "code is not complete"),
         ([(0,), (1,), (0, 1)], [1, 0, 0, 0], "code is not uniquely encodable"),
     ],
 )
@@ -174,7 +174,7 @@ def test_encode_not_integer(x):
         ([(0,), (1,), (2,)], [0, 0, 1, 1], "input contains invalid word"),
         ([(0,), (1,), (2,)], [0, 2], "elements of 'input' must be in [0:2)"),
         ([(0,), (1,), (2,)], [[0, 0], [1, 0]], "'input' must be a 1D-array"),
-        ([(0, 0), (0, 1)], [0, 0, 0, 1], "code is not fully covering"),
+        ([(0, 0), (0, 1)], [0, 0, 0, 1], "code is not complete"),
         ([(0,), (1,), (0, 1)], [0, 0, 0, 1], "code is not uniquely encodable"),
     ],
 )

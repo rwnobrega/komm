@@ -22,7 +22,7 @@ class TunstallCode(abc.VariableToFixedCode):
     Binary Tunstall code. It is an optimal (minimal expected rate) [variable-to-fixed length code](/ref/VariableToFixedCode) for a given pmf $p$ over $\mathcal{X}$. For more details, see <cite>Say06, Sec. 3.7</cite>.
 
     Notes:
-        Tunstall codes are always [prefix-free](/ref/VariableToFixedCode/#is_prefix_free) (hence [uniquely encodable](/ref/VariableToFixedCode/#is_uniquely_encodable)) and [fully covering](/ref/VariableToFixedCode/#is_fully_covering).
+        Tunstall codes are always [prefix-free](/ref/VariableToFixedCode/#is_prefix_free) (hence [uniquely encodable](/ref/VariableToFixedCode/#is_uniquely_encodable)) and [complete](/ref/VariableToFixedCode/#is_complete).
 
     Parameters:
         pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
@@ -94,7 +94,7 @@ class TunstallCode(abc.VariableToFixedCode):
         return self._dec_mapping
 
     @cache
-    def is_fully_covering(self) -> bool:
+    def is_complete(self) -> bool:
         return True
 
     @cache

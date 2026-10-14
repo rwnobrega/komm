@@ -81,7 +81,7 @@ class VariableToFixedCode(abc.VariableToFixedCode):
             ...     (1, 0, 0): (0, 0, 0),
             ...     (1, 0, 1): (0, 0, 1),
             ...     (1, 1, 0): (0, 0, 2),
-            ... })  # Incomplete mapping
+            ... })  # Partial mapping
             >>> code.target_cardinality, code.source_cardinality, code.target_block_size
             (2, 3, 3)
             >>> code.sourcewords
@@ -231,26 +231,26 @@ class VariableToFixedCode(abc.VariableToFixedCode):
         return super().lengths
 
     @cache
-    def is_fully_covering(self) -> bool:
+    def is_complete(self) -> bool:
         """
         Examples:
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0,), (1, 0), (1, 1)])
-            >>> code.is_fully_covering()
+            >>> code.is_complete()
             True
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0,), (1,), (0, 1)])
-            >>> code.is_fully_covering()
+            >>> code.is_complete()
             True
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0, 0), (0, 1)])
-            >>> code.is_fully_covering()  # (1,) is not covered
+            >>> code.is_complete()  # (1,) is not covered
             False
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0,), (0, 1)])
-            >>> code.is_fully_covering()  # (1,) is not covered
+            >>> code.is_complete()  # (1,) is not covered
             False
         """
-        return super().is_fully_covering()
+        return super().is_complete()
 
     @cache
     def is_uniquely_encodable(self) -> bool:
@@ -327,10 +327,10 @@ class VariableToFixedCode(abc.VariableToFixedCode):
             ValueError: elements of 'input' must be in [0:2)
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0, 0), (0, 1)])
-            >>> code.encode([1, 0, 0, 0])  # Code is not fully covering
+            >>> code.encode([1, 0, 0, 0])  # Code is not complete
             Traceback (most recent call last):
             ...
-            ValueError: code is not fully covering
+            ValueError: code is not complete
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0,), (1,), (0, 1)])
             >>> code.encode([1, 0, 0, 0])  # Code is not uniquely encodable
@@ -362,10 +362,10 @@ class VariableToFixedCode(abc.VariableToFixedCode):
             ValueError: input contains invalid word
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0, 0), (0, 1)])
-            >>> code.decode([0, 0, 0, 1])  # Code is not fully covering
+            >>> code.decode([0, 0, 0, 1])  # Code is not complete
             Traceback (most recent call last):
             ...
-            ValueError: code is not fully covering
+            ValueError: code is not complete
 
             >>> code = komm.VariableToFixedCode.from_sourcewords([(0,), (1,), (0, 1)])
             >>> code.decode([0, 0, 0, 1])  # Code is not uniquely encodable

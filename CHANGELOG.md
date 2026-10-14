@@ -52,6 +52,8 @@
 
 - Changed `encode` and `decode` of integer codes to work on arrays instead of iterators. Instead of `list(code.decode(bits))`, use `code.decode(bits)`; to decode one codeword at a time from an iterator, use `decode_single`.
 
+- Renamed method `is_fully_covering` to `is_complete` in variable-to-fixed codes.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.
@@ -504,7 +506,7 @@
 ### Fixed
 
 - Fixed Sardinas–Patterson algorithm.
-- Encoding and decoding of [variable-to-fixed codes](https://komm.dev/ref/VariableToFixedCode) now require the code to be [fully covering](https://komm.dev/ref/VariableToFixedCode#is_fully_covering).
+- Encoding and decoding of [variable-to-fixed codes](https://komm.dev/ref/VariableToFixedCode) now require the code to be fully covering.
 
 ## v0.14.0 (2024-12-19)
 
