@@ -47,7 +47,7 @@ def test_truncated_binary_round_trip(M, rng):
 def test_truncated_binary_kraft_equality(M):
     # The code is complete
     code = komm.TruncatedBinaryCode(M)
-    assert code.kraft_parameter() == 1.0
+    assert code.kraft_parameter() == 1
 
 
 @pytest.mark.parametrize("M", [2, 5, 16, 100])

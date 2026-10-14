@@ -1,5 +1,6 @@
 from collections import Counter
 from collections.abc import Iterable, Iterator
+from fractions import Fraction
 from itertools import islice, product
 from math import ceil, log
 
@@ -74,6 +75,12 @@ def is_complete(words: list[Word], cardinality: int) -> bool:
                 stack.append(child)
 
     return True
+
+
+def kraft_parameter(lengths: list[int], base: int) -> Fraction:
+    # Integer sum over the common denominator
+    l_max = max(lengths)
+    return Fraction(sum(base ** (l_max - l) for l in lengths), base**l_max)
 
 
 def parse_fixed_length(

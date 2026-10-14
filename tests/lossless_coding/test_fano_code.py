@@ -67,7 +67,7 @@ def test_fano_code_complete(source_cardinality, order, rng):
     # Full binary tree, so Kraft equality holds.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
     code = komm.FanoCode(pmf)
-    assert np.isclose(code.kraft_parameter(), 1.0)
+    assert code.kraft_parameter() == 1
 
 
 @pytest.mark.parametrize("source_cardinality", range(2, 7))

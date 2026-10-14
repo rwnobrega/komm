@@ -54,6 +54,8 @@
 
 - Renamed method `is_fully_covering` to `is_complete` in variable-to-fixed codes.
 
+- Changed `kraft_parameter` of symbol codes and `FixedToVariableCode` to return a `Fraction` instead of a float.
+
 ### Fixed
 
 - Fixed `check` of `CyclicCode`.

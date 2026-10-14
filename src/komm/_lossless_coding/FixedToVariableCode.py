@@ -1,3 +1,4 @@
+from fractions import Fraction
 from functools import cache, cached_property
 from itertools import product
 from typing import Self
@@ -18,6 +19,7 @@ from .util import (
     infer_block_size,
     is_prefix_free,
     is_uniquely_parsable,
+    kraft_parameter,
     parse_fixed_length,
     parse_prefix_free,
 )
@@ -375,7 +377,7 @@ class FixedToVariableCode:
         return is_prefix_free(self.codewords)
 
     @cache
-    def kraft_parameter(self) -> float:
+    def kraft_parameter(self) -> Fraction:
         r"""
         Computes the Kraft parameter $K$ of the code. This quantity is given by
         $$
@@ -391,23 +393,21 @@ class FixedToVariableCode:
             ...     codewords=[(0, 0, 0), (0, 0, 1), (0, 1, 0), (1, 0, 1), (1, 1)],
             ... )
             >>> code.kraft_parameter()
-            0.75
+            Fraction(3, 4)
 
             >>> code = komm.FixedToVariableCode.from_codewords(
             ...     codewords=[(0,), (1, 0), (1, 1, 0), (1, 1, 1)],
             ... )
             >>> code.kraft_parameter()
-            1.0
+            Fraction(1, 1)
 
             >>> code = komm.FixedToVariableCode.from_codewords(
             ...     codewords=[(0, 0), (1, 1), (0,), (1,)],
             ... )
             >>> code.kraft_parameter()
-            1.5
+            Fraction(3, 2)
         """
-        calY = self.target_cardinality
-        kraft_parameter = np.sum(np.float_power(calY, -np.asarray(self.lengths)))
-        return float(kraft_parameter)
+        return kraft_parameter(self.lengths, self.target_cardinality)
 
     def rate(self, pmf: npt.ArrayLike) -> float:
         r"""

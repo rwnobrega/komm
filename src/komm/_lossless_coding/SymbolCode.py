@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from fractions import Fraction
 from functools import cache, cached_property
 from typing import Self, SupportsIndex
 
@@ -235,20 +236,24 @@ class SymbolCode(abc.SymbolCode):
         return super().is_prefix_free()
 
     @cache
-    def kraft_parameter(self) -> float:
+    def kraft_parameter(self) -> Fraction:
         r"""
         Examples:
             >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0)])
             >>> code.kraft_parameter()
-            0.75
+            Fraction(3, 4)
 
             >>> code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
             >>> code.kraft_parameter()
-            1.0
+            Fraction(1, 1)
 
             >>> code = komm.SymbolCode.from_codewords([(0, 0), (1, 1), (0,), (1,)])
             >>> code.kraft_parameter()
-            1.5
+            Fraction(3, 2)
+
+            >>> code = komm.SymbolCode.from_lengths([1, 2, 2, 2], target_cardinality=3)
+            >>> code.kraft_parameter()
+            Fraction(2, 3)
         """
         return super().kraft_parameter()
 

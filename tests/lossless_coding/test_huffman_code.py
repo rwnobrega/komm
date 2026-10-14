@@ -180,7 +180,7 @@ def test_huffman_code_complete(policy, source_cardinality, order, rng):
     # Full binary tree, so Kraft equality holds.
     pmf = extended_pmf(random_pmf(rng, source_cardinality), order)
     code = komm.HuffmanCode(pmf, policy=policy)
-    assert np.isclose(code.kraft_parameter(), 1.0)
+    assert code.kraft_parameter() == 1
 
 
 @pytest.mark.parametrize("policy", ["high", "low"])

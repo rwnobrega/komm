@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
+from fractions import Fraction
 from functools import cache, cached_property
 from itertools import islice
 from operator import index
@@ -16,6 +17,7 @@ from .util import (
     is_prefix_free,
     is_prefix_of,
     is_uniquely_parsable,
+    kraft_parameter,
     parse_fixed_length,
     parse_prefix_free,
 )
@@ -89,7 +91,7 @@ class SymbolCode(ABC):
         return is_prefix_free(self.codewords)
 
     @cache
-    def kraft_parameter(self) -> float:
+    def kraft_parameter(self) -> Fraction:
         r"""
         Computes the Kraft parameter $K$ of the code. This quantity is given by
         $$
@@ -100,9 +102,7 @@ class SymbolCode(ABC):
         Returns:
             kraft_parameter: The Kraft parameter $K$ of the code.
         """
-        calY = self.target_cardinality
-        kraft_parameter = np.sum(np.float_power(calY, -np.asarray(self.lengths)))
-        return float(kraft_parameter)
+        return kraft_parameter(self.lengths, self.target_cardinality)
 
     def average_length(self, pmf: npt.ArrayLike) -> float:
         r"""

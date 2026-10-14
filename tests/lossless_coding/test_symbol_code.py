@@ -1,3 +1,4 @@
+from fractions import Fraction
 from re import escape
 
 import numpy as np
@@ -79,6 +80,28 @@ def test_from_lengths_alphabetic(lengths):
     # Non-decreasing lengths yield an alphabetic (slice) code. See [CT06, Sec. 5.7].
     code = komm.SymbolCode.from_lengths(lengths)
     assert code.codewords == sorted(code.codewords)
+
+
+@pytest.mark.parametrize(
+    "code_parameters, kraft_parameter",
+    [
+        (test_data[0], Fraction(5, 8)),
+        (test_data[1], Fraction(1)),
+        (test_data[2], Fraction(1)),
+        (test_data[3], Fraction(1)),
+        (test_data[4], Fraction(1)),  # Float sum gives 0.9999999999999998
+    ],
+)
+def test_kraft_parameter(code_parameters, kraft_parameter):
+    _, _, codewords = code_parameters.values()
+    code = komm.SymbolCode.from_codewords(codewords)
+    assert code.kraft_parameter() == kraft_parameter
+
+
+def test_kraft_parameter_exact():
+    # Truncated unary code; float sum gives 1.0
+    code = komm.SymbolCode.from_codewords([(1,) * i + (0,) for i in range(60)])
+    assert code.kraft_parameter() == 1 - Fraction(1, 2**60)
 
 
 @pytest.mark.parametrize(
