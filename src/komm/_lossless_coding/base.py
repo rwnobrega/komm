@@ -172,7 +172,6 @@ class SymbolCode(ABC):
             input,
             dictionary=self._inv_enc_mapping,
             allow_incomplete=False,
-            cardinality=calY,
         )
 
     def encode_single(self, symbol: SupportsIndex) -> Word:
@@ -403,7 +402,6 @@ class VariableToFixedCode(ABC):
             input,
             dictionary=self._inv_dec_mapping,
             allow_incomplete=True,
-            cardinality=calX,
         )
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:

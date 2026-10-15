@@ -85,40 +85,23 @@ def parse_prefix_free(
     input: Array1D[np.integer],
     dictionary: dict[Word, Word],
     allow_incomplete: bool,
-    cardinality: int = 2,
 ) -> Array1D[np.integer]:
-    # Precompute a (length, value) -> word table, where 'value' is the word
-    # folded into an integer in base 'cardinality'. Parsing is then a single
-    # pass which folds input symbols into an accumulator and probes the table.
-    lut: dict[tuple[int, int], Word] = {}
-    max_length = 0
-    for key, value in dictionary.items():
-        acc = 0
-        for symbol in key:
-            acc = cardinality * acc + symbol
-        lut[len(key), acc] = value
-        max_length = max(max_length, len(key))
-
+    max_length = max(map(len, dictionary), default=0)
     output: list[int] = []
-    length = acc = 0
+    word: Word = ()
     for symbol in input.tolist():  # Python ints are faster
-        acc = cardinality * acc + symbol
-        length += 1
-        if (length, acc) in lut:
-            output.extend(lut[length, acc])
-            length = acc = 0
-        elif length > max_length:
+        word += (symbol,)
+        if word in dictionary:
+            output.extend(dictionary[word])
+            word = ()
+        elif len(word) > max_length:
             raise ValueError("input contains invalid word")
 
-    if length == 0:
+    if not word:
         return np.asarray(output, dtype=int)
 
-    remainder: list[int] = []
-    for _ in range(length):
-        acc, symbol = divmod(acc, cardinality)
-        remainder.insert(0, symbol)
     for key, value in dictionary.items():
-        if is_prefix_of(tuple(remainder), key):
+        if is_prefix_of(word, key):
             if not allow_incomplete:
                 raise ValueError("input contains an incomplete codeword")
             output.extend(value)

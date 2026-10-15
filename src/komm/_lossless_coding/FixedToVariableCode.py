@@ -551,5 +551,4 @@ class FixedToVariableCode:
             input,
             dictionary=self._inv_enc_mapping,
             allow_incomplete=False,
-            cardinality=calY,
         )
