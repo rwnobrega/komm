@@ -6,6 +6,8 @@ import pytest
 
 import komm
 
+from .util import random_pmf
+
 test_data = [
     {
         "source_cardinality": 5,
@@ -158,6 +160,33 @@ def test_encode_decode_empty():
     for output in [code.encode([]), code.decode([])]:
         assert output.shape == (0,)
         assert np.issubdtype(output.dtype, np.integer)
+
+
+@pytest.mark.parametrize(
+    "codewords, x, y",
+    [
+        ([(0,), (0, 1), (1, 1)], [1, 2], [0, 1, 1, 1]),
+        ([(0,), (0, 1), (1, 1)], [0, 2, 2], [0, 1, 1, 1, 1]),
+        (  # [BPR10, Sec. 4.3]
+            [(0, 0), (1, 0), (1, 0, 0)],
+            [1, 0, 1, 2, 0],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+        ),
+    ],
+)
+def test_encode_decode_not_prefix_free(codewords, x, y):
+    code = komm.SymbolCode.from_codewords(codewords)
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), x)
+
+
+@pytest.mark.parametrize("S", range(3, 9))
+def test_encode_decode_suffix_free(S, rng):
+    # Reversed prefix-free codes are uniquely decodable
+    codewords = komm.HuffmanCode(random_pmf(rng, S)).codewords
+    code = komm.SymbolCode.from_codewords([word[::-1] for word in codewords])
+    x = rng.integers(0, S, 1000)
+    assert np.array_equal(code.decode(code.encode(x)), x)
 
 
 @pytest.mark.parametrize("code_parameters", test_data)
@@ -374,6 +403,8 @@ def test_encode_not_integer(x):
         ([(0,), (1, 0)], [1, 0, 2], "elements of 'input' must be in [0:2)"),
         ([(0,), (1, 0)], [[1, 0], [0, 0]], "'input' must be a 1D-array"),
         ([(0,), (0, 0), (1, 0)], [0], "code is not uniquely decodable"),
+        ([(0,), (0, 1), (1, 1)], [1, 0], "input contains invalid word"),
+        ([(0,), (0, 1), (1, 1)], [1, 1, 1], "input contains an incomplete codeword"),
     ],
 )
 def test_decode_invalid(codewords, y, message):
@@ -387,12 +418,6 @@ def test_decode_not_integer(y):
     code = komm.SymbolCode.from_codewords([(0,), (1, 0), (1, 1)])
     with pytest.raises(TypeError, match="'input' must contain only integers"):
         code.decode(y)
-
-
-def test_decode_not_prefix_free():
-    code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
-    with pytest.raises(NotImplementedError, match="not implemented yet"):
-        code.decode([0, 1, 1])
 
 
 @pytest.mark.parametrize("x", [-1, 3])

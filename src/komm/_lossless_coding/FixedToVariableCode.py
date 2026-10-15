@@ -22,6 +22,7 @@ from .util import (
     kraft_parameter,
     parse_fixed_length,
     parse_prefix_free,
+    parse_uniquely_decodable,
 )
 
 
@@ -508,9 +509,6 @@ class FixedToVariableCode:
         r"""
         Decodes a sequence of target symbols using the code, which must be uniquely decodable.
 
-        Warning:
-            Decoding for non-prefix-free codes is not implemented yet.
-
         Parameters:
             input: The sequence of symbols to be decoded. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a concatenation of codewords (i.e., the output of the `encode` method).
 
@@ -533,6 +531,13 @@ class FixedToVariableCode:
             ...
             ValueError: input contains an incomplete codeword
 
+            >>> code = komm.FixedToVariableCode.from_codewords(
+            ...     [(0,), (0, 1), (0, 1, 1), (0, 1, 1, 1)],
+            ...     source_cardinality=2,
+            ... )
+            >>> code.decode([0, 1, 0, 1, 1, 1, 0])  # Code is not prefix-free
+            array([0, 1, 1, 1, 0, 0])
+
             >>> code = komm.FixedToVariableCode.from_codewords([(0,), (0,1), (1,0)])
             >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
             Traceback (most recent call last):
@@ -541,14 +546,12 @@ class FixedToVariableCode:
         """
         if not self.is_uniquely_decodable():
             raise ValueError("code is not uniquely decodable")
-        if not self.is_prefix_free():
-            raise NotImplementedError(
-                "decoding for non-prefix-free codes is not implemented yet"
-            )
         calY = self.target_cardinality
         input = validate_integer_array(input, low=0, high=calY, ndim=1)
-        return parse_prefix_free(
-            input,
-            dictionary=self._inv_enc_mapping,
-            allow_incomplete=False,
-        )
+        if self.is_prefix_free():  # Faster parser
+            return parse_prefix_free(
+                input,
+                dictionary=self._inv_enc_mapping,
+                allow_incomplete=False,
+            )
+        return parse_uniquely_decodable(input, dictionary=self._inv_enc_mapping)

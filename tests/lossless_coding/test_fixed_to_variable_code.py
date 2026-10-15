@@ -273,6 +273,17 @@ def test_encode_decode_empty():
         assert np.issubdtype(output.dtype, np.integer)
 
 
+def test_encode_decode_not_prefix_free():
+    code = komm.FixedToVariableCode.from_codewords(
+        [(0,), (0, 1), (0, 1, 1), (0, 1, 1, 1)],
+        source_cardinality=2,
+    )
+    x = [0, 1, 1, 1, 0, 0]
+    y = [0, 1, 0, 1, 1, 1, 0]
+    assert np.array_equal(code.encode(x), y)
+    assert np.array_equal(code.decode(y), x)
+
+
 @pytest.mark.parametrize(
     "x, message",
     [

@@ -110,6 +110,41 @@ def parse_prefix_free(
     raise ValueError("input contains invalid word")
 
 
+def parse_uniquely_decodable(
+    input: Array1D[np.integer],
+    dictionary: dict[Word, Word],
+) -> Array1D[np.integer]:
+    # Forward and backward passes. See [BPR10, Sec. 4.3].
+    prefixes = {key[:i] for key in dictionary for i in range(1, len(key))}
+
+    # history[j]: state -> (previous state, value)
+    history: list[dict[Word, tuple[Word, Word | None]]] = [{(): ((), None)}]
+    for symbol in input.tolist():
+        alive: dict[Word, tuple[Word, Word | None]] = {}
+        for state in history[-1]:
+            candidate = state + (symbol,)
+            if candidate in dictionary:
+                alive[()] = (state, dictionary[candidate])
+            if candidate in prefixes:
+                alive[candidate] = (state, None)
+        if not alive:
+            raise ValueError("input contains invalid word")
+        history.append(alive)
+
+    if () not in history[-1]:
+        raise ValueError("input contains an incomplete codeword")
+
+    # Walk back from the empty state
+    values: list[Word] = []
+    state: Word = ()
+    for alive in reversed(history[1:]):
+        state, value = alive[state]
+        if value is not None:
+            values.append(value)
+    output = [symbol for value in reversed(values) for symbol in value]
+    return np.asarray(output, dtype=int)
+
+
 def ceil_log(size: int, base: int) -> int:
     # Smallest k with base**k >= size
     if size <= 1:

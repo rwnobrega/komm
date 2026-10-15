@@ -1,6 +1,7 @@
 *[Abr00]: Sílvio A. Abrantes. Codificação de Fonte: Duas Breves Visitas. FEUP Edições, 2000. ISBN 978-9727520398.
 *[Abr10]: Sílvio A. Abrantes. Códigos Correctores de Erros em Comunicações Digitais. FEUP Edições, 2010. ISBN 978-9727521272.
 *[And22]: Jeffrey G. Andrews. A Primer on Zadoff Chu Sequences. arXiv:2211.05702v2 [cs.IT], 2022.
+*[BPR10]: Jean Berstel, Dominique Perrin, and Christophe Reutenauer. Codes and Automata. Cambridge University Press, 2010. ISBN 978-0521888318.
 *[BTD01]: Norman C. Beaulieu, Christopher C. Tan, and Mohamed Oussama Damen. A "better than" Nyquist pulse. IEEE Communications Letters, 5(9):367–368, 2001.
 *[CF07]: Daniel J. Costello Jr. and G. David Forney Jr. Channel coding: The road to channel capacity. Proceedings of the IEEE, 95(6):1150–1177, 2007.
 *[CT06]: Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.

@@ -322,6 +322,10 @@ class SymbolCode(abc.SymbolCode):
             ...
             ValueError: input contains an incomplete codeword
 
+            >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 1)])
+            >>> code.decode([0, 1, 1, 1])  # Code is not prefix-free
+            array([1, 2])
+
             >>> code = komm.SymbolCode.from_codewords([(0,), (0, 1), (1, 0)])
             >>> code.decode([0, 1, 0])  # Code is not uniquely decodable
             Traceback (most recent call last):
