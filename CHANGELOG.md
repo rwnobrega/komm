@@ -4,61 +4,55 @@
 
 ### Added
 
-- Implemented [run-length code](https://komm.dev/ref/RunLengthCode).
-
 - Implemented [exhaustive bitwise decoder](https://komm.dev/ref/ExhaustiveBitwiseDecoder).
 
-- Added parameter `stop_bit` to `UnaryCode`, which selects the bit that ends each codeword.
-
-- Implemented [Golomb](https://komm.dev/ref/GolombCode), [taboo](https://komm.dev/ref/TabooCode), [escape](https://komm.dev/ref/EscapeCode), and [Elias omega](https://komm.dev/ref/EliasOmegaCode) integer codes.
-
-- Added method `flush` to `ViterbiStreamDecoder`, which returns the last bits of the stream and resets the decoder.
+- Added method `flush` to `ViterbiStreamDecoder`.
 
 - Added support for dyadic ordering to `WalshHadamardSequence`.
 
+- Implemented [Golomb](https://komm.dev/ref/GolombCode), [taboo](https://komm.dev/ref/TabooCode), [escape](https://komm.dev/ref/EscapeCode), and [Elias omega](https://komm.dev/ref/EliasOmegaCode) integer codes.
+
+- Added parameter `stop_bit` to `UnaryCode`.
+
+- Implemented [run-length code](https://komm.dev/ref/RunLengthCode).
+
 - Implemented [symbol code](https://komm.dev/ref/SymbolCode).
 
-- Added parameter `assignment` to `FanoCode`, which selects how the codewords are assigned once the partition tree is built: either `"tree"` (the default, from the paths of the tree) or `"canonical"`.
+- Added parameter `assignment` to `FanoCode` and `ShannonCode`, as in `HuffmanCode`.
 
-- Added parameter `assignment` to `ShannonCode`, which selects how the codewords are assigned once the lengths are computed: either `"cumulative"` (the default, from the binary expansions of the cumulative probabilities) or `"canonical"`.
-
-- Added method `is_complete` to [symbol codes](https://komm.dev/ref/SymbolCode/#is_complete) and [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#is_complete), which returns whether the code is uniquely decodable with Kraft parameter equal to 1.
+- Added method `is_complete` to [symbol codes](https://komm.dev/ref/SymbolCode/#is_complete) and [`FixedToVariableCode`](https://komm.dev/ref/FixedToVariableCode/#is_complete).
 
 - Added support for non-prefix-free codes to `decode` of symbol codes and `FixedToVariableCode`.
 
 ### Breaking changes
 
-- Changed `project_word` of `CyclicCode` with `systematic=False` to use a right inverse of the generator matrix, which changes the output for words that are not codewords.
-
 - Renamed `ExhaustiveSearchDecoder` to `ExhaustiveCodewordDecoder`.
 
-- Removed `SlepianArray`. Instead of `komm.SlepianArray(code)`, use `code.coset_leaders()[:, np.newaxis] ^ code.codewords()`, as in the [standard array example](https://komm.dev/gallery/standard-array).
+- Removed `SlepianArray`; see the [standard array example](https://komm.dev/gallery/standard-array).
 
-- Changed `'metrics'` in the `memory` of `viterbi_streaming` of `MealyMachine` to a 1D-array with one metric per state.
+- Changed the output of `project_word` of `CyclicCode` with `systematic=False` for words that are not codewords.
+
+- Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers.
+
+- Renamed parameter `extended` of `SimplexCode` to `lengthened`.
+
+- Made parameters `extended` of `HammingCode` and `GolayCode`, `lengthened` of `SimplexCode`, and `policy` and `assignment` of `HuffmanCode` keyword-only.
+
+- Changed `'metrics'` in the `memory` of `viterbi_streaming` of `MealyMachine` to one metric per state.
 
 - Renamed parameter `state` of `ViterbiStreamDecoder` to `initial_state`, and made its `memory`, `cache_bit`, and `metric_function` private.
 
-- Made parameter `extended` of `HammingCode` and `GolayCode` keyword-only.
+- Changed `encode` and `decode` of integer codes to work on arrays instead of iterators, and `encode_single` to return a tuple.
 
-- Renamed parameter `extended` of `SimplexCode` to `lengthened`, and made it keyword-only.
+- Changed `HuffmanCode`, `FanoCode`, and `ShannonCode` to symbol codes, without source block size and with `average_length` in place of `rate`; see the [extended Huffman example](https://komm.dev/gallery/extended-huffman).
 
-- Changed `codeword_weight_distribution` and `coset_leader_weight_distribution` of block codes to return a list of Python integers instead of a NumPy array.
+- Changed `TruncatedBinaryCode` to a symbol code, with `lengths` in place of `length`.
 
-- Changed `HuffmanCode`, `FanoCode`, and `ShannonCode` from subclasses of `FixedToVariableCode` to subclasses of `abc.SymbolCode`, with integer keys in `enc_mapping` and `average_length` in place of `rate`; removed their `source_block_size` and `size`. Instead of `komm.HuffmanCode(pmf, k)` and `code.rate(pmf)`, use `komm.HuffmanCode(pmf_k)` and `code.average_length(pmf_k) / k`, where `pmf_k = functools.reduce(np.kron, [pmf] * k)`, as in the [extended Huffman example](https://komm.dev/gallery/extended-huffman).
-
-- Changed `ShannonCode` to assign the codewords from the cumulative probabilities, as in Shannon's original construction; for the previous codewords, use `assignment="canonical"`.
-
-- Changed `TruncatedBinaryCode` to a subclass of `abc.SymbolCode`, with `encode` and `decode` on arrays instead of iterators and `encode_single` returning a tuple instead of a list; removed its `length`, in favor of `lengths`.
-
-- Made parameters `policy` and `assignment` of `HuffmanCode` keyword-only.
-
-- Changed `encode_single` of integer codes to return a tuple instead of a list.
-
-- Changed `encode` and `decode` of integer codes to work on arrays instead of iterators. Instead of `list(code.decode(bits))`, use `code.decode(bits)`; to decode one codeword at a time from an iterator, use `decode_single`.
-
-- Renamed method `is_fully_covering` to `is_complete` in variable-to-fixed codes.
+- Changed the default codewords of `ShannonCode`; for the previous ones, use `assignment="canonical"`.
 
 - Changed `kraft_parameter` of symbol codes and `FixedToVariableCode` to return a `Fraction` instead of a float.
+
+- Renamed method `is_fully_covering` to `is_complete` in variable-to-fixed codes.
 
 ### Fixed
 
