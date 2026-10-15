@@ -73,14 +73,12 @@ def parse_fixed_length(
             f" {block_size} (got {len(input)})"
         )
     try:
-        output_list: list[int] = []
-        for i in range(0, len(input), block_size):
-            key = tuple(map(int, input[i : i + block_size]))
-            output_list.extend(dictionary[key])
-        output = np.asarray(output_list, dtype=int)
+        output: list[int] = []
+        for key in input.reshape(-1, block_size).tolist():
+            output.extend(dictionary[tuple(key)])
     except KeyError:
         raise ValueError("input contains invalid word")
-    return output
+    return np.asarray(output, dtype=int)
 
 
 def parse_prefix_free(
