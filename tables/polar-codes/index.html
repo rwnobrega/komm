@@ -1,0 +1,7343 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://komm.dev/tables/polar-codes/">
+      
+      
+        <link rel="prev" href="../lexicodes/">
+      
+      
+        <link rel="next" href="../primitive-polynomials/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Polar codes - Komm</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../css/katex.css">
+    
+      <link rel="stylesheet" href="../../css/markdown.css">
+    
+      <link rel="stylesheet" href="../../css/mkdocs.css">
+    
+      <link rel="stylesheet" href="../../css/mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5g-reliability" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Komm" class="md-header__button md-logo" aria-label="Komm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Komm
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Polar codes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rwnobrega/komm/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ref/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Library reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../gallery/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Gallery
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tables
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Komm" class="md-nav__button md-logo" aria-label="Komm" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Komm
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rwnobrega/komm/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ref/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Library reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algebra
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Algebra
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BinaryPolynomial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BinaryPolynomial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BinaryPolynomialFraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BinaryPolynomialFraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/FiniteBifield/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FiniteBifield
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Channels
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Channels
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GaussianChannel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GaussianChannel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/DiscreteMemorylessChannel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DiscreteMemorylessChannel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BinarySymmetricChannel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BinarySymmetricChannel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BinaryErasureChannel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BinaryErasureChannel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ZChannel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ZChannel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Constellations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Constellations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/Constellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Constellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/PAMConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PAMConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/QAMConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QAMConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/CrossQAMConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CrossQAMConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ASKConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ASKConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/PSKConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PSKConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/APSKConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    APSKConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/OrthogonalConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OrthogonalConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BiorthogonalConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BiorthogonalConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SimplexConstellation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SimplexConstellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error control
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Error control
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_1" id="__nav_2_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Block codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Block codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BlockCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BlockCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SystematicBlockCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SystematicBlockCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/CyclicCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CyclicCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/HammingCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HammingCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SimplexCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SimplexCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GolayCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GolayCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/RepetitionCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RepetitionCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SingleParityCheckCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SingleParityCheckCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/CordaroWagnerCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CordaroWagnerCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ReedMullerCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ReedMullerCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BCHCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCHCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ReedSolomonCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ReedSolomonCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/Lexicode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lexicode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/PolarCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PolarCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolutional codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Convolutional codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ConvolutionalCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ConvolutionalCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LowRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LowRateConvolutionalCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/HighRateConvolutionalCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HighRateConvolutionalCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/TerminatedConvolutionalCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TerminatedConvolutionalCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ViterbiStreamDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViterbiStreamDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_3" id="__nav_2_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decoders
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decoders
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ExhaustiveCodewordDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ExhaustiveCodewordDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ExhaustiveBitwiseDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ExhaustiveBitwiseDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SyndromeTableDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SyndromeTableDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/WagnerDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WagnerDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ReedDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ReedDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BerlekampDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BerlekampDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SCDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SCDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ViterbiDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViterbiDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BCJRDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCJRDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GaussianEliminationDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GaussianEliminationDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/PeelingDecoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PeelingDecoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_4" id="__nav_2_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checksum
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Checksum
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/CyclicRedundancyCheck/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CyclicRedundancyCheck
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finite-state machines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finite-state machines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/MooreMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MooreMachine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/MealyMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MealyMachine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labelings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labelings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/Labeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/NaturalLabeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NaturalLabeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ReflectedLabeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ReflectedLabeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ReflectedRectangularLabeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ReflectedRectangularLabeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ProductLabeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ProductLabeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lossless coding
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lossless coding
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8_1" id="__nav_2_8_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symbol codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Symbol codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SymbolCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SymbolCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ShannonCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ShannonCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/FanoCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FanoCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/HuffmanCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HuffmanCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/TruncatedBinaryCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TruncatedBinaryCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/FixedToVariableCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FixedToVariableCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8_2" id="__nav_2_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variable-to-fixed codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Variable-to-fixed codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/VariableToFixedCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VariableToFixedCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/TunstallCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TunstallCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8_3" id="__nav_2_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stream codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/RunLengthCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RunLengthCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LempelZiv77Code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LempelZiv77Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LempelZivSSCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LempelZivSSCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LempelZiv78Code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LempelZiv78Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LempelZivWelchCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LempelZivWelchCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8_4" id="__nav_2_8_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integer codes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Integer codes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/UnaryCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UnaryCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GolombCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GolombCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/EscapeCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EscapeCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/EliasGammaCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EliasGammaCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/EliasDeltaCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EliasDeltaCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/EliasOmegaCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EliasOmegaCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/FibonacciCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FibonacciCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/TabooCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TabooCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pulse formatting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pulse formatting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/Pulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/RectangularPulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RectangularPulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ManchesterPulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ManchesterPulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/SincPulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SincPulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/RaisedCosinePulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RaisedCosinePulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BeaulieuPulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BeaulieuPulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GaussianPulse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GaussianPulse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quantization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quantization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ScalarQuantizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ScalarQuantizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/UniformQuantizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UniformQuantizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LloydMaxQuantizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LloydMaxQuantizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequences
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sequences
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11_1" id="__nav_2_11_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary sequences
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Binary sequences
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BinarySequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BinarySequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/BarkerSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BarkerSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/WalshHadamardSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WalshHadamardSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/LFSRSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LFSRSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/GoldSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GoldSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/KasamiSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KasamiSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11_2" id="__nav_2_11_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Complex sequences
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Complex sequences
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ComplexSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ComplexSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/ZadoffChuSequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ZadoffChuSequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/DiscreteMemorylessSource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DiscreteMemorylessSource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/MarkovChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MarkovChain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Utilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/bits_to_int/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bits_to_int
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/int_to_bits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    int_to_bits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/from_binary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    from_binary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/to_binary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    to_binary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/sampling_rate_compress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sampling_rate_compress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/sampling_rate_expand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sampling_rate_expand
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/convolve/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    convolve
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/fourier_transform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fourier_transform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/boxplus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    boxplus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/gaussian_q/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gaussian_q
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/gaussian_q_inv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gaussian_q_inv
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/marcum_q/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    marcum_q
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/autocorrelation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    autocorrelation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/cyclic_autocorrelation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cyclic_autocorrelation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/entropy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    entropy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/binary_entropy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    binary_entropy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/binary_entropy_inv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    binary_entropy_inv
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ref/relative_entropy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    relative_entropy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../gallery/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gallery
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Gallery
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gallery/ber-antipodal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BER of binary antipodal signaling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gallery/extended-huffman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extended Huffman codes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gallery/pulse-shaping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pulse shaping and matched filtering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gallery/standard-array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard array and syndrome decoding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tables
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tables
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bch-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH codes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convolutional-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolutional codes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lexicodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lexicodes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polar codes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polar codes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#5g-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability sequence for 5G
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../primitive-polynomials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Primitive polynomials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#5g-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability sequence for 5G
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Polar codes</h1>
+
+<h2 id="5g-reliability">Reliability sequence for 5G</h2>
+<p>Below is the reliability sequence $Q_0, Q_1, \ldots, Q_{1023}$ of the length-$1024$ <a href="/ref/PolarCode">polar code</a> used in 5G, in ascending order of reliability. The entry in row $r$ and column $c$ is $Q_{r + c}$.</p>
+<p><strong>Source:</strong> <cite><abbr title="ETSI. 5G; NR; Multiplexing and channel coding (3GPP TS 38.212 version 15.2.0 Release 15). ETSI TS 138 212 V15.2.0, 2018.">ETSI18</abbr>, Table 5.3.1.2-1, pp. 16–18</cite>.</p>
+<div class="compact">
+<!-- table: polar_codes -->
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">$r \backslash c$</th>
+<th style="text-align: center;">$0$</th>
+<th style="text-align: center;">$1$</th>
+<th style="text-align: center;">$2$</th>
+<th style="text-align: center;">$3$</th>
+<th style="text-align: center;">$4$</th>
+<th style="text-align: center;">$5$</th>
+<th style="text-align: center;">$6$</th>
+<th style="text-align: center;">$7$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$8$</td>
+<td style="text-align: center;">$16$</td>
+<td style="text-align: center;">$32$</td>
+<td style="text-align: center;">$3$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$8$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$64$</td>
+<td style="text-align: center;">$9$</td>
+<td style="text-align: center;">$6$</td>
+<td style="text-align: center;">$17$</td>
+<td style="text-align: center;">$10$</td>
+<td style="text-align: center;">$18$</td>
+<td style="text-align: center;">$128$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$16$</td>
+<td style="text-align: center;">$12$</td>
+<td style="text-align: center;">$33$</td>
+<td style="text-align: center;">$65$</td>
+<td style="text-align: center;">$20$</td>
+<td style="text-align: center;">$256$</td>
+<td style="text-align: center;">$34$</td>
+<td style="text-align: center;">$24$</td>
+<td style="text-align: center;">$36$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$24$</td>
+<td style="text-align: center;">$7$</td>
+<td style="text-align: center;">$129$</td>
+<td style="text-align: center;">$66$</td>
+<td style="text-align: center;">$512$</td>
+<td style="text-align: center;">$11$</td>
+<td style="text-align: center;">$40$</td>
+<td style="text-align: center;">$68$</td>
+<td style="text-align: center;">$130$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$32$</td>
+<td style="text-align: center;">$19$</td>
+<td style="text-align: center;">$13$</td>
+<td style="text-align: center;">$48$</td>
+<td style="text-align: center;">$14$</td>
+<td style="text-align: center;">$72$</td>
+<td style="text-align: center;">$257$</td>
+<td style="text-align: center;">$21$</td>
+<td style="text-align: center;">$132$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$40$</td>
+<td style="text-align: center;">$35$</td>
+<td style="text-align: center;">$258$</td>
+<td style="text-align: center;">$26$</td>
+<td style="text-align: center;">$513$</td>
+<td style="text-align: center;">$80$</td>
+<td style="text-align: center;">$37$</td>
+<td style="text-align: center;">$25$</td>
+<td style="text-align: center;">$22$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$48$</td>
+<td style="text-align: center;">$136$</td>
+<td style="text-align: center;">$260$</td>
+<td style="text-align: center;">$264$</td>
+<td style="text-align: center;">$38$</td>
+<td style="text-align: center;">$514$</td>
+<td style="text-align: center;">$96$</td>
+<td style="text-align: center;">$67$</td>
+<td style="text-align: center;">$41$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$56$</td>
+<td style="text-align: center;">$144$</td>
+<td style="text-align: center;">$28$</td>
+<td style="text-align: center;">$69$</td>
+<td style="text-align: center;">$42$</td>
+<td style="text-align: center;">$516$</td>
+<td style="text-align: center;">$49$</td>
+<td style="text-align: center;">$74$</td>
+<td style="text-align: center;">$272$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$64$</td>
+<td style="text-align: center;">$160$</td>
+<td style="text-align: center;">$520$</td>
+<td style="text-align: center;">$288$</td>
+<td style="text-align: center;">$528$</td>
+<td style="text-align: center;">$192$</td>
+<td style="text-align: center;">$544$</td>
+<td style="text-align: center;">$70$</td>
+<td style="text-align: center;">$44$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$72$</td>
+<td style="text-align: center;">$131$</td>
+<td style="text-align: center;">$81$</td>
+<td style="text-align: center;">$50$</td>
+<td style="text-align: center;">$73$</td>
+<td style="text-align: center;">$15$</td>
+<td style="text-align: center;">$320$</td>
+<td style="text-align: center;">$133$</td>
+<td style="text-align: center;">$52$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$80$</td>
+<td style="text-align: center;">$23$</td>
+<td style="text-align: center;">$134$</td>
+<td style="text-align: center;">$384$</td>
+<td style="text-align: center;">$76$</td>
+<td style="text-align: center;">$137$</td>
+<td style="text-align: center;">$82$</td>
+<td style="text-align: center;">$56$</td>
+<td style="text-align: center;">$27$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$88$</td>
+<td style="text-align: center;">$97$</td>
+<td style="text-align: center;">$39$</td>
+<td style="text-align: center;">$259$</td>
+<td style="text-align: center;">$84$</td>
+<td style="text-align: center;">$138$</td>
+<td style="text-align: center;">$145$</td>
+<td style="text-align: center;">$261$</td>
+<td style="text-align: center;">$29$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$96$</td>
+<td style="text-align: center;">$43$</td>
+<td style="text-align: center;">$98$</td>
+<td style="text-align: center;">$515$</td>
+<td style="text-align: center;">$88$</td>
+<td style="text-align: center;">$140$</td>
+<td style="text-align: center;">$30$</td>
+<td style="text-align: center;">$146$</td>
+<td style="text-align: center;">$71$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$104$</td>
+<td style="text-align: center;">$262$</td>
+<td style="text-align: center;">$265$</td>
+<td style="text-align: center;">$161$</td>
+<td style="text-align: center;">$576$</td>
+<td style="text-align: center;">$45$</td>
+<td style="text-align: center;">$100$</td>
+<td style="text-align: center;">$640$</td>
+<td style="text-align: center;">$51$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$112$</td>
+<td style="text-align: center;">$148$</td>
+<td style="text-align: center;">$46$</td>
+<td style="text-align: center;">$75$</td>
+<td style="text-align: center;">$266$</td>
+<td style="text-align: center;">$273$</td>
+<td style="text-align: center;">$517$</td>
+<td style="text-align: center;">$104$</td>
+<td style="text-align: center;">$162$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$120$</td>
+<td style="text-align: center;">$53$</td>
+<td style="text-align: center;">$193$</td>
+<td style="text-align: center;">$152$</td>
+<td style="text-align: center;">$77$</td>
+<td style="text-align: center;">$164$</td>
+<td style="text-align: center;">$768$</td>
+<td style="text-align: center;">$268$</td>
+<td style="text-align: center;">$274$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$128$</td>
+<td style="text-align: center;">$518$</td>
+<td style="text-align: center;">$54$</td>
+<td style="text-align: center;">$83$</td>
+<td style="text-align: center;">$57$</td>
+<td style="text-align: center;">$521$</td>
+<td style="text-align: center;">$112$</td>
+<td style="text-align: center;">$135$</td>
+<td style="text-align: center;">$78$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$136$</td>
+<td style="text-align: center;">$289$</td>
+<td style="text-align: center;">$194$</td>
+<td style="text-align: center;">$85$</td>
+<td style="text-align: center;">$276$</td>
+<td style="text-align: center;">$522$</td>
+<td style="text-align: center;">$58$</td>
+<td style="text-align: center;">$168$</td>
+<td style="text-align: center;">$139$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$144$</td>
+<td style="text-align: center;">$99$</td>
+<td style="text-align: center;">$86$</td>
+<td style="text-align: center;">$60$</td>
+<td style="text-align: center;">$280$</td>
+<td style="text-align: center;">$89$</td>
+<td style="text-align: center;">$290$</td>
+<td style="text-align: center;">$529$</td>
+<td style="text-align: center;">$524$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$152$</td>
+<td style="text-align: center;">$196$</td>
+<td style="text-align: center;">$141$</td>
+<td style="text-align: center;">$101$</td>
+<td style="text-align: center;">$147$</td>
+<td style="text-align: center;">$176$</td>
+<td style="text-align: center;">$142$</td>
+<td style="text-align: center;">$530$</td>
+<td style="text-align: center;">$321$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$160$</td>
+<td style="text-align: center;">$31$</td>
+<td style="text-align: center;">$200$</td>
+<td style="text-align: center;">$90$</td>
+<td style="text-align: center;">$545$</td>
+<td style="text-align: center;">$292$</td>
+<td style="text-align: center;">$322$</td>
+<td style="text-align: center;">$532$</td>
+<td style="text-align: center;">$263$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$168$</td>
+<td style="text-align: center;">$149$</td>
+<td style="text-align: center;">$102$</td>
+<td style="text-align: center;">$105$</td>
+<td style="text-align: center;">$304$</td>
+<td style="text-align: center;">$296$</td>
+<td style="text-align: center;">$163$</td>
+<td style="text-align: center;">$92$</td>
+<td style="text-align: center;">$47$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$176$</td>
+<td style="text-align: center;">$267$</td>
+<td style="text-align: center;">$385$</td>
+<td style="text-align: center;">$546$</td>
+<td style="text-align: center;">$324$</td>
+<td style="text-align: center;">$208$</td>
+<td style="text-align: center;">$386$</td>
+<td style="text-align: center;">$150$</td>
+<td style="text-align: center;">$153$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$184$</td>
+<td style="text-align: center;">$165$</td>
+<td style="text-align: center;">$106$</td>
+<td style="text-align: center;">$55$</td>
+<td style="text-align: center;">$328$</td>
+<td style="text-align: center;">$536$</td>
+<td style="text-align: center;">$577$</td>
+<td style="text-align: center;">$548$</td>
+<td style="text-align: center;">$113$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$192$</td>
+<td style="text-align: center;">$154$</td>
+<td style="text-align: center;">$79$</td>
+<td style="text-align: center;">$269$</td>
+<td style="text-align: center;">$108$</td>
+<td style="text-align: center;">$578$</td>
+<td style="text-align: center;">$224$</td>
+<td style="text-align: center;">$166$</td>
+<td style="text-align: center;">$519$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$200$</td>
+<td style="text-align: center;">$552$</td>
+<td style="text-align: center;">$195$</td>
+<td style="text-align: center;">$270$</td>
+<td style="text-align: center;">$641$</td>
+<td style="text-align: center;">$523$</td>
+<td style="text-align: center;">$275$</td>
+<td style="text-align: center;">$580$</td>
+<td style="text-align: center;">$291$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$208$</td>
+<td style="text-align: center;">$59$</td>
+<td style="text-align: center;">$169$</td>
+<td style="text-align: center;">$560$</td>
+<td style="text-align: center;">$114$</td>
+<td style="text-align: center;">$277$</td>
+<td style="text-align: center;">$156$</td>
+<td style="text-align: center;">$87$</td>
+<td style="text-align: center;">$197$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$216$</td>
+<td style="text-align: center;">$116$</td>
+<td style="text-align: center;">$170$</td>
+<td style="text-align: center;">$61$</td>
+<td style="text-align: center;">$531$</td>
+<td style="text-align: center;">$525$</td>
+<td style="text-align: center;">$642$</td>
+<td style="text-align: center;">$281$</td>
+<td style="text-align: center;">$278$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$224$</td>
+<td style="text-align: center;">$526$</td>
+<td style="text-align: center;">$177$</td>
+<td style="text-align: center;">$293$</td>
+<td style="text-align: center;">$388$</td>
+<td style="text-align: center;">$91$</td>
+<td style="text-align: center;">$584$</td>
+<td style="text-align: center;">$769$</td>
+<td style="text-align: center;">$198$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$232$</td>
+<td style="text-align: center;">$172$</td>
+<td style="text-align: center;">$120$</td>
+<td style="text-align: center;">$201$</td>
+<td style="text-align: center;">$336$</td>
+<td style="text-align: center;">$62$</td>
+<td style="text-align: center;">$282$</td>
+<td style="text-align: center;">$143$</td>
+<td style="text-align: center;">$103$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$240$</td>
+<td style="text-align: center;">$178$</td>
+<td style="text-align: center;">$294$</td>
+<td style="text-align: center;">$93$</td>
+<td style="text-align: center;">$644$</td>
+<td style="text-align: center;">$202$</td>
+<td style="text-align: center;">$592$</td>
+<td style="text-align: center;">$323$</td>
+<td style="text-align: center;">$392$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$248$</td>
+<td style="text-align: center;">$297$</td>
+<td style="text-align: center;">$770$</td>
+<td style="text-align: center;">$107$</td>
+<td style="text-align: center;">$180$</td>
+<td style="text-align: center;">$151$</td>
+<td style="text-align: center;">$209$</td>
+<td style="text-align: center;">$284$</td>
+<td style="text-align: center;">$648$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$256$</td>
+<td style="text-align: center;">$94$</td>
+<td style="text-align: center;">$204$</td>
+<td style="text-align: center;">$298$</td>
+<td style="text-align: center;">$400$</td>
+<td style="text-align: center;">$608$</td>
+<td style="text-align: center;">$352$</td>
+<td style="text-align: center;">$325$</td>
+<td style="text-align: center;">$533$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$264$</td>
+<td style="text-align: center;">$155$</td>
+<td style="text-align: center;">$210$</td>
+<td style="text-align: center;">$305$</td>
+<td style="text-align: center;">$547$</td>
+<td style="text-align: center;">$300$</td>
+<td style="text-align: center;">$109$</td>
+<td style="text-align: center;">$184$</td>
+<td style="text-align: center;">$534$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$272$</td>
+<td style="text-align: center;">$537$</td>
+<td style="text-align: center;">$115$</td>
+<td style="text-align: center;">$167$</td>
+<td style="text-align: center;">$225$</td>
+<td style="text-align: center;">$326$</td>
+<td style="text-align: center;">$306$</td>
+<td style="text-align: center;">$772$</td>
+<td style="text-align: center;">$157$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$280$</td>
+<td style="text-align: center;">$656$</td>
+<td style="text-align: center;">$329$</td>
+<td style="text-align: center;">$110$</td>
+<td style="text-align: center;">$117$</td>
+<td style="text-align: center;">$212$</td>
+<td style="text-align: center;">$171$</td>
+<td style="text-align: center;">$776$</td>
+<td style="text-align: center;">$330$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$288$</td>
+<td style="text-align: center;">$226$</td>
+<td style="text-align: center;">$549$</td>
+<td style="text-align: center;">$538$</td>
+<td style="text-align: center;">$387$</td>
+<td style="text-align: center;">$308$</td>
+<td style="text-align: center;">$216$</td>
+<td style="text-align: center;">$416$</td>
+<td style="text-align: center;">$271$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$296$</td>
+<td style="text-align: center;">$279$</td>
+<td style="text-align: center;">$158$</td>
+<td style="text-align: center;">$337$</td>
+<td style="text-align: center;">$550$</td>
+<td style="text-align: center;">$672$</td>
+<td style="text-align: center;">$118$</td>
+<td style="text-align: center;">$332$</td>
+<td style="text-align: center;">$579$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$304$</td>
+<td style="text-align: center;">$540$</td>
+<td style="text-align: center;">$389$</td>
+<td style="text-align: center;">$173$</td>
+<td style="text-align: center;">$121$</td>
+<td style="text-align: center;">$553$</td>
+<td style="text-align: center;">$199$</td>
+<td style="text-align: center;">$784$</td>
+<td style="text-align: center;">$179$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$312$</td>
+<td style="text-align: center;">$228$</td>
+<td style="text-align: center;">$338$</td>
+<td style="text-align: center;">$312$</td>
+<td style="text-align: center;">$704$</td>
+<td style="text-align: center;">$390$</td>
+<td style="text-align: center;">$174$</td>
+<td style="text-align: center;">$554$</td>
+<td style="text-align: center;">$581$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$320$</td>
+<td style="text-align: center;">$393$</td>
+<td style="text-align: center;">$283$</td>
+<td style="text-align: center;">$122$</td>
+<td style="text-align: center;">$448$</td>
+<td style="text-align: center;">$353$</td>
+<td style="text-align: center;">$561$</td>
+<td style="text-align: center;">$203$</td>
+<td style="text-align: center;">$63$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$328$</td>
+<td style="text-align: center;">$340$</td>
+<td style="text-align: center;">$394$</td>
+<td style="text-align: center;">$527$</td>
+<td style="text-align: center;">$582$</td>
+<td style="text-align: center;">$556$</td>
+<td style="text-align: center;">$181$</td>
+<td style="text-align: center;">$295$</td>
+<td style="text-align: center;">$285$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$336$</td>
+<td style="text-align: center;">$232$</td>
+<td style="text-align: center;">$124$</td>
+<td style="text-align: center;">$205$</td>
+<td style="text-align: center;">$182$</td>
+<td style="text-align: center;">$643$</td>
+<td style="text-align: center;">$562$</td>
+<td style="text-align: center;">$286$</td>
+<td style="text-align: center;">$585$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$344$</td>
+<td style="text-align: center;">$299$</td>
+<td style="text-align: center;">$354$</td>
+<td style="text-align: center;">$211$</td>
+<td style="text-align: center;">$401$</td>
+<td style="text-align: center;">$185$</td>
+<td style="text-align: center;">$396$</td>
+<td style="text-align: center;">$344$</td>
+<td style="text-align: center;">$586$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$352$</td>
+<td style="text-align: center;">$645$</td>
+<td style="text-align: center;">$593$</td>
+<td style="text-align: center;">$535$</td>
+<td style="text-align: center;">$240$</td>
+<td style="text-align: center;">$206$</td>
+<td style="text-align: center;">$95$</td>
+<td style="text-align: center;">$327$</td>
+<td style="text-align: center;">$564$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$360$</td>
+<td style="text-align: center;">$800$</td>
+<td style="text-align: center;">$402$</td>
+<td style="text-align: center;">$356$</td>
+<td style="text-align: center;">$307$</td>
+<td style="text-align: center;">$301$</td>
+<td style="text-align: center;">$417$</td>
+<td style="text-align: center;">$213$</td>
+<td style="text-align: center;">$568$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$368$</td>
+<td style="text-align: center;">$832$</td>
+<td style="text-align: center;">$588$</td>
+<td style="text-align: center;">$186$</td>
+<td style="text-align: center;">$646$</td>
+<td style="text-align: center;">$404$</td>
+<td style="text-align: center;">$227$</td>
+<td style="text-align: center;">$896$</td>
+<td style="text-align: center;">$594$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$376$</td>
+<td style="text-align: center;">$418$</td>
+<td style="text-align: center;">$302$</td>
+<td style="text-align: center;">$649$</td>
+<td style="text-align: center;">$771$</td>
+<td style="text-align: center;">$360$</td>
+<td style="text-align: center;">$539$</td>
+<td style="text-align: center;">$111$</td>
+<td style="text-align: center;">$331$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$384$</td>
+<td style="text-align: center;">$214$</td>
+<td style="text-align: center;">$309$</td>
+<td style="text-align: center;">$188$</td>
+<td style="text-align: center;">$449$</td>
+<td style="text-align: center;">$217$</td>
+<td style="text-align: center;">$408$</td>
+<td style="text-align: center;">$609$</td>
+<td style="text-align: center;">$596$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$392$</td>
+<td style="text-align: center;">$551$</td>
+<td style="text-align: center;">$650$</td>
+<td style="text-align: center;">$229$</td>
+<td style="text-align: center;">$159$</td>
+<td style="text-align: center;">$420$</td>
+<td style="text-align: center;">$310$</td>
+<td style="text-align: center;">$541$</td>
+<td style="text-align: center;">$773$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$400$</td>
+<td style="text-align: center;">$610$</td>
+<td style="text-align: center;">$657$</td>
+<td style="text-align: center;">$333$</td>
+<td style="text-align: center;">$119$</td>
+<td style="text-align: center;">$600$</td>
+<td style="text-align: center;">$339$</td>
+<td style="text-align: center;">$218$</td>
+<td style="text-align: center;">$368$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$408$</td>
+<td style="text-align: center;">$652$</td>
+<td style="text-align: center;">$230$</td>
+<td style="text-align: center;">$391$</td>
+<td style="text-align: center;">$313$</td>
+<td style="text-align: center;">$450$</td>
+<td style="text-align: center;">$542$</td>
+<td style="text-align: center;">$334$</td>
+<td style="text-align: center;">$233$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$416$</td>
+<td style="text-align: center;">$555$</td>
+<td style="text-align: center;">$774$</td>
+<td style="text-align: center;">$175$</td>
+<td style="text-align: center;">$123$</td>
+<td style="text-align: center;">$658$</td>
+<td style="text-align: center;">$612$</td>
+<td style="text-align: center;">$341$</td>
+<td style="text-align: center;">$777$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$424$</td>
+<td style="text-align: center;">$220$</td>
+<td style="text-align: center;">$314$</td>
+<td style="text-align: center;">$424$</td>
+<td style="text-align: center;">$395$</td>
+<td style="text-align: center;">$673$</td>
+<td style="text-align: center;">$583$</td>
+<td style="text-align: center;">$355$</td>
+<td style="text-align: center;">$287$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$432$</td>
+<td style="text-align: center;">$183$</td>
+<td style="text-align: center;">$234$</td>
+<td style="text-align: center;">$125$</td>
+<td style="text-align: center;">$557$</td>
+<td style="text-align: center;">$660$</td>
+<td style="text-align: center;">$616$</td>
+<td style="text-align: center;">$342$</td>
+<td style="text-align: center;">$316$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$440$</td>
+<td style="text-align: center;">$241$</td>
+<td style="text-align: center;">$778$</td>
+<td style="text-align: center;">$563$</td>
+<td style="text-align: center;">$345$</td>
+<td style="text-align: center;">$452$</td>
+<td style="text-align: center;">$397$</td>
+<td style="text-align: center;">$403$</td>
+<td style="text-align: center;">$207$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$448$</td>
+<td style="text-align: center;">$674$</td>
+<td style="text-align: center;">$558$</td>
+<td style="text-align: center;">$785$</td>
+<td style="text-align: center;">$432$</td>
+<td style="text-align: center;">$357$</td>
+<td style="text-align: center;">$187$</td>
+<td style="text-align: center;">$236$</td>
+<td style="text-align: center;">$664$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$456$</td>
+<td style="text-align: center;">$624$</td>
+<td style="text-align: center;">$587$</td>
+<td style="text-align: center;">$780$</td>
+<td style="text-align: center;">$705$</td>
+<td style="text-align: center;">$126$</td>
+<td style="text-align: center;">$242$</td>
+<td style="text-align: center;">$565$</td>
+<td style="text-align: center;">$398$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$464$</td>
+<td style="text-align: center;">$346$</td>
+<td style="text-align: center;">$456$</td>
+<td style="text-align: center;">$358$</td>
+<td style="text-align: center;">$405$</td>
+<td style="text-align: center;">$303$</td>
+<td style="text-align: center;">$569$</td>
+<td style="text-align: center;">$244$</td>
+<td style="text-align: center;">$595$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$472$</td>
+<td style="text-align: center;">$189$</td>
+<td style="text-align: center;">$566$</td>
+<td style="text-align: center;">$676$</td>
+<td style="text-align: center;">$361$</td>
+<td style="text-align: center;">$706$</td>
+<td style="text-align: center;">$589$</td>
+<td style="text-align: center;">$215$</td>
+<td style="text-align: center;">$786$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$480$</td>
+<td style="text-align: center;">$647$</td>
+<td style="text-align: center;">$348$</td>
+<td style="text-align: center;">$419$</td>
+<td style="text-align: center;">$406$</td>
+<td style="text-align: center;">$464$</td>
+<td style="text-align: center;">$680$</td>
+<td style="text-align: center;">$801$</td>
+<td style="text-align: center;">$362$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$488$</td>
+<td style="text-align: center;">$590$</td>
+<td style="text-align: center;">$409$</td>
+<td style="text-align: center;">$570$</td>
+<td style="text-align: center;">$788$</td>
+<td style="text-align: center;">$597$</td>
+<td style="text-align: center;">$572$</td>
+<td style="text-align: center;">$219$</td>
+<td style="text-align: center;">$311$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$496$</td>
+<td style="text-align: center;">$708$</td>
+<td style="text-align: center;">$598$</td>
+<td style="text-align: center;">$601$</td>
+<td style="text-align: center;">$651$</td>
+<td style="text-align: center;">$421$</td>
+<td style="text-align: center;">$792$</td>
+<td style="text-align: center;">$802$</td>
+<td style="text-align: center;">$611$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$504$</td>
+<td style="text-align: center;">$602$</td>
+<td style="text-align: center;">$410$</td>
+<td style="text-align: center;">$231$</td>
+<td style="text-align: center;">$688$</td>
+<td style="text-align: center;">$653$</td>
+<td style="text-align: center;">$248$</td>
+<td style="text-align: center;">$369$</td>
+<td style="text-align: center;">$190$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$512$</td>
+<td style="text-align: center;">$364$</td>
+<td style="text-align: center;">$654$</td>
+<td style="text-align: center;">$659$</td>
+<td style="text-align: center;">$335$</td>
+<td style="text-align: center;">$480$</td>
+<td style="text-align: center;">$315$</td>
+<td style="text-align: center;">$221$</td>
+<td style="text-align: center;">$370$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$520$</td>
+<td style="text-align: center;">$613$</td>
+<td style="text-align: center;">$422$</td>
+<td style="text-align: center;">$425$</td>
+<td style="text-align: center;">$451$</td>
+<td style="text-align: center;">$614$</td>
+<td style="text-align: center;">$543$</td>
+<td style="text-align: center;">$235$</td>
+<td style="text-align: center;">$412$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$528$</td>
+<td style="text-align: center;">$343$</td>
+<td style="text-align: center;">$372$</td>
+<td style="text-align: center;">$775$</td>
+<td style="text-align: center;">$317$</td>
+<td style="text-align: center;">$222$</td>
+<td style="text-align: center;">$426$</td>
+<td style="text-align: center;">$453$</td>
+<td style="text-align: center;">$237$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$536$</td>
+<td style="text-align: center;">$559$</td>
+<td style="text-align: center;">$833$</td>
+<td style="text-align: center;">$804$</td>
+<td style="text-align: center;">$712$</td>
+<td style="text-align: center;">$834$</td>
+<td style="text-align: center;">$661$</td>
+<td style="text-align: center;">$808$</td>
+<td style="text-align: center;">$779$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$544$</td>
+<td style="text-align: center;">$617$</td>
+<td style="text-align: center;">$604$</td>
+<td style="text-align: center;">$433$</td>
+<td style="text-align: center;">$720$</td>
+<td style="text-align: center;">$816$</td>
+<td style="text-align: center;">$836$</td>
+<td style="text-align: center;">$347$</td>
+<td style="text-align: center;">$897$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$552$</td>
+<td style="text-align: center;">$243$</td>
+<td style="text-align: center;">$662$</td>
+<td style="text-align: center;">$454$</td>
+<td style="text-align: center;">$318$</td>
+<td style="text-align: center;">$675$</td>
+<td style="text-align: center;">$618$</td>
+<td style="text-align: center;">$898$</td>
+<td style="text-align: center;">$781$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$560$</td>
+<td style="text-align: center;">$376$</td>
+<td style="text-align: center;">$428$</td>
+<td style="text-align: center;">$665$</td>
+<td style="text-align: center;">$736$</td>
+<td style="text-align: center;">$567$</td>
+<td style="text-align: center;">$840$</td>
+<td style="text-align: center;">$625$</td>
+<td style="text-align: center;">$238$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$568$</td>
+<td style="text-align: center;">$359$</td>
+<td style="text-align: center;">$457$</td>
+<td style="text-align: center;">$399$</td>
+<td style="text-align: center;">$787$</td>
+<td style="text-align: center;">$591$</td>
+<td style="text-align: center;">$678$</td>
+<td style="text-align: center;">$434$</td>
+<td style="text-align: center;">$677$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$576$</td>
+<td style="text-align: center;">$349$</td>
+<td style="text-align: center;">$245$</td>
+<td style="text-align: center;">$458$</td>
+<td style="text-align: center;">$666$</td>
+<td style="text-align: center;">$620$</td>
+<td style="text-align: center;">$363$</td>
+<td style="text-align: center;">$127$</td>
+<td style="text-align: center;">$191$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$584$</td>
+<td style="text-align: center;">$782$</td>
+<td style="text-align: center;">$407$</td>
+<td style="text-align: center;">$436$</td>
+<td style="text-align: center;">$626$</td>
+<td style="text-align: center;">$571$</td>
+<td style="text-align: center;">$465$</td>
+<td style="text-align: center;">$681$</td>
+<td style="text-align: center;">$246$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$592$</td>
+<td style="text-align: center;">$707$</td>
+<td style="text-align: center;">$350$</td>
+<td style="text-align: center;">$599$</td>
+<td style="text-align: center;">$668$</td>
+<td style="text-align: center;">$790$</td>
+<td style="text-align: center;">$460$</td>
+<td style="text-align: center;">$249$</td>
+<td style="text-align: center;">$682$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$600$</td>
+<td style="text-align: center;">$573$</td>
+<td style="text-align: center;">$411$</td>
+<td style="text-align: center;">$803$</td>
+<td style="text-align: center;">$789$</td>
+<td style="text-align: center;">$709$</td>
+<td style="text-align: center;">$365$</td>
+<td style="text-align: center;">$440$</td>
+<td style="text-align: center;">$628$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$608$</td>
+<td style="text-align: center;">$689$</td>
+<td style="text-align: center;">$374$</td>
+<td style="text-align: center;">$423$</td>
+<td style="text-align: center;">$466$</td>
+<td style="text-align: center;">$793$</td>
+<td style="text-align: center;">$250$</td>
+<td style="text-align: center;">$371$</td>
+<td style="text-align: center;">$481$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$616$</td>
+<td style="text-align: center;">$574$</td>
+<td style="text-align: center;">$413$</td>
+<td style="text-align: center;">$603$</td>
+<td style="text-align: center;">$366$</td>
+<td style="text-align: center;">$468$</td>
+<td style="text-align: center;">$655$</td>
+<td style="text-align: center;">$900$</td>
+<td style="text-align: center;">$805$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$624$</td>
+<td style="text-align: center;">$615$</td>
+<td style="text-align: center;">$684$</td>
+<td style="text-align: center;">$710$</td>
+<td style="text-align: center;">$429$</td>
+<td style="text-align: center;">$794$</td>
+<td style="text-align: center;">$252$</td>
+<td style="text-align: center;">$373$</td>
+<td style="text-align: center;">$605$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$632$</td>
+<td style="text-align: center;">$848$</td>
+<td style="text-align: center;">$690$</td>
+<td style="text-align: center;">$713$</td>
+<td style="text-align: center;">$632$</td>
+<td style="text-align: center;">$482$</td>
+<td style="text-align: center;">$806$</td>
+<td style="text-align: center;">$427$</td>
+<td style="text-align: center;">$904$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$640$</td>
+<td style="text-align: center;">$414$</td>
+<td style="text-align: center;">$223$</td>
+<td style="text-align: center;">$663$</td>
+<td style="text-align: center;">$692$</td>
+<td style="text-align: center;">$835$</td>
+<td style="text-align: center;">$619$</td>
+<td style="text-align: center;">$472$</td>
+<td style="text-align: center;">$455$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$648$</td>
+<td style="text-align: center;">$796$</td>
+<td style="text-align: center;">$809$</td>
+<td style="text-align: center;">$714$</td>
+<td style="text-align: center;">$721$</td>
+<td style="text-align: center;">$837$</td>
+<td style="text-align: center;">$716$</td>
+<td style="text-align: center;">$864$</td>
+<td style="text-align: center;">$810$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$656$</td>
+<td style="text-align: center;">$606$</td>
+<td style="text-align: center;">$912$</td>
+<td style="text-align: center;">$722$</td>
+<td style="text-align: center;">$696$</td>
+<td style="text-align: center;">$377$</td>
+<td style="text-align: center;">$435$</td>
+<td style="text-align: center;">$817$</td>
+<td style="text-align: center;">$319$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$664$</td>
+<td style="text-align: center;">$621$</td>
+<td style="text-align: center;">$812$</td>
+<td style="text-align: center;">$484$</td>
+<td style="text-align: center;">$430$</td>
+<td style="text-align: center;">$838$</td>
+<td style="text-align: center;">$667$</td>
+<td style="text-align: center;">$488$</td>
+<td style="text-align: center;">$239$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$672$</td>
+<td style="text-align: center;">$378$</td>
+<td style="text-align: center;">$459$</td>
+<td style="text-align: center;">$622$</td>
+<td style="text-align: center;">$627$</td>
+<td style="text-align: center;">$437$</td>
+<td style="text-align: center;">$380$</td>
+<td style="text-align: center;">$818$</td>
+<td style="text-align: center;">$461$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$680$</td>
+<td style="text-align: center;">$496$</td>
+<td style="text-align: center;">$669$</td>
+<td style="text-align: center;">$679$</td>
+<td style="text-align: center;">$724$</td>
+<td style="text-align: center;">$841$</td>
+<td style="text-align: center;">$629$</td>
+<td style="text-align: center;">$351$</td>
+<td style="text-align: center;">$467$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$688$</td>
+<td style="text-align: center;">$438$</td>
+<td style="text-align: center;">$737$</td>
+<td style="text-align: center;">$251$</td>
+<td style="text-align: center;">$462$</td>
+<td style="text-align: center;">$442$</td>
+<td style="text-align: center;">$441$</td>
+<td style="text-align: center;">$469$</td>
+<td style="text-align: center;">$247$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$696$</td>
+<td style="text-align: center;">$683$</td>
+<td style="text-align: center;">$842$</td>
+<td style="text-align: center;">$738$</td>
+<td style="text-align: center;">$899$</td>
+<td style="text-align: center;">$670$</td>
+<td style="text-align: center;">$783$</td>
+<td style="text-align: center;">$849$</td>
+<td style="text-align: center;">$820$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$704$</td>
+<td style="text-align: center;">$728$</td>
+<td style="text-align: center;">$928$</td>
+<td style="text-align: center;">$791$</td>
+<td style="text-align: center;">$367$</td>
+<td style="text-align: center;">$901$</td>
+<td style="text-align: center;">$630$</td>
+<td style="text-align: center;">$685$</td>
+<td style="text-align: center;">$844$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$712$</td>
+<td style="text-align: center;">$633$</td>
+<td style="text-align: center;">$711$</td>
+<td style="text-align: center;">$253$</td>
+<td style="text-align: center;">$691$</td>
+<td style="text-align: center;">$824$</td>
+<td style="text-align: center;">$902$</td>
+<td style="text-align: center;">$686$</td>
+<td style="text-align: center;">$740$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$720$</td>
+<td style="text-align: center;">$850$</td>
+<td style="text-align: center;">$375$</td>
+<td style="text-align: center;">$444$</td>
+<td style="text-align: center;">$470$</td>
+<td style="text-align: center;">$483$</td>
+<td style="text-align: center;">$415$</td>
+<td style="text-align: center;">$485$</td>
+<td style="text-align: center;">$905$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$728$</td>
+<td style="text-align: center;">$795$</td>
+<td style="text-align: center;">$473$</td>
+<td style="text-align: center;">$634$</td>
+<td style="text-align: center;">$744$</td>
+<td style="text-align: center;">$852$</td>
+<td style="text-align: center;">$960$</td>
+<td style="text-align: center;">$865$</td>
+<td style="text-align: center;">$693$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$736$</td>
+<td style="text-align: center;">$797$</td>
+<td style="text-align: center;">$906$</td>
+<td style="text-align: center;">$715$</td>
+<td style="text-align: center;">$807$</td>
+<td style="text-align: center;">$474$</td>
+<td style="text-align: center;">$636$</td>
+<td style="text-align: center;">$694$</td>
+<td style="text-align: center;">$254$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$744$</td>
+<td style="text-align: center;">$717$</td>
+<td style="text-align: center;">$575$</td>
+<td style="text-align: center;">$913$</td>
+<td style="text-align: center;">$798$</td>
+<td style="text-align: center;">$811$</td>
+<td style="text-align: center;">$379$</td>
+<td style="text-align: center;">$697$</td>
+<td style="text-align: center;">$431$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$752$</td>
+<td style="text-align: center;">$607$</td>
+<td style="text-align: center;">$489$</td>
+<td style="text-align: center;">$866$</td>
+<td style="text-align: center;">$723$</td>
+<td style="text-align: center;">$486$</td>
+<td style="text-align: center;">$908$</td>
+<td style="text-align: center;">$718$</td>
+<td style="text-align: center;">$813$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$760$</td>
+<td style="text-align: center;">$476$</td>
+<td style="text-align: center;">$856$</td>
+<td style="text-align: center;">$839$</td>
+<td style="text-align: center;">$725$</td>
+<td style="text-align: center;">$698$</td>
+<td style="text-align: center;">$914$</td>
+<td style="text-align: center;">$752$</td>
+<td style="text-align: center;">$868$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$768$</td>
+<td style="text-align: center;">$819$</td>
+<td style="text-align: center;">$814$</td>
+<td style="text-align: center;">$439$</td>
+<td style="text-align: center;">$929$</td>
+<td style="text-align: center;">$490$</td>
+<td style="text-align: center;">$623$</td>
+<td style="text-align: center;">$671$</td>
+<td style="text-align: center;">$739$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$776$</td>
+<td style="text-align: center;">$916$</td>
+<td style="text-align: center;">$463$</td>
+<td style="text-align: center;">$843$</td>
+<td style="text-align: center;">$381$</td>
+<td style="text-align: center;">$497$</td>
+<td style="text-align: center;">$930$</td>
+<td style="text-align: center;">$821$</td>
+<td style="text-align: center;">$726$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$784$</td>
+<td style="text-align: center;">$961$</td>
+<td style="text-align: center;">$872$</td>
+<td style="text-align: center;">$492$</td>
+<td style="text-align: center;">$631$</td>
+<td style="text-align: center;">$729$</td>
+<td style="text-align: center;">$700$</td>
+<td style="text-align: center;">$443$</td>
+<td style="text-align: center;">$741$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$792$</td>
+<td style="text-align: center;">$845$</td>
+<td style="text-align: center;">$920$</td>
+<td style="text-align: center;">$382$</td>
+<td style="text-align: center;">$822$</td>
+<td style="text-align: center;">$851$</td>
+<td style="text-align: center;">$730$</td>
+<td style="text-align: center;">$498$</td>
+<td style="text-align: center;">$880$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$800$</td>
+<td style="text-align: center;">$742$</td>
+<td style="text-align: center;">$445$</td>
+<td style="text-align: center;">$471$</td>
+<td style="text-align: center;">$635$</td>
+<td style="text-align: center;">$932$</td>
+<td style="text-align: center;">$687$</td>
+<td style="text-align: center;">$903$</td>
+<td style="text-align: center;">$825$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$808$</td>
+<td style="text-align: center;">$500$</td>
+<td style="text-align: center;">$846$</td>
+<td style="text-align: center;">$745$</td>
+<td style="text-align: center;">$826$</td>
+<td style="text-align: center;">$732$</td>
+<td style="text-align: center;">$446$</td>
+<td style="text-align: center;">$962$</td>
+<td style="text-align: center;">$936$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$816$</td>
+<td style="text-align: center;">$475$</td>
+<td style="text-align: center;">$853$</td>
+<td style="text-align: center;">$867$</td>
+<td style="text-align: center;">$637$</td>
+<td style="text-align: center;">$907$</td>
+<td style="text-align: center;">$487$</td>
+<td style="text-align: center;">$695$</td>
+<td style="text-align: center;">$746$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$824$</td>
+<td style="text-align: center;">$828$</td>
+<td style="text-align: center;">$753$</td>
+<td style="text-align: center;">$854$</td>
+<td style="text-align: center;">$857$</td>
+<td style="text-align: center;">$504$</td>
+<td style="text-align: center;">$799$</td>
+<td style="text-align: center;">$255$</td>
+<td style="text-align: center;">$964$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$832$</td>
+<td style="text-align: center;">$909$</td>
+<td style="text-align: center;">$719$</td>
+<td style="text-align: center;">$477$</td>
+<td style="text-align: center;">$915$</td>
+<td style="text-align: center;">$638$</td>
+<td style="text-align: center;">$748$</td>
+<td style="text-align: center;">$944$</td>
+<td style="text-align: center;">$869$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$840$</td>
+<td style="text-align: center;">$491$</td>
+<td style="text-align: center;">$699$</td>
+<td style="text-align: center;">$754$</td>
+<td style="text-align: center;">$858$</td>
+<td style="text-align: center;">$478$</td>
+<td style="text-align: center;">$968$</td>
+<td style="text-align: center;">$383$</td>
+<td style="text-align: center;">$910$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$848$</td>
+<td style="text-align: center;">$815$</td>
+<td style="text-align: center;">$976$</td>
+<td style="text-align: center;">$870$</td>
+<td style="text-align: center;">$917$</td>
+<td style="text-align: center;">$727$</td>
+<td style="text-align: center;">$493$</td>
+<td style="text-align: center;">$873$</td>
+<td style="text-align: center;">$701$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$856$</td>
+<td style="text-align: center;">$931$</td>
+<td style="text-align: center;">$756$</td>
+<td style="text-align: center;">$860$</td>
+<td style="text-align: center;">$499$</td>
+<td style="text-align: center;">$731$</td>
+<td style="text-align: center;">$823$</td>
+<td style="text-align: center;">$922$</td>
+<td style="text-align: center;">$874$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$864$</td>
+<td style="text-align: center;">$918$</td>
+<td style="text-align: center;">$502$</td>
+<td style="text-align: center;">$933$</td>
+<td style="text-align: center;">$743$</td>
+<td style="text-align: center;">$760$</td>
+<td style="text-align: center;">$881$</td>
+<td style="text-align: center;">$494$</td>
+<td style="text-align: center;">$702$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$872$</td>
+<td style="text-align: center;">$921$</td>
+<td style="text-align: center;">$501$</td>
+<td style="text-align: center;">$876$</td>
+<td style="text-align: center;">$847$</td>
+<td style="text-align: center;">$992$</td>
+<td style="text-align: center;">$447$</td>
+<td style="text-align: center;">$733$</td>
+<td style="text-align: center;">$827$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$880$</td>
+<td style="text-align: center;">$934$</td>
+<td style="text-align: center;">$882$</td>
+<td style="text-align: center;">$937$</td>
+<td style="text-align: center;">$963$</td>
+<td style="text-align: center;">$747$</td>
+<td style="text-align: center;">$505$</td>
+<td style="text-align: center;">$855$</td>
+<td style="text-align: center;">$924$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$888$</td>
+<td style="text-align: center;">$734$</td>
+<td style="text-align: center;">$829$</td>
+<td style="text-align: center;">$965$</td>
+<td style="text-align: center;">$938$</td>
+<td style="text-align: center;">$884$</td>
+<td style="text-align: center;">$506$</td>
+<td style="text-align: center;">$749$</td>
+<td style="text-align: center;">$945$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$896$</td>
+<td style="text-align: center;">$966$</td>
+<td style="text-align: center;">$755$</td>
+<td style="text-align: center;">$859$</td>
+<td style="text-align: center;">$940$</td>
+<td style="text-align: center;">$830$</td>
+<td style="text-align: center;">$911$</td>
+<td style="text-align: center;">$871$</td>
+<td style="text-align: center;">$639$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$904$</td>
+<td style="text-align: center;">$888$</td>
+<td style="text-align: center;">$479$</td>
+<td style="text-align: center;">$946$</td>
+<td style="text-align: center;">$750$</td>
+<td style="text-align: center;">$969$</td>
+<td style="text-align: center;">$508$</td>
+<td style="text-align: center;">$861$</td>
+<td style="text-align: center;">$757$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$912$</td>
+<td style="text-align: center;">$970$</td>
+<td style="text-align: center;">$919$</td>
+<td style="text-align: center;">$875$</td>
+<td style="text-align: center;">$862$</td>
+<td style="text-align: center;">$758$</td>
+<td style="text-align: center;">$948$</td>
+<td style="text-align: center;">$977$</td>
+<td style="text-align: center;">$923$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$920$</td>
+<td style="text-align: center;">$972$</td>
+<td style="text-align: center;">$761$</td>
+<td style="text-align: center;">$877$</td>
+<td style="text-align: center;">$952$</td>
+<td style="text-align: center;">$495$</td>
+<td style="text-align: center;">$703$</td>
+<td style="text-align: center;">$935$</td>
+<td style="text-align: center;">$978$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$928$</td>
+<td style="text-align: center;">$883$</td>
+<td style="text-align: center;">$762$</td>
+<td style="text-align: center;">$503$</td>
+<td style="text-align: center;">$925$</td>
+<td style="text-align: center;">$878$</td>
+<td style="text-align: center;">$735$</td>
+<td style="text-align: center;">$993$</td>
+<td style="text-align: center;">$885$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$936$</td>
+<td style="text-align: center;">$939$</td>
+<td style="text-align: center;">$994$</td>
+<td style="text-align: center;">$980$</td>
+<td style="text-align: center;">$926$</td>
+<td style="text-align: center;">$764$</td>
+<td style="text-align: center;">$941$</td>
+<td style="text-align: center;">$967$</td>
+<td style="text-align: center;">$886$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$944$</td>
+<td style="text-align: center;">$831$</td>
+<td style="text-align: center;">$947$</td>
+<td style="text-align: center;">$507$</td>
+<td style="text-align: center;">$889$</td>
+<td style="text-align: center;">$984$</td>
+<td style="text-align: center;">$751$</td>
+<td style="text-align: center;">$942$</td>
+<td style="text-align: center;">$996$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$952$</td>
+<td style="text-align: center;">$971$</td>
+<td style="text-align: center;">$890$</td>
+<td style="text-align: center;">$509$</td>
+<td style="text-align: center;">$949$</td>
+<td style="text-align: center;">$973$</td>
+<td style="text-align: center;">$1000$</td>
+<td style="text-align: center;">$892$</td>
+<td style="text-align: center;">$950$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$960$</td>
+<td style="text-align: center;">$863$</td>
+<td style="text-align: center;">$759$</td>
+<td style="text-align: center;">$1008$</td>
+<td style="text-align: center;">$510$</td>
+<td style="text-align: center;">$979$</td>
+<td style="text-align: center;">$953$</td>
+<td style="text-align: center;">$763$</td>
+<td style="text-align: center;">$974$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$968$</td>
+<td style="text-align: center;">$954$</td>
+<td style="text-align: center;">$879$</td>
+<td style="text-align: center;">$981$</td>
+<td style="text-align: center;">$982$</td>
+<td style="text-align: center;">$927$</td>
+<td style="text-align: center;">$995$</td>
+<td style="text-align: center;">$765$</td>
+<td style="text-align: center;">$956$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$976$</td>
+<td style="text-align: center;">$887$</td>
+<td style="text-align: center;">$985$</td>
+<td style="text-align: center;">$997$</td>
+<td style="text-align: center;">$986$</td>
+<td style="text-align: center;">$943$</td>
+<td style="text-align: center;">$891$</td>
+<td style="text-align: center;">$998$</td>
+<td style="text-align: center;">$766$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$984$</td>
+<td style="text-align: center;">$511$</td>
+<td style="text-align: center;">$988$</td>
+<td style="text-align: center;">$1001$</td>
+<td style="text-align: center;">$951$</td>
+<td style="text-align: center;">$1002$</td>
+<td style="text-align: center;">$893$</td>
+<td style="text-align: center;">$975$</td>
+<td style="text-align: center;">$894$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$992$</td>
+<td style="text-align: center;">$1009$</td>
+<td style="text-align: center;">$955$</td>
+<td style="text-align: center;">$1004$</td>
+<td style="text-align: center;">$1010$</td>
+<td style="text-align: center;">$957$</td>
+<td style="text-align: center;">$983$</td>
+<td style="text-align: center;">$958$</td>
+<td style="text-align: center;">$987$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$1000$</td>
+<td style="text-align: center;">$1012$</td>
+<td style="text-align: center;">$999$</td>
+<td style="text-align: center;">$1016$</td>
+<td style="text-align: center;">$767$</td>
+<td style="text-align: center;">$989$</td>
+<td style="text-align: center;">$1003$</td>
+<td style="text-align: center;">$990$</td>
+<td style="text-align: center;">$1005$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$1008$</td>
+<td style="text-align: center;">$959$</td>
+<td style="text-align: center;">$1011$</td>
+<td style="text-align: center;">$1013$</td>
+<td style="text-align: center;">$895$</td>
+<td style="text-align: center;">$1006$</td>
+<td style="text-align: center;">$1014$</td>
+<td style="text-align: center;">$1017$</td>
+<td style="text-align: center;">$1018$</td>
+</tr>
+<tr>
+<td style="text-align: center;">$1016$</td>
+<td style="text-align: center;">$991$</td>
+<td style="text-align: center;">$1020$</td>
+<td style="text-align: center;">$1007$</td>
+<td style="text-align: center;">$1015$</td>
+<td style="text-align: center;">$1019$</td>
+<td style="text-align: center;">$1021$</td>
+<td style="text-align: center;">$1022$</td>
+<td style="text-align: center;">$1023$</td>
+</tr>
+</tbody>
+</table>
+<!-- end table -->
+</div>
+<p><a download="" href="../polar-codes.json">Download JSON</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lexicodes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lexicodes">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lexicodes
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../primitive-polynomials/" class="md-footer__link md-footer__link--next" aria-label="Next: Primitive polynomials">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Primitive polynomials
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.footer"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../js/katex.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

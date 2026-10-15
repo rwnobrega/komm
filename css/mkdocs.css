@@ -17,3 +17,12 @@
   color: var(--md-secondary-fg-color);
   font-size: 0.9em;
 }
+
+.compact th {
+  min-width: 0 !important;
+}
+
+.compact th,
+.compact td {
+  padding: 0.4em 0.8em !important;
+}
