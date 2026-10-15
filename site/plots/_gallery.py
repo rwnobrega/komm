@@ -11,7 +11,7 @@ FENCES = re.compile(r"```(pycon|python)\n(.*?)```", re.DOTALL)
 
 
 def run(name, index=0):
-    path = Path(__file__).parents[1] / "docs" / "recipes" / f"{name}.md"
+    path = Path(__file__).parents[1] / "docs" / "gallery" / f"{name}.md"
     namespace = {}
     figs = []
     # Quiet, and without opening a window

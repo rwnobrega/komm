@@ -1,4 +1,4 @@
-from ._recipes import run
+from ._gallery import run
 
 STYLE = "default"
 

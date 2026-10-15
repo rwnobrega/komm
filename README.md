@@ -12,7 +12,7 @@ _A Python library for communication systems._
 
 <!--intro-end-->
 
-The [project's website](https://komm.dev/) has the [library reference](https://komm.dev/ref/), [recipes](https://komm.dev/recipes/), and [tables](https://komm.dev/tables/).
+The [project's website](https://komm.dev/) has the [library reference](https://komm.dev/ref/), [gallery](https://komm.dev/gallery/), and [tables](https://komm.dev/tables/).
 
 <!--notes-start-->
 

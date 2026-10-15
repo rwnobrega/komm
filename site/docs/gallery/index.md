@@ -2,7 +2,7 @@
 hide: toc
 ---
 
-# Recipes
+# Gallery
 
 Short examples of common tasks with Komm.
 
