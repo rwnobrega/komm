@@ -1,4 +1,6 @@
+import inspect
 import sys
+from pathlib import Path
 
 import mkdocs_gen_files
 import yaml
@@ -9,6 +11,15 @@ def get_data(toc):
     sys.path.append(".")
     import komm
 
+    src_dir = Path(komm.__file__).parents[1]
+    repo_url = mkdocs_gen_files.FilesEditor.current().config.repo_url
+    src_url = f"{repo_url}blob/v{komm.__version__}/src"
+
+    def _get_source_url(obj):
+        lines, start = inspect.getsourcelines(obj)
+        path = Path(inspect.getsourcefile(obj)).relative_to(src_dir)
+        return f"{src_url}/{path.as_posix()}#L{start}-L{start + len(lines) - 1}"
+
     def _get_object_data(obj):
         try:
             summary = obj.__doc__.split(".")[0].strip() + "."
@@ -18,6 +29,7 @@ def get_data(toc):
             "name": obj.__name__,
             "summary": summary,
             "qualname": f"{obj.__module__}.{obj.__qualname__}",
+            "source_url": _get_source_url(obj),
             "options": obj._doc_options() if hasattr(obj, "_doc_options") else None,
         }
 
