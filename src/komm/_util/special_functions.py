@@ -53,13 +53,13 @@ def _gaussian_q_inv(y: float) -> float:
 
 def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
     r"""
-    Computes the inverse Gaussian Q-function.
+    Computes the inverse of the [Gaussian Q-function](/ref/gaussian_q). More precisely, it computes the value of $x$ such that $\mathrm{Q}(x) = y$.
 
     Parameters:
         y: The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
 
     Returns:
-        x: The value $x = \mathrm{Q^{-1}}(y)$.
+        x: The value $x = \mathrm{Q}^{-1}(y)$.
 
     Examples:
         >>> komm.gaussian_q_inv(0.5)
