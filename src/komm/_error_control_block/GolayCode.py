@@ -12,7 +12,7 @@ from .util import extended_parity_submatrix
 @mkdocstrings(filters=["!.*"])
 class GolayCode(SystematicBlockCode):
     r"""
-    Binary Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
+    Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
     $$
     P = \begin{bmatrix}
         1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\\\
@@ -32,18 +32,26 @@ class GolayCode(SystematicBlockCode):
 
     The Golay code has the following parameters:
 
-    - Length: $23$
-    - Dimension: $12$
-    - Minimum distance: $7$
+    - Length: $n = 23$
+    - Dimension: $k = 12$
+    - Redundancy: $m = 11$
+    - Minimum distance: $d = 7$
+
+    In its extended version, the Golay code has the following parameters:
+
+    - Length: $n = 24$
+    - Dimension: $k = 12$
+    - Redundancy: $m = 12$
+    - Minimum distance: $d = 8$
 
     For more details, see <cite>LC04, Sec. 4.6</cite> and [EC Zoo: Golay code](https://errorcorrectionzoo.org/c/golay).
 
     Notes:
-        - The binary Golay code is a perfect code.
-        - The extended binary Golay code is self-dual.
+        - The Golay code is a perfect code; its extended version is not.
+        - Its extended version is self-dual.
 
     Parameters:
-        extended: If `True`, constructs the code in extended version. The default value is `False`.
+        extended: Whether to use the extended version of the Golay code. Default is `False`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 
@@ -53,12 +61,16 @@ class GolayCode(SystematicBlockCode):
         (23, 12, 11)
         >>> code.minimum_distance()
         7
+        >>> (code.packing_radius(), code.covering_radius())
+        (3, 3)
 
         >>> code = komm.GolayCode(extended=True)
         >>> (code.length, code.dimension, code.redundancy)
         (24, 12, 12)
         >>> code.minimum_distance()
         8
+        >>> (code.packing_radius(), code.covering_radius())
+        (3, 4)
     """
 
     def __init__(self, *, extended: bool = False) -> None:
