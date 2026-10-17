@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.
+
 ## v0.37.0 (2026-10-15)
 
 ### Added

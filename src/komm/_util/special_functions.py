@@ -1,4 +1,4 @@
-from math import erfc, exp, gamma, sqrt
+from math import erfc, exp, floor, isinf, lgamma, log, nan, sqrt
 from statistics import NormalDist
 
 import numpy as np
@@ -77,20 +77,50 @@ def gaussian_q_inv(y: npt.ArrayLike) -> npt.NDArray[np.floating] | float:
     return float(result) if np.ndim(result) == 0 else result
 
 
-def _auxiliary_p(
-    m: int, a: float, b: float, max_iter: int = 100, tol: float = 1e-16
-) -> float:
-    # Auxiliary function for the Marcum Q-function
-    # See [https://en.wikipedia.org/wiki/Marcum_Q-function].
-    result = sum(exp(-b) * b**k / gamma(k + 1) for k in range(m))
-    for i in range(m, max_iter):
-        ks = range(i - m + 1)
-        inner_sum = sum(exp(-m * a) * (m * a) ** k / gamma(k + 1) for k in ks)
-        term = exp(-b) * b**i / gamma(i + 1) * (1 - inner_sum)
-        result += term
-        if abs(term) < tol:
+def _poisson_log_pmf(k: int, mu: float) -> float:
+    return k * log(mu) - mu - lgamma(k + 1) if k > 0 else -mu
+
+
+def _skellam_cdf(mu: float, nu: float, s: int, tol: float = 1e-16) -> float:
+    # P(N_nu - N_mu < s), with Poisson N_mu and N_nu.
+    # Sums P(N_mu = j) P(N_nu < s + j) over j.
+    j = max(0, 1 - s, floor(mu - 9 * sqrt(mu)))  # Skip negligible weights
+    n = s + j
+    head = c = 1.0  # P(N_nu < n) / P(N_nu = n - 1)
+    for k in range(n - 1, 0, -1):
+        c *= k / nu
+        head += c
+        q = (k - 1) / nu
+        if c * q < tol * (1 - q) * head:
             break
-    return result
+    log_peak = _poisson_log_pmf(j, mu) + _poisson_log_pmf(n - 1, nu) + log(head)
+    rho = nu / (n * head)  # P(N_nu = n) / P(N_nu < n)
+    term = total = 1.0  # Relative to largest term so far
+    while True:
+        r = mu / (j + 1) * (1 + rho)  # Next term over current term
+        if term * r < tol * (1 - r) * total:  # Log-concave terms: tail bound
+            break
+        term *= r
+        if term > 1:
+            log_peak += log(term)
+            total /= term
+            term = 1.0
+        total += term
+        rho *= nu / (n + 1) / (1 + rho)
+        j, n = j + 1, n + 1
+    return exp(log_peak + log(total))
+
+
+def _marcum_q(m: int, a: float, x: float) -> float:
+    if isinf(a) or isinf(x):
+        return 0.0 if a < x else 1.0 if a > x else nan
+    # Q = P(N_beta - N_lambda < m), with Poisson N's
+    lam, beta = a**2 / 2, x**2 / 2
+    if beta == 0:
+        return 1.0
+    if beta > lam + m:  # Q is the smaller tail
+        return _skellam_cdf(lam, beta, m)
+    return 1 - _skellam_cdf(beta, lam, 1 - m)
 
 
 def marcum_q(
@@ -113,7 +143,7 @@ def marcum_q(
 
     Examples:
         >>> komm.marcum_q(1, 1, 1)
-        0.7328798037968204
+        0.7328798037968203
 
         >>> komm.marcum_q(2, 0.5, [1.2, 1.4, 1.6])
         array([0.85225816, 0.76472056, 0.66139663])
@@ -125,7 +155,7 @@ def marcum_q(
     x = validate_float_array(x)
     if not np.all(x >= 0):
         raise ValueError("'x' must be non-negative")
-    result = np.vectorize(_auxiliary_p)(m, a**2 / (2 * m), x**2 / 2)
+    result = np.vectorize(_marcum_q)(m, a, x)
     return float(result) if np.ndim(result) == 0 else result
 
 

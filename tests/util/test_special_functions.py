@@ -118,12 +118,43 @@ def test_marcum_q_x_zero(m, a):
 
 
 @pytest.mark.parametrize("lamb", [0.5, 1.0, 1.5, 2.0, 2.5])
-def test_marqum_q_exponential_distribution(lamb):
+def test_marcum_q_exponential_distribution(lamb):
     # If Exp(lamb), then its complementary CDF is F(x) = Q_1(0, sqrt(2*lamb*x))
     xs = np.linspace(0, 10, 100)
     np.testing.assert_allclose(
         komm.marcum_q(1, 0.0, np.sqrt(2 * lamb * xs)), np.exp(-lamb * xs)
     )
+
+
+@pytest.mark.parametrize(
+    "m, a, x, expected",
+    [
+        (3, 2.0, 1e-200, 1.0),
+        (2, 0.5, 9.0, 6.7167922481660943506e-16),
+        (2, 0.5, 10.0, 8.7695486805746855398e-20),
+        (2, 0.5, 25.0, 2.5371077509263435795e-130),
+        (1, 15.0, 10.0, 0.99999976795515093666),
+        (1, 20.0, 20.0, 0.50997667814096999494),
+        (5, 10.0, 14.0, 1.4661724503821928443e-04),
+        (1, 25.0, 50.0, 4.3249771966658979303e-138),
+        (100, 2.0, 15.0, 0.15166548886919461162),
+        (200, 1.0, 20.0, 0.50467505805922774015),
+    ],
+)
+def test_marcum_q_accuracy(m, a, x, expected):
+    np.testing.assert_allclose(komm.marcum_q(m, a, x), expected, rtol=1e-12)
+
+
+@pytest.mark.parametrize(
+    "a, x, expected",
+    [
+        (1.0, np.inf, 0.0),
+        (np.inf, 1.0, 1.0),
+        (np.inf, np.inf, np.nan),
+    ],
+)
+def test_marcum_q_infinite(a, x, expected):
+    np.testing.assert_equal(komm.marcum_q(2, a, x), expected)
 
 
 @pytest.mark.parametrize("m", [0, -1])
