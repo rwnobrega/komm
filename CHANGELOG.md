@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Implemented [inverse Marcum Q-function](https://komm.dev/ref/marcum_q_inv).
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.

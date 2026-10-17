@@ -195,6 +195,73 @@ def test_marcum_q_not_real(a, x, message):
 
 
 @pytest.mark.parametrize(
+    "m, a, y, expected",
+    [
+        (2, 0.5, 6.7167922481660943506e-16, 9.0),
+        (2, 0.5, 1e-300, 37.721087799616094151),
+        (1, 20.0, 0.5, 20.024994800782861884),
+        (5, 10.0, 1e-100, 31.513512538220193238),
+        (3, 1.0, 1e-12, 8.7304408325429968797),
+        (100, 2.0, 0.9, 13.354272668275517307),
+        (1, 0.3, 0.999999999999, 1.446378041850527533e-06),
+        (1000, 30.0, 1e-06, 57.725913847473419621),
+    ],
+)
+def test_marcum_q_inv_accuracy(m, a, y, expected):
+    np.testing.assert_allclose(komm.marcum_q_inv(m, a, y), expected, rtol=1e-13)
+
+
+@pytest.mark.parametrize("y", [5e-324, 1e-300, 1e-20, 0.1, 0.5, 0.9, 1 - 1e-12])
+def test_marcum_q_inv_rayleigh(y):
+    # Q_1(0, x) = exp(-x^2 / 2)
+    expected = np.sqrt(-2 * np.log(y))
+    np.testing.assert_allclose(komm.marcum_q_inv(1, 0.0, y), expected, rtol=1e-14)
+
+
+@pytest.mark.parametrize(
+    "m, a",
+    [
+        (1, 0.0),
+        (2, 0.5),
+        (5, 2.35),
+        (30, 10.0),
+    ],
+)
+def test_marcum_q_inverse_relation(m, a):
+    y = np.geomspace(1e-300, 1, 50)
+    x = komm.marcum_q_inv(m, a, y)
+    np.testing.assert_allclose(komm.marcum_q(m, a, x), y, rtol=1e-11)
+
+
+@pytest.mark.parametrize(
+    "a, y, expected",
+    [
+        (1.0, 0.0, np.inf),
+        (1.0, 1.0, 0.0),
+        (np.inf, 0.5, np.inf),
+        (np.inf, 1.0, 0.0),
+    ],
+)
+def test_marcum_q_inv_limits(a, y, expected):
+    assert komm.marcum_q_inv(2, a, y) == expected
+
+
+@pytest.mark.parametrize(
+    "m, a, y, message",
+    [
+        (0, 1.0, 0.5, "'m' must be a positive integer"),
+        (1, -1.0, 0.5, "'a' must be non-negative"),
+        (1, 1.0, -0.5, r"'y' must be in \[0, 1\]"),
+        (1, 1.0, 1.5, r"'y' must be in \[0, 1\]"),
+        (1, 1.0, np.nan, r"'y' must be in \[0, 1\]"),
+    ],
+)
+def test_marcum_q_inv_invalid_input(m, a, y, message):
+    with pytest.raises(ValueError, match=message):
+        komm.marcum_q_inv(m, a, y)
+
+
+@pytest.mark.parametrize(
     "a, b, expected",
     [
         (1.0, 2.0, 0.73532566405551922471),

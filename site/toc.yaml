@@ -129,6 +129,7 @@ Utilities:
   - gaussian_q
   - gaussian_q_inv
   - marcum_q
+  - marcum_q_inv
   - autocorrelation
   - cyclic_autocorrelation
   - entropy

@@ -142,7 +142,7 @@ from ._util.bit_operations import bits_to_int, from_binary, int_to_bits, to_bina
 from ._util.information_theory import binary_entropy, binary_entropy_inv, entropy, relative_entropy
 from ._util.sequences import autocorrelation, cyclic_autocorrelation
 from ._util.signal_processing import convolve, fourier_transform, sampling_rate_compress, sampling_rate_expand
-from ._util.special_functions import boxplus, gaussian_q, gaussian_q_inv, marcum_q
+from ._util.special_functions import boxplus, gaussian_q, gaussian_q_inv, marcum_q, marcum_q_inv
 
 # isort: on
 # fmt: on
@@ -283,4 +283,5 @@ __all__ = [
     "gaussian_q",
     "gaussian_q_inv",
     "marcum_q",
+    "marcum_q_inv",
 ]

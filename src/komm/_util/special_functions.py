@@ -1,4 +1,4 @@
-from math import erfc, exp, floor, isinf, lgamma, log, nan, sqrt
+from math import erfc, exp, floor, inf, isinf, lgamma, log, log1p, nan, sqrt
 from statistics import NormalDist
 
 import numpy as np
@@ -81,8 +81,8 @@ def _poisson_log_pmf(k: int, mu: float) -> float:
     return k * log(mu) - mu - lgamma(k + 1) if k > 0 else -mu
 
 
-def _skellam_cdf(mu: float, nu: float, s: int, tol: float = 1e-16) -> float:
-    # P(N_nu - N_mu < s), with Poisson N_mu and N_nu.
+def _skellam_log_cdf(mu: float, nu: float, s: int, tol: float = 1e-16) -> float:
+    # log P(N_nu - N_mu < s), with Poisson N_mu and N_nu.
     # Sums P(N_mu = j) P(N_nu < s + j) over j.
     j = max(0, 1 - s, floor(mu - 9 * sqrt(mu)))  # Skip negligible weights
     n = s + j
@@ -108,7 +108,7 @@ def _skellam_cdf(mu: float, nu: float, s: int, tol: float = 1e-16) -> float:
         total += term
         rho *= nu / (n + 1) / (1 + rho)
         j, n = j + 1, n + 1
-    return exp(log_peak + log(total))
+    return log_peak + log(total)
 
 
 def _marcum_q(m: int, a: float, x: float) -> float:
@@ -119,8 +119,8 @@ def _marcum_q(m: int, a: float, x: float) -> float:
     if beta == 0:
         return 1.0
     if beta > lam + m:  # Q is the smaller tail
-        return _skellam_cdf(lam, beta, m)
-    return 1 - _skellam_cdf(beta, lam, 1 - m)
+        return exp(_skellam_log_cdf(lam, beta, m))
+    return 1 - exp(_skellam_log_cdf(beta, lam, 1 - m))
 
 
 def marcum_q(
@@ -156,6 +156,83 @@ def marcum_q(
     if not np.all(x >= 0):
         raise ValueError("'x' must be non-negative")
     result = np.vectorize(_marcum_q)(m, a, x)
+    return float(result) if np.ndim(result) == 0 else result
+
+
+def _marcum_q_inv(m: int, a: float, y: float) -> float:
+    if y == 1:
+        return 0.0
+    if y == 0 or isinf(a):
+        return inf
+    lam = a**2 / 2
+    upper = y < 0.5  # Solve for the smaller tail
+
+    def residual(v: float) -> float:  # Decreasing in v = log(x)
+        beta = exp(2 * v) / 2
+        if beta > lam + m:
+            log_q = _skellam_log_cdf(lam, beta, m)
+            log_p = log1p(-exp(log_q))
+        else:
+            log_p = _skellam_log_cdf(beta, lam, 1 - m)
+            log_q = log1p(-exp(log_p))
+        return log_q - log(y) if upper else log1p(-y) - log_p
+
+    # Bracket: R = |a + Z| is 1-Lipschitz in Z
+    lo = max(
+        sqrt(a**2 + 2 * m - 1) - sqrt(-2 * log1p(-y)),  # Var(R) <= 1
+        sqrt(2) * exp((lgamma(m + 1) + log1p(-y)) / (2 * m)),  # P <= beta^m / m!
+    )
+    hi = sqrt(a**2 + 2 * m) + sqrt(-2 * log(y))
+    v_lo, v_hi = log(lo), log(hi)
+    r_lo, r_hi = residual(v_lo), residual(v_hi)
+    v, side = v_lo, 0
+    for _ in range(100):  # Illinois method
+        v = (v_lo * r_hi - v_hi * r_lo) / (r_hi - r_lo)
+        if not v_lo < v < v_hi:  # Float precision reached
+            break
+        r = residual(v)
+        if r > 0:
+            v_lo, r_lo = v, r
+            if side > 0:
+                r_hi /= 2
+            side = 1
+        else:
+            v_hi, r_hi = v, r
+            if side < 0:
+                r_lo /= 2
+            side = -1
+    return exp(v)
+
+
+def marcum_q_inv(
+    m: int, a: npt.ArrayLike, y: npt.ArrayLike
+) -> npt.NDArray[np.floating] | float:
+    r"""
+    Computes the inverse of the [Marcum Q-function](/ref/marcum_q) with respect to $x$. More precisely, it computes the value of $x \geq 0$ such that $\mathrm{Q}_{m,a}(x) = y$.
+
+    Parameters:
+        m: The order of the Marcum Q-function. Should be a positive integer.
+        a: The value of $a$. Should be a float or array of floats. Must satisfy $a \geq 0$.
+        y: The input to the function. Should be a float or array of floats in the real interval $[0, 1]$.
+
+    Returns:
+        x: The value $x = \mathrm{Q}_{m,a}^{-1}(y)$.
+
+    Examples:
+        >>> komm.marcum_q_inv(1, 1, 0.7328798037968203)  # doctest: +FLOAT_CMP
+        1.0
+
+        >>> komm.marcum_q_inv(2, 0.5, [0.852258163, 0.764720559, 0.66139663])
+        array([1.2, 1.4, 1.6])
+    """
+    m = validate_positive_integer(m)
+    a = validate_float_array(a)
+    if not np.all(a >= 0):
+        raise ValueError("'a' must be non-negative")
+    y = validate_float_array(y)
+    if not np.all((0 <= y) & (y <= 1)):
+        raise ValueError("'y' must be in [0, 1]")
+    result = np.vectorize(_marcum_q_inv)(m, a, y)
     return float(result) if np.ndim(result) == 0 else result
 
 
