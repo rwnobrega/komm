@@ -26,7 +26,7 @@ class PolarCode(BlockCode):
     For more details, see [EC Zoo: Polar code](https://errorcorrectionzoo.org/c/polar).
 
     Notes:
-        - For $\mathcal{F} = \\{ i : \mathrm{w}(i) < \mu - \rho \\}$ it reduces to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\rho, \mu)$, where $\mathrm{w}(i)$ is the number of ones in the binary representation of $i$.
+        - For $\mathcal{F} = \\{ i : \mathrm{w}(i) < \mu - \rho \\}$ it reduces to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\mu, \rho)$, where $\mathrm{w}(i)$ is the number of ones in the binary representation of $i$.
 
     Parameters:
         mu: The parameter $\mu$ of the code.

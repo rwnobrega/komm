@@ -27,7 +27,7 @@ class SimplexCode(SystematicBlockCode):
 
     Notes:
         - For $\mu = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$; in its lengthened version, of length $4$.
-        - Its lengthened version is equivalent to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(1, \mu)$.
+        - Its lengthened version is equivalent to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\mu, 1)$.
         - Its dual is the [Hamming code](/ref/HammingCode); the dual of its lengthened version is the extended Hamming code.
         - Simplex codes are constant-weight codes; their lengthened versions are not.
 

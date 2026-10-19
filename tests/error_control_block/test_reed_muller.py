@@ -4,14 +4,14 @@ import pytest
 import komm
 
 
-def test_reed_muller_code_2_4_parameters():
-    code = komm.ReedMullerCode(2, 4)
+def test_reed_muller_code_4_2_parameters():
+    code = komm.ReedMullerCode(4, 2)
     assert (code.length, code.dimension, code.redundancy) == (16, 11, 5)
     assert code.minimum_distance() == 4
 
 
-def test_reed_muller_code_2_4_generator_matrix():
-    code = komm.ReedMullerCode(2, 4)
+def test_reed_muller_code_4_2_generator_matrix():
+    code = komm.ReedMullerCode(4, 2)
     np.testing.assert_equal(
         code.generator_matrix,
         # fmt: off
@@ -23,8 +23,8 @@ def test_reed_muller_code_2_4_generator_matrix():
     )
 
 
-def test_reed_muller_code_2_4_weight_distributions():
-    code = komm.ReedMullerCode(2, 4)
+def test_reed_muller_code_4_2_weight_distributions():
+    code = komm.ReedMullerCode(4, 2)
     np.testing.assert_equal(
         code.codeword_weight_distribution(),
         [1, 0, 0, 0, 140, 0, 448, 0, 870, 0, 448, 0, 140, 0, 0, 0, 1],
@@ -38,22 +38,22 @@ def test_reed_muller_code_2_4_weight_distributions():
 @pytest.mark.parametrize("mu", range(1, 7))
 def test_reed_muller_code_weight_distribution(mu):
     for rho in range(mu):
-        code1 = komm.ReedMullerCode(rho, mu)
+        code1 = komm.ReedMullerCode(mu, rho)
         code2 = komm.BlockCode(generator_matrix=code1.generator_matrix)
         distribution = code1.codeword_weight_distribution()
         assert distribution == code2.codeword_weight_distribution()
 
 
-def test_reed_muller_code_2_4_GH_orthogonality():
-    code = komm.ReedMullerCode(2, 4)
+def test_reed_muller_code_4_2_GH_orthogonality():
+    code = komm.ReedMullerCode(4, 2)
     np.testing.assert_equal(
         np.dot(code.generator_matrix, code.check_matrix.T) % 2,
         np.zeros((code.dimension, code.redundancy), dtype=int),
     )
 
 
-def test_reed_muller_code_2_4_reed_partitions():
-    code = komm.ReedMullerCode(2, 4)
+def test_reed_muller_code_4_2_reed_partitions():
+    code = komm.ReedMullerCode(4, 2)
     reed_partitions = code.reed_partitions()
     np.testing.assert_equal(
         reed_partitions[0],
@@ -69,8 +69,8 @@ def test_reed_muller_code_2_4_reed_partitions():
     )
 
 
-def test_reed_muller_code_2_4_encoder():
-    code = komm.ReedMullerCode(1, 5)
+def test_reed_muller_code_5_1_encoder():
+    code = komm.ReedMullerCode(5, 1)
     np.testing.assert_equal(
         code.encode([0, 0, 0, 0, 0, 1]),
         np.ones(32, dtype=int),
@@ -81,8 +81,8 @@ def test_reed_muller_code_invalid_init():
     with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
         komm.ReedMullerCode(2, 2)
     with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
-        komm.ReedMullerCode(-1, 3)
+        komm.ReedMullerCode(3, -1)
     with pytest.raises(ValueError, match="'rho' must satisfy 0 <= rho < mu"):
-        komm.ReedMullerCode(3, 2)
+        komm.ReedMullerCode(2, 3)
     with pytest.raises(TypeError, match="'rho' must be an integer"):
-        komm.ReedMullerCode(1.5, 3)  # type: ignore
+        komm.ReedMullerCode(3, 1.5)  # type: ignore

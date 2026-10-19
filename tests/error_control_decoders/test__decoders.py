@@ -13,7 +13,7 @@ punctured = komm.TerminatedConvolutionalCode(
 )
 bch = komm.BCHCode(4, 5)
 reed_solomon = komm.ReedSolomonCode(3, 5)
-reed_muller = komm.ReedMullerCode(1, 5)
+reed_muller = komm.ReedMullerCode(5, 1)
 spc = komm.SingleParityCheckCode(3)
 polar = komm.PolarCode(3, [0, 1, 2, 4])
 

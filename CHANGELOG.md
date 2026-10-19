@@ -10,6 +10,8 @@
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.
 
+- Swapped the order of the parameters of `ReedMullerCode` to `(mu, rho)`.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.

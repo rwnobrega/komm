@@ -4,9 +4,9 @@ import pytest
 import komm
 
 
-@pytest.mark.parametrize("mu", range(5))
-def test_reed_decoder(mu, rng):
-    code = komm.ReedMullerCode(mu, 5)
+@pytest.mark.parametrize("rho", range(5))
+def test_reed_decoder(rho, rng):
+    code = komm.ReedMullerCode(5, rho)
     n = code.length  # 32
     k = code.dimension
     t = code.packing_radius()
@@ -21,7 +21,7 @@ def test_reed_decoder(mu, rng):
 
 
 def test_reed_repetition_code(rng):
-    code = komm.ReedMullerCode(0, 5)
+    code = komm.ReedMullerCode(5, 0)
     assert code.dimension == 1
     assert code.length == 32
     decoder = komm.ReedDecoder(code)

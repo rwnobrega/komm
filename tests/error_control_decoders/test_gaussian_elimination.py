@@ -23,7 +23,7 @@ all_codes = small_codes + [
     komm.RepetitionCode(5),
     komm.SingleParityCheckCode(5),
     komm.CordaroWagnerCode(5),
-    komm.ReedMullerCode(1, 4),
+    komm.ReedMullerCode(4, 1),
 ]
 
 

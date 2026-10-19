@@ -38,7 +38,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
         Examples:
-            >>> code = komm.ReedMullerCode(1, 3)
+            >>> code = komm.ReedMullerCode(3, 1)
 
             >>> decoder = komm.ReedDecoder(code, input_type="hard")
             >>> decoder.decode([[0, 0, 0, 0, 0, 1, 0, 0], [1, 1, 0, 1, 1, 1, 1, 1]])

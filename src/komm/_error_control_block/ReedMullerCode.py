@@ -19,7 +19,7 @@ from .util import macwilliams_transform
 @mkdocstrings(members=["reed_partitions"], filters=["!.*"])
 class ReedMullerCode(BlockCode):
     r"""
-    Reed–Muller code. Let $\mu$ and $\rho$ be two integers such that $0 \leq \rho < \mu$. The Reed–Muller code with parameters $(\rho, \mu)$ is the [linear block code](/ref/BlockCode) whose generator matrix rows are
+    Reed–Muller code. Let $\mu$ and $\rho$ be two integers such that $0 \leq \rho < \mu$. The Reed–Muller code with parameters $(\mu, \rho)$ is the [linear block code](/ref/BlockCode) whose generator matrix rows are
     $$
         \mathbf{1}, \, v_0, \ldots, v_{\mu - 1}, \, v_0 v_1, v_0 v_2, \ldots, v_{\mu - 2} v_{\mu - 1}, \, \ldots \, \text{(up to products of degree $\rho$)},
     $$
@@ -37,16 +37,16 @@ class ReedMullerCode(BlockCode):
         - For $\rho = 1$ it reduces to a lengthened [simplex code](/ref/SimplexCode).
         - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
         - For $\rho = \mu - 1$ it reduces to a [single parity-check code](/ref/SingleParityCheckCode).
-        - The dual of the code with parameters $(\rho, \mu)$ is the code with parameters $(\mu - \rho - 1, \mu)$.
+        - The dual of the code with parameters $(\mu, \rho)$ is the code with parameters $(\mu, \mu - \rho - 1)$.
 
     Parameters:
-        rho: The parameter $\rho$ of the code.
         mu: The parameter $\mu$ of the code.
+        rho: The parameter $\rho$ of the code.
 
     This class takes the rows in decreasing order of degree, with $\mathbf{1}$ last, and rows of the same degree in lexicographic order of their indices.
 
     Examples:
-        >>> code = komm.ReedMullerCode(2, 4)
+        >>> code = komm.ReedMullerCode(4, 2)
         >>> (code.length, code.dimension, code.redundancy)
         (16, 11, 5)
         >>> code.generator_matrix
@@ -65,28 +65,28 @@ class ReedMullerCode(BlockCode):
         4
     """
 
-    def __init__(self, rho: int, mu: int) -> None:
+    def __init__(self, mu: int, rho: int) -> None:
         mu = validate_positive_integer(mu)
         rho = validate_integer(rho, low=0, high=mu, rule="0 <= rho < mu")
-        self.rho = rho
         self.mu = mu
-        super().__init__(generator_matrix=reed_muller_generator_matrix(rho, mu))
+        self.rho = rho
+        super().__init__(generator_matrix=reed_muller_generator_matrix(mu, rho))
 
     def __repr__(self) -> str:
-        args = f"rho={self.rho}, mu={self.mu}"
+        args = f"mu={self.mu}, rho={self.rho}"
         return f"{self.__class__.__name__}({args})"
 
     @cache
     def codeword_weight_distribution(self) -> list[int]:
-        rho, mu = self.rho, self.mu
+        mu, rho = self.mu, self.rho
         # Generic method: trivial for mu = 1, no gain for mu > 8.
         if not 2 <= mu <= 8:
             return super().codeword_weight_distribution()
         if self.redundancy < self.dimension:
-            # The dual code is RM(mu - rho - 1, mu).
-            dual = reed_muller_weight_distribution(mu - rho - 1, mu)
+            # The dual code is RM(mu, mu - rho - 1).
+            dual = reed_muller_weight_distribution(mu, mu - rho - 1)
             return macwilliams_transform(dual)
-        return reed_muller_weight_distribution(rho, mu)
+        return reed_muller_weight_distribution(mu, rho)
 
     @cache
     def minimum_distance(self) -> int:
@@ -98,7 +98,7 @@ class ReedMullerCode(BlockCode):
         The Reed partitions of the code. See <cite>LC04, Sec. 4.3</cite>.
 
         Examples:
-            >>> code = komm.ReedMullerCode(2, 4)
+            >>> code = komm.ReedMullerCode(4, 2)
             >>> reed_partitions = code.reed_partitions()
             >>> reed_partitions[1]
             array([[ 0,  1,  4,  5],
@@ -115,7 +115,7 @@ class ReedMullerCode(BlockCode):
                    [10, 14],
                    [11, 15]])
         """
-        rho, mu = self.rho, self.mu
+        mu, rho = self.mu, self.rho
         reed_partitions: list[Array2D[np.integer]] = []
         bin_vectors = [
             int_to_bits(range(2**ell), width=ell).reshape(2**ell, ell)
@@ -131,7 +131,7 @@ class ReedMullerCode(BlockCode):
         return reed_partitions
 
 
-def reed_muller_generator_matrix(rho: int, mu: int) -> Array2D[np.integer]:
+def reed_muller_generator_matrix(mu: int, rho: int) -> Array2D[np.integer]:
     # See [LC04, pp. 105–114]. Assumes 0 <= rho < mu.
     v = np.empty((mu, 2**mu), dtype=int)
     for i in range(mu):
@@ -152,12 +152,12 @@ def reed_muller_generator_matrix(rho: int, mu: int) -> Array2D[np.integer]:
     return np.array(G_list, dtype=int)
 
 
-def reed_muller_weight_distribution(rho: int, mu: int) -> list[int]:
-    # Codewords are (u | u + v), with u in RM(ρ, μ - 1) and v in RM(ρ - 1, μ - 1).
-    # Both halves lie in the same coset C of RM(ρ - 1, μ - 1), and every pair of
+def reed_muller_weight_distribution(mu: int, rho: int) -> list[int]:
+    # Codewords are (u | u + v), with u in RM(μ - 1, ρ) and v in RM(μ - 1, ρ - 1).
+    # Both halves lie in the same coset C of RM(μ - 1, ρ - 1), and every pair of
     # words of C forms a codeword. Hence A(z) = sum_C φ_C(z)^2, where φ_C(z) is
     # the weight enumerator of C.
-    rows = np.packbits(reed_muller_generator_matrix(rho, mu - 1), axis=1)
+    rows = np.packbits(reed_muller_generator_matrix(mu - 1, rho), axis=1)
     top = comb(mu - 1, rho)  # Rows of degree rho come first.
     representatives, subcode = row_span(rows[:top]), row_span(rows[top:])
     enumerators: Counter[tuple[int, ...]] = Counter()
