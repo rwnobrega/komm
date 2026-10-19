@@ -33,7 +33,7 @@ doc = [
     "matplotlib==3.11.2",
     "properdocs==1.6.7",
     "mkdocs-material==9.7.7",
-    "mkdocstrings==1.0.6",
+    "mkdocstrings==1.0.7",
     "mkdocstrings-python==2.0.9",
     "mkdocs-gen-files==0.6.1",
     "mkdocs-include-markdown-plugin==7.3.0",
