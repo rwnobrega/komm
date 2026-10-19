@@ -22,6 +22,7 @@ from komm._util.validators import (
     validate_pmf,
     validate_positive_float,
     validate_positive_integer,
+    validate_soft_array,
     validate_transition_matrix,
 )
 
@@ -424,6 +425,42 @@ def test_validate_float_array_ndim_invalid(value, ndim, got):
     message = f"'value' must be a {ndim}D-array (got shape {got})"
     with pytest.raises(ValueError, match=escape(message)):
         validate_float_array(value, ndim=ndim)
+
+
+@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+def test_validate_soft_array(dtype):
+    array = validate_soft_array(np.array([-np.inf, 0.0, 2.5], dtype=dtype))
+    assert array.dtype == np.float64
+    np.testing.assert_equal(array, [-np.inf, 0.0, 2.5])
+    assert validate_soft_array([]).size == 0
+
+
+@pytest.mark.parametrize(
+    "value, kwargs, message",
+    [
+        ([[0.0, 1.0]], {"ndim": 1}, "'value' must be a 1D-array"),
+        ([[0.0, 1.0]], {"shape": (2,)}, r"'value' must have shape \(2,\)"),
+    ],
+)
+def test_validate_soft_array_invalid(value, kwargs, message):
+    with pytest.raises(ValueError, match=message):
+        validate_soft_array(value, **kwargs)
+
+
+@pytest.mark.parametrize(
+    "value, got",
+    [
+        ([0, 1], "int64"),
+        (np.array([0, 1], dtype=np.uint8), "uint8"),
+        ([True, False], "bool"),
+        ([1j, 2.0], "complex128"),
+        (["1.0", "2.0"], "<U3"),
+    ],
+)
+def test_validate_soft_array_not_float(value, got):
+    message = f"'value' must contain only floats (got {got})"
+    with pytest.raises(TypeError, match=escape(message)):
+        validate_soft_array(value)
 
 
 @pytest.mark.parametrize("value", [False, True, np.False_, np.True_])

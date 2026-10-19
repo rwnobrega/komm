@@ -225,6 +225,18 @@ def validate_float_array(
     return value.astype(float, copy=False)
 
 
+def validate_soft_array(
+    value: npt.ArrayLike,
+    *,
+    ndim: int | None = None,
+    shape: tuple[int, ...] | None = None,
+) -> npt.NDArray[np.floating]:
+    value = np.asarray(value)
+    if not value.dtype.kind == "f":
+        raise TypeError(f"'{arg_name()}' must contain only floats (got {value.dtype})")
+    return validate_float_array(value, ndim=ndim, shape=shape)
+
+
 def validate_bool(value: object) -> bool:
     if type(value) not in (bool, np.bool_):
         got = type(value).__name__
