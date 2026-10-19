@@ -1,15 +1,16 @@
 from functools import cache
 from math import comb
+from typing import Literal
 
 import numpy as np
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_positive_integer
-from .BlockCode import BlockCode
+from .._util.validators import validate_choice, validate_positive_integer
+from .SystematicBlockCode import SystematicBlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-class RepetitionCode(BlockCode):
+class RepetitionCode(SystematicBlockCode):
     r"""
     Repetition code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose only two codewords are $00 \cdots 0$ and $11 \cdots 1$. The repetition code has the following parameters:
 
@@ -25,6 +26,9 @@ class RepetitionCode(BlockCode):
 
     Parameters:
         n: The length $n$ of the code. Must be a positive integer.
+        information_set: The side of the information set. Either `'left'` or `'right'`. Default is `'left'`.
+
+    This class represents the code in [systematic form](/ref/SystematicBlockCode).
 
     Examples:
         >>> code = komm.RepetitionCode(5)
@@ -47,12 +51,21 @@ class RepetitionCode(BlockCode):
         [1, 16, 120, 560, 1820, 4368, 8008, 11440, 6435, 0, 0, 0, 0, 0, 0, 0, 0]
     """
 
-    def __init__(self, n: int) -> None:
+    def __init__(
+        self,
+        n: int,
+        *,
+        information_set: Literal["left", "right"] = "left",
+    ) -> None:
         self.n = validate_positive_integer(n)
-        super().__init__(generator_matrix=np.ones((1, self.n), dtype=int))
+        side = validate_choice(information_set, ("left", "right"))
+        P = np.ones((1, self.n - 1), dtype=int)
+        super().__init__(parity_submatrix=P, information_set=side)
 
     def __repr__(self) -> str:
-        args = f"n={self.n}"
+        left = np.array_equal(self.information_set, np.arange(self.dimension))
+        side = "left" if left else "right"
+        args = f"n={self.n}, information_set={side!r}"
         return f"{self.__class__.__name__}({args})"
 
     @cache

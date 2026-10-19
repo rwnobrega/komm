@@ -45,3 +45,9 @@ def test_repetition_code_invalid_init():
         komm.RepetitionCode(3.0)  # type: ignore
     with pytest.raises(TypeError, match="'n' must be an integer"):
         komm.RepetitionCode("3")  # type: ignore
+
+
+@pytest.mark.parametrize("information_set", ["middle", [0]])
+def test_repetition_code_invalid_information_set(information_set):
+    with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
+        komm.RepetitionCode(5, information_set=information_set)

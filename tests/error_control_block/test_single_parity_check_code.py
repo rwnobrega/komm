@@ -45,3 +45,18 @@ def test_single_parity_check_code_invalid_init():
         komm.SingleParityCheckCode(3.0)  # type: ignore
     with pytest.raises(TypeError, match="'n' must be an integer"):
         komm.SingleParityCheckCode("3")  # type: ignore
+
+
+@pytest.mark.parametrize("information_set", ["middle", [0, 1, 2, 3]])
+def test_single_parity_check_code_invalid_information_set(information_set):
+    with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
+        komm.SingleParityCheckCode(5, information_set=information_set)
+
+
+@pytest.mark.parametrize("n", range(1, 9))
+@pytest.mark.parametrize("side, opposite", [("left", "right"), ("right", "left")])
+def test_single_parity_check_repetition_duality(n, side, opposite):
+    spc = komm.SingleParityCheckCode(n, information_set=side)
+    repetition = komm.RepetitionCode(n, information_set=opposite)
+    np.testing.assert_equal(spc.generator_matrix, repetition.check_matrix)
+    np.testing.assert_equal(spc.check_matrix, repetition.generator_matrix)

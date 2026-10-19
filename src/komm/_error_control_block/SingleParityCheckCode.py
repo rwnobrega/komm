@@ -1,15 +1,16 @@
 from functools import cache
 from math import comb
+from typing import Literal
 
 import numpy as np
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_positive_integer
-from .BlockCode import BlockCode
+from .._util.validators import validate_choice, validate_positive_integer
+from .SystematicBlockCode import SystematicBlockCode
 
 
 @mkdocstrings(filters=["!.*"])
-class SingleParityCheckCode(BlockCode):
+class SingleParityCheckCode(SystematicBlockCode):
     r"""
     Single parity-check code. For a given length $n \geq 1$, it is the [linear block code](/ref/BlockCode) whose codewords are obtained by extending $n - 1$ information bits with a single parity-check bit. The single parity-check code has the following parameters:
 
@@ -25,6 +26,9 @@ class SingleParityCheckCode(BlockCode):
 
     Parameters:
         n: The length $n$ of the code. Must be a positive integer.
+        information_set: The side of the information set. Either `'left'` or `'right'`. Default is `'left'`.
+
+    This class represents the code in [systematic form](/ref/SystematicBlockCode).
 
     Examples:
         >>> code = komm.SingleParityCheckCode(5)
@@ -47,12 +51,21 @@ class SingleParityCheckCode(BlockCode):
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     """
 
-    def __init__(self, n: int) -> None:
+    def __init__(
+        self,
+        n: int,
+        *,
+        information_set: Literal["left", "right"] = "left",
+    ) -> None:
         self.n = validate_positive_integer(n)
-        super().__init__(check_matrix=np.ones((1, self.n), dtype=int))
+        side = validate_choice(information_set, ("left", "right"))
+        P = np.ones((self.n - 1, 1), dtype=int)
+        super().__init__(parity_submatrix=P, information_set=side)
 
     def __repr__(self) -> str:
-        args = f"n={self.n}"
+        left = np.array_equal(self.information_set, np.arange(self.dimension))
+        side = "left" if left else "right"
+        args = f"n={self.n}, information_set={side!r}"
         return f"{self.__class__.__name__}({args})"
 
     @cache
