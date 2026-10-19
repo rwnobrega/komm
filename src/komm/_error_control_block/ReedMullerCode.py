@@ -33,10 +33,10 @@ class ReedMullerCode(BlockCode):
     For more details, see <cite>LC04, Sec. 4.3</cite> and [EC Zoo: Reed–Muller code](https://errorcorrectionzoo.org/c/reed_muller).
 
     Notes:
-        - For $\rho = 0$ it reduces to a [repetition code](/ref/RepetitionCode).
-        - For $\rho = 1$ it reduces to a lengthened [simplex code](/ref/SimplexCode).
-        - For $\rho = \mu - 2$ it reduces to an extended [Hamming code](/ref/HammingCode).
-        - For $\rho = \mu - 1$ it reduces to a [single parity-check code](/ref/SingleParityCheckCode).
+        - For $\rho = 0$ it reduces to the [repetition code](/ref/RepetitionCode) of length $2^\mu$.
+        - For $\rho = 1$ it is equivalent to the lengthened [simplex code](/ref/SimplexCode) with parameter $\mu$.
+        - For $\rho = \mu - 2$ it is equivalent to the extended [Hamming code](/ref/HammingCode) with parameter $\mu$.
+        - For $\rho = \mu - 1$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $2^\mu$.
         - The dual of the code with parameters $(\mu, \rho)$ is the code with parameters $(\mu, \mu - \rho - 1)$.
 
     Parameters:
