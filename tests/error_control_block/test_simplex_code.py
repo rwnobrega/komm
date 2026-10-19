@@ -13,9 +13,9 @@ def test_encoder():
 
 
 def test_simplex_invalid_init():
-    with pytest.raises(ValueError, match="'kappa' must be at least 2"):
+    with pytest.raises(ValueError, match="'mu' must be at least 2"):
         komm.SimplexCode(1)
-    with pytest.raises(TypeError, match="'kappa' must be an integer"):
+    with pytest.raises(TypeError, match="'mu' must be an integer"):
         komm.SimplexCode(7 / 3)  # type: ignore
     with pytest.raises(TypeError, match="takes 2 positional arguments"):
         komm.SimplexCode(7, 3)  # type: ignore

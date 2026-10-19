@@ -6,6 +6,10 @@
 
 - Implemented [inverse Marcum Q-function](https://komm.dev/ref/marcum_q_inv).
 
+### Breaking changes
+
+- Renamed parameter `kappa` of `SimplexCode` to `mu`.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.
