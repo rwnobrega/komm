@@ -14,6 +14,8 @@
 
 - Swapped the order of the parameters of `ReedMullerCode` to `(mu, rho)`.
 
+- Made decoders with soft input reject integer and boolean arrays, which are likely bits; pass L-values as floats.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.

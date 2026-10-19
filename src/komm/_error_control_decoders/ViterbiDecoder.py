@@ -14,7 +14,7 @@ from .._util.decorators import blockwise, chunkwise, with_pbar
 from .._util.validators import (
     validate_binary_array,
     validate_decision_type,
-    validate_float_array,
+    validate_soft_array,
 )
 from .util import get_pbar
 
@@ -111,4 +111,4 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         if self.input_type == "hard":
             return decode(validate_binary_array(input))
         else:  # self.input_type == "soft"
-            return decode(validate_float_array(input))
+            return decode(validate_soft_array(input))

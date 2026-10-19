@@ -6,7 +6,7 @@ import numpy.typing as npt
 from .. import abc
 from .._error_control_block.SingleParityCheckCode import SingleParityCheckCode
 from .._util.decorators import blockwise
-from .._util.validators import validate_float_array
+from .._util.validators import validate_soft_array
 
 
 @dataclass
@@ -45,7 +45,7 @@ class WagnerDecoder(abc.CodewordDecoder[SingleParityCheckCode]):
             v_hat ^= parity * (np.arange(self.code.length) == i)
             return v_hat
 
-        return decode_to_codeword(validate_float_array(input))
+        return decode_to_codeword(validate_soft_array(input))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

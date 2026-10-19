@@ -11,7 +11,7 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 from .._finite_state_machine.trellis import TrellisSection, forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
-from .._util.validators import validate_decision_type, validate_float_array
+from .._util.validators import validate_decision_type, validate_soft_array
 from .util import get_pbar, marginalize
 
 
@@ -99,7 +99,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             lo = marginalize(log_posteriors[:, :h], self._input_bits)
             return lo.reshape(li.shape[0], -1)
 
-        output = decode(validate_float_array(input))
+        output = decode(validate_soft_array(input))
         if self.output_type == "hard":
             output = (output < 0.0).astype(int)
         return output

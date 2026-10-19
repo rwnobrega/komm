@@ -47,35 +47,35 @@ def decoding_methods(decoders):
 
 
 @pytest.mark.parametrize(
-    "code, decoder_class",
+    "code, decoder_class, dtype",
     [
-        (block, komm.SyndromeTableDecoder),
-        (block, komm.ExhaustiveCodewordDecoder),
-        (block, komm.ExhaustiveBitwiseDecoder),
-        (block, komm.GaussianEliminationDecoder),
-        (block, komm.PeelingDecoder),
-        (terminated, komm.ViterbiDecoder),
-        (terminated, komm.BCJRDecoder),
-        (punctured, komm.ExhaustiveCodewordDecoder),
-        (punctured, komm.ExhaustiveBitwiseDecoder),
-        (punctured, komm.ViterbiDecoder),
-        (punctured, komm.BCJRDecoder),
-        (punctured, komm.SyndromeTableDecoder),
-        (bch, komm.BerlekampDecoder),
-        (reed_solomon, komm.BerlekampDecoder),
-        (reed_muller, komm.ReedDecoder),
-        (spc, komm.WagnerDecoder),
-        (polar, komm.SCDecoder),
+        (block, komm.SyndromeTableDecoder, int),
+        (block, komm.ExhaustiveCodewordDecoder, int),
+        (block, komm.ExhaustiveBitwiseDecoder, float),
+        (block, komm.GaussianEliminationDecoder, int),
+        (block, komm.PeelingDecoder, int),
+        (terminated, komm.ViterbiDecoder, int),
+        (terminated, komm.BCJRDecoder, float),
+        (punctured, komm.ExhaustiveCodewordDecoder, int),
+        (punctured, komm.ExhaustiveBitwiseDecoder, float),
+        (punctured, komm.ViterbiDecoder, int),
+        (punctured, komm.BCJRDecoder, float),
+        (punctured, komm.SyndromeTableDecoder, int),
+        (bch, komm.BerlekampDecoder, int),
+        (reed_solomon, komm.BerlekampDecoder, int),
+        (reed_muller, komm.ReedDecoder, int),
+        (spc, komm.WagnerDecoder, float),
+        (polar, komm.SCDecoder, float),
     ],
 )
-def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class):
+def test_decoders_shapes(code: komm.abc.BlockCode, decoder_class, dtype):
     decoder: komm.abc.BlockDecoder = decoder_class(code)
     k, n = code.dimension, code.length
     for b in range(1, 5):
-        u_hat = decoder.decode(np.zeros((3, 4, b * n), dtype=int))
+        u_hat = decoder.decode(np.zeros((3, 4, b * n), dtype=dtype))
         assert u_hat.shape == (3, 4, b * k)
     with pytest.raises(ValueError, match="last dimension of array must be a multiple"):
-        decoder.decode(np.zeros((3, 4, n + 1), dtype=int))
+        decoder.decode(np.zeros((3, 4, n + 1), dtype=dtype))
 
 
 @pytest.mark.parametrize(
@@ -117,6 +117,7 @@ def test_hard_decoders_input_dtype(decoder, dtype, rng):
 
 
 @pytest.mark.parametrize("decoder, method", decoding_methods(soft_decoders))
-def test_soft_decoders_input_not_real(decoder, method):
-    with pytest.raises(TypeError, match="'input' must contain only real numbers"):
-        getattr(decoder, method)(np.zeros(decoder.code.length, dtype=complex))
+@pytest.mark.parametrize("dtype", [int, bool, complex])
+def test_soft_decoders_input_not_float(decoder, method, dtype):
+    with pytest.raises(TypeError, match="'input' must contain only floats"):
+        getattr(decoder, method)(np.zeros(decoder.code.length, dtype=dtype))

@@ -10,9 +10,9 @@ from .._util.bit_operations import int_to_bits
 from .._util.validators import (
     validate_binary_array,
     validate_decision_type,
-    validate_float_array,
     validate_integer,
     validate_nonnegative_integer,
+    validate_soft_array,
 )
 from ..types import Array1D
 
@@ -82,7 +82,7 @@ class ViterbiStreamDecoder:
         if self.input_type == "hard":
             input = validate_binary_array(input, ndim=1)
         else:  # self.input_type == "soft"
-            input = validate_float_array(input, ndim=1)
+            input = validate_soft_array(input, ndim=1)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
         if not input.size % n == 0:

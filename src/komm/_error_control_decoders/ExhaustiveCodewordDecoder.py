@@ -9,7 +9,7 @@ from .._util.decorators import blockwise, chunkwise, with_pbar
 from .._util.validators import (
     validate_binary_array,
     validate_decision_type,
-    validate_float_array,
+    validate_soft_array,
 )
 from .util import get_pbar
 
@@ -69,7 +69,7 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
         if self.input_type == "hard":
             return decode_to_codeword(validate_binary_array(input))
         else:  # self.input_type == "soft"
-            return decode_to_codeword(validate_float_array(input))
+            return decode_to_codeword(validate_soft_array(input))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

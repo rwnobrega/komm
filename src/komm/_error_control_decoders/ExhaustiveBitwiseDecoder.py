@@ -7,7 +7,7 @@ import numpy.typing as npt
 from .. import abc
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
-from .._util.validators import validate_decision_type, validate_float_array
+from .._util.validators import validate_decision_type, validate_soft_array
 from .util import get_pbar, marginalize
 
 
@@ -47,7 +47,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
             metrics = 0.5 * li @ self._polar.T
             return marginalize(metrics, bits)
 
-        output = decode(validate_float_array(input))
+        output = decode(validate_soft_array(input))
         if self.output_type == "hard":
             output = (output < 0.0).astype(int)
         return output

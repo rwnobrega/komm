@@ -10,7 +10,7 @@ from .._util.decorators import blockwise
 from .._util.validators import (
     validate_binary_array,
     validate_decision_type,
-    validate_float_array,
+    validate_soft_array,
 )
 
 
@@ -76,4 +76,4 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
         if self.input_type == "hard":
             return decode_hard(validate_binary_array(input))
         else:  # self.input_type == "soft"
-            return decode_soft(validate_float_array(input))
+            return decode_soft(validate_soft_array(input))

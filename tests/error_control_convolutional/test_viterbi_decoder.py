@@ -182,8 +182,9 @@ def test_viterbi_stream_decoder_invalid_input_shape(input_type, r, message):
         decoder.decode(r)
 
 
-def test_viterbi_stream_decoder_input_not_real():
+@pytest.mark.parametrize("r", [[0, 1, 1, 0], [1j, 1, -1, 1]])
+def test_viterbi_stream_decoder_input_not_float(r):
     code = komm.ConvolutionalCode([[0o7, 0o5]])
     decoder = komm.ViterbiStreamDecoder(code, 10, input_type="soft")
-    with pytest.raises(TypeError, match="'input' must contain only real numbers"):
-        decoder.decode([1j, 1, -1, 1])
+    with pytest.raises(TypeError, match="'input' must contain only floats"):
+        decoder.decode(r)
