@@ -38,7 +38,7 @@ class CyclicCode(abc.BlockCode):
 
         check_polynomial: The check polynomial $h(X)$ of the code, of degree $k$ (the dimension of the code), specified either as a [binary polynomial](/ref/BinaryPolynomial) or as an integer to be converted to the former.
 
-        systematic: Whether the encoder is systematic. Default is `True`.
+        systematic: Whether the encoder is systematic. The default value is `True`.
 
     Examples:
         >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)

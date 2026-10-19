@@ -27,7 +27,7 @@ def sampling_rate_compress(
         input: The input array $x[n]$ to be compressed.
         factor: The compression factor $M$.
         offset: The offset $\Delta$. Must satisfy $\Delta \in [0:M)$.
-        axis: The axis along which to extract elements. Default is the last axis.
+        axis: The axis along which to extract elements. The default value is the last axis.
 
     Returns:
         output: The compressed array $y[n]$.
@@ -88,7 +88,7 @@ def sampling_rate_expand(
         input: The input array $x[n]$ to be expanded.
         factor: The expansion factor $L$.
         offset: The offset $\Delta$. Must satisfy $\Delta \in [0:L)$.
-        axis: The axis along which to insert zeros. Default is the last axis.
+        axis: The axis along which to insert zeros. The default value is the last axis.
 
     Returns:
         output: The expanded array $y[n]$.
@@ -137,7 +137,7 @@ def convolve(
 
         input2: The second input array.
 
-        axis: The axis along which the convolution is applied in the multidimensional input. Default is the last axis.
+        axis: The axis along which the convolution is applied in the multidimensional input. The default value is the last axis.
 
         mode: Convolution mode (same as `numpy.convolve`).
 
@@ -190,7 +190,7 @@ def fourier_transform(
         waveform: The input array representing the waveform to be transformed.
         time_step: The time step between samples in the waveform. Must be positive.
         nfft: The number of points in the FFT. Must be a positive integer. If `None`, it defaults to the size of the input along the specified axis.
-        axis: The axis along which to compute the Fourier transform. Default is the last axis.
+        axis: The axis along which to compute the Fourier transform. The default value is the last axis.
 
     Returns:
         spectrum: The spectrum corresponding to the input waveform.

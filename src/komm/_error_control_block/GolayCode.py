@@ -51,7 +51,7 @@ class GolayCode(SystematicBlockCode):
         - Its extended version is self-dual.
 
     Parameters:
-        extended: Whether to use the extended version of the Golay code. Default is `False`.
+        extended: Whether to use the extended version of the Golay code. The default value is `False`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
 

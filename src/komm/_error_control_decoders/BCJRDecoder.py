@@ -22,7 +22,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
 
     Parameters:
         code: The terminated convolutional code to be used for decoding.
-        output_type: The type of the output. Either `'hard'` or `'soft'`. Default is `'soft'`.
+        output_type: The type of the output. Either `'hard'` or `'soft'`. The default value is `'soft'`.
 
     Notes:
         - Input type: `soft` (L-values).

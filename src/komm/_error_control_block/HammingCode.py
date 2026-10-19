@@ -38,8 +38,8 @@ class HammingCode(SystematicBlockCode):
 
     Parameters:
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
-        extended: Whether to use the extended version of the Hamming code. Default is `False`.
-        information_set: The side of the information set. Either `'left'` or `'right'`. Default is `'left'`.
+        extended: Whether to use the extended version of the Hamming code. The default value is `False`.
+        information_set: The side of the information set. Either `'left'` or `'right'`. The default value is `'left'`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode).
 

@@ -21,7 +21,7 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
 
     Parameters:
         code: The Reed–Muller code to be used for decoding.
-        input_type: The type of the input. Either `'hard'` or `'soft'`. Default is `'hard'`.
+        input_type: The type of the input. Either `'hard'` or `'soft'`. The default value is `'hard'`.
 
     Notes:
         - Input type: `hard` (bits) or `soft` (L-values).

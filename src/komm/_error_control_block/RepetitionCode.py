@@ -26,7 +26,7 @@ class RepetitionCode(SystematicBlockCode):
 
     Parameters:
         n: The length $n$ of the code. Must be a positive integer.
-        information_set: The side of the information set. Either `'left'` or `'right'`. Default is `'left'`.
+        information_set: The side of the information set. Either `'left'` or `'right'`. The default value is `'left'`.
 
     This class represents the code in [systematic form](/ref/SystematicBlockCode).
 
