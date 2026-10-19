@@ -1,7 +1,10 @@
 from functools import cache
+from typing import Literal
+
+import numpy as np
 
 from .._util.docs import mkdocstrings
-from .._util.validators import validate_bool, validate_integer
+from .._util.validators import validate_bool, validate_choice, validate_integer
 from .HammingCode import hamming_parity_submatrix
 from .SystematicBlockCode import SystematicBlockCode
 
@@ -28,14 +31,15 @@ class SimplexCode(SystematicBlockCode):
     Notes:
         - For $\mu = 2$ it reduces to the [single parity-check code](/ref/SingleParityCheckCode) of length $3$; in its lengthened version, of length $4$.
         - Its lengthened version is equivalent to the [Reed–Muller code](/ref/ReedMullerCode) with parameters $(\mu, 1)$.
-        - Its dual is the [Hamming code](/ref/HammingCode); the dual of its lengthened version is the extended Hamming code.
+        - Its dual is the [Hamming code](/ref/HammingCode) with the information set on the opposite side; the same holds for its lengthened version and the extended Hamming code.
         - Simplex codes are constant-weight codes; their lengthened versions are not.
 
     Parameters:
         mu: The parameter $\mu$ of the code. Must satisfy $\mu \geq 2$.
         lengthened: Whether to use the lengthened version of the simplex code. Default is `False`.
+        information_set: The side of the information set. Either `'left'` or `'right'`. Default is `'left'`.
 
-    This class represents the code in [systematic form](/ref/SystematicBlockCode), with the information set on the left.
+    This class represents the code in [systematic form](/ref/SystematicBlockCode).
 
     Examples:
         >>> code = komm.SimplexCode(3)
@@ -70,14 +74,23 @@ class SimplexCode(SystematicBlockCode):
         4
     """
 
-    def __init__(self, mu: int, *, lengthened: bool = False) -> None:
+    def __init__(
+        self,
+        mu: int,
+        *,
+        lengthened: bool = False,
+        information_set: Literal["left", "right"] = "left",
+    ) -> None:
         self.mu = validate_integer(mu, low=2)
         self.lengthened = validate_bool(lengthened)
+        side = validate_choice(information_set, ("left", "right"))
         P = hamming_parity_submatrix(self.mu, self.lengthened).T
-        super().__init__(parity_submatrix=P)
+        super().__init__(parity_submatrix=P, information_set=side)
 
     def __repr__(self) -> str:
-        args = f"mu={self.mu}, lengthened={self.lengthened}"
+        left = np.array_equal(self.information_set, np.arange(self.dimension))
+        side = "left" if left else "right"
+        args = f"mu={self.mu}, lengthened={self.lengthened}, information_set={side!r}"
         return f"{self.__class__.__name__}({args})"
 
     @cache

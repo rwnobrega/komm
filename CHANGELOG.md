@@ -6,6 +6,8 @@
 
 - Implemented [inverse Marcum Q-function](https://komm.dev/ref/marcum_q_inv).
 
+- Added parameter `information_set` to `HammingCode` and `SimplexCode`.
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.

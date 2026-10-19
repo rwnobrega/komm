@@ -169,3 +169,9 @@ def test_hamming_code_invalid_init():
         komm.HammingCode(7, 4)  # type: ignore
     with pytest.raises(TypeError, match="'extended' must be a boolean"):
         komm.HammingCode(3, extended="False")  # type: ignore
+
+
+@pytest.mark.parametrize("information_set", ["middle", [0, 1, 2, 3]])
+def test_hamming_code_invalid_information_set(information_set):
+    with pytest.raises(ValueError, match="'information_set' must be 'left' or 'right'"):
+        komm.HammingCode(3, information_set=information_set)
