@@ -22,8 +22,8 @@ class BCHCode(CyclicCode):
     Only *narrow-sense* and *primitive* BCH codes are implemented. For more details, see <cite>LC04, Ch. 6</cite>, <cite>HP03, Sec. 5.1</cite>, and [EC Zoo: Binary BCH code](https://errorcorrectionzoo.org/c/bch).
 
     Notes:
-        - For $\delta = 3$ it is equivalent to the [Hamming code](/ref/HammingCode).
-        - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode).
+        - For $\delta = 3$ it is equivalent to the [Hamming code](/ref/HammingCode) with parameter $\mu$.
+        - For $\delta = 2^{\mu} - 1$ it reduces to the [repetition code](/ref/RepetitionCode) of length $2^{\mu} - 1$.
 
     Parameters:
         mu: The parameter $\mu$ of the BCH code.
