@@ -189,7 +189,7 @@ def fourier_transform(
     Parameters:
         waveform: The input array representing the waveform to be transformed.
         time_step: The time step between samples in the waveform. Must be positive.
-        nfft: The number of points in the FFT. Must be a positive integer. If `None`, it defaults to the size of the input along the specified axis.
+        nfft: The number of points in the FFT. Must be a positive integer. The default value is the size of the input along the specified axis.
         axis: The axis along which to compute the Fourier transform. The default value is the last axis.
 
     Returns:

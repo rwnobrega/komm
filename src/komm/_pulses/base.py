@@ -64,7 +64,7 @@ class Pulse(ABC):
 
         Parameters:
             samples_per_symbol: The number of samples per symbol.
-            span: The time span to consider for the taps. This parameter is optional for pulses with finite support (defaults to $[0, 1]$), but required for pulses with infinite support.
+            span: The time span to consider for the taps. Must be given for pulses with infinite support. For pulses with finite support, the default value is $[0, 1]$.
         """
         if span is None and (self.support[0] == -np.inf or self.support[1] == np.inf):
             raise ValueError(

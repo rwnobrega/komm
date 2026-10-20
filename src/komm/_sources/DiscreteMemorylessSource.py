@@ -112,7 +112,7 @@ class DiscreteMemorylessSource:
         Returns random symbols from the source.
 
         Parameters:
-            shape: The shape of the output array. If `None` (default), a single symbol is returned as a numpy scalar.
+            shape: The shape of the output array. The default value is `None`, in which case a single symbol is returned as a numpy scalar.
 
         Returns:
             symbols: The emitted symbols from the source, with values in $\mathcal{X}$.

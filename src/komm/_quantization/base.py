@@ -70,7 +70,7 @@ class ScalarQuantizer(ABC):
         Parameters:
             input_pdf: The pdf $f_X(x)$ of the input signal.
             input_range: The range $(x_\mathrm{min}, x_\mathrm{max})$ of the input signal.
-            points_per_interval: The number of points per interval for numerical integration (default: `4096`).
+            points_per_interval: The number of points per interval for numerical integration. The default value is `4096`.
 
         Returns:
             mse: The mean square quantization error.
