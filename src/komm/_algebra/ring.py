@@ -76,11 +76,11 @@ def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     Evaluates a polynomial at a point using Horner's method. For more details, see [Wikipedia: Horner's method](https://en.wikipedia.org/wiki/Horner's_method).
 
     Parameters:
-        poly: Polynomial to evaluate
+        coefficients: The coefficients of the polynomial, in increasing order of degree
         x: Point at which to evaluate the polynomial (ring element)
 
     Returns:
-        result: The result of evaluating the polynomial `poly` at point `x`
+        result: The result of evaluating the polynomial at point `x`
     """
     coefficients = np.asarray(coefficients)
     zero: T_co = x.ambient.zero
