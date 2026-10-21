@@ -1,11 +1,13 @@
 *[Abr00]: Sílvio A. Abrantes. Codificação de Fonte: Duas Breves Visitas. FEUP Edições, 2000. ISBN 978-9727520398.
 *[Abr10]: Sílvio A. Abrantes. Códigos Correctores de Erros em Comunicações Digitais. FEUP Edições, 2010. ISBN 978-9727521272.
 *[And22]: Jeffrey G. Andrews. A Primer on Zadoff Chu Sequences. arXiv:2211.05702v2 [cs.IT], 2022.
+*[Bar97]: Alexander Barg. Complexity issues in coding theory. Electronic Colloquium on Computational Complexity, Report TR97-046, 1997.
 *[BPR10]: Jean Berstel, Dominique Perrin, and Christophe Reutenauer. Codes and Automata. Cambridge University Press, 2010. ISBN 978-0521888318.
 *[BTD01]: Norman C. Beaulieu, Christopher C. Tan, and Mohamed Oussama Damen. A "better than" Nyquist pulse. IEEE Communications Letters, 5(9):367–368, 2001.
 *[CF07]: Daniel J. Costello Jr. and G. David Forney Jr. Channel coding: The road to channel capacity. Proceedings of the IEEE, 95(6):1150–1177, 2007.
 *[CT06]: Thomas M. Cover and Joy A. Thomas. Elements of Information Theory. Wiley-Interscience, 2nd edition, 2006. ISBN 978-0471241959.
 *[CW67]: Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.
+*[DLM19]: Ken R. Duffy, Jiange Li, and Muriel Médard. Capacity-achieving guessing random additive noise decoding. IEEE Transactions on Information Theory, 65(7):4023–4040, 2019.
 *[ETSI18]: ETSI. 5G; NR; Multiplexing and channel coding (3GPP TS 38.212 version 15.2.0 Release 15). ETSI TS 138 212 V15.2.0, 2018.
 *[Gol66]: Solomon W. Golomb. Run-length encodings. IEEE Transactions on Information Theory, 12(3):399–401, 1966.
 *[GS97]: Charles M. Grinstead and J. Laurie Snell. Introduction to Probability. American Mathematical Society, 2nd edition, 1997. ISBN 978-0821807491.
