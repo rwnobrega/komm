@@ -13,7 +13,7 @@ class FieldElement(ring.RingElement, Protocol):
 
 def power(base: T_co, exponent: int) -> T_co:
     r"""
-    Computes $b^e$ using exponentiation by squaring. See the corresponding function in :mod:`komm._algebra.ring`.
+    Computes $b^e$ using exponentiation by squaring. See the corresponding function in `komm._algebra.ring`.
 
     Parameters:
         base: The base $b$ (a field element)

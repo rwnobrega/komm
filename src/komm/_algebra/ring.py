@@ -32,7 +32,7 @@ class Ring(Protocol[T_co]):
 
 def power(base: T_co, exponent: int) -> T_co:
     r"""
-    Computes $b^e$ using exponentiation by squaring.
+    Computes $b^e$ using exponentiation by squaring. For more details, see [Wikipedia: Exponentiation by squaring](https://en.wikipedia.org/wiki/Exponentiation_by_squaring).
 
     Parameters:
         base: The base $b$ (a ring element)
@@ -43,9 +43,6 @@ def power(base: T_co, exponent: int) -> T_co:
 
     Raises:
         ValueError: If `exponent` is negative
-
-    References:
-        `Exponentiation by squaring <https://en.wikipedia.org/wiki/Exponentiation_by_squaring>`_
     """
     exponent = validate_nonnegative_integer(exponent)
     if exponent == 0:
@@ -61,7 +58,7 @@ def power(base: T_co, exponent: int) -> T_co:
 
 def binary_horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     r"""
-    Specialized Horner's method for binary polynomials. See :func:`horner` for a more general implementation.
+    Specialized Horner's method for binary polynomials. See `horner` for a more general implementation.
     """
     coefficients = np.asarray(coefficients)
     zero: T_co = x.ambient.zero
@@ -76,7 +73,7 @@ def binary_horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
 
 def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
     r"""
-    Evaluates a polynomial at a point using Horner's method.
+    Evaluates a polynomial at a point using Horner's method. For more details, see [Wikipedia: Horner's method](https://en.wikipedia.org/wiki/Horner's_method).
 
     Parameters:
         poly: Polynomial to evaluate
@@ -84,9 +81,6 @@ def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
 
     Returns:
         result: The result of evaluating the polynomial `poly` at point `x`
-
-    References:
-        `Horner's method <https://en.wikipedia.org/wiki/Horner's_method>`_
     """
     coefficients = np.asarray(coefficients)
     zero: T_co = x.ambient.zero
@@ -99,16 +93,13 @@ def horner(coefficients: npt.ArrayLike, x: T_co) -> T_co:
 
 def determinant(matrix: Sequence[Sequence[T_co]]) -> T_co:
     r"""
-    Computes the determinant of a matrix using cofactor expansion.
+    Computes the determinant of a matrix using cofactor expansion. For more details, see [Wikipedia: Laplace expansion](https://en.wikipedia.org/wiki/Laplace_expansion).
 
     Parameters:
         matrix: The matrix with coefficients over a ring
 
     Returns:
         det: The determinant of the matrix (a ring element)
-
-    References:
-        `Laplace expansion <https://en.wikipedia.org/wiki/Laplace_expansion>`_
     """
     n = len(matrix)
     if any(len(row) != n for row in matrix):

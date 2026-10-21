@@ -13,7 +13,7 @@ class DomainElement(ring.RingElement, Protocol):
 
 def gcd(x: T, y: T) -> T:
     r"""
-    Greatest common divisor. Computes the greatest common divisor (gcd) of two elements in a domain using the Euclidean algorithm.
+    Greatest common divisor. Computes the greatest common divisor (gcd) of two elements in a domain using the Euclidean algorithm. For more details, see [Wikipedia: Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm).
 
     Parameters:
         x: First element
@@ -21,9 +21,6 @@ def gcd(x: T, y: T) -> T:
 
     Returns:
         gcd: The greatest common divisor of `x` and `y`
-
-    References:
-        `Euclidean algorithm <https://en.wikipedia.org/wiki/Euclidean_algorithm>`_
     """
     zero = x.ambient.zero
     while y != zero:
@@ -33,7 +30,7 @@ def gcd(x: T, y: T) -> T:
 
 def xgcd(x: T, y: T) -> tuple[T, T, T]:
     r"""
-    Extended gcd. Computes the greatest common divisor (gcd) and the Bézout coefficients of two elements in a domain using the extended Euclidean algorithm.
+    Extended gcd. Computes the greatest common divisor (gcd) and the Bézout coefficients of two elements in a domain using the extended Euclidean algorithm. For more details, see [Wikipedia: Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm).
 
     Parameters:
         x: First element
@@ -43,9 +40,6 @@ def xgcd(x: T, y: T) -> tuple[T, T, T]:
         gcd: The greatest common divisor of `x` and `y`
         s: The Bézout coefficient of `x`
         t: The Bézout coefficient of `y`
-
-    References:
-        `Extended Euclidean algorithm <https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm>`_
     """
     zero: T = x.ambient.zero
     one: T = x.ambient.one
@@ -58,7 +52,7 @@ def xgcd(x: T, y: T) -> tuple[T, T, T]:
 
 def lcm(x: T, y: T) -> T:
     r"""
-    Least common multiple. Computes the least common multiple (lcm) of two elements in a domain.
+    Least common multiple. Computes the least common multiple (lcm) of two elements in a domain. For more details, see [Wikipedia: Least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple).
 
     Parameters:
         x: First element
@@ -66,9 +60,6 @@ def lcm(x: T, y: T) -> T:
 
     Returns:
         lcm: The least common multiple of `x` and `y`
-
-    References:
-        `Least common multiple <https://en.wikipedia.org/wiki/Least_common_multiple>`_
     """
     zero = x.ambient.zero
     if x == zero or y == zero:
