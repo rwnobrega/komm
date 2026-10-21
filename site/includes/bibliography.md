@@ -11,6 +11,7 @@
 *[GS97]: Charles M. Grinstead and J. Laurie Snell. Introduction to Probability. American Mathematical Society, 2nd edition, 1997. ISBN 978-0821807491.
 *[Hay04]: Simon Haykin. Communication Systems. John Wiley & Sons, 4th edition, 2004. ISBN 978-0471178699.
 *[HP03]: W. Cary Huffman and Vera Pless. Fundamentals of Error-Correcting Codes. Cambridge University Press, 2003. ISBN 978-0521782807.
+*[ISO24]: ISO/IEC. Information technology — Automatic identification and data capture techniques — QR code bar code symbology specification. ISO/IEC 18004:2024, 2024.
 *[JS72]: Frederick Jelinek and Kenneth S. Schneider. On variable-length-to-block coding. IEEE Transactions on Information Theory, 18(6):765–774, 1972.
 *[JZ15]: Rolf Johannesson and Kamil Sh. Zigangirov. Fundamentals of Convolutional Coding. Wiley-IEEE Press, 2nd edition, 2015. ISBN 978-0470276839.
 *[LC04]: Shu Lin and Daniel J. Costello Jr. Error Control Coding. Pearson Prentice Hall, 2nd edition, 2004. ISBN 978-0130426727.
