@@ -13,7 +13,7 @@ div .centered p {
   content: "]";
 }
 
-.md-typeset a[href^="http"]::after {
+.md-typeset a[href^="http"]:not(.md-content__button)::after {
   content: "\2060"; /* Word joiner: icon never wraps alone. */
   padding-right: 0.9em;
   background-color: currentColor;
