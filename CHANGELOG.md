@@ -8,6 +8,8 @@
 
 - Added parameter `information_set` to `HammingCode`, `SimplexCode`, `RepetitionCode`, and `SingleParityCheckCode`.
 
+- Implemented [trellis section](https://komm.dev/ref/TrellisSection).
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.

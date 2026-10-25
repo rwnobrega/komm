@@ -1,30 +1,32 @@
 from itertools import product
+from re import escape
 
 import numpy as np
 import pytest
 
 import komm
-from komm._finite_state_machine.trellis import TrellisSection, forward_backward, viterbi
+from komm._finite_state_machine.trellis import forward_backward, viterbi
 from komm._util.special_functions import boxplus
 
 
-def random_sections(rng: np.random.Generator, length: int) -> list[TrellisSection]:
+def random_sections(rng: np.random.Generator, length: int) -> list[komm.TrellisSection]:
     # Missing and parallel branches, one output each
     num_states = rng.integers(1, 5, size=length + 1)
-    sections: list[TrellisSection] = []
+    sections: list[komm.TrellisSection] = []
     for t in range(length):
         shape = (num_states[t], 3)
         transitions = rng.integers(num_states[t + 1], size=shape)
         transitions[:, 1:][rng.random((num_states[t], 2)) < 0.3] = -1
         outputs = rng.permutation(12)[: 3 * num_states[t]].reshape(shape)
-        sections.append(TrellisSection(transitions, outputs, num_states[t + 1]))
+        sections.append(komm.TrellisSection(transitions, outputs, num_states[t + 1]))
     return sections
 
 
-def all_paths(sections: list[TrellisSection]):
+def all_paths(sections: list[komm.TrellisSection]):
     # Initial state, inputs, outputs, final state
+    num_inputs = sections[0].num_input_symbols
     for s0 in range(sections[0].num_states):
-        for inputs in product(range(sections[0].num_inputs), repeat=len(sections)):
+        for inputs in product(range(num_inputs), repeat=len(sections)):
             s, outputs = s0, []
             for section, x in zip(sections, inputs):
                 if section.transitions[s, x] < 0:
@@ -37,11 +39,56 @@ def all_paths(sections: list[TrellisSection]):
 
 def test_trellis_section_incoming():
     # Parallel, missing, and unreachable cases
-    section = TrellisSection([[0, 0], [0, -1]], [[3, 2], [1, 0]], 2)
+    section = komm.TrellisSection([[0, 0], [0, -1]], [[3, 2], [1, 0]], 2)
     in_states, in_inputs, in_outputs = section.incoming
     np.testing.assert_equal(in_states, [[0, 0, 1], [-1, -1, -1]])
     np.testing.assert_equal(in_inputs[0], [0, 1, 0])
     np.testing.assert_equal(in_outputs[0], [3, 2, 1])
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"transitions": [0, -1]}, "'transitions' must be a 2D-array"),
+        ({"transitions": [[0, 2], [-1, 0]]}, "'transitions' must be in [-1:2)"),
+        ({"transitions": [[0, -2], [-1, 0]]}, "'transitions' must be in [-1:2)"),
+        ({"outputs": [[0, -1], [0, 1]]}, "'outputs' must be at least 0"),
+        ({"outputs": [0, 1]}, "'outputs' must have shape (2, 2) (got (2,))"),
+        ({"num_next_states": 0}, "'num_next_states' must be a positive integer"),
+    ],
+)
+def test_trellis_section_invalid(kwargs, message):
+    kwargs = {
+        "transitions": [[0, 1], [-1, 0]],
+        "outputs": [[0, 1], [0, 1]],
+        "num_next_states": 2,
+    } | kwargs
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.TrellisSection(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "kwargs, message",
+    [
+        ({"transitions": [[0, 1.5], [-1, 0]]}, "'transitions' must contain only"),
+        ({"outputs": [[0, 1.0], [0, 1]]}, "'outputs' must contain only"),
+        ({"num_next_states": 2.0}, "'num_next_states' must be an integer"),
+    ],
+)
+def test_trellis_section_not_integer(kwargs, message):
+    kwargs = {
+        "transitions": [[0, 1], [-1, 0]],
+        "outputs": [[0, 1], [0, 1]],
+        "num_next_states": 2,
+    } | kwargs
+    with pytest.raises(TypeError, match=message):
+        komm.TrellisSection(**kwargs)
+
+
+def test_trellis_section_repr():
+    section = komm.TrellisSection([[0, -1]], [[0, 1]], 1)
+    args = "transitions=[[0, -1]], outputs=[[0, 1]], num_next_states=1"
+    assert repr(section) == f"TrellisSection({args})"
 
 
 @pytest.mark.repeat(10)
@@ -82,7 +129,7 @@ def test_trellis_viterbi_mealy_machine(rng):
     observed = rng.integers(3, size=(6, 4))  # Integer costs, hence many ties
     initial = rng.integers(3, size=4).astype(float)
     inputs_hat, final_metrics = machine.viterbi(observed, lambda y, z: z[y], initial)
-    section = TrellisSection(transitions, outputs, 4)
+    section = komm.TrellisSection(transitions, outputs, 4)
     for s in np.flatnonzero(np.isfinite(final_metrics)):
         final = np.full(4, np.inf)
         final[s] = 0.0
@@ -124,9 +171,9 @@ def test_trellis_forward_backward_shapes(rng):
 def test_trellis_single_parity_check(rng):
     # Code (3, 2); state is partial parity
     sections = [
-        TrellisSection([[0, 1]], [[0, 1]], 2),
-        TrellisSection([[0, 1], [1, 0]], [[0, 1], [0, 1]], 2),
-        TrellisSection([[0, -1], [-1, 0]], [[0, 1], [0, 1]], 1),
+        komm.TrellisSection([[0, 1]], [[0, 1]], 2),
+        komm.TrellisSection([[0, 1], [1, 0]], [[0, 1], [0, 1]], 2),
+        komm.TrellisSection([[0, -1], [-1, 0]], [[0, 1], [0, 1]], 1),
     ]
     r = rng.normal(size=(100, 3))
     zeros = np.zeros_like(r)

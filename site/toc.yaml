@@ -58,6 +58,7 @@ Error control:
 Finite-state machines:
   - MooreMachine
   - MealyMachine
+  - TrellisSection
 Labelings:
   - Labeling
   - NaturalLabeling

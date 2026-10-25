@@ -4,6 +4,7 @@ from functools import cached_property
 import numpy as np
 import numpy.typing as npt
 
+from .._util.validators import validate_integer_array, validate_positive_integer
 from ..types import Array2D
 
 
@@ -19,6 +20,49 @@ class TrellisSection:
         outputs: The matrix of outputs of the section, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $G(s, x) \in \mathcal{Y}$ if $(s, x) \in \mathcal{B}$, and any element of $\mathcal{Y}$ otherwise.
 
         num_next_states: The number $|\mathcal{S}'|$ of next states. It cannot be inferred from `transitions`, since a next state may have no incoming branch.
+
+    Examples:
+        1. Consider the machine of the [Mealy machine](/ref/MealyMachine) example, started at state $0$. Its second section, depicted in the figure below, goes from the states $0$ and $1$, the only ones reachable in one step, to all four states. No branch is missing.
+
+            <figure markdown>
+            ![Trellis section from 2 to 4 states.](/fig/trellis_section_2_4.svg)
+            </figure>
+
+            It has the set of states $\mathcal{S} = \\{ 0, 1 \\}$, set of next states $\mathcal{S}' = \\{ 0, 1, 2, 3 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$, and set of branches $\mathcal{B} = \mathcal{S} \times \mathcal{X}$. The transition function $T$ and output function $G$ are given by the table below.
+
+            | State $s$ | Input $x$ | Transition $T(s, x)$ | Output $G(s, x)$ |
+            | :-------: | :-------: | :------------------: | :--------------: |
+            | $0$       | $0$       | $0$                  | $0$              |
+            | $0$       | $1$       | $1$                  | $3$              |
+            | $1$       | $0$       | $2$                  | $1$              |
+            | $1$       | $1$       | $3$                  | $2$              |
+
+                >>> section = komm.TrellisSection(
+                ...     transitions=[[0, 1], [2, 3]],
+                ...     outputs=[[0, 3], [1, 2]],
+                ...     num_next_states=4,
+                ... )
+
+        2. Now let the same machine return to state $0$ with two zero inputs. The first of these two sections is depicted in the figure below. Only the branches with input $0$ remain; they enter the states $0$ and $2$ of the machine, which are numbered $0$ and $1$ in the section.
+
+            <figure markdown>
+            ![Trellis section from 4 to 2 states.](/fig/trellis_section_4_2.svg)
+            </figure>
+
+            It has the set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$, set of next states $\mathcal{S}' = \\{ 0, 1 \\}$, input alphabet $\mathcal{X} = \\{ 0, 1 \\}$, output alphabet $\mathcal{Y} = \\{ 0, 1, 2, 3 \\}$, and set of branches $\mathcal{B} = \mathcal{S} \times \\{ 0 \\}$. The transition function $T$ and output function $G$ are given by the table below. The entries of `outputs` for the missing branches are arbitrary; here, they are those of the machine.
+
+            | State $s$ | Input $x$ | Transition $T(s, x)$ | Output $G(s, x)$ |
+            | :-------: | :-------: | :------------------: | :--------------: |
+            | $0$       | $0$       | $0$                  | $0$              |
+            | $1$       | $0$       | $1$                  | $1$              |
+            | $2$       | $0$       | $0$                  | $3$              |
+            | $3$       | $0$       | $1$                  | $2$              |
+
+                >>> section = komm.TrellisSection(
+                ...     transitions=[[0, -1], [1, -1], [0, -1], [1, -1]],
+                ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+                ...     num_next_states=2,
+                ... )
     """
 
     def __init__(
@@ -27,16 +71,52 @@ class TrellisSection:
         outputs: npt.ArrayLike,
         num_next_states: int,
     ):
-        self.transitions: Array2D[np.integer] = np.asarray(transitions)
-        self.outputs: Array2D[np.integer] = np.asarray(outputs)
-        self.num_next_states = num_next_states
+        self.num_next_states = validate_positive_integer(num_next_states)
+        self.transitions: Array2D[np.integer] = validate_integer_array(
+            transitions, low=-1, high=self.num_next_states, ndim=2
+        )
+        self.outputs: Array2D[np.integer] = validate_integer_array(
+            outputs, low=0, shape=self.transitions.shape
+        )
+
+    def __repr__(self) -> str:
+        args = ", ".join([
+            f"transitions={self.transitions.tolist()}",
+            f"outputs={self.outputs.tolist()}",
+            f"num_next_states={self.num_next_states}",
+        ])
+        return f"{self.__class__.__name__}({args})"
 
     @property
     def num_states(self) -> int:
+        r"""
+        The number of states of the section.
+
+        Examples:
+            >>> section = komm.TrellisSection(
+            ...     transitions=[[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+            ...     num_next_states=2,
+            ... )
+            >>> section.num_states
+            4
+        """
         return self.transitions.shape[0]
 
     @property
-    def num_inputs(self) -> int:
+    def num_input_symbols(self) -> int:
+        r"""
+        The size (cardinality) of the input alphabet $\mathcal{X}$.
+
+        Examples:
+            >>> section = komm.TrellisSection(
+            ...     transitions=[[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+            ...     num_next_states=2,
+            ... )
+            >>> section.num_input_symbols
+            2
+        """
         return self.transitions.shape[1]
 
     @cached_property
@@ -45,6 +125,23 @@ class TrellisSection:
     ) -> tuple[Array2D[np.integer], Array2D[np.integer], Array2D[np.integer]]:
         r"""
         The branches into each next state, in (state, input) order. They are given by three 2D-arrays, with the state, the input, and the output of each branch; row $s'$ lists the branches into state $s'$. Rows are padded with state $-1$ up to the largest number of branches into a state.
+
+        Examples:
+            >>> section = komm.TrellisSection(
+            ...     transitions=[[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...     outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+            ...     num_next_states=2,
+            ... )
+            >>> states, inputs, outputs = section.incoming
+            >>> states
+            array([[0, 2],
+                   [1, 3]])
+            >>> inputs
+            array([[0, 0],
+                   [0, 0]])
+            >>> outputs
+            array([[0, 3],
+                   [1, 2]])
         """
         # Branches in (state, input) order
         states, inputs = np.nonzero(self.transitions >= 0)
@@ -157,7 +254,7 @@ def forward_backward(
         alphas.append(alpha)
     # Backward recursion, with the posteriors
     beta = np.broadcast_to(final_metrics, (*shape, sections[-1].num_next_states))
-    log_posteriors = np.empty((*shape, len(sections), sections[0].num_inputs))
+    log_posteriors = np.empty((*shape, len(sections), sections[0].num_input_symbols))
     for t in reversed(range(len(sections))):
         section = sections[t]
         padded = _pad(beta, -np.inf)
