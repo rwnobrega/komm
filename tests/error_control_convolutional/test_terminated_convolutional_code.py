@@ -141,19 +141,40 @@ def test_terminated_convolutional_code_tail_biting(convolutional_args):
         np.testing.assert_equal(final_state, initial_state)
 
 
+def trellis_words(trellis: komm.Trellis, width: int) -> list[tuple[int, ...]]:
+    # Output words of all paths, as bits
+    paths = [(s, []) for s in range(trellis[0].num_states)]
+    for section in trellis:
+        paths = [
+            (section.transitions[s, x], outputs + [section.outputs[s, x]])
+            for s, outputs in paths
+            for x in range(section.num_input_symbols)
+            if section.transitions[s, x] >= 0
+        ]
+    return sorted(tuple(komm.int_to_bits(outputs, width)) for _, outputs in paths)
+
+
 @pytest.mark.parametrize(
-    "mode, final_distribution",
+    "convolutional_code",
     [
-        ("direct-truncation", [0.25, 0.25, 0.25, 0.25]),
-        ("zero-termination", [1.0, 0.0, 0.0, 0.0]),
+        komm.ConvolutionalCode([[0o1, 0o1]]),  # μ = 0
+        komm.ConvolutionalCode([[0o7, 0o5]]),
+        komm.ConvolutionalCode([[0o7, 0o5]], [0o7]),
+        komm.LowRateConvolutionalCode([0o7, 0o5]),
+        # Free tail bits
+        komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]]),
+        komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]], [0o5, 0o3]),
+        komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]),
+        komm.HighRateConvolutionalCode([0o6, 0o7, 0o5, 0o1]),
     ],
 )
-def test_terminated_convolutional_code_distributions(mode, final_distribution):
-    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+@pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])
+def test_terminated_convolutional_code_trellis(convolutional_code, mode):
+    # One path per codeword
     code = komm.TerminatedConvolutionalCode(convolutional_code, 3, mode)
-    initial, final = code.strategy.initial_final_distributions(4)
-    np.testing.assert_equal(initial, [1.0, 0.0, 0.0, 0.0])
-    np.testing.assert_equal(final, final_distribution)
+    trellis = code.strategy.trellis()
+    expected = sorted(tuple(word) for word in code.codewords())
+    assert trellis_words(trellis, convolutional_code.num_output_bits) == expected
 
 
 @pytest.mark.parametrize(

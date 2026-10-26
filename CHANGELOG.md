@@ -24,6 +24,8 @@
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.
 
+- Fixed `ViterbiDecoder` and `BCJRDecoder` in zero termination, which accepted tails that the encoder never produces.
+
 ## v0.37.0 (2026-10-15)
 
 ### Added

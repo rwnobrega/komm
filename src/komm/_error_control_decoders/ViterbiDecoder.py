@@ -8,8 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._finite_state_machine.Trellis import Trellis, viterbi
-from .._finite_state_machine.TrellisSection import TrellisSection
+from .._finite_state_machine.Trellis import viterbi
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
 from .._util.validators import (
@@ -43,19 +42,12 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 "Viterbi algorithm not implemented for 'tail-biting'"
             )
         self.input_type = validate_decision_type(self.input_type)
-        fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
-        num_sections = self.code.strategy.codeword_length() // n
-        section = TrellisSection(fsm.transitions, fsm.outputs)
-        self._trellis = Trellis([section] * num_sections)
+        self._trellis = self.code.strategy.trellis()
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
-        initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
-        with np.errstate(divide="ignore"):
-            self._initial_metrics = -np.log(initial)
-            self._final_metrics = -np.log(final)
         # About 64 MiB of decisions and metrics
-        section_bytes = fsm.num_states + 8 * 2**n
-        self._chunk_size = max(1, 2**26 // (num_sections * section_bytes))
+        section_bytes = int(self._trellis.widths.max()) + 8 * 2**n
+        self._chunk_size = max(1, 2**26 // (len(self._trellis) * section_bytes))
 
     def _branch_metrics(
         self, r: npt.NDArray[np.integer | np.floating]
@@ -103,8 +95,8 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             x_hat = viterbi(
                 trellis=self._trellis,
                 branch_metrics=self._branch_metrics(r),
-                initial_metrics=self._initial_metrics,
-                final_metrics=self._final_metrics,
+                initial_metrics=0.0,
+                final_metrics=0.0,
             )
             u_hat = int_to_bits(x_hat[:, :h], width=k)
             return u_hat

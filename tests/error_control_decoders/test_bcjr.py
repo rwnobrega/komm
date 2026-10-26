@@ -51,17 +51,62 @@ def test_bcjr_two_input_bits(feedforward_polynomials, rng):
 @pytest.mark.parametrize(
     "convolutional_code, num_blocks, puncturing_matrix",
     [
-        (komm.ConvolutionalCode([[0o7, 0o5]]), 6, None),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]), 3, None),
-        (komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]), 3, None),
-        (komm.ConvolutionalCode([[0b11, 0b1]], [0b11]), 6, None),
-        (komm.ConvolutionalCode([[0o5, 0o7]]), 6, [[1, 0], [1, 1]]),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5]]),
+            6,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b1, 0b1]]),
+            3,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]),
+            3,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
+            6,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0o5, 0o7]]),
+            6,
+            [[1, 0], [1, 1]],
+        ),
         (
             komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o7, 0o5]]),
             4,
             [[1, 1], [1, 1], [1, 0]],
         ),
-        (komm.ConvolutionalCode([[0o7, 0o5]], [0o7]), 6, [[1, 0], [1, 1]]),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5]], [0o7]),
+            6,
+            [[1, 0], [1, 1]],
+        ),
+        # Free tail bits
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]]),
+            3,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]], [0o5, 0o3]),
+            3,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]]),
+            4,
+            [[1, 1], [1, 1], [1, 0]],
+        ),
+        (
+            komm.HighRateConvolutionalCode([0o6, 0o7, 0o5, 0o1]),
+            3,
+            None,
+        ),
     ],
 )
 @pytest.mark.parametrize("mode", ["direct-truncation", "zero-termination"])

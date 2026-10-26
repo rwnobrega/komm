@@ -8,8 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._finite_state_machine.Trellis import Trellis, forward_backward
-from .._finite_state_machine.TrellisSection import TrellisSection
+from .._finite_state_machine.Trellis import forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
 from .._util.validators import validate_decision_type, validate_soft_array
@@ -39,22 +38,15 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
                 "BCJR algorithm not implemented for 'tail-biting'"
             )
         self.output_type = validate_decision_type(self.output_type)
-        fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits
-        num_sections = self.code.strategy.codeword_length() // n
-        section = TrellisSection(fsm.transitions, fsm.outputs)
-        self._trellis = Trellis([section] * num_sections)
+        self._trellis = self.code.strategy.trellis()
         self._polar = (-1) ** int_to_bits(range(2**n), width=n).reshape(-1, n)
-        initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
-        with np.errstate(divide="ignore"):
-            self._initial_metrics = np.log(initial)
-            self._final_metrics = np.log(final)
         # Input symbols are LSB-first
         self._input_bits = int_to_bits(range(2**k), width=k).reshape(-1, k)
         # About 64 MiB of metrics
-        section_bytes = 8 * (fsm.num_states + 2**n + 2**k)
-        self._chunk_size = max(1, 2**26 // (num_sections * section_bytes))
+        section_bytes = 8 * (int(self._trellis.widths.max()) + 2**n + 2**k)
+        self._chunk_size = max(1, 2**26 // (len(self._trellis) * section_bytes))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -94,8 +86,8 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             log_posteriors = forward_backward(
                 trellis=self._trellis,
                 branch_metrics=0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T,
-                initial_metrics=self._initial_metrics,
-                final_metrics=self._final_metrics,
+                initial_metrics=0.0,
+                final_metrics=0.0,
             )
             lo = marginalize(log_posteriors[:, :h], self._input_bits)
             return lo.reshape(li.shape[0], -1)

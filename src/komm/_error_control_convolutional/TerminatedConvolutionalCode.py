@@ -7,7 +7,10 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._finite_state_machine.MealyMachine import MealyMachine
 from .._finite_state_machine.Trellis import Trellis
+from .._finite_state_machine.TrellisSection import TrellisSection
+from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
 from .._util.validators import (
@@ -423,6 +426,27 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         return super().minimal_trellis()
 
 
+def reachable_sections(
+    fsm: MealyMachine, num_blocks: int
+) -> tuple[list[TrellisSection], Array1D[np.integer], Array2D[np.integer]]:
+    # Reachable states from 0, in increasing order
+    sections: list[TrellisSection] = []
+    firsts: list[npt.NDArray[np.integer]] = []
+    states = np.array([0])
+    for _ in range(num_blocks):
+        next_states, first = np.unique(fsm.transitions[states], return_index=True)
+        transitions = np.searchsorted(next_states, fsm.transitions[states])
+        sections.append(TrellisSection(transitions, fsm.outputs[states]))
+        firsts.append(first)  # First branch into each state
+        states = next_states
+    # One input sequence into each final state
+    inputs = np.empty((states.size, num_blocks), dtype=int)
+    index = np.arange(states.size)
+    for t in reversed(range(num_blocks)):
+        index, inputs[:, t] = np.divmod(firsts[t][index], fsm.num_input_symbols)
+    return sections, states, inputs
+
+
 @dataclass
 class TerminationStrategy(ABC):
     convolutional_code: abc.ConvolutionalCode
@@ -438,9 +462,7 @@ class TerminationStrategy(ABC):
     def codeword_length(self) -> int: ...
 
     @abstractmethod
-    def initial_final_distributions(
-        self, num_states: int
-    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]: ...
+    def trellis(self) -> Trellis: ...
 
 
 class DirectTruncation(TerminationStrategy):
@@ -456,12 +478,10 @@ class DirectTruncation(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def initial_final_distributions(
-        self, num_states: int
-    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
-        initial_distribution = np.eye(1, num_states)[0]
-        final_distribution = np.ones(num_states) / num_states
-        return initial_distribution, final_distribution
+    def trellis(self) -> Trellis:
+        fsm = self.convolutional_code.finite_state_machine()
+        sections, _, _ = reachable_sections(fsm, self.num_blocks)
+        return Trellis(sections)
 
 
 class ZeroTermination(TerminationStrategy):
@@ -497,12 +517,28 @@ class ZeroTermination(TerminationStrategy):
         μ = self.convolutional_code.memory_order
         return (h + μ) * n0
 
-    def initial_final_distributions(
-        self, num_states: int
-    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
-        initial_distribution = np.eye(1, num_states)[0]
-        final_distribution = np.eye(1, num_states)[0]
-        return initial_distribution, final_distribution
+    def trellis(self) -> Trellis:
+        fsm = self.convolutional_code.finite_state_machine()
+        h, k0 = self.num_blocks, self.convolutional_code.num_input_bits
+        sections, states, inputs = reachable_sections(fsm, h)
+        # Tail: only the branches the encoder takes
+        bits = self.pre_process_input(int_to_bits(inputs, width=k0))
+        tail = bits_to_int(bits[:, h * k0 :], width=k0).reshape(states.size, -1)
+        # Paths keyed by state and remaining tail
+        paths = states
+        keys, index = np.unique(
+            np.column_stack([paths, tail]), axis=0, return_inverse=True
+        )
+        for j in range(tail.shape[1]):
+            paths = fsm.transitions[paths, tail[:, j]]
+            next_keys, next_index = np.unique(
+                np.column_stack([paths, tail[:, j + 1 :]]), axis=0, return_inverse=True
+            )
+            transitions = np.full((keys.shape[0], fsm.num_input_symbols), -1)
+            transitions[index.ravel(), tail[:, j]] = next_index.ravel()
+            sections.append(TrellisSection(transitions, fsm.outputs[keys[:, 0]]))
+            keys, index = next_keys, next_index
+        return Trellis(sections)
 
 
 @dataclass
@@ -531,7 +567,5 @@ class TailBiting(TerminationStrategy):
         n0 = self.convolutional_code.num_output_bits
         return h * n0
 
-    def initial_final_distributions(
-        self, num_states: int
-    ) -> tuple[Array1D[np.floating], Array1D[np.floating]]:
+    def trellis(self) -> Trellis:
         raise NotImplementedError
