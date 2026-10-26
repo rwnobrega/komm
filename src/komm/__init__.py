@@ -73,7 +73,8 @@ from ._error_control_decoders.WagnerDecoder import WagnerDecoder
 # Finite state machines
 from ._finite_state_machine.MealyMachine import MealyMachine
 from ._finite_state_machine.MooreMachine import MooreMachine
-from ._finite_state_machine.trellis import Trellis, TrellisSection
+from ._finite_state_machine.Trellis import Trellis
+from ._finite_state_machine.TrellisSection import TrellisSection
 
 # Integer coding
 from ._integer_coding.EliasDeltaCode import EliasDeltaCode

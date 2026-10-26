@@ -8,7 +8,8 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._finite_state_machine.trellis import TrellisSection, forward_backward
+from .._finite_state_machine.Trellis import forward_backward
+from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
 from .._util.validators import validate_decision_type, validate_soft_array
