@@ -95,8 +95,6 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             x_hat = viterbi(
                 trellis=self._trellis,
                 branch_metrics=self._branch_metrics(r),
-                initial_metrics=0.0,
-                final_metrics=0.0,
             )
             u_hat = int_to_bits(x_hat[:, :h], width=k)
             return u_hat

@@ -95,8 +95,8 @@ def _pad(metrics: npt.NDArray[np.floating], value: float) -> npt.NDArray[np.floa
 def viterbi(
     trellis: Trellis,
     branch_metrics: npt.ArrayLike,
-    initial_metrics: npt.ArrayLike,
-    final_metrics: npt.ArrayLike,
+    initial_metrics: npt.ArrayLike = 0.0,
+    final_metrics: npt.ArrayLike = 0.0,
 ) -> npt.NDArray[np.integer]:
     r"""
     Finds the input sequence of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
@@ -106,9 +106,9 @@ def viterbi(
 
         branch_metrics: The cost of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
 
-        initial_metrics: The cost of each initial state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+        initial_metrics: The cost of each initial state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
-        final_metrics: The cost of each final state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+        final_metrics: The cost of each final state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
     Returns:
         inputs: The input sequence of least cost. Has the same shape as `branch_metrics`, but with the last dimension removed.
@@ -144,8 +144,8 @@ def viterbi(
 def forward_backward(
     trellis: Trellis,
     branch_metrics: npt.ArrayLike,
-    initial_metrics: npt.ArrayLike,
-    final_metrics: npt.ArrayLike,
+    initial_metrics: npt.ArrayLike = 0.0,
+    final_metrics: npt.ArrayLike = 0.0,
 ) -> npt.NDArray[np.floating]:
     r"""
     Computes the a posteriori log-probabilities of the inputs. The weight of a path is the sum of the metrics of its initial state, its branches, and its final state, in the log domain.
@@ -155,9 +155,9 @@ def forward_backward(
 
         branch_metrics: The log-weight of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
 
-        initial_metrics: The log-weight of each initial state, along the last dimension; `-inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+        initial_metrics: The log-weight of each initial state, along the last dimension; `-inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
-        final_metrics: The log-weight of each final state, along the last dimension; `-inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`.
+        final_metrics: The log-weight of each final state, along the last dimension; `-inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
     Returns:
         log_posteriors: The a posteriori log-probability of each input at each step. Has the same shape as `branch_metrics`, but with the last dimension replaced by the number of inputs.

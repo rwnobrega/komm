@@ -86,8 +86,6 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             log_posteriors = forward_backward(
                 trellis=self._trellis,
                 branch_metrics=0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T,
-                initial_metrics=0.0,
-                final_metrics=0.0,
             )
             lo = marginalize(log_posteriors[:, :h], self._input_bits)
             return lo.reshape(li.shape[0], -1)
