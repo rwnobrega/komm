@@ -46,7 +46,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         fsm = self.code.convolutional_code.finite_state_machine()
         n = self.code.convolutional_code.num_output_bits
         num_sections = self.code.strategy.codeword_length() // n
-        section = TrellisSection(fsm.transitions, fsm.outputs, fsm.num_states)
+        section = TrellisSection(fsm.transitions, fsm.outputs)
         self._sections = [section] * num_sections
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)

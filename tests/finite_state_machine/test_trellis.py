@@ -11,14 +11,18 @@ from komm._util.special_functions import boxplus
 
 def random_sections(rng: np.random.Generator, length: int) -> list[komm.TrellisSection]:
     # Missing and parallel branches, one output each
-    num_states = rng.integers(1, 5, size=length + 1)
+    num_states = int(rng.integers(1, 5))
     sections: list[komm.TrellisSection] = []
-    for t in range(length):
-        shape = (num_states[t], 3)
-        transitions = rng.integers(num_states[t + 1], size=shape)
-        transitions[:, 1:][rng.random((num_states[t], 2)) < 0.3] = -1
-        outputs = rng.permutation(12)[: 3 * num_states[t]].reshape(shape)
-        sections.append(komm.TrellisSection(transitions, outputs, num_states[t + 1]))
+    for _ in range(length):
+        shape = (num_states, 3)
+        transitions = rng.integers(4, size=shape)
+        transitions[:, 1:][rng.random((num_states, 2)) < 0.3] = -1
+        # Renumber the entered next states
+        valid = transitions >= 0
+        transitions[valid] = np.unique(transitions[valid], return_inverse=True)[1]
+        outputs = rng.permutation(12)[: 3 * num_states].reshape(shape)
+        sections.append(komm.TrellisSection(transitions, outputs))
+        num_states = sections[-1].num_next_states
     return sections
 
 
@@ -38,8 +42,8 @@ def all_paths(sections: list[komm.TrellisSection]):
 
 
 # First sections of the example trellis
-SECTION_0 = komm.TrellisSection([[0, 1]], [[0, 3]], 2)
-SECTION_1 = komm.TrellisSection([[0, 1], [2, 3]], [[0, 3], [1, 2]], 4)
+SECTION_0 = komm.TrellisSection([[0, 1]], [[0, 3]])
+SECTION_1 = komm.TrellisSection([[0, 1], [2, 3]], [[0, 3], [1, 2]])
 
 
 def test_trellis_sequence():
@@ -73,7 +77,7 @@ def test_trellis_invalid(sections, message):
 
 
 def test_trellis_repr():
-    section = komm.TrellisSection([[0, -1]], [[0, 1]], 1)
+    section = komm.TrellisSection([[0, -1]], [[0, 1]])
     assert repr(komm.Trellis([section])) == f"Trellis(sections=[{section!r}])"
 
 
@@ -110,12 +114,13 @@ def test_trellis_viterbi_shapes(rng):
 def test_trellis_viterbi_mealy_machine(rng):
     # Same ties as the reference implementation
     transitions = rng.integers(4, size=(4, 3))
+    transitions[:, 0] = rng.permutation(4)  # Every state entered
     outputs = rng.integers(4, size=(4, 3))
     machine = komm.MealyMachine(transitions, outputs)
     observed = rng.integers(3, size=(6, 4))  # Integer costs, hence many ties
     initial = rng.integers(3, size=4).astype(float)
     inputs_hat, final_metrics = machine.viterbi(observed, lambda y, z: z[y], initial)
-    section = komm.TrellisSection(transitions, outputs, 4)
+    section = komm.TrellisSection(transitions, outputs)
     for s in np.flatnonzero(np.isfinite(final_metrics)):
         final = np.full(4, np.inf)
         final[s] = 0.0
@@ -157,9 +162,9 @@ def test_trellis_forward_backward_shapes(rng):
 def test_trellis_single_parity_check(rng):
     # Code (3, 2); state is partial parity
     sections = komm.Trellis([
-        komm.TrellisSection([[0, 1]], [[0, 1]], 2),
-        komm.TrellisSection([[0, 1], [1, 0]], [[0, 1], [0, 1]], 2),
-        komm.TrellisSection([[0, -1], [-1, 0]], [[0, 1], [0, 1]], 1),
+        komm.TrellisSection([[0, 1]]),
+        komm.TrellisSection([[0, 1], [1, 0]]),
+        komm.TrellisSection([[0, -1], [-1, 0]]),
     ])
     r = rng.normal(size=(100, 3))
     zeros = np.zeros_like(r)

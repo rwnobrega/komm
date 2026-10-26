@@ -24,13 +24,13 @@ class Trellis(Sequence[TrellisSection]):
 
                 >>> trellis = komm.Trellis([
                 ...     komm.TrellisSection([[0, 1]],
-                ...                         [[0, 3]], 2),
+                ...                         [[0, 3]]),
                 ...     komm.TrellisSection([[0, 1], [2, 3]],
-                ...                         [[0, 3], [1, 2]], 4),
+                ...                         [[0, 3], [1, 2]]),
                 ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
-                ...                         [[0, 3], [1, 2], [3, 0], [2, 1]], 2),
+                ...                         [[0, 3], [1, 2], [3, 0], [2, 1]]),
                 ...     komm.TrellisSection([[0, -1], [0, -1]],
-                ...                         [[0, 3], [3, 0]], 1),
+                ...                         [[0, 3], [3, 0]]),
                 ... ])
     """
 
@@ -71,13 +71,13 @@ class Trellis(Sequence[TrellisSection]):
         Examples:
             >>> trellis = komm.Trellis([
             ...     komm.TrellisSection([[0, 1]],
-            ...                         [[0, 3]], 2),
+            ...                         [[0, 3]]),
             ...     komm.TrellisSection([[0, 1], [2, 3]],
-            ...                         [[0, 3], [1, 2]], 4),
+            ...                         [[0, 3], [1, 2]]),
             ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
-            ...                         [[0, 3], [1, 2], [3, 0], [2, 1]], 2),
+            ...                         [[0, 3], [1, 2], [3, 0], [2, 1]]),
             ...     komm.TrellisSection([[0, -1], [0, -1]],
-            ...                         [[0, 3], [3, 0]], 1),
+            ...                         [[0, 3], [3, 0]]),
             ... ])
             >>> trellis.widths
             array([1, 2, 4, 2, 1])
