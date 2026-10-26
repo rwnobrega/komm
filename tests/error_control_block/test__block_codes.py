@@ -135,3 +135,33 @@ def test_project_word_with_erasures_generic():
     v = np.array([1, 2, 1, 0, 1])
     expected = np.where(G_r_inv[v == 2].any(axis=0), 2, ((v == 1) @ G_r_inv) % 2)
     np.testing.assert_equal(code.project_word_with_erasures(v), expected)
+
+
+def trellis_words(trellis: komm.Trellis) -> list[tuple[int, ...]]:
+    # Output words of all paths
+    paths = [(s, ()) for s in range(trellis[0].num_states)]
+    for section in trellis:
+        paths = [
+            (section.transitions[s, x], word + (section.outputs[s, x],))
+            for s, word in paths
+            for x in range(section.num_input_symbols)
+            if section.transitions[s, x] >= 0
+        ]
+    return sorted(word for _, word in paths)
+
+
+@pytest.mark.parametrize("code", codes)
+def test_minimal_trellis_paths(code: komm.abc.BlockCode):
+    expected = sorted(tuple(word) for word in code.codewords())
+    assert trellis_words(code.minimal_trellis()) == expected
+
+
+def test_minimal_trellis_same_code():
+    # Single parity-check code, three ways
+    trellises = [
+        komm.BlockCode(generator_matrix=[[1, 1, 0], [0, 1, 1]]).minimal_trellis(),
+        komm.SystematicBlockCode(parity_submatrix=[[1], [1]]).minimal_trellis(),
+        komm.CyclicCode(length=3, generator_polynomial=0b11).minimal_trellis(),
+    ]
+    assert repr(trellises[1]) == repr(trellises[0])
+    assert repr(trellises[2]) == repr(trellises[0])

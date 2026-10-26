@@ -7,6 +7,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._finite_state_machine.Trellis import Trellis
 from .._util.decorators import blockwise
 from .._util.matrices import matmul, matrix_power, null_matrix, pseudo_inverse, rank
 from .._util.validators import (
@@ -405,6 +406,21 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             2
         """
         return super().covering_radius()
+
+    @cache
+    def minimal_trellis(self) -> Trellis:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
+            ...     num_blocks=3,
+            ...     mode='tail-biting',
+            ... )
+            >>> trellis = code.minimal_trellis()
+            >>> trellis.widths
+            array([1, 2, 4, 8, 4, 2, 1])
+        """
+        return super().minimal_trellis()
 
 
 @dataclass

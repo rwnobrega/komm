@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._finite_state_machine.Trellis import Trellis
 from .._util.matrices import null_matrix, rank, rref
 from .._util.validators import validate_binary_array
 from ..types import Array2D
@@ -365,3 +366,17 @@ class BlockCode(abc.BlockCode):
             2
         """
         return super().covering_radius()
+
+    @cache
+    def minimal_trellis(self) -> Trellis:
+        r"""
+        Examples:
+            >>> code = komm.BlockCode(generator_matrix=[
+            ...     [1, 0, 0, 1, 1],
+            ...     [0, 1, 1, 1, 0],
+            ... ])
+            >>> trellis = code.minimal_trellis()
+            >>> trellis.widths
+            array([1, 2, 4, 4, 2, 1])
+        """
+        return super().minimal_trellis()

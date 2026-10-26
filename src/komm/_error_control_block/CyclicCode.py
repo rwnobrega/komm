@@ -8,6 +8,7 @@ import numpy.typing as npt
 
 from .. import abc
 from .._algebra.BinaryPolynomial import BinaryPolynomial
+from .._finite_state_machine.Trellis import Trellis
 from .._util.decorators import blockwise
 from .._util.matrices import matmul
 from .._util.validators import validate_bool, validate_positive_integer
@@ -286,6 +287,17 @@ class CyclicCode(abc.BlockCode):
             1
         """
         return super().covering_radius()
+
+    @cache
+    def minimal_trellis(self) -> Trellis:
+        r"""
+        Examples:
+            >>> code = komm.CyclicCode(length=7, generator_polynomial=0b1011)
+            >>> trellis = code.minimal_trellis()
+            >>> trellis.widths
+            array([1, 2, 4, 8, 8, 4, 2, 1])
+        """
+        return super().minimal_trellis()
 
 
 @dataclass

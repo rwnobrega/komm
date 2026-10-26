@@ -10,6 +10,8 @@
 
 - Implemented [trellis](https://komm.dev/ref/Trellis) and [trellis section](https://komm.dev/ref/TrellisSection).
 
+- Added method `minimal_trellis` to [block codes](https://komm.dev/ref/BlockCode/#minimal_trellis).
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.

@@ -5,12 +5,13 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .._finite_state_machine.Trellis import Trellis
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
 from .._util.validators import validate_binary_array
 from ..types import Array2D
-from .util import macwilliams_transform, span_weight_distribution
+from .util import macwilliams_transform, span_weight_distribution, syndrome_trellis
 
 
 class BlockCode(ABC):
@@ -270,3 +271,15 @@ class BlockCode(ABC):
         Returns the covering radius of the code. This is equal to the maximum Hamming weight of the coset leaders.
         """
         return int(np.flatnonzero(self.coset_leader_weight_distribution())[-1])
+
+    @cache
+    @abstractmethod
+    def minimal_trellis(self) -> Trellis:
+        r"""
+        Returns the minimal trellis of the code. It has one [section](/ref/TrellisSection) per code bit, and its paths, from the single state at time $0$ to the single state at time $n$, are in one-to-one correspondence with the codewords. Each branch of section $t$ carries a single label, the code bit $v_t$, which is both its input and its output, as in <cite>MacK03, Sec. 25.2</cite>.
+
+        Of all trellises of the code with this bit order, the minimal trellis has the fewest states at each time, and hence the fewest states in total; it is unique up to the numbering of the states <cite>LC04, Sec. 9.6</cite>.
+
+        In the trellis returned by this method, the state at each time is given by the partial syndromes of the active rows of a trellis-oriented check matrix.
+        """
+        return syndrome_trellis(self.check_matrix)
