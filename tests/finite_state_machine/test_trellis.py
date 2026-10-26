@@ -91,6 +91,46 @@ def test_trellis_section_repr():
     assert repr(section) == f"TrellisSection({args})"
 
 
+# First sections of the example trellis
+SECTION_0 = komm.TrellisSection([[0, 1]], [[0, 3]], 2)
+SECTION_1 = komm.TrellisSection([[0, 1], [2, 3]], [[0, 3], [1, 2]], 4)
+
+
+def test_trellis_sequence():
+    trellis = komm.Trellis([SECTION_0, SECTION_1])
+    assert len(trellis) == 2
+    assert trellis[-1] is SECTION_1
+    assert list(trellis) == [SECTION_0, SECTION_1]
+    assert isinstance(trellis[1:], komm.Trellis)
+    assert list(trellis[1:]) == [SECTION_1]
+
+
+@pytest.mark.repeat(10)
+def test_trellis_widths(rng):
+    sections = random_sections(rng, 4)
+    widths = [section.num_states for section in sections]
+    widths.append(sections[-1].num_next_states)
+    np.testing.assert_equal(komm.Trellis(sections).widths, widths)
+
+
+@pytest.mark.parametrize(
+    "sections, message",
+    [
+        ([], "'sections' must be non-empty"),
+        ([SECTION_1, SECTION_0], "section 1 must have 4 states (got 1)"),
+        ([SECTION_0, SECTION_1, SECTION_1], "section 2 must have 4 states (got 2)"),
+    ],
+)
+def test_trellis_invalid(sections, message):
+    with pytest.raises(ValueError, match=escape(message)):
+        komm.Trellis(sections)
+
+
+def test_trellis_repr():
+    section = komm.TrellisSection([[0, -1]], [[0, 1]], 1)
+    assert repr(komm.Trellis([section])) == f"Trellis(sections=[{section!r}])"
+
+
 @pytest.mark.repeat(10)
 def test_trellis_viterbi_brute_force(rng):
     sections = random_sections(rng, 4)
@@ -170,11 +210,11 @@ def test_trellis_forward_backward_shapes(rng):
 
 def test_trellis_single_parity_check(rng):
     # Code (3, 2); state is partial parity
-    sections = [
+    sections = komm.Trellis([
         komm.TrellisSection([[0, 1]], [[0, 1]], 2),
         komm.TrellisSection([[0, 1], [1, 0]], [[0, 1], [0, 1]], 2),
         komm.TrellisSection([[0, -1], [-1, 0]], [[0, 1], [0, 1]], 1),
-    ]
+    ])
     r = rng.normal(size=(100, 3))
     zeros = np.zeros_like(r)
     v_hat = viterbi(sections, np.stack([zeros, r], axis=2), [0.0], [0.0])

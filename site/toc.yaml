@@ -59,6 +59,7 @@ Finite-state machines:
   - MooreMachine
   - MealyMachine
   - TrellisSection
+  - Trellis
 Labelings:
   - Labeling
   - NaturalLabeling

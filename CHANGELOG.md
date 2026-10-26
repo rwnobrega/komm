@@ -8,7 +8,7 @@
 
 - Added parameter `information_set` to `HammingCode`, `SimplexCode`, `RepetitionCode`, and `SingleParityCheckCode`.
 
-- Implemented [trellis section](https://komm.dev/ref/TrellisSection).
+- Implemented [trellis](https://komm.dev/ref/Trellis) and [trellis section](https://komm.dev/ref/TrellisSection).
 
 ### Breaking changes
 

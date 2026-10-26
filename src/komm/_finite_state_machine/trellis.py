@@ -1,18 +1,19 @@
 from collections.abc import Sequence
 from functools import cached_property
+from typing import overload
 
 import numpy as np
 import numpy.typing as npt
 
 from .._util.validators import validate_integer_array, validate_positive_integer
-from ..types import Array2D
+from ..types import Array1D, Array2D
 
 
 class TrellisSection:
     r"""
     One section of a trellis. It is one step of a time-varying Mealy machine, in which the number of states may change and some branches may be missing. It is defined by a *set of states* $\mathcal{S}$, a *set of next states* $\mathcal{S}'$, an *input alphabet* $\mathcal{X}$, an *output alphabet* $\mathcal{Y}$, a *set of branches* $\mathcal{B} \subseteq \mathcal{S} \times \mathcal{X}$, a *transition function* $T : \mathcal{B} \to \mathcal{S}'$, and an *output function* $G : \mathcal{B} \to \mathcal{Y}$. The branch $(s, x) \in \mathcal{B}$ leaves state $s$ with input $x$, enters state $T(s, x)$, and has output $G(s, x)$. Here, for simplicity, the sets are taken as $\mathcal{S} = [0 : |\mathcal{S}|)$, $\mathcal{S}' = [0 : |\mathcal{S}'|)$, $\mathcal{X} = [0 : |\mathcal{X}|)$, and $\mathcal{Y} = [0 : |\mathcal{Y}|)$.
 
-    A trellis is a sequence of sections, in which the next states of each section are the states of the following one. A [Mealy machine](/ref/MealyMachine) gives the case where all sections are equal, with $\mathcal{S}' = \mathcal{S}$ and $\mathcal{B} = \mathcal{S} \times \mathcal{X}$.
+    A [trellis](/ref/Trellis) is a sequence of sections, in which the next states of each section are the states of the following one. A [Mealy machine](/ref/MealyMachine) gives the case where all sections are equal, with $\mathcal{S}' = \mathcal{S}$ and $\mathcal{B} = \mathcal{S} \times \mathcal{X}$.
 
     Parameters:
         transitions: The matrix of transitions of the section, of shape $|\mathcal{S}| \times |\mathcal{X}|$. The element in row $s \in \mathcal{S}$ and column $x \in \mathcal{X}$ should be $T(s, x) \in \mathcal{S}'$ if $(s, x) \in \mathcal{B}$, and $-1$ otherwise.
@@ -161,6 +162,84 @@ class TrellisSection:
         in_inputs[next_states, slots] = inputs
         in_outputs[next_states, slots] = self.outputs[states, inputs]
         return in_states, in_inputs, in_outputs
+
+
+class Trellis(Sequence[TrellisSection]):
+    r"""
+    Trellis. It is a graph whose nodes, called *states*, are grouped into *times* $t \in [0 : L]$, and whose edges, called *branches*, connect states at consecutive times <cite>MacK03, Sec. 25.2</cite>. Here, it is given by a sequence of $L$ [trellis sections](/ref/TrellisSection), where section $t$ holds the branches from time $t$ to time $t + 1$. The next states of each section are the states of the following one.
+
+    Parameters:
+        sections: The sections of the trellis. Must be a non-empty sequence, in which the number of next states of each section is equal to the number of states of the following one.
+
+    Examples:
+        1. Consider the machine of the [Mealy machine](/ref/MealyMachine) example, started at state $0$. It receives two arbitrary inputs, followed by two zero inputs that return it to state $0$. Its trellis, depicted in the figure below, has four sections; the second and the third are those of the [trellis section](/ref/TrellisSection) examples.
+
+            <figure markdown>
+            ![Trellis example.](/fig/trellis.svg)
+            </figure>
+
+                >>> trellis = komm.Trellis([
+                ...     komm.TrellisSection([[0, 1]],
+                ...                         [[0, 3]], 2),
+                ...     komm.TrellisSection([[0, 1], [2, 3]],
+                ...                         [[0, 3], [1, 2]], 4),
+                ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
+                ...                         [[0, 3], [1, 2], [3, 0], [2, 1]], 2),
+                ...     komm.TrellisSection([[0, -1], [0, -1]],
+                ...                         [[0, 3], [3, 0]], 1),
+                ... ])
+    """
+
+    def __init__(self, sections: Sequence[TrellisSection]):
+        self.sections = tuple(sections)
+        if not self.sections:
+            raise ValueError("'sections' must be non-empty")
+        for t in range(1, len(self.sections)):
+            expected = self.sections[t - 1].num_next_states
+            actual = self.sections[t].num_states
+            if not actual == expected:
+                raise ValueError(
+                    f"section {t} must have {expected} states (got {actual})"
+                )
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(sections={list(self.sections)})"
+
+    def __len__(self) -> int:
+        return len(self.sections)
+
+    @overload
+    def __getitem__(self, index: int) -> TrellisSection: ...
+
+    @overload
+    def __getitem__(self, index: slice) -> "Trellis": ...
+
+    def __getitem__(self, index: int | slice) -> "TrellisSection | Trellis":
+        if isinstance(index, slice):
+            return Trellis(self.sections[index])
+        return self.sections[index]
+
+    @property
+    def widths(self) -> Array1D[np.integer]:
+        r"""
+        The widths of the trellis. The width at a given time is its number of states <cite>MacK03, Sec. 25.2</cite>. The sequence of widths, from time $0$ to time $L$, is also called the *state space complexity profile* <cite>LC04, Sec. 9.2</cite>.
+
+        Examples:
+            >>> trellis = komm.Trellis([
+            ...     komm.TrellisSection([[0, 1]],
+            ...                         [[0, 3]], 2),
+            ...     komm.TrellisSection([[0, 1], [2, 3]],
+            ...                         [[0, 3], [1, 2]], 4),
+            ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...                         [[0, 3], [1, 2], [3, 0], [2, 1]], 2),
+            ...     komm.TrellisSection([[0, -1], [0, -1]],
+            ...                         [[0, 3], [3, 0]], 1),
+            ... ])
+            >>> trellis.widths
+            array([1, 2, 4, 2, 1])
+        """
+        widths = [section.num_states for section in self.sections]
+        return np.array(widths + [self.sections[-1].num_next_states])
 
 
 def _pad(metrics: npt.NDArray[np.floating], value: float) -> npt.NDArray[np.floating]:
