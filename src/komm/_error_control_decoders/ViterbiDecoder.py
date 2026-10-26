@@ -8,7 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._finite_state_machine.Trellis import viterbi
+from .._finite_state_machine.Trellis import Trellis, viterbi
 from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
@@ -47,7 +47,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         n = self.code.convolutional_code.num_output_bits
         num_sections = self.code.strategy.codeword_length() // n
         section = TrellisSection(fsm.transitions, fsm.outputs)
-        self._sections = [section] * num_sections
+        self._trellis = Trellis([section] * num_sections)
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
         with np.errstate(divide="ignore"):
@@ -101,7 +101,7 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Viterbi"))
         def decode(r: npt.NDArray[np.integer | np.floating]):
             x_hat = viterbi(
-                sections=self._sections,
+                trellis=self._trellis,
                 branch_metrics=self._branch_metrics(r),
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,

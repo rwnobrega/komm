@@ -93,7 +93,7 @@ def _pad(metrics: npt.NDArray[np.floating], value: float) -> npt.NDArray[np.floa
 
 
 def viterbi(
-    sections: Sequence[TrellisSection],
+    trellis: Trellis,
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike,
     final_metrics: npt.ArrayLike,
@@ -102,7 +102,7 @@ def viterbi(
     Finds the input sequence of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
 
     Parameters:
-        sections: The $L$ sections of the trellis.
+        trellis: The trellis, with $L$ sections.
 
         branch_metrics: The cost of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
 
@@ -115,9 +115,9 @@ def viterbi(
     """
     branch_metrics = np.asarray(branch_metrics)
     shape = branch_metrics.shape[:-2]
-    metrics = np.broadcast_to(initial_metrics, (*shape, sections[0].num_states))
+    metrics = np.broadcast_to(initial_metrics, (*shape, trellis[0].num_states))
     choices: list[npt.NDArray[np.integer]] = []
-    for t, section in enumerate(sections):
+    for t, section in enumerate(trellis):
         # Add, compare, select
         in_states, _, in_outputs = section.incoming
         padded, gamma = _pad(metrics, np.inf), branch_metrics[..., t, :]
@@ -132,9 +132,9 @@ def viterbi(
     # Trace back from best final state
     final_metrics = np.broadcast_to(final_metrics, metrics.shape)
     states = np.argmin(metrics + final_metrics, axis=-1, keepdims=True)
-    inputs = np.empty((*shape, len(sections)), dtype=int)
-    for t in reversed(range(len(sections))):
-        in_states, in_inputs, _ = sections[t].incoming
+    inputs = np.empty((*shape, len(trellis)), dtype=int)
+    for t in reversed(range(len(trellis))):
+        in_states, in_inputs, _ = trellis[t].incoming
         d = np.take_along_axis(choices[t], states, axis=-1)
         inputs[..., t : t + 1] = in_inputs[states, d]
         states = in_states[states, d]
@@ -142,7 +142,7 @@ def viterbi(
 
 
 def forward_backward(
-    sections: Sequence[TrellisSection],
+    trellis: Trellis,
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike,
     final_metrics: npt.ArrayLike,
@@ -151,7 +151,7 @@ def forward_backward(
     Computes the a posteriori log-probabilities of the inputs. The weight of a path is the sum of the metrics of its initial state, its branches, and its final state, in the log domain.
 
     Parameters:
-        sections: The $L$ sections of the trellis, all with the same number of inputs.
+        trellis: The trellis, with $L$ sections, all with the same number of inputs.
 
         branch_metrics: The log-weight of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
 
@@ -165,9 +165,9 @@ def forward_backward(
     branch_metrics = np.asarray(branch_metrics)
     shape = branch_metrics.shape[:-2]
     # Forward recursion
-    alpha = np.broadcast_to(initial_metrics, (*shape, sections[0].num_states))
+    alpha = np.broadcast_to(initial_metrics, (*shape, trellis[0].num_states))
     alphas = [alpha]
-    for t, section in enumerate(sections):
+    for t, section in enumerate(trellis):
         in_states, _, in_outputs = section.incoming
         padded, gamma = _pad(alpha, -np.inf), branch_metrics[..., t, :]
         alpha = padded[..., in_states[:, 0]] + gamma[..., in_outputs[:, 0]]
@@ -176,10 +176,10 @@ def forward_backward(
             alpha = np.logaddexp(alpha, candidate)
         alphas.append(alpha)
     # Backward recursion, with the posteriors
-    beta = np.broadcast_to(final_metrics, (*shape, sections[-1].num_next_states))
-    log_posteriors = np.empty((*shape, len(sections), sections[0].num_input_symbols))
-    for t in reversed(range(len(sections))):
-        section = sections[t]
+    beta = np.broadcast_to(final_metrics, (*shape, trellis[-1].num_next_states))
+    log_posteriors = np.empty((*shape, len(trellis), trellis[0].num_input_symbols))
+    for t in reversed(range(len(trellis))):
+        section = trellis[t]
         padded = _pad(beta, -np.inf)
         gamma = branch_metrics[..., t, section.outputs]
         weights = gamma + padded[..., section.transitions]

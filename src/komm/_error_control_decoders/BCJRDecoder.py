@@ -8,7 +8,7 @@ from .. import abc
 from .._error_control_convolutional.TerminatedConvolutionalCode import (
     TerminatedConvolutionalCode,
 )
-from .._finite_state_machine.Trellis import forward_backward
+from .._finite_state_machine.Trellis import Trellis, forward_backward
 from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise, with_pbar
@@ -44,7 +44,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         k = self.code.convolutional_code.num_input_bits
         num_sections = self.code.strategy.codeword_length() // n
         section = TrellisSection(fsm.transitions, fsm.outputs)
-        self._sections = [section] * num_sections
+        self._trellis = Trellis([section] * num_sections)
         self._polar = (-1) ** int_to_bits(range(2**n), width=n).reshape(-1, n)
         initial, final = self.code.strategy.initial_final_distributions(fsm.num_states)
         with np.errstate(divide="ignore"):
@@ -92,7 +92,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             lu = self.code.depuncture(li, 0.0)  # Deleted bits as null L-values
             log_posteriors = forward_backward(
-                sections=self._sections,
+                trellis=self._trellis,
                 branch_metrics=0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T,
                 initial_metrics=self._initial_metrics,
                 final_metrics=self._final_metrics,
