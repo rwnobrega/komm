@@ -136,11 +136,15 @@ def test_viterbi_exhaustive(
     exhaustive = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
     r = rng.standard_normal((100, code.length))
     np.testing.assert_equal(viterbi.decode(r), exhaustive.decode(r))
+    np.testing.assert_equal(
+        viterbi.decode_to_codeword(r),
+        exhaustive.decode_to_codeword(r),
+    )
     # Hard: ties are common, so compare distances
     viterbi = komm.ViterbiDecoder(code, input_type="hard")
     exhaustive = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
     r = rng.integers(0, 2, (100, code.length))
-    v_hat = code.encode(viterbi.decode(r))
+    v_hat = viterbi.decode_to_codeword(r)
     v_ml = exhaustive.decode_to_codeword(r)
     np.testing.assert_equal(
         np.count_nonzero(v_hat != r, axis=-1),

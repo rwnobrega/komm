@@ -20,7 +20,7 @@ from .util import get_pbar
 
 
 @dataclass
-class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
+class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
     r"""
     Viterbi decoder for [terminated convolutional codes](/ref/TerminatedConvolutionalCode). This decoder searches the code trellis for the maximum-likelihood (ML) codeword, which is also the maximum a posteriori (MAP) codeword when messages are equiprobable. For more details, see <cite>LC04, Sec. 12.1</cite>.
 
@@ -57,6 +57,37 @@ class ViterbiDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
             r = (-1.0) ** r  # Bits as unit L-values
         r = self.code.depuncture(r, 0.0)  # Deleted bits as null L-values
         return r.reshape(r.shape[0], -1, n) @ self._bits.T
+
+    def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
+            ...     num_blocks=4,
+            ...     mode="direct-truncation",
+            ... )
+
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder.decode_to_codeword([1, 1, 1, 1, 1, 0, 0, 0])
+            array([1, 1, 1, 0, 1, 1, 0, 0])
+
+            >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
+            >>> decoder.decode_to_codeword(
+            ...     [-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8]
+            ... )
+            array([1, 1, 1, 0, 1, 1, 0, 0])
+
+            >>> code = komm.TerminatedConvolutionalCode(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b101, 0b111]]),
+            ...     num_blocks=4,
+            ...     mode="zero-termination",
+            ...     puncturing_matrix=[[1, 0], [1, 1]],
+            ... )
+            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
+            >>> decoder.decode_to_codeword([1, 1, 0, 1, 1, 0, 0, 0, 0])
+            array([1, 1, 1, 1, 1, 0, 0, 0, 0])
+        """
+        return self.code.encode(self.decode(input))
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""

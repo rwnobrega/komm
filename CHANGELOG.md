@@ -12,6 +12,8 @@
 
 - Added method `minimal_trellis` to [block codes](https://komm.dev/ref/BlockCode/#minimal_trellis).
 
+- Added method `decode_to_codeword` to `ViterbiDecoder`.
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.
