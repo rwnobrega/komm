@@ -65,6 +65,12 @@ def test_discrete_memoryless_source_constant(pmf, x_symbol):
     assert np.all(source.emit(1000) == x_symbol)
 
 
+def test_discrete_memoryless_source_pmf_within_tolerance():
+    # Sums to 0.99999
+    source = komm.DiscreteMemorylessSource([0, 0.99999])
+    np.testing.assert_equal(source.emit(3), [1, 1, 1])
+
+
 def test_discrete_memoryless_source_follows_global_rng():
     source = komm.DiscreteMemorylessSource([0.5, 0.5])
     komm.global_rng.set(np.random.default_rng(1))

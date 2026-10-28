@@ -98,6 +98,13 @@ class DiscreteMemorylessSource:
         """
         return entropy(self.pmf, base)
 
+    @cached_property
+    def _cdf(self) -> Array1D[np.floating]:
+        # Same normalization as `Generator.choice`
+        cdf = np.cumsum(self.pmf)
+        cdf /= cdf[-1]
+        return cdf
+
     @overload
     def emit(self, shape: None = None) -> np.integer: ...
 
@@ -127,5 +134,5 @@ class DiscreteMemorylessSource:
             array([[3, 1, 2, 0, 0],
                    [1, 0, 2, 1, 2]])
         """
-        alphabet = np.arange(self.cardinality)
-        return self.rng.choice(alphabet, p=self.pmf, size=shape)
+        symbols = np.searchsorted(self._cdf, self.rng.random(shape), side="right")
+        return symbols if shape is None else np.asarray(symbols)
