@@ -17,6 +17,7 @@ THICK = 2.0
 DASHES = (4, 4)
 GAP = 7
 RADIUS = 16
+HEAD = "-|>,head_length=7,head_width=2.33"
 
 SIDES = {
     "above": ((0, GAP), "center", "bottom"),
@@ -43,9 +44,8 @@ def canvas(xlim, ylim, scale, xaxis=True, yaxis=True):
     return fig, ax
 
 
-def arrow(ax, start, end):
-    style = "-|>,head_length=7,head_width=2.33"
-    props = dict(arrowstyle=style, mutation_scale=1, shrinkA=0, shrinkB=0)
+def arrow(ax, start, end, **kwargs):
+    props = dict(arrowstyle=HEAD, mutation_scale=1, shrinkA=0, shrinkB=0) | kwargs
     ax.annotate("", end, start, arrowprops=props | dict(lw=THIN, color="black"))
 
 
@@ -64,7 +64,16 @@ def yticks(ax, ys):
 def text(ax, xy, string, side):
     # Side as a name or as (offset, ha, va)
     offset, ha, va = SIDES[side] if isinstance(side, str) else side
-    ax.annotate(string, xy, offset, textcoords="offset points", ha=ha, va=va)
+    # Drawn even off the canvas
+    props = dict(textcoords="offset points", ha=ha, va=va, annotation_clip=False)
+    ax.annotate(string, xy, offset, **props)
+
+
+def toward(u, gap=GAP):
+    # Side facing the unit vector u
+    ha = "left" if u[0] > 0.3 else "right" if u[0] < -0.3 else "center"
+    va = "bottom" if u[1] > 0.3 else "top" if u[1] < -0.3 else "center"
+    return (gap * u[0], gap * u[1]), ha, va
 
 
 def label(ax, xy, value, side):

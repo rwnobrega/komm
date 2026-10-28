@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.patches import Arc, Circle
 
-from . import DASHES, GAP, THIN, canvas, label, line, text, xticks, yticks
+from . import DASHES, THIN, canvas, label, line, text, toward, xticks, yticks
 
 
 def plane(xlim, ylim, scale):
@@ -25,9 +25,7 @@ def outward(z, flip=False):
     elif np.isclose(u.real, 0):
         u += 1 if flip else -1
     u /= abs(u)
-    ha = "left" if u.real > 0.3 else "right" if u.real < -0.3 else "center"
-    va = "bottom" if u.imag > 0.3 else "top" if u.imag < -0.3 else "center"
-    return (GAP * u.real, GAP * u.imag), ha, va
+    return toward((u.real, u.imag))
 
 
 def angle(ax, z, radius, string):
