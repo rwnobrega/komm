@@ -16,6 +16,7 @@ THIN = 0.4
 THICK = 2.0
 DASHES = (4, 4)
 GAP = 7
+RADIUS = 16
 
 SIDES = {
     "above": ((0, GAP), "center", "bottom"),
@@ -25,6 +26,7 @@ SIDES = {
     "above left": ((-GAP / 2, 0), "right", "bottom"),
     "above right": ((GAP / 2, GAP / 2), "left", "bottom"),
     "below right": ((GAP / 2, -GAP), "left", "top"),
+    "center": ((0, 0), "center", "center"),
 }
 
 
@@ -69,3 +71,10 @@ def label(ax, xy, value, side):
     # Minus sign hangs when centered
     hang = r"\phantom{-}" if value < 0 and side in ["above", "below"] else ""
     text(ax, xy, f"${value:g}{hang}$", side)
+
+
+def node(ax, xy, string):
+    # Radius in points, whatever the scale
+    ax.plot(*xy, "o", color="black", ms=2 * RADIUS, mfc="none", mew=THICK)
+    # Plain "center" would leave digits high
+    text(ax, xy, string, ((0, 0), "center", "center_baseline"))
