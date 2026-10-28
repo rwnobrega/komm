@@ -1,3 +1,4 @@
+from bisect import bisect_right
 from collections import deque
 from functools import cache
 from math import gcd
@@ -636,6 +637,13 @@ class MarkovChain:
         """
         return all(self._period(i) == 1 for i in range(self.num_states))
 
+    @cache
+    def _cdfs(self) -> list[list[float]]:
+        # Same normalization as `Generator.choice`
+        cdfs = np.cumsum(self.transition_matrix, axis=1)
+        cdfs /= cdfs[:, -1:]
+        return cdfs.tolist()
+
     def simulate(self, initial_state: int, steps: int) -> Array1D[np.integer]:
         r"""
         Returns random samples from the Markov chain.
@@ -667,13 +675,13 @@ class MarkovChain:
         """
         initial_state = validate_integer(initial_state, low=0, high=self.num_states)
         steps = validate_nonnegative_integer(steps)
-        P = self.transition_matrix
+        cdfs = self._cdfs()
         state = initial_state
-        output = np.empty(steps, dtype=int)
-        for t in range(steps):
-            output[t] = state
-            state = self.rng.choice(self.num_states, p=P[state])
-        return output
+        output: list[int] = []
+        for u in self.rng.random(steps).tolist():
+            output.append(state)
+            state = bisect_right(cdfs[state], u)
+        return np.array(output, dtype=int)
 
     def simulate_until_absorption(self, initial_state: int) -> Array1D[np.integer]:
         r"""
@@ -701,11 +709,11 @@ class MarkovChain:
         initial_state = validate_integer(initial_state, low=0, high=self.num_states)
         if not self.is_absorbing():
             raise ValueError("chain is not absorbing")
-        P = self.transition_matrix
+        cdfs = self._cdfs()
         state = initial_state
         output = [state]
         transient = self._transient_states()
         while state in transient:
-            state = self.rng.choice(self.num_states, p=P[state])
+            state = bisect_right(cdfs[state], self.rng.random())
             output.append(state)
         return np.array(output)

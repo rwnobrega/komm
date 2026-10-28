@@ -145,6 +145,13 @@ def test_markov_chain_follows_global_rng():
     np.testing.assert_equal(chain.simulate(0, 100), x)
 
 
+def test_markov_chain_rows_within_tolerance():
+    # Row 1 sums to 0.99999
+    chain = komm.MarkovChain([[1, 0], [0.99999, 0]])
+    np.testing.assert_equal(chain.simulate(1, 3), [1, 0, 0])
+    np.testing.assert_equal(chain.simulate_until_absorption(1), [1, 0])
+
+
 def test_markov_chain_not_square():
     with pytest.raises(ValueError, match="'transition_matrix' must be square"):
         komm.MarkovChain([[0.5, 0.5]])
