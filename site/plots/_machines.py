@@ -4,9 +4,11 @@ import numpy as np
 from matplotlib.patches import FancyArrowPatch
 from matplotlib.path import Path
 
-from . import GAP, HEAD, RADIUS, THICK, THIN, arrow, canvas, node, text, toward
+from . import HEAD, RADIUS, THICK, THIN, arrow, canvas, node, text, toward
 
 BEND = 0.3125
+SIZE = 12  # \large
+NEAR = 4
 
 
 def mealy(machine, positions):
@@ -77,8 +79,8 @@ def straight(ax, a, b, string, center):
     # Label away from the center
     if np.dot(normal, mid - center) < 0:
         normal = -normal
-    # Closer to edges than to points
-    text(ax, mid, string, toward(normal, GAP / 2))
+    # Corner facing the edge: half gap
+    tag(ax, mid, string, normal, NEAR / 2)
 
 
 def bend(ax, a, b, string, rad):
@@ -86,7 +88,7 @@ def bend(ax, a, b, string, rad):
     style = f"arc3,rad={rad}"
     arrow(ax, a, b, connectionstyle=style, shrinkA=RADIUS, shrinkB=RADIUS)
     side = np.array([b[1] - a[1], a[0] - b[0]])
-    text(ax, (a + b) / 2 + rad / 2 * side, string, toward(unit(side)))
+    tag(ax, (a + b) / 2 + rad / 2 * side, string, unit(side))
 
 
 def loop(ax, a, u, string):
@@ -97,4 +99,9 @@ def loop(ax, a, u, string):
     path = Path(vertices, [Path.MOVETO] + [Path.CURVE4] * 6)
     props = dict(arrowstyle=HEAD, mutation_scale=1, lw=THIN, color="black")
     ax.add_patch(FancyArrowPatch(path=path, clip_on=False, **props))
-    text(ax, a + 3 * RADIUS * u, string, toward(u))
+    tag(ax, a + 3 * RADIUS * u, string, u)
+
+
+def tag(ax, xy, string, u, gap=NEAR):
+    # Smaller and closer than other labels
+    text(ax, xy, string, toward(u, gap), size=SIZE)

@@ -61,12 +61,12 @@ def yticks(ax, ys):
     ax.plot(np.zeros_like(ys), ys, "_", color="black", ms=8, mew=THIN)
 
 
-def text(ax, xy, string, side):
+def text(ax, xy, string, side, **kwargs):
     # Side as a name or as (offset, ha, va)
     offset, ha, va = SIDES[side] if isinstance(side, str) else side
     # Drawn even off the canvas
     props = dict(textcoords="offset points", ha=ha, va=va, annotation_clip=False)
-    ax.annotate(string, xy, offset, **props)
+    ax.annotate(string, xy, offset, **props, **kwargs)
 
 
 def toward(u, gap=GAP):
