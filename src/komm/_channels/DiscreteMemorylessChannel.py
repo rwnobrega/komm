@@ -100,6 +100,13 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
         )
         return mutual_information(input_pmf, self.transition_matrix, base=base)
 
+    @cached_property
+    def _cdfs(self) -> Array2D[np.floating]:
+        # Same normalization as `Generator.choice`
+        cdfs = np.cumsum(self.transition_matrix, axis=1)
+        cdfs /= cdfs[:, -1:]
+        return cdfs
+
     def transmit(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
@@ -111,9 +118,9 @@ class DiscreteMemorylessChannel(abc.DiscreteMemorylessChannel):
             array([2, 1, 2, 0, 0, 2, 2, 0, 1, 0])
         """
         input = validate_integer_array(input, low=0, high=self.input_cardinality)
+        u = self.rng.random(input.shape)
         output = np.empty_like(input, dtype=int)
-        for index, symbol in np.ndenumerate(input):
-            output[index] = self.rng.choice(
-                a=self.output_cardinality, p=self.transition_matrix[symbol]
-            )
+        for x, cdf in enumerate(self._cdfs):
+            mask = input == x
+            output[mask] = np.searchsorted(cdf, u[mask], side="right")
         return output

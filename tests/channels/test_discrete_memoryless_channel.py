@@ -74,3 +74,9 @@ def test_dmc_mutual_information_size():
     message = "'input_pmf' must have size 2 (got 3)"
     with pytest.raises(ValueError, match=escape(message)):
         dmc.mutual_information([0.2, 0.3, 0.5])
+
+
+def test_dmc_rows_within_tolerance():
+    # Row 0 sums to 0.99999
+    dmc = komm.DiscreteMemorylessChannel([[0.99999, 0], [0, 1]])
+    np.testing.assert_equal(dmc.transmit([0, 1, 0]), [0, 1, 0])
