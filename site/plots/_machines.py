@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 import numpy as np
 from matplotlib.patches import FancyArrowPatch
 from matplotlib.path import Path
@@ -22,6 +24,16 @@ def moore(machine, positions):
     return diagram(positions, nodes, edges)
 
 
+def markov(chain, positions):
+    nodes = [f"${s}$" for s in range(chain.num_states)]
+    edges = [
+        (s, n, f"${Fraction(p).limit_denominator()}$")
+        for (s, n), p in np.ndenumerate(chain.transition_matrix)
+        if p > 0
+    ]
+    return diagram(positions, nodes, edges)
+
+
 def diagram(positions, nodes, edges):
     points = np.array(positions, dtype=float)
     center = points.mean(axis=0)
@@ -37,8 +49,10 @@ def diagram(positions, nodes, edges):
         a, b = points[s], points[n]
         if s == n:
             loop(ax, a, unit(a - center), string)
+        elif blocked(points, a, b):
+            bend(ax, a, b, string, 2 * BEND)
         elif (n, s) in pairs:
-            bend(ax, a, b, string)
+            bend(ax, a, b, string, BEND)
         else:
             straight(ax, a, b, string, center)
     return fig
@@ -46,6 +60,14 @@ def diagram(positions, nodes, edges):
 
 def unit(v):
     return v / np.hypot(*v)
+
+
+def blocked(points, a, b):
+    # Another node near the chord
+    d = b - a
+    t = np.clip((points - a) @ d / (d @ d), 0, 1)
+    gaps = np.hypot(*(points - a - np.outer(t, d)).T)
+    return np.count_nonzero(gaps < 2 * RADIUS) > 2
 
 
 def straight(ax, a, b, string, center):
@@ -59,12 +81,12 @@ def straight(ax, a, b, string, center):
     text(ax, mid, string, toward(normal, GAP / 2))
 
 
-def bend(ax, a, b, string):
+def bend(ax, a, b, string, rad):
     # Bend right, away from the reverse
-    style = f"arc3,rad={BEND}"
+    style = f"arc3,rad={rad}"
     arrow(ax, a, b, connectionstyle=style, shrinkA=RADIUS, shrinkB=RADIUS)
     side = np.array([b[1] - a[1], a[0] - b[0]])
-    text(ax, (a + b) / 2 + BEND / 2 * side, string, toward(unit(side)))
+    text(ax, (a + b) / 2 + rad / 2 * side, string, toward(unit(side)))
 
 
 def loop(ax, a, u, string):
