@@ -20,6 +20,7 @@
 *[MacK03]: David J. C. MacKay. Information Theory, Inference, and Learning Algorithms. Cambridge University Press, 2003. ISBN 978-0521642989.
 *[McE04]: Robert J. McEliece. The Theory of Information and Coding. Cambridge University Press, 2nd edition, 2004. ISBN 978-0511606267.
 *[McE98]: Robert J. McEliece. The Algebraic Theory of Convolutional Codes. Chapter 12 of Handbook of Coding Theory, Volume I (V. S. Pless and W. C. Huffman, Eds.). Elsevier, 1998. ISBN 978-0444814722.
+*[MS77]: F. Jessie MacWilliams and Neil J. A. Sloane. The Theory of Error-Correcting Codes. North-Holland, 1977. ISBN 978-0444851932.
 *[Nad62]: Morton Nadler. A 32-point $n = 12$, $d = 5$ code. IRE Transactions on Information Theory, 8(1):58, 1962.
 *[OS99]: Alan V. Oppenheim, Ronald W. Schafer, with John R. Buck. Discrete-Time Signal Processing. Prentice Hall, 2nd edition, 1999. ISBN 978-0137549207.
 *[PS08]: John G. Proakis and Masoud Salehi. Digital Communications. McGraw-Hill, 5th edition, 2008. ISBN 978-0072957167.

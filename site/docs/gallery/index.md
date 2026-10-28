@@ -7,6 +7,7 @@ hide: toc
 Short examples of common tasks with Komm.
 
 - [**BER of binary antipodal signaling**](ber-antipodal.md) – Bit error rate of binary antipodal signaling over the AWGN channel, by simulation and by formula.
+- [**BER of syndrome decoding**](ber-syndrome.md) – Bit error rate of syndrome decoding over the binary symmetric channel, by formula from the standard array, compared with bitwise MAP decoding.
 - [**Extended Huffman codes**](extended-huffman.md) – Huffman codes for blocks of source symbols, with rates approaching the entropy.
 - [**Nadler code**](nadler-code.md) – Nonlinear code with 32 codewords of length 12 and minimum distance 5, compared with a linear code.
 - [**Pulse shaping and matched filtering**](pulse-shaping.md) – Root-raised-cosine pulses at the transmitter and receiver, without intersymbol interference.
