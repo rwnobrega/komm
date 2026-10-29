@@ -25,64 +25,86 @@ def lfsr(sequence):
         dot(ax, (STEP * i, 0))
         wire(ax, (STEP * i, 0), (STEP * i, y), (3, y), hub, shrinkB=RADIUS)
     for i in range(n + 1):
-        bit(ax, STEP * i, i)
+        bit(ax, (STEP * i, 0), i)
     return fig
+
+
+def convolutional(code):
+    return encoder(code.feedforward_polynomials)
 
 
 def low_rate(code):
-    m = code.degree
+    return encoder([code.g_row])
+
+
+def encoder(polys):
+    # Chain i at y = -8i; adder j at 4 - 8j
+    m = max(p.degree for row in polys for p in row)
+    hubs = [(2 * m, 4 - 8 * j) for j in range(len(polys[0]))]
+    # Outputs two radii past the outer adders
+    top, bottom = hubs[0][1] + 2, hubs[-1][1] - 2
     xlim = (-3, STEP * m + 3)
-    ylim = (-6 - THIN / 2 / RADIUS, 6 + THIN / 2 / RADIUS)
+    # Room for the ports
+    ylim = (bottom - PORT / 2, top + PORT / 2)
     fig, ax = canvas(xlim, ylim, scale=(RADIUS, RADIUS), xaxis=False, yaxis=False)
-    port(ax, (xlim[0], 0))
-    arrow(ax, (xlim[0], 0), (1, 0))
-    chain(ax, m)
-    line(ax, (STEP * m - 1, 0), (STEP * m + 1, 0))
-    # End joints step aside, for the labels
-    joints = STEP * np.arange(m + 1)
-    joints[[0, -1]] += [-1, 1]
-    taps = [g.exponents() for g in code.g_row]
-    # One adder above, one below
-    for exponents, y in zip(taps, [4, -4]):
-        hub = (2 * m, y)
-        adder(ax, hub)
-        feed(ax, joints[exponents], hub)
-        s = np.sign(y)
-        line(ax, (2 * m, y + s), (2 * m, y + 2 * s), (xlim[1] - PORT, y + 2 * s))
-        port(ax, (xlim[1], y + 2 * s))
-    for i in np.unique(np.concatenate(taps)):
-        dot(ax, (joints[i], 0))
-    for i in range(m + 1):
+    for i, row in enumerate(polys):
+        y = -8 * i
+        degree = max(p.degree for p in row)
+        taps = [p.exponents() for p in row]
+        port(ax, (xlim[0], y))
+        arrow(ax, (xlim[0], y), (1, y))
+        chain(ax, degree, y)
+        line(ax, (STEP * degree - 1, y), (STEP * degree + 1, y))
+        # End joints step aside, for the labels
+        joints = STEP * np.arange(degree + 1)
+        joints[[0, -1]] += [-1, 1]
+        for exponents, hub in zip(taps, hubs):
+            feed(ax, joints[exponents], y, hub)
+        for b in np.unique(np.concatenate(taps)):
+            dot(ax, (joints[b], y))
         # Clear of the taps going down
-        shift = 0.5 if 0 < i < m and i in taps[1] else 0
-        bit(ax, STEP * i + shift, i)
+        down = np.concatenate(taps[i + 1 :])
+        for b in range(degree + 1):
+            shift = 0.5 if 0 < b < degree and b in down else 0
+            bit(ax, (STEP * b + shift, y), b)
+    for j, (hx, hy) in enumerate(hubs):
+        adder(ax, (hx, hy))
+        if 0 < j < len(hubs) - 1:
+            points = [(hx + 1, hy)]
+        else:
+            # Outer adders: out, then right
+            s = 1 if j == 0 else -1
+            points = [(hx, hy + s), (hx, hy + 2 * s)]
+        y = points[-1][1]
+        line(ax, *points, (xlim[1] - PORT, y))
+        port(ax, (xlim[1], y))
     return fig
 
 
-def chain(ax, n):
+def chain(ax, n, y=0):
     for k in range(1, n + 1):
-        register(ax, (STEP * k - 2, 0))
+        register(ax, (STEP * k - 2, y))
     for k in range(1, n):
-        arrow(ax, (STEP * k - 1, 0), (STEP * k + 1, 0))
+        arrow(ax, (STEP * k - 1, y), (STEP * k + 1, y))
 
 
-def feed(ax, xs, hub):
-    # Outermost taps reach the sides
+def feed(ax, xs, y, hub):
+    # Far taps enter by the side
     hx, hy = hub
-    s = np.sign(hy)
-    left, right = xs[xs < hx], xs[xs > hx]
+    s = np.sign(hy - y)
     for x in xs:
         if x == hx:
-            wire(ax, (x, 0), (x, hy - s))
-        elif x in (left.min(initial=hx), right.max(initial=hx)):
-            wire(ax, (x, 0), (x, hy - s), (hx + np.sign(x - hx), hy))
+            wire(ax, (x, y), (x, hy - s))
+        elif abs(x - hx) > 3 * STEP:
+            wire(ax, (x, y), (x, hy - s), (hx + np.sign(x - hx), hy))
         else:
-            wire(ax, (x, 0), (x, hy - 2 * s), hub, shrinkB=RADIUS)
+            wire(ax, (x, y), (x, hy - 2 * s), hub, shrinkB=RADIUS)
 
 
-def bit(ax, x, i):
+def bit(ax, xy, i):
     # Digits centered, as in the nodes
-    text(ax, (x, -1), f"${i}$", ((0, 0), "center", "center_baseline"))
+    x, y = xy
+    text(ax, (x, y - 1), f"${i}$", ((0, 0), "center", "center_baseline"))
 
 
 def register(ax, xy):
