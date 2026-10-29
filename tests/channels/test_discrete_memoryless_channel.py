@@ -14,7 +14,7 @@ import komm
         ([[-0.5, 1.5], [0.5, 0.5]], "'transition_matrix' must be non-negative"),
     ],
 )
-def test_dmf_invalid_transition_matrix(transition_matrix, message):
+def test_dmc_invalid_transition_matrix(transition_matrix, message):
     with pytest.raises(ValueError, match=message):
         komm.DiscreteMemorylessChannel(transition_matrix)
 
