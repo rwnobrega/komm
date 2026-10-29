@@ -36,6 +36,16 @@ def markov(chain, positions):
     return diagram(positions, nodes, edges)
 
 
+def markov_source(source, positions):
+    nodes = [f"${s}$" for s in range(source.num_states)]
+    edges = [
+        (s, n, f"${x}; {source.pmfs[s, x]:g}$")
+        for (s, x), n in np.ndenumerate(source.transitions)
+        if source.pmfs[s, x] > 0
+    ]
+    return diagram(positions, nodes, edges)
+
+
 def diagram(positions, nodes, edges):
     points = np.array(positions, dtype=float)
     center = points.mean(axis=0)

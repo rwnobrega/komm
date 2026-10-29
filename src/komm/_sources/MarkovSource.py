@@ -30,7 +30,13 @@ class MarkovSource:
         initial_pmf: The initial pmf $\pi_0$ over $\mathcal{S}$. Must be a 1D-array of size $|\mathcal{S}|$. The default value is the stationary distribution $\pi$ of the chain of states, which must then be irreducible.
 
     Examples:
-        1. Consider the Markov source from <cite>Gal08, Sec. 2.8</cite>. It has the set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$ and source alphabet $\mathcal{X} = \\{ 0, 1 \\}$. The transition function $T$ and the conditional pmf $p$ are given by the table below.
+        1. Consider the Markov source from <cite>Gal08, Sec. 2.8</cite>, whose state diagram is depicted in the figure below.
+
+            <figure markdown>
+            ![Markov source example.](/fig/markov_source.svg)
+            </figure>
+
+            It has the set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$ and source alphabet $\mathcal{X} = \\{ 0, 1 \\}$. The transition function $T$ and the conditional pmf $p$ are given by the table below.
 
             | State $s$ | Symbol $x$ | Transition $T(s, x)$ | Probability $p(x \mid s)$ |
             | :-------: | :--------: | :------------------: | :-----------------------: |
