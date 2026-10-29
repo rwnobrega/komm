@@ -47,23 +47,39 @@ The pmf of the second extension is the Kronecker product of $p$ with itself, in 
 
 ```
 
-The pmf of the $k$-th extension is the Kronecker product of $k$ copies of $p$. The rate approaches the entropy, though not monotonically:
+The pmf of the $k$-th extension is the Kronecker product of $k$ copies of $p$. The _redundancy_ $R_k - \mathrm{H}$ stays below $1/k$ and approaches zero, though not monotonically.
 
 ```pycon
 >>> from functools import reduce
 
->>> for k in range(1, 7):
+>>> ks = np.arange(1, 9)
+>>> rates = []
+>>> for k in ks:
 ...     pmf_k = reduce(np.kron, [pmf] * k)
 ...     code_k = komm.HuffmanCode(pmf_k)
-...     print(k, f"{code_k.average_length(pmf_k) / k:.4f}")
-1 1.2000
-2 0.8614
-3 0.8209
-4 0.8302
-5 0.8281
-6 0.8194
+...     rates.append(code_k.average_length(pmf_k) / k)
+
+>>> redundancy = np.array(rates) - komm.entropy(pmf)
 
 ```
+
+To plot the redundancy, with [Matplotlib](https://matplotlib.org), and the bound $1/k$ as a dashed line:
+
+```python
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.semilogy(ks, redundancy, "o-", label="Huffman")
+ax.semilogy(ks, 1 / ks, "--", label="$1/k$")
+ax.set(xlabel="$k$", ylabel=r"$R_k - \mathrm{H}$")
+ax.grid(which="both")
+ax.legend()
+plt.show()
+```
+
+<figure markdown>
+  ![Redundancy of the extended Huffman codes, with the bound 1/k.](/fig/extended_huffman.svg)
+</figure>
 
 To encode a sequence of source symbols with the code of the second extension, group the symbols in pairs, and replace each pair $(x_0, x_1)$ by its index $u = 3 x_0 + x_1$:
 
