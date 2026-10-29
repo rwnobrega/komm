@@ -30,30 +30,26 @@ class MarkovSource:
         initial_pmf: The initial pmf $\pi_0$ over $\mathcal{S}$. Must be a 1D-array of size $|\mathcal{S}|$. The default value is the stationary distribution $\pi$ of the chain of states, which must then be irreducible.
 
     Examples:
-        1. Consider the Markov source from <cite>Gal08, Sec. 2.8</cite>, whose state diagram is depicted in the figure below.
+        1. Consider the Markov source whose state diagram is depicted in the figure below.
 
             <figure markdown>
             ![Markov source example.](/fig/markov_source.svg)
             </figure>
 
-            It has the set of states $\mathcal{S} = \\{ 0, 1, 2, 3 \\}$ and source alphabet $\mathcal{X} = \\{ 0, 1 \\}$. The transition function $T$ and the conditional pmf $p$ are given by the table below.
+            It has the set of states $\mathcal{S} = \\{ 0, 1 \\}$ and source alphabet $\mathcal{X} = \\{ 0, 1 \\}$. The transition function $T$ and the conditional pmf $p$ are given by the table below. Since $p(0 \mid 1) = 0$, the value of $T(1, 0)$ is arbitrary.
 
             | State $s$ | Symbol $x$ | Transition $T(s, x)$ | Probability $p(x \mid s)$ |
             | :-------: | :--------: | :------------------: | :-----------------------: |
-            | $0$       | $0$        | $0$                  | $0.9$                     |
-            | $0$       | $1$        | $1$                  | $0.1$                     |
-            | $1$       | $0$        | $2$                  | $0.5$                     |
-            | $1$       | $1$        | $3$                  | $0.5$                     |
-            | $2$       | $0$        | $0$                  | $0.5$                     |
-            | $2$       | $1$        | $1$                  | $0.5$                     |
-            | $3$       | $0$        | $2$                  | $0.1$                     |
-            | $3$       | $1$        | $3$                  | $0.9$                     |
+            | $0$       | $0$        | $0$                  | $0.5$                     |
+            | $0$       | $1$        | $1$                  | $0.5$                     |
+            | $1$       | $0$        | $0$                  | $0$                       |
+            | $1$       | $1$        | $0$                  | $1$                       |
 
-            In other words, the state is given by the last two emitted bits, with the states $0$, $1$, $2$, and $3$ standing for $00$, $01$, $10$, and $11$, respectively. After two equal bits, the source repeats the last bit with probability $0.9$; otherwise, it emits each bit with probability $1/2$.
+            In other words, the ones come in pairs, so that every run of ones between two zeros has even length. The output is not a Markov chain of any order, since the next symbol depends on the parity of the current run of ones, which may be arbitrarily long.
 
                 >>> source = komm.MarkovSource(
-                ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-                ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+                ...     transitions=[[0, 1], [0, 0]],
+                ...     pmfs=[[0.5, 0.5], [0, 1]],
                 ... )
     """
 
@@ -105,19 +101,19 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.initial_pmf
-            array([0.41666667, 0.08333333, 0.08333333, 0.41666667])
+            array([0.66666667, 0.33333333])
 
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
-            ...     initial_pmf=[1, 0, 0, 0],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
+            ...     initial_pmf=[1, 0],
             ... )
             >>> source.initial_pmf
-            array([1., 0., 0., 0.])
+            array([1., 0.])
         """
         if self._initial_pmf is None:
             return self._stationary_pmf
@@ -130,11 +126,11 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.num_states
-            4
+            2
         """
         return self._transitions.shape[0]
 
@@ -145,8 +141,8 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.cardinality
             2
@@ -163,14 +159,12 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.chain.transition_matrix
-            array([[0.9, 0.1, 0. , 0. ],
-                   [0. , 0. , 0.5, 0.5],
-                   [0.5, 0.5, 0. , 0. ],
-                   [0. , 0. , 0.1, 0.9]])
+            array([[0.5, 0.5],
+                   [1. , 0. ]])
         """
         n = self.num_states
         matrix = np.zeros((n, n))
@@ -200,11 +194,11 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.entropy_rate()  # doctest: +FLOAT_CMP
-            0.5574963279910677
+            0.6666666666666666
         """
         q = self._stationary_pmf
         return float(q @ [entropy(pmf, base) for pmf in self.pmfs])
@@ -234,11 +228,11 @@ class MarkovSource:
 
         Examples:
             >>> source = komm.MarkovSource(
-            ...     transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
-            ...     pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
+            ...     transitions=[[0, 1], [0, 0]],
+            ...     pmfs=[[0.5, 0.5], [0, 1]],
             ... )
             >>> source.emit(20)
-            array([1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1])
+            array([1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1])
         """
         steps = validate_nonnegative_integer(steps)
         cdfs, transitions = self._cdfs, self.transitions.tolist()
