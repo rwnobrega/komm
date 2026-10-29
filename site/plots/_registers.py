@@ -98,6 +98,48 @@ def feedback(code):
     return fig
 
 
+def high_rate(code):
+    # Observer form: adders between the registers
+    *taps, q = [p.exponents() for p in code.h_row]
+    m = code.degree
+    # Input j at y = 2(k - j) + 2, above
+    lanes = 2 * (len(taps) - np.arange(len(taps))) + 2
+    xlim = (-2, 2 * STEP * m + 5)
+    # Room for the ports and dots
+    ylim = (-4 - PORT / 2, lanes[0] + PORT / 2)
+    fig, ax = canvas(xlim, ylim, scale=(RADIUS, RADIUS), xaxis=False, yaxis=False)
+    for y in lanes:
+        port(ax, (xlim[0], y))
+        line(ax, (xlim[0], y), (xlim[1] - PORT, y))
+        port(ax, (xlim[1], y))
+    # Adder of D^i at x = 2 STEP (m - i)
+    for i in range(m + 1):
+        x = 2 * STEP * (m - i)
+        adder(ax, (x, 0))
+        text(ax, (x + 1.5, 1), f"${i}$", ((0, 0), "center", "center_baseline"))
+        if i > 0:
+            arrow(ax, (x + 1, 0), (x + 3, 0))
+            register(ax, (x + 4, 0))
+            arrow(ax, (x + 5, 0), (x + 7, 0))
+        # Taps side by side, 6 pt apart
+        js = [j for j, e in enumerate(taps) if i in e]
+        for j, dx in zip(js, (np.arange(len(js)) - (len(js) - 1) / 2) * 6 / RADIUS):
+            dot(ax, (x + dx, lanes[j]))
+            arrow(ax, (x + dx, lanes[j]), (x + dx, 1))
+    end = 2 * STEP * m
+    line(ax, (end + 1, 0), (xlim[1] - PORT, 0))
+    port(ax, (xlim[1], 0))
+    # Feedback from the output, below
+    xs = 2 * STEP * (m - q[q > 0])
+    if xs.size > 0:
+        dot(ax, (end + 3, 0))
+        wire(ax, (end + 3, 0), (end + 3, -4), (xs.min(), -4), (xs.min(), -1))
+        for x in xs[xs > xs.min()]:
+            dot(ax, (x, -4))
+            arrow(ax, (x, -4), (x, -1))
+    return fig
+
+
 def tapped_chain(ax, y, taps, hubs):
     degree = np.concatenate(taps).max()
     chain(ax, degree, y)
