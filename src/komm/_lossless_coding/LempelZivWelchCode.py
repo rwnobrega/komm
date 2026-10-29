@@ -51,18 +51,19 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
         source = validate_integer_array(
             source, low=0, high=self.source_cardinality, ndim=1
         )
-        dictionary: dict[Word, int] = {(s,): s for s in range(self.source_cardinality)}
+        # Entry p extended by x
+        children = {(-1, x): x for x in range(self.source_cardinality)}
         tokens: list[Token] = []
-        word: Word = ()
-        for symbol in tqdm(source, "Compressing LZW", delay=2.5):
-            if word + (symbol,) in dictionary:
-                word += (symbol,)
+        p = -1  # Empty word
+        for x in tqdm(source.tolist(), "Compressing LZW", delay=2.5):
+            if (p, x) in children:
+                p = children[p, x]
                 continue
-            tokens.append(dictionary[word])
-            dictionary[word + (symbol,)] = len(dictionary)
-            word = (symbol,)
-        if word:
-            tokens.append(dictionary[word])
+            tokens.append(p)
+            children[p, x] = len(children)
+            p = x
+        if p >= 0:
+            tokens.append(p)
         return tokens
 
     def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
