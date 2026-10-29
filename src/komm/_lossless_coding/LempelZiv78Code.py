@@ -47,19 +47,19 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         source = validate_integer_array(
             source, low=0, high=self.source_cardinality, ndim=1
         )
-        dictionary: dict[Word, int] = {(): 0}
+        # Entry p extended by x
+        children: dict[Token, int] = {}
         tokens: list[Token] = []
-        word: Word = ()
-        for symbol in tqdm(source, "Compressing LZ78", delay=2.5):
-            if word + (symbol,) in dictionary:
-                word += (symbol,)
+        p = 0
+        for x in tqdm(source.tolist(), "Compressing LZ78", delay=2.5):
+            if (p, x) in children:
+                p = children[p, x]
                 continue
-            p, x = dictionary[word], int(symbol)
             tokens.append((p, x))
-            dictionary[word + (symbol,)] = len(dictionary)
-            word = ()
-        if word:
-            tokens.append((dictionary[word], -1))
+            children[p, x] = len(children) + 1
+            p = 0
+        if p > 0:
+            tokens.append((p, -1))
         return tokens
 
     def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
