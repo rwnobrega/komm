@@ -50,24 +50,9 @@ def encoder(polys):
     fig, ax = canvas(xlim, ylim, scale=(RADIUS, RADIUS), xaxis=False, yaxis=False)
     for i, row in enumerate(polys):
         y = -8 * i
-        degree = max(p.degree for p in row)
-        taps = [p.exponents() for p in row]
         port(ax, (xlim[0], y))
         arrow(ax, (xlim[0], y), (1, y))
-        chain(ax, degree, y)
-        line(ax, (STEP * degree - 1, y), (STEP * degree + 1, y))
-        # End joints step aside, for the labels
-        joints = STEP * np.arange(degree + 1)
-        joints[[0, -1]] += [-1, 1]
-        for exponents, hub in zip(taps, hubs):
-            feed(ax, joints[exponents], y, hub)
-        for b in np.unique(np.concatenate(taps)):
-            dot(ax, (joints[b], y))
-        # Clear of the taps going down
-        down = np.concatenate(taps[i + 1 :])
-        for b in range(degree + 1):
-            shift = 0.5 if 0 < b < degree and b in down else 0
-            bit(ax, (STEP * b + shift, y), b)
+        tapped_chain(ax, y, [p.exponents() for p in row], hubs)
     for j, (hx, hy) in enumerate(hubs):
         adder(ax, (hx, hy))
         if 0 < j < len(hubs) - 1:
@@ -80,6 +65,55 @@ def encoder(polys):
         line(ax, *points, (xlim[1] - PORT, y))
         port(ax, (xlim[1], y))
     return fig
+
+
+def feedback(code):
+    # One input, through the feedback adder
+    (row,) = code.feedforward_polynomials
+    (q,) = code.feedback_polynomials
+    (parity,) = [p for p in row if p != q]
+    m = max(q.degree, parity.degree)
+    # Parity adder above, feedback adder below
+    hubs = [(2 * m, 4), (2 * m, -4)]
+    xlim = (-9, STEP * m + 3)
+    # Room for the lower adder and ports
+    ylim = (-5 - THICK / 2 / RADIUS, 8 + PORT / 2)
+    fig, ax = canvas(xlim, ylim, scale=(RADIUS, RADIUS), xaxis=False, yaxis=False)
+    # Input, branch at -7, adder at -4
+    port(ax, (xlim[0], 0))
+    arrow(ax, (xlim[0], 0), (-5, 0))
+    dot(ax, (-7, 0))
+    adder(ax, (-4, 0))
+    arrow(ax, (-3, 0), (1, 0))
+    # Feedback taps skip bit 0
+    tapped_chain(ax, 0, [parity.exponents(), q.exponents()[1:]], hubs)
+    for hub in hubs:
+        adder(ax, hub)
+    wire(ax, (2 * m - 1, -4), (-4, -4), (-4, -1))
+    line(ax, (2 * m, 5), (2 * m, 6), (xlim[1] - PORT, 6))
+    port(ax, (xlim[1], 6))
+    # Systematic output, from the branch
+    line(ax, (-7, 0), (-7, 8), (xlim[1] - PORT, 8))
+    port(ax, (xlim[1], 8))
+    return fig
+
+
+def tapped_chain(ax, y, taps, hubs):
+    degree = np.concatenate(taps).max()
+    chain(ax, degree, y)
+    line(ax, (STEP * degree - 1, y), (STEP * degree + 1, y))
+    # End joints step aside, for the labels
+    joints = STEP * np.arange(degree + 1)
+    joints[[0, -1]] += [-1, 1]
+    for exponents, hub in zip(taps, hubs):
+        feed(ax, joints[exponents], y, hub)
+    for b in np.unique(np.concatenate(taps)):
+        dot(ax, (joints[b], y))
+    # Clear of the taps going down
+    down = {b for e, (_, hy) in zip(taps, hubs) if hy < y for b in e}
+    for b in range(degree + 1):
+        shift = 0.5 if 0 < b < degree and b in down else 0
+        bit(ax, (STEP * b + shift, y), b)
 
 
 def chain(ax, n, y=0):
