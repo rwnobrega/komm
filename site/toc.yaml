@@ -118,6 +118,7 @@ Sequences:
 Sources:
   - DiscreteMemorylessSource
   - MarkovChain
+  - MarkovSource
 Utilities:
   - bits_to_int
   - int_to_bits

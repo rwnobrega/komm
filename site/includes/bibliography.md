@@ -9,6 +9,7 @@
 *[CW67]: Joseph T. Cordaro and Terry J. Wagner. Optimum $(n, 2)$ codes for small values of channel error probability. IEEE Transactions on Information Theory, 13(2):349–350, 1967.
 *[DLM19]: Ken R. Duffy, Jiange Li, and Muriel Médard. Capacity-achieving guessing random additive noise decoding. IEEE Transactions on Information Theory, 65(7):4023–4040, 2019.
 *[ETSI18]: ETSI. 5G; NR; Multiplexing and channel coding (3GPP TS 38.212 version 15.2.0 Release 15). ETSI TS 138 212 V15.2.0, 2018.
+*[Gal08]: Robert G. Gallager. Principles of Digital Communication. Cambridge University Press, 2008. ISBN 978-0521879071.
 *[Gol66]: Solomon W. Golomb. Run-length encodings. IEEE Transactions on Information Theory, 12(3):399–401, 1966.
 *[GS97]: Charles M. Grinstead and J. Laurie Snell. Introduction to Probability. American Mathematical Society, 2nd edition, 1997. ISBN 978-0821807491.
 *[Hay04]: Simon Haykin. Communication Systems. John Wiley & Sons, 4th edition, 2004. ISBN 978-0471178699.

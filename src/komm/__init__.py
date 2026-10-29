@@ -137,6 +137,7 @@ from ._sequences_complex.ZadoffChuSequence import ZadoffChuSequence
 # Sources
 from ._sources.DiscreteMemorylessSource import DiscreteMemorylessSource
 from ._sources.MarkovChain import MarkovChain
+from ._sources.MarkovSource import MarkovSource
 
 # Util
 from ._util import global_rng
@@ -267,6 +268,7 @@ __all__ = [
     # _sources
     "DiscreteMemorylessSource",
     "MarkovChain",
+    "MarkovSource",
     # _util
     "global_rng",
     "bits_to_int",

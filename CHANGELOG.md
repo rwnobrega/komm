@@ -14,6 +14,8 @@
 
 - Added method `decode_to_codeword` to `ViterbiDecoder`.
 
+- Implemented [Markov source](https://komm.dev/ref/MarkovSource).
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.
