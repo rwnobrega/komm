@@ -6,7 +6,7 @@ plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["cmr10"],
     "axes.formatter.use_mathtext": True,  # Asked by cmr10
-    "font.size": 14.4,  # \Large, as in the Ipe figures
+    "font.size": 14.4,  # \Large
     "mathtext.fontset": "cm",
     "lines.scale_dashes": False,
     "lines.solid_capstyle": "butt",

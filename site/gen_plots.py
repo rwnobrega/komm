@@ -28,7 +28,7 @@ def save(fig, path, themed):
     svg = buffer.getvalue()
     # Matplotlib leaves trailing spaces
     svg = re.sub(r" +\n", "\n", svg)
-    # One point becomes one pixel, as in Ipe
+    # One point becomes one pixel
     svg = re.sub(r'(width|height)="([\d.]+)pt"', r'\1="\2"', svg)
     if themed:
         svg = svg.replace("#000000", "currentColor")
