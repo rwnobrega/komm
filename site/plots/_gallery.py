@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 
 FENCES = re.compile(r"```(pycon|python)\n(.*?)```", re.DOTALL)
 
+# Flag of pytest-doctestplus, unknown to doctest
+doctest.register_optionflag("FLOAT_CMP")
+
 
 def run(name, index=0):
     path = Path(__file__).parents[1] / "docs" / "gallery" / f"{name}.md"
