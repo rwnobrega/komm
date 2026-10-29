@@ -18,7 +18,8 @@ def lfsr(sequence):
     adder(ax, hub)
     wire(ax, (0, 5), (-1, 5), (-1, 0), (1, 0))
     chain(ax, n)
-    arrow(ax, (STEP * n - 1, 0), (STEP * n + 2, 0))
+    line(ax, (STEP * n - 1, 0), (xlim[1] - PORT, 0))
+    port(ax, (xlim[1], 0))
     # One lane per tap, the last on top
     for lane, i in enumerate(reversed(exponents[1:])):
         y = hub[1] - lane

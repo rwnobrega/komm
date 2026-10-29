@@ -98,6 +98,23 @@ z
     </g>
    </g>
    <g id="line2d_9">
+    <path d="M 321.2 98
+L 363.866667 98
+" clip-path="url(#p6f5822b28a)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
+   </g>
+   <g id="line2d_10">
+    <defs>
+     <path id="m57324e464a" d="M 2.666667 0
+L -2.666667 -2.666667
+L -2.666667 2.666667
+z
+" style="stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </defs>
+    <g>
+     <use xlink:href="#m57324e464a" x="366.533333" y="98" style="fill-opacity: 0; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="line2d_11">
     <defs>
      <path id="me1ba1b5962" d="M 0 1.8
 C 0.477366 1.8 0.935244 1.610341 1.272792 1.272792
@@ -115,18 +132,18 @@ z
      <use xlink:href="#me1ba1b5962" x="337.2" y="98"/>
     </g>
    </g>
-   <g id="line2d_10">
+   <g id="line2d_12">
     <path d="M 337.2 98
 L 337.2 18
 L 65.2 18
 " clip-path="url(#p6f5822b28a)" style="fill: none; stroke: currentColor; stroke-width: 0.4"/>
    </g>
-   <g id="line2d_11">
+   <g id="line2d_13">
     <g clip-path="url(#p6f5822b28a)">
      <use xlink:href="#me1ba1b5962" x="145.2" y="98"/>
     </g>
    </g>
-   <g id="line2d_12">
+   <g id="line2d_14">
     <path d="M 145.2 98
 L 145.2 34
 L 65.2 34
@@ -183,16 +200,6 @@ z
 " style="stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
-    <path d="M 321.2 98
-Q 345.2 98 368.56673 98
-" style="fill: none; stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
-    <path d="M 361.56673 95.67
-L 368.56673 98
-L 361.56673 100.33
-z
-" style="stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
-   </g>
-   <g id="patch_8">
     <path d="M 65.2 18
 Q 57.198047 18 49.829364 18
 " style="fill: none; stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
@@ -202,7 +209,7 @@ L 56.829364 15.67
 z
 " style="stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
    </g>
-   <g id="patch_9">
+   <g id="patch_8">
     <path d="M 65.2 34
 Q 56.354297 29.577148 48.075008 25.437504
 " style="fill: none; stroke: currentColor; stroke-width: 0.4; stroke-linecap: round"/>
