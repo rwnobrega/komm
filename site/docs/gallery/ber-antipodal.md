@@ -29,17 +29,6 @@ Binary antipodal signaling uses the [PAM constellation](/ref/PAMConstellation) o
 ...     ber.append(np.mean(bits != bits_hat))
 
 >>> ber_theory = komm.gaussian_q(np.sqrt(2 * ebn0))
->>> for row in zip(ebn0_db, ber, ber_theory):
-...     print("{} dB  {:.2e}  {:.2e}".format(*row))
-0 dB  7.85e-02  7.86e-02
-1 dB  5.67e-02  5.63e-02
-2 dB  3.74e-02  3.75e-02
-3 dB  2.30e-02  2.29e-02
-4 dB  1.24e-02  1.25e-02
-5 dB  5.97e-03  5.95e-03
-6 dB  2.35e-03  2.39e-03
-7 dB  7.78e-04  7.73e-04
-8 dB  1.89e-04  1.91e-04
 
 ```
 
@@ -60,3 +49,17 @@ plt.show()
 <figure markdown>
   ![Bit error rate of binary antipodal signaling over the AWGN channel.](/fig/ber_antipodal.svg)
 </figure>
+
+Inverting the formula gives the $E_\mathrm{b} / N_0$ needed for a target BER:
+$$
+    E_\mathrm{b} / N_0 = \frac{1}{2} \left( \mathrm{Q}^{-1}(P_\mathrm{b}) \right)^2,
+$$
+where $\mathrm{Q}^{-1}$ is the [inverse of the Gaussian Q-function](/ref/gaussian_q_inv). For $P_\mathrm{b} = 10^{-5}$, a common target when comparing channel codes, it is about $9.6$ dB:
+
+```pycon
+>>> from math import log10
+
+>>> 10 * log10(komm.gaussian_q_inv(1e-5) ** 2 / 2)  # doctest: +FLOAT_CMP
+9.587858346847609
+
+```
