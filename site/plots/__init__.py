@@ -49,8 +49,8 @@ def arrow(ax, start, end, **kwargs):
     ax.annotate("", end, start, arrowprops=props | dict(lw=THIN, color="black"))
 
 
-def line(ax, start, end, **kwargs):
-    ax.plot(*zip(start, end), color="black", lw=THIN, **kwargs)
+def line(ax, *points, **kwargs):
+    ax.plot(*zip(*points), color="black", lw=THIN, **kwargs)
 
 
 def xticks(ax, xs):
