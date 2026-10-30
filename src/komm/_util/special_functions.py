@@ -1,4 +1,6 @@
+from collections.abc import Iterable
 from math import erfc, exp, floor, inf, isinf, lgamma, log, log1p, nan, sqrt
+from operator import index
 from statistics import NormalDist
 
 import numpy as np
@@ -274,3 +276,39 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating] | fl
     p2 = np.exp(-np.abs(a - b))
     result = s + np.log1p(p1) - np.log1p(p2)
     return float(result) if np.ndim(result) == 0 else result
+
+
+def macwilliams_transform(distribution: Iterable[int]) -> list[int]:
+    r"""
+    Computes the MacWilliams transform of a weight distribution. Let $A_0, A_1, \ldots, A_n$ be the codeword weight distribution of a binary linear code with dimension $k$, in which $A_w$ is the number of codewords of Hamming weight $w$. The codeword weight distribution $B_0, B_1, \ldots, B_n$ of the dual code is given by the MacWilliams identity
+    $$
+        \sum_{w=0}^n B_w z^w = \frac{1}{2^k} \sum_{w=0}^n A_w (1 - z)^w (1 + z)^{n - w}.
+    $$
+    For more details, see <cite>LC04, Sec. 3.6</cite>.
+
+    Parameters:
+        distribution: The codeword weight distribution $A_0, A_1, \ldots, A_n$ of the code. Must be a list of non-negative integers.
+
+    Returns:
+        The codeword weight distribution $B_0, B_1, \ldots, B_n$ of the dual code.
+
+    Examples:
+        >>> komm.macwilliams_transform([1, 0, 0, 7, 7, 0, 0, 1])
+        [1, 0, 0, 0, 7, 0, 0, 0]
+    """
+    distribution = [index(a) for a in distribution]
+    n, size = len(distribution) - 1, sum(distribution)
+    if not (size > 0 and min(distribution) >= 0):
+        raise ValueError("'distribution' must be non-negative and nonzero")
+    dual = [0] * (n + 1)
+    for i, a in enumerate(distribution):
+        if a == 0:
+            continue
+        # Coefficients of (1 - z)^i (1 + z)^(n - i).
+        prev, curr = 0, 1
+        for j in range(n + 1):
+            dual[j] += a * curr
+            prev, curr = curr, ((n - 2 * i) * curr - (n - j + 1) * prev) // (j + 1)
+    if not all(b >= 0 and b % size == 0 for b in dual):
+        raise ValueError("'distribution' must come from a linear code")
+    return [b // size for b in dual]

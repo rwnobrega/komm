@@ -10,10 +10,10 @@ from tqdm import tqdm
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
 from .._util.matrices import row_span
+from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_integer, validate_positive_integer
 from ..types import Array2D
 from .BlockCode import BlockCode
-from .util import macwilliams_transform
 
 
 @mkdocstrings(members=["reed_partitions"], filters=["!.*"])

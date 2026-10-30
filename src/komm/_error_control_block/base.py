@@ -9,9 +9,10 @@ from .._finite_state_machine.Trellis import Trellis
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
+from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_binary_array
 from ..types import Array2D
-from .util import macwilliams_transform, span_weight_distribution, syndrome_trellis
+from .util import span_weight_distribution, syndrome_trellis
 
 
 class BlockCode(ABC):

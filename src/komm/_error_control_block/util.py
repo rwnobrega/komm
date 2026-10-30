@@ -30,21 +30,6 @@ def span_weight_distribution(matrix: Array2D[np.integer]) -> list[int]:
     return distribution.tolist()
 
 
-def macwilliams_transform(distribution: list[int]) -> list[int]:
-    # Weight distribution of the dual code.
-    n, size = len(distribution) - 1, sum(distribution)
-    dual = [0] * (n + 1)
-    for i, a in enumerate(distribution):
-        if a == 0:
-            continue
-        # Coefficients of (1 - z)^i (1 + z)^(n - i).
-        prev, curr = 0, 1
-        for j in range(n + 1):
-            dual[j] += a * curr
-            prev, curr = curr, ((n - 2 * i) * curr - (n - j + 1) * prev) // (j + 1)
-    return [b // size for b in dual]
-
-
 def syndrome_trellis(check_matrix: npt.ArrayLike) -> Trellis:
     # States: partial syndromes of active rows
     tof = trellis_oriented_form(check_matrix)

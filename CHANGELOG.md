@@ -16,6 +16,8 @@
 
 - Implemented [Markov source](https://komm.dev/ref/MarkovSource).
 
+- Implemented [MacWilliams transform](https://komm.dev/ref/macwilliams_transform).
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.
