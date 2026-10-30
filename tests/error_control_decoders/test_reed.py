@@ -26,7 +26,22 @@ def test_reed_repetition_code(rng):
     assert code.length == 32
     decoder = komm.ReedDecoder(code)
     r = rng.integers(2, size=(100, 32))
+    votes = r.sum(axis=1)
     np.testing.assert_equal(
         decoder.decode(r),
-        (r.sum(axis=1) > 16).astype(int).reshape(-1, 1),
+        np.where(votes == 16, r[:, 0], votes > 16).reshape(-1, 1),
     )
+
+
+@pytest.mark.parametrize("rho", range(5))
+@pytest.mark.parametrize("input_type", ["hard", "soft"])
+def test_reed_codeword_shift(rho, input_type, rng):
+    # Adding a codeword adds its message
+    code = komm.ReedMullerCode(5, rho)
+    decoder = komm.ReedDecoder(code, input_type=input_type)
+    u = rng.integers(2, size=(1000, code.dimension))
+    r = rng.integers(2, size=(1000, code.length))
+    r_shift = (r + code.encode(u)) % 2
+    if input_type == "soft":  # Equal magnitudes, as in the BSC
+        r, r_shift = (-1.0) ** r, (-1.0) ** r_shift
+    np.testing.assert_equal(decoder.decode(r_shift), (decoder.decode(r) + u) % 2)

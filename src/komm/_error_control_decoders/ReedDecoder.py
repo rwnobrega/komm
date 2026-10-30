@@ -19,6 +19,8 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
     r"""
     Reed decoder for [Reed–Muller codes](/ref/ReedMullerCode). It's a majority-logic decoding algorithm. For more details, see <cite>LC04, Sec. 4.3</cite> and <cite>LC04, Sec. 10.9.1</cite> for hard-decision decoding, and <cite>LC04, Sec. 10.9.2</cite> for soft-decision decoding.
 
+    Ties in the majority votes are broken by the first checksum, so that the error probability does not depend on the transmitted codeword.
+
     Parameters:
         code: The Reed–Muller code to be used for decoding.
         input_type: The type of the input. Either `'hard'` or `'soft'`. The default value is `'hard'`.
@@ -57,7 +59,9 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
             for i, partition in enumerate(self._reed_partitions):
                 checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
                 votes = np.count_nonzero(checksums, axis=-1)
-                u_hat[..., i] = votes > len(partition) // 2
+                tie = 2 * votes == len(partition)
+                majority = votes > len(partition) // 2
+                u_hat[..., i] = np.where(tie, checksums[..., 0], majority)
                 bx ^= u_hat[..., i, np.newaxis] * self.code.generator_matrix[i]
             return u_hat
 
@@ -69,7 +73,8 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
                 checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
                 min_reliability = np.min(np.abs(r[..., partition]), axis=-1)
                 decision_var = np.vecdot((-1) ** checksums, min_reliability)
-                u_hat[..., i] = decision_var < 0
+                tie = decision_var == 0
+                u_hat[..., i] = np.where(tie, checksums[..., 0], decision_var < 0)
                 bx ^= u_hat[..., i, np.newaxis] * self.code.generator_matrix[i]
             return u_hat
 

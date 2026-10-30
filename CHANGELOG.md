@@ -32,6 +32,8 @@
 
 - Fixed `ViterbiDecoder` and `BCJRDecoder` in zero termination, which accepted tails that the encoder never produces.
 
+- Fixed `ReedDecoder`, whose ties favored the all-zero message.
+
 ## v0.37.0 (2026-10-15)
 
 ### Added
