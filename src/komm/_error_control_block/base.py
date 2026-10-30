@@ -167,11 +167,7 @@ class BlockCode(ABC):
         r"""
         Returns the codeword weight distribution of the code. This is the list $A_0, A_1, \ldots, A_n$, in which $A_w$ is the number of codewords of Hamming weight $w$.
 
-        If $m < k$, this method enumerates the $2^m$ codewords of the dual code, spanned by the rows of the check matrix $H$, and applies the MacWilliams identity
-        $$
-            \sum_{w=0}^n A_w z^w = \frac{1}{2^m} \sum_{w=0}^n B_w (1 - z)^w (1 + z)^{n - w},
-        $$
-        where $B_w$ is the number of codewords of Hamming weight $w$ in the dual code. Otherwise, it enumerates the $2^k$ codewords of the code. For more details, see <cite>LC04, Sec. 3.6</cite>.
+        If $k \leq m$, this method enumerates all $2^k$ codewords of the code. Otherwise, it enumerates the $2^m$ codewords of the dual code, spanned by the rows of the check matrix $H$, and applies the [MacWilliams transform](/ref/macwilliams_transform) to their weight distribution.
         """
         n = self.length
         if hasattr(self, "_cached_codewords"):
