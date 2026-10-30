@@ -20,8 +20,9 @@ def mealy(machine, positions):
     return diagram(positions, nodes, edges)
 
 
-def moore(machine, positions):
-    nodes = [f"${s}/{y}$" for s, y in enumerate(machine.outputs)]
+def moore(machine, positions, symbols=None):
+    symbols = symbols or range(machine.num_output_symbols)
+    nodes = [f"${s}/{symbols[y]}$" for s, y in enumerate(machine.outputs)]
     edges = [(s, n, f"${x}$") for (s, x), n in np.ndenumerate(machine.transitions)]
     return diagram(positions, nodes, edges)
 
