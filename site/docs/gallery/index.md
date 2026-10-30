@@ -6,6 +6,7 @@ hide: toc
 
 Short examples of common tasks with Komm.
 
+- [**AMI and MLT-3 line codes**](ami-mlt3.md) – Two ternary line codes as Moore machines, with their power spectral densities, by formula and by simulation.
 - [**BER of binary antipodal signaling**](ber-antipodal.md) – Bit error rate of binary antipodal signaling over the AWGN channel, by simulation and by formula.
 - [**BER of syndrome decoding**](ber-syndrome.md) – Bit error rate of syndrome decoding over the binary symmetric channel, by formula from the standard array, compared with bitwise MAP decoding.
 - [**Extended Huffman codes**](extended-huffman.md) – Huffman codes for blocks of source symbols, with rates approaching the entropy.
