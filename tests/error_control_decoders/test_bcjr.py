@@ -48,6 +48,13 @@ def test_bcjr_two_input_bits(feedforward_polynomials, rng):
     np.testing.assert_equal(decoder.decode(li), u)
 
 
+def check_against_exhaustive(code, rng):
+    decoder = komm.BCJRDecoder(code)
+    exhaustive = komm.ExhaustiveBitwiseDecoder(code)
+    li = rng.standard_normal((100, code.length))
+    np.testing.assert_allclose(decoder.decode(li), exhaustive.decode(li), atol=1e-8)
+
+
 @pytest.mark.parametrize(
     "convolutional_code, num_blocks, puncturing_matrix",
     [
@@ -114,10 +121,61 @@ def test_bcjr_exhaustive(convolutional_code, num_blocks, puncturing_matrix, mode
     code = komm.TerminatedConvolutionalCode(
         convolutional_code, num_blocks, mode, puncturing_matrix
     )
-    decoder = komm.BCJRDecoder(code)
-    exhaustive = komm.ExhaustiveBitwiseDecoder(code)
-    li = rng.standard_normal((100, code.length))
-    np.testing.assert_allclose(decoder.decode(li), exhaustive.decode(li), atol=1e-8)
+    check_against_exhaustive(code, rng)
+
+
+@pytest.mark.parametrize(
+    "convolutional_code, num_blocks, puncturing_matrix",
+    [
+        (
+            komm.ConvolutionalCode([[0o7, 0o5]]),
+            6,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5]], [0o7]),
+            5,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]),
+            3,
+            None,
+        ),
+        (
+            komm.ConvolutionalCode([[0o5, 0o7]]),
+            6,
+            [[1, 0], [1, 1]],
+        ),
+        (
+            komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]]),
+            4,
+            [[1, 1], [1, 1], [1, 0]],
+        ),
+        (
+            komm.HighRateConvolutionalCode([0o6, 0o7, 0o5, 0o1]),
+            3,
+            None,
+        ),
+        (  # [LC04, p. 602]
+            komm.ConvolutionalCode([
+                [3, 0, 1, 0, 3, 1, 1, 1],
+                [0, 3, 1, 1, 2, 3, 1, 0],
+                [2, 2, 3, 0, 0, 2, 3, 1],
+                [0, 2, 0, 3, 2, 2, 2, 3],
+            ]),
+            3,
+            None,
+        ),
+    ],
+)
+def test_bcjr_exhaustive_tail_biting(
+    convolutional_code, num_blocks, puncturing_matrix, rng
+):
+    code = komm.TerminatedConvolutionalCode(
+        convolutional_code, num_blocks, "tail-biting", puncturing_matrix
+    )
+    check_against_exhaustive(code, rng)
 
 
 def test_bcjr_reliable_input(rng):

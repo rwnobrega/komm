@@ -33,10 +33,6 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
     output_type: Literal["hard", "soft"] = "soft"
 
     def __post_init__(self) -> None:
-        if self.code.mode == "tail-biting":
-            raise NotImplementedError(
-                "BCJR algorithm not implemented for 'tail-biting'"
-            )
         self.output_type = validate_decision_type(self.output_type)
         n = self.code.convolutional_code.num_output_bits
         k = self.code.convolutional_code.num_input_bits

@@ -37,10 +37,6 @@ class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
     input_type: Literal["hard", "soft"] = "hard"
 
     def __post_init__(self) -> None:
-        if self.code.mode == "tail-biting":
-            raise NotImplementedError(
-                "Viterbi algorithm not implemented for 'tail-biting'"
-            )
         self.input_type = validate_decision_type(self.input_type)
         n = self.code.convolutional_code.num_output_bits
         self._trellis = self.code.strategy.trellis()
