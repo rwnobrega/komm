@@ -254,6 +254,17 @@ def test_terminated_convolutional_golay():
     code = komm.TerminatedConvolutionalCode(convolutional_code, 3, "tail-biting")
     assert (code.length, code.dimension, code.redundancy) == (24, 12, 12)
     assert code.minimum_distance() == 8
+    # Position i of the code is position perm[i] of the Golay code
+    # fmt: off
+    perm = [
+        0, 1, 2, 3, 4, 6, 5, 19, 17, 20, 22, 11,
+        12, 9, 23, 8, 14, 16, 21, 10, 7, 18, 13, 15,
+    ]
+    # fmt: on
+    codewords = np.empty_like(code.codewords())
+    codewords[:, perm] = code.codewords()
+    golay = komm.GolayCode(extended=True)
+    assert sorted(map(tuple, codewords)) == sorted(map(tuple, golay.codewords()))
 
 
 @pytest.mark.parametrize(

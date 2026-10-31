@@ -208,34 +208,3 @@ def test_viterbi_exhaustive_tail_biting(
         convolutional_code, num_blocks, "tail-biting", puncturing_matrix
     )
     check_against_exhaustive(code, rng)
-
-
-def test_viterbi_tail_biting_golay(rng):
-    # [LC04, p. 602]
-    convolutional_code = komm.ConvolutionalCode([
-        [3, 0, 1, 0, 3, 1, 1, 1],
-        [0, 3, 1, 1, 2, 3, 1, 0],
-        [2, 2, 3, 0, 0, 2, 3, 1],
-        [0, 2, 0, 3, 2, 2, 2, 3],
-    ])
-    code = komm.TerminatedConvolutionalCode(convolutional_code, 3, "tail-biting")
-    golay = komm.GolayCode(extended=True)
-    # Position i of the code is position perm[i] of the Golay code
-    # fmt: off
-    perm = [
-        0, 1, 2, 3, 4, 6, 5, 19, 17, 20, 22, 11,
-        12, 9, 23, 8, 14, 16, 21, 10, 7, 18, 13, 15,
-    ]
-    # fmt: on
-    codewords = np.empty_like(code.codewords())
-    codewords[:, perm] = code.codewords()
-    assert sorted(map(tuple, codewords)) == sorted(map(tuple, golay.codewords()))
-    viterbi = komm.ViterbiDecoder(code, input_type="soft")
-    exhaustive = komm.ExhaustiveCodewordDecoder(golay, input_type="soft")
-    r = rng.standard_normal((100, code.length))
-    r_golay = np.empty_like(r)
-    r_golay[:, perm] = r
-    np.testing.assert_equal(
-        exhaustive.decode_to_codeword(r_golay)[:, perm],
-        viterbi.decode_to_codeword(r),
-    )
