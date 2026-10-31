@@ -78,6 +78,7 @@ theme:
     # - navigation.sections
     - navigation.indexes
     - navigation.footer
+    - content.code.copy
     # - toc.integrate
 
 markdown_extensions:

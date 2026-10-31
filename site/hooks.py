@@ -1,6 +1,7 @@
 import ast
 import doctest
 import re
+from html import escape, unescape
 from pathlib import Path
 
 from properdocs.plugins import event_priority
@@ -9,6 +10,11 @@ from properdocs.structure.files import File
 ABBR_RE = re.compile(r"^\*\[(.+?)\]: (.*)$")
 DOCTEST_FLAGS_RE = re.compile(r"[ \t]*#[ \t]*doctest:.+$", re.MULTILINE)
 FENCE_RE = re.compile(r"```(pycon|python)\n(.*?)```", re.DOTALL)
+SESSION_RE = re.compile(
+    r'<div class="highlight">(<pre><span></span><code>(<span class="gp">.*?)</code>)',
+    re.DOTALL,
+)
+TAG_RE = re.compile(r"<[^>]+>")
 TITLE_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
 # As the source button in the reference
@@ -47,7 +53,7 @@ def print_value(source):
     return source
 
 
-def strip_prompts(code):
+def strip_prompts(code, print_values=False):
     parts = []
     end = 0
     for example in doctest.DocTestParser().get_examples(code):
@@ -55,7 +61,7 @@ def strip_prompts(code):
         if parts and example.lineno > end:
             parts.append("\n")
         source = DOCTEST_FLAGS_RE.sub("", example.source)
-        parts.append(print_value(source) if example.want else source)
+        parts.append(print_value(source) if print_values and example.want else source)
         end = example.lineno + example.source.count("\n") + example.want.count("\n")
     return "".join(parts)
 
@@ -64,7 +70,9 @@ def strip_prompts(code):
 def script(markdown, url):
     cells = [f"# {TITLE_RE.search(markdown)[1]}\n# {url}\n"]
     for lang, code in FENCE_RE.findall(markdown):
-        cells.append("# %%\n" + (strip_prompts(code) if lang == "pycon" else code))
+        if lang == "pycon":
+            code = strip_prompts(code, print_values=True)
+        cells.append("# %%\n" + code)
     return "\n".join(cells)
 
 
@@ -77,8 +85,16 @@ def on_files(files, config):
             files.append(File.generated(config, uri, content=content))
 
 
-# Link gallery pages to their scripts.
+# Material copies data-copy, if present.
+def add_copy_text(match):
+    code = strip_prompts(unescape(TAG_RE.sub("", match[2])))
+    return f'<div class="highlight" data-copy="{escape(code)}">{match[1]}'
+
+
 def on_page_content(html, page, files, **kwargs):
+    # Copy code without prompts and outputs
+    html = SESSION_RE.sub(add_copy_text, html)
+    # Link gallery pages to their scripts
     uri = page.file.src_uri.removesuffix(".md") + ".py"
     if file := files.get_file_from_path(uri):
         html = SCRIPT_BUTTON.format(file.url_relative_to(page.file)) + html
