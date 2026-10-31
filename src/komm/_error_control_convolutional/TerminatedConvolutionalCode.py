@@ -457,7 +457,7 @@ def prune_sections(
         valid = section.transitions >= 0
         valid[valid] = keep[section.transitions[valid]]
         transitions = np.where(valid, index[section.transitions], -1)
-        keep = valid.any(axis=1)
+        keep = np.any(valid, axis=1)
         pruned.append(TrellisSection(transitions[keep], section.outputs[keep]))
     return pruned[::-1]
 
