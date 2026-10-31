@@ -427,12 +427,12 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
 
 def reachable_sections(
-    fsm: MealyMachine, num_blocks: int
+    fsm: MealyMachine, num_blocks: int, initial_states: npt.ArrayLike = (0,)
 ) -> tuple[list[TrellisSection], Array1D[np.integer], Array2D[np.integer]]:
-    # Reachable states from 0, in increasing order
+    # Reachable states, in increasing order
     sections: list[TrellisSection] = []
     firsts: list[npt.NDArray[np.integer]] = []
-    states = np.array([0])
+    states = np.asarray(initial_states)
     for _ in range(num_blocks):
         next_states, first = np.unique(fsm.transitions[states], return_index=True)
         transitions = np.searchsorted(next_states, fsm.transitions[states])
@@ -445,6 +445,21 @@ def reachable_sections(
     for t in reversed(range(num_blocks)):
         index, inputs[:, t] = np.divmod(firsts[t][index], fsm.num_input_symbols)
     return sections, states, inputs
+
+
+def prune_sections(
+    sections: list[TrellisSection], keep: npt.NDArray[np.bool_]
+) -> list[TrellisSection]:
+    # Keep only the paths into kept final states
+    pruned: list[TrellisSection] = []
+    for section in reversed(sections):
+        index = np.cumsum(keep) - 1  # New numbering of kept states
+        valid = section.transitions >= 0
+        valid[valid] = keep[section.transitions[valid]]
+        transitions = np.where(valid, index[section.transitions], -1)
+        keep = valid.any(axis=1)
+        pruned.append(TrellisSection(transitions[keep], section.outputs[keep]))
+    return pruned[::-1]
 
 
 @dataclass
@@ -568,4 +583,16 @@ class TailBiting(TerminationStrategy):
         return h * n0
 
     def trellis(self) -> Trellis:
-        raise NotImplementedError
+        fsm = self.convolutional_code.finite_state_machine()
+        num_states = fsm.num_states
+        # Product machine: (initial state, current state)
+        pairs = np.arange(num_states**2).reshape(num_states, num_states)
+        product = MealyMachine(
+            transitions=pairs[:, fsm.transitions].reshape(num_states**2, -1),
+            outputs=np.tile(fsm.outputs, (num_states, 1)),
+        )
+        initial = np.diagonal(pairs)
+        sections, states, _ = reachable_sections(product, self.num_blocks, initial)
+        # Keep paths ending at their initial state
+        s0, s = np.divmod(states, num_states)
+        return Trellis(prune_sections(sections, s0 == s))

@@ -178,6 +178,32 @@ def test_terminated_convolutional_code_trellis(convolutional_code, mode):
 
 
 @pytest.mark.parametrize(
+    "convolutional_code",
+    [
+        komm.ConvolutionalCode([[0o1, 0o1]]),  # μ = 0
+        komm.ConvolutionalCode([[0o7, 0o5]]),
+        komm.ConvolutionalCode([[0o7, 0o5]], [0o7]),
+        komm.LowRateConvolutionalCode([0o7, 0o5]),
+        komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]]),
+        komm.ConvolutionalCode([[0b11, 0b10, 0b0], [0b0, 0b0, 0b1]]),
+        komm.HighRateConvolutionalCode([0o6, 0o7, 0o5, 0o1]),
+    ],
+)
+def test_terminated_convolutional_code_trellis_tail_biting(convolutional_code):
+    # One path per codeword
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 5, "tail-biting")
+    trellis = code.strategy.trellis()
+    expected = sorted(tuple(word) for word in code.codewords())
+    assert trellis_words(trellis, convolutional_code.num_output_bits) == expected
+
+
+def test_terminated_convolutional_code_trellis_tail_biting_widths():
+    convolutional_code = komm.ConvolutionalCode([[0o7, 0o5]])
+    code = komm.TerminatedConvolutionalCode(convolutional_code, 5, "tail-biting")
+    np.testing.assert_equal(code.strategy.trellis().widths, [4, 8, 16, 16, 8, 4])
+
+
+@pytest.mark.parametrize(
     "convolutional_args, num_blocks",
     [
         (([[0b11, 0b1]], [0b11]), 6),
