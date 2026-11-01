@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 import komm
 
@@ -25,4 +26,15 @@ def test_sc_decoder_erasures():
     np.testing.assert_array_equal(
         decoder.decode([0.0, 0.0, 0.0, np.inf, 0.0, -np.inf, np.inf, -np.inf]),
         [-np.inf, np.inf, -np.inf, -np.inf],
+    )
+
+
+@pytest.mark.filterwarnings("error")
+def test_sc_decoder_wrong_guess():
+    # Wrong guess, then a frozen bit contradicts
+    code = komm.PolarCode(3, [0, 1, 2, 4])
+    decoder = komm.SCDecoder(code)
+    np.testing.assert_array_equal(
+        decoder.decode([0.0, 0.0, 0.0, np.inf, np.inf, -np.inf, np.inf, 0.0]),
+        [0.0, np.nan, np.nan, np.nan],
     )

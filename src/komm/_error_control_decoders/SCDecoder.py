@@ -20,7 +20,8 @@ def f(r: Belief, s: Belief) -> Belief:
 
 
 def g(r: Belief, s: Belief, b: Decision) -> Belief:
-    return s + (-1) ** b * r
+    with np.errstate(invalid="ignore"):
+        return s + (-1) ** b * r
 
 
 @dataclass
