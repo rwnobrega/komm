@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
@@ -5,7 +7,16 @@ from tqdm import tqdm
 from .._finite_state_machine.Trellis import Trellis
 from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.matrices import row_span, trellis_oriented_form
-from ..types import Array2D
+from ..types import Array1D, Array2D
+
+
+@dataclass(slots=True)
+class TrellisEncoder:
+    # Message bits in, code bits out
+    trellis: Trellis
+    num_input_bits: int
+    num_output_bits: int
+    kept: Array1D[np.integer]  # Code bits kept after puncturing
 
 
 def extended_parity_submatrix(

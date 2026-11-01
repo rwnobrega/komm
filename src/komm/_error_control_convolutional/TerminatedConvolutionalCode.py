@@ -7,6 +7,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._error_control_block.util import TrellisEncoder
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._finite_state_machine.Trellis import Trellis
 from .._finite_state_machine.TrellisSection import TrellisSection
@@ -424,6 +425,14 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             array([1, 2, 4, 8, 4, 2, 1])
         """
         return super().minimal_trellis()
+
+    def trellis_encoder(self) -> TrellisEncoder:
+        return TrellisEncoder(
+            trellis=self.strategy.trellis(),
+            num_input_bits=self.convolutional_code.num_input_bits,
+            num_output_bits=self.convolutional_code.num_output_bits,
+            kept=self._kept,
+        )
 
 
 def reachable_sections(

@@ -38,21 +38,23 @@ class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
 
     def __post_init__(self) -> None:
         self.input_type = validate_decision_type(self.input_type)
-        n = self.code.convolutional_code.num_output_bits
-        self._trellis = self.code.strategy.trellis()
+        self._encoder = self.code.trellis_encoder()
+        trellis, n = self._encoder.trellis, self._encoder.num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         # About 64 MiB of decisions and metrics
-        section_bytes = int(self._trellis.widths.max()) + 8 * 2**n
-        self._chunk_size = max(1, 2**26 // (len(self._trellis) * section_bytes))
+        section_bytes = int(trellis.widths.max()) + 8 * 2**n
+        self._chunk_size = max(1, 2**26 // (len(trellis) * section_bytes))
 
     def _branch_metrics(
         self, r: npt.NDArray[np.integer | np.floating]
     ) -> npt.NDArray[np.integer | np.floating]:
-        n = self.code.convolutional_code.num_output_bits
+        trellis, n = self._encoder.trellis, self._encoder.num_output_bits
         if self.input_type == "hard":
             r = (-1.0) ** r  # Bits as unit L-values
-        r = self.code.depuncture(r, 0.0)  # Deleted bits as null L-values
-        return r.reshape(r.shape[0], -1, n) @ self._bits.T
+        # Deleted bits as null L-values
+        lu = np.zeros((r.shape[0], len(trellis) * n))
+        lu[:, self._encoder.kept] = r
+        return lu.reshape(r.shape[0], -1, n) @ self._bits.T
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -112,15 +114,15 @@ class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
             >>> decoder.decode([1, 1, 0, 1, 1, 0, 0, 0, 0])
             array([1, 0, 0, 0])
         """
-        k = self.code.convolutional_code.num_input_bits
-        h = self.code.num_blocks
+        k = self._encoder.num_input_bits
+        h = self.code.dimension // k
 
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Viterbi"))
         def decode(r: npt.NDArray[np.integer | np.floating]):
             x_hat = viterbi(
-                trellis=self._trellis,
+                trellis=self._encoder.trellis,
                 branch_metrics=self._branch_metrics(r),
             )
             u_hat = int_to_bits(x_hat[:, :h], width=k)
