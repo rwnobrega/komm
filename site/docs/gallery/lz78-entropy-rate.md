@@ -33,7 +33,7 @@ array([0.5, 0.5])
 The source emits long runs of zeros and ones, so the phrases grow quickly. The first $24$ symbols below make the $8$ phrases $1$, $11$, $0$, $111$, $1111$, $11111$, $01$, and $111111$:
 
 ```pycon
->>> x = source.emit(100_000)
+>>> x = source.emit(10_000_000)
 >>> x[:24]
 array([1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1])
 >>> lz78 = komm.LempelZiv78Code(2)
@@ -46,9 +46,9 @@ The rate of the code, in bits per source symbol, is the length of the output div
 
 ```pycon
 >>> coin = komm.DiscreteMemorylessSource(2)
->>> z = coin.emit(100_000)
+>>> z = coin.emit(10_000_000)
 
->>> ns = np.logspace(2, 5, 7).astype(int)
+>>> ns = np.logspace(2, 7, 11).astype(int)
 >>> rates_source = [lz78.encode(x[:n]).size / n for n in ns]
 >>> rates_coin = [lz78.encode(z[:n]).size / n for n in ns]
 
@@ -74,10 +74,10 @@ plt.show()
   ![Rate of the Lempel–Ziv 78 code for a Markov source and a fair coin.](/fig/lz78_entropy_rate.svg)
 </figure>
 
-The phrases form a tree, in which each phrase hangs from the previous phrase it extends. The figure below shows the trees for the first $300$ symbols of each sequence, with the edges of $0$ in blue and the edges of $1$ in red. For the coin, the tree is full and shallow, and takes $67$ tokens; for the Markov source, it is sparse and deep, with long branches from the runs, and takes only $50$ tokens.
+The phrases form a tree, in which each phrase hangs from the previous phrase it extends. The figure below shows the trees for the first $300$ symbols of each sequence, with the edges of $0$ in blue and the edges of $1$ in red. For the coin, the tree is full and shallow, and takes $68$ tokens; for the Markov source, it is sparse and deep, with long branches from the runs, and takes only $50$ tokens.
 
 <figure markdown>
   ![Phrase trees of the Lempel–Ziv 78 code for a Markov source and a fair coin.](/fig/lz78_trees.svg)
 </figure>
 
-The universality has a price. With $10^5$ symbols, the rate of the LZ78 code is $0.711$ bits per symbol, close to the $0.7125$ bits per symbol of a Huffman code for blocks of $4$ symbols designed for this source.
+The universality has a price. With $10^7$ symbols, the rate of the LZ78 code is $0.653$ bits per symbol, close to the $0.6505$ bits per symbol of a Huffman code for blocks of $6$ symbols designed for this source.

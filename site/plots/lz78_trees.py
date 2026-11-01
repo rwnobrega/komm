@@ -15,8 +15,8 @@ def sequences():
         transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
         pmfs=[[0.9, 0.1], [0.5, 0.5], [0.5, 0.5], [0.1, 0.9]],
     )
-    x = source.emit(100_000)
-    z = komm.DiscreteMemorylessSource(2).emit(100_000)
+    x = source.emit(10_000_000)
+    z = komm.DiscreteMemorylessSource(2).emit(10_000_000)
     return x[:LENGTH], z[:LENGTH]
 
 
