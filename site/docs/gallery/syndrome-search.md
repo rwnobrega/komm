@@ -61,7 +61,7 @@ True
 
 ```
 
-The search needs no table, but the number of error patterns it tries is random, and grows with the noise. Over the binary symmetric channel, with the [Golay code](/ref/GolayCode), the mean number of tries goes from about $1$ for $p = 0.001$ to about $500$ for $p = 0.1$. Below, the columns are $p$, the mean, and the maximum number of tries:
+The search needs no table, but the number of error patterns it tries is random, and grows with the noise. The simulation below counts the tries over the binary symmetric channel, with the [Golay code](/ref/GolayCode), for $1000$ codewords at each value of $p$:
 
 ```pycon
 >>> rng = np.random.default_rng(seed=42)
@@ -69,15 +69,34 @@ The search needs no table, but the number of error patterns it tries is random, 
 
 >>> code = komm.GolayCode()
 >>> source = komm.DiscreteMemorylessSource(2)
->>> for p in [0.001, 0.01, 0.1]:
+>>> ps = np.logspace(-3, -1, 9)
+>>> mean_tries, max_tries = [], []
+>>> for p in ps:
 ...     channel = komm.BinarySymmetricChannel(p)
-...     v = code.encode(source.emit((300, code.dimension)))
+...     v = code.encode(source.emit((1000, code.dimension)))
 ...     tries = [decode(code, r)[1] for r in channel.transmit(v)]
-...     print(f"{p:<5}  {np.mean(tries):6.1f}  {np.max(tries):4}")
-0.001     1.3    20
-0.01     10.2   648
-0.1     475.5  2046
+...     mean_tries.append(np.mean(tries))
+...     max_tries.append(np.max(tries))
 
 ```
 
-Since the Golay code is perfect, every word of weight at most $3$ is a coset leader, so the search never tries more than $2^{11} = 2048$ error patterns. For comparison, the [exhaustive codeword decoder](/ref/ExhaustiveCodewordDecoder) compares each received word with all the $2^{12} = 4096$ codewords, whatever the noise.
+Since the Golay code is perfect, every word of weight at most $3$ is a coset leader, so the search never tries more than $2^{11} = 2048$ error patterns. To plot the mean and the maximum number of tries, with [Matplotlib](https://matplotlib.org), and this bound as a dashed line:
+
+```python
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.loglog(ps, mean_tries, "o-", label="Mean")
+ax.loglog(ps, max_tries, "s-", label="Maximum")
+ax.axhline(2048, color="k", ls="--")
+ax.set(xlabel="$p$", ylabel="Error patterns tried", ylim=(1, 1e4))
+ax.grid(which="both")
+ax.legend()
+plt.show()
+```
+
+<figure markdown>
+  ![Mean and maximum number of error patterns tried by the search for the Golay code over the binary symmetric channel.](/fig/syndrome_search.svg)
+</figure>
+
+The mean goes from about $1$ for $p = 0.001$ to about $500$ for $p = 0.1$, and the maximum gets close to the bound from about $p = 0.03$ on. For comparison, the [exhaustive codeword decoder](/ref/ExhaustiveCodewordDecoder) compares each received word with all the $2^{12} = 4096$ codewords, whatever the noise.
