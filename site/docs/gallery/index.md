@@ -16,3 +16,4 @@ Short examples of common tasks with Komm.
 - [**QR code format information**](qr-format.md) – BCH code that protects the error correction level and mask pattern of a QR code.
 - [**Standard array and syndrome decoding**](standard-array.md) – Standard array of a linear block code, and decoding with it.
 - [**Syndrome decoding without a table**](syndrome-search.md) – Syndrome decoding that searches for the coset leader, instead of looking it up in a table.
+- [**Text compression**](text-compression.md) – Huffman and Lempel–Ziv codes on the text of _Alice's Adventures in Wonderland_, compared with the entropy of its characters.
