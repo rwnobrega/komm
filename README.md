@@ -67,6 +67,12 @@ The test suite is written using the [pytest](https://docs.pytest.org/) framework
 pytest
 ```
 
+To test the gallery, execute:
+
+```bash
+pytest site/docs/gallery
+```
+
 ### Documentation
 
 The documentation is built using [ProperDocs](https://properdocs.org/) with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. To serve the documentation locally, run:

@@ -33,6 +33,19 @@ jobs:
         run: basedpyright
       - name: pytest
         run: pytest
+  # Run once, since pages may be slow
+  gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: pip install -e ".[test]"
+      - name: Check gallery
+        run: pytest site/docs/gallery
   plots:
     runs-on: ubuntu-latest
     steps:
