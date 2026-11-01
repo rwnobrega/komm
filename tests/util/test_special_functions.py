@@ -298,6 +298,14 @@ def test_boxplus_identity_and_annihilator():
     np.testing.assert_allclose(komm.boxplus(-np.inf, 3.7), -3.7, rtol=1e-12)
 
 
+@pytest.mark.filterwarnings("error")
+def test_boxplus_infinite():
+    a = np.array([np.inf, np.inf, -np.inf, -np.inf])
+    b = np.array([np.inf, -np.inf, np.inf, -np.inf])
+    expected = [np.inf, -np.inf, -np.inf, np.inf]
+    np.testing.assert_array_equal(komm.boxplus(a, b), expected)
+
+
 def test_boxplus_commutative_and_sign(rng):
     a = rng.normal(scale=20, size=1000)
     b = rng.normal(scale=20, size=1000)

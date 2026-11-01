@@ -36,6 +36,8 @@
 
 - Fixed `ReedDecoder`, whose ties favored the all-zero message.
 
+- Fixed regression in `boxplus` (and hence `SCDecoder`), which returned NaN when both inputs were infinite.
+
 ## v0.37.0 (2026-10-15)
 
 ### Added

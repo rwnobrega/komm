@@ -16,3 +16,13 @@ def test_sc_decoder_kit():
         np.array([-6.85, -5.96, -9.31, -20]),
         atol=0.005,
     )
+
+
+def test_sc_decoder_erasures():
+    # Message [1, 0, 1, 1], four bits erased
+    code = komm.PolarCode(3, [0, 1, 2, 4])
+    decoder = komm.SCDecoder(code)
+    np.testing.assert_array_equal(
+        decoder.decode([0.0, 0.0, 0.0, np.inf, 0.0, -np.inf, np.inf, -np.inf]),
+        [-np.inf, np.inf, -np.inf, -np.inf],
+    )
