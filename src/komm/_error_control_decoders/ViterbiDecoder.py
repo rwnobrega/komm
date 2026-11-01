@@ -45,17 +45,6 @@ class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
         section_bytes = int(trellis.widths.max()) + 8 * 2**n
         self._chunk_size = max(1, 2**26 // (len(trellis) * section_bytes))
 
-    def _branch_metrics(
-        self, r: npt.NDArray[np.integer | np.floating]
-    ) -> npt.NDArray[np.integer | np.floating]:
-        trellis, n = self._encoder.trellis, self._encoder.num_output_bits
-        if self.input_type == "hard":
-            r = (-1.0) ** r  # Bits as unit L-values
-        # Deleted bits as null L-values
-        lu = np.zeros((r.shape[0], len(trellis) * n))
-        lu[:, self._encoder.kept] = r
-        return lu.reshape(r.shape[0], -1, n) @ self._bits.T
-
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
         Examples:
@@ -114,21 +103,24 @@ class ViterbiDecoder(abc.CodewordDecoder[TerminatedConvolutionalCode]):
             >>> decoder.decode([1, 1, 0, 1, 1, 0, 0, 0, 0])
             array([1, 0, 0, 0])
         """
-        k = self._encoder.num_input_bits
+        trellis = self._encoder.trellis
+        k, n = self._encoder.num_input_bits, self._encoder.num_output_bits
         h = self.code.dimension // k
 
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size)
         @with_pbar(get_pbar(np.size(input) // self.code.length, "Viterbi"))
-        def decode(r: npt.NDArray[np.integer | np.floating]):
-            x_hat = viterbi(
-                trellis=self._encoder.trellis,
-                branch_metrics=self._branch_metrics(r),
-            )
+        def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
+            # Deleted bits as null L-values
+            lu = np.zeros((li.shape[0], len(trellis) * n))
+            lu[:, self._encoder.kept] = li
+            branch_metrics = lu.reshape(lu.shape[0], -1, n) @ self._bits.T
+            x_hat = viterbi(trellis, branch_metrics)
             u_hat = int_to_bits(x_hat[:, :h], width=k)
             return u_hat
 
         if self.input_type == "hard":
-            return decode(validate_binary_array(input))
+            li = (-1.0) ** validate_binary_array(input)  # Bits as unit L-values
         else:  # self.input_type == "soft"
-            return decode(validate_soft_array(input))
+            li = validate_soft_array(input)
+        return decode(li)
