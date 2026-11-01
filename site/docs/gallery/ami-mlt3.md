@@ -72,13 +72,13 @@ $$
 $$
 which peaks near $\phi = 1/8$: half of the bits are ones, so the level takes eight bits, on average, to go around the cycle.
 
-The simulation below estimates the power spectral densities by averaging the periodograms of $1000$ blocks of $64$ bits:
+The simulation below estimates the power spectral densities by averaging the periodograms of $10^4$ blocks of $64$ bits:
 
 ```pycon
 >>> komm.global_rng.set(np.random.default_rng(seed=42))
 
 >>> source = komm.DiscreteMemorylessSource(2)
->>> bits = source.emit(64_000)
+>>> bits = source.emit(640_000)
 
 >>> sps = 8
 >>> pulse = komm.RectangularPulse()  # NRZ pulse
@@ -111,7 +111,7 @@ formulas = {
 
 fig, ax = plt.subplots()
 for name in estimates:
-    ax.plot(*estimates[name], label=name)
+    ax.plot(*estimates[name], label=name, lw=2)
     ax.plot(*formulas[name], "k--", lw=1)
 ax.set(xlabel="$f$", ylabel="$S(f)$", xlim=(0, 2), ylim=(0, 1.6))
 ax.grid()
