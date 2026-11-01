@@ -90,9 +90,9 @@ class SystematicBlockCode(abc.BlockCode):
     def length(self) -> int:
         r"""
         Examples:
-           >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
-           >>> code.length
-           5
+            >>> code = komm.SystematicBlockCode(parity_submatrix=[[0, 1, 1], [1, 1, 0]])
+            >>> code.length
+            5
         """
         return self.dimension + self.redundancy
 

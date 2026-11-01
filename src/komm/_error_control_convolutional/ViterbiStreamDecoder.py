@@ -68,16 +68,16 @@ class ViterbiStreamDecoder:
             output: The decoded bit sequence.
 
         Examples:
-                >>> decoder = komm.ViterbiStreamDecoder(
-                ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
-                ...     traceback_length=10,
-                ... )
-                >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-                array([0, 0, 0, 0, 0, 0, 0, 0])
-                >>> decoder.decode([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1])
-                array([0, 0, 0, 0, 0, 0, 0, 0])
-                >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-                array([0, 0, 1, 0, 1, 1, 1, 0])
+            >>> decoder = komm.ViterbiStreamDecoder(
+            ...     convolutional_code=komm.ConvolutionalCode([[0b111, 0b101]]),
+            ...     traceback_length=10,
+            ... )
+            >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            array([0, 0, 0, 0, 0, 0, 0, 0])
+            >>> decoder.decode([1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1])
+            array([0, 0, 0, 0, 0, 0, 0, 0])
+            >>> decoder.decode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            array([0, 0, 1, 0, 1, 1, 1, 0])
         """
         if self.input_type == "hard":
             input = validate_binary_array(input, ndim=1)
