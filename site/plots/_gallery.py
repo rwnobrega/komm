@@ -2,10 +2,9 @@ import doctest
 import io
 import re
 from contextlib import redirect_stdout
+from functools import cache
 from pathlib import Path
 from unittest.mock import patch
-
-import matplotlib.pyplot as plt
 
 FENCES = re.compile(r"```(pycon|python)\n(.*?)```", re.DOTALL)
 
@@ -13,7 +12,9 @@ FENCES = re.compile(r"```(pycon|python)\n(.*?)```", re.DOTALL)
 doctest.register_optionflag("FLOAT_CMP")
 
 
-def run(name, index=0):
+# Run each page once for its figures
+@cache
+def figures(name):
     path = Path(__file__).parents[1] / "docs" / "gallery" / f"{name}.md"
     namespace = {}
     figs = []
@@ -26,7 +27,8 @@ def run(name, index=0):
             exec(code, namespace)
             if lang == "python":
                 figs.append(namespace["fig"])
-    fig = figs.pop(index)
-    for other in figs:
-        plt.close(other)
-    return fig
+    return figs
+
+
+def run(name, index=0):
+    return figures(name)[index]
