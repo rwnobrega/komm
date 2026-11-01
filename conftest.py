@@ -22,3 +22,10 @@ def rng(request: pytest.FixtureRequest):
     rng = numpy.random.default_rng(seed)
     komm.global_rng.set(rng)
     return rng
+
+
+@pytest.fixture(autouse=True)
+def _chdir_to_page(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch):
+    # Pages read files beside them
+    if request.node.path.suffix == ".md":
+        monkeypatch.chdir(request.node.path.parent)

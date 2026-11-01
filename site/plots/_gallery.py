@@ -1,7 +1,7 @@
 import doctest
 import io
 import re
-from contextlib import redirect_stdout
+from contextlib import chdir, redirect_stdout
 from functools import cache
 from pathlib import Path
 from unittest.mock import patch
@@ -18,8 +18,12 @@ def figures(name):
     path = Path(__file__).parents[1] / "docs" / "gallery" / f"{name}.md"
     namespace = {}
     figs = []
-    # Quiet, and without opening a window
-    with redirect_stdout(io.StringIO()), patch("matplotlib.pyplot.show"):
+    # Quiet, without a window, beside the page
+    with (
+        redirect_stdout(io.StringIO()),
+        patch("matplotlib.pyplot.show"),
+        chdir(path.parent),
+    ):
         for lang, code in FENCES.findall(path.read_text()):
             if lang == "pycon":
                 examples = doctest.DocTestParser().get_examples(code)
