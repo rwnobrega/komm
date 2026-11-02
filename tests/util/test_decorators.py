@@ -34,7 +34,7 @@ def test_blockwise():
 def test_chunkwise():
     sizes = []
 
-    @chunkwise(3)
+    @chunkwise(3, "Testing")
     def func(rows):
         sizes.append(rows.shape[0])
         return rows[:, ::2]

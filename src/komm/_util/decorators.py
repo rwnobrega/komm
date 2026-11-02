@@ -7,6 +7,8 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .progress import tqdm_bar
+
 T = TypeVar("T", bound=np.generic)
 U = TypeVar("U", bound=np.generic)
 
@@ -49,19 +51,22 @@ def blockwise(block_size: int):
     return decorator
 
 
-def chunkwise(chunk_size: int):
+def chunkwise(chunk_size: int, desc: str):
     r"""
-    Vectorizes a function that accepts a 2D-array and returns a 2D-array, acting row by row. Calls it on chunks of `chunk_size` rows.
+    Vectorizes a function that accepts a 2D-array and returns a 2D-array, acting row by row. Calls it on chunks of `chunk_size` rows. Shows a progress bar with description `desc`.
     """
 
     def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
         @wraps(func)
         def wrapper(arr: npt.NDArray[T]) -> npt.NDArray[U]:
             rows = arr.reshape(-1, arr.shape[-1])
-            outputs = [
-                func(rows[start : start + chunk_size])
-                for start in range(0, rows.shape[0], chunk_size)
-            ]
+            pbar = tqdm_bar(rows.shape[0], desc, unit="block")
+            outputs: list[npt.NDArray[U]] = []
+            for start in range(0, rows.shape[0], chunk_size):
+                chunk = rows[start : start + chunk_size]
+                outputs.append(func(chunk))
+                pbar.update(chunk.shape[0])
+            pbar.close()
             output = np.concatenate(outputs)
             return output.reshape(*arr.shape[:-1], output.shape[-1])
 

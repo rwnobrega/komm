@@ -10,9 +10,9 @@ from .._error_control_convolutional.TerminatedConvolutionalCode import (
 )
 from .._finite_state_machine.Trellis import forward_backward
 from .._util.bit_operations import int_to_bits
-from .._util.decorators import blockwise, chunkwise, with_pbar
+from .._util.decorators import blockwise, chunkwise
 from .._util.validators import validate_decision_type, validate_soft_array
-from .util import get_pbar, marginalize
+from .util import marginalize
 
 
 @dataclass
@@ -76,8 +76,7 @@ class BCJRDecoder(abc.BlockDecoder[TerminatedConvolutionalCode]):
         h = self.code.dimension // k
 
         @blockwise(self.code.length)
-        @chunkwise(self._chunk_size)
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "BCJR"))
+        @chunkwise(self._chunk_size, "Decoding with BCJR algorithm")
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
             # Deleted bits as null L-values
             lu = np.zeros((li.shape[0], len(trellis) * n))

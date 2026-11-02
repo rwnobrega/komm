@@ -5,13 +5,12 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.decorators import blockwise, chunkwise, with_pbar
+from .._util.decorators import blockwise, chunkwise
 from .._util.validators import (
     validate_binary_array,
     validate_decision_type,
     validate_soft_array,
 )
-from .util import get_pbar
 
 
 @dataclass
@@ -58,8 +57,7 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
         """
 
         @blockwise(self.code.length)
-        @chunkwise(self._chunk_size)
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "exhaustive codeword"))
+        @chunkwise(self._chunk_size, "Decoding with exhaustive codeword algorithm")
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             x = (-1.0) ** r if self.input_type == "hard" else r
             metrics = x @ self._polar.T
