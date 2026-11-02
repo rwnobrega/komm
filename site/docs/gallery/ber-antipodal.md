@@ -36,7 +36,7 @@ Binary antipodal signaling uses the [PAM constellation](/ref/PAMConstellation) o
 
 ```
 
-To plot the curves, with [Matplotlib](https://matplotlib.org):
+To plot the curves, with [Matplotlib](https://matplotlib.org), and the BER of $10^{-5}$ as a dashed line:
 
 ```python
 import matplotlib.pyplot as plt
@@ -44,7 +44,9 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots()
 ax.semilogy(ebn0_db, ber_theory, label="Theory")
 ax.semilogy(ebn0_db, ber, "o", label="Simulation")
+ax.axhline(1e-5, color="k", ls="--")
 ax.set(xlabel=r"$E_\mathrm{b}/N_0$ (dB)", ylabel="BER", ylim=(1e-6, 1e-1))
+ax.set_xticks(ebn0_db)
 ax.grid(which="both")
 ax.legend()
 plt.show()
@@ -58,7 +60,7 @@ Inverting the formula gives the $E_\mathrm{b} / N_0$ needed for a target BER:
 $$
     E_\mathrm{b} / N_0 = \frac{1}{2} \left( \mathrm{Q}^{-1}(P_\mathrm{b}) \right)^2,
 $$
-where $\mathrm{Q}^{-1}$ is the [inverse of the Gaussian Q-function](/ref/gaussian_q_inv). For $P_\mathrm{b} = 10^{-5}$, a common target when comparing channel codes, it is about $9.6$ dB:
+where $\mathrm{Q}^{-1}$ is the [inverse of the Gaussian Q-function](/ref/gaussian_q_inv). For $P_\mathrm{b} = 10^{-5}$, a common target when comparing channel codes, it is about $9.6$ dB, where the theory curve crosses the dashed line:
 
 ```pycon
 >>> from math import log10
