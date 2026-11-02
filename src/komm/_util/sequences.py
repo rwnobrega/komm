@@ -34,20 +34,15 @@ def autocorrelation(
         array([11., 20., 30., 20., 11.])
     """
     sequence = np.asarray(sequence)
-    seq_conj = np.conj(sequence)
     if shifts is None:
         shifts = np.arange(sequence.size)
     shifts = validate_integer_array(shifts, ndim=1)
     normalized = validate_bool(normalized)
-    acorr = np.empty_like(shifts, dtype=sequence.dtype)
-    for i, ℓ in enumerate(shifts.tolist()):
-        if ℓ < 0:
-            acorr[i] = np.dot(sequence[:ℓ], seq_conj[-ℓ:])
-        elif ℓ > 0:
-            acorr[i] = np.dot(sequence[ℓ:], seq_conj[:-ℓ])
-        else:
-            acorr[i] = np.dot(sequence, seq_conj)
-    energy = np.dot(sequence, seq_conj)
+    size = 2 ** (2 * sequence.size - 1).bit_length()
+    padded = np.pad(sequence, (0, size - sequence.size))
+    acorr = cyclic_autocorrelation(padded, shifts)
+    acorr[np.abs(shifts.astype(int)) >= sequence.size] = 0
+    energy = np.dot(sequence, sequence.conj())
     return acorr / energy if normalized else acorr
 
 
