@@ -110,7 +110,6 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         ss, ls = self.search_size, self.lookahead_size
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []
-
         pbar = tqdm(total=len(buffer), initial=ss, desc="Compressing LZ77", delay=2.5)
         i = ss
         while i < len(buffer):
@@ -118,7 +117,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             tokens.append((p, l, buffer[i + l]))
             i += l + 1
             pbar.update(l + 1)
-
+        pbar.close()
         return tokens
 
     def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:

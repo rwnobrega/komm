@@ -75,6 +75,7 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode | ReedSolomonCode]):
                     roots = inverses[e_loc]
                     e_val = forney_algorithm(field, syndromes[i], sigma, roots)
                 v_hat[i][e_loc] ^= e_val
+            pbar.close()
             return int_to_bits(v_hat, width=width)
 
         return decode_to_codeword(validate_binary_array(input))
