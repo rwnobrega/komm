@@ -10,8 +10,8 @@ from .._error_control_block.BCHCode import BCHCode
 from .._error_control_block.ReedSolomonCode import ReedSolomonCode
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.decorators import blockwise
+from .._util.progress import tqdm_bar
 from .._util.validators import validate_binary_array
-from .util import get_pbar
 
 
 @dataclass
@@ -58,7 +58,8 @@ class BerlekampDecoder(abc.CodewordDecoder[BCHCode | ReedSolomonCode]):
             # See [LC04, Sec. 6.2].
             syndromes = bifield.horner(field, r, points)
             v_hat = r.copy()
-            pbar = get_pbar(np.size(input) // self.code.length, "Berlekamp")
+            desc = "Decoding with Berlekamp algorithm"
+            pbar = tqdm_bar(np.size(input) // self.code.length, desc, unit="block")
             for i in np.ndindex(r.shape[:-1]):
                 pbar.update()
                 if not syndromes[i].any():
