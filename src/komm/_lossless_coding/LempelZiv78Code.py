@@ -3,9 +3,9 @@ from itertools import chain
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
+from .._util.progress import tqdm_chunked
 from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D
 from .util import Word, ceil_log, integer_to_symbols, symbols_to_integer, take
@@ -51,7 +51,7 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         children: dict[Token, int] = {}
         tokens: list[Token] = []
         p = 0
-        for x in tqdm(source.tolist(), "Compressing LZ78", delay=2.5):
+        for x in tqdm_chunked(source.tolist(), "Compressing LZ78"):
             if (p, x) in children:
                 p = children[p, x]
                 continue
