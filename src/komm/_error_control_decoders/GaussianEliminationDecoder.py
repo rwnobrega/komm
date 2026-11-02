@@ -4,10 +4,9 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.decorators import blockwise, vectorize
 from .._util.matrices import solution_set
 from .._util.validators import validate_integer_array
-from .util import get_pbar
 
 
 @dataclass
@@ -45,8 +44,7 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
         G, H = self.code.generator_matrix, self.code.check_matrix
 
         @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "Gaussian elimination"))
+        @vectorize("Decoding with Gaussian elimination algorithm")
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             # Solve for the erased positions or the message bits, whichever are fewer.
             if np.count_nonzero(r == 2) < self.code.dimension:
@@ -77,8 +75,7 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
         G_r_inv = self.code.generator_matrix_right_inverse
 
         @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "Gaussian elimination"))
+        @vectorize("Decoding with Gaussian elimination algorithm")
         def decode(r: npt.NDArray[np.integer]):
             # Solve for the erased positions or the message bits, whichever are fewer.
             if np.count_nonzero(r == 2) < self.code.dimension:

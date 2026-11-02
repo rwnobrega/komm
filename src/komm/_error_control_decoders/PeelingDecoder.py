@@ -4,9 +4,8 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._util.decorators import blockwise, vectorize, with_pbar
+from .._util.decorators import blockwise, vectorize
 from .._util.validators import validate_integer_array
-from .util import get_pbar
 
 
 @dataclass
@@ -44,8 +43,7 @@ class PeelingDecoder(abc.CodewordDecoder[abc.BlockCode]):
         input = validate_integer_array(input, low=0, high=3)
 
         @blockwise(self.code.length)
-        @vectorize
-        @with_pbar(get_pbar(np.size(input) // self.code.length, "peeling"))
+        @vectorize("Decoding with peeling algorithm")
         def decode_to_codeword(r: npt.NDArray[np.integer]):
             # See [RU08, Example 3.104, p. 118].
             H = self.code.check_matrix

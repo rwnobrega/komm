@@ -1,11 +1,9 @@
 from collections.abc import Callable
 from functools import wraps
-from math import prod
-from typing import Any, TypeVar
+from typing import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .progress import tqdm_bar
 
@@ -16,16 +14,20 @@ U = TypeVar("U", bound=np.generic)
 ArrayFunction = Callable[[npt.NDArray[T]], npt.NDArray[U]]
 
 
-def vectorize(func: ArrayFunction[T, U]):
+def vectorize(desc: str):
     r"""
-    Vectorizes a function that accepts a 1D-array and returns a 1D-array.
+    Vectorizes a function that accepts a 1D-array and returns a 1D-array. Shows a progress bar with description `desc`.
     """
 
-    @wraps(func)
-    def wrapper(arr: npt.NDArray[T]):
-        return np.apply_along_axis(func, -1, arr)
+    def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
+        @chunkwise(1, desc)
+        @wraps(func)
+        def wrapper(rows: npt.NDArray[T]) -> npt.NDArray[U]:
+            return func(rows[0])[np.newaxis]
 
-    return wrapper
+        return wrapper
+
+    return decorator
 
 
 def blockwise(block_size: int):
@@ -69,23 +71,6 @@ def chunkwise(chunk_size: int, desc: str):
             pbar.close()
             output = np.concatenate(outputs)
             return output.reshape(*arr.shape[:-1], output.shape[-1])
-
-        return wrapper
-
-    return decorator
-
-
-def with_pbar(pbar: "tqdm[Any]"):
-    r"""
-    Updates a given tqdm progress bar after a function call, by the number of rows of the input (one, for a 1D-array).
-    """
-
-    def decorator(func: ArrayFunction[T, U]) -> ArrayFunction[T, U]:
-        @wraps(func)
-        def wrapper(arr: npt.NDArray[T]) -> npt.NDArray[U]:
-            result = func(arr)
-            pbar.update(prod(arr.shape[:-1]))
-            return result
 
         return wrapper
 
