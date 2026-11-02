@@ -30,12 +30,17 @@ def lfsr_sequence(
     feedback_polynomial: BinaryPolynomial,
     start_state_polynomial: BinaryPolynomial,
 ) -> Array1D[np.integer]:
+    n = feedback_polynomial.degree
     taps = (feedback_polynomial + BinaryPolynomial(1)).exponents()
-    length = 2 ** taps[-1] - 1
-    state = start_state_polynomial.coefficients(width=feedback_polynomial.degree)
+    length = 2**n - 1
     sequence = np.empty(length, dtype=int)
-    for i in range(length):
-        sequence[i] = state[-1]
-        state[-1] = np.count_nonzero(state[taps - 1]) % 2
-        state = np.roll(state, 1)
+    sequence[:n] = start_state_polynomial.coefficients(width=n)[::-1]
+    # Since p(X)^2 = p(X^2), tap positions can be doubled
+    k, s = n, 1
+    while k < length:
+        if k >= 2 * n * s:
+            s *= 2
+        stop = min(k + taps[0] * s, length)
+        sequence[k:stop] = sum(sequence[k - s * i : stop - s * i] for i in taps) % 2
+        k = stop
     return sequence

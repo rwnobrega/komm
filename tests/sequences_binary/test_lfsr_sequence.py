@@ -49,6 +49,16 @@ def test_lfsr_mls(degree):
     np.testing.assert_equal(lfsr.cyclic_autocorrelation(), cyclic_autocorrelation)
 
 
+@pytest.mark.parametrize("degree", range(1, 21))
+def test_lfsr_mls_recurrence(degree):
+    lfsr = komm.LFSRSequence.maximum_length_sequence(degree)
+    taps = lfsr.feedback_polynomial.exponents()[1:]
+    x = lfsr.bit_sequence
+    np.testing.assert_equal(x[:degree], [0] * (degree - 1) + [1])
+    feedback = sum(x[degree - i : x.size - i] for i in taps) % 2
+    np.testing.assert_equal(x[degree:], feedback)
+
+
 @pytest.mark.parametrize("degree", [-10, 0, 25])
 def test_lfsr_mls_invalid(degree):
     with pytest.raises(ValueError, match=r"only degrees in the range \[1 : 24\]"):
