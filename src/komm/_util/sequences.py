@@ -84,6 +84,12 @@ def cyclic_autocorrelation(
         shifts = np.arange(sequence.size)
     shifts = validate_integer_array(shifts, ndim=1)
     normalized = validate_bool(normalized)
-    acorr = np.array([np.dot(sequence, np.roll(sequence, ℓ).conj()) for ℓ in shifts])
+    # The DFT of the cyclic autocorrelation is |X|^2
+    spectrum = np.fft.fft(sequence)
+    acorr = np.fft.ifft(np.abs(spectrum) ** 2)[shifts % sequence.size]
+    if np.isrealobj(sequence):
+        acorr = np.real(acorr)
+    if np.issubdtype(sequence.dtype, np.integer):
+        acorr = np.rint(acorr).astype(sequence.dtype)
     energy = np.dot(sequence, sequence.conj())
     return acorr / energy if normalized else acorr

@@ -39,7 +39,7 @@ def test_lfsr_sequence_invalid(args, message):
         komm.LFSRSequence(*args)
 
 
-@pytest.mark.parametrize("degree", range(2, 13))
+@pytest.mark.parametrize("degree", range(2, 21))
 def test_lfsr_mls(degree):
     lfsr = komm.LFSRSequence.maximum_length_sequence(degree)
     assert degree == lfsr.feedback_polynomial.degree
