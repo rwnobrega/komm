@@ -1,16 +1,14 @@
 import inspect
-import sys
 from pathlib import Path
 
 import mkdocs_gen_files
 import yaml
 from jinja2 import Environment, FileSystemLoader
 
+import komm
+
 
 def get_data(toc):
-    sys.path.append(".")
-    import komm
-
     src_dir = Path(komm.__file__).parents[1]
     repo_url = mkdocs_gen_files.FilesEditor.current().config.repo_url
     src_url = f"{repo_url}blob/v{komm.__version__}/src"
