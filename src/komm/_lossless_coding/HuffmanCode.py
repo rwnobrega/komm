@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 from .. import abc
 from .._util.docs import mkdocstrings
+from .._util.progress import tqdm_bar
 from .._util.validators import validate_choice, validate_pmf
 from ..types import Array1D
 from .util import Word, canonical_code
@@ -168,7 +169,7 @@ def huffman_code(
 ) -> dict[int, Word]:
     size = pmf.size
 
-    pbar = tqdm(desc="Generating Huffman code", total=3 * size, delay=2.5)
+    pbar = tqdm_bar(3 * size, "Generating Huffman code")
     tree = huffman_tree(pmf, policy, pbar)
     if assignment == "canonical":
         codewords = canonical_code(tree_lengths(tree, size, pbar))

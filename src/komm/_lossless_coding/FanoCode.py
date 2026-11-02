@@ -4,10 +4,10 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
 from .._util.docs import mkdocstrings
+from .._util.progress import tqdm_bar
 from .._util.validators import validate_choice, validate_pmf
 from ..types import Array1D
 from .util import Word, canonical_code
@@ -83,7 +83,7 @@ def fano_code(
     pmf: Array1D[np.floating],
     assignment: Literal["tree", "canonical"],
 ) -> dict[int, Word]:
-    pbar = tqdm(desc="Generating Fano code", total=pmf.size, delay=2.5)
+    pbar = tqdm_bar(pmf.size, "Generating Fano code")
     codewords: list[Word] = [()] * pmf.size
     items = sorted(enumerate(pmf), key=itemgetter(1), reverse=True)
     stack: list[tuple[int, int, Word]] = [(0, pmf.size, ())]

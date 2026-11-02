@@ -5,10 +5,10 @@ from typing import Any, SupportsIndex
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._algebra.BinaryPolynomial import BinaryPolynomial
 from ..types import Array1D, Array2D
+from .progress import tqdm_iter
 from .validators import validate_nonnegative_integer
 
 
@@ -108,7 +108,7 @@ def rref(matrix: npt.ArrayLike) -> Array2D[np.integer]:
     r = 0
     cols = range(n_cols)
     if reduced.size > 2**20:  # Small matrices finish before the bar shows
-        cols = tqdm(cols, desc="Row-reducing matrix", unit="col", delay=2.5)
+        cols = tqdm_iter(cols, "Row-reducing matrix", unit="col")
     for c in cols:
         if r == n_rows:
             break

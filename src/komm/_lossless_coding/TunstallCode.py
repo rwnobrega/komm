@@ -7,10 +7,10 @@ from typing import Self
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
 from .._util.docs import mkdocstrings
+from .._util.progress import tqdm_bar
 from .._util.validators import validate_integer, validate_pmf
 from ..types import Array1D
 from .util import Word
@@ -119,7 +119,7 @@ def tunstall_code(
     K = ceil((2**n - S) / (S - 1)) - 1  # See [Say06, p. 70]
     size = S + K * (S - 1)
 
-    pbar = tqdm(desc="Generating Tunstall code", total=K * S + size, delay=2.5)
+    pbar = tqdm_bar(K * S + size, "Generating Tunstall code")
 
     heap = [Node((symbol,), probability) for (symbol, probability) in enumerate(pmf)]
     heapify(heap)

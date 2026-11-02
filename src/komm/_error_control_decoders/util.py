@@ -4,14 +4,11 @@ import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 
+from .._util.progress import tqdm_bar
+
 
 def get_pbar(total: int, algorithm: str) -> "tqdm[Any]":
-    return tqdm(
-        total=total,
-        desc=f"Decoding with {algorithm} algorithm",
-        unit="block",
-        delay=2.5,
-    )
+    return tqdm_bar(total, f"Decoding with {algorithm} algorithm", unit="block")
 
 
 def marginalize(

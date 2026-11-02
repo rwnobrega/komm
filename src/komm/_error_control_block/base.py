@@ -3,12 +3,12 @@ from functools import cache, cached_property
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._finite_state_machine.Trellis import Trellis
 from .._util.bit_operations import bits_to_int
 from .._util.decorators import blockwise
 from .._util.matrices import boolean_matmul, matmul, pseudo_inverse, row_span
+from .._util.progress import tqdm_bar, tqdm_iter
 from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_binary_array
 from ..types import Array2D
@@ -155,7 +155,7 @@ class BlockCode(ABC):
         # Batches of up to 2**10 codewords.
         low, high = row_span(G[:10]), row_span(G[10:])
         codewords = np.empty((len(high), len(low), n), dtype=int)
-        pbar = tqdm(high, desc="Generating codewords", delay=2.5, unit_scale=len(low))
+        pbar = tqdm_iter(high, "Generating codewords", unit_scale=len(low))
         for i, offset in enumerate(pbar):
             codewords[i] = low ^ offset
         self._cached_codewords = True
@@ -201,7 +201,7 @@ class BlockCode(ABC):
         visited[0] = True
         syndromes = np.array([0])
         leaders = np.zeros((2**m, n), dtype=int)
-        pbar = tqdm(total=2**m, desc="Generating coset leaders", delay=2.5, initial=1)
+        pbar = tqdm_bar(2**m, "Generating coset leaders", initial=1)
         while not visited.all():
             next_syndromes: list[npt.NDArray[np.integer]] = []
             for j, h in enumerate(H_cols):
@@ -236,8 +236,7 @@ class BlockCode(ABC):
         weight = 0
         distribution = np.zeros(n + 1, dtype=int)
         distribution[0] = 1
-        desc = "Computing coset leader weight distribution"
-        pbar = tqdm(total=2**m, desc=desc, delay=2.5, initial=1)
+        pbar = tqdm_bar(2**m, "Computing coset leader weight distribution", initial=1)
         while not visited.all():
             next_syndromes: list[npt.NDArray[np.integer]] = []
             for h in H_cols:

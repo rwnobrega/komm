@@ -2,11 +2,11 @@ from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._finite_state_machine.Trellis import Trellis
 from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.matrices import row_span, trellis_oriented_form
+from .._util.progress import tqdm_iter
 from ..types import Array1D, Array2D
 
 
@@ -35,7 +35,7 @@ def span_weight_distribution(matrix: Array2D[np.integer]) -> list[int]:
     low, high = row_span(packed[:10]), row_span(packed[10:])
     distribution = np.zeros(n + 1, dtype=int)
     desc = "Computing codeword weight distribution"
-    for offset in tqdm(high, desc=desc, delay=2.5, unit_scale=len(low)):
+    for offset in tqdm_iter(high, desc, unit_scale=len(low)):
         weights = np.bitwise_count(low ^ offset).sum(axis=1, dtype=int)
         distribution += np.bincount(weights, minlength=n + 1)
     return distribution.tolist()

@@ -2,9 +2,9 @@ from itertools import chain
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
+from .._util.progress import tqdm_bar
 from .._util.validators import (
     validate_integer,
     validate_integer_array,
@@ -110,7 +110,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         ss, ls = self.search_size, self.lookahead_size
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []
-        pbar = tqdm(total=len(buffer), initial=ss, desc="Compressing LZ77", delay=2.5)
+        pbar = tqdm_bar(len(buffer), "Compressing LZ77", initial=ss)
         i = ss
         while i < len(buffer):
             p, l = find_longest_match(buffer, i, ss, min(ls, len(buffer) - i) - 1)

@@ -5,11 +5,11 @@ from math import comb
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
 from .._util.matrices import row_span
+from .._util.progress import tqdm_iter
 from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_integer, validate_positive_integer
 from ..types import Array2D
@@ -161,8 +161,7 @@ def reed_muller_weight_distribution(mu: int, rho: int) -> list[int]:
     top = comb(mu - 1, rho)  # Rows of degree rho come first.
     representatives, subcode = row_span(rows[:top]), row_span(rows[top:])
     enumerators: Counter[tuple[int, ...]] = Counter()
-    desc = "Computing codeword weight distribution"
-    for word in tqdm(representatives, desc=desc, delay=2.5):
+    for word in tqdm_iter(representatives, "Computing codeword weight distribution"):
         weights = np.bitwise_count(word ^ subcode).sum(-1, dtype=int)
         enumerator = np.bincount(weights, minlength=2 ** (mu - 1) + 1)
         enumerators[tuple(enumerator.tolist())] += 1

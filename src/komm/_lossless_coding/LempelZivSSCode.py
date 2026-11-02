@@ -3,9 +3,9 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
+from .._util.progress import tqdm_bar
 from .._util.validators import (
     validate_integer,
     validate_integer_array,
@@ -127,7 +127,7 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []
 
-        pbar = tqdm(total=len(buffer), initial=ss, desc="Compressing LZSS", delay=2.5)
+        pbar = tqdm_bar(len(buffer), "Compressing LZSS", initial=ss)
         i = ss
         while i < len(buffer):
             p, l = find_longest_match(buffer, i, ss, min(ls, len(buffer) - i))

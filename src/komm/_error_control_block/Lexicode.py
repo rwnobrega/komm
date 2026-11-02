@@ -1,10 +1,10 @@
 from functools import cache
 
 import numpy as np
-from tqdm import tqdm
 
 from .._util.bit_operations import int_to_bits
 from .._util.docs import mkdocstrings
+from .._util.progress import tqdm_iter
 from .._util.validators import validate_integer, validate_positive_integer
 from ..types import Array2D
 from .BlockCode import BlockCode
@@ -63,7 +63,7 @@ def lexicode_generator_matrix(n: int, d: int) -> Array2D[np.integer]:
     weight = np.array([0], dtype=np.uint8)
     leader = np.array([0])
     basis: list[int] = []
-    for m in tqdm(range(n), desc="Generating lexicode", delay=2.5):
+    for m in tqdm_iter(range(n), "Generating lexicode"):
         # Cosets at distance at least d - 1.
         far = weight >= d - 1
         if not far.any():  # New check bit.
