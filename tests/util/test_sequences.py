@@ -60,6 +60,18 @@ def test_autocorrelation_unsigned_shifts(function):
     np.testing.assert_allclose(function([2, 3, -1], shifts), expected)
 
 
+@pytest.mark.parametrize(
+    "function",
+    [komm.autocorrelation, komm.cyclic_autocorrelation],
+)
+@pytest.mark.parametrize("dtype", [np.int8, np.uint8])
+def test_autocorrelation_small_dtype_shifts(function, dtype):
+    # Length does not fit in 8 bits
+    seq = np.arange(300)
+    shifts = np.array([0, 1, 2], dtype=dtype)
+    np.testing.assert_equal(function(seq, shifts), function(seq, [0, 1, 2]))
+
+
 def test_autocorrelation_wikipedia():
     assert np.allclose(
         komm.autocorrelation([2, 3, -1]),

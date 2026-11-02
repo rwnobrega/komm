@@ -86,7 +86,7 @@ def cyclic_autocorrelation(
     normalized = validate_bool(normalized)
     # The DFT of the cyclic autocorrelation is |X|^2
     spectrum = np.fft.fft(sequence)
-    acorr = np.fft.ifft(np.abs(spectrum) ** 2)[shifts % sequence.size]
+    acorr = np.fft.ifft(np.abs(spectrum) ** 2)[shifts.astype(int) % sequence.size]
     if np.isrealobj(sequence):
         acorr = np.real(acorr)
     if np.issubdtype(sequence.dtype, np.integer):
