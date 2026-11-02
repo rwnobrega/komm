@@ -3,9 +3,9 @@ from itertools import chain
 
 import numpy as np
 import numpy.typing as npt
-from tqdm import tqdm
 
 from .. import abc
+from .._util.progress import tqdm_chunked
 from .._util.validators import validate_integer, validate_integer_array
 from ..types import Array1D
 from .util import Word, ceil_log, integer_to_symbols, symbols_to_integer, take
@@ -55,7 +55,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
         children = {(-1, x): x for x in range(self.source_cardinality)}
         tokens: list[Token] = []
         p = -1  # Empty word
-        for x in tqdm(source.tolist(), "Compressing LZW", delay=2.5):
+        for x in tqdm_chunked(source.tolist(), "Compressing LZW"):
             if (p, x) in children:
                 p = children[p, x]
                 continue
@@ -76,7 +76,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
         dictionary: dict[int, Word] = {s: (s,) for s in range(self.source_cardinality)}
         source: list[int] = []
         old: Word = ()
-        for pointer in tqdm(tokens, "Decompressing LZW", delay=2.5):
+        for pointer in tqdm_chunked(tokens, "Decompressing LZW"):
             if not (pointer in dictionary or (pointer == len(dictionary) and old)):
                 raise ValueError(f"invalid token: {pointer}")
             word = dictionary.get(pointer, old + old[:1])
