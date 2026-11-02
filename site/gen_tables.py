@@ -15,6 +15,7 @@ def dumps(rows):
 
 
 def fill(match):
+    print(f"Generating {match[2]}...")
     module = importlib.import_module(f"tables.{match[2]}")
     path = site / "docs/tables" / f"{match[2].replace('_', '-')}.json"
     # Slow tables are computed once
@@ -23,7 +24,6 @@ def fill(match):
     else:
         rows = module.data()
     path.write_text(dumps(rows))
-    print(f"Generated {match[2]}")
     return match[1] + module.table(rows) + match[3]
 
 

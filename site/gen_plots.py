@@ -41,13 +41,13 @@ def main():
     site = Path(__file__).parent
     # Skip helpers, like __init__.py
     for path in sorted(site.glob("plots/[!_]*.py")):
+        print(f"Generating {path.stem}.svg...")
         module = importlib.import_module(f"plots.{path.stem}")
         # Plots with their own style stay unthemed
         style = getattr(module, "STYLE", {})
         with plt.style.context(style):
             fig = module.plot()
             save(fig, site / "docs" / "fig" / f"{path.stem}.svg", themed=not style)
-        print(f"Generated {path.stem}.svg")
 
 
 if __name__ == "__main__":
