@@ -156,3 +156,8 @@ def test_cyclic_autocorrelation_wikipedia():
 def test_cyclic_autocorrelation_shifts(shifts, answer):
     seq = [0.7, 0.2, 0.4]
     assert np.allclose(komm.cyclic_autocorrelation(seq, shifts), answer)
+
+
+def test_cyclic_autocorrelation_empty():
+    with pytest.raises(ValueError, match="'sequence' must be non-empty"):
+        komm.cyclic_autocorrelation([])

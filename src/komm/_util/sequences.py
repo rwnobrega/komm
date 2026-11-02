@@ -64,7 +64,7 @@ def cyclic_autocorrelation(
     where $\tilde{x}^\*\_\ell[n]$ is the complex conjugate of $x[n]$ cyclic-shifted by $\ell$ positions, and $L$ is the period of the sequence. The cyclic autocorrelation $\tilde{R}[\ell]$ is conjugate symmetric and periodic with period $L$.
 
     Parameters:
-        sequence: A 1D-array containing the sequence $x[n]$, of length $L$.
+        sequence: A 1D-array containing the sequence $x[n]$, of length $L$. Must be non-empty.
 
         shifts: A 1D-array containing the values of $\ell$ for which the cyclic autocorrelation will be computed. The default value is `range(len(sequence))`, that is, $[0 : L)$.
 
@@ -78,6 +78,8 @@ def cyclic_autocorrelation(
         array([22., 24., 30., 24., 22.])
     """
     sequence = np.asarray(sequence)
+    if not sequence.size > 0:
+        raise ValueError("'sequence' must be non-empty")
     if shifts is None:
         shifts = np.arange(sequence.size)
     shifts = validate_integer_array(shifts, ndim=1)
