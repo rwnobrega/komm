@@ -40,6 +40,14 @@ def all_paths(trellis: komm.Trellis):
                 yield s0, inputs, outputs, s
 
 
+def branches(trellis: komm.Trellis, s0: int, inputs) -> list[tuple[int, int]]:
+    # State and input of each branch
+    states = [s0]
+    for section, x in zip(trellis, inputs):
+        states.append(int(section.transitions[states[-1], x]))
+    return list(zip(states, inputs))
+
+
 def survivors(trellis: komm.Trellis, branch_metrics: np.ndarray, initial):
     # Best path into each final state
     n = trellis[-1].num_next_states
@@ -126,22 +134,24 @@ def test_trellis_viterbi_shapes(rng):
         np.testing.assert_equal(inputs_hat[i, j], x_hat)
 
 
-@pytest.mark.repeat(10)
-def test_trellis_viterbi_mealy_machine(rng):
-    # Same ties as the reference implementation
-    transitions = rng.integers(4, size=(4, 3))
-    transitions[:, 0] = rng.permutation(4)  # Every state entered
-    outputs = rng.integers(4, size=(4, 3))
-    machine = komm.MealyMachine(transitions, outputs)
-    observed = rng.integers(3, size=(6, 4))  # Integer costs, hence many ties
-    initial = rng.integers(3, size=4).astype(float)
-    inputs_hat, final_metrics = machine.viterbi(observed, lambda y, z: z[y], initial)
-    section = komm.TrellisSection(transitions, outputs)
-    for s in np.flatnonzero(np.isfinite(final_metrics)):
-        final = np.full(4, np.inf)
-        final[s] = 0.0
-        inputs = komm.Trellis([section] * 6).viterbi(observed, initial, final)
-        np.testing.assert_equal(inputs, inputs_hat[:, s])
+@pytest.mark.repeat(20)
+def test_trellis_viterbi_ties(rng):
+    # Integer costs, hence many ties
+    trellis = random_trellis(rng, 4)
+    initial = rng.integers(3, size=trellis[0].num_states)
+    final = rng.integers(3, size=trellis[-1].num_next_states)
+    branch_metrics = rng.integers(3, size=(4, 12))
+
+    def key(path):
+        # Least cost, then least final state, last branch, and so on
+        s0, x, y, s1 = path
+        cost = initial[s0] + branch_metrics[range(4), y].sum() + final[s1]
+        return cost, s1, branches(trellis, s0, x)[::-1]
+
+    _, best_x, best_y, _ = min(all_paths(trellis), key=key)
+    args = (branch_metrics, initial, final)
+    np.testing.assert_equal(trellis.viterbi(*args, symbols="input"), best_x)
+    np.testing.assert_equal(trellis.viterbi(*args, symbols="output"), best_y)
 
 
 @pytest.mark.repeat(10)
