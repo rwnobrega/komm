@@ -52,7 +52,16 @@ def check_against_exhaustive(code, rng):
     decoder = komm.BCJRDecoder(code)
     exhaustive = komm.ExhaustiveBitwiseDecoder(code)
     li = rng.standard_normal((100, code.length))
-    np.testing.assert_allclose(decoder.decode(li), exhaustive.decode(li), atol=1e-8)
+    np.testing.assert_allclose(
+        decoder.decode(li),
+        exhaustive.decode(li),
+        atol=1e-8,
+    )
+    np.testing.assert_allclose(
+        decoder.decode_to_codeword(li),
+        exhaustive.decode_to_codeword(li),
+        atol=1e-8,
+    )
 
 
 @pytest.mark.parametrize(

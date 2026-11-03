@@ -12,7 +12,7 @@
 
 - Added method `minimal_trellis` to [block codes](https://komm.dev/ref/BlockCode/#minimal_trellis).
 
-- Added method `decode_to_codeword` to `ViterbiDecoder`.
+- Added method `decode_to_codeword` to `ViterbiDecoder` and `BCJRDecoder`.
 
 - Added support for tail-biting to `ViterbiDecoder` and `BCJRDecoder`.
 
