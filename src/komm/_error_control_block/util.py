@@ -31,12 +31,10 @@ def systematic_positions(
     generator_matrix: Array2D[np.integer],
 ) -> Array1D[np.integer] | None:
     # Column of each unit vector, if all present
-    k = generator_matrix.shape[0]
-    units = np.eye(k, dtype=int)
-    match = (generator_matrix.T[:, np.newaxis, :] == units).all(axis=2)
-    if not match.any(axis=0).all():
+    unit = (generator_matrix == 1) & (generator_matrix.sum(axis=0) == 1)
+    if not unit.any(axis=1).all():
         return None
-    return np.argmax(match, axis=0)
+    return np.argmax(unit, axis=1)
 
 
 def span_weight_distribution(matrix: Array2D[np.integer]) -> list[int]:
