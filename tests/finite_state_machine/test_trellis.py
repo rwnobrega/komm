@@ -40,9 +40,23 @@ def all_paths(trellis: komm.Trellis):
                 yield s0, inputs, outputs, s
 
 
+def survivors(trellis: komm.Trellis, branch_metrics: np.ndarray, initial):
+    # Best path into each final state
+    n = trellis[-1].num_next_states
+    final = np.where(np.eye(n, dtype=bool), 0.0, np.inf)
+    args = (np.broadcast_to(branch_metrics, (n, *branch_metrics.shape)), initial, final)
+    inputs = trellis.viterbi(*args)
+    outputs = trellis.viterbi(*args, symbols="output")
+    costs = branch_metrics[range(len(trellis)), outputs].sum(axis=1)
+    return inputs, costs
+
+
 # First sections of the example trellis
 SECTION_0 = komm.TrellisSection([[0, 1]], [[0, 3]])
 SECTION_1 = komm.TrellisSection([[0, 1], [2, 3]], [[0, 3], [1, 2]])
+
+# Output bits, LSB-first
+BITS = komm.int_to_bits(range(4), width=2).reshape(-1, 2)
 
 
 def test_trellis_sequence():
@@ -193,6 +207,72 @@ def test_trellis_single_parity_check(rng):
     np.testing.assert_allclose(log_app_in[..., 0] - log_app_in[..., 1], r + extrinsic)
     log_app_out = trellis.forward_backward(branch_metrics, symbols="output")
     np.testing.assert_allclose(log_app_out, log_app_in)  # Single label
+
+
+def test_trellis_viterbi_sklar():
+    # [Skl01, pp. 401–405]
+    section = komm.TrellisSection(
+        transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+        outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+    )
+    received = np.array([[1, 1], [0, 1], [0, 1], [1, 0], [0, 1]])
+    distances = np.count_nonzero(received[:, np.newaxis] != BITS, axis=2)
+    initial = [0.0, np.inf, np.inf, np.inf]
+    inputs, costs = survivors(komm.Trellis([section] * 5), distances, initial)
+    np.testing.assert_equal(costs, [2, 2, 2, 1])
+    np.testing.assert_equal(
+        inputs,
+        [[1, 1, 0, 0, 0], [1, 1, 0, 0, 1], [1, 1, 1, 1, 0], [1, 1, 0, 1, 1]],
+    )
+
+
+def test_trellis_viterbi_ryan_lin():
+    # [RL09, pp. 176–177]
+    section = komm.TrellisSection(
+        transitions=[[0, 1], [2, 3], [0, 1], [2, 3]],
+        outputs=[[0, 3], [1, 2], [3, 0], [2, 1]],
+    )
+    received = np.array([[-0.7, -0.5], [-0.8, -0.6], [-1.1, +0.4], [+0.9, +0.8]])
+    correlations = received @ (-1) ** BITS.T
+    initial = [0.0, np.inf, np.inf, np.inf]
+    inputs, costs = survivors(komm.Trellis([section] * 4), -correlations, initial)
+    np.testing.assert_allclose(costs, [-3.8, -3.4, -2.6, -2.4])
+    np.testing.assert_equal(
+        inputs, [[1, 0, 0, 0], [0, 1, 0, 1], [1, 1, 1, 0], [1, 1, 1, 1]]
+    )
+
+
+def test_trellis_forward_backward_lin_costello():
+    # [LC04, pp. 572–575]
+    section = komm.TrellisSection([[0, 1], [1, 0]], [[0, 3], [2, 1]])
+    received = np.array([[-0.8, -0.1], [-1.0, +0.5], [+1.8, -1.1], [-1.6, +1.6]])
+    branch_metrics = 0.5 * received @ (-1) ** BITS.T
+    ends = [0.0, -np.inf]
+    log_app = komm.Trellis([section] * 4).forward_backward(branch_metrics, ends, ends)
+    np.testing.assert_allclose(
+        log_app[:, 1] - log_app[:, 0], [0.48, 0.62, -1.02, 2.08], atol=0.05
+    )
+
+
+def test_trellis_forward_backward_abrantes():
+    # [Abr10, pp. 434–437]
+    section = komm.TrellisSection(
+        transitions=[[0, 2], [0, 2], [1, 3], [1, 3]],
+        outputs=[[0, 3], [3, 0], [1, 2], [2, 1]],
+    )
+    received = np.array([
+        [-0.3, -0.1],
+        [+0.5, -0.2],
+        [-0.8, -0.5],
+        [+0.5, -0.3],
+        [-0.1, +0.7],
+        [-1.5, +0.4],
+    ])
+    branch_metrics = 2.5 * received @ (-1) ** BITS.T
+    ends = [0.0, -np.inf, -np.inf, -np.inf]
+    log_app = komm.Trellis([section] * 6).forward_backward(branch_metrics, ends, ends)
+    expected = [1.78, 0.24, -1.97, 5.52, -np.inf, -np.inf]
+    np.testing.assert_allclose(log_app[:, 1] - log_app[:, 0], expected, atol=0.05)
 
 
 @pytest.mark.parametrize("method", ["viterbi", "forward_backward"])
