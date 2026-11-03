@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import overload
+from typing import Literal, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -146,9 +146,10 @@ def forward_backward(
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike = 0.0,
     final_metrics: npt.ArrayLike = 0.0,
+    symbols: Literal["input", "output"] = "input",
 ) -> npt.NDArray[np.floating]:
     r"""
-    Computes the a posteriori log-probabilities of the inputs. The weight of a path is the sum of the metrics of its initial state, its branches, and its final state, in the log domain.
+    Computes the a posteriori log-probabilities of the inputs or of the outputs. The weight of a path is the sum of the metrics of its initial state, its branches, and its final state, in the log domain.
 
     Parameters:
         trellis: The trellis, with $L$ sections, all with the same number of inputs.
@@ -159,8 +160,10 @@ def forward_backward(
 
         final_metrics: The log-weight of each final state, along the last dimension; `-inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
+        symbols: The symbols whose posteriors are computed. Either `'input'` or `'output'`. The default value is `'input'`.
+
     Returns:
-        log_posteriors: The a posteriori log-probability of each input at each step. Has the same shape as `branch_metrics`, but with the last dimension replaced by the number of inputs.
+        log_posteriors: The a posteriori log-probability of each symbol at each step. Has the same shape as `branch_metrics`, but with the last dimension replaced by the number of input or output symbols.
     """
     branch_metrics = np.asarray(branch_metrics)
     shape = branch_metrics.shape[:-2]
@@ -177,14 +180,23 @@ def forward_backward(
         alphas.append(alpha)
     # Backward recursion, with the posteriors
     beta = np.broadcast_to(final_metrics, (*shape, trellis[-1].num_next_states))
-    log_posteriors = np.empty((*shape, len(trellis), trellis[0].num_input_symbols))
+    if symbols == "input":
+        log_posteriors = np.empty((*shape, len(trellis), trellis[0].num_input_symbols))
+    else:  # symbols == "output"
+        log_posteriors = np.full(branch_metrics.shape, -np.inf)
     for t in reversed(range(len(trellis))):
         section = trellis[t]
         padded = _pad(beta, -np.inf)
         gamma = branch_metrics[..., t, section.outputs]
         weights = gamma + padded[..., section.transitions]
         joint = alphas[t][..., np.newaxis] + weights
-        log_posteriors[..., t, :] = np.logaddexp.reduce(joint, axis=-2)
+        if symbols == "input":
+            log_posteriors[..., t, :] = np.logaddexp.reduce(joint, axis=-2)
+        else:  # symbols == "output"
+            flat = joint.reshape(*shape, -1)
+            for y in np.unique(section.outputs):
+                branches = flat[..., section.outputs.ravel() == y]
+                log_posteriors[..., t, y] = np.logaddexp.reduce(branches, axis=-1)
         beta = np.logaddexp.reduce(weights, axis=-1)
     normalizer = np.logaddexp.reduce(log_posteriors, axis=-1, keepdims=True)
     return log_posteriors - normalizer
