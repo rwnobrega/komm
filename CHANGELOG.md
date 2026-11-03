@@ -16,6 +16,8 @@
 
 - Added support for tail-biting to `ViterbiDecoder` and `BCJRDecoder`.
 
+- Added support for general block codes to `ViterbiDecoder`.
+
 - Implemented [Markov source](https://komm.dev/ref/MarkovSource).
 
 - Implemented [MacWilliams transform](https://komm.dev/ref/macwilliams_transform).

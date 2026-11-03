@@ -24,12 +24,14 @@ hard_decoders = [
     komm.ExhaustiveCodewordDecoder(block, input_type="hard"),
     komm.ReedDecoder(reed_muller, input_type="hard"),
     komm.ViterbiDecoder(terminated, input_type="hard"),
+    komm.ViterbiDecoder(block, input_type="hard"),
 ]
 
 soft_decoders = [
     komm.ExhaustiveCodewordDecoder(block, input_type="soft"),
     komm.ReedDecoder(reed_muller, input_type="soft"),
     komm.ViterbiDecoder(terminated, input_type="soft"),
+    komm.ViterbiDecoder(block, input_type="soft"),
     komm.ExhaustiveBitwiseDecoder(block),
     komm.BCJRDecoder(terminated),
     komm.WagnerDecoder(spc),
@@ -54,6 +56,7 @@ def decoding_methods(decoders):
         (block, komm.ExhaustiveBitwiseDecoder, float),
         (block, komm.GaussianEliminationDecoder, int),
         (block, komm.PeelingDecoder, int),
+        (block, komm.ViterbiDecoder, int),
         (terminated, komm.ViterbiDecoder, int),
         (terminated, komm.BCJRDecoder, float),
         (punctured, komm.ExhaustiveCodewordDecoder, int),

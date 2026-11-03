@@ -12,7 +12,7 @@ from .._util.progress import tqdm_bar, tqdm_iter
 from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_binary_array
 from ..types import Array2D
-from .util import span_weight_distribution, syndrome_trellis
+from .util import TrellisEncoder, span_weight_distribution, syndrome_trellis
 
 
 class BlockCode(ABC):
@@ -279,3 +279,7 @@ class BlockCode(ABC):
         In the trellis returned by this method, the state at each time is given by the partial syndromes of the active rows of a trellis-oriented check matrix.
         """
         return syndrome_trellis(self.check_matrix)
+
+    def trellis_encoder(self) -> TrellisEncoder | None:
+        # Encoder in trellis form, if any
+        return None

@@ -208,3 +208,23 @@ def test_viterbi_exhaustive_tail_biting(
         convolutional_code, num_blocks, "tail-biting", puncturing_matrix
     )
     check_against_exhaustive(code, rng)
+
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        komm.HammingCode(3),
+        komm.HammingCode(3, extended=True),
+        komm.GolayCode(),
+        komm.ReedMullerCode(4, 1),
+        komm.ReedMullerCode(4, 2),
+        komm.BCHCode(4, 3),
+        komm.CyclicCode(7, generator_polynomial=0b1011, systematic=False),
+        komm.PolarCode(4, [0, 1, 2, 3, 4, 5, 6, 8, 9]),
+        komm.SingleParityCheckCode(5),
+        komm.RepetitionCode(5),
+        komm.BlockCode(generator_matrix=[[1, 0, 0, 1, 1], [0, 1, 1, 1, 0]]),
+    ],
+)
+def test_viterbi_exhaustive_block(code, rng):
+    check_against_exhaustive(code, rng)
