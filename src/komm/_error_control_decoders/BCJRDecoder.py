@@ -18,7 +18,7 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
     r"""
     Bahl–Cocke–Jelinek–Raviv (BCJR) decoder for general [block codes](/ref/BlockCode). This decoder computes the a posteriori L-value of each message bit or code bit over a trellis of the code, assuming equiprobable messages. Its hard decisions, the signs of the L-values, are the bitwise maximum a posteriori (MAP) decisions, and may not form a codeword. For more details, see <cite>LC04, Sec. 12.6</cite> and <cite>MacK03, Ch. 25</cite>.
 
-    [Terminated convolutional codes](/ref/TerminatedConvolutionalCode) are decoded on the trellis of their encoder, whose inputs are the message bits; other codes, on their [minimal trellis](/ref/BlockCode#minimal_trellis), where the message bits are the code bits at the positions in which the generator matrix is systematic. For other codes, only `decode_to_codeword` is available.
+    [Terminated convolutional codes](/ref/TerminatedConvolutionalCode) are decoded on the trellis of their encoder, whose inputs are the message bits; other codes, on their [minimal trellis](/ref/BlockCode#minimal_trellis), where the message bits are the code bits at the systematic positions of the generator matrix. If it is not systematic, only `decode_to_codeword` is available.
 
     Parameters:
         code: The block code to be used for decoding.
