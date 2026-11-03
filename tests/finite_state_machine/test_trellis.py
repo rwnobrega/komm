@@ -87,13 +87,16 @@ def test_trellis_viterbi_brute_force(rng):
     initial = rng.random(trellis[0].num_states)
     final = rng.random(trellis[-1].num_next_states)
     branch_metrics = rng.random((5, 4, 12))
-    inputs_hat = viterbi(trellis, branch_metrics, initial, final)
-    for metrics, x_hat in zip(branch_metrics, inputs_hat):
-        _, best = min(
-            (initial[s0] + metrics[range(4), outputs].sum() + final[s1], inputs)
-            for s0, inputs, outputs, s1 in all_paths(trellis)
+    args = (trellis, branch_metrics, initial, final)
+    inputs_hat = viterbi(*args, symbols="input")
+    outputs_hat = viterbi(*args, symbols="output")
+    for metrics, x_hat, y_hat in zip(branch_metrics, inputs_hat, outputs_hat):
+        _, best_x, best_y = min(
+            (initial[s0] + metrics[range(4), y].sum() + final[s1], x, y)
+            for s0, x, y, s1 in all_paths(trellis)
         )
-        np.testing.assert_equal(x_hat, best)
+        np.testing.assert_equal(x_hat, best_x)
+        np.testing.assert_equal(y_hat, best_y)
 
 
 @pytest.mark.repeat(10)

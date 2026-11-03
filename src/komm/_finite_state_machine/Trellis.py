@@ -97,9 +97,10 @@ def viterbi(
     branch_metrics: npt.ArrayLike,
     initial_metrics: npt.ArrayLike = 0.0,
     final_metrics: npt.ArrayLike = 0.0,
+    symbols: Literal["input", "output"] = "input",
 ) -> npt.NDArray[np.integer]:
     r"""
-    Finds the input sequence of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
+    Finds the input or output sequence of the path of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
 
     Parameters:
         trellis: The trellis, with $L$ sections.
@@ -110,8 +111,10 @@ def viterbi(
 
         final_metrics: The cost of each final state, along the last dimension; `inf` forbids a state. The other dimensions are broadcast to the leading dimensions of `branch_metrics`. The default value is `0.0` for all states.
 
+        symbols: The symbols to be returned. Either `'input'` or `'output'`. The default value is `'input'`.
+
     Returns:
-        inputs: The input sequence of least cost. Has the same shape as `branch_metrics`, but with the last dimension removed.
+        sequence: The input or output sequence of the path of least cost. Has the same shape as `branch_metrics`, but with the last dimension removed.
     """
     branch_metrics = np.asarray(branch_metrics)
     shape = branch_metrics.shape[:-2]
@@ -132,13 +135,14 @@ def viterbi(
     # Trace back from best final state
     final_metrics = np.broadcast_to(final_metrics, metrics.shape)
     states = np.argmin(metrics + final_metrics, axis=-1, keepdims=True)
-    inputs = np.empty((*shape, len(trellis)), dtype=int)
+    sequence = np.empty((*shape, len(trellis)), dtype=int)
     for t in reversed(range(len(trellis))):
-        in_states, in_inputs, _ = trellis[t].incoming
+        in_states, in_inputs, in_outputs = trellis[t].incoming
+        in_symbols = in_inputs if symbols == "input" else in_outputs
         d = np.take_along_axis(choices[t], states, axis=-1)
-        inputs[..., t : t + 1] = in_inputs[states, d]
+        sequence[..., t : t + 1] = in_symbols[states, d]
         states = in_states[states, d]
-    return inputs
+    return sequence
 
 
 def forward_backward(
