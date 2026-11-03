@@ -176,11 +176,9 @@ def forward_backward(
     alphas = [alpha]
     for t, section in enumerate(trellis):
         in_states, _, in_outputs = section.incoming
-        padded, gamma = _pad(alpha, -np.inf), branch_metrics[..., t, :]
-        alpha = padded[..., in_states[:, 0]] + gamma[..., in_outputs[:, 0]]
-        for d in range(1, in_states.shape[1]):
-            candidate = padded[..., in_states[:, d]] + gamma[..., in_outputs[:, d]]
-            alpha = np.logaddexp(alpha, candidate)
+        gamma = branch_metrics[..., t, in_outputs]
+        weights = gamma + _pad(alpha, -np.inf)[..., in_states]
+        alpha = np.logaddexp.reduce(weights, axis=-1)
         alphas.append(alpha)
     # Backward recursion, with the posteriors
     beta = np.broadcast_to(final_metrics, (*shape, trellis[-1].num_next_states))
@@ -190,9 +188,8 @@ def forward_backward(
         log_posteriors = np.full(branch_metrics.shape, -np.inf)
     for t in reversed(range(len(trellis))):
         section = trellis[t]
-        padded = _pad(beta, -np.inf)
         gamma = branch_metrics[..., t, section.outputs]
-        weights = gamma + padded[..., section.transitions]
+        weights = gamma + _pad(beta, -np.inf)[..., section.transitions]
         joint = alphas[t][..., np.newaxis] + weights
         if symbols == "input":
             log_posteriors[..., t, :] = np.logaddexp.reduce(joint, axis=-2)
