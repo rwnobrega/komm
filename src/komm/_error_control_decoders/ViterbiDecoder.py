@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._error_control_block.util import systematic_positions
 from .._finite_state_machine.Trellis import viterbi
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
@@ -43,11 +44,13 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             self._num_input_bits = 1
             self._num_output_bits = 1
             self._kept = np.arange(self.code.length)
+            self._message_positions = systematic_positions(self.code.generator_matrix)
         else:
             self._trellis = self._encoder.trellis
             self._num_input_bits = self._encoder.num_input_bits
             self._num_output_bits = self._encoder.num_output_bits
             self._kept = self._encoder.kept
+            self._message_positions = np.arange(self.code.dimension)
         trellis, n = self._trellis, self._num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         # About 64 MiB of decisions and metrics
@@ -158,9 +161,9 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             >>> decoder.decode([-0.8, +0.9, -1.1, -0.7, +0.4, +0.3, +1.0])
             array([1, 0, 1, 1])
         """
-        if self._encoder is None:
+        if self._message_positions is None:
             v_hat = self.decode_to_codeword(input)
             u_hat = self.code.project_word(v_hat)
         else:
-            u_hat = self._decode(input, "input", np.arange(self.code.dimension))
+            u_hat = self._decode(input, "input", self._message_positions)
         return u_hat
