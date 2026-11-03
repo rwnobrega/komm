@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._finite_state_machine.Trellis import forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
 from .._util.validators import validate_decision_type, validate_soft_array
@@ -65,7 +64,7 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
             lu = np.zeros((li.shape[0], len(trellis) * n))
             lu[:, self._kept] = li
             branch_metrics = 0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T
-            log_posteriors = forward_backward(trellis, branch_metrics, symbols=symbols)
+            log_posteriors = trellis.forward_backward(branch_metrics, symbols=symbols)
             lo = marginalize(log_posteriors, bits)
             return lo.reshape(li.shape[0], -1)[:, positions]
 

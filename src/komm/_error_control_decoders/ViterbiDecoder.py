@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._finite_state_machine.Trellis import viterbi
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
 from .._util.validators import (
@@ -65,7 +64,7 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             lu = np.zeros((li.shape[0], len(trellis) * n))
             lu[:, self._kept] = li
             branch_metrics = lu.reshape(lu.shape[0], -1, n) @ self._bits.T
-            sequence = viterbi(trellis, branch_metrics, symbols=symbols)
+            sequence = trellis.viterbi(branch_metrics, symbols=symbols)
             return int_to_bits(sequence, width=width)[:, positions]
 
         if self.input_type == "hard":

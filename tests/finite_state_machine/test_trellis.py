@@ -5,7 +5,6 @@ import numpy as np
 import pytest
 
 import komm
-from komm._finite_state_machine.Trellis import forward_backward, viterbi
 from komm._util.special_functions import boxplus
 
 
@@ -87,9 +86,9 @@ def test_trellis_viterbi_brute_force(rng):
     initial = rng.random(trellis[0].num_states)
     final = rng.random(trellis[-1].num_next_states)
     branch_metrics = rng.random((5, 4, 12))
-    args = (trellis, branch_metrics, initial, final)
-    inputs_hat = viterbi(*args, symbols="input")
-    outputs_hat = viterbi(*args, symbols="output")
+    args = (branch_metrics, initial, final)
+    inputs_hat = trellis.viterbi(*args, symbols="input")
+    outputs_hat = trellis.viterbi(*args, symbols="output")
     for metrics, x_hat, y_hat in zip(branch_metrics, inputs_hat, outputs_hat):
         _, best_x, best_y = min(
             (initial[s0] + metrics[range(4), y].sum() + final[s1], x, y)
@@ -106,10 +105,10 @@ def test_trellis_viterbi_shapes(rng):
     initial = rng.random((3, trellis[0].num_states))
     final = rng.random((3, trellis[-1].num_next_states))
     branch_metrics = rng.random((2, 3, 4, 12))
-    inputs_hat = viterbi(trellis, branch_metrics, initial, final)
+    inputs_hat = trellis.viterbi(branch_metrics, initial, final)
     assert inputs_hat.shape == (2, 3, 4)
     for i, j in product(range(2), range(3)):
-        x_hat = viterbi(trellis, branch_metrics[i, j], initial[j], final[j])
+        x_hat = trellis.viterbi(branch_metrics[i, j], initial[j], final[j])
         np.testing.assert_equal(inputs_hat[i, j], x_hat)
 
 
@@ -127,7 +126,7 @@ def test_trellis_viterbi_mealy_machine(rng):
     for s in np.flatnonzero(np.isfinite(final_metrics)):
         final = np.full(4, np.inf)
         final[s] = 0.0
-        inputs = viterbi(komm.Trellis([section] * 6), observed, initial, final)
+        inputs = komm.Trellis([section] * 6).viterbi(observed, initial, final)
         np.testing.assert_equal(inputs, inputs_hat[:, s])
 
 
@@ -142,9 +141,9 @@ def test_trellis_forward_backward_brute_force(rng):
     initial = rng.normal(size=trellis[0].num_states)
     final = rng.normal(size=trellis[-1].num_next_states)
     branch_metrics = rng.normal(size=(5, 4, 12))
-    args = (trellis, branch_metrics, initial, final)
-    log_app_in = forward_backward(*args, symbols="input")
-    log_app_out = forward_backward(*args, symbols="output")
+    args = (branch_metrics, initial, final)
+    log_app_in = trellis.forward_backward(*args, symbols="input")
+    log_app_out = trellis.forward_backward(*args, symbols="output")
     for metrics, app_in, app_out in zip(branch_metrics, log_app_in, log_app_out):
         expected_in, expected_out = np.full((4, 3), -np.inf), np.full((4, 12), -np.inf)
         for s0, inputs, outputs, s1 in all_paths(trellis):
@@ -169,11 +168,11 @@ def test_trellis_forward_backward_shapes(rng, symbols, width):
     initial = rng.normal(size=(3, trellis[0].num_states))
     final = rng.normal(size=(3, trellis[-1].num_next_states))
     branch_metrics = rng.normal(size=(2, 3, 4, 12))
-    log_app = forward_backward(trellis, branch_metrics, initial, final, symbols)
+    log_app = trellis.forward_backward(branch_metrics, initial, final, symbols)
     assert log_app.shape == (2, 3, 4, width)
     for i, j in product(range(2), range(3)):
-        args = (trellis, branch_metrics[i, j], initial[j], final[j], symbols)
-        np.testing.assert_allclose(log_app[i, j], forward_backward(*args))
+        args = (branch_metrics[i, j], initial[j], final[j], symbols)
+        np.testing.assert_allclose(log_app[i, j], trellis.forward_backward(*args))
 
 
 def test_trellis_single_parity_check(rng):
@@ -185,12 +184,19 @@ def test_trellis_single_parity_check(rng):
     ])
     r = rng.normal(size=(100, 3))
     zeros = np.zeros_like(r)
-    v_hat = viterbi(trellis, np.stack([zeros, r], axis=2))
+    v_hat = trellis.viterbi(np.stack([zeros, r], axis=2))
     decoder = komm.WagnerDecoder(komm.SingleParityCheckCode(3))
     np.testing.assert_equal(v_hat, decoder.decode_to_codeword(r))
     branch_metrics = np.stack([zeros, -r], axis=2)
-    log_app_in = forward_backward(trellis, branch_metrics, symbols="input")
+    log_app_in = trellis.forward_backward(branch_metrics, symbols="input")
     extrinsic = boxplus(r[:, [1, 2, 0]], r[:, [2, 0, 1]])
     np.testing.assert_allclose(log_app_in[..., 0] - log_app_in[..., 1], r + extrinsic)
-    log_app_out = forward_backward(trellis, branch_metrics, symbols="output")
+    log_app_out = trellis.forward_backward(branch_metrics, symbols="output")
     np.testing.assert_allclose(log_app_out, log_app_in)  # Single label
+
+
+@pytest.mark.parametrize("method", ["viterbi", "forward_backward"])
+def test_trellis_invalid_symbols(method):
+    trellis = komm.Trellis([SECTION_0])
+    with pytest.raises(ValueError, match="'symbols' must be 'input' or 'output'"):
+        getattr(trellis, method)(np.zeros((1, 4)), symbols="inputs")
