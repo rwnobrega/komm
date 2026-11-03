@@ -197,9 +197,8 @@ def forward_backward(
         if symbols == "input":
             log_posteriors[..., t, :] = np.logaddexp.reduce(joint, axis=-2)
         else:  # symbols == "output"
-            flat = joint.reshape(*shape, -1)
             for y in np.unique(section.outputs):
-                branches = flat[..., section.outputs.ravel() == y]
+                branches = joint[..., section.outputs == y]
                 log_posteriors[..., t, y] = np.logaddexp.reduce(branches, axis=-1)
         beta = np.logaddexp.reduce(weights, axis=-1)
     normalizer = np.logaddexp.reduce(log_posteriors, axis=-1, keepdims=True)
