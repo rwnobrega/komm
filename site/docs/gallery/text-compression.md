@@ -112,4 +112,4 @@ The four Lempel–Ziv codes go below the entropy of the characters, with no cont
 
 The size $S$ of the search buffer sets a trade-off: a larger buffer finds longer matches, but each pointer costs more bits. For this text, $S = 2^{16}$ gives the lowest rates among the powers of two. With $S = 2^{10}$, the rate of LZ77 is $5.12$ bits per character, worse than that of the Huffman code.
 
-For comparison, Deflate, the algorithm of gzip and PNG, compresses this file to about $2.85$ bits per character. It is, in essence, an LZSS code with Huffman codes for the tokens.
+For comparison, Deflate, the algorithm of gzip and PNG, compresses this file to about $2.85$ bits per character. It is, in essence, an LZSS code with [Huffman codes for the tokens](lzss-huffman.md).
