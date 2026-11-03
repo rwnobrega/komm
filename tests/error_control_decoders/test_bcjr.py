@@ -194,3 +194,46 @@ def test_bcjr_reliable_input(rng):
     lo = decoder.decode(1000.0 * (-1) ** code.encode(u))
     assert np.all(np.isfinite(lo))
     np.testing.assert_equal(lo < 0, u == 1)
+
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        komm.HammingCode(3),
+        komm.HammingCode(3, extended=True),
+        komm.GolayCode(),
+        komm.BCHCode(4, 3),
+        komm.SingleParityCheckCode(5),
+        komm.RepetitionCode(5),
+        komm.BlockCode(generator_matrix=[[1, 1, 0, 1, 1], [0, 1, 1, 1, 0]]),
+    ],
+)
+def test_bcjr_exhaustive_block(code, rng):
+    check_against_exhaustive(code, rng)
+
+
+non_systematic_codes = [
+    komm.ReedMullerCode(4, 1),
+    komm.ReedMullerCode(4, 2),
+    komm.CyclicCode(7, generator_polynomial=0b1011, systematic=False),
+    komm.PolarCode(4, [0, 1, 2, 3, 4, 5, 6, 8, 9]),
+]
+
+
+@pytest.mark.parametrize("code", non_systematic_codes)
+def test_bcjr_exhaustive_block_codeword(code, rng):
+    decoder = komm.BCJRDecoder(code)
+    exhaustive = komm.ExhaustiveBitwiseDecoder(code)
+    li = rng.standard_normal((100, code.length))
+    np.testing.assert_allclose(
+        decoder.decode_to_codeword(li),
+        exhaustive.decode_to_codeword(li),
+        atol=1e-8,
+    )
+
+
+@pytest.mark.parametrize("code", non_systematic_codes)
+def test_bcjr_non_systematic(code):
+    decoder = komm.BCJRDecoder(code)
+    with pytest.raises(NotImplementedError, match="need a systematic generator matrix"):
+        decoder.decode(np.zeros(code.length))

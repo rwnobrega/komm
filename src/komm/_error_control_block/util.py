@@ -27,6 +27,18 @@ def extended_parity_submatrix(
     return extended_parity_submatrix
 
 
+def systematic_positions(
+    generator_matrix: Array2D[np.integer],
+) -> Array1D[np.integer] | None:
+    # Column of each unit vector, if all present
+    k = generator_matrix.shape[0]
+    units = np.eye(k, dtype=int)
+    match = (generator_matrix.T[:, np.newaxis, :] == units).all(axis=2)
+    if not match.any(axis=0).all():
+        return None
+    return np.argmax(match, axis=0)
+
+
 def span_weight_distribution(matrix: Array2D[np.integer]) -> list[int]:
     n = matrix.shape[1]
     # Packed bits: faster XOR and popcount.

@@ -34,6 +34,7 @@ soft_decoders = [
     komm.ViterbiDecoder(block, input_type="soft"),
     komm.ExhaustiveBitwiseDecoder(block),
     komm.BCJRDecoder(terminated),
+    komm.BCJRDecoder(block),
     komm.WagnerDecoder(spc),
     komm.SCDecoder(polar),
 ]
@@ -57,6 +58,7 @@ def decoding_methods(decoders):
         (block, komm.GaussianEliminationDecoder, int),
         (block, komm.PeelingDecoder, int),
         (block, komm.ViterbiDecoder, int),
+        (block, komm.BCJRDecoder, float),
         (terminated, komm.ViterbiDecoder, int),
         (terminated, komm.BCJRDecoder, float),
         (punctured, komm.ExhaustiveCodewordDecoder, int),
