@@ -107,6 +107,28 @@ class Trellis(Sequence[TrellisSection]):
 
         Returns:
             sequence: The input or output sequence of the path of least cost. Has the same shape as `branch_metrics`, but with the last dimension removed.
+
+        Examples:
+            >>> trellis = komm.Trellis([
+            ...     komm.TrellisSection([[0, 1]],
+            ...                         [[0, 3]]),
+            ...     komm.TrellisSection([[0, 1], [2, 3]],
+            ...                         [[0, 3], [1, 2]]),
+            ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...                         [[0, 3], [1, 2], [3, 0], [2, 1]]),
+            ...     komm.TrellisSection([[0, -1], [0, -1]],
+            ...                         [[0, 3], [3, 0]]),
+            ... ])
+            >>> distances = [
+            ...     [2, 1, 1, 0],  # Received 11
+            ...     [0, 1, 1, 2],  # Received 00
+            ...     [2, 1, 1, 0],  # Received 11
+            ...     [0, 1, 1, 2],  # Received 00
+            ... ]
+            >>> trellis.viterbi(distances)
+            array([1, 0, 0, 0])
+            >>> trellis.viterbi(distances, symbols="output")
+            array([3, 1, 3, 0])
         """
         symbols = validate_choice(symbols, ("input", "output"))
         branch_metrics = np.asarray(branch_metrics)
@@ -158,6 +180,30 @@ class Trellis(Sequence[TrellisSection]):
 
         Returns:
             log_posteriors: The a posteriori log-probability of each symbol at each step. Has the same shape as `branch_metrics`, but with the last dimension replaced by the number of input or output symbols.
+
+        Examples:
+            >>> trellis = komm.Trellis([
+            ...     komm.TrellisSection([[0, 1]],
+            ...                         [[0, 3]]),
+            ...     komm.TrellisSection([[0, 1], [2, 3]],
+            ...                         [[0, 3], [1, 2]]),
+            ...     komm.TrellisSection([[0, -1], [1, -1], [0, -1], [1, -1]],
+            ...                         [[0, 3], [1, 2], [3, 0], [2, 1]]),
+            ...     komm.TrellisSection([[0, -1], [0, -1]],
+            ...                         [[0, 3], [3, 0]]),
+            ... ])
+            >>> distances = [
+            ...     [2, 1, 1, 0],  # Received 11
+            ...     [0, 1, 1, 2],  # Received 00
+            ...     [2, 1, 1, 0],  # Received 11
+            ...     [0, 1, 1, 2],  # Received 00
+            ... ]
+            >>> log_posteriors = trellis.forward_backward(-np.array(distances))
+            >>> np.exp(log_posteriors)
+            array([[0.04742587, 0.95257413],
+                   [0.95257413, 0.04742587],
+                   [1.        , 0.        ],
+                   [1.        , 0.        ]])
         """
         symbols = validate_choice(symbols, ("input", "output"))
         branch_metrics = np.asarray(branch_metrics)
