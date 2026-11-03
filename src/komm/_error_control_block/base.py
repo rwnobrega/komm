@@ -12,7 +12,12 @@ from .._util.progress import tqdm_bar, tqdm_iter
 from .._util.special_functions import macwilliams_transform
 from .._util.validators import validate_binary_array
 from ..types import Array2D
-from .util import TrellisEncoder, span_weight_distribution, syndrome_trellis
+from .util import (
+    TrellisEncoder,
+    span_weight_distribution,
+    syndrome_trellis,
+    systematic_positions,
+)
 
 
 class BlockCode(ABC):
@@ -280,6 +285,12 @@ class BlockCode(ABC):
         """
         return syndrome_trellis(self.check_matrix)
 
-    def trellis_encoder(self) -> TrellisEncoder | None:
-        # Encoder in trellis form, if any
-        return None
+    def trellis_encoder(self) -> TrellisEncoder:
+        # Minimal trellis: inputs are code bits
+        return TrellisEncoder(
+            trellis=self.minimal_trellis(),
+            num_input_bits=1,
+            num_output_bits=1,
+            kept=np.arange(self.length),
+            message_positions=systematic_positions(self.generator_matrix),
+        )

@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
-from .._error_control_block.util import systematic_positions
 from .._finite_state_machine.Trellis import forward_backward
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
@@ -35,19 +34,11 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
     def __post_init__(self) -> None:
         self.output_type = validate_decision_type(self.output_type)
         encoder = self.code.trellis_encoder()
-        if encoder is None:
-            # Minimal trellis: inputs are code bits
-            self._trellis = self.code.minimal_trellis()
-            self._num_input_bits = 1
-            self._num_output_bits = 1
-            self._kept = np.arange(self.code.length)
-            self._message_positions = systematic_positions(self.code.generator_matrix)
-        else:
-            self._trellis = encoder.trellis
-            self._num_input_bits = encoder.num_input_bits
-            self._num_output_bits = encoder.num_output_bits
-            self._kept = encoder.kept
-            self._message_positions = np.arange(self.code.dimension)
+        self._trellis = encoder.trellis
+        self._num_input_bits = encoder.num_input_bits
+        self._num_output_bits = encoder.num_output_bits
+        self._kept = encoder.kept
+        self._message_positions = encoder.message_positions
         trellis, k, n = self._trellis, self._num_input_bits, self._num_output_bits
         # Symbols are LSB-first
         self._input_bits = int_to_bits(range(2**k), width=k).reshape(-1, k)

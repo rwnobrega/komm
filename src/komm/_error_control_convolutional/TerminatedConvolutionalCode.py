@@ -432,6 +432,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
             num_input_bits=self.convolutional_code.num_input_bits,
             num_output_bits=self.convolutional_code.num_output_bits,
             kept=self._kept,
+            message_positions=np.arange(self.dimension),
         )
 
 

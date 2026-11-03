@@ -12,11 +12,12 @@ from ..types import Array1D, Array2D
 
 @dataclass(slots=True)
 class TrellisEncoder:
-    # Message bits in, code bits out
+    # Input bits in, code bits out
     trellis: Trellis
     num_input_bits: int
     num_output_bits: int
     kept: Array1D[np.integer]  # Code bits kept after puncturing
+    message_positions: Array1D[np.integer] | None  # Among input bits, if any
 
 
 def extended_parity_submatrix(
