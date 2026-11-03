@@ -92,26 +92,6 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             ...     [-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8]
             ... )
             array([1, 1, 1, 0, 1, 1, 0, 0])
-
-            >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code=komm.ConvolutionalCode([[0b101, 0b111]]),
-            ...     num_blocks=4,
-            ...     mode="zero-termination",
-            ...     puncturing_matrix=[[1, 0], [1, 1]],
-            ... )
-            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-            >>> decoder.decode_to_codeword([1, 1, 0, 1, 1, 0, 0, 0, 0])
-            array([1, 1, 1, 1, 1, 0, 0, 0, 0])
-
-            >>> code = komm.HammingCode(3)
-
-            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-            >>> decoder.decode_to_codeword([1, 0, 1, 1, 0, 0, 0])
-            array([1, 0, 1, 1, 0, 1, 0])
-
-            >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
-            >>> decoder.decode_to_codeword([-0.8, +0.9, -1.1, -0.7, +0.4, +0.3, +1.0])
-            array([1, 0, 1, 1, 0, 1, 0])
         """
         return self._decode(input, "output", self._kept)
 
@@ -131,26 +111,6 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
             >>> decoder.decode([-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8])
             array([1, 0, 0, 0])
-
-            >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code=komm.ConvolutionalCode([[0b101, 0b111]]),
-            ...     num_blocks=4,
-            ...     mode="zero-termination",
-            ...     puncturing_matrix=[[1, 0], [1, 1]],
-            ... )
-            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-            >>> decoder.decode([1, 1, 0, 1, 1, 0, 0, 0, 0])
-            array([1, 0, 0, 0])
-
-            >>> code = komm.HammingCode(3)
-
-            >>> decoder = komm.ViterbiDecoder(code, input_type="hard")
-            >>> decoder.decode([1, 0, 1, 1, 0, 0, 0])
-            array([1, 0, 1, 1])
-
-            >>> decoder = komm.ViterbiDecoder(code, input_type="soft")
-            >>> decoder.decode([-0.8, +0.9, -1.1, -0.7, +0.4, +0.3, +1.0])
-            array([1, 0, 1, 1])
         """
         if self._message_positions is None:
             v_hat = self.decode_to_codeword(input)

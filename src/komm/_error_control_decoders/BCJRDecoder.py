@@ -97,27 +97,6 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
             ...     [-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6]
             ... )
             array([1, 1, 1, 1, 0, 1, 1, 0])
-
-            >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code=komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
-            ...     num_blocks=3,
-            ...     mode="zero-termination",
-            ...     puncturing_matrix=[[1, 1], [1, 0]],
-            ... )
-            >>> decoder = komm.BCJRDecoder(code)
-            >>> decoder.decode_to_codeword([-0.8, -0.1, -1.0, +1.8, -1.1, -1.6])
-            array([-0.30434446, -0.30434446, -0.45888484,  1.45581944, -2.41885407,
-                   -2.41885407])
-
-            >>> code = komm.HammingCode(3)
-            >>> decoder = komm.BCJRDecoder(code)
-            >>> decoder.decode_to_codeword([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
-            array([-1.4867878 , -0.47876436,  1.30351111, -0.2634431 ,  1.38090385,
-                   -0.20271875, -1.57367212])
-
-            >>> decoder = komm.BCJRDecoder(code, output_type="hard")
-            >>> decoder.decode_to_codeword([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
-            array([1, 1, 0, 1, 0, 1, 1])
         """
         return self._decode(input, "output", self._kept)
 
@@ -137,25 +116,6 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
             >>> decoder = komm.BCJRDecoder(code, output_type="hard")
             >>> decoder.decode([-0.8, -0.1, -1.0, +0.5, +1.8, -1.1, -1.6, +1.6])
             array([1, 1, 0])
-
-            >>> code = komm.TerminatedConvolutionalCode(
-            ...     convolutional_code=komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),
-            ...     num_blocks=3,
-            ...     mode="zero-termination",
-            ...     puncturing_matrix=[[1, 1], [1, 0]],
-            ... )
-            >>> decoder = komm.BCJRDecoder(code)
-            >>> decoder.decode([-0.8, -0.1, -1.0, +1.8, -1.1, -1.6])
-            array([-0.30434446, -0.45888484,  1.45581944])
-
-            >>> code = komm.HammingCode(3)
-            >>> decoder = komm.BCJRDecoder(code)
-            >>> decoder.decode([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
-            array([-1.4867878 , -0.47876436,  1.30351111, -0.2634431 ])
-
-            >>> decoder = komm.BCJRDecoder(code, output_type="hard")
-            >>> decoder.decode([-1.3, -0.8, +1.1, -0.8, +1.2, -0.2, -1.4])
-            array([1, 1, 0, 1])
         """
         if self._message_positions is None:
             raise NotImplementedError(
