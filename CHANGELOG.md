@@ -30,6 +30,8 @@
 
 - Made decoders with soft input reject integer and boolean arrays, which are likely bits; pass L-values as floats.
 
+- Removed methods `viterbi` and `forward_backward` from `MealyMachine`; use those of `Trellis`.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.
