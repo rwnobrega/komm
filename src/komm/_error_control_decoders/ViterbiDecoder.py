@@ -42,13 +42,11 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             self._trellis = self.code.minimal_trellis()
             self._num_input_bits = 1
             self._num_output_bits = 1
-            self._num_sections = self.code.length
             self._kept = np.arange(self.code.length)
         else:
             self._trellis = self._encoder.trellis
             self._num_input_bits = self._encoder.num_input_bits
             self._num_output_bits = self._encoder.num_output_bits
-            self._num_sections = self.code.dimension // self._num_input_bits
             self._kept = self._encoder.kept
         trellis, n = self._trellis, self._num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
@@ -56,26 +54,31 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
         section_bytes = int(trellis.widths.max()) + 8 * 2**n
         self._chunk_size = max(1, 2**26 // (len(trellis) * section_bytes))
 
-    def _best_inputs(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
-        # Inputs of the best path, as bits
-        trellis, h = self._trellis, self._num_sections
-        k, n = self._num_input_bits, self._num_output_bits
+    def _decode(
+        self,
+        input: npt.ArrayLike,
+        symbols: Literal["input", "output"],
+        positions: npt.NDArray[np.integer],
+    ) -> npt.NDArray[np.integer]:
+        # Bits of the given symbols on the best path
+        trellis, n = self._trellis, self._num_output_bits
+        width = self._num_input_bits if symbols == "input" else n
 
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size, "Decoding with Viterbi algorithm")
-        def best_inputs(li: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
+        def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.integer]:
             # Deleted bits as null L-values
             lu = np.zeros((li.shape[0], len(trellis) * n))
             lu[:, self._kept] = li
             branch_metrics = lu.reshape(lu.shape[0], -1, n) @ self._bits.T
-            x_hat = viterbi(trellis, branch_metrics)
-            return int_to_bits(x_hat[:, :h], width=k)
+            sequence = viterbi(trellis, branch_metrics, symbols=symbols)
+            return int_to_bits(sequence, width=width)[:, positions]
 
         if self.input_type == "hard":
             li = (-1.0) ** validate_binary_array(input)  # Bits as unit L-values
         else:  # self.input_type == "soft"
             li = validate_soft_array(input)
-        return best_inputs(li)
+        return decode(li)
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
@@ -116,12 +119,7 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             >>> decoder.decode_to_codeword([-0.8, +0.9, -1.1, -0.7, +0.4, +0.3, +1.0])
             array([1, 0, 1, 1, 0, 1, 0])
         """
-        if self._encoder is None:
-            v_hat = self._best_inputs(input)
-        else:
-            u_hat = self._best_inputs(input)
-            v_hat = self.code.encode(u_hat)
-        return v_hat
+        return self._decode(input, "output", self._kept)
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
@@ -161,8 +159,8 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             array([1, 0, 1, 1])
         """
         if self._encoder is None:
-            v_hat = self._best_inputs(input)
+            v_hat = self.decode_to_codeword(input)
             u_hat = self.code.project_word(v_hat)
         else:
-            u_hat = self._best_inputs(input)
+            u_hat = self._decode(input, "input", np.arange(self.code.dimension))
         return u_hat
