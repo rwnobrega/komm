@@ -6,7 +6,7 @@ $$
 $$
 where $\mathrm{Q}$ is the [Gaussian Q-function](/ref/gaussian_q). Binary phase-shift keying (BPSK) has the same BER. The simulation below confirms this formula.
 
-Binary antipodal signaling uses the [PAM constellation](/ref/PAMConstellation) of order $2$, with points $\pm 1$, so that $E_\mathrm{b} = 1$. The [Gaussian channel](/ref/GaussianChannel) then has noise power $N_0 / 2 = 1 / (2 E_\mathrm{b} / N_0)$. The bits, from a [discrete memoryless source](/ref/DiscreteMemorylessSource), serve directly as indices of the constellation points, and the receiver picks the closest point. Estimating a lower BER takes more bits, so each point simulates blocks of $10^6$ bits until it counts at least $100$ errors, which keeps the relative error of each estimate at most about $1/\sqrt{100} = 10\%$.
+Binary antipodal signaling uses the [PAM constellation](/ref/PAMConstellation) of order $2$, with points $\pm 1$. Each point carries one bit, so $E_\mathrm{b}$ is the mean energy of the constellation. The signal is real, so the [Gaussian channel](/ref/GaussianChannel) has noise power $N_0 / 2$. The bits, from a [discrete memoryless source](/ref/DiscreteMemorylessSource), serve directly as indices of the constellation points, and the receiver picks the closest point. Estimating a lower BER takes more bits, so each point simulates blocks of $10^6$ bits until it counts at least $100$ errors, which keeps the relative error of each estimate at most about $1/\sqrt{100} = 10\%$.
 
 ```pycon
 >>> import numpy as np
@@ -17,11 +17,12 @@ Binary antipodal signaling uses the [PAM constellation](/ref/PAMConstellation) o
 
 >>> source = komm.DiscreteMemorylessSource(2)
 >>> constellation = komm.PAMConstellation(2)
+>>> eb = constellation.mean_energy()
 >>> ebn0_db = np.arange(11)
 >>> ebn0 = 10 ** (ebn0_db / 10)
 >>> ber = []
->>> for noise_power in 1 / (2 * ebn0):
-...     channel = komm.GaussianChannel(noise_power)
+>>> for n0 in eb / ebn0:
+...     channel = komm.GaussianChannel(n0 / 2)
 ...     num_errors = num_bits = 0
 ...     while num_errors < 100:
 ...         bits = source.emit(1_000_000)
