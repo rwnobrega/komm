@@ -119,8 +119,13 @@ class Constellation(ABC, Generic[T]):
         return symbols
 
     def _squared_distances(self, input: npt.NDArray[T]) -> npt.NDArray[np.floating]:
-        diff = input[..., np.newaxis, :] - self.matrix[np.newaxis, ...]
-        return np.sum(np.abs(diff) ** 2, axis=-1)
+        if self.dimension == 1:
+            return np.abs(input - self.matrix.T) ** 2
+        # |r - x|² = |r|² - 2<r, x> + |x|²
+        input_energies = np.sum(np.abs(input) ** 2, axis=-1, keepdims=True)
+        energies = np.sum(np.abs(self.matrix) ** 2, axis=-1)
+        correlations = np.real(input @ self.matrix.conj().T)
+        return input_energies - 2 * correlations + energies
 
     @abstractmethod
     def closest_indices(self, received: npt.ArrayLike) -> npt.NDArray[np.integer]:
