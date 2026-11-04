@@ -32,6 +32,8 @@
 
 - Removed methods `viterbi` and `forward_backward` from `MealyMachine`; use those of `Trellis`.
 
+- Removed method `viterbi_streaming` from `MealyMachine`.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.

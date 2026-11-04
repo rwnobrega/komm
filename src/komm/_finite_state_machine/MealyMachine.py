@@ -1,18 +1,10 @@
-from collections.abc import Callable
 from functools import cached_property
-from itertools import product
-from typing import Any, TypedDict
 
 import numpy as np
 import numpy.typing as npt
 
 from .._util.validators import validate_integer, validate_integer_array
-from ..types import Array1D, Array2D
-
-
-class MetricMemory(TypedDict):
-    paths: Array2D[np.integer]
-    metrics: Array1D[np.floating]
+from ..types import Array1D
 
 
 class MealyMachine:
@@ -149,48 +141,3 @@ class MealyMachine:
             output[t] = y
         final_state = int(s)
         return output, final_state
-
-    def viterbi_streaming(
-        self,
-        observed: npt.ArrayLike,
-        metric_function: Callable[[int, Any], float],
-        memory: MetricMemory,
-    ) -> Array1D[np.integer]:
-        r"""
-        Applies the streaming version of the Viterbi algorithm on a given observed sequence. The path memory (or traceback length) is denoted by $\tau$. It chooses the survivor with best metric and selects the information block on this path. See <cite>LC04, Sec. 12.4</cite>.
-
-        Parameters:
-            observed: The observed sequence $z \in \mathcal{Z}^L$.
-
-            metric_function: The metric function $\mathcal{Y} \times \mathcal{Z} \to \mathbb{R}$.
-
-            memory: The metrics for each state. It must be a dictionary containing two keys: `'paths'`, a 2D-array of integers of shape $|\mathcal{S}| \times (\tau + 1)$, with the inputs along the survivor ending in each state; and `'metrics'`, a 1D-array of floats of length $|\mathcal{S}|$, with the metric of the survivor ending in each state. This dictionary is updated in-place by this method.
-
-        Returns:
-            input_hat: The most probable input sequence $\hat{x} \in \mathcal{X}^L$.
-        """
-        observed = np.asarray(observed)
-        L, num_states = observed.shape[0], self.num_states
-        input_hat = np.empty(L, dtype=int)
-        for t, z in enumerate(observed):
-            new_metrics = np.full(num_states, fill_value=np.inf)
-            choices = np.zeros((num_states, 2), dtype=int)  # State and input
-            for s0, x in product(range(num_states), range(self.num_input_symbols)):
-                s1, y = self.transitions[s0, x], self.outputs[s0, x]
-                candidate_metric = memory["metrics"][s0] + metric_function(y, z)
-                if candidate_metric < new_metrics[s1]:
-                    new_metrics[s1] = candidate_metric
-                    choices[s1] = s0, x
-
-            memory["metrics"] = new_metrics
-            memory["paths"] = np.roll(memory["paths"], shift=-1, axis=1)
-
-            paths_copy = np.copy(memory["paths"])
-            for s1, (s0, x) in enumerate(choices):
-                memory["paths"][s1, :-1] = paths_copy[s0, :-1]
-                memory["paths"][s1, -1] = x
-
-            s_star = np.argmin(new_metrics)
-            input_hat[t] = memory["paths"][s_star, 0]  # Oldest input on best survivor
-
-        return input_hat
