@@ -8,7 +8,7 @@ from .. import abc
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
 from .._util.validators import validate_decision_type, validate_soft_array
-from .util import marginalize
+from .util import branch_costs, marginalize
 
 
 @dataclass
@@ -42,7 +42,6 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
         # Symbols are LSB-first
         self._input_bits = int_to_bits(range(2**k), width=k).reshape(-1, k)
         self._output_bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
-        self._polar = (-1) ** self._output_bits
         # About 64 MiB of metrics
         section_bytes = 8 * (int(trellis.widths.max()) + 2 * 2**n + 2**k)
         self._chunk_size = max(1, 2**26 // (len(trellis) * section_bytes))
@@ -63,7 +62,7 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
             # Deleted bits as null L-values
             lu = np.zeros((li.shape[0], len(trellis) * n))
             lu[:, self._kept] = li
-            branch_metrics = 0.5 * lu.reshape(lu.shape[0], -1, n) @ self._polar.T
+            branch_metrics = -branch_costs(lu.reshape(lu.shape[0], -1, n))
             log_posteriors = trellis.forward_backward(branch_metrics, symbols=symbols)
             lo = marginalize(log_posteriors, bits)
             return lo.reshape(li.shape[0], -1)[:, positions]

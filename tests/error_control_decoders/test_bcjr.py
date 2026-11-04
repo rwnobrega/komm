@@ -196,6 +196,18 @@ def test_bcjr_reliable_input(rng):
     np.testing.assert_equal(lo < 0, u == 1)
 
 
+def test_bcjr_infinite_input():
+    # Two code bits known for sure
+    code = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 8)
+    decoder = komm.BCJRDecoder(code)
+    u = np.array([1, 0, 1, 1, 0, 0, 1, 0])
+    r = 4.0 * (-1.0) ** code.encode(u)
+    r[[0, 3]] *= np.inf  # One of each sign
+    lo = decoder.decode(r)
+    assert not np.any(np.isnan(lo))
+    np.testing.assert_equal(lo < 0, u == 1)
+
+
 @pytest.mark.parametrize(
     "code",
     [

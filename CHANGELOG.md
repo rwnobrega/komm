@@ -44,7 +44,7 @@
 
 - Fixed regression in `boxplus` (and hence `SCDecoder`), which returned NaN when both inputs were infinite.
 
-- Fixed `ViterbiDecoder` and `ViterbiStreamDecoder` for infinite L-values.
+- Fixed `ViterbiDecoder`, `ViterbiStreamDecoder`, and `BCJRDecoder` for infinite L-values.
 
 ## v0.37.0 (2026-10-15)
 
