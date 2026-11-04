@@ -12,6 +12,7 @@ from .._util.validators import (
     validate_decision_type,
     validate_soft_array,
 )
+from .util import branch_costs
 
 
 @dataclass
@@ -42,7 +43,6 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
         self._kept = encoder.kept
         self._message_positions = encoder.message_positions
         trellis, n = self._trellis, self._num_output_bits
-        self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         # About 64 MiB of decisions and metrics
         section_bytes = int(trellis.widths.max()) + 8 * 2**n
         self._chunk_size = max(1, 2**26 // (len(trellis) * section_bytes))
@@ -63,7 +63,7 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
             # Deleted bits as null L-values
             lu = np.zeros((li.shape[0], len(trellis) * n))
             lu[:, self._kept] = li
-            branch_metrics = lu.reshape(lu.shape[0], -1, n) @ self._bits.T
+            branch_metrics = branch_costs(lu.reshape(lu.shape[0], -1, n))
             sequence = trellis.viterbi(branch_metrics, symbols=symbols)
             return int_to_bits(sequence, width=width)[:, positions]
 

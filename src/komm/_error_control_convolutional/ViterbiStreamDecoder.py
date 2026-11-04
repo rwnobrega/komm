@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._error_control_decoders.util import branch_costs
 from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.bit_operations import int_to_bits
 from .._util.validators import (
@@ -42,8 +43,6 @@ class ViterbiStreamDecoder:
             self.initial_state, low=0, high=self._fsm.num_states
         )
         self._section = TrellisSection(self._fsm.transitions, self._fsm.outputs)
-        n = self.convolutional_code.num_output_bits
-        self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         self._reset()
 
     def _reset(self) -> None:
@@ -52,15 +51,7 @@ class ViterbiStreamDecoder:
         self._metrics = np.full(num_states, fill_value=np.inf)
         self._metrics[self.initial_state] = 0.0
 
-    def _branch_metrics(
-        self, observed: npt.NDArray[np.number]
-    ) -> npt.NDArray[np.number]:
-        if self.input_type == "hard":
-            return np.count_nonzero(observed[:, np.newaxis] != self._bits, axis=2)
-        else:  # self.input_type == "soft"
-            return observed @ self._bits.T
-
-    def _decode(self, branch_metrics: npt.NDArray[np.number]) -> Array1D[np.integer]:
+    def _decode(self, branch_metrics: npt.NDArray[np.floating]) -> Array1D[np.integer]:
         in_states, in_inputs, in_outputs = self._section.incoming
         states = np.arange(self._section.num_next_states)
         input_hat = np.empty(branch_metrics.shape[0], dtype=int)
@@ -96,16 +87,16 @@ class ViterbiStreamDecoder:
             array([0, 0, 1, 0, 1, 1, 1, 0])
         """
         if self.input_type == "hard":
-            input = validate_binary_array(input, ndim=1)
+            li = (-1.0) ** validate_binary_array(input, ndim=1)  # Bits as unit L-values
         else:  # self.input_type == "soft"
-            input = validate_soft_array(input, ndim=1)
+            li = validate_soft_array(input, ndim=1)
         n = self.convolutional_code.num_output_bits
         k = self.convolutional_code.num_input_bits
-        if not input.size % n == 0:
+        if not li.size % n == 0:
             raise ValueError(
-                f"length of 'input' must be a multiple of {n} (got {input.size})"
+                f"length of 'input' must be a multiple of {n} (got {li.size})"
             )
-        input_hat = self._decode(self._branch_metrics(input.reshape(-1, n)))
+        input_hat = self._decode(branch_costs(li.reshape(-1, n)))
         output = int_to_bits(input_hat, width=k)
         return output
 

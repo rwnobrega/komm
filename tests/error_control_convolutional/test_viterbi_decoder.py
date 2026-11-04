@@ -83,6 +83,17 @@ def test_viterbi_stream_decoder_parallel_transitions(rng):
     np.testing.assert_equal(decoder.decode(v)[10:], u)
 
 
+def test_viterbi_stream_decoder_infinite_input():
+    # Two code bits known for sure
+    code = komm.ConvolutionalCode([[0o7, 0o5]])
+    decoder = komm.ViterbiStreamDecoder(code, traceback_length=4, input_type="soft")
+    u = [1, 0, 1, 1, 0, 0, 1, 0, 0, 0]
+    r = 4.0 * (-1.0) ** code.encode(u)
+    r[[0, 3]] *= np.inf  # One of each sign
+    output = np.concatenate([decoder.decode(r), decoder.flush()])
+    np.testing.assert_equal(output[4:], u)  # Delay of 4
+
+
 @pytest.mark.parametrize(
     "feedforward_polynomials",
     [

@@ -63,6 +63,16 @@ def test_viterbi_parallel_transitions(rng):
     np.testing.assert_equal(decoder.decode(code.encode(u)), u)
 
 
+def test_viterbi_infinite_input():
+    # Two code bits known for sure
+    code = komm.TerminatedConvolutionalCode(komm.ConvolutionalCode([[0o7, 0o5]]), 8)
+    decoder = komm.ViterbiDecoder(code, input_type="soft")
+    u = [1, 0, 1, 1, 0, 0, 1, 0]
+    r = 4.0 * (-1.0) ** code.encode(u)
+    r[[0, 3]] *= np.inf  # One of each sign
+    np.testing.assert_equal(decoder.decode(r), u)
+
+
 def check_against_exhaustive(code, rng):
     # Soft: no ties, so compare messages
     viterbi = komm.ViterbiDecoder(code, input_type="soft")
