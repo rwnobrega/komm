@@ -94,7 +94,7 @@ class Trellis(Sequence[TrellisSection]):
         symbols: Literal["input", "output"] = "input",
     ) -> npt.NDArray[np.integer]:
         r"""
-        Finds the input or output sequence of the path of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order.
+        Finds the input or output sequence of the path of least cost. The cost of a path is the sum of the metrics of its initial state, its branches, and its final state. Ties go to the branch that comes first in (state, input) order. If no path has finite cost, all paths tie.
 
         Parameters:
             branch_metrics: The cost of each output at each step. Its last two dimensions have lengths $L$ and $|\mathcal{Y}|$. It may have extra leading dimensions, which are kept in the output.
@@ -148,13 +148,15 @@ class Trellis(Sequence[TrellisSection]):
                 choice[better] = d
             choices.append(choice)
         # Trace back from best final state
-        final_metrics = np.broadcast_to(final_metrics, metrics.shape)
-        states = np.argmin(metrics + final_metrics, axis=-1, keepdims=True)
+        costs = metrics + np.broadcast_to(final_metrics, metrics.shape)
+        states = np.argmin(costs, axis=-1, keepdims=True)
+        # With no finite path, all paths tie
+        tied = np.take_along_axis(costs, states, axis=-1) == np.inf
         sequence = np.empty((*shape, len(self)), dtype=int)
         for t in reversed(range(len(self))):
             in_states, in_inputs, in_outputs = self[t].incoming
             in_symbols = in_inputs if symbols == "input" else in_outputs
-            d = np.take_along_axis(choices[t], states, axis=-1)
+            d = np.where(tied, 0, np.take_along_axis(choices[t], states, axis=-1))
             sequence[..., t : t + 1] = in_symbols[states, d]
             states = in_states[states, d]
         return sequence

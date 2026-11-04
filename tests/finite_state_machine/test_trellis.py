@@ -135,12 +135,13 @@ def test_trellis_viterbi_shapes(rng):
 
 
 @pytest.mark.repeat(20)
-def test_trellis_viterbi_ties(rng):
-    # Integer costs, hence many ties
+@pytest.mark.parametrize("costs", [[0, 1, 2], [0, 1, np.inf]])
+def test_trellis_viterbi_ties(costs, rng):
+    # Few distinct costs, hence many ties
     trellis = random_trellis(rng, 4)
-    initial = rng.integers(3, size=trellis[0].num_states)
-    final = rng.integers(3, size=trellis[-1].num_next_states)
-    branch_metrics = rng.integers(3, size=(4, 12))
+    initial = rng.choice(costs, size=trellis[0].num_states)
+    final = rng.choice(costs, size=trellis[-1].num_next_states)
+    branch_metrics = rng.choice(costs, size=(4, 12))
 
     def key(path):
         # Least cost, then least final state, last branch, and so on
