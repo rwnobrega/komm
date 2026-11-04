@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from itertools import product
 from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from .. import abc
+from .._finite_state_machine.TrellisSection import TrellisSection
 from .._util.bit_operations import int_to_bits
 from .._util.validators import (
     validate_binary_array,
@@ -41,6 +41,7 @@ class ViterbiStreamDecoder:
         self.initial_state = validate_integer(
             self.initial_state, low=0, high=self._fsm.num_states
         )
+        self._section = TrellisSection(self._fsm.transitions, self._fsm.outputs)
         n = self.convolutional_code.num_output_bits
         self._bits = int_to_bits(range(2**n), width=n).reshape(-1, n)
         self._reset()
@@ -51,37 +52,27 @@ class ViterbiStreamDecoder:
         self._metrics = np.full(num_states, fill_value=np.inf)
         self._metrics[self.initial_state] = 0.0
 
-    def _metric(self, y: int, z: npt.ArrayLike) -> float:
+    def _branch_metrics(
+        self, observed: npt.NDArray[np.number]
+    ) -> npt.NDArray[np.number]:
         if self.input_type == "hard":
-            return float(np.count_nonzero(self._bits[y] != z))
+            return np.count_nonzero(observed[:, np.newaxis] != self._bits, axis=2)
         else:  # self.input_type == "soft"
-            return np.dot(self._bits[y], z)
+            return observed @ self._bits.T
 
-    def _decode(self, observed: npt.NDArray[np.number]) -> Array1D[np.integer]:
-        fsm = self._fsm
-        L, num_states = observed.shape[0], fsm.num_states
-        input_hat = np.empty(L, dtype=int)
-        for t, z in enumerate(observed):
-            new_metrics = np.full(num_states, fill_value=np.inf)
-            choices = np.zeros((num_states, 2), dtype=int)  # State and input
-            for s0, x in product(range(num_states), range(fsm.num_input_symbols)):
-                s1, y = fsm.transitions[s0, x], fsm.outputs[s0, x]
-                candidate_metric = self._metrics[s0] + self._metric(y, z)
-                if candidate_metric < new_metrics[s1]:
-                    new_metrics[s1] = candidate_metric
-                    choices[s1] = s0, x
-
-            self._metrics = new_metrics
-            self._paths = np.roll(self._paths, shift=-1, axis=1)
-
-            paths_copy = np.copy(self._paths)
-            for s1, (s0, x) in enumerate(choices):
-                self._paths[s1, :-1] = paths_copy[s0, :-1]
-                self._paths[s1, -1] = x
-
-            s_star = np.argmin(new_metrics)
+    def _decode(self, branch_metrics: npt.NDArray[np.number]) -> Array1D[np.integer]:
+        in_states, in_inputs, in_outputs = self._section.incoming
+        states = np.arange(self._section.num_next_states)
+        input_hat = np.empty(branch_metrics.shape[0], dtype=int)
+        for t, gamma in enumerate(branch_metrics):
+            # Add, compare, select
+            candidates = self._metrics[in_states] + gamma[in_outputs]
+            d = np.argmin(candidates, axis=1)
+            self._metrics = candidates[states, d]
+            survivors = self._paths[in_states[states, d], 1:]
+            self._paths = np.column_stack([survivors, in_inputs[states, d]])
+            s_star = np.argmin(self._metrics)
             input_hat[t] = self._paths[s_star, 0]  # Oldest input on best survivor
-
         return input_hat
 
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
@@ -114,7 +105,7 @@ class ViterbiStreamDecoder:
             raise ValueError(
                 f"length of 'input' must be a multiple of {n} (got {input.size})"
             )
-        input_hat = self._decode(input.reshape(-1, n))
+        input_hat = self._decode(self._branch_metrics(input.reshape(-1, n)))
         output = int_to_bits(input_hat, width=k)
         return output
 
