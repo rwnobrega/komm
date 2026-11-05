@@ -173,7 +173,7 @@ class BinaryPolynomial:
         Returns the coefficients of the binary polynomial.
 
         Parameters:
-            width: If this parameter is specified, the output will be filled with zeros on the right so that the its length will be the specified value.
+            width: If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
 
         Returns:
             coefficients: Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.
@@ -204,7 +204,10 @@ class BinaryPolynomial:
 
     def reciprocal(self, width: int | None = None) -> Self:
         r"""
-        Returns the reciprocal (reflexion) of the binary polynomial. The reciprocal of a binary polynomial is the polynomial with the coefficients in reversed order, that is, the coefficient of $X^i$ becomes the coefficient of $X^{n-i}$, where $n$ is the degree of the polynomial.
+        Returns the reciprocal (reflexion) of the binary polynomial. The reciprocal of a binary polynomial is the polynomial with the coefficients in reversed order, that is, the coefficient of $X^i$ becomes the coefficient of $X^{n-i}$, where $n$ is the degree of the polynomial, or $w - 1$ if a width $w$ is specified.
+
+        Parameters:
+            width: The number $w$ of coefficients to reverse. Must be greater than the degree of the polynomial. The default value is the degree plus one.
 
         Returns:
             result (BinaryPolynomial): The binary polynomial with the reversed coefficients.
@@ -213,6 +216,8 @@ class BinaryPolynomial:
             >>> poly = komm.BinaryPolynomial(0b11010)  # X^4 + X^3 + X
             >>> poly.reciprocal()  # X^3 + X + 1
             BinaryPolynomial(0b1011)
+            >>> poly.reciprocal(width=8)  # X^6 + X^4 + X^3
+            BinaryPolynomial(0b1011000)
         """
         return self.__class__(from_binary(self.coefficients(width)[::-1]))
 
