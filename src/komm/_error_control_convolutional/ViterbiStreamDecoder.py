@@ -26,7 +26,7 @@ class ViterbiStreamDecoder:
     Parameters:
         convolutional_code: The convolutional code.
         traceback_length: The traceback length (path memory) $\tau$ of the decoder. Must be a non-negative integer.
-        initial_state: The initial state of the decoder. Must be in $[0 : 2^\sigma)$, where $\sigma$ is the degree of the convolutional code. The default value is `0`.
+        initial_state: The initial state of the decoder, numbered as in the [finite-state machine](/ref/ConvolutionalCode/#finite_state_machine) of the convolutional code. Must be in $[0 : 2^\sigma)$, where $\sigma$ is the degree of the convolutional code. The default value is `0`.
         input_type: The type of the input sequence, either `'hard'` or `'soft'`. The default value is `'hard'`.
     """
 

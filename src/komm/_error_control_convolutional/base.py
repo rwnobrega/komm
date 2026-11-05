@@ -130,6 +130,8 @@ class ConvolutionalCode(ABC):
     def finite_state_machine(self) -> MealyMachine:
         r"""
         Returns the [finite-state (Mealy) machine](/ref/MealyMachine) of the encoder.
+
+        In the machine returned by this method, the states, inputs, and outputs are the integers whose binary representations (LSB-first) are the state, the input block, and the output block of [`encode_with_state`](./#encode_with_state).
         """
         n, k, σ = self.num_output_bits, self.num_input_bits, self.degree
         # All (state, input) pairs in one step
