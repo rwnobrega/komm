@@ -10,6 +10,7 @@ Short examples of common tasks with Komm.
 - [**BER of binary antipodal signaling**](ber-antipodal.md) – Bit error rate of binary antipodal signaling over the AWGN channel, by simulation and by formula.
 - [**BER of syndrome decoding**](ber-syndrome.md) – Bit error rate of syndrome decoding over the binary symmetric channel, by formula from the standard array, compared with bitwise MAP decoding.
 - [**Extended Huffman codes**](extended-huffman.md) – Huffman codes for blocks of source symbols, with rates approaching the entropy.
+- [**Hard- and soft-decision decoding**](hard-soft-decoding.md) – Block error rate of the Hamming code over the AWGN channel, with hard and soft decisions, by simulation and by formula.
 - [**Huffman codes for LZSS tokens**](lzss-huffman.md) – The two main ideas of Deflate, the algorithm of gzip and PNG, on the tokens of an LZSS code.
 - [**Lempel–Ziv 78 and the entropy rate**](lz78-entropy-rate.md) – Lempel–Ziv 78 code on a Markov source, with rates approaching the entropy rate without knowledge of the source.
 - [**Nadler code**](nadler-code.md) – Nonlinear code with 32 codewords of length 12 and minimum distance 5, compared with a linear code.
