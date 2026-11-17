@@ -46,6 +46,8 @@
 
 - Fixed `ViterbiDecoder`, `ViterbiStreamDecoder`, and `BCJRDecoder` for infinite L-values.
 
+- Fixed `is_catastrophic` of convolutional codes, which missed catastrophic encoders with more than one input.
+
 ## v0.37.0 (2026-10-15)
 
 ### Added

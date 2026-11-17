@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from itertools import product
 from math import prod
 from typing import Any, SupportsIndex
 
@@ -395,60 +394,29 @@ def invariant_factors(matrix: npt.ArrayLike) -> list[BinaryPolynomial]:
     if np.all(matrix == 0):
         return []
 
-    # E1: Find entry of least size and move it to position (0,0)
-    i0, j0, d0, a0 = -1, -1, np.inf, BP(0b0)
-    for i, j in product(range(k), range(n)):
-        a = BP(matrix[i, j])
-        if a == 0b0:
-            continue
-        d = a.degree
-        if d < d0:
-            i0, j0, d0, a0 = i, j, d, a
-    matrix[0, :], matrix[i0, :] = matrix[i0, :].copy(), matrix[0, :].copy()
-    matrix[:, 0], matrix[:, j0] = matrix[:, j0].copy(), matrix[:, 0].copy()
+    while True:
+        # E1: Find entry of least size and move it to position (0,0)
+        _, i0, j0 = min(
+            (BP(a).degree, i, j) for (i, j), a in np.ndenumerate(matrix) if a != 0
+        )
+        matrix[[0, i0], :] = matrix[[i0, 0], :]
+        matrix[:, [0, j0]] = matrix[:, [j0, 0]]
+        a0 = BP(matrix[0, 0])
 
-    # E2a
-    done = False
-    while not done:
-        done = True
+        # E2: Reduce first row and column modulo a0
         for j in range(1, n):
-            a = BP(matrix[0, j])
-            if a == 0:
-                continue
-            q, r = divmod(a, a0)
-            if r != 0:
-                a0 = r
-                for i in range(k):
-                    matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[i, 0])
-                matrix[:, 0], matrix[:, j] = matrix[:, j].copy(), matrix[:, 0].copy()
-                done = False
-                break
-    # E2b
-    done = False
-    while not done:
-        done = True
+            q = BP(matrix[0, j]) // a0
+            for i in range(k):
+                matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[i, 0])
         for i in range(1, k):
-            a = BP(matrix[i, 0])
-            if a == 0:
-                continue
-            q, r = divmod(a, a0)
-            if r != 0:
-                a0 = r
-                for j in range(n):
-                    matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[0, j])
-                matrix[0, :], matrix[i, :] = matrix[i, :].copy(), matrix[0, :].copy()
-                done = False
-                break
+            q = BP(matrix[i, 0]) // a0
+            for j in range(n):
+                matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[0, j])
+        if np.any(matrix[0, 1:]) or np.any(matrix[1:, 0]):
+            continue  # Remainders are smaller than a0
 
-    # E3a
-    for j in range(1, n):
-        q = BP(matrix[0, j]) // a0
-        for i in range(k):
-            matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[i, 0])
-    # E3b
-    for i in range(1, k):
-        q = BP(matrix[i, 0]) // a0
-        for j in range(n):
-            matrix[i, j] = BP(matrix[i, j]) - q * BP(matrix[0, j])
-
-    return [a0] + invariant_factors(matrix[1:, 1:])
+        # E3: Make a0 divide the remaining entries
+        rows = [i for (i, _), a in np.ndenumerate(matrix[1:, 1:]) if BP(a) % a0 != 0]
+        if not rows:
+            return [a0] + invariant_factors(matrix[1:, 1:])
+        matrix[0, :] ^= matrix[rows[0] + 1, :]

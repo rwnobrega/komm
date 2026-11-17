@@ -1,7 +1,13 @@
+from functools import reduce
+from itertools import combinations
+from math import prod
+
 import numpy as np
 import pytest
 
 import komm
+from komm._algebra.domain import gcd
+from komm._algebra.ring import determinant
 from komm._util.bit_operations import int_to_bits
 from komm._util.matrices import (
     boolean_matmul,
@@ -335,7 +341,33 @@ def test_trellis_oriented_form_random(n_rows, n_cols, rng):
             ],
             [0b1, 0b1001, 0b1001],
         ),
+        (
+            [
+                [0b11, 0b101, 0b1111],
+                [0b0, 0b1010, 0b100],
+            ],
+            [0b1, 0b110],
+        ),
     ],
 )
 def test_invariant_factors(matrix, factors):
     assert invariant_factors(matrix) == [komm.BinaryPolynomial(f) for f in factors]
+
+
+def test_invariant_factors_minors(rng):
+    # First i factors multiply to gcd of i x i minors
+    for _ in range(200):
+        k = int(rng.integers(1, 4))
+        n = int(rng.integers(k, k + 3))
+        matrix = rng.integers(0, 16, size=(k, n))
+        factors = invariant_factors(matrix)
+        poly = [[komm.BinaryPolynomial(int(a)) for a in row] for row in matrix]
+        for i in range(1, k + 1):
+            minors = [
+                determinant([[poly[r][c] for c in cols] for r in rows])
+                for rows in combinations(range(k), i)
+                for cols in combinations(range(n), i)
+            ]
+            one, zero = komm.BinaryPolynomial(1), komm.BinaryPolynomial(0)
+            expected = prod(factors[:i], start=one) if i <= len(factors) else zero
+            assert reduce(gcd, minors) == expected

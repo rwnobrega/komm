@@ -351,6 +351,27 @@ def test_convolutional_code_catastrophic_mceliece():
     assert code.is_catastrophic() is False
 
 
+def test_convolutional_code_catastrophic_common_factor():
+    # First row has the factor 1 + D
+    code = komm.ConvolutionalCode([[0b11, 0b101, 0b1111], [0b0, 0b1010, 0b100]])
+    assert code._minors_gcd() == komm.BinaryPolynomial(0b110)
+    assert code.is_catastrophic() is True
+    # Infinite-weight input, finite-weight output
+    assert np.sum(code.encode(np.tile([1, 0], 40))) == 5
+
+
+def test_convolutional_code_catastrophic_minors(rng):
+    # Non-catastrophic iff gcd of minors is D^s
+    for _ in range(200):
+        k = int(rng.integers(1, 4))
+        n = int(rng.integers(k + 1, k + 3))
+        code = komm.ConvolutionalCode(rng.integers(1, 16, size=(k, n)))
+        delta = code._minors_gcd()
+        if delta == 0:
+            continue
+        assert code.is_catastrophic() == (len(delta.exponents()) != 1)
+
+
 @pytest.mark.parametrize(
     "feedforward_polynomials, feedback_polynomials, delta, is_catastrophic",
     [
