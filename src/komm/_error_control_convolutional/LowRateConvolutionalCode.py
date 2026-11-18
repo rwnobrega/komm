@@ -40,6 +40,7 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
 
             >>> code = komm.LowRateConvolutionalCode([0b1001111, 0b1101101])
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> code = komm.LowRateConvolutionalCode([79, 109])
     """
 
     g_row: list[BinaryPolynomial]
