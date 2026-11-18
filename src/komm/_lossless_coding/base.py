@@ -140,6 +140,9 @@ class SymbolCode(ABC):
 
         Returns:
             output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$.
+
+        Raises:
+            ValueError: If the code is not uniquely decodable.
         """
         if not self.is_uniquely_decodable():
             raise ValueError("code is not uniquely decodable")
@@ -157,6 +160,9 @@ class SymbolCode(ABC):
 
         Returns:
             output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
+
+        Raises:
+            ValueError: If the code is not uniquely decodable.
         """
         if not self.is_uniquely_decodable():
             raise ValueError("code is not uniquely decodable")
@@ -193,8 +199,8 @@ class SymbolCode(ABC):
         Returns:
             symbol: The decoded source symbol.
 
-        Notes:
-            A ValueError is raised if the iterator is exhausted mid-codeword or if an invalid word is found.
+        Raises:
+            ValueError: If the code is not prefix-free, or if the iterator is exhausted mid-codeword or yields an invalid word.
         """
         if not self.is_prefix_free():
             raise ValueError("code is not prefix-free")
@@ -386,6 +392,9 @@ class VariableToFixedCode(ABC):
 
         Returns:
             output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$ with a length that is a multiple of $n$.
+
+        Raises:
+            ValueError: If the code is not complete or not uniquely encodable.
         """
         if not self.is_complete():
             raise ValueError("code is not complete")
@@ -409,6 +418,9 @@ class VariableToFixedCode(ABC):
 
         Returns:
             output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$.
+
+        Raises:
+            ValueError: If the code is not complete or not uniquely encodable.
         """
         if not self.is_complete():
             raise ValueError("code is not complete")

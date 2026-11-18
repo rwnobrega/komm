@@ -472,6 +472,9 @@ class FixedToVariableCode:
         Returns:
             output: The sequence of encoded symbols. It is a 1D-array with elements in $\mathcal{Y}$.
 
+        Raises:
+            ValueError: If the code is not uniquely decodable.
+
         Examples:
             >>> code = komm.FixedToVariableCode.from_enc_mapping({
             ...     (0, 0): (0,),
@@ -514,6 +517,9 @@ class FixedToVariableCode:
 
         Returns:
             output: The sequence of decoded symbols. It is a 1D-array with elements in $\mathcal{X}$ with a length that is a multiple of $k$.
+
+        Raises:
+            ValueError: If the code is not uniquely decodable.
 
         Examples:
             >>> code = komm.FixedToVariableCode.from_enc_mapping({
