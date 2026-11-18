@@ -209,11 +209,11 @@ class MarkovChain:
         r"""
         Computes the stationary distribution of an irreducible Markov chain. The *stationary distribution* $\pi$ is a pmf over $\mathcal{S}$ such that $\pi P = \pi$.
 
-        Note:
-            This method is only implemented for irreducible chains.
-
         Returns:
             The stationary distribution $\pi$ of the Markov chain.
+
+        Raises:
+            NotImplementedError: If the chain is not irreducible.
 
         Examples:
             >>> chain = komm.MarkovChain([
@@ -354,11 +354,11 @@ class MarkovChain:
         r"""
         Computes the index of primitivity of a regular Markov chain. The *index of primitivity* is the smallest positive integer $n$ such that all entries of $P^n$ are positive.
 
-        Notes:
-            - This method only applies to regular Markov chains.
-
         Returns:
             The index of primitivity of the Markov chain.
+
+        Raises:
+            ValueError: If the chain is not regular.
 
         Examples:
             >>> chain = komm.MarkovChain([
@@ -468,12 +468,14 @@ class MarkovChain:
         r"""
         Computes the mean number of visits from each transient state to each transient state. This is the expected number of times the chain, starting from transient state $i \in \mathcal{T}$, visits transient state $j \in \mathcal{T}$ before being absorbed.
 
-        Notes:
-            - This method only applies to absorbing Markov chains.
-            - This corresponds to the *fundamental matrix* $N$ of the Markov chain.
+        Note:
+            This corresponds to the *fundamental matrix* $N$ of the Markov chain.
 
         Returns:
             A $|\mathcal{T}| \times |\mathcal{T}|$-matrix $N$ where entry $N_{i,j}$ is the mean number of visits from $i \in \mathcal{T}$ to $j \in \mathcal{T}$.
+
+        Raises:
+            ValueError: If the chain is not absorbing.
 
         Examples:
             >>> chain = komm.MarkovChain([
@@ -500,12 +502,14 @@ class MarkovChain:
         r"""
         Computes the mean time to absorption from each transient state. This is the expected number of steps until the chain, starting from transient state $i \in \mathcal{T}$, is absorbed.
 
-        Notes:
-            - This method only applies to absorbing Markov chains.
-            - This is obtained by adding all the entries in the $i$-th row of the fundamental matrix $N$.
+        Note:
+            This is obtained by adding all the entries in the $i$-th row of the fundamental matrix $N$.
 
         Returns:
             A $|\mathcal{T}|$-vector $\mathbf{t}$ where $\mathbf{t}_i$ is the mean time to absorption from $i \in \mathcal{T}$.
+
+        Raises:
+            ValueError: If the chain is not absorbing.
 
         Examples:
             >>> chain = komm.MarkovChain([
@@ -525,12 +529,14 @@ class MarkovChain:
         r"""
         Computes the absorption probabilities from each transient state to each absorbing state. This is the probability of, starting from transient state $i \in \mathcal{T}$, being absorbed in absorbing state $j \in \mathcal{A}$.
 
-        Notes:
-            - This method only applies to absorbing Markov chains.
-            - This corresponds to the matrix $B = N R$, where $N$ is the fundamental matrix and $R$ is the submatrix of $P$ row-indexed by $\mathcal{T}$ and column-indexed by $\mathcal{A}$.
+        Note:
+            This corresponds to the matrix $B = N R$, where $N$ is the fundamental matrix and $R$ is the submatrix of $P$ row-indexed by $\mathcal{T}$ and column-indexed by $\mathcal{A}$.
 
         Returns:
             A $|\mathcal{T}| \times |\mathcal{A}|$-matrix $B$ where $B_{i,j}$ is the absorption probability from $i \in \mathcal{T}$ to $j \in \mathcal{A}$.
+
+        Raises:
+            ValueError: If the chain is not absorbing.
 
         Examples:
             >>> chain = komm.MarkovChain([
@@ -687,14 +693,14 @@ class MarkovChain:
         r"""
         Returns random samples from the Markov chain until an absorbing state is reached.
 
-        Note:
-            This method only applies to absorbing Markov chains.
-
         Parameters:
             initial_state: The state $i \in \mathcal{S}$ from which to start the simulation.
 
         Returns:
             output: A 1D-array of integers in $\mathcal{S}$ representing the states visited during the simulation.
+
+        Raises:
+            ValueError: If the chain is not absorbing.
 
         Examples:
             >>> chain = komm.MarkovChain([

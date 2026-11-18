@@ -183,14 +183,14 @@ class MarkovSource:
         $$
         where $\pi$ is the stationary distribution of the chain of states, and $\mathrm{H}(p(\cdot \mid s))$ is the [entropy](/ref/entropy) of the conditional pmf given the state $s$. It does not depend on the initial pmf. See <cite>Gal08, Sec. 2.8.2</cite>.
 
-        Note:
-            This method is only implemented for irreducible chains.
-
         Parameters:
             base: See [`komm.entropy`](/ref/entropy). The default value is `2.0`.
 
         Returns:
             entropy_rate: The source entropy rate.
+
+        Raises:
+            NotImplementedError: If the chain of states is not irreducible.
 
         Examples:
             >>> source = komm.MarkovSource(
