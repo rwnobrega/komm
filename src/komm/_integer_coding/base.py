@@ -41,8 +41,8 @@ class IntegerCode(ABC):
         Returns:
             integer: The decoded integer.
 
-        Notes:
-            A ValueError is raised if the iterator is exhausted mid-codeword or if an invalid bit is found.
+        Raises:
+            ValueError: If the iterator is exhausted mid-codeword or yields an invalid bit.
         """
         raise NotImplementedError
 
