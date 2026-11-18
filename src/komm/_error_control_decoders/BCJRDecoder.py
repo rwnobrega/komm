@@ -100,6 +100,9 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer | np.floating]:
         r"""
+        Raises:
+            NotImplementedError: If the generator matrix is not systematic, unless the code is a terminated convolutional code.
+
         Examples:
             >>> code = komm.TerminatedConvolutionalCode(
             ...     convolutional_code=komm.ConvolutionalCode([[0b11, 0b1]], [0b11]),

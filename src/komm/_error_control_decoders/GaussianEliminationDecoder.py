@@ -26,6 +26,9 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
 
     def decode_to_codeword(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
+        Raises:
+            ValueError: If no codeword agrees with `input` in the non-erased positions.
+
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.GaussianEliminationDecoder(code)
@@ -56,6 +59,9 @@ class GaussianEliminationDecoder(abc.CodewordDecoder[abc.BlockCode]):
 
     def decode(self, input: npt.ArrayLike) -> npt.NDArray[np.integer]:
         r"""
+        Raises:
+            ValueError: If no codeword agrees with `input` in the non-erased positions.
+
         Examples:
             >>> code = komm.HammingCode(3)
             >>> decoder = komm.GaussianEliminationDecoder(code)
