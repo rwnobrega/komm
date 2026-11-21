@@ -118,7 +118,7 @@ def to_binary(
     Parameters:
         integer: The input integer. Must be non-negative.
 
-        width: The number of bits of the representation. The default value is the number of bits of the input integer.
+        width: The number of bits of the representation. Must be at least the number of bits of the input integer. The default value is the number of bits of the input integer.
 
         bit_order: Bit order convention. Must be either `"LSB-first"` (least significant bit in the first position) or `"MSB-first"` (most significant bit in the first position). The default value is `"LSB-first"`.
 

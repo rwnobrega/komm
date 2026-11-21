@@ -255,7 +255,7 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating] | fl
 
     Parameters:
         a: A float or array of floats containing L-values.
-        b: A float or array of floats containing L-values.
+        b: A float or array of floats containing L-values. Must have the same shape as `a`.
 
     Returns:
         The result of the boxplus operation. It has the same shape as the inputs.
