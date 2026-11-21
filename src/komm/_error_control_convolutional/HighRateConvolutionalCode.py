@@ -208,12 +208,14 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
         beta = np.fliplr(beta)
         alpha = np.array([self.h_row[-1].coefficients(σ + 1)])
         alpha = np.fliplr(alpha)
-        A_mat = np.vstack([np.eye(σ - 1, σ, k=1, dtype=int), alpha[:, :-1]])
+        A_mat = np.eye(σ, σ, k=1, dtype=int)
+        C_mat = np.zeros((σ, n), dtype=int)
+        if σ > 0:
+            A_mat[-1, :] = alpha[0, :-1]
+            C_mat[-1, -1] = 1
         B_mat = np.empty((n - 1, σ), dtype=int)
         for j in range(σ):
             B_mat[:, j] = beta[:, j] ^ (alpha[0, j] * beta[:, -1])
-        C_mat = np.zeros((σ, n), dtype=int)
-        C_mat[-1, -1] = 1
         D_mat = np.hstack([np.eye(n - 1, dtype=int), beta[:, -1:]])
         return A_mat, B_mat, C_mat, D_mat
 

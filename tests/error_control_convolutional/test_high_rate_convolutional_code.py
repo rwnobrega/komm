@@ -56,6 +56,33 @@ def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance,
 
 
 @pytest.mark.parametrize(
+    "h_row, free_distance",
+    [
+        ([0b1, 0b1], 2),
+        ([0b0, 0b1], 1),
+        ([0b1, 0b1, 0b1], 2),
+        ([0b1, 0b0, 0b1, 0b1], 1),
+    ],
+)
+def test_high_rate_convolutional_code_memoryless(h_row, free_distance, rng):
+    code = komm.HighRateConvolutionalCode(h_row)
+    n = len(h_row)
+    assert code.degree == 0
+    assert code.finite_state_machine().num_states == 1
+    assert code.free_distance() == free_distance
+
+    # Test against general class
+    feedforward_polynomials = np.zeros((n - 1, n), dtype=int)
+    for i in range(n - 1):
+        feedforward_polynomials[i, i] = 1
+        feedforward_polynomials[i, n - 1] = h_row[i]
+    code1 = komm.ConvolutionalCode(feedforward_polynomials)
+    for _ in range(100):
+        input = rng.integers(0, 2, size=50 * (n - 1))
+        np.testing.assert_equal(code.encode(input), code1.encode(input))
+
+
+@pytest.mark.parametrize(
     "h_row, message",
     [
         ([0o5], "'h_row' must have at least two entries"),
