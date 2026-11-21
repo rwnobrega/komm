@@ -226,6 +226,12 @@ class TokenCode(ABC, Generic[T]):
     def source_to_tokens(self, source: npt.ArrayLike) -> list[T]:
         r"""
         Encodes a given sequence of source symbols to the corresponding list of tokens.
+
+        Parameters:
+            source: The sequence of source symbols. Must be a 1D-array with elements in $\mathcal{X}$.
+
+        Returns:
+            tokens: The list of tokens.
         """
         raise NotImplementedError
 
@@ -233,6 +239,15 @@ class TokenCode(ABC, Generic[T]):
     def tokens_to_source(self, tokens: list[T]) -> Array1D[np.integer]:
         r"""
         Decodes a given list of tokens to the corresponding sequence of source symbols.
+
+        Parameters:
+            tokens: The list of tokens.
+
+        Returns:
+            source: The sequence of source symbols. It is a 1D-array with elements in $\mathcal{X}$.
+
+        Raises:
+            ValueError: If `tokens` contains an invalid token.
         """
         raise NotImplementedError
 
@@ -240,6 +255,12 @@ class TokenCode(ABC, Generic[T]):
     def tokens_to_target(self, tokens: list[T]) -> Array1D[np.integer]:
         r"""
         Returns the target alphabet representation corresponding to a given list of tokens.
+
+        Parameters:
+            tokens: The list of tokens.
+
+        Returns:
+            target: The sequence of target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
         """
         raise NotImplementedError
 
@@ -247,6 +268,12 @@ class TokenCode(ABC, Generic[T]):
     def target_to_tokens(self, target: npt.ArrayLike) -> list[T]:
         r"""
         Returns the list of tokens corresponding to a given target alphabet representation.
+
+        Parameters:
+            target: The sequence of target symbols. Must be a 1D-array with elements in $\mathcal{Y}$. Also, the sequence must be a valid output of the `tokens_to_target` method.
+
+        Returns:
+            tokens: The list of tokens.
         """
         raise NotImplementedError
 
