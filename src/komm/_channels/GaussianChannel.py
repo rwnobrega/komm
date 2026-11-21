@@ -25,7 +25,7 @@ class GaussianChannel:
     For more details, see <cite>CT06, Ch. 9</cite>.
 
     Parameters:
-        noise_power: The noise power (variance) $\sigma_Z^2$. The default value is `0.0`, which corresponds to a noiseless channel.
+        noise_power: The noise power (variance) $\sigma_Z^2$. Must satisfy $\sigma_Z^2 \geq 0$. The default value is `0.0`, which corresponds to a noiseless channel.
     """
 
     noise_power: float

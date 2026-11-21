@@ -30,7 +30,7 @@ class GaussianPulse(abc.Pulse):
     </div>
 
     Parameters:
-        half_power_bandwidth: The half-power bandwidth $B$ of the pulse. The default value is `1.0`.
+        half_power_bandwidth: The half-power bandwidth $B$ of the pulse. Must satisfy $B > 0$. The default value is `1.0`.
     """
 
     half_power_bandwidth: float = 1.0
