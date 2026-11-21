@@ -189,6 +189,9 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
     @cache
     def is_catastrophic(self) -> bool:
         """
+        Raises:
+            ValueError: If the generator matrix is not full rank.
+
         Examples:
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
             >>> code.is_catastrophic()

@@ -340,6 +340,9 @@ class ConvolutionalCode(abc.ConvolutionalCode):
     @cache
     def is_catastrophic(self) -> bool:
         """
+        Raises:
+            ValueError: If the generator matrix is not full rank.
+
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.is_catastrophic()

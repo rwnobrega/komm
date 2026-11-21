@@ -48,6 +48,9 @@ class TerminatedConvolutionalCode(abc.BlockCode):
 
         puncturing_matrix: The puncturing matrix $\mathbf{P}$. Must be an $n_0 \times T$ array of bits with at least one `1`, where the period $T$ divides the number $n_\mathrm{u} / n_0$ of trellis sections. The default value corresponds to no puncturing.
 
+    Raises:
+        ValueError: If `mode` is `'tail-biting'` and $A^h + I$ is not invertible.
+
     Examples:
         >>> code = komm.TerminatedConvolutionalCode(
         ...     convolutional_code=komm.ConvolutionalCode([[0b1, 0b11]]),
