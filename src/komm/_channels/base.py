@@ -45,7 +45,7 @@ class DiscreteMemorylessChannel(ABC):
         Parameters:
             input_pmf: The pmf $p_X$ of the channel input $X$. It must be a 1D-array of non-negative values that sum to $1$.
 
-            base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+            base: The base of the logarithm to be used. It must be a positive float other than `1.0` or the string `'e'`. The default value is `2.0`.
 
         Returns:
             The mutual information $\mathrm{I}(X ; Y)$ between the input $X$ and the output $Y$.
@@ -58,7 +58,7 @@ class DiscreteMemorylessChannel(ABC):
         Returns the channel capacity $C$.
 
         Parameters:
-            base: The base of the logarithm to be used. It must be a positive float or the string `'e'`. The default value is `2.0`.
+            base: The base of the logarithm to be used. It must be a positive float other than `1.0` or the string `'e'`. The default value is `2.0`.
 
         Returns:
             The channel capacity $C$.
