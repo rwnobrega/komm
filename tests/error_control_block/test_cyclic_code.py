@@ -184,6 +184,24 @@ def test_cyclic_code_check_random(systematic, rng):
     np.testing.assert_equal(code.check(r), r @ code.check_matrix.T % 2)
 
 
+@pytest.mark.parametrize(
+    "polynomials, message",
+    [
+        (
+            {},
+            "either 'generator_polynomial' or 'check_polynomial' must be",
+        ),
+        (
+            {"generator_polynomial": 0b1011, "check_polynomial": 0b10111},
+            "'generator_polynomial' and 'check_polynomial' cannot both be",
+        ),
+    ],
+)
+def test_cyclic_code_invalid_polynomials(polynomials, message):
+    with pytest.raises(ValueError, match=message):
+        komm.CyclicCode(7, **polynomials)
+
+
 @pytest.mark.parametrize("length", [0, -1])
 def test_cyclic_code_invalid_length(length):
     message = f"'length' must be a positive integer (got {length})"

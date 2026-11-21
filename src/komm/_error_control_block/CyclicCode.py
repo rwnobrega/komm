@@ -63,6 +63,10 @@ class CyclicCode(abc.BlockCode):
             raise ValueError(
                 "either 'generator_polynomial' or 'check_polynomial' must be provided"
             )
+        if generator_polynomial is not None and check_polynomial is not None:
+            raise ValueError(
+                "'generator_polynomial' and 'check_polynomial' cannot both be provided"
+            )
         modulus = BinaryPolynomial.from_exponents([0, self.length])
         if generator_polynomial is not None and check_polynomial is None:
             self.generator_polynomial = BinaryPolynomial(generator_polynomial)
