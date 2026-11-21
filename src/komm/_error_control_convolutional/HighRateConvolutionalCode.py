@@ -17,7 +17,7 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
     High-rate convolutional encoder. It is an $(n, n-1)$ recursive systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *check row* $h(D) \in \mathbb{F}_2[D]^n$ and realized in observable canonical form. By convention, the first $n - 1$ positions represent the information bits.
 
     Parameters:
-        h_row: The check row $h(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        h_row: The check row $h(D)$ of the encoder. Must be an $n$-vector, with $n \geq 2$, whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. Its last entry $h_{n-1}(D)$ must be nonzero.
 
     **Tables:**
 
@@ -46,6 +46,10 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
 
     def __init__(self, h_row: npt.ArrayLike) -> None:
         h_row = validate_integer_array(h_row, low=0, ndim=1)
+        if not h_row.size >= 2:
+            raise ValueError("'h_row' must have at least two entries")
+        if not h_row[-1] > 0:
+            raise ValueError("last entry of 'h_row' must be nonzero")
         self.h_row = [BinaryPolynomial(x) for x in h_row]
 
     def __repr__(self) -> str:

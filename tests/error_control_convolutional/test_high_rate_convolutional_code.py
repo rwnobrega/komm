@@ -55,6 +55,20 @@ def test_high_rate_convolutional_code_lin_costello(degree, h_row, free_distance,
         np.testing.assert_equal(code.encode(input), code1.encode(input))
 
 
+@pytest.mark.parametrize(
+    "h_row, message",
+    [
+        ([0o5], "'h_row' must have at least two entries"),
+        ([0b11, 0], "last entry of 'h_row' must be nonzero"),
+        ([0b111, 0b101, 0], "last entry of 'h_row' must be nonzero"),
+        ([0, 0], "last entry of 'h_row' must be nonzero"),
+    ],
+)
+def test_high_rate_convolutional_code_degenerate_h_row(h_row, message):
+    with pytest.raises(ValueError, match=message):
+        komm.HighRateConvolutionalCode(h_row)
+
+
 def test_high_rate_convolutional_code_invalid_h_row():
     with pytest.raises(TypeError, match="'h_row' must contain only integers"):
         komm.HighRateConvolutionalCode([0o117, 109.7])
