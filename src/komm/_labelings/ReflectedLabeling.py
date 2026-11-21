@@ -16,6 +16,9 @@ from ..types import Array2D
 class ReflectedLabeling(abc.Labeling):
     r"""
     Reflected (Gray) binary labeling. It is a [binary labeling](/ref/Labeling) in which integer $i \in [0 : 2^m)$ is mapped to its Gray code representation (MSB-first).
+
+    Parameters:
+        num_bits: The number $m$ of bits of each label. Must satisfy $m \geq 1$.
     """
 
     def __init__(self, num_bits: int, _pre_cache: bool = True) -> None:

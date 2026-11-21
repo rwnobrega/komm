@@ -14,6 +14,9 @@ from .ReflectedLabeling import ReflectedLabeling
 class ReflectedRectangularLabeling(abc.Labeling):
     r"""
     Reflected rectangular binary labeling. It is the [Cartesian product](/ref/ProductLabeling) of two [reflected binary labelings](/ref/ReflectedLabeling), possibly with distinct number of bits.
+
+    Parameters:
+        num_bits: A tuple $(m_\mathrm{I}, m_\mathrm{Q})$ with the numbers of bits of the in-phase and quadrature labelings, respectively. If specified as a single integer $m$, then it is assumed that $m_\mathrm{I} = m_\mathrm{Q} = m / 2$; in this case, $m$ must be even. Must satisfy $m_\mathrm{I}, m_\mathrm{Q} \geq 1$.
     """
 
     def __init__(

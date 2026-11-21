@@ -22,7 +22,7 @@ class QAMConstellation(abc.Constellation[np.complexfloating]):
     Quadrature amplitude modulation (QAM) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) obtained by a Cartesian product of two [PAM constellations](/ref/PAMConstellation), namely, the *in-phase constellation*, and the *quadrature constellation*. For more details, see <cite>SA15, Sec. 2.5.1</cite>.
 
     Parameters:
-        orders: A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be a perfect square.
+        orders: A tuple $(M_\mathrm{I}, M_\mathrm{Q})$ with the orders of the in-phase and quadrature constellations, respectively. If specified as a single integer $M$, then it is assumed that $M_\mathrm{I} = M_\mathrm{Q} = \sqrt{M}$; in this case, $M$ must be a perfect square. Must satisfy $M_\mathrm{I}, M_\mathrm{Q} \geq 1$ and $M_\mathrm{I} M_\mathrm{Q} \geq 2$.
 
         deltas: A tuple $(\delta_\mathrm{I}, \delta_\mathrm{Q})$ with the distances of the in-phase and quadrature constellations, respectively. If specified as a single float $\delta$, then it is assumed that $\delta_\mathrm{I} = \delta_\mathrm{Q} = \delta$. Must satisfy $\delta_\mathrm{I}, \delta_\mathrm{Q} > 0$. The default value is `2.0`.
 
