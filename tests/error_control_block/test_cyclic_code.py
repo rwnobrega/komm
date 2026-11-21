@@ -169,7 +169,7 @@ def test_cyclic_code_inverse_encode_invalid_input():
     r = np.zeros(code.length, dtype=int)
     code.inverse_encode(r)  # Correct
     r[0] = 1
-    with pytest.raises(ValueError, match="one or more inputs in 'v' are not valid"):
+    with pytest.raises(ValueError, match="'input' must contain only codewords"):
         code.inverse_encode(r)  # Incorrect
 
 

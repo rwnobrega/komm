@@ -130,7 +130,7 @@ class BlockCode(ABC):
         """
         s = self.check(input)
         if not np.all(s == 0):
-            raise ValueError("one or more inputs in 'v' are not valid codewords")
+            raise ValueError("'input' must contain only codewords")
         return self.project_word(input)
 
     @abstractmethod
