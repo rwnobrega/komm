@@ -174,6 +174,7 @@ def test_lz78_invalid_input():
         code.encode([0, 10.5, 26])
 
 
+@pytest.mark.parametrize("method", ["tokens_to_source", "tokens_to_target"])
 @pytest.mark.parametrize(
     "tokens",
     [
@@ -184,7 +185,7 @@ def test_lz78_invalid_input():
         [(0, 1), (0, -1)],
     ],
 )
-def test_lz78_invalid_tokens(tokens):
+def test_lz78_invalid_tokens(method, tokens):
     code = komm.LempelZiv78Code(source_cardinality=3)
     with pytest.raises(ValueError, match="invalid token"):
-        code.tokens_to_source(tokens)
+        getattr(code, method)(tokens)

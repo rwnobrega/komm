@@ -181,20 +181,21 @@ class LempelZivSSCode(abc.TokenCode[Token]):
             >>> lzss.tokens_to_target([(0, 3), (1, 4, 4), (0, 2), (1, 3, 2)])
             array([0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1])
         """
+        ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         target: list[int] = []
 
         for token in tokens:
             match token:
-                case (1, p, l):  # Reference
+                case (1, p, l) if 1 <= p <= ss and 1 <= l <= ls:  # Reference
                     target.append(1)
                     target.extend(integer_to_symbols(p - 1, base=calY, width=p_width))
                     target.extend(integer_to_symbols(l - 1, base=calY, width=l_width))
-                case (0, x):  # Literal
+                case (0, x) if 0 <= x < calX:  # Literal
                     target.append(0)
                     target.extend(integer_to_symbols(x, base=calY, width=x_width))
-                case _:  # pyright: ignore[reportUnnecessaryComparison]
+                case _:
                     raise ValueError(f"invalid token: {token}")
 
         return np.array(target, dtype=int)

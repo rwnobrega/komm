@@ -85,9 +85,6 @@ class RunLengthCode(abc.TokenCode[Token]):
 
     def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
-        Raises:
-            ValueError: If `tokens` contains an invalid token.
-
         Examples:
             >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
             >>> code.tokens_to_target([(0, 3), (2, 2), (1, 4), (1, 1)])

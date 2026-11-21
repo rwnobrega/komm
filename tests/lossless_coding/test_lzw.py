@@ -81,8 +81,9 @@ def test_lzw_invalid_input():
         code.encode([-1, 10, 26])
 
 
+@pytest.mark.parametrize("method", ["tokens_to_source", "tokens_to_target"])
 @pytest.mark.parametrize("tokens", [[3], [0, 4], [-1]])
-def test_lzw_invalid_tokens(tokens):
+def test_lzw_invalid_tokens(method, tokens):
     code = komm.LempelZivWelchCode(source_cardinality=3)
     with pytest.raises(ValueError, match="invalid token"):
-        code.tokens_to_source(tokens)
+        getattr(code, method)(tokens)

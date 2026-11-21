@@ -110,13 +110,14 @@ def test_lzss_invalid_input():
         code.encode([-1, 10, 26])
 
 
+@pytest.mark.parametrize("method", ["tokens_to_source", "tokens_to_target"])
 @pytest.mark.parametrize(
     "token", [(1, 0, 1), (1, 5, 1), (1, 1, 0), (1, 1, 5), (0, 3), (0, -1), (2, 0)]
 )
-def test_lzss_invalid_tokens(token):
+def test_lzss_invalid_tokens(method, token):
     code = komm.LempelZivSSCode(search_size=4, lookahead_size=4, source_cardinality=3)
     with pytest.raises(ValueError, match=escape(f"invalid token: {token}")):
-        code.tokens_to_source([token])
+        getattr(code, method)([token])
 
 
 def test_lzss_invalid_flag():

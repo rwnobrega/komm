@@ -93,9 +93,11 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
             >>> lzw.tokens_to_target([0, 2, 3, 4, 5])
             array([0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1])
         """
-        calY = self.target_cardinality
+        calX, calY = self.source_cardinality, self.target_cardinality
         target: list[int] = []
         for i, pointer in enumerate(tokens):
+            if not 0 <= pointer < calX + i:
+                raise ValueError(f"invalid token: {pointer}")
             target.extend(integer_to_symbols(pointer, base=calY, width=self._width(i)))
         return np.array(target, dtype=int)
 

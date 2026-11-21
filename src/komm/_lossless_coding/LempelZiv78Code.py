@@ -94,6 +94,9 @@ class LempelZiv78Code(abc.TokenCode[Token]):
         M = ceil_log(calX, calY)
         target: list[int] = []
         for i, (p, x) in enumerate(tokens):
+            pointer_only = x == -1 and p > 0 and i == len(tokens) - 1
+            if not (0 <= p <= i and (0 <= x < calX or pointer_only)):
+                raise ValueError(f"invalid token: {(p, x)}")
             k = ceil_log(i + 1, calY)
             target.extend(integer_to_symbols(p, base=calY, width=k))
             if x >= 0:

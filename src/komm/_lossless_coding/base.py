@@ -261,6 +261,9 @@ class TokenCode(ABC, Generic[T]):
 
         Returns:
             target: The sequence of target symbols. It is a 1D-array with elements in $\mathcal{Y}$.
+
+        Raises:
+            ValueError: If `tokens` contains an invalid token.
         """
         raise NotImplementedError
 

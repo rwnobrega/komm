@@ -156,10 +156,13 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             >>> lz77.tokens_to_target([(8, 2, 1), (7, 3, 2), (6, 7, 2)])
             array([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
         """
+        ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         target: list[int] = []
         for p, l, x in tokens:
+            if not (0 <= p < ss and 0 <= l < ls and 0 <= x < calX):
+                raise ValueError(f"invalid token: {(p, l, x)}")
             target.extend(integer_to_symbols(p, base=calY, width=p_width))
             target.extend(integer_to_symbols(l, base=calY, width=l_width))
             target.extend(integer_to_symbols(x, base=calY, width=x_width))
