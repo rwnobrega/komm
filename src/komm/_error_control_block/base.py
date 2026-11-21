@@ -124,6 +124,9 @@ class BlockCode(ABC):
 
         Returns:
             output: The output sequence(s). Has the same shape as the input, with the last dimension contracted from $bn$ to $bk$, where $b$ is a positive integer.
+
+        Raises:
+            ValueError: If `input` contains a word that is not a codeword.
         """
         s = self.check(input)
         if not np.all(s == 0):
