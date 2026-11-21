@@ -18,7 +18,7 @@ class WagnerDecoder(abc.CodewordDecoder[SingleParityCheckCode]):
         code: The single parity-check code to be used for decoding.
 
     Notes:
-        - Input type: `soft` (L-values).
+        - Input type: `soft` (L-values, as floats).
         - Output type: `hard` (bits).
     """
 

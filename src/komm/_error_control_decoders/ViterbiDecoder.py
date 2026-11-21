@@ -27,7 +27,7 @@ class ViterbiDecoder(abc.CodewordDecoder[abc.BlockCode]):
         input_type: The type of the input. Either `'hard'` or `'soft'`. The default value is `'hard'`.
 
     Notes:
-        - Input type: `hard` (bits) or `soft` (L-values).
+        - Input type: `hard` (bits) or `soft` (L-values, as floats).
         - Output type: `hard` (bits).
     """
 

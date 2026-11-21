@@ -23,7 +23,7 @@ class BCJRDecoder(abc.CodewordDecoder[abc.BlockCode]):
         output_type: The type of the output. Either `'hard'` or `'soft'`. The default value is `'soft'`.
 
     Notes:
-        - Input type: `soft` (L-values).
+        - Input type: `soft` (L-values, as floats).
         - Output type: `hard` (bits) or `soft` (L-values).
     """
 
