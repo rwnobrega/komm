@@ -17,7 +17,7 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
     Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *generator row* $g(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.
 
     Parameters:
-        g_row: The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        g_row: The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. Must have a nonzero entry.
 
     **Tables:**
 
@@ -47,6 +47,8 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
 
     def __init__(self, g_row: npt.ArrayLike) -> None:
         g_row = validate_integer_array(g_row, low=0, ndim=1)
+        if not np.any(g_row):
+            raise ValueError("'g_row' must have a nonzero entry")
         self.g_row = [BinaryPolynomial(x) for x in g_row]
 
     def __repr__(self) -> str:
@@ -189,9 +191,6 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
     @cache
     def is_catastrophic(self) -> bool:
         """
-        Raises:
-            ValueError: If the generator matrix is not full rank.
-
         Examples:
             >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
             >>> code.is_catastrophic()

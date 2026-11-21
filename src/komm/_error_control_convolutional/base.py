@@ -175,8 +175,6 @@ class ConvolutionalCode(ABC):
             [(BinaryPolynomialFraction(q) * x).numerator for x in row] for row in G_mat
         ])
         factors = invariant_factors(G_prime)
-        if len(factors) < G_mat.shape[0]:
-            raise ValueError("generator matrix is not full rank")
         ɑ_k = BinaryPolynomialFraction(factors[-1], q).numerator
         return len(ɑ_k.exponents()) != 1
 

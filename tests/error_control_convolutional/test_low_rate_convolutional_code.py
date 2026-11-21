@@ -67,6 +67,12 @@ def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance, 
         np.testing.assert_equal(code.encode(input), code1.encode(input))
 
 
+@pytest.mark.parametrize("g_row", [[0], [0, 0], [0, 0, 0]])
+def test_low_rate_convolutional_code_zero_g_row(g_row):
+    with pytest.raises(ValueError, match="'g_row' must have a nonzero entry"):
+        komm.LowRateConvolutionalCode(g_row)
+
+
 def test_low_rate_convolutional_code_invalid_g_row():
     with pytest.raises(TypeError, match="'g_row' must contain only integers"):
         komm.LowRateConvolutionalCode([0o117, 109.7])
