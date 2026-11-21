@@ -14,6 +14,7 @@ from komm._util.matrices import (
     invariant_factors,
     matmul,
     matrix_power,
+    polynomial_rank,
     pseudo_inverse,
     rank,
     row_span,
@@ -371,3 +372,13 @@ def test_invariant_factors_minors(rng):
             one, zero = komm.BinaryPolynomial(1), komm.BinaryPolynomial(0)
             expected = prod(factors[:i], start=one) if i <= len(factors) else zero
             assert reduce(gcd, minors) == expected
+
+
+def test_polynomial_rank(rng):
+    # Rank is the number of invariant factors
+    for _ in range(200):
+        k = int(rng.integers(1, 4))
+        n = int(rng.integers(k, k + 3))
+        matrix = rng.integers(0, 16, size=(k, n))
+        assert polynomial_rank(matrix) == len(invariant_factors(matrix))
+        assert polynomial_rank(matrix.T) == len(invariant_factors(matrix))

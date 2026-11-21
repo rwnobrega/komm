@@ -371,6 +371,33 @@ def block_diagonal(arrays: Sequence[npt.ArrayLike]) -> Array2D[Any]:
     return result
 
 
+def polynomial_rank(matrix: npt.ArrayLike) -> int:
+    r"""
+    Computes the rank of a matrix over $\ZZ_2[D]$.
+
+    Parameters:
+        matrix: The matrix. Its elements must be [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+
+    Returns:
+        rank: The rank of the matrix.
+
+    Examples:
+        >>> polynomial_rank([[0b11, 0b1], [0b110, 0b10]])
+        1
+    """
+    # Fraction-free elimination
+    rows = [[BinaryPolynomial(a) for a in row] for row in np.array(matrix, dtype=int)]
+    rank = 0
+    for j in range(len(rows[0]) if rows else 0):
+        pivot = next((row for row in rows if row[j] != 0), None)
+        if pivot is None:
+            continue
+        rows.remove(pivot)
+        rows = [[pivot[j] * a + row[j] * b for a, b in zip(row, pivot)] for row in rows]
+        rank += 1
+    return rank
+
+
 def invariant_factors(matrix: npt.ArrayLike) -> list[BinaryPolynomial]:
     r"""
     Computes the invariant factors of a matrix over $\ZZ_2[D]$.

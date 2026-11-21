@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 import komm
+from komm._util.matrices import polynomial_rank
 
 
 def test_convolutional_code_basic():
@@ -365,10 +366,11 @@ def test_convolutional_code_catastrophic_minors(rng):
     for _ in range(200):
         k = int(rng.integers(1, 4))
         n = int(rng.integers(k + 1, k + 3))
-        code = komm.ConvolutionalCode(rng.integers(1, 16, size=(k, n)))
-        delta = code._minors_gcd()
-        if delta == 0:
+        feedforward_polynomials = rng.integers(1, 16, size=(k, n))
+        if polynomial_rank(feedforward_polynomials) < k:
             continue
+        code = komm.ConvolutionalCode(feedforward_polynomials)
+        delta = code._minors_gcd()
         assert code.is_catastrophic() == (len(delta.exponents()) != 1)
 
 
@@ -506,6 +508,22 @@ def test_convolutional_code_encode_invalid_input_length(u):
     code = komm.ConvolutionalCode([[0o7, 0o5, 0o0], [0o0, 0o3, 0o2]])
     with pytest.raises(ValueError, match="'input' must be a multiple of 2"):
         code.encode(u)
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials",
+    [
+        [[0]],
+        [[0, 0]],
+        [[0b11, 0b1], [0b11, 0b1]],
+        [[0b11, 0b1], [0b110, 0b10]],
+        [[1], [1]],
+    ],
+)
+def test_convolutional_code_not_full_rank(feedforward_polynomials):
+    message = "'feedforward_polynomials' must have full row rank"
+    with pytest.raises(ValueError, match=message):
+        komm.ConvolutionalCode(feedforward_polynomials)
 
 
 def test_convolutional_code_invalid_polynomials():

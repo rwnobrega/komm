@@ -9,7 +9,7 @@ from .._algebra.BinaryPolynomial import BinaryPolynomial
 from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.format import format_list_no_quotes as fmt
-from .._util.matrices import block_diagonal
+from .._util.matrices import block_diagonal, polynomial_rank
 from .._util.validators import validate_integer_array
 from ..types import Array1D, Array2D
 
@@ -19,7 +19,7 @@ class ConvolutionalCode(abc.ConvolutionalCode):
     Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is realized in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, <cite>LC04, Chs. 11, 12</cite>, and [EC Zoo: Convolutional code](https://errorcorrectionzoo.org/c/convolutional).
 
     Parameters:
-        feedforward_polynomials: The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former.
+        feedforward_polynomials: The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. Must have full row rank.
 
         feedback_polynomials: The vector of feedback polynomials $q(D)$, which is a $k$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. The default value corresponds to no feedback, that is, $q_i(D) = 1$ for all $i \in [0 : k)$.
 
@@ -95,6 +95,8 @@ class ConvolutionalCode(abc.ConvolutionalCode):
         fb = validate_integer_array(feedback_polynomials, low=1, ndim=1)
         if fb.shape[0] != ff.shape[0]:
             raise ValueError("feedback and feedforward dimensions do not match")
+        if not polynomial_rank(ff) == ff.shape[0]:
+            raise ValueError("'feedforward_polynomials' must have full row rank")
         self.feedforward_polynomials = [[BinaryPolynomial(p) for p in ps] for ps in ff]
         self.feedback_polynomials = [BinaryPolynomial(q) for q in fb]
 
@@ -340,9 +342,6 @@ class ConvolutionalCode(abc.ConvolutionalCode):
     @cache
     def is_catastrophic(self) -> bool:
         """
-        Raises:
-            ValueError: If the generator matrix is not full rank.
-
         Examples:
             >>> code = komm.ConvolutionalCode([[0b111, 0b101]])
             >>> code.is_catastrophic()
