@@ -173,7 +173,7 @@ class BinaryPolynomial:
         Returns the coefficients of the binary polynomial.
 
         Parameters:
-            width: If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value.
+            width: If this parameter is specified, the output will be filled with zeros on the right so that its length will be the specified value. Must be greater than the degree of the polynomial.
 
         Returns:
             coefficients: Coefficients of the binary polynomial. The $i$-th element of the array stands for the coefficient of $X^i$.

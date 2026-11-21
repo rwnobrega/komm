@@ -10,7 +10,7 @@ class BinaryPolynomialFraction:
 
     Parameters:
         numerator: The numerator of the fraction.
-        denominator: The denominator of the fraction.
+        denominator: The denominator of the fraction. Must be nonzero.
 
     Examples:
         >>> komm.BinaryPolynomialFraction(0b11010, 0b101)  # (X^4 + X^3 + X) / (X^2 + 1)
