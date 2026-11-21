@@ -25,7 +25,7 @@ class TunstallCode(abc.VariableToFixedCode):
         Tunstall codes are always [prefix-free](/ref/VariableToFixedCode/#is_prefix_free) (hence [uniquely encodable](/ref/VariableToFixedCode/#is_uniquely_encodable)) and [complete](/ref/VariableToFixedCode/#is_complete).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
+        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}| \geq 2$ of non-negative values that sum to $1$.
 
         target_block_size: The target block size $n$. Must satisfy $2^n \geq |\mathcal{X}|$. The default value is $n = \lceil \log_2 |\mathcal{X}| \rceil$.
 

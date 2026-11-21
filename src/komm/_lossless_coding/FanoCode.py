@@ -22,7 +22,7 @@ class FanoCode(abc.SymbolCode):
         Fano codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)) and [complete](/ref/SymbolCode/#is_complete).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
+        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}| \geq 2$ of non-negative values that sum to $1$.
 
         assignment: The strategy used to assign the codewords, once the partition tree is built. Must be either `'tree'` (read the codewords off the paths of the tree, bit $\mathtt{0}$ being assigned to the group of more probable source symbols) or `'canonical'` (the [canonical code](/ref/SymbolCode/#from_lengths) with the resulting lengths). The default value is `'tree'`. It affects neither the codeword lengths nor the [average length](/ref/SymbolCode/#average_length).
 

@@ -24,7 +24,7 @@ class HuffmanCode(abc.SymbolCode):
         Huffman codes are always [prefix-free](/ref/SymbolCode/#is_prefix_free) (hence [uniquely decodable](/ref/SymbolCode/#is_uniquely_decodable)) and [complete](/ref/SymbolCode/#is_complete).
 
     Parameters:
-        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}|$ of non-negative values that sum to $1$.
+        pmf: The pmf $p$ to be considered. Must be a 1D-array of size $|\mathcal{X}| \geq 2$ of non-negative values that sum to $1$.
 
         policy: The policy to be used when constructing the code. Must be either `'high'` (move combined symbols as high as possible) or `'low'` (move combined symbols as low as possible). The default value is `'high'`. It affects the codeword lengths only in the presence of ties.
 
