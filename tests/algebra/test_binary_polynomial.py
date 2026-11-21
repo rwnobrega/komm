@@ -56,7 +56,16 @@ def test_binary_polynomial_coefficients_and_exponents():
 
     zero = komm.BinaryPolynomial(0)
     assert np.array_equal(zero.coefficients(), [0])
+    assert np.array_equal(zero.coefficients(width=0), [])
     assert np.array_equal(zero.exponents(), [])
+
+
+@pytest.mark.parametrize("method", ["coefficients", "reciprocal"])
+@pytest.mark.parametrize("width", [0, 3])
+def test_binary_polynomial_short_width(method, width):
+    poly = komm.BinaryPolynomial(0b1101)
+    with pytest.raises(ValueError, match="'width' must be greater than the degree"):
+        getattr(poly, method)(width)
 
 
 def test_binary_polynomial_shifts():

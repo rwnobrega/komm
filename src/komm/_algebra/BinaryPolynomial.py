@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .._util.bit_operations import from_binary, to_binary
+from .._util.validators import validate_integer
 from ..types import Array1D
 from . import domain, ring
 from .Integers import mersenne_prime_factors, prime_factors
@@ -185,7 +186,11 @@ class BinaryPolynomial:
             >>> poly.coefficients(width=8)
             array([0, 1, 0, 1, 1, 0, 0, 0])
         """
-        width = width or max(self.degree + 1, 1)
+        if width is None:
+            width = max(self.degree + 1, 1)
+        width = validate_integer(width)
+        if not width > self.degree:
+            raise ValueError(f"'width' must be greater than the degree (got {width})")
         return np.array(to_binary(self.value, width), dtype=int)
 
     def exponents(self) -> Array1D[np.integer]:
