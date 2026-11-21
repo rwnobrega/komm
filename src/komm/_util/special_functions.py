@@ -293,6 +293,9 @@ def macwilliams_transform(distribution: Iterable[int]) -> list[int]:
     Returns:
         The codeword weight distribution $B_0, B_1, \ldots, B_n$ of the dual code.
 
+    Raises:
+        ValueError: If the transform has a negative or non-integer entry, which means that `distribution` does not come from a linear code.
+
     Examples:
         >>> komm.macwilliams_transform([1, 0, 0, 7, 7, 0, 0, 1])
         [1, 0, 0, 0, 7, 0, 0, 0]
