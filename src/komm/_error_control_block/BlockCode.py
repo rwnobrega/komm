@@ -17,9 +17,9 @@ class BlockCode(abc.BlockCode):
     The constructor expects the generator matrix, the check matrix, or both. If both are provided, they must satisfy $G H^\transpose = 0$, and each one is kept as given, rather than derived from the other.
 
     Parameters:
-        generator_matrix: The generator matrix $G$ of the code, which is a $k \times n$ binary matrix.
+        generator_matrix: The generator matrix $G$ of the code, which is a $k \times n$ binary matrix. Must have full row rank.
 
-        check_matrix: The check matrix $H$ of the code, which is a $m \times n$ binary matrix.
+        check_matrix: The check matrix $H$ of the code, which is a $m \times n$ binary matrix. Must have full row rank.
 
     Examples:
         >>> code = komm.BlockCode(generator_matrix=[
