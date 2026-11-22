@@ -39,7 +39,7 @@ def test_viterbi_hard(convolutional_code, num_blocks, mode, r, u_hat):
             [-0.7, -0.5, -0.8, -0.6, -1.1, +0.4, +0.9, +0.8],
             [1, 0, 0, 0],
         ),
-        (  # [Abr10, p. 313]
+        (  # [Abr10, p. 313], negated
             komm.ConvolutionalCode([[0b111, 0b101]]),
             5,
             "direct-truncation",

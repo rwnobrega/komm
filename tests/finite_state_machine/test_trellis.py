@@ -254,7 +254,7 @@ def test_trellis_viterbi_ryan_lin():
 
 
 def test_trellis_forward_backward_lin_costello():
-    # [LC04, pp. 572–575]
+    # [LC04, pp. 572–575], received values negated
     section = komm.TrellisSection([[0, 1], [1, 0]], [[0, 3], [2, 1]])
     received = np.array([[-0.8, -0.1], [-1.0, +0.5], [+1.8, -1.1], [-1.6, +1.6]])
     branch_metrics = 0.5 * received @ (-1) ** BITS.T
@@ -266,7 +266,7 @@ def test_trellis_forward_backward_lin_costello():
 
 
 def test_trellis_forward_backward_abrantes():
-    # [Abr10, pp. 434–437]
+    # [Abr10, pp. 434–437], received values negated
     section = komm.TrellisSection(
         transitions=[[0, 2], [0, 2], [1, 3], [1, 3]],
         outputs=[[0, 3], [3, 0], [1, 2], [2, 1]],
