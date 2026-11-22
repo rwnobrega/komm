@@ -45,3 +45,13 @@ def test_reed_codeword_shift(rho, input_type, rng):
     if input_type == "soft":  # Equal magnitudes, as in the BSC
         r, r_shift = (-1.0) ** r, (-1.0) ** r_shift
     np.testing.assert_equal(decoder.decode(r_shift), (decoder.decode(r) + u) % 2)
+
+
+@pytest.mark.parametrize("rho", range(5))
+def test_reed_infinite_input(rho, rng):
+    # Infinite L-values reduce to hard decoding
+    code = komm.ReedMullerCode(5, rho)
+    hard = komm.ReedDecoder(code, input_type="hard")
+    soft = komm.ReedDecoder(code, input_type="soft")
+    r = rng.integers(2, size=(1000, code.length))
+    np.testing.assert_equal(soft.decode(np.inf * (-1.0) ** r), hard.decode(r))

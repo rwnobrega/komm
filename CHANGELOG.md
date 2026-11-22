@@ -44,7 +44,7 @@
 
 - Fixed regression in `boxplus` (and hence `SCDecoder`), which returned NaN when both inputs were infinite.
 
-- Fixed `ViterbiDecoder`, `ViterbiStreamDecoder`, `BCJRDecoder`, `ExhaustiveCodewordDecoder`, and `ExhaustiveBitwiseDecoder` for infinite L-values.
+- Fixed `ViterbiDecoder`, `ViterbiStreamDecoder`, `BCJRDecoder`, `ExhaustiveCodewordDecoder`, `ExhaustiveBitwiseDecoder`, and `ReedDecoder` for infinite L-values.
 
 - Fixed `is_catastrophic` of convolutional codes, which missed catastrophic encoders with more than one input.
 

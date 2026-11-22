@@ -72,7 +72,12 @@ class ReedDecoder(abc.BlockDecoder[ReedMullerCode]):
             for i, partition in enumerate(self._reed_partitions):
                 checksums = np.count_nonzero(bx[..., partition], axis=-1) % 2
                 min_reliability = np.min(np.abs(r[..., partition]), axis=-1)
-                decision_var = np.vecdot((-1) ** checksums, min_reliability)
+                signs = (-1) ** checksums
+                # Votes with infinite reliability prevail
+                sure = np.isinf(min_reliability)
+                sure_var = np.where(sure, signs, 0).sum(axis=-1)
+                finite_var = np.vecdot(signs, np.where(sure, 0.0, min_reliability))
+                decision_var = np.where(sure_var == 0, finite_var, sure_var)
                 tie = decision_var == 0
                 u_hat[..., i] = np.where(tie, checksums[..., 0], decision_var < 0)
                 bx ^= u_hat[..., i, np.newaxis] * self.code.generator_matrix[i]
