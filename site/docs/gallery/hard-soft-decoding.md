@@ -1,6 +1,6 @@
 # Hard- and soft-decision decoding
 
-With binary antipodal signaling, the codewords of an $(n, k)$ [linear block code](/ref/BlockCode) become the points of a [constellation](/ref/Constellation) of dimension $n$ and order $M = 2^k$. The [PAM constellation](/ref/PAMConstellation) of order $2$ sends each bit $0$ as $-1$ and each bit $1$ as $+1$, so that the codeword $v$ becomes the point $x = 2v - 1$. For the $(7, 4)$ [Hamming code](/ref/HammingCode), the constellation has dimension $7$ and order $M = 16$. Row $i$ of the [codewords](/ref/BlockCode#codewords) of the code is the codeword of message $i$, so the index of a point is its message.
+With binary antipodal signaling, the codewords of an $(n, k)$ [linear block code](/ref/BlockCode) become the points of a [constellation](/ref/Constellation) of dimension $n$ and order $M = 2^k$. Each bit $b$ is sent as $(-1)^b$, so that the codeword $v$ becomes the point $x = (-1)^v$, coordinate by coordinate. For the $(7, 4)$ [Hamming code](/ref/HammingCode), the constellation has dimension $7$ and order $M = 16$. Row $i$ of the [codewords](/ref/BlockCode#codewords) of the code is the codeword of message $i$, so the index of a point is its message.
 
 ```pycon
 >>> import numpy as np
@@ -9,22 +9,21 @@ With binary antipodal signaling, the codewords of an $(n, k)$ [linear block code
 >>> code = komm.HammingCode(3)
 >>> n, k = code.length, code.dimension
 >>> M = 2**k
->>> pam2 = komm.PAMConstellation(2)
->>> points = pam2.indices_to_symbols(code.codewords())
+>>> points = (-1.0) ** code.codewords()
 >>> constellation = komm.Constellation(points)
 
 ```
 
-Over the additive white Gaussian noise (AWGN) channel, the maximum-likelihood decoder, optimal for equiprobable messages, returns the point closest to the received word $r$ in Euclidean distance. This is *soft-decision* decoding (SDD). In *hard-decision* decoding (HDD), the receiver first decides each bit on its own, which gives a binary word $b$, and then returns the codeword closest to $b$ in Hamming distance. Since the point of $b$ is $h = 2b - 1$ and $\lVert h - x \rVert^2 = 4 \, \mathrm{d_H}(b, v)$, this is the point closest to $h$, so that the two decoders differ only in their input. The hard decisions are, coordinate by coordinate, the closest points of the PAM constellation. For example, the received word below is close to the point of message $0$, but two of its coordinates are slightly positive:
+Over the additive white Gaussian noise (AWGN) channel, the maximum-likelihood decoder, optimal for equiprobable messages, returns the point closest to the received word $r$ in Euclidean distance. This is *soft-decision* decoding (SDD). In *hard-decision* decoding (HDD), the receiver first decides each bit on its own, which gives a binary word $b$, and then returns the codeword closest to $b$ in Hamming distance. Since the point of $b$ is $h = (-1)^b$ and $\lVert h - x \rVert^2 = 4 \, \mathrm{d_H}(b, v)$, this is the point closest to $h$, so that the two decoders differ only in their input. Each coordinate is decided by its sign: bit $\mathtt{0}$ if positive, bit $\mathtt{1}$ if negative. For example, the received word below is close to the point of message $0$, but two of its coordinates are slightly negative:
 
 ```pycon
->>> r = np.array([-0.8, 0.2, 0.1, -1.1, -0.9, -1.2, -1.0])
->>> b = pam2.closest_indices(r)
+>>> r = np.array([0.8, -0.2, -0.1, 1.1, 0.9, 1.2, 1.0])
+>>> b = (r < 0).astype(int)
 >>> b
 array([0, 1, 1, 0, 0, 0, 0])
->>> h = pam2.indices_to_symbols(b)
+>>> h = (-1.0) ** b
 >>> h
-array([-1.,  1.,  1., -1., -1., -1., -1.])
+array([ 1., -1., -1.,  1.,  1.,  1.,  1.])
 >>> constellation.closest_indices(h)
 array([7])
 >>> constellation.closest_indices(r)
@@ -32,9 +31,9 @@ array([0])
 
 ```
 
-The word $b$ has two bit errors, more than the Hamming code corrects, so hard-decision decoding returns a wrong message. Soft-decision decoding still sees that the two positive coordinates are small, and returns the correct message $0$.
+The word $b$ has two bit errors, more than the Hamming code corrects, so hard-decision decoding returns a wrong message. Soft-decision decoding still sees that the two negative coordinates are small, and returns the correct message $0$.
 
-The [exhaustive codeword decoder](/ref/ExhaustiveCodewordDecoder) makes the same decisions by another computation. All points have energy $n$, so that $\lVert r - x \rVert^2 = \lVert r \rVert^2 - 2 \langle r, x \rangle + n$, and the closest point is the one of largest correlation $\langle r, x \rangle$, which is what that decoder maximizes. For hard-decision decoding, it takes the decided bits $b$. For soft-decision decoding, it takes [L-values](/conventions#l-values). Over the AWGN channel and with the PAM constellation of order $2$, they are $-4 r / N_0$, since bit $0$ is sent as $-1$. With $N_0 = 1$, for example (any $N_0$ gives the same decisions), the two decoders return the bits of messages $7$ and $0$, least significant first:
+The [exhaustive codeword decoder](/ref/ExhaustiveCodewordDecoder) makes the same decisions by another computation. All points have energy $n$, so that $\lVert r - x \rVert^2 = \lVert r \rVert^2 - 2 \langle r, x \rangle + n$, and the closest point is the one of largest correlation $\langle r, x \rangle$, which is what that decoder maximizes. For hard-decision decoding, it takes the decided bits $b$. For soft-decision decoding, it takes [L-values](/conventions#l-values). Over the AWGN channel, they are $4 r / N_0$, since bit $\mathtt{0}$ is sent as $+1$. With $N_0 = 1$, for example (any $N_0$ gives the same decisions), the two decoders return the bits of messages $7$ and $0$, least significant first:
 
 ```pycon
 >>> hdd_decoder = komm.ExhaustiveCodewordDecoder(code, input_type="hard")
@@ -43,7 +42,7 @@ array([1, 1, 1, 0])
 
 >>> sdd_decoder = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
 >>> n0 = 1.0
->>> l_values = -4 * r / n0
+>>> l_values = 4 * r / n0
 >>> sdd_decoder.decode(l_values)
 array([0, 0, 0, 0])
 
@@ -67,7 +66,7 @@ The simulation below estimates the block error rate (BLER) of the two decoders. 
 ...         messages = source.emit(10_000)
 ...         symbols = constellation.indices_to_symbols(messages)
 ...         received = channel.transmit(symbols)
-...         hard = pam2.closest_symbols(received)
+...         hard = np.sign(received)
 ...         messages_hdd = constellation.closest_indices(hard)
 ...         messages_sdd = constellation.closest_indices(received)
 ...         num_errors_hdd += np.sum(messages != messages_hdd)
