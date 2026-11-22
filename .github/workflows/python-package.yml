@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[test]"
       - name: Check gallery
-        run: pytest site/docs/gallery
+        run: pytest site/docs/gallery site/docs/conventions.md
   plots:
     runs-on: ubuntu-latest
     steps:
