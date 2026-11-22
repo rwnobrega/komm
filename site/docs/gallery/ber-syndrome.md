@@ -56,7 +56,7 @@ $$
 \end{aligned}
 $$
 
-The simulation below confirms this formula. The message bits come from a [discrete memoryless source](/ref/DiscreteMemorylessSource), and the receiver uses the [syndrome table decoder](/ref/SyndromeTableDecoder). For comparison, it also uses the [bitwise MAP decoder](/ref/ExhaustiveBitwiseDecoder), which minimizes the BER, with the L-value $(-1)^{r_i} \log(q / p)$ of each received bit $r_i$.
+The simulation below confirms this formula. The message bits come from a [discrete memoryless source](/ref/DiscreteMemorylessSource), and the receiver uses the [syndrome table decoder](/ref/SyndromeTableDecoder). For comparison, it also uses the [bitwise MAP decoder](/ref/ExhaustiveBitwiseDecoder), which minimizes the BER, with the [L-value](/conventions#l-values) $(-1)^{r_i} \log(q / p)$ of each received bit $r_i$.
 
 ```pycon
 >>> rng = np.random.default_rng(seed=42)
