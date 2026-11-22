@@ -274,7 +274,7 @@ class TerminatedConvolutionalCode(abc.BlockCode):
         Parameters:
             input: The input sequence(s). Can be either a single sequence whose length is a multiple of $n$, or a multidimensional array where the last dimension is a multiple of $n$.
 
-            fill_value: The value to insert at the deleted positions, such as `0.0` for L-values or `2` for erasures.
+            fill_value: The value to insert at the deleted positions, such as `0.0` for [L-values](/conventions#l-values) or `2` for erasures.
 
         Returns:
             output: The output sequence(s). Has the same shape as the input, but with the last dimension expanded by a factor of $n_\mathrm{u} / n$.

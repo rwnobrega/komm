@@ -87,10 +87,7 @@ class Labeling(ABC):
     @abstractmethod
     def marginalize(self, metrics: npt.ArrayLike) -> npt.NDArray[np.floating]:
         r"""
-        Marginalize metrics over the bits of the labeling. The metrics may represent likelihoods or probabilities, for example. The marginalization is done by computing the L-values of the bits, which are defined as
-        $$
-        L(\mathtt{b}_i) = \log \frac{\Pr[\mathtt{b}_i = 0]}{\Pr[\mathtt{b}_i = 1]}.
-        $$
+        Marginalize metrics over the bits of the labeling. The metrics may represent likelihoods or probabilities, for example. The marginalization is done by computing the [L-values](/conventions#l-values) of the bits.
 
         Parameters:
             metrics: The metrics for each index of the labeling. Must be an array whose last dimension is a multiple of $2^m$.

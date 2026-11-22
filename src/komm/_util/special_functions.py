@@ -251,10 +251,9 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating] | fl
     $$
         a \boxplus b = 2 \operatorname{atanh} \left( \tanh\left(\frac{a}{2}\right) \tanh\left(\frac{b}{2}\right) \right).
     $$
-    If $X, Y$ are independent binary random variables, then $L(X \oplus Y) = L(X) \boxplus L(Y)$, where $L$ denotes the L-value and $\oplus$ denotes the modulo-$2$ sum.
 
     Parameters:
-        a: A float or array of floats containing L-values.
+        a: A float or array of floats containing [L-values](/conventions#l-values).
         b: A float or array of floats containing L-values. Must have the same shape as `a`.
 
     Returns:
