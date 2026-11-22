@@ -150,3 +150,16 @@ def test_soft_decoders_demapped_input(decoder, rng):
     y = x + 0.1 * rng.standard_normal(x.shape)
     lvalues = labeling.marginalize(constellation.posteriors(y, noise_power=0.01))
     np.testing.assert_array_equal(decoder.decode(lvalues), u)
+
+
+@pytest.mark.parametrize("decoder", soft_decoders)
+@pytest.mark.filterwarnings("error")
+def test_soft_decoders_infinite_input(decoder, rng):
+    # Some code bits known for sure
+    u = rng.integers(0, 2, (100, decoder.code.dimension))
+    r = 4.0 * (-1.0) ** decoder.code.encode(u)
+    r[rng.random(r.shape) < 0.3] *= np.inf
+    output = decoder.decode(r)
+    if np.issubdtype(output.dtype, np.floating):
+        output = output < 0
+    np.testing.assert_equal(output, u)

@@ -61,13 +61,3 @@ def test_exhaustive_codeword_hard_golay(rng):
                 assert np.array_equal(u_hat, np.zeros(12, dtype=int))
             else:  # Golay code cannot correct more than 3 errors.
                 assert not np.array_equal(u_hat, np.zeros(12, dtype=int))
-
-
-def test_exhaustive_codeword_infinite_input():
-    # Two code bits known for sure
-    code = komm.HammingCode(3)
-    decoder = komm.ExhaustiveCodewordDecoder(code, input_type="soft")
-    u = [1, 0, 1, 1]
-    r = 4.0 * (-1.0) ** code.encode(u)
-    r[[0, 3]] *= np.inf  # One of each sign
-    np.testing.assert_equal(decoder.decode(r), u)
