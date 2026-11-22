@@ -126,3 +126,27 @@ def test_hard_decoders_input_dtype(decoder, dtype, rng):
 def test_soft_decoders_input_not_float(decoder, method, dtype):
     with pytest.raises(TypeError, match="'input' must contain only floats"):
         getattr(decoder, method)(np.zeros(decoder.code.length, dtype=dtype))
+
+
+@pytest.mark.parametrize(
+    "decoder",
+    [
+        komm.ExhaustiveCodewordDecoder(block, input_type="soft"),
+        komm.ExhaustiveBitwiseDecoder(block, output_type="hard"),
+        komm.ViterbiDecoder(terminated, input_type="soft"),
+        komm.BCJRDecoder(terminated, output_type="hard"),
+        komm.ReedDecoder(reed_muller, input_type="soft"),
+        komm.WagnerDecoder(spc),
+        komm.SCDecoder(polar, output_type="hard"),
+    ],
+)
+def test_soft_decoders_demapped_input(decoder, rng):
+    # Demapper and decoders must share the L-value sign
+    constellation = komm.PAMConstellation(2)
+    labeling = komm.NaturalLabeling(1)
+    u = rng.integers(0, 2, (10, decoder.code.dimension))
+    v = decoder.code.encode(u)
+    x = constellation.indices_to_symbols(labeling.bits_to_indices(v))
+    y = x + 0.1 * rng.standard_normal(x.shape)
+    lvalues = labeling.marginalize(constellation.posteriors(y, noise_power=0.01))
+    np.testing.assert_array_equal(decoder.decode(lvalues), u)
