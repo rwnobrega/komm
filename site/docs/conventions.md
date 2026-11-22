@@ -2,6 +2,14 @@
 
 Conventions used throughout Komm.
 
+## Integer intervals
+
+For integers $a$ and $b$, the closed and the half-open integer intervals are
+$$
+    [a : b] = \\{a, a + 1, \ldots, b\\}, \qquad [a : b) = \\{a, a + 1, \ldots, b - 1\\}.
+$$
+For example, the indices of a constellation of order $M$ lie in $[0 : M)$, as in `range(M)`.
+
 ## L-values
 
 The *L-value* of a bit $b$ is defined as
