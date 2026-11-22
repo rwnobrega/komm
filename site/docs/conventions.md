@@ -10,6 +10,33 @@ $$
 $$
 For example, the indices of a constellation of order $M$ lie in $[0 : M)$, as in `range(M)`.
 
+## Bit order
+
+A sequence of bits $(b_0, b_1, \ldots, b_{n-1})$ represents the integers
+$$
+    \sum_{i \in [0 : n)} b_i 2^i \qquad \text{and} \qquad \sum_{i \in [0 : n)} b_i 2^{n - i - 1}
+$$
+in *LSB-first* and *MSB-first* order, respectively.
+
+- LSB-first is used where the position of a bit is an exponent: the coefficients of [binary polynomials](/ref/BinaryPolynomial), the cells of shift registers, and the states, inputs, and outputs of the finite-state machines of convolutional codes. This covers the finite fields and the error control codes.
+- MSB-first is used where the bits are digits in reading order: the binary labelings, the codewords of source codes and of most integer codes, and the lexicodes. The [Fibonacci code](/ref/FibonacciCode) is an exception.
+
+The functions [`int_to_bits`](/ref/int_to_bits), [`bits_to_int`](/ref/bits_to_int), [`to_binary`](/ref/to_binary), and [`from_binary`](/ref/from_binary) are LSB-first by default, unlike Python's `bin`:
+
+```pycon
+>>> import komm
+
+>>> komm.to_binary(6)
+[0, 1, 1]
+
+>>> komm.to_binary(6, bit_order="MSB-first")
+[1, 1, 0]
+
+>>> bin(6)
+'0b110'
+
+```
+
 ## L-values
 
 The *L-value* of a bit $b$ is defined as
