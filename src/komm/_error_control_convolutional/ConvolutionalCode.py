@@ -18,6 +18,9 @@ class ConvolutionalCode(abc.ConvolutionalCode):
     r"""
     Binary convolutional encoder. It is characterized by a *matrix of feedforward polynomials* $P(D)$, of shape $k \times n$, and (optionally) by a *vector of feedback polynomials* $q(D)$, of length $k$. The parameters $k$ and $n$ are the number of input and output bits per block, respectively. In this class, the encoder is realized in controllable canonical form. For more details, see <cite>McE98</cite>, <cite>JZ15</cite>, <cite>LC04, Chs. 11, 12</cite>, and [EC Zoo: Convolutional code](https://errorcorrectionzoo.org/c/convolutional).
 
+    Note:
+        Unlike MATLAB's `poly2trellis`, where the leftmost bit of each polynomial is the coefficient of $D^0$, here it is the least significant bit. For example, `poly2trellis(7, [171 133])` corresponds to `ConvolutionalCode([[0o117, 0o155]])`. In general, each polynomial of row $i$ must be reversed within the width $K = \nu_i + 1$, where $\nu_i$ is the [constraint length](./#constraint_lengths) of the row, as in `BinaryPolynomial(g).reciprocal(width=K)`.
+
     Parameters:
         feedforward_polynomials: The matrix of feedforward polynomials $P(D)$, which is a $k \times n$ matrix whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. Must have full row rank.
 

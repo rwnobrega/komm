@@ -16,6 +16,9 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
     r"""
     Low-rate convolutional encoder. It is an $(n, 1)$ non-recursive non-systematic [convolutional encoder](/ref/ConvolutionalCode) defined by a single *generator row* $g(D) \in \mathbb{F}_2[D]^n$ and realized in controllable canonical form.
 
+    Note:
+        As in [`ConvolutionalCode`](/ref/ConvolutionalCode), the least significant bit of each polynomial is the coefficient of $D^0$, unlike MATLAB's `poly2trellis`. For example, the encoder below is `poly2trellis(7, [171 133])`.
+
     Parameters:
         g_row: The generator row $g(D)$ of the encoder. Must be an $n$-vector whose entries are either [binary polynomials](/ref/BinaryPolynomial) or integers to be converted to the former. Must have a nonzero entry.
 
