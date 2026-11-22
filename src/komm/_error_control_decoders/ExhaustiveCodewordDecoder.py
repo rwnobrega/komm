@@ -11,6 +11,7 @@ from .._util.validators import (
     validate_decision_type,
     validate_soft_array,
 )
+from .util import codeword_correlations
 
 
 @dataclass
@@ -58,14 +59,13 @@ class ExhaustiveCodewordDecoder(abc.CodewordDecoder[abc.BlockCode]):
 
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size, "Decoding with exhaustive codeword algorithm")
-        def decode_to_codeword(r: npt.NDArray[np.integer]):
-            x = (-1.0) ** r if self.input_type == "hard" else r
-            metrics = x @ self._polar.T
+        def decode_to_codeword(x: npt.NDArray[np.floating]):
+            metrics = codeword_correlations(x, self._polar)
             v_hat = self._codewords[np.argmax(metrics, axis=-1)]
             return v_hat
 
         if self.input_type == "hard":
-            return decode_to_codeword(validate_binary_array(input))
+            return decode_to_codeword((-1.0) ** validate_binary_array(input))
         else:  # self.input_type == "soft"
             return decode_to_codeword(validate_soft_array(input))
 

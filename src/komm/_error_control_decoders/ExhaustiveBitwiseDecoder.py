@@ -8,7 +8,7 @@ from .. import abc
 from .._util.bit_operations import int_to_bits
 from .._util.decorators import blockwise, chunkwise
 from .._util.validators import validate_decision_type, validate_soft_array
-from .util import marginalize
+from .util import codeword_correlations, marginalize
 
 
 @dataclass
@@ -33,7 +33,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
         k = self.code.dimension
         self._codewords = self.code.codewords()
         self._messages = int_to_bits(range(2**k), width=k).reshape(-1, k)
-        self._polar = (-1) ** self._codewords
+        self._polar = (-1.0) ** self._codewords
         # About 64 MiB of metrics
         self._chunk_size = max(1, 2**26 // (8 * 2**k * self.code.length))
 
@@ -43,7 +43,7 @@ class ExhaustiveBitwiseDecoder(abc.CodewordDecoder[abc.BlockCode]):
         @blockwise(self.code.length)
         @chunkwise(self._chunk_size, "Decoding with exhaustive bitwise algorithm")
         def decode(li: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
-            metrics = 0.5 * li @ self._polar.T
+            metrics = 0.5 * codeword_correlations(li, self._polar)
             return marginalize(metrics, bits)
 
         output = decode(validate_soft_array(input))

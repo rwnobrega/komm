@@ -12,6 +12,19 @@ def branch_costs(lvalues: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
     return costs
 
 
+def codeword_correlations(
+    lvalues: npt.NDArray[np.floating], polar: npt.NDArray[np.floating]
+) -> npt.NDArray[np.floating]:
+    finite = np.isfinite(lvalues)
+    if np.all(finite):
+        return lvalues @ polar.T
+    # Codewords against infinite L-values get -inf
+    signs = np.where(finite, 0.0, np.sign(lvalues))
+    agree = signs @ polar.T == np.abs(signs).sum(axis=-1, keepdims=True)
+    correlations = np.where(finite, lvalues, 0.0) @ polar.T
+    return np.where(agree, correlations, -np.inf)
+
+
 def marginalize(
     log_posteriors: npt.NDArray[np.floating],
     bits: npt.NDArray[np.integer],
