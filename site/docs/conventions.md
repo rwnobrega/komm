@@ -33,23 +33,23 @@ $$
         \end{cases}
     $$
 
-- Over the [Gaussian channel](/ref/GaussianChannel) with noise power $\sigma^2$, with each bit $\mathtt{0}$ sent as $-1$ and each bit $\mathtt{1}$ as $+1$,
+- Over the [Gaussian channel](/ref/GaussianChannel) with noise power $\sigma^2$, with each bit $b$ sent as $(-1)^b$,
     $$
-        L(b \mid y) = -2 y / \sigma^2.
+        L(b \mid y) = 2 y / \sigma^2.
     $$
-    This mapping is the [PAM constellation](/ref/PAMConstellation) of order $2$ with the [natural labeling](/ref/NaturalLabeling), and the same L-values follow from the [posteriors](/ref/Constellation#posteriors) of the constellation, [marginalized](/ref/Labeling#marginalize) over the labeling:
+    This mapping is the [constellation](/ref/Constellation) with points $+1$ and $-1$, in this order, with the [natural labeling](/ref/NaturalLabeling), and the same L-values follow from the [posteriors](/ref/Constellation#posteriors) of the constellation, [marginalized](/ref/Labeling#marginalize) over the labeling:
 
     ```pycon
     >>> import numpy as np
     >>> import komm
 
-    >>> constellation = komm.PAMConstellation(2)
+    >>> constellation = komm.Constellation([1.0, -1.0])
     >>> labeling = komm.NaturalLabeling(1)
     >>> y = np.array([0.9, -0.2])
     >>> posteriors = constellation.posteriors(y, noise_power=0.5)
     >>> labeling.marginalize(posteriors)
-    array([-3.6,  0.8])
-    >>> -2 * y / 0.5
-    array([-3.6,  0.8])
+    array([ 3.6, -0.8])
+    >>> 2 * y / 0.5
+    array([ 3.6, -0.8])
 
     ```
