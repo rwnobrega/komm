@@ -8,7 +8,7 @@ from ..types import Array2D
 
 class Labeling(abc.Labeling):
     r"""
-    General binary labeling. It is defined by a bijective mapping from $[0:2^m)$ to $\mathbb{B}^m$ or, equivalently, by an ordered set $\\{ \mathbf{q}_i : i \in [0:2^m) \\}$ of $2^m$ distinct binary vectors in  $\mathbb{B}^m$. In this class, a labeling is represented by a matrix $\mathbf{Q} \in \mathbb{B}^{2^m \times m}$, where the $i$-th row of $\mathbf{Q}$ corresponds to the binary vector $\mathbf{q}_i$. For more details, see <cite>SA15, Sec. 2.5.2</cite>.
+    General binary labeling. It is defined by a bijective mapping from $[0 : 2^m)$ to $\mathbb{B}^m$ or, equivalently, by an ordered set $\\{ \mathbf{q}_i : i \in [0 : 2^m) \\}$ of $2^m$ distinct binary vectors in  $\mathbb{B}^m$. In this class, a labeling is represented by a matrix $\mathbf{Q} \in \mathbb{B}^{2^m \times m}$, where the $i$-th row of $\mathbf{Q}$ corresponds to the binary vector $\mathbf{q}_i$. For more details, see <cite>SA15, Sec. 2.5.2</cite>.
 
     Parameters:
         matrix: The labeling matrix $\mathbf{Q}$. Must be a $2^m \times m$ binary matrix whose rows are all distinct.

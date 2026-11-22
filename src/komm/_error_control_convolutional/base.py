@@ -71,7 +71,7 @@ class ConvolutionalCode(ABC):
         r"""
         The *overall constraint length* $\nu$ of the encoder, defined by
         $$
-            \nu = \sum_{i \in [0:k)} \nu_i,
+            \nu = \sum_{i \in [0 : k)} \nu_i,
         $$
         where $\nu_i$ are the constraint lengths of the encoder.
         """
@@ -83,7 +83,7 @@ class ConvolutionalCode(ABC):
         r"""
         The *memory order* $\mu$ of the encoder. It is given by
         $$
-            \mu = \max_{i \in [0:k)} \nu_i,
+            \mu = \max_{i \in [0 : k)} \nu_i,
         $$
         where $\nu_i$ are the constraint lengths of the encoder.
         """

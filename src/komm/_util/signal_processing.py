@@ -21,12 +21,12 @@ def sampling_rate_compress(
     $$
     y[n] = x[n M + \Delta],
     $$
-    where $M$ is the *compression factor* and $\Delta \in [0:M)$ is the *offset* for the first selected element. In words, the compressor extracts every $M$-th element starting from the offset $\Delta$ along the specified axis. For more details, see <cite>OS99, Sec. 4.6.1</cite>.
+    where $M$ is the *compression factor* and $\Delta \in [0 : M)$ is the *offset* for the first selected element. In words, the compressor extracts every $M$-th element starting from the offset $\Delta$ along the specified axis. For more details, see <cite>OS99, Sec. 4.6.1</cite>.
 
     Parameters:
         input: The input array $x[n]$ to be compressed.
         factor: The compression factor $M$.
-        offset: The offset $\Delta$. Must satisfy $\Delta \in [0:M)$.
+        offset: The offset $\Delta$. Must satisfy $\Delta \in [0 : M)$.
         axis: The axis along which to extract elements. The default value is the last axis.
 
     Returns:
@@ -82,12 +82,12 @@ def sampling_rate_expand(
     0,       & \text{otherwise}
     \end{cases}
     $$
-    where $L$ is the *expansion factor* and $\Delta \in [0:L)$ is the *offset* for the first output element. In words, the expander inserts $L-1$ zeros between each element of the input array along the specified axis, starting from the offset $\Delta$. For more details, see <cite>OS99, Sec. 4.6.2</cite>.
+    where $L$ is the *expansion factor* and $\Delta \in [0 : L)$ is the *offset* for the first output element. In words, the expander inserts $L-1$ zeros between each element of the input array along the specified axis, starting from the offset $\Delta$. For more details, see <cite>OS99, Sec. 4.6.2</cite>.
 
     Parameters:
         input: The input array $x[n]$ to be expanded.
         factor: The expansion factor $L$.
-        offset: The offset $\Delta$. Must satisfy $\Delta \in [0:L)$.
+        offset: The offset $\Delta$. Must satisfy $\Delta \in [0 : L)$.
         axis: The axis along which to insert zeros. The default value is the last axis.
 
     Returns:

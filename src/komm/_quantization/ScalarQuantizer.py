@@ -15,7 +15,7 @@ class ScalarQuantizer(abc.ScalarQuantizer):
     $$
         -\infty = \lambda_0 < y_0 < \lambda_1 < y_1 < \cdots < \lambda_{L - 1} < y_{L - 1} < \lambda_L = +\infty.
     $$
-    Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = y_i$ if and only if $\lambda_i \leq x < \lambda_{i+1}$, where $i \in [0:L)$. For more details, see <cite>Say06, Ch. 9</cite>.
+    Given an input $x \in \mathbb{R}$, the output of the quantizer is given by $y = y_i$ if and only if $\lambda_i \leq x < \lambda_{i+1}$, where $i \in [0 : L)$. For more details, see <cite>Say06, Ch. 9</cite>.
 
     Parameters:
         levels: The quantizer levels $y_0, y_1, \ldots, y_{L-1}$. Must be a 1D-array of length $L$.

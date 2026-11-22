@@ -18,7 +18,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
     Amplitude- and phase-shift keying (APSK) constellation. It is a complex one-dimensional [constellation](/ref/Constellation) obtained by the union of $K$ component [PSK constellations](/ref/PSKConstellation), called *rings*.
 
     Parameters:
-        orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. Must satisfy $M_k \geq 1$ and $\sum_{k \in [0:K)} M_k \geq 2$.
+        orders: A $K$-tuple with the orders $M_k$ of each ring, for $k \in [0 : K)$. Must satisfy $M_k \geq 1$ and $\sum_{k \in [0 : K)} M_k \geq 2$.
 
         amplitudes: A $K$-tuple with the amplitudes $A_k$ of each ring, for $k \in [0 : K)$. Must satisfy $A_k \geq 0$.
 
@@ -111,7 +111,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         r"""
         For the APSK constellation, it is given by
         $$
-            M = \sum_{k \in [0:K)} M_k.
+            M = \sum_{k \in [0 : K)} M_k.
         $$
 
         Examples:
@@ -153,7 +153,7 @@ class APSKConstellation(abc.Constellation[np.complexfloating]):
         r"""
         For uniform priors, the mean energy of the APSK constellation is given by
         $$
-            E = \frac{1}{M} \sum_{k \in [0:K)} A^2 M_k.
+            E = \frac{1}{M} \sum_{k \in [0 : K)} A^2 M_k.
         $$
 
         Examples:

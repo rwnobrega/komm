@@ -60,7 +60,7 @@ class Constellation(ABC, Generic[T]):
         r"""
         Computes the mean $\mathbf{m}$ of the constellation given prior probabilities $p_i$ of the constellation symbols. It is given by
         $$
-        \mathbf{m} = \sum_{i \in [0:M)} p_i \mathbf{x}_i.
+        \mathbf{m} = \sum_{i \in [0 : M)} p_i \mathbf{x}_i.
         $$
 
         Parameters:
@@ -77,7 +77,7 @@ class Constellation(ABC, Generic[T]):
         r"""
         Computes the mean energy $E$ of the constellation given prior probabilities $p_i$ of the constellation symbols. It is given by
         $$
-        E = \sum_{i \in [0:M)} p_i \lVert \mathbf{x}_i \rVert^2.
+        E = \sum_{i \in [0 : M)} p_i \lVert \mathbf{x}_i \rVert^2.
         $$
 
         Parameters:
@@ -95,7 +95,7 @@ class Constellation(ABC, Generic[T]):
         r"""
         Computes the minimum Euclidean distance $d_\mathrm{min}$ of the constellation. It is given by
         $$
-        d_\mathrm{min} = \min_ { i, j \in [0:M), ~ i \neq j } \lVert \mathbf{x}_i - \mathbf{x}_j \rVert.
+        d_\mathrm{min} = \min_ { i, j \in [0 : M), ~ i \neq j } \lVert \mathbf{x}_i - \mathbf{x}_j \rVert.
         $$
         """
         distances = np.linalg.norm(self.matrix[:, np.newaxis] - self.matrix, axis=2)
@@ -109,7 +109,7 @@ class Constellation(ABC, Generic[T]):
         Returns the constellation symbols corresponding to the given indices.
 
         Parameters:
-            indices: The indices to be converted to symbols. Must be an array of integers in $[0:M)$.
+            indices: The indices to be converted to symbols. Must be an array of integers in $[0 : M)$.
 
         Returns:
             symbols: The symbols corresponding to the given indices. Has the same shape as `indices`, but with the last dimension expanded by a factor of $N$.

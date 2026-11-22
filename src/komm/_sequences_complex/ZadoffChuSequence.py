@@ -9,7 +9,7 @@ class ZadoffChuSequence(ComplexSequence):
     $$
         z_{L,q}[n] = \mathrm{e}^{-\mathrm{j} \pi q n (n + 1) / L},
     $$
-    where $L$ is the *length* (and period) of the sequence, an odd integer with $L \geq 3$, and $q \in [1:L)$ is called the *root index* of the sequence.
+    where $L$ is the *length* (and period) of the sequence, an odd integer with $L \geq 3$, and $q \in [1 : L)$ is called the *root index* of the sequence.
 
     Zadoff–Chu sequences have the following properties:
 
@@ -35,7 +35,7 @@ class ZadoffChuSequence(ComplexSequence):
 
     Parameters:
         length: The length $L$ of the Zadoff–Chu sequence. Must be an odd integer satisfying $L \geq 3$.
-        root_index: The root index $q$ of the Zadoff–Chu sequence. Must be in $[1:L)$. The default value is $1$.
+        root_index: The root index $q$ of the Zadoff–Chu sequence. Must be in $[1 : L)$. The default value is $1$.
 
     Examples:
         >>> zadoff_chu = komm.ZadoffChuSequence(5, root_index=1)

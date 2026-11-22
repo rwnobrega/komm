@@ -49,7 +49,7 @@ class Labeling(ABC):
         Returns the binary representation of the given indices.
 
         Parameters:
-            indices: The indices to be converted to bits. Must be an array of integers in $[0:2^m)$.
+            indices: The indices to be converted to bits. Must be an array of integers in $[0 : 2^m)$.
 
         Returns:
             bits: The binary representations of the given indices. Has the same shape as `indices`, but with the last dimension expanded by a factor of $m$.
