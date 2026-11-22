@@ -251,6 +251,7 @@ def boxplus(a: npt.ArrayLike, b: npt.ArrayLike) -> npt.NDArray[np.floating] | fl
     $$
         a \boxplus b = 2 \operatorname{atanh} \left( \tanh\left(\frac{a}{2}\right) \tanh\left(\frac{b}{2}\right) \right).
     $$
+    For more details, see <cite>RL09, Sec. 5.4.5</cite>.
 
     Parameters:
         a: A float or array of floats containing [L-values](/conventions#l-values).
