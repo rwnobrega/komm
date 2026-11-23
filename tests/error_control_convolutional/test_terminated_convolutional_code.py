@@ -257,8 +257,8 @@ def test_terminated_convolutional_golay():
     # Position i of the code is position perm[i] of the Golay code
     # fmt: off
     perm = [
-        0, 1, 2, 3, 4, 6, 5, 19, 17, 20, 22, 11,
-        12, 9, 23, 8, 14, 16, 21, 10, 7, 18, 13, 15,
+        0, 1, 2, 3, 4, 5, 7, 21, 8, 6, 19, 14,
+        15, 17, 10, 20, 9, 22, 13, 16, 18, 12, 11, 23,
     ]
     # fmt: on
     codewords = np.empty_like(code.codewords())

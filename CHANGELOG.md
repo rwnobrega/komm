@@ -34,6 +34,8 @@
 
 - Removed method `viterbi_streaming` from `MealyMachine`.
 
+- Changed the parity submatrix of `GolayCode` to the one in Wikipedia.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.
