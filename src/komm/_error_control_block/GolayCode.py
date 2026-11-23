@@ -12,23 +12,25 @@ from .util import extended_parity_submatrix
 @mkdocstrings(filters=["!.*"])
 class GolayCode(SystematicBlockCode):
     r"""
-    Golay code. It is the [linear block code](/ref/BlockCode) with parity submatrix
+    Golay code. Its extended version is the [linear block code](/ref/BlockCode) with parity submatrix $P = J - A$, where $J$ is the $12 \times 12$ all-ones matrix and $A$ is the adjacency matrix of the icosahedron, with vertices labeled so that vertex $i \in [0 : 10)$ is adjacent to vertices $i \pm 1$ and $i \pm 2$ (modulo $10$), and vertices $10$ and $11$ are adjacent to the even and odd ones, respectively. That is,
     $$
     P = \begin{bmatrix}
-        1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\\\
-        0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\\\
-        0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\\\
-        1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\\\
-        1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\\\
-        1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 \\\\
-        1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\\\
-        1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\\\
-        0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\\\
-        0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 1 \\\\
-        0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 \\\\
-        1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1
-    \end{bmatrix}
+        1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\\\
+        0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\\\
+        0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\\\
+        1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\\\
+        1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 1 \\\\
+        1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\\\
+        1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 \\\\
+        1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\\\
+        0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\\\
+        0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 1 & 0 \\\\
+        0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 1 \\\\
+        1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1
+    \end{bmatrix}.
     $$
+
+    The Golay code is obtained by deleting the last position of its extended version.
 
     The Golay code has the following parameters:
 
@@ -44,7 +46,7 @@ class GolayCode(SystematicBlockCode):
     - Redundancy: $m = 12$
     - Minimum distance: $d = 8$
 
-    For more details, see <cite>LC04, Sec. 4.6</cite> and [EC Zoo: Golay code](https://errorcorrectionzoo.org/c/golay).
+    For more details, see <cite>LC04, Sec. 4.6</cite>, [EC Zoo: Golay code](https://errorcorrectionzoo.org/c/golay), and [Wikipedia: Binary Golay code](https://en.wikipedia.org/wiki/Binary_Golay_code), which uses the same matrix.
 
     Notes:
         - The Golay code is a perfect code; its extended version is not.
