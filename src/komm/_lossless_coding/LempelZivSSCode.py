@@ -99,16 +99,16 @@ class LempelZivSSCode(abc.TokenCode[Token]):
     @property
     def break_even(self) -> int:
         r"""
-        The break-even point for encoding a reference. A match must be at least this long to be worth encoding as a reference instead of literals. It is given by
+        The break-even point for encoding a reference. A match must be at least this long to cost no more as a reference than as literals. It is given by
         $$
-            \left\lceil \frac{1 + \lceil \log S \rceil + \lceil \log L \rceil}{1+ \lceil \log |\mathcal{X}| \rceil} \right\rceil,
+            \left\lceil \frac{1 + \lceil \log S \rceil + \lceil \log L \rceil}{1 + \lceil \log |\mathcal{X}| \rceil} \right\rceil,
         $$
         where all logs are to base $|\mathcal{Y}|$.
         """
         p_width, l_width, x_width = self._get_widths()
         # Cost as a reference: 1 (flag) + p_width + l_width
         # Cost as literals: length * (1 (flag) + x_width)
-        # Break even when: 1 + p_width + l_width < length * (1 + x_width)
+        # Break even when: 1 + p_width + l_width <= length * (1 + x_width)
         return ceil((1 + p_width + l_width) / (1 + x_width))
 
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
