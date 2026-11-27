@@ -16,7 +16,11 @@ Token = int
 @dataclass
 class LempelZivWelchCode(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv–Welch (LZW) code. It is a lossless data compression algorithm which is a variation of the [Lempel–Ziv 78](/ref/LempelZiv78Code) algorithm. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The token format is $p \in \mathbb{N}$, the index of the corresponding dictionary entry. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \lceil \log_{|\mathcal{Y}|} i \rceil$, and $i$ is the size of the dictionary at the moment. Integers are written most significant digit first. For more details, see <cite>Say06, Sec. 5.4.2</cite>.
+    Lempel–Ziv–Welch (LZW) code. It is a lossless data compression algorithm which is a variation of the [Lempel–Ziv 78](/ref/LempelZiv78Code) algorithm. For more details, see <cite>Say06, Sec. 5.4.2</cite>.
+
+    Let $\mathcal{X}$ be the source alphabet. The token format is $p \in [0 : i)$, the index of the corresponding dictionary entry, where $i$ is the size of the dictionary at the moment.
+
+    Let $\mathcal{Y}$ be the target alphabet. A token is represented as a word in $\mathcal{Y}^n$, where $$n = \lceil \log i \rceil$$ and the log is to base $|\mathcal{Y}|$. Integers are written most significant digit first.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.

@@ -19,7 +19,11 @@ Token = tuple[int, int]
 @dataclass
 class RunLengthCode(abc.TokenCode[Token]):
     r"""
-    Run-length code. It is a lossless data compression algorithm which parses the source sequence into *runs*, that is, blocks of repeated symbols. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $L \geq 1$ is the *maximum run length*. The token format is $(x, \ell)$, where $x \in \mathcal{X}$ is the repeated symbol and $\ell \in [1 : L]$ is the length of the run; runs longer than $L$ are split into two or more tokens. A token is represented as a fixed-size word in $\mathcal{Y}^n$, consisting of $x$ followed by $\ell - 1$, where $$n = \lceil \log |\mathcal{X}| \rceil + \lceil \log L \rceil$$ and all logs are to base $|\mathcal{Y}|$. Integers are written most significant digit first. For more details, see [Wikipedia: Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding).
+    Run-length code. It is a lossless data compression algorithm which parses the source sequence into *runs*, that is, blocks of repeated symbols. For more details, see [Wikipedia: Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding).
+
+    Let $\mathcal{X}$ be the source alphabet, and $L \geq 1$ be the *maximum run length*. The source sequence is parsed into *phrases*, one per token. The token format is $(x, \ell)$, where $x \in \mathcal{X}$ is the repeated symbol and $\ell \in [1 : L]$ is the length of the run; runs longer than $L$ are split into two or more tokens. The phrase of a token is $x$ repeated $k = \ell$ times.
+
+    Let $\mathcal{Y}$ be the target alphabet. A token is represented as a word in $\mathcal{Y}^n$, consisting of $x$ followed by $\ell - 1$, where $$n = \lceil \log |\mathcal{X}| \rceil + \lceil \log L \rceil$$ and all logs are to base $|\mathcal{Y}|$. Integers are written most significant digit first.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
@@ -30,7 +34,7 @@ class RunLengthCode(abc.TokenCode[Token]):
         target_cardinality: The target cardinality $|\mathcal{Y}|$. Must satisfy $|\mathcal{Y}| \geq 2$. The default value is $2$ (binary).
 
     Examples:
-        >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+        >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
     """
 
     source_cardinality: int
@@ -51,8 +55,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def source_to_tokens(self, source: npt.ArrayLike) -> list[Token]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.source_to_tokens([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.source_to_tokens([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
             [(0, 3), (2, 2), (1, 4), (1, 1)]
         """
         source = validate_integer_array(
@@ -72,8 +76,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def tokens_to_source(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.tokens_to_source([(0, 3), (2, 2), (1, 4), (1, 1)])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.tokens_to_source([(0, 3), (2, 2), (1, 4), (1, 1)])
             array([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
         """
         calX, L = self.source_cardinality, self.max_run_length
@@ -86,8 +90,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def tokens_to_target(self, tokens: list[Token]) -> Array1D[np.integer]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.tokens_to_target([(0, 3), (2, 2), (1, 4), (1, 1)])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.tokens_to_target([(0, 3), (2, 2), (1, 4), (1, 1)])
             array([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
         """
         calX, calY = self.source_cardinality, self.target_cardinality
@@ -104,8 +108,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.target_to_tokens([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.target_to_tokens([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
             [(0, 3), (2, 2), (1, 4), (1, 1)]
         """
         target = validate_integer_array(
@@ -125,8 +129,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def encode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.encode([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.encode([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
             array([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
         """
         return super().encode(input)
@@ -134,8 +138,8 @@ class RunLengthCode(abc.TokenCode[Token]):
     def decode(self, input: npt.ArrayLike) -> Array1D[np.integer]:
         r"""
         Examples:
-            >>> code = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
-            >>> code.decode([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
+            >>> rle = komm.RunLengthCode(source_cardinality=3, max_run_length=4)
+            >>> rle.decode([0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
             array([0, 0, 0, 2, 2, 1, 1, 1, 1, 1])
         """
         return super().decode(input)

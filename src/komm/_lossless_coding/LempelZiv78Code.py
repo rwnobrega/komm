@@ -16,7 +16,11 @@ Token = tuple[int, int]
 @dataclass
 class LempelZiv78Code(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The token format is $(p, x)$, where $p \in \mathbb{N}$ is the index of the corresponding dictionary entry, and $x \in \mathcal{X}$ is the source symbol following the match. The index $p$ is represented as a variable-size word in $\mathcal{Y}^k$, where $k = \lceil \log_{|\mathcal{Y}|} i \rceil$, and $i$ is the size of the dictionary at the moment, including the empty word. Integers are written most significant digit first. For more details, see <cite>MacK03, Sec. 6.4</cite>, <cite>Say06, Sec. 5.4.2</cite> and <cite>CT06, Sec. 13.4.2</cite>.
+    Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. For more details, see <cite>MacK03, Sec. 6.4</cite>, <cite>Say06, Sec. 5.4.2</cite> and <cite>CT06, Sec. 13.4.2</cite>.
+
+    Let $\mathcal{X}$ be the source alphabet. The token format is $(p, x)$, where $p \in [0 : i)$ is the index of the corresponding dictionary entry, $x \in \mathcal{X}$ is the source symbol following the match, and $i$ is the size of the dictionary at the moment, including the empty word. If no symbol follows the match, the last token is $(p, -1)$.
+
+    Let $\mathcal{Y}$ be the target alphabet. A token is represented as a word in $\mathcal{Y}^n$, consisting of $p$ followed by $x$, where $$n = \lceil \log i \rceil + \lceil \log |\mathcal{X}| \rceil$$ and all logs are to base $|\mathcal{Y}|$. The last token $(p, -1)$ is represented by $p$ alone, with $n = \lceil \log i \rceil$. Integers are written most significant digit first.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
