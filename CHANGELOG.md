@@ -36,6 +36,8 @@
 
 - Changed the parity submatrix of `GolayCode` to the one in Wikipedia.
 
+- Changed the pointer of `LempelZiv77Code` to be measured backward from the end of the search buffer, as in `LempelZivSSCode`.
+
 ### Fixed
 
 - Fixed `marcum_q`, which was inaccurate in the tail and wrong for large arguments.

@@ -14,8 +14,9 @@ def test_lz77_original_paper():
         target_cardinality=3,
     )
     source = [0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2, 0, 2, 1, 0, 2, 1, 2, 0, 0]
-    tokens = [(8, 2, 1), (7, 3, 2), (6, 7, 2), (2, 8, 0)]
-    target = [2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2, 0, 2, 2, 2, 0]
+    # Unlike the paper, pointers count backward
+    tokens = [(1, 2, 1), (2, 3, 2), (3, 7, 2), (7, 8, 0)]
+    target = [0, 0, 0, 2, 1, 0, 1, 1, 0, 2, 0, 2, 2, 1, 2, 2, 0, 2, 2, 0]
     np.testing.assert_equal(code.source_to_tokens(source), tokens)
     np.testing.assert_equal(code.tokens_to_target(tokens), target)
     np.testing.assert_equal(code.tokens_to_source(tokens), source)
@@ -42,9 +43,7 @@ def test_lz77_abrantes():
         (6, 3, "A"),
         (8, 2, "C"),
     ]
-    tokens = []
-    for offset, length, symbol in expected:
-        tokens.append((8 - offset, length, alphabet.index(symbol)))
+    tokens = [(p, l, alphabet.index(x)) for p, l, x in expected]
     np.testing.assert_equal(code.source_to_tokens(source), tokens)
     np.testing.assert_equal(code.tokens_to_source(tokens), source)
     np.testing.assert_equal(code.decode(code.encode(source)), source)
@@ -60,9 +59,7 @@ def test_lz77_sayood():
     )
     source = [ord(x) for x in "dabrarrarrad"]
     expected = [(1, 0, "d"), (7, 4, "r"), (3, 5, "d")]
-    tokens = []
-    for offset, length, symbol in expected:
-        tokens.append((7 - offset, length, ord(symbol)))
+    tokens = [(p, l, ord(x)) for p, l, x in expected]
     np.testing.assert_equal(code.source_to_tokens(source), tokens)
     np.testing.assert_equal(code.tokens_to_source(tokens), source)
     np.testing.assert_equal(code.decode(code.encode(source)), source)
@@ -80,9 +77,7 @@ def test_lz77_wikipedia():
         (8, 3, "."),
     ]
     source = [ord(x) for x in "A_ASA_DA_CASA."]
-    tokens = []
-    for offset, length, symbol in expected:
-        tokens.append((8 - offset, length, ord(symbol)))
+    tokens = [(p, l, ord(x)) for p, l, x in expected]
     target = code.encode(source)
     # Wikipedia considers 4 + 3 + 8 = 15 bits instead of 3 + 2 + 8 = 13 bits per codeword
     assert target.size == 13 * len(expected)
@@ -159,7 +154,7 @@ def test_lz77_invalid_input():
 
 @pytest.mark.parametrize("method", ["tokens_to_source", "tokens_to_target"])
 @pytest.mark.parametrize(
-    "token", [(4, 0, 0), (-1, 0, 0), (0, 4, 0), (0, -1, 0), (0, 0, 3), (0, 0, -1)]
+    "token", [(5, 0, 0), (0, 0, 0), (1, 4, 0), (1, -1, 0), (1, 0, 3), (1, 0, -1)]
 )
 def test_lz77_invalid_tokens(method, token):
     code = komm.LempelZiv77Code(search_size=4, lookahead_size=4, source_cardinality=3)

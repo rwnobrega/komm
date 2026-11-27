@@ -24,7 +24,7 @@ Token = tuple[int, int, int]
 
 class LempelZiv77Code(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $S \geq 1$ is the size of the *search buffer*, $L \geq 1$ is the size of the *lookahead buffer*, and $W = S + L$ is the size of the *sliding window*. The token format follows the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), namely $(p, \ell, x)$, where $p \in [0 : S)$ is the *pointer* for the match, $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match, but with both $p$ and $\ell$ being $0$-indexed instead of $1$-indexed. Also following the LZ77 original paper, a token is represented as a fixed-size word in $\mathcal{Y}^n$, where $$n = \lceil \log S \rceil + \lceil \log L \rceil + \lceil \log |\mathcal{X}| \rceil$$ and all logs are to base $|\mathcal{Y}|$. Integers are written most significant digit first. For more details, see <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
+    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. Let $\mathcal{X}$ be the source alphabet, and $\mathcal{Y}$ be the target alphabet. The notation used here is the following: $S \geq 1$ is the size of the *search buffer*, $L \geq 1$ is the size of the *lookahead buffer*, and $W = S + L$ is the size of the *sliding window*. The token format is $(p, \ell, x)$, where $p \in [1 : S]$ is the *pointer* (location of the beginning of the match, measured backward from the end of the search buffer), $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match. A token is represented as a fixed-size word in $\mathcal{Y}^n$, consisting of $p - 1$ followed by $\ell$ and $x$, where $$n = \lceil \log S \rceil + \lceil \log L \rceil + \lceil \log |\mathcal{X}| \rceil$$ and all logs are to base $|\mathcal{Y}|$. Integers are written most significant digit first. For more details, see the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
 
     Note:
         Here, for simplicity, we assume that the source alphabet is $\mathcal{X} = [0 : |\mathcal{X}|)$ and the target alphabet is $\mathcal{Y} = [0 : |\mathcal{Y}|)$, where $|\mathcal{X}| \geq 2$ and $|\mathcal{Y}| \geq 2$ are called the *source cardinality* and *target cardinality*, respectively.
@@ -102,7 +102,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     target_cardinality=3,
             ... )
             >>> lz77.source_to_tokens([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
-            [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
+            [(1, 2, 1), (2, 3, 2), (3, 7, 2)]
         """
         source = validate_integer_array(
             source, low=0, high=self.source_cardinality, ndim=1
@@ -114,7 +114,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         i = ss
         while i < len(buffer):
             p, l = find_longest_match(buffer, i, ss, min(ls, len(buffer) - i) - 1)
-            tokens.append((p, l, buffer[i + l]))
+            tokens.append((ss - p, l, buffer[i + l]))
             i += l + 1
             pbar.update(l + 1)
         pbar.close()
@@ -129,15 +129,15 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     source_cardinality=3,
             ...     target_cardinality=3,
             ... )
-            >>> lz77.tokens_to_source([(8, 2, 1), (7, 3, 2), (6, 7, 2)])
+            >>> lz77.tokens_to_source([(1, 2, 1), (2, 3, 2), (3, 7, 2)])
             array([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
         """
         ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         buffer = self.search_buffer.copy()
         for p, l, x in tokens:
-            if not (0 <= p < ss and 0 <= l < ls and 0 <= x < calX):
+            if not (1 <= p <= ss and 0 <= l < ls and 0 <= x < calX):
                 raise ValueError(f"invalid token: {(p, l, x)}")
-            start = len(buffer) - ss + p
+            start = len(buffer) - p
             for j in range(l):
                 buffer.append(buffer[start + j])
             buffer.append(x)
@@ -153,17 +153,17 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     source_cardinality=3,
             ...     target_cardinality=3,
             ... )
-            >>> lz77.tokens_to_target([(8, 2, 1), (7, 3, 2), (6, 7, 2)])
-            array([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
+            >>> lz77.tokens_to_target([(1, 2, 1), (2, 3, 2), (3, 7, 2)])
+            array([0, 0, 0, 2, 1, 0, 1, 1, 0, 2, 0, 2, 2, 1, 2])
         """
         ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         target: list[int] = []
         for p, l, x in tokens:
-            if not (0 <= p < ss and 0 <= l < ls and 0 <= x < calX):
+            if not (1 <= p <= ss and 0 <= l < ls and 0 <= x < calX):
                 raise ValueError(f"invalid token: {(p, l, x)}")
-            target.extend(integer_to_symbols(p, base=calY, width=p_width))
+            target.extend(integer_to_symbols(p - 1, base=calY, width=p_width))
             target.extend(integer_to_symbols(l, base=calY, width=l_width))
             target.extend(integer_to_symbols(x, base=calY, width=x_width))
         return np.array(target, dtype=int)
@@ -177,8 +177,8 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     source_cardinality=3,
             ...     target_cardinality=3,
             ... )
-            >>> lz77.target_to_tokens([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
-            [(8, 2, 1), (7, 3, 2), (6, 7, 2)]
+            >>> lz77.target_to_tokens([0, 0, 0, 2, 1, 0, 1, 1, 0, 2, 0, 2, 2, 1, 2])
+            [(1, 2, 1), (2, 3, 2), (3, 7, 2)]
         """
         target = validate_integer_array(
             target, low=0, high=self.target_cardinality, ndim=1
@@ -189,7 +189,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
         it = iter(target.tolist())
         for first in it:
             symbols = chain([first], it)
-            p = symbols_to_integer(take(symbols, p_width), base=calY)
+            p = symbols_to_integer(take(symbols, p_width), base=calY) + 1
             l = symbols_to_integer(take(symbols, l_width), base=calY)
             x = symbols_to_integer(take(symbols, x_width), base=calY)
             tokens.append((p, l, x))
@@ -205,7 +205,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     target_cardinality=3,
             ... )
             >>> lz77.encode([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
-            array([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
+            array([0, 0, 0, 2, 1, 0, 1, 1, 0, 2, 0, 2, 2, 1, 2])
         """
         return super().encode(input)
 
@@ -218,7 +218,7 @@ class LempelZiv77Code(abc.TokenCode[Token]):
             ...     source_cardinality=3,
             ...     target_cardinality=3,
             ... )
-            >>> lz77.decode([2, 2, 0, 2, 1, 2, 1, 1, 0, 2, 2, 0, 2, 1, 2])
+            >>> lz77.decode([0, 0, 0, 2, 1, 0, 1, 1, 0, 2, 0, 2, 2, 1, 2])
             array([0, 0, 1, 0, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 2])
         """
         return super().decode(input)
