@@ -24,7 +24,7 @@ Token = tuple[int, int, int]
 
 class LempelZiv77Code(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. For more details, see the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
+    Lempel–Ziv 77 (LZ77 or LZ1) code. It is a lossless data compression algorithm based on a sliding window. For more details, see the [original LZ77 paper](https://doi.org/10.1109%2FTIT.1977.1055714), <cite>Say06, Sec. 5.4.1</cite> and <cite>CT06, Sec. 13.4.1</cite>.
 
     Let $\mathcal{X}$ be the source alphabet, $S \geq 1$ be the size of the *search buffer*, and $L \geq 1$ be the size of the *lookahead buffer*; the *sliding window* has size $W = S + L$. The source sequence is parsed into *phrases*, one per token. The token format is $(p, \ell, x)$, where $p \in [1 : S]$ is the *pointer* (location of the beginning of the match, measured backward from the end of the search buffer), $\ell \in [0 : L)$ is the *length* of the match, and $x \in \mathcal{X}$ is the source symbol following the match. The phrase of a token is the match followed by $x$, with $k = \ell + 1$ symbols.
 

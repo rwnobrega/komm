@@ -16,7 +16,7 @@ Token = tuple[int, int]
 @dataclass
 class LempelZiv78Code(abc.TokenCode[Token]):
     r"""
-    Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm which is asymptotically optimal for ergodic sources. For more details, see <cite>MacK03, Sec. 6.4</cite>, <cite>Say06, Sec. 5.4.2</cite> and <cite>CT06, Sec. 13.4.2</cite>.
+    Lempel–Ziv 78 (LZ78 or LZ2) code. It is a lossless data compression algorithm based on a dictionary. For more details, see <cite>MacK03, Sec. 6.4</cite>, <cite>Say06, Sec. 5.4.2</cite> and <cite>CT06, Sec. 13.4.2</cite>.
 
     Let $\mathcal{X}$ be the source alphabet. The source sequence is parsed into *phrases*, one per token, which are kept in a *dictionary* whose entry $0$ is the empty word. The token format is $(p, x)$, where $p \in [0 : i)$ is the index of the longest dictionary entry $w_p$ matching the source, $x \in \mathcal{X}$ is the source symbol following the match, and $i$ is the size of the dictionary at the moment. The phrase of a token is $w_p$ followed by $x$, with $k = |w_p| + 1$ symbols, and becomes entry $i$ of the dictionary. If no symbol follows the match, the last token is $(p, -1)$, whose phrase is $w_p$, with $k = |w_p|$ symbols.
 

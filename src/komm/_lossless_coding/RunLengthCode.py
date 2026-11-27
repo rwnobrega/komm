@@ -19,7 +19,7 @@ Token = tuple[int, int]
 @dataclass
 class RunLengthCode(abc.TokenCode[Token]):
     r"""
-    Run-length code. It is a lossless data compression algorithm which parses the source sequence into *runs*, that is, blocks of repeated symbols. For more details, see [Wikipedia: Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding).
+    Run-length code. It is a lossless data compression algorithm based on runs of repeated symbols. For more details, see [Wikipedia: Run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding).
 
     Let $\mathcal{X}$ be the source alphabet, and $L \geq 1$ be the *maximum run length*. The source sequence is parsed into *phrases*, one per token. The token format is $(x, \ell)$, where $x \in \mathcal{X}$ is the repeated symbol and $\ell \in [1 : L]$ is the length of the run; runs longer than $L$ are split into two or more tokens. The phrase of a token is $x$ repeated $k = \ell$ times.
 
