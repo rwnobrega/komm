@@ -63,7 +63,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         self.lookahead_size = validate_positive_integer(lookahead_size)
         self.source_cardinality = validate_integer(source_cardinality, low=2)
         self.target_cardinality = validate_integer(target_cardinality, low=2)
-
         if search_buffer is None:
             self.search_buffer = [0] * self.search_size
         else:
@@ -130,7 +129,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         break_even = self.break_even
         buffer = bytes(self.search_buffer + source.tolist())
         tokens: list[Token] = []
-
         pbar = tqdm_bar(len(buffer), "Compressing LZSS", initial=ss)
         i = ss
         while i < len(buffer):
@@ -143,7 +141,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
                 tokens.append((0, buffer[i]))
                 i += 1
                 pbar.update(1)
-
         pbar.close()
         return tokens
 
@@ -160,7 +157,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         """
         ss, ls, calX = self.search_size, self.lookahead_size, self.source_cardinality
         buffer = self.search_buffer.copy()
-
         for token in tokens:
             match token:
                 case (1, p, l) if 1 <= p <= ss and 1 <= l <= ls:  # Reference
@@ -170,7 +166,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
                     buffer.append(x)
                 case _:
                     raise ValueError(f"invalid token: {token}")
-
         source = np.array(buffer[ss:], dtype=int)
         return source
 
@@ -189,7 +184,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
         calY = self.target_cardinality
         p_width, l_width, x_width = self._get_widths()
         target: list[int] = []
-
         for token in tokens:
             match token:
                 case (1, p, l) if 1 <= p <= ss and 1 <= l <= ls:  # Reference
@@ -201,7 +195,6 @@ class LempelZivSSCode(abc.TokenCode[Token]):
                     target.extend(integer_to_symbols(x, base=calY, width=x_width))
                 case _:
                     raise ValueError(f"invalid token: {token}")
-
         return np.array(target, dtype=int)
 
     def target_to_tokens(self, target: npt.ArrayLike) -> list[Token]:
