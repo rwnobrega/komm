@@ -18,7 +18,7 @@ class LempelZivWelchCode(abc.TokenCode[Token]):
     r"""
     Lempel–Ziv–Welch (LZW) code. It is a lossless data compression algorithm which is a variation of the [Lempel–Ziv 78](/ref/LempelZiv78Code) algorithm. For more details, see <cite>Say06, Sec. 5.4.2</cite>.
 
-    Let $\mathcal{X}$ be the source alphabet. The token format is $p \in [0 : i)$, the index of the corresponding dictionary entry, where $i$ is the size of the dictionary at the moment.
+    Let $\mathcal{X}$ be the source alphabet. The source sequence is parsed into *phrases*, one per token, with a *dictionary* that starts with the $|\mathcal{X}|$ one-symbol words, entry $x$ being $(x)$. The token format is $p \in [0 : i)$, the index of the longest dictionary entry $w_p$ matching the source, where $i$ is the size of the dictionary at the moment. The phrase of a token is $w_p$, with $k = |w_p|$ symbols; $w_p$ followed by the next source symbol becomes entry $i$ of the dictionary.
 
     Let $\mathcal{Y}$ be the target alphabet. A token is represented as a word in $\mathcal{Y}^n$, where $$n = \lceil \log i \rceil$$ and the log is to base $|\mathcal{Y}|$. Integers are written most significant digit first.
 
