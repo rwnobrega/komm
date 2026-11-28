@@ -9,6 +9,7 @@ Short examples of common tasks with Komm.
 - [**AMI and MLT-3 line codes**](ami-mlt3.md) – Two ternary line codes as Moore machines, with their power spectral densities, by formula and by simulation.
 - [**BER of binary antipodal signaling**](ber-antipodal.md) – Bit error rate of binary antipodal signaling over the AWGN channel, by simulation and by formula.
 - [**BER of syndrome decoding**](ber-syndrome.md) – Bit error rate of syndrome decoding over the binary symmetric channel, by formula from the standard array, compared with bitwise MAP decoding.
+- [**BER of Viterbi decoding**](ber-viterbi.md) – Bit error rate of a convolutional code over the AWGN channel, with soft-decision Viterbi decoding, by simulation and by the union bound.
 - [**Extended Huffman codes**](extended-huffman.md) – Huffman codes for blocks of source symbols, with rates approaching the entropy.
 - [**Hard- and soft-decision decoding**](hard-soft-decoding.md) – Block error rate of the Hamming code over the AWGN channel, with hard and soft decisions, by simulation and by formula.
 - [**Huffman codes for LZSS tokens**](lzss-huffman.md) – The two main ideas of Deflate, the algorithm of gzip and PNG, on the tokens of an LZSS code.
