@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections import Counter
 from functools import cache, cached_property, reduce
 from heapq import heappop, heappush
 from itertools import combinations
@@ -12,7 +13,7 @@ from .._algebra.BinaryPolynomialFraction import BinaryPolynomialFraction
 from .._finite_state_machine.MealyMachine import MealyMachine
 from .._util.bit_operations import bits_to_int, int_to_bits
 from .._util.matrices import invariant_factors, matmul
-from .._util.validators import validate_binary_array
+from .._util.validators import validate_binary_array, validate_nonnegative_integer
 from ..types import Array1D, Array2D
 
 
@@ -177,6 +178,84 @@ class ConvolutionalCode(ABC):
         factors = invariant_factors(G_prime)
         ɑ_k = BinaryPolynomialFraction(factors[-1], q).numerator
         return len(ɑ_k.exponents()) != 1
+
+    @cache
+    @abstractmethod
+    def path_weight_distribution(self, max_weight: int) -> Array2D[np.integer]:
+        r"""
+        Returns the path weight distribution of the code, up to a maximum output weight. This is the table $A_{i,j}$, in which $A_{i,j}$ is the number of paths in the state diagram that leave the all-zero state and first return to it with input weight $i$ and output weight $j$. These are the coefficients of the *weight enumerator*
+        $$
+            A(U, V) = \sum_{i,j} A_{i,j} U^i V^j.
+        $$
+        The number of paths with output weight $j$ is $A_j = \sum_i A_{i,j}$, and their total input weight is $B_j = \sum_i i A_{i,j}$. The least $j$ with $A_j > 0$ is the [free distance](./#free_distance).
+
+        This method keeps only the paths with output weight $j \leq J$. The table has one column for each $j \in [0 : J]$, and one row for each input weight from $0$ up to the largest among the paths kept.
+
+        Parameters:
+            max_weight: The maximum output weight $J$. Must be a non-negative integer.
+
+        Returns:
+            distribution: The table $A_{i,j}$, with the input weight $i$ along the rows and the output weight $j$ along the columns.
+
+        Raises:
+            ValueError: If the state diagram has a cycle of zero output weight (as in catastrophic encoders), or if some $B_j$ exceeds $2^{63} - 1$.
+        """
+        max_weight = validate_nonnegative_integer(max_weight)
+        fsm = self.finite_state_machine()
+        nxt: list[list[int]] = fsm.transitions.tolist()
+        out: list[list[int]] = fsm.outputs.tolist()
+        inputs = range(fsm.num_input_symbols)
+        w_in = [x.bit_count() for x in inputs]
+        w_out = [[y.bit_count() for y in row] for row in out]
+
+        # Nonzero states reachable from zero
+        reached, queue = {0}, [0]
+        for s in queue:
+            for s1 in nxt[s]:
+                if s1 not in reached:
+                    reached.add(s1)
+                    queue.append(s1)
+        states = queue[1:]
+
+        # Topological order of zero-weight branches
+        zero = {
+            s: [s1 for s1, w in zip(nxt[s], w_out[s]) if w == 0 and s1 != 0]
+            for s in states
+        }
+        indegree = Counter(s1 for s in states for s1 in zero[s])
+        order = [s for s in states if indegree[s] == 0]
+        for s in order:
+            for s1 in zero[s]:
+                indegree[s1] -= 1
+                if indegree[s1] == 0:
+                    order.append(s1)
+        if not len(order) == len(states):
+            raise ValueError("state diagram has a cycle of zero output weight")
+
+        # paths[j][s]: input weights of paths at s
+        paths: list[dict[int, Counter[int]]] = [{} for _ in range(max_weight + 1)]
+
+        def extend(j: int, s: int, x: int, counts: Counter[int]) -> None:
+            j1 = j + w_out[s][x]
+            if j1 <= max_weight:
+                target = paths[j1].setdefault(nxt[s][x], Counter())
+                for i, count in counts.items():
+                    target[i + w_in[x]] += count
+
+        # Within each layer, follow topological order
+        for x in inputs[1:]:
+            extend(0, 0, x, Counter({0: 1}))
+        for j in range(max_weight + 1):
+            for s in order:
+                if s in paths[j]:
+                    for x in inputs:
+                        extend(j, s, x, paths[j][s])
+
+        arrivals = [paths[j].get(0, Counter()) for j in range(max_weight + 1)]
+        if not max(sum(i * c for i, c in a.items()) for a in arrivals) < 2**63:
+            raise ValueError("'max_weight' is too large for 64-bit counts")
+        num_rows = max((i for a in arrivals for i in a), default=0) + 1
+        return np.array([[a[i] for a in arrivals] for i in range(num_rows)])
 
     @cache
     @abstractmethod

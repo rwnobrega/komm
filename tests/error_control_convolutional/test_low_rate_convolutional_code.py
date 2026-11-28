@@ -55,6 +55,8 @@ def test_low_rate_convolutional_code_lin_costello(degree, g_row, free_distance, 
     assert code.degree == degree
     assert code.is_catastrophic() is False
     assert code.free_distance() == free_distance
+    counts = code.path_weight_distribution(free_distance).sum(axis=0)
+    assert np.flatnonzero(counts)[0] == free_distance
 
     # Test against general class
     feedforward_polynomials = [g_row]

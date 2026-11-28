@@ -22,6 +22,8 @@
 
 - Implemented [MacWilliams transform](https://komm.dev/ref/macwilliams_transform).
 
+- Added method `path_weight_distribution` to [convolutional codes](https://komm.dev/ref/ConvolutionalCode/#path_weight_distribution).
+
 ### Breaking changes
 
 - Renamed parameter `kappa` of `SimplexCode` to `mu`.

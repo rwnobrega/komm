@@ -357,6 +357,25 @@ class ConvolutionalCode(abc.ConvolutionalCode):
         return super().is_catastrophic()
 
     @cache
+    def path_weight_distribution(self, max_weight: int) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.ConvolutionalCode([[0o7, 0o5]])
+            >>> table = code.path_weight_distribution(8)
+            >>> table
+            array([[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 1, 0, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 2, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 4, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 0, 8]])
+            >>> table.sum(axis=0)
+            array([0, 0, 0, 0, 0, 1, 2, 4, 8])
+            >>> np.arange(len(table)) @ table
+            array([ 0,  0,  0,  0,  0,  1,  4, 12, 32])
+        """
+        return super().path_weight_distribution(max_weight)
+
+    @cache
     def free_distance(self) -> int:
         r"""
         Examples:

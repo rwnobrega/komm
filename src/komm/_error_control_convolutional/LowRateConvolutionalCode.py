@@ -202,6 +202,19 @@ class LowRateConvolutionalCode(abc.ConvolutionalCode):
         return super().is_catastrophic()
 
     @cache
+    def path_weight_distribution(self, max_weight: int) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.LowRateConvolutionalCode([0o117, 0o155])
+            >>> table = code.path_weight_distribution(16)
+            >>> table.sum(axis=0)[10:]
+            array([  11,    0,   38,    0,  193,    0, 1331])
+            >>> (np.arange(len(table)) @ table)[10:]
+            array([   36,     0,   211,     0,  1404,     0, 11633])
+        """
+        return super().path_weight_distribution(max_weight)
+
+    @cache
     def free_distance(self) -> int:
         r"""
         Examples:

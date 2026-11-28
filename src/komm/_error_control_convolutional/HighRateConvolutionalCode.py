@@ -241,6 +241,19 @@ class HighRateConvolutionalCode(abc.ConvolutionalCode):
         return super().is_catastrophic()
 
     @cache
+    def path_weight_distribution(self, max_weight: int) -> Array2D[np.integer]:
+        r"""
+        Examples:
+            >>> code = komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11])
+            >>> table = code.path_weight_distribution(7)
+            >>> table.sum(axis=0)
+            array([  0,   0,   0,   0,  10,  46, 202, 949])
+            >>> np.arange(len(table)) @ table
+            array([   0,    0,    0,    0,   30,  171,  904, 4962])
+        """
+        return super().path_weight_distribution(max_weight)
+
+    @cache
     def free_distance(self) -> int:
         r"""
         Examples:

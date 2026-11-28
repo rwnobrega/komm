@@ -1,3 +1,5 @@
+from collections import Counter
+
 import numpy as np
 import pytest
 
@@ -537,3 +539,72 @@ def test_convolutional_code_invalid_polynomials():
         komm.ConvolutionalCode([[0o7, 0o5]], [0])
     with pytest.raises(ValueError, match="'feedback_polynomials' must be a 1D-array"):
         komm.ConvolutionalCode([[0o7, 0o5]], [[0o7]])
+
+
+def path_weights_by_search(code, max_weight):
+    # Depth-first search from the all-zero state
+    fsm = code.finite_state_machine()
+    counts = Counter()
+
+    def search(s, x, i, j):
+        i += x.bit_count()
+        j += fsm.outputs[s, x].bit_count()
+        s = fsm.transitions[s, x]
+        if j > max_weight:
+            return
+        if s == 0:
+            counts[i, j] += 1
+            return
+        for x in range(fsm.num_input_symbols):
+            search(s, x, i, j)
+
+    for x in range(1, fsm.num_input_symbols):
+        search(0, x, 0, 0)
+    num_rows = max((i for i, _ in counts), default=0) + 1
+    table = np.zeros((num_rows, max_weight + 1), dtype=int)
+    for (i, j), count in counts.items():
+        table[i, j] = count
+    return table
+
+
+@pytest.mark.parametrize(
+    "code, max_weight",
+    [
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 3),
+        (komm.ConvolutionalCode([[0o7, 0o5]]), 12),
+        (komm.ConvolutionalCode([[0o27, 0o31]], [0o27]), 10),
+        (komm.ConvolutionalCode([[0o31, 0o27, 0o0], [0o0, 0o12, 0o15]]), 8),
+        (komm.LowRateConvolutionalCode([0o117, 0o155]), 14),
+        (komm.HighRateConvolutionalCode([0o12, 0o15, 0o13, 0o11]), 7),
+    ],
+)
+def test_convolutional_code_path_weight_distribution_search(code, max_weight):
+    np.testing.assert_equal(
+        code.path_weight_distribution(max_weight),
+        path_weights_by_search(code, max_weight),
+    )
+
+
+@pytest.mark.parametrize(
+    "feedforward_polynomials, feedback_polynomials, max_weight, error, message",
+    [
+        ([[0b11, 0b101]], None, 10, ValueError, "cycle of zero output weight"),
+        (
+            [[0b11, 0b101, 0b1111], [0b0, 0b1010, 0b100]],
+            None,
+            10,
+            ValueError,
+            "cycle of zero output weight",
+        ),
+        ([[0b11, 0b11]], [0b11], 10, ValueError, "cycle of zero output weight"),
+        ([[0o117, 0o155]], None, 54, ValueError, "too large for 64-bit counts"),
+        ([[0o7, 0o5]], None, -1, ValueError, "'max_weight' must be a non-negative"),
+        ([[0o7, 0o5]], None, 1.5, TypeError, "'max_weight' must be an integer"),
+    ],
+)
+def test_convolutional_code_path_weight_distribution_invalid(
+    feedforward_polynomials, feedback_polynomials, max_weight, error, message
+):
+    code = komm.ConvolutionalCode(feedforward_polynomials, feedback_polynomials)
+    with pytest.raises(error, match=message):
+        code.path_weight_distribution(max_weight)
