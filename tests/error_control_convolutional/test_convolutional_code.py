@@ -586,6 +586,40 @@ def test_convolutional_code_path_weight_distribution_search(code, max_weight):
 
 
 @pytest.mark.parametrize(
+    "code, A, B",
+    [
+        (  # [LC04, Example 11.12]
+            komm.ConvolutionalCode([[0b1101, 0b1111]]),
+            [0, 0, 0, 0, 0, 0, 1, 3, 5, 11, 25],  # [LC04, eq. (11.106)]
+            [0, 0, 0, 0, 0, 0, 2, 7, 18],  # [LC04, eq. (11.131)]
+        ),
+        (  # [LC04, Example 11.13]
+            komm.ConvolutionalCode([[0b11, 0b10, 0b11], [0b10, 0b01, 0b01]]),
+            [0, 0, 0, 2, 5, 15],  # [LC04, eq. (11.109)]
+            [],
+        ),
+        (  # [LC04, Example 11.14]
+            komm.ConvolutionalCode([[0b111, 0b101]], [0b111]),
+            [0, 0, 0, 0, 0, 1, 2, 4, 8],  # [LC04, eq. (11.148)]
+            [0, 0, 0, 0, 0, 3, 6, 14, 32],  # [LC04, eq. (11.154)]
+        ),
+        (  # [LC04, Example 12.5]
+            komm.ConvolutionalCode([[0b011, 0b101, 0b111]]),
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2],  # [LC04, eq. (12.15)]
+            [0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 6],  # [LC04, eq. (12.53)]
+        ),
+    ],
+)
+def test_convolutional_code_path_weight_distribution_lin_costello(code, A, B):
+    max_weight = max(len(A), len(B)) - 1
+    table = code.path_weight_distribution(max_weight)
+    codeword_wef = table.sum(axis=0)
+    bit_wef = np.arange(len(table)) @ table
+    np.testing.assert_equal(codeword_wef[: len(A)], A)
+    np.testing.assert_equal(bit_wef[: len(B)], B)
+
+
+@pytest.mark.parametrize(
     "feedforward_polynomials, feedback_polynomials, max_weight, error, message",
     [
         ([[0b11, 0b101]], None, 10, ValueError, "cycle of zero output weight"),
